@@ -8,6 +8,7 @@ fun TextToImagePayloadDomain.mapToRequest(): TextToImageRequest = with(this) {
         prompt = prompt,
         negativePrompt = negativePrompt,
         steps = samplingSteps,
+        cfgScale = cfgScale,
         width = width,
         height = height,
         restoreFaces = restoreFaces,

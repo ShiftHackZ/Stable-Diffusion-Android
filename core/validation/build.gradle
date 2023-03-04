@@ -6,9 +6,10 @@ plugins {
 apply from: "$project.rootDir/gradle/common.gradle"
 
 android {
-    namespace 'com.shifthackz.aisdv1.core.common'
+    namespace 'com.shifthackz.aisdv1.core.validation'
 }
 
 dependencies {
-    implementation reactive.rxjava
+    implementation di.koinCore
+    implementation reactive.rxkotlin
 }

@@ -19,6 +19,8 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+private const val HTTP_TIMEOUT = 10L
+
 val networkModule = module {
 
     single<Gson> { GsonBuilder().create() }
@@ -66,8 +68,8 @@ val networkModule = module {
                 get<List<HttpInterceptor>>().forEach(::addInterceptor)
                 get<List<NetworkInterceptor>>().forEach(::addNetworkInterceptor)
             }
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(HTTP_TIMEOUT, TimeUnit.MINUTES)
+            .readTimeout(HTTP_TIMEOUT, TimeUnit.MINUTES)
             .build()
     }
 

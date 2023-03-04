@@ -9,6 +9,8 @@ data class TextToImageRequest(
     val negativePrompt: String,
     @SerializedName("steps")
     val steps: Int,
+    @SerializedName("cfg_scale")
+    val cfgScale: Float,
     @SerializedName("width")
     val width: Int,
     @SerializedName("height")

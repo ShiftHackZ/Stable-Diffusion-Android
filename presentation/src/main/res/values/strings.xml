@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="ok">OK</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
     <string name="splash_status_initializing">Initializing…</string>
     <string name="splash_status_fetching">Fetching data…</string>
     <string name="splash_status_launching">Launching application!</string>
+
+    <string name="action_generate">Generate</string>
+
+    <string name="hint_prompt">Prompt</string>
+    <string name="hint_prompt_negative">Negative prompt</string>
+    <string name="hint_sampling_steps">Sampling steps: %1$s</string>
+    <string name="hint_cfg_scale">CFG Scale: %1$s</string>
+
+    <string name="home_tab_txt_to_img">Text to Image</string>
+    <string name="home_tab_img_to_img">Image to Image</string>
+
+    <string name="communicating_progress_title">Hang tight, communicating with server…</string>
+    <string name="communicating_progress_sub_title">This could take up to 60 seconds</string>
+
+    <string name="error_title">Error</string>
+    <string name="error_empty">Field can\'t be empty</string>
+    <string name="error_invalid">Invalid input</string>
+    <string name="error_min_size">Minimum size is %1$s</string>
+    <string name="error_max_size">Maximum size is %1$s</string>
 </resources>

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -15,6 +16,7 @@ import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationScreen
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashLoaderScreen
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreen
 import org.koin.androidx.compose.koinViewModel
+import com.shifthackz.aisdv1.presentation.R
 
 class MainActivity : ComponentActivity() {
 
@@ -44,17 +46,18 @@ class MainActivity : ComponentActivity() {
                     HomeNavigationScreen(
                         navItems = listOf(
                             HomeNavigationItem(
-                                name = "Txt 2 Img",
+                                name = stringResource(R.string.home_tab_txt_to_img),
                                 route = Constants.ROUTE_TXT_TO_IMG,
-                                icon = Icons.Filled.Home,
+                                icon = HomeNavigationItem.Icon.Resource(R.drawable.ic_txt2img),
                                 content = {
                                     TextToImageScreen(viewModel = koinViewModel()).Build()
                                 },
                             ),
                             HomeNavigationItem(
-                                name = "Img 2 Img",
+                                name = stringResource(R.string.home_tab_img_to_img),
                                 route = Constants.ROUTE_IMG_TO_IMG,
-                                icon = Icons.Filled.Home,
+                                icon = HomeNavigationItem.Icon.Resource(R.drawable.ic_img2img),
+//                                icon = HomeNavigationItem.Icon.Vector(Icons.Filled.Home),
                                 content = {
                                     Text("Not implemented")
                                 },

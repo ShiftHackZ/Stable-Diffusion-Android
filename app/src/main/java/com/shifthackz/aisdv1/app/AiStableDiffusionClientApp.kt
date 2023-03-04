@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.app
 
 import android.app.Application
 import com.shifthackz.aisdv1.app.di.providersModule
+import com.shifthackz.aisdv1.core.validation.di.validatorsModule
 import com.shifthackz.aisdv1.data.di.dataModule
 import com.shifthackz.aisdv1.data.di.localDataSourceModule
 import com.shifthackz.aisdv1.data.di.remoteDataSourceModule
@@ -28,6 +29,7 @@ class AiStableDiffusionClientApp : Application() {
             *dataModule,
             networkModule,
             databaseModule,
+            validatorsModule,
             viewModelModule,
         )
     }

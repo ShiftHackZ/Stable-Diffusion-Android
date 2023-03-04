@@ -2,11 +2,15 @@
 
 package com.shifthackz.aisdv1.presentation.screen.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -17,7 +21,7 @@ class HomeNavigationScreen(
     private val navItems: List<HomeNavigationItem> = emptyList(),
 ) : Screen() {
 
-    override val statusBarColor: Color = Color.Cyan
+    override val statusBarColor: Color = Color.White
     override val navigationBarColor: Color = Color.Black
 
     @Composable
@@ -37,13 +41,19 @@ class HomeNavigationScreen(
                                 Text(text = item.name)
                             },
                             icon = {
-                                Icon(
-                                    imageVector = item.icon,
-                                    contentDescription = item.name,
-                                )
+                                when (item.icon) {
+                                    is HomeNavigationItem.Icon.Resource -> Image(
+                                        modifier = Modifier.widthIn(max = 56.dp),
+                                        painter = painterResource(item.icon.resId),
+                                        contentDescription = "",
+                                    )
+                                    is HomeNavigationItem.Icon.Vector -> Icon(
+                                        imageVector = item.icon.vector,
+                                        contentDescription = item.name,
+                                    )
+                                }
                             },
                             onClick = {
-                                //if (selected) return@NavigationBarItem
                                 navController.navigate(item.route) {
                                     navController.graph.startDestinationRoute?.let { route ->
                                         popUpTo(route) {

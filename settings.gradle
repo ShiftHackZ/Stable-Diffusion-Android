@@ -18,6 +18,7 @@ def libraries = [
         ':app',
         ':core:common',
         ':core:ui',
+        ':core:validation',
         ':data',
         ':domain',
         ':network',

@@ -32,7 +32,7 @@ abstract class MviViewModel<S : MviState, E : MviEffect> : ViewModel() {
 
     abstract val emptyState: S
 
-    fun setState(state: S) {
+    open fun setState(state: S) {
         mutableState.tryEmit(state)
     }
 

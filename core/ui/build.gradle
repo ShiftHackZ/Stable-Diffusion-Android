@@ -29,8 +29,5 @@ dependencies {
     api androidx.lifecycleViewModel
     api google.accompanistSystemUiController
 
-//    debugApi "androidx.customview:customview:1.2.0-alpha02"
-//    debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
-
     implementation reactive.rxjava
 }
