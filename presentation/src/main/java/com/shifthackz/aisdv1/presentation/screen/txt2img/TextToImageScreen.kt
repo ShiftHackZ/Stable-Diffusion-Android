@@ -9,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -81,45 +80,45 @@ private fun ScreenContent(
                 )
             },
             content = { paddingValues ->
+                val scrollState = rememberScrollState()
                 Column(
                     modifier = Modifier
                         .padding(paddingValues)
+                        .verticalScroll(scrollState)
                         .padding(horizontal = 16.dp),
                 ) {
-                    val scrollState = rememberScrollState()
-                    Column(
-                        modifier = Modifier.verticalScroll(scrollState)
-                    ) {
-                        GenerationInputForm(
-                            prompt = state.prompt,
-                            negativePrompt = state.negativePrompt,
-                            width = state.width,
-                            height = state.height,
-                            samplingSteps = state.samplingSteps,
-                            cfgScale = state.cfgScale,
-                            onPromptUpdated = onPromptUpdated,
-                            onNegativePromptUpdated = onNegativePromptUpdated,
-                            onWidthUpdated = onWidthUpdated,
-                            onHeightUpdated = onHeightUpdated,
-                            onSamplingStepsUpdated = onSamplingStepsUpdated,
-                            onCfgScaleUpdated = onCfgScaleUpdated,
-                            widthValidationError = state.widthValidationError,
-                            heightValidationError = state.heightValidationError,
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    Button(
-                        modifier = Modifier
-                            .padding(bottom = 16.dp)
-                            .align(Alignment.CenterHorizontally)
-                            .fillMaxWidth(0.6f),
-                        onClick = onGenerateClicked,
-                        enabled = !state.hasValidationErrors
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.action_generate)
-                        )
-                    }
+
+
+                    GenerationInputForm(
+                        prompt = state.prompt,
+                        negativePrompt = state.negativePrompt,
+                        width = state.width,
+                        height = state.height,
+                        samplingSteps = state.samplingSteps,
+                        cfgScale = state.cfgScale,
+                        onPromptUpdated = onPromptUpdated,
+                        onNegativePromptUpdated = onNegativePromptUpdated,
+                        onWidthUpdated = onWidthUpdated,
+                        onHeightUpdated = onHeightUpdated,
+                        onSamplingStepsUpdated = onSamplingStepsUpdated,
+                        onCfgScaleUpdated = onCfgScaleUpdated,
+                        widthValidationError = state.widthValidationError,
+                        heightValidationError = state.heightValidationError,
+                    )
+                }
+            },
+            bottomBar = {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp)
+                        .padding(bottom = 16.dp),
+                    onClick = onGenerateClicked,
+                    enabled = !state.hasValidationErrors
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.action_generate)
+                    )
                 }
             }
         )
