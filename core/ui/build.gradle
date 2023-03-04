@@ -1,0 +1,36 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: "$project.rootDir/gradle/common.gradle"
+
+android {
+    namespace 'com.shifthackz.aisdv1.core.ui'
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
+}
+
+dependencies {
+    api platform(androidx.composeBom)
+    api androidx.composeRuntime
+    api androidx.composeMaterial3
+    debugApi androidx.composeUiTooling
+    api androidx.composeUiToolingPreview
+    api androidx.composeActivity
+    api androidx.composeViewModel
+    api androidx.composeNavigation
+
+    api androidx.composeUiGraphics
+    api androidx.lifecycleViewModel
+    api google.accompanistSystemUiController
+
+//    debugApi "androidx.customview:customview:1.2.0-alpha02"
+//    debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
+
+    implementation reactive.rxjava
+}

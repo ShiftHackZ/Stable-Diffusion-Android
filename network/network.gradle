@@ -1,0 +1,22 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+apply from: "$project.rootDir/gradle/common.gradle"
+
+android {
+    namespace 'com.shifthackz.aisdv1.network'
+}
+
+dependencies {
+    implementation google.gson
+    implementation retrofit.core
+    implementation retrofit.converterGson
+    implementation retrofit.adapterRx
+    implementation okhttp.core
+    implementation okhttp.logging
+    implementation di.koinCore
+    implementation reactive.rxkotlin
+}

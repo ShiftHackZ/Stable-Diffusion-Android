@@ -1,0 +1,36 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+apply from: "$project.rootDir/gradle/common.gradle"
+
+android {
+    namespace 'com.shifthackz.aisdv1.presentation'
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
+}
+
+dependencies {
+    api project(":core:ui")
+    implementation project(":core:common")
+    implementation project(":domain")
+
+    implementation di.koinCore
+    implementation di.koinAndroid
+    implementation di.koinCompose
+
+    implementation androidx.core
+    implementation androidx.appcompat
+    implementation androidx.activity
+    implementation google.material
+
+    implementation reactive.rxjava
+    implementation reactive.rxkotlin
+    implementation reactive.rxandroid
+}

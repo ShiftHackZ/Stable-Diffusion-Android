@@ -1,0 +1,44 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+apply from: "$project.rootDir/gradle/common.gradle"
+
+android {
+    namespace 'com.shifthackz.aisdv1.app'
+    defaultConfig {
+        applicationId "com.shifthackz.aisdv1.app"
+    }
+
+    flavorDimensions "server"
+    productFlavors {
+        local {
+            dimension "server"
+            buildConfigField "String", "SERVER_URL", "\"http://192.168.228.16:7860\""
+        }
+        production {
+            dimension "server"
+            buildConfigField "String", "SERVER_URL", "\"http://192.168.228.16:7860\""
+        }
+    }
+}
+
+dependencies {
+    implementation project(":core:common")
+    implementation project(":presentation")
+    implementation project(":network")
+    implementation project(":storage")
+    implementation project(":domain")
+    implementation project(":data")
+    implementation di.koinCore
+    implementation di.koinAndroid
+    implementation di.koinCompose
+    implementation reactive.rxkotlin
+    implementation reactive.rxandroid
+}
+
+kapt {
+    correctErrorTypes true
+}

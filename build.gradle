@@ -1,0 +1,14 @@
+buildscript {
+    ext {
+        appVersion = "1.0.0"
+        appVersionCode = 1
+        minSdk = 24
+        targetSdk = 33
+    }
+}
+
+plugins {
+    id 'com.android.application' version '7.4.2' apply false
+    id 'com.android.library' version '7.4.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
+}

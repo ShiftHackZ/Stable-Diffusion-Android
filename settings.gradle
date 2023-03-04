@@ -1,0 +1,33 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "AI Stable Diffusion Client"
+
+def libraries = [
+        ':app',
+        ':core:common',
+        ':core:ui',
+        ':data',
+        ':domain',
+        ':network',
+        ':presentation',
+        ':storage',
+] as String[]
+
+include libraries
+
+// Change each module's gradle filename - https://stackoverflow.com/a/30878796
+rootProject.children.each {
+    it.buildFileName = it.name + '.gradle'
+}

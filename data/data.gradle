@@ -1,0 +1,19 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+apply from: "$project.rootDir/gradle/common.gradle"
+
+android {
+    namespace 'com.shifthackz.aisdv1.data'
+}
+
+dependencies {
+    implementation project(":domain")
+    implementation project(":network")
+    implementation project(":storage")
+    implementation di.koinCore
+    implementation reactive.rxkotlin
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="splash_status_initializing">Initializing…</string>
+    <string name="splash_status_fetching">Fetching data…</string>
+    <string name="splash_status_launching">Launching application!</string>
+</resources>

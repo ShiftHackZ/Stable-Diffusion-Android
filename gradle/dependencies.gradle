@@ -1,0 +1,56 @@
+ext {
+    composeBomVersion = '2023.01.00'
+    koinVersion = '3.3.3'
+    koinComposeVersion = '3.4.2'
+    retrofitVersion = '2.9.0'
+    okHttpVersion = '5.0.0-alpha.11'
+    roomVersion = '2.5.0'
+    rxJavaVersion = '3.1.6'
+    rxKotlinVersion = '3.0.1'
+    rxAndroidVersion = '3.0.2'
+
+    androidx = [
+            core: "androidx.core:core-ktx:1.9.0",
+            appcompat: "androidx.appcompat:appcompat:1.6.0",
+            activity: "androidx.activity:activity-ktx:1.6.1",
+            composeBom: "androidx.compose:compose-bom:$composeBomVersion",
+            composeRuntime: "androidx.compose.runtime:runtime",
+            composeMaterial3: "androidx.compose.material3:material3",
+            composeUiGraphics: "androidx.compose.ui:ui-graphics",
+            composeUiTooling: "androidx.compose.ui:ui-tooling:1.3.3",
+            composeUiToolingPreview: "androidx.compose.ui:ui-tooling-preview:1.3.3",
+            composeActivity: "androidx.activity:activity-compose:1.5.1",
+            composeViewModel: "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1",
+            composeNavigation: "androidx.navigation:navigation-compose:2.5.3",
+            lifecycleViewModel: "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1",
+    ]
+    google = [
+            gson: "com.google.code.gson:gson:2.9.1",
+            material: "com.google.android.material:material:1.8.0",
+            accompanistSystemUiController: "com.google.accompanist:accompanist-systemuicontroller:0.28.0",
+    ]
+    di = [
+            koinCore: "io.insert-koin:koin-core:$koinVersion",
+            koinAndroid: "io.insert-koin:koin-android:$koinVersion",
+            koinCompose: "io.insert-koin:koin-androidx-compose:$koinComposeVersion",
+    ]
+    retrofit = [
+            core: "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            converterGson: "com.squareup.retrofit2:converter-gson:$retrofitVersion",
+            adapterRx: "com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion",
+    ]
+    okhttp = [
+            core: "com.squareup.okhttp3:okhttp:$okHttpVersion",
+            logging: "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
+    ]
+    database = [
+            roomRuntime: "androidx.room:room-runtime:$roomVersion",
+            roomCompiler: "androidx.room:room-compiler:$roomVersion",
+            roomRx3: "androidx.room:room-rxjava3:$roomVersion",
+    ]
+    reactive = [
+            rxjava: "io.reactivex.rxjava3:rxjava:$rxJavaVersion",
+            rxkotlin: "io.reactivex.rxjava3:rxkotlin:$rxKotlinVersion",
+            rxandroid: "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion",
+    ]
+}
