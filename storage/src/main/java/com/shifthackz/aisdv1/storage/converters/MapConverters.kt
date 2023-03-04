@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.storage.database.converters
+package com.shifthackz.aisdv1.storage.converters
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

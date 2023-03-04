@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSamplerDomain
 import com.shifthackz.aisdv1.network.model.StableDiffusionSamplerRaw
-import com.shifthackz.aisdv1.storage.database.entity.StableDiffusionSamplerEntity
+import com.shifthackz.aisdv1.storage.db_cache.entity.StableDiffusionSamplerEntity
 
 //region RAW --> DOMAIN
 fun List<StableDiffusionSamplerRaw>.mapToDomain(): List<StableDiffusionSamplerDomain> =

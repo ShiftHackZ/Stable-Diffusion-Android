@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.data.local
 import com.shifthackz.aisdv1.data.mappers.mapToEntity
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSamplerDomain
-import com.shifthackz.aisdv1.storage.database.dao.StableDiffusionSamplerDao
+import com.shifthackz.aisdv1.storage.db_cache.dao.StableDiffusionSamplerDao
 import io.reactivex.rxjava3.core.Completable
 
 class StableDiffusionSamplersLocalDataSource(

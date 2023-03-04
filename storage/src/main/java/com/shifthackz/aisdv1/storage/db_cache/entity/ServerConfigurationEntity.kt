@@ -1,9 +1,9 @@
-package com.shifthackz.aisdv1.storage.database.entity
+package com.shifthackz.aisdv1.storage.db_cache.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.shifthackz.aisdv1.storage.database.contract.ServerConfigurationContract
+import com.shifthackz.aisdv1.storage.db_cache.contract.ServerConfigurationContract
 
 @Entity(tableName = ServerConfigurationContract.TABLE)
 data class ServerConfigurationEntity(
