@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.ServerConfigurationDomain
 import com.shifthackz.aisdv1.network.model.ServerConfigurationRaw
-import com.shifthackz.aisdv1.storage.database.entity.ServerConfigurationEntity
+import com.shifthackz.aisdv1.storage.db_cache.entity.ServerConfigurationEntity
 
 //region RAW --> DOMAIN
 fun ServerConfigurationRaw.mapToDomain(): ServerConfigurationDomain = with(this) {

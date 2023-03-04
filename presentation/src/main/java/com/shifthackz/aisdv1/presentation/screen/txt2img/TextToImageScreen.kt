@@ -11,16 +11,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.model.asString
+import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
-import com.shifthackz.aisdv1.presentation.screen.txt2img.contract.TextToImageEffect
-import com.shifthackz.aisdv1.presentation.screen.txt2img.contract.TextToImageState
-import com.shifthackz.aisdv1.presentation.screen.txt2img.model.StableDiffusionModelUi
-import com.shifthackz.aisdv1.presentation.screen.txt2img.model.TextToImagePayloadUi
 import com.shifthackz.aisdv1.presentation.utils.base64ToImage
 import kotlin.math.roundToInt
 
@@ -28,42 +24,73 @@ class TextToImageScreen(
     private val viewModel: TextToImageViewModel,
 ) : MviScreen<TextToImageState, TextToImageEffect>(viewModel) {
 
-    override val statusBarColor: Color = Color.Cyan
-
     @Composable
     override fun Content() {
         val state = viewModel.state.collectAsState().value
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
-            generate = viewModel::generate,
-            selectSdModel = viewModel::selectStableDiffusionModel,
+            onPromptUpdated = viewModel::updatePrompt,
+            onNegativePromptUpdated = viewModel::updateNegativePrompt,
+            onSamplingStepsUpdated = viewModel::updateSamplingSteps,
+            onGenerateClicked = viewModel::generate,
+            onSelectedSdModel = viewModel::selectStableDiffusionModel,
         )
     }
+
+    @Composable
+    override fun ApplySystemUiColors() = Unit
 }
 
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: TextToImageState,
-    generate: (TextToImagePayloadUi) -> Unit = { _ -> },
-    selectSdModel: (StableDiffusionModelUi) -> Unit = { _ -> },
+    onPromptUpdated: (String) -> Unit = { _ -> },
+    onNegativePromptUpdated: (String) -> Unit = { _ -> },
+    onSamplingStepsUpdated: (Int) -> Unit = { _ -> },
+    onGenerateClicked: () -> Unit = {},
+    onSelectedSdModel: (String) -> Unit = { _ -> },
+) {
+    when (state) {
+        is TextToImageState.Content -> TextToImageGenerationForm(
+            modifier = modifier,
+            state = state,
+            onPromptUpdated = onPromptUpdated,
+            onNegativePromptUpdated = onNegativePromptUpdated,
+            onSamplingStepsUpdated = onSamplingStepsUpdated,
+            onGenerateClicked = onGenerateClicked,
+            onSelectedSdModel = onSelectedSdModel,
+        )
+//        is TextToImageState.Image -> {
+//            val bmp = base64ToImage(state.image)
+//            Image(bitmap = bmp.asImageBitmap(), contentDescription = "ai")
+//        }
+        TextToImageState.Uninitialized -> {
+            Text("Uninitialized")
+        }
+    }
+}
+
+@Composable
+private fun TextToImageGenerationForm(
+    modifier: Modifier = Modifier,
+    state: TextToImageState.Content,
+    onPromptUpdated: (String) -> Unit = { _ -> },
+    onNegativePromptUpdated: (String) -> Unit = { _ -> },
+    onSamplingStepsUpdated: (Int) -> Unit = { _ -> },
+    onGenerateClicked: () -> Unit = {},
+    onSelectedSdModel: (String) -> Unit = { _ -> },
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
     ) {
-        var sdModelsItems by remember { mutableStateOf(listOf<StableDiffusionModelUi>()) }
+//        var sdModelsItems by remember { mutableStateOf(listOf<StableDiffusionModelUi>()) }
         var sdModelsExpanded by remember { mutableStateOf(false) }
-        var sdModelsSelection by remember { mutableStateOf("") }
+//        var sdModelsSelection by remember { mutableStateOf("") }
 
-        var prompt by remember { mutableStateOf(TextFieldValue("")) }
-        var negativePrompt by remember { mutableStateOf(TextFieldValue("")) }
-        var samplingSteps by remember { mutableStateOf(20f) }
-
-        (state as? TextToImageState.Content)?.let { content ->
-            sdModelsItems = content.models
-            sdModelsSelection = content.models.first { it.isSelected }.title
-        }
+//        sdModelsItems = state.models
+//        sdModelsSelection = state.models.first { it.isSelected }.title
 
         ExposedDropdownMenuBox(
             modifier = Modifier
@@ -72,11 +99,12 @@ private fun ScreenContent(
             expanded = sdModelsExpanded,
             onExpandedChange = { sdModelsExpanded = !sdModelsExpanded },
         ) {
+            val selectedModel = state.selectedModel.asString()
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
-                value = sdModelsSelection,
+                value = selectedModel,
                 onValueChange = {},
                 readOnly = true,
                 label = { Text("SD Model") },
@@ -89,14 +117,15 @@ private fun ScreenContent(
                 expanded = sdModelsExpanded,
                 onDismissRequest = { sdModelsExpanded = false },
             ) {
-                sdModelsItems.forEach { model ->
+                state.models.forEach { title ->
                     DropdownMenuItem(
-                        text = { Text(model.title) },
+                        text = { Text(title) },
                         onClick = {
                             sdModelsExpanded = false
-                            if (sdModelsSelection == model.title) return@DropdownMenuItem
-                            sdModelsSelection = model.title
-                            selectSdModel(model)
+                            if (selectedModel == title) return@DropdownMenuItem
+                            onSelectedSdModel(title)
+                            //sdModelsSelection = model.title
+                            //selectSdModel(model)
                         },
                     )
                 }
@@ -107,29 +136,28 @@ private fun ScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
-            value = prompt,
-            onValueChange = { prompt = it },
+            value = state.prompt,
+            onValueChange = onPromptUpdated,
             label = { Text("Prompt") },
         )
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
-            value = negativePrompt,
-            onValueChange = { negativePrompt = it },
+            value = state.negativePrompt,
+            onValueChange = onNegativePromptUpdated,
             label = { Text("Negative prompt") },
         )
 
         Text(
-            text = "Sampling steps: ${samplingSteps.roundToInt()}",
+            text = "Sampling steps: ${state.samplingSteps}",
         )
         Slider(
-            value = samplingSteps,
+            value = state.samplingSteps * 1f,
             valueRange = 0f..150f,
             steps = 149,
             onValueChange = {
-                println("DBG0, samplingSteps = $it")
-                samplingSteps = it
+                onSamplingStepsUpdated(it.roundToInt())
             },
         )
 
@@ -137,34 +165,37 @@ private fun ScreenContent(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth(0.6f),
-            onClick = {
-                generate(
-                    TextToImagePayloadUi(
-                        prompt = prompt.text,
-                        negativePrompt = negativePrompt.text,
-                        samplingSteps = samplingSteps.roundToInt(),
-                    ),
-                )
-            },
+            onClick = onGenerateClicked,
         ) {
             Text(
                 text = "Txt 2 img"
             )
         }
-
-        if (state is TextToImageState.Image) {
-            val bmp = base64ToImage(state.image)
-            Image(bitmap = bmp.asImageBitmap(), contentDescription = "ai")
-        }
     }
 }
 
-
+//region PREVIEWS
 @Composable
-@Preview(name = "STATE -> Idle", showSystemUi = true, showBackground = true)
-private fun PreviewStateIdle() {
+@Preview(showSystemUi = true, showBackground = true)
+private fun PreviewStateUninitialized() {
     ScreenContent(
         modifier = Modifier.fillMaxSize(),
-        state = TextToImageState.Idle,
+        state = TextToImageState.Uninitialized,
     )
 }
+
+@Composable
+@Preview(showSystemUi = true, showBackground = true)
+private fun PreviewStateContent() {
+    ScreenContent(
+        modifier = Modifier.fillMaxSize(),
+        state = TextToImageState.Content(
+            models = listOf("Stable Diffusion v1.5"),
+            selectedModel = "Stable Diffusion v1.5".asUiText(),
+            prompt = "Opel Astra H OPC",
+            negativePrompt = "White background",
+            samplingSteps = 55,
+        )
+    )
+}
+//endregion

@@ -6,8 +6,6 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.screen.splash.contract.SplashLoaderEffect
-import com.shifthackz.aisdv1.presentation.screen.splash.contract.SplashLoaderState
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class SplashLoaderViewModel(
@@ -32,7 +30,7 @@ class SplashLoaderViewModel(
             .subscribeBy(
                 onError = {
                     it.printStackTrace()
-                    //setState(SplashLoaderState.StatusNotification("Failed loading data".asUiText()))
+                    setState(SplashLoaderState.StatusNotification("Failed loading data".asUiText()))
                 },
                 onComplete = {
                     setState(

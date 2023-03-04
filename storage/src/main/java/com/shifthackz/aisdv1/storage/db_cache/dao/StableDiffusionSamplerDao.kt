@@ -1,11 +1,11 @@
-package com.shifthackz.aisdv1.storage.database.dao
+package com.shifthackz.aisdv1.storage.db_cache.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.shifthackz.aisdv1.storage.database.contract.StableDiffusionSamplerContract
-import com.shifthackz.aisdv1.storage.database.entity.StableDiffusionSamplerEntity
+import com.shifthackz.aisdv1.storage.db_cache.contract.StableDiffusionSamplerContract
+import com.shifthackz.aisdv1.storage.db_cache.entity.StableDiffusionSamplerEntity
 import io.reactivex.rxjava3.core.Completable
 
 @Dao

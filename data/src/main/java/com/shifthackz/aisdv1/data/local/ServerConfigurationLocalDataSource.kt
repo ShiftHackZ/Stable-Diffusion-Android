@@ -4,8 +4,8 @@ import com.shifthackz.aisdv1.data.mappers.mapToDomain
 import com.shifthackz.aisdv1.data.mappers.mapToEntity
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
 import com.shifthackz.aisdv1.domain.entity.ServerConfigurationDomain
-import com.shifthackz.aisdv1.storage.database.dao.ServerConfigurationDao
-import com.shifthackz.aisdv1.storage.database.entity.ServerConfigurationEntity
+import com.shifthackz.aisdv1.storage.db_cache.dao.ServerConfigurationDao
+import com.shifthackz.aisdv1.storage.db_cache.entity.ServerConfigurationEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
