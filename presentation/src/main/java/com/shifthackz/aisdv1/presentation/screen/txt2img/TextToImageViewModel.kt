@@ -3,8 +3,9 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
-import com.shifthackz.aisdv1.domain.interactor.StableDiffusionModelSelectionInteractor
-import com.shifthackz.aisdv1.domain.usecase.TextToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import com.shifthackz.aisdv1.presentation.screen.txt2img.contract.TextToImageEffect
 import com.shifthackz.aisdv1.presentation.screen.txt2img.contract.TextToImageState
 import com.shifthackz.aisdv1.presentation.screen.txt2img.model.StableDiffusionModelUi
@@ -13,15 +14,15 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
     private val textToImageUseCase: TextToImageUseCase,
-    private val sdModelSelectionInteractor: StableDiffusionModelSelectionInteractor,
+    private val getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
+    private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<TextToImageState, TextToImageEffect>() {
 
     override val emptyState = TextToImageState.Idle
 
     init {
-        sdModelSelectionInteractor
-            .getData()
+        getStableDiffusionModelsUseCase()
             .subscribeOnMainThread(schedulersProvider)
             .map { data ->
                 data.map { (model, selection) ->
@@ -39,8 +40,7 @@ class TextToImageViewModel(
             .addToDisposable()
     }
 
-    fun generate(payload: TextToImagePayloadUi) = textToImageUseCase
-        .generate(payload.mapToDomain())
+    fun generate(payload: TextToImagePayloadUi) = textToImageUseCase(payload.mapToDomain())
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
             onError = {
@@ -53,16 +53,16 @@ class TextToImageViewModel(
         )
         .addToDisposable()
 
-    fun selectStableDiffusionModel(sdModel: StableDiffusionModelUi) = sdModelSelectionInteractor
-        .selectModelByName(sdModel.title)
-        .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(
-            onError = {
+    fun selectStableDiffusionModel(sdModel: StableDiffusionModelUi) =
+        selectStableDiffusionModelUseCase(sdModel.title)
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = {
 
-            },
-            onComplete = {
+                },
+                onComplete = {
 
-            },
-        )
-        .addToDisposable()
+                },
+            )
+            .addToDisposable()
 }

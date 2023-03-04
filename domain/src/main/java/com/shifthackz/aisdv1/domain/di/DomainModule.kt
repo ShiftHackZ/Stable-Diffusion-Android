@@ -1,8 +1,15 @@
 package com.shifthackz.aisdv1.domain.di
 
-import com.shifthackz.aisdv1.domain.interactor.StableDiffusionModelSelectionInteractor
-import com.shifthackz.aisdv1.domain.interactor.StableDiffusionModelSelectionInteractorImpl
-import com.shifthackz.aisdv1.domain.usecase.*
+import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
+import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCase
+import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCaseImpl
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -19,7 +26,11 @@ val domainModule = module {
         DataPreLoaderUseCaseImpl(get(), get(), get())
     }
 
-    factory<StableDiffusionModelSelectionInteractor> {
-        StableDiffusionModelSelectionInteractorImpl(get(), get())
+    factory<GetStableDiffusionModelsUseCase> {
+        GetStableDiffusionModelsUseCaseImpl(get(), get())
+    }
+
+    factory<SelectStableDiffusionModelUseCase> {
+        SelectStableDiffusionModelUseCaseImpl(get())
     }
 }

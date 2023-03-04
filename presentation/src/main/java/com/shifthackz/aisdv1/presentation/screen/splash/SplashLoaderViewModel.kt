@@ -4,7 +4,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
-import com.shifthackz.aisdv1.domain.usecase.DataPreLoaderUseCase
+import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.splash.contract.SplashLoaderEffect
 import com.shifthackz.aisdv1.presentation.screen.splash.contract.SplashLoaderState
@@ -20,8 +20,7 @@ class SplashLoaderViewModel(
     )
 
     init {
-        dataPreLoaderUseCase
-            .execute()
+        dataPreLoaderUseCase()
             .doOnSubscribe {
                 setState(
                     SplashLoaderState.StatusNotification(
@@ -46,5 +45,4 @@ class SplashLoaderViewModel(
             )
             .addToDisposable()
     }
-
 }

@@ -1,17 +1,16 @@
-package com.shifthackz.aisdv1.domain.interactor
+package com.shifthackz.aisdv1.domain.usecase.sdmodel
 
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionModelDomain
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
-class StableDiffusionModelSelectionInteractorImpl(
+class GetStableDiffusionModelsUseCaseImpl(
     private val serverConfigurationRepository: ServerConfigurationRepository,
     private val sdModelsRepository: StableDiffusionModelsRepository,
-) : StableDiffusionModelSelectionInteractor {
+) : GetStableDiffusionModelsUseCase {
 
-    override fun getData(): Single<List<Pair<StableDiffusionModelDomain, Boolean>>> =
+    override operator fun invoke(): Single<List<Pair<StableDiffusionModelDomain, Boolean>>> =
         serverConfigurationRepository
             .fetchAndGetConfiguration()
             .flatMap { config ->
@@ -20,16 +19,8 @@ class StableDiffusionModelSelectionInteractorImpl(
                     .map { sdModels -> config to sdModels }
             }
             .map { (config, sdModels) ->
-                val cc = sdModels.map { model ->
+                sdModels.map { model ->
                     model to (config.sdModelCheckpoint == model.title)
                 }
-                println("DBG0 - $cc")
-                cc
             }
-
-    override fun selectModelByName(modelName: String): Completable = serverConfigurationRepository
-        .getConfiguration()
-        .map { config -> config.copy(sdModelCheckpoint = modelName) }
-        .flatMapCompletable(serverConfigurationRepository::updateConfiguration)
-        .andThen(serverConfigurationRepository.fetchConfiguration())
 }

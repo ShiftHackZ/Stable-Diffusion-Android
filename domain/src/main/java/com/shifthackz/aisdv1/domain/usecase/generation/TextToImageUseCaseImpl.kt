@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.domain.usecase
+package com.shifthackz.aisdv1.domain.usecase.generation
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayloadDomain
@@ -9,6 +9,6 @@ class TextToImageUseCaseImpl(
     private val repository: StableDiffusionTextToImageRepository,
 ) : TextToImageUseCase {
 
-    override fun generate(payload: TextToImagePayloadDomain): Single<AiGenerationResultDomain> =
+    override operator fun invoke(payload: TextToImagePayloadDomain): Single<AiGenerationResultDomain> =
         repository.getImage(payload)
 }

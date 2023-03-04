@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.domain.usecase
+package com.shifthackz.aisdv1.domain.usecase.caching
 
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
@@ -11,7 +11,7 @@ class DataPreLoaderUseCaseImpl(
     private val sdSamplersRepository: StableDiffusionSamplersRepository,
 ) : DataPreLoaderUseCase {
 
-    override fun execute(): Completable = serverConfigurationRepository.fetchConfiguration()
+    override operator fun invoke(): Completable = serverConfigurationRepository.fetchConfiguration()
         .andThen(sdModelsRepository.fetchModels())
         .andThen(sdSamplersRepository.fetchSamplers())
 }
