@@ -1,7 +1,10 @@
 package com.shifthackz.aisdv1.presentation.widget
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
@@ -35,7 +38,10 @@ fun GenerationImageResultDialog(
             ) {
                 val bmp = base64ToImage(imageBase64)
                 Image(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .align(Alignment.CenterHorizontally),
                     bitmap = bmp.asImageBitmap(),
                     contentDescription = "ai",
                 )

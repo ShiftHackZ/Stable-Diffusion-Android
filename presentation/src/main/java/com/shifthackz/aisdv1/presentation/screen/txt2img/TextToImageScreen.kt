@@ -3,6 +3,8 @@
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.*
@@ -84,7 +86,10 @@ private fun ScreenContent(
                         .padding(paddingValues)
                         .padding(horizontal = 16.dp),
                 ) {
-                    Column {
+                    val scrollState = rememberScrollState()
+                    Column(
+                        modifier = Modifier.verticalScroll(scrollState)
+                    ) {
                         GenerationInputForm(
                             prompt = state.prompt,
                             negativePrompt = state.negativePrompt,
