@@ -8,16 +8,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
@@ -37,6 +35,7 @@ class GalleryScreen(
             modifier = Modifier.fillMaxSize(),
             state = viewModel.state.collectAsState().value,
             lazyGalleryItems = viewModel.pagingFlow.collectAsLazyPagingItems(),
+            onExportDataClick = viewModel::exportData,
         )
     }
 
@@ -49,6 +48,7 @@ private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryState,
     lazyGalleryItems: LazyPagingItems<GalleryGridItemUi>,
+    onExportDataClick: () -> Unit = {},
 ) {
     Box(modifier) {
         Scaffold(
@@ -57,6 +57,18 @@ private fun ScreenContent(
                 CenterAlignedTopAppBar(
                     title = {
                         Text(stringResource(id = R.string.title_gallery))
+                    },
+                    actions = {
+                        IconButton(
+                            onClick = onExportDataClick,
+                            content = {
+                                Image(
+                                    modifier = Modifier.size(24.dp),
+                                    painter = painterResource(id = R.drawable.ic_share),
+                                    contentDescription = "Export"
+                                )
+                            },
+                        )
                     },
                 )
             },

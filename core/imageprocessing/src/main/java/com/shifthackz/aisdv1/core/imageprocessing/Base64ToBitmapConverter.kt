@@ -8,11 +8,13 @@ import com.shifthackz.aisdv1.core.imageprocessing.utils.base64ToImage
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.Single
 
+typealias Base64ToBitmapProcessor = RxImageProcessor<Input, Output>
+
 class Base64ToBitmapConverter(
     private val processingScheduler: Scheduler,
-) : RxImageProcessor<Input, Output> {
+) : Base64ToBitmapProcessor {
 
-    override fun invoke(input: Input): Single<Output> = Single
+    override operator fun invoke(input: Input): Single<Output> = Single
         .create { emitter ->
             convert(input).fold(
                 onSuccess = emitter::onSuccess,

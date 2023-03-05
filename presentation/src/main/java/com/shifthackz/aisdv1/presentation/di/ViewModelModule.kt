@@ -9,5 +9,5 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel { SplashLoaderViewModel(get(), get()) }
     viewModel { TextToImageViewModel(get(), get(), get()) }
-    viewModel { GalleryViewModel(get(), get(), get()) }
+    viewModel { GalleryViewModel(get(), get(), get(), get()) }
 }

@@ -7,7 +7,7 @@ import com.shifthackz.aisdv1.core.validation.di.validatorsModule
 import com.shifthackz.aisdv1.data.di.dataModule
 import com.shifthackz.aisdv1.domain.di.domainModule
 import com.shifthackz.aisdv1.network.di.networkModule
-import com.shifthackz.aisdv1.presentation.di.viewModelModule
+import com.shifthackz.aisdv1.presentation.di.presentationModule
 import com.shifthackz.aisdv1.storage.di.databaseModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -29,7 +29,7 @@ class AiStableDiffusionClientApp : Application() {
             databaseModule,
             validatorsModule,
             imageProcessingModule,
-            viewModelModule,
+            *presentationModule,
         )
     }
 }

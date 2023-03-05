@@ -16,7 +16,12 @@ class GenerationResultLocalDataSource(
     override fun insert(result: AiGenerationResultDomain): Completable = dao
         .insert(result.mapDomainToEntity())
 
-    override fun getPage(limit: Int, offset: Int): Single<List<AiGenerationResultDomain>> = dao
+
+    override fun queryAll(): Single<List<AiGenerationResultDomain>> = dao
+        .query()
+        .map(List<GenerationResultEntity>::mapEntityToDomain)
+
+    override fun queryPage(limit: Int, offset: Int): Single<List<AiGenerationResultDomain>> = dao
         .queryPage(limit, offset)
         .map(List<GenerationResultEntity>::mapEntityToDomain)
 }

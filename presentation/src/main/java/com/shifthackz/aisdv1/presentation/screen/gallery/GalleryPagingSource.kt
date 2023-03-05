@@ -6,7 +6,7 @@ import androidx.paging.rxjava3.RxPagingSource
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Output
-import com.shifthackz.aisdv1.core.imageprocessing.contract.RxImageProcessor
+import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapProcessor
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryPageUseCase
 import com.shifthackz.aisdv1.presentation.utils.Constants
@@ -17,7 +17,7 @@ typealias GalleryPagedResult = PagingSource.LoadResult<Int, GalleryGridItemUi>
 
 class GalleryPagingSource(
     private val getGalleryPageUseCase: GetGalleryPageUseCase,
-    private val base64ToBitmapConverter: RxImageProcessor<Input, Output>,
+    private val base64ToBitmapConverter: Base64ToBitmapProcessor,
     private val schedulersProvider: SchedulersProvider,
 ) : RxPagingSource<Int, GalleryGridItemUi>() {
 

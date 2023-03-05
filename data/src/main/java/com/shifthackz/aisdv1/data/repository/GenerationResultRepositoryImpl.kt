@@ -7,5 +7,7 @@ class GenerationResultRepositoryImpl(
     private val localDataSource: GenerationResultDataSource.Local,
 ) : GenerationResultRepository {
 
-    override fun getPage(limit: Int, offset: Int) = localDataSource.getPage(limit, offset)
+    override fun getAll() = localDataSource.queryAll()
+
+    override fun getPage(limit: Int, offset: Int) = localDataSource.queryPage(limit, offset)
 }
