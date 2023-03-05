@@ -63,19 +63,20 @@ private fun ScreenContent(
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {
-                        Text(stringResource(id = R.string.home_tab_txt_to_img))
+                        Text(stringResource(id = R.string.title_text_to_image))
                     },
                     actions = {
                         IconButton(
                             onClick = {
                                 //ToDo implement info bottom sheet
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Info,
-                                contentDescription = "Info",
-                            )
-                        }
+                            },
+                            content = {
+                                Icon(
+                                    imageVector = Icons.Rounded.Info,
+                                    contentDescription = "Info",
+                                )
+                            },
+                        )
                     },
                 )
             },
