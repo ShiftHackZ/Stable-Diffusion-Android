@@ -9,5 +9,6 @@ sealed interface GenerationResultDataSource {
         fun insert(result: AiGenerationResultDomain): Single<Long>
         fun queryAll(): Single<List<AiGenerationResultDomain>>
         fun queryPage(limit: Int, offset: Int): Single<List<AiGenerationResultDomain>>
+        fun queryById(id: Long): Single<AiGenerationResultDomain>
     }
 }

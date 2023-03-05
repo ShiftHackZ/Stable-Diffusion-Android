@@ -1,10 +1,8 @@
-package com.shifthackz.aisdv1.presentation.screen.gallery
+package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
-import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapProcessor
@@ -29,24 +27,19 @@ class GalleryViewModel(
         initialLoadSize = Constants.PAGINATION_PAYLOAD_SIZE
     )
 
-    private val pager: Pager<Int, GalleryGridItemUi>
+    private val pager: Pager<Int, GalleryGridItemUi> = Pager(
+        config = config,
+        initialKey = GalleryPagingSource.FIRST_KEY,
+        pagingSourceFactory = {
+            GalleryPagingSource(
+                getGalleryPageUseCase,
+                base64ToBitmapConverter,
+                schedulersProvider,
+            )
+        }
+    )
 
-    val pagingFlow: Flow<PagingData<GalleryGridItemUi>>
-        get() = pager.flow.cachedIn(viewModelScope)
-
-    init {
-        pager = Pager(
-            config = config,
-            initialKey = GalleryPagingSource.FIRST_KEY,
-            pagingSourceFactory = {
-                GalleryPagingSource(
-                    getGalleryPageUseCase,
-                    base64ToBitmapConverter,
-                    schedulersProvider,
-                )
-            }
-        )
-    }
+    val pagingFlow: Flow<PagingData<GalleryGridItemUi>> = pager.flow//.cachedIn(viewModelScope)
 
     fun dismissScreenDialog() = setActiveDialog(GalleryState.Dialog.None)
 

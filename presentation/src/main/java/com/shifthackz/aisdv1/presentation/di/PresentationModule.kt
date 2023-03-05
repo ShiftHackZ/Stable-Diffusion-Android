@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.presentation.di
 
-import com.shifthackz.aisdv1.presentation.screen.gallery.GalleryExporter
-import com.shifthackz.aisdv1.presentation.screen.gallery.GallerySharing
+import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryExporter
+import com.shifthackz.aisdv1.presentation.screen.gallery.list.GallerySharing
 import org.koin.dsl.module
 
 val presentationModule = (viewModelModule + module {

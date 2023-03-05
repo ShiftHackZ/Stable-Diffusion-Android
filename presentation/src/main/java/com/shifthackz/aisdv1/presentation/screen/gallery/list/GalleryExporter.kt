@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.screen.gallery
+package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.file.writeBitmap
