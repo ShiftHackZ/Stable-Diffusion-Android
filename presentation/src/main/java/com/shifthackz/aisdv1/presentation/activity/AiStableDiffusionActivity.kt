@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.screen.gallery.GalleryScreen
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationItem
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationScreen
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashLoaderScreen
@@ -19,7 +20,7 @@ import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreen
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import org.koin.androidx.compose.koinViewModel
 
-class MainActivity : ComponentActivity() {
+class AiStableDiffusionActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,11 +65,21 @@ class MainActivity : ComponentActivity() {
                                     resId = R.drawable.ic_image,
                                     modifier = Modifier.size(24.dp),
                                 ),
-//                                icon = HomeNavigationItem.Icon.Vector(Icons.Filled.Home),
                                 content = {
                                     Text("Not implemented")
                                 },
                             ),
+                            HomeNavigationItem(
+                                name = stringResource(R.string.home_tab_gallery),
+                                route = Constants.ROUTE_GALLERY,
+                                icon = HomeNavigationItem.Icon.Resource(
+                                    resId = R.drawable.ic_gallery,
+                                    modifier = Modifier.size(24.dp),
+                                ),
+                                content = {
+                                    GalleryScreen(viewModel = koinViewModel()).Build()
+                                }
+                            )
                         ),
                     ).Build()
                 }

@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.widget
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,7 +22,9 @@ import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.presentation.R
 
 @Composable
-fun CommunicationProgressDialog(
+fun ProgressDialog(
+    @StringRes titleResId: Int = R.string.communicating_progress_title,
+    @StringRes subTitleResId: Int = R.string.communicating_progress_sub_title,
     canDismiss: Boolean = true,
     onDismissRequest: () -> Unit = {},
 ) {
@@ -33,20 +36,20 @@ fun CommunicationProgressDialog(
         ),
     ) {
         Surface(
-            shape = RoundedCornerShape(4.dp),
+            shape = RoundedCornerShape(16.dp),
             color = Color.White,
         ) {
-            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 32.dp)) {
+            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
                 Text(
-                    text = stringResource(id = R.string.communicating_progress_title),
-                    style = TextStyle(fontSize = 16.sp, /*color = mineShaft*/),
+                    text = stringResource(id = titleResId),
+                    style = TextStyle(fontSize = 16.sp /*color = mineShaft*/),
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
-                    modifier = Modifier.padding(top = 32.dp),
-                    text = stringResource(id = R.string.communicating_progress_sub_title),
-                    style = TextStyle(fontSize = 14.sp, /*color = pureBlackLight*/),
+                    modifier = Modifier.padding(top = 24.dp),
+                    text = stringResource(id = subTitleResId),
+                    style = TextStyle(fontSize = 14.sp /*color = pureBlackLight*/),
                 )
 
                 LinearProgressIndicator(
@@ -54,7 +57,6 @@ fun CommunicationProgressDialog(
                         .fillMaxWidth()
                         .padding(top = 8.dp),
                     color = Color.Black,
-                    //backgroundColor = Color.Magenta,
                 )
             }
         }
@@ -64,5 +66,5 @@ fun CommunicationProgressDialog(
 @Composable
 @Preview(showBackground = true)
 private fun CommunicationProgressDialogPreview() {
-    CommunicationProgressDialog()
+    ProgressDialog()
 }

@@ -17,6 +17,7 @@ rootProject.name = "AI Stable Diffusion Client"
 def libraries = [
         ':app',
         ':core:common',
+        ':core:imageprocessing',
         ':core:ui',
         ':core:validation',
         ':data',

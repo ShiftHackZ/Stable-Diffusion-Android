@@ -16,9 +16,11 @@
 
     <string name="home_tab_txt_to_img">Text &gt; Image</string>
     <string name="home_tab_img_to_img">Image &gt; Image</string>
+    <string name="home_tab_gallery">Gallery</string>
 
     <string name="title_text_to_image">Text to Image</string>
     <string name="title_image_to_image">Image to Image</string>
+    <string name="title_gallery">Gallery</string>
 
     <string name="communicating_progress_title">Hang tight, communicating with server…</string>
     <string name="communicating_progress_sub_title">This could take up to 60 seconds</string>

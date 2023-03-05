@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.utils
+package com.shifthackz.aisdv1.core.imageprocessing.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

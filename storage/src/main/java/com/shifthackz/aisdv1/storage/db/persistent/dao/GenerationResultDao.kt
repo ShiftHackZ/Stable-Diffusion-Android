@@ -15,6 +15,9 @@ interface GenerationResultDao {
     @Query("SELECT * FROM ${GenerationResultContract.TABLE}")
     fun query(): Single<List<GenerationResultEntity>>
 
+    @Query("SELECT * FROM ${GenerationResultContract.TABLE} LIMIT :limit OFFSET :offset")
+    fun queryPage(limit: Int, offset: Int): Single<List<GenerationResultEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: GenerationResultEntity): Completable
 }

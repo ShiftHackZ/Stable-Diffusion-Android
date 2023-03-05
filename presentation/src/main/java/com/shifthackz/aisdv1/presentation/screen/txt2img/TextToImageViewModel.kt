@@ -2,21 +2,18 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
-import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
-import com.shifthackz.aisdv1.core.validation.model.ValidationResult
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
-import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
-import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
     private val textToImageUseCase: TextToImageUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val dimensionValidator: DimensionValidator,
-) : MviRxViewModel<TextToImageState, TextToImageEffect>() {
+) : MviRxViewModel<TextToImageState, EmptyEffect>() {
 
     override val emptyState = TextToImageState()
 

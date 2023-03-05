@@ -7,5 +7,5 @@ import io.reactivex.rxjava3.core.Single
 
 interface StableDiffusionTextToImageRepository {
     fun checkApiAvailability(): Completable
-    fun getImage(payload: TextToImagePayloadDomain) : Single<AiGenerationResultDomain>
+    fun generateAndGetImage(payload: TextToImagePayloadDomain): Single<AiGenerationResultDomain>
 }

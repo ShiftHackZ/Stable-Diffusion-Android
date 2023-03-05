@@ -15,7 +15,7 @@ class StableDiffusionTextToImageRepositoryImpl(
 
     override fun checkApiAvailability(): Completable = remoteDataSource.checkAvailability()
 
-    override fun getImage(payload: TextToImagePayloadDomain): Single<AiGenerationResultDomain> =
+    override fun generateAndGetImage(payload: TextToImagePayloadDomain): Single<AiGenerationResultDomain> =
         remoteDataSource
             .textToImage(payload)
             .flatMap { aiResult ->

@@ -19,11 +19,14 @@ dependencies {
     api platform(androidx.composeBom)
     api androidx.composeRuntime
     api androidx.composeMaterial3
+    api androidx.composeMaterialIconsExtended
     debugApi androidx.composeUiTooling
     api androidx.composeUiToolingPreview
     api androidx.composeActivity
     api androidx.composeViewModel
     api androidx.composeNavigation
+    api androidx.pagingRuntime
+    api androidx.pagingCompose
 
     api androidx.composeUiGraphics
     api androidx.lifecycleViewModel

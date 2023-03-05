@@ -5,6 +5,9 @@ import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
 import java.util.*
 
 //region DOMAIN --> ENTITY
+fun List<AiGenerationResultDomain>.mapDomainToEntity(): List<GenerationResultEntity> =
+    map(AiGenerationResultDomain::mapDomainToEntity)
+
 fun AiGenerationResultDomain.mapDomainToEntity(): GenerationResultEntity = with(this) {
     GenerationResultEntity(
         id = 0L,
@@ -15,6 +18,9 @@ fun AiGenerationResultDomain.mapDomainToEntity(): GenerationResultEntity = with(
 //endregion
 
 //region ENTITY --> DOMAIN
+fun List<GenerationResultEntity>.mapEntityToDomain(): List<AiGenerationResultDomain> =
+    map(GenerationResultEntity::mapEntityToDomain)
+
 fun GenerationResultEntity.mapEntityToDomain(): AiGenerationResultDomain = with(this) {
     AiGenerationResultDomain(
         image = imageBase64,

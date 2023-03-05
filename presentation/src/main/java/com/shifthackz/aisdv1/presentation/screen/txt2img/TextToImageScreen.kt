@@ -13,16 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.widget.CommunicationProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
+import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
 
 class TextToImageScreen(
     private val viewModel: TextToImageViewModel,
-) : MviScreen<TextToImageState, TextToImageEffect>(viewModel) {
+) : MviScreen<TextToImageState, EmptyEffect>(viewModel) {
 
     @Composable
     override fun Content() {
@@ -124,7 +125,7 @@ private fun ScreenContent(
             }
         )
         when (state.screenDialog) {
-            TextToImageState.Dialog.Communicating -> CommunicationProgressDialog(
+            TextToImageState.Dialog.Communicating -> ProgressDialog(
                 canDismiss = false,
             )
             is TextToImageState.Dialog.Image -> GenerationImageResultDialog(

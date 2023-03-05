@@ -1,13 +1,7 @@
 package com.shifthackz.aisdv1.data.di
 
-import com.shifthackz.aisdv1.data.repository.ServerConfigurationRepositoryImpl
-import com.shifthackz.aisdv1.data.repository.StableDiffusionModelsRepositoryImpl
-import com.shifthackz.aisdv1.data.repository.StableDiffusionSamplersRepositoryImpl
-import com.shifthackz.aisdv1.data.repository.StableDiffusionTextToImageRepositoryImpl
-import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
-import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
-import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
-import com.shifthackz.aisdv1.domain.repository.StableDiffusionTextToImageRepository
+import com.shifthackz.aisdv1.data.repository.*
+import com.shifthackz.aisdv1.domain.repository.*
 import org.koin.dsl.module
 
 val repositoryModule = module {
@@ -26,5 +20,9 @@ val repositoryModule = module {
 
     factory<ServerConfigurationRepository> {
         ServerConfigurationRepositoryImpl(get(), get())
+    }
+
+    factory<GenerationResultRepository> {
+        GenerationResultRepositoryImpl(get())
     }
 }
