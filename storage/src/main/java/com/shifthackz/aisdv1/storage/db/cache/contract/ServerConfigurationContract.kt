@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.storage.db_cache.contract
+package com.shifthackz.aisdv1.storage.db.cache.contract
 
 object ServerConfigurationContract {
     const val TABLE = "server_config"

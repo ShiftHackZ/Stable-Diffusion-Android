@@ -1,9 +1,9 @@
-package com.shifthackz.aisdv1.storage.db_cache.entity
+package com.shifthackz.aisdv1.storage.db.cache.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.shifthackz.aisdv1.storage.db_cache.contract.StableDiffusionSamplerContract
+import com.shifthackz.aisdv1.storage.db.cache.contract.StableDiffusionSamplerContract
 
 @Entity(tableName = StableDiffusionSamplerContract.TABLE)
 data class StableDiffusionSamplerEntity(

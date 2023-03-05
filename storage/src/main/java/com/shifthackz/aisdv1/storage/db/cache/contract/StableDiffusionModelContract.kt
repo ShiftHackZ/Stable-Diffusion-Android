@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.storage.db_cache.contract
+package com.shifthackz.aisdv1.storage.db.cache.contract
 
 object StableDiffusionModelContract {
     const val TABLE = "sd_models"

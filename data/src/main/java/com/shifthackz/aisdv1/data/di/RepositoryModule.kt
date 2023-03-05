@@ -13,7 +13,7 @@ import org.koin.dsl.module
 val repositoryModule = module {
 
     factory<StableDiffusionTextToImageRepository> {
-        StableDiffusionTextToImageRepositoryImpl(get())
+        StableDiffusionTextToImageRepositoryImpl(get(), get())
     }
 
     factory<StableDiffusionModelsRepository> {
