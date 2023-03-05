@@ -21,6 +21,6 @@ class StableDiffusionTextToImageRepositoryImpl(
             .flatMap { aiResult ->
                 localDataSource
                     .insert(aiResult)
-                    .andThen(Single.just(aiResult))
+                    .map { id -> aiResult.copy(id = id) }
             }
 }

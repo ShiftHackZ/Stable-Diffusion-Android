@@ -16,4 +16,5 @@ dependencies {
     implementation project(":storage")
     implementation di.koinCore
     implementation reactive.rxkotlin
+    implementation google.gson
 }

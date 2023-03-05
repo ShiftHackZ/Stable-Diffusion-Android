@@ -2,7 +2,6 @@ package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
-import java.util.*
 
 //region DOMAIN --> ENTITY
 fun List<AiGenerationResultDomain>.mapDomainToEntity(): List<GenerationResultEntity> =
@@ -10,9 +9,18 @@ fun List<AiGenerationResultDomain>.mapDomainToEntity(): List<GenerationResultEnt
 
 fun AiGenerationResultDomain.mapDomainToEntity(): GenerationResultEntity = with(this) {
     GenerationResultEntity(
-        id = 0L,
+        id = id,
         imageBase64 = image,
-        cratedAt = Date()
+        createdAt = createdAt,
+        generationType = type.key,
+        prompt = prompt,
+        negativePrompt = negativePrompt,
+        width = width,
+        height = height,
+        samplingSteps = samplingSteps,
+        cfgScale = cfgScale,
+        restoreFaces = restoreFaces,
+        seed = seed,
     )
 }
 //endregion
@@ -23,7 +31,18 @@ fun List<GenerationResultEntity>.mapEntityToDomain(): List<AiGenerationResultDom
 
 fun GenerationResultEntity.mapEntityToDomain(): AiGenerationResultDomain = with(this) {
     AiGenerationResultDomain(
+        id = id,
         image = imageBase64,
+        createdAt = createdAt,
+        type = AiGenerationResultDomain.Type.parse(generationType),
+        prompt = prompt,
+        negativePrompt = negativePrompt,
+        width = width,
+        height = height,
+        samplingSteps = samplingSteps,
+        cfgScale = cfgScale,
+        restoreFaces = restoreFaces,
+        seed = seed,
     )
 }
 //endregion

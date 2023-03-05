@@ -14,6 +14,23 @@ data class GenerationResultEntity(
     @ColumnInfo(name = GenerationResultContract.IMAGE_BASE_64)
     val imageBase64: String,
     @ColumnInfo(name = GenerationResultContract.CREATED_AT)
-    val cratedAt: Date,
+    val createdAt: Date,
+    @ColumnInfo(name = GenerationResultContract.GENERATION_TYPE)
+    val generationType: String,
+    @ColumnInfo(name = GenerationResultContract.PROMPT)
+    val prompt: String,
+    @ColumnInfo(name = GenerationResultContract.NEGATIVE_PROMPT)
+    val negativePrompt: String,
+    @ColumnInfo(name = GenerationResultContract.WIDTH)
+    val width: Int,
+    @ColumnInfo(name = GenerationResultContract.HEIGHT)
+    val height: Int,
+    @ColumnInfo(name = GenerationResultContract.SAMPLING_STEPS)
+    val samplingSteps: Int,
+    @ColumnInfo(name = GenerationResultContract.CFG_SCALE)
+    val cfgScale: Float,
+    @ColumnInfo(name = GenerationResultContract.RESTORE_FACES)
+    val restoreFaces: Boolean,
+    @ColumnInfo(name = GenerationResultContract.SEED)
+    val seed: String,
 )
-
