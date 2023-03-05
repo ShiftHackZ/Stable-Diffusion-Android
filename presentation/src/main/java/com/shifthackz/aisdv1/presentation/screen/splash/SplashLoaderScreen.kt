@@ -19,7 +19,7 @@ class SplashLoaderScreen(
     private val onNavigateNextScreen: () -> Unit = {},
 ) : MviScreen<SplashLoaderState, SplashLoaderEffect>(viewModel) {
 
-    override val statusBarColor: Color = Color.Cyan
+    override val statusBarColor: Color = Color.White
 
     @Composable
     override fun Content() {

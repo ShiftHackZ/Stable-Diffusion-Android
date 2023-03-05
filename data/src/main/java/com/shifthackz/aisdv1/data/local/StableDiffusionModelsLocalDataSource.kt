@@ -1,11 +1,11 @@
 package com.shifthackz.aisdv1.data.local
 
-import com.shifthackz.aisdv1.data.mappers.mapEntityToDomain
 import com.shifthackz.aisdv1.data.mappers.mapDomainToEntity
+import com.shifthackz.aisdv1.data.mappers.mapEntityToDomain
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionModelDomain
-import com.shifthackz.aisdv1.storage.db_cache.dao.StableDiffusionModelDao
-import com.shifthackz.aisdv1.storage.db_cache.entity.StableDiffusionModelEntity
+import com.shifthackz.aisdv1.storage.db.cache.dao.StableDiffusionModelDao
+import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionModelEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 

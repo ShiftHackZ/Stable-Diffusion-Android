@@ -2,14 +2,11 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.core.validation.model.ValidationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayloadDomain
 import com.shifthackz.aisdv1.presentation.R
-
-sealed interface TextToImageEffect : MviEffect
 
 data class TextToImageState(
     val screenDialog: Dialog = Dialog.None,

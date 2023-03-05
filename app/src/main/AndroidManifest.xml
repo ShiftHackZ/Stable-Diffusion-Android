@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:name=".AiStableDiffusionClientApp"
@@ -10,7 +9,7 @@
         android:theme="@style/Theme.AiSdCompose">
 
         <activity
-            android:name="com.shifthackz.aisdv1.presentation.activity.MainActivity"
+            android:name="com.shifthackz.aisdv1.presentation.activity.AiStableDiffusionActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
@@ -21,5 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
     </application>
 </manifest>

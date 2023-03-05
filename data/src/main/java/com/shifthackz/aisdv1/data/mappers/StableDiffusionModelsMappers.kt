@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionModelDomain
 import com.shifthackz.aisdv1.network.model.StableDiffusionModelRaw
-import com.shifthackz.aisdv1.storage.db_cache.entity.StableDiffusionModelEntity
+import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionModelEntity
 
 //region RAW --> DOMAIN
 fun List<StableDiffusionModelRaw>.mapRawToDomain(): List<StableDiffusionModelDomain> =

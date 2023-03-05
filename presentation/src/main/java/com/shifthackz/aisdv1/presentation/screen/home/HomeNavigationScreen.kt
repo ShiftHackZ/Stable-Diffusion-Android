@@ -4,13 +4,11 @@ package com.shifthackz.aisdv1.presentation.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -43,11 +41,12 @@ class HomeNavigationScreen(
                             icon = {
                                 when (item.icon) {
                                     is HomeNavigationItem.Icon.Resource -> Image(
-                                        modifier = Modifier.widthIn(max = 56.dp),
+                                        modifier = item.icon.modifier,
                                         painter = painterResource(item.icon.resId),
                                         contentDescription = "",
                                     )
                                     is HomeNavigationItem.Icon.Vector -> Icon(
+                                        modifier = item.icon.modifier,
                                         imageVector = item.icon.vector,
                                         contentDescription = item.name,
                                     )

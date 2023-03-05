@@ -1,11 +1,13 @@
 package com.shifthackz.aisdv1.app.di
 
-import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import com.shifthackz.aisdv1.app.BuildConfig
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -24,6 +26,13 @@ val providersModule = module {
             override val ui: Scheduler = AndroidSchedulers.mainThread()
             override val computation: Scheduler = Schedulers.computation()
             override val singleThread: Executor = Executors.newSingleThreadExecutor()
+        }
+    }
+
+    single<FileProviderDescriptor> {
+        object : FileProviderDescriptor {
+            override val providerPath: String = "${androidApplication().packageName}.fileprovider"
+            override val imagesCacheDirPath: String = "${androidApplication().cacheDir}/images"
         }
     }
 }

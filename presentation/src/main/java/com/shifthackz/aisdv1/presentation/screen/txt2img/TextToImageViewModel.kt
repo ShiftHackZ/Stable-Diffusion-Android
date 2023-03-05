@@ -2,21 +2,18 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
-import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
-import com.shifthackz.aisdv1.core.validation.model.ValidationResult
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
-import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
-import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
     private val textToImageUseCase: TextToImageUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val dimensionValidator: DimensionValidator,
-) : MviRxViewModel<TextToImageState, TextToImageEffect>() {
+) : MviRxViewModel<TextToImageState, EmptyEffect>() {
 
     override val emptyState = TextToImageState()
 
@@ -51,35 +48,31 @@ class TextToImageViewModel(
         .copy(cfgScale = value)
         .let(::setState)
 
-    fun dismissScreenDialog() = currentState
-        .copy(screenDialog = TextToImageState.Dialog.None)
-        .let(::setState)
+    fun dismissScreenDialog() = setActiveDialog(TextToImageState.Dialog.None)
 
     fun generate() = currentState
         .mapToPayload()
         .let(textToImageUseCase::invoke)
         .doOnSubscribe {
-            currentState
-                .copy(screenDialog = TextToImageState.Dialog.Communicating)
-                .let(::setState)
+            setActiveDialog(TextToImageState.Dialog.Communicating)
         }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
             onError = {
                 it.printStackTrace()
-                currentState
-                    .copy(
-                        screenDialog = TextToImageState.Dialog.Error(
-                            (it.localizedMessage ?: "Something went wrong").asUiText()
-                        )
+                setActiveDialog(
+                    TextToImageState.Dialog.Error(
+                        (it.localizedMessage ?: "Something went wrong").asUiText()
                     )
-                    .let(::setState)
+                )
             },
             onSuccess = {
-                currentState
-                    .copy(screenDialog = TextToImageState.Dialog.Image(it.image))
-                    .let(::setState)
+                setActiveDialog(TextToImageState.Dialog.Image(it.image))
             }
         )
         .addToDisposable()
+
+    private fun setActiveDialog(dialog: TextToImageState.Dialog) = currentState
+        .copy(screenDialog = dialog)
+        .let(::setState)
 }

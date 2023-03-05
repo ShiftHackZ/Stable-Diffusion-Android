@@ -10,5 +10,5 @@ class TextToImageUseCaseImpl(
 ) : TextToImageUseCase {
 
     override operator fun invoke(payload: TextToImagePayloadDomain): Single<AiGenerationResultDomain> =
-        repository.getImage(payload)
+        repository.generateAndGetImage(payload)
 }

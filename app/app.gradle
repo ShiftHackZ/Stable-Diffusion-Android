@@ -27,6 +27,7 @@ android {
 
 dependencies {
     implementation project(":core:common")
+    implementation project(":core:imageprocessing")
     implementation project(":core:validation")
     implementation project(":presentation")
     implementation project(":network")
