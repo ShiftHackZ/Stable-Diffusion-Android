@@ -13,10 +13,12 @@ object Constants {
     const val ROUTE_GALLERY_DETAIL = "gallery_detail"
     const val ROUTE_GALLERY_DETAIL_FULL = "$ROUTE_GALLERY_DETAIL/{$PARAM_ITEM_ID}"
 
-
     const val SAMPLING_STEPS_RANGE_MIN = 1
     const val SAMPLING_STEPS_RANGE_MAX = 150
 
     const val CFG_SCALE_RANGE_MIN = 1
     const val CFG_SCALE_RANGE_MAX = 30
+
+    const val MIME_TYPE_ZIP = "application/zip"
+    const val MIME_TYPE_JPG = "image/jpeg"
 }

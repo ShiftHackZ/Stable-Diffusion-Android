@@ -89,10 +89,11 @@ class AiStableDiffusionActivity : ComponentActivity() {
                                 content = {
                                     GalleryScreen(
                                         viewModel = koinViewModel(),
-                                        shareGalleryZipFile = { zipFile ->
+                                        shareGalleryFile = { zipFile ->
                                             gallerySharing(
                                                 context = this@AiStableDiffusionActivity,
                                                 file = zipFile,
+                                                mimeType = Constants.MIME_TYPE_ZIP,
                                             )
                                         },
                                         openGalleryItemDetails = { galleryItemId ->
@@ -119,6 +120,13 @@ class AiStableDiffusionActivity : ComponentActivity() {
                     GalleryDetailScreen(
                         viewModel = viewModel,
                         onNavigateBack = { navController.navigateUp() },
+                        shareGalleryFile = { jpgFile ->
+                            gallerySharing(
+                                context = this@AiStableDiffusionActivity,
+                                file = jpgFile,
+                                mimeType = Constants.MIME_TYPE_JPG,
+                            )
+                        },
                     ).Build()
                 }
             }

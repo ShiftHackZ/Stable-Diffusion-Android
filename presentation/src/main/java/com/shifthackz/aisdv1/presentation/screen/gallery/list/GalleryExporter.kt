@@ -1,24 +1,23 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
-import com.shifthackz.aisdv1.core.common.file.writeBitmap
-import com.shifthackz.aisdv1.core.common.file.writeFilesToZip
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Output
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapProcessor
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
+import com.shifthackz.aisdv1.presentation.utils.FileSavableExporter
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.io.File
 
 class GalleryExporter(
-    private val fileProviderDescriptor: FileProviderDescriptor,
+    override val fileProviderDescriptor: FileProviderDescriptor,
     private val getAllGalleryUseCase: GetAllGalleryUseCase,
     private val base64ToBitmapConverter: Base64ToBitmapProcessor,
     private val schedulersProvider: SchedulersProvider,
-) {
+) : FileSavableExporter.BmpToFile, FileSavableExporter.FilesToZip {
 
     operator fun invoke(): Single<File> = getAllGalleryUseCase()
         .subscribeOn(schedulersProvider.io)
@@ -27,26 +26,10 @@ class GalleryExporter(
         .flatMapSingle { (aiDomain, input) ->
             base64ToBitmapConverter(input).map { out -> aiDomain to out }
         }
-        .flatMapSingle(::saveBitmapToFile)
+        .flatMapSingle(::saveBitmapToFileImpl)
         .toList()
         .flatMap(::saveFilesToZip)
 
-    private fun saveBitmapToFile(data: Pair<AiGenerationResultDomain, Output>) = Single
-        .create { emitter ->
-            val (ai, out) = data
-            val bitmap = out.bitmap
-            val cacheDirectory = File(fileProviderDescriptor.imagesCacheDirPath)
-            if (!cacheDirectory.exists()) cacheDirectory.mkdirs()
-            val outFile = File(cacheDirectory, "ai_${ai.hashCode()}.jpg")
-            outFile.writeBitmap(bitmap)
-            emitter.onSuccess(outFile)
-        }
-
-    private fun saveFilesToZip(files: List<File>) = Single.create { emitter ->
-        val cacheDirectory = File(fileProviderDescriptor.imagesCacheDirPath)
-        if (!cacheDirectory.exists()) cacheDirectory.mkdirs()
-        val outFile = File(cacheDirectory, "export_${System.currentTimeMillis()}.zip")
-        outFile.writeFilesToZip(files)
-        emitter.onSuccess(outFile)
-    }
+    private fun saveBitmapToFileImpl(data: Pair<AiGenerationResultDomain, Output>) =
+        saveBitmapToFile(data.first.hashCode().toString(), data.second.bitmap)
 }

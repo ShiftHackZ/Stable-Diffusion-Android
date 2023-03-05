@@ -38,7 +38,7 @@ import java.io.File
 
 class GalleryScreen(
     private val viewModel: GalleryViewModel,
-    private val shareGalleryZipFile: (File) -> Unit = {},
+    private val shareGalleryFile: (File) -> Unit = {},
     private val openGalleryItemDetails: (Long) -> Unit = {},
 ) : MviScreen<GalleryState, GalleryEffect>(viewModel) {
 
@@ -59,7 +59,7 @@ class GalleryScreen(
     override fun ApplySystemUiColors() = Unit
 
     override fun processEffect(effect: GalleryEffect) = when (effect) {
-        is GalleryEffect.Share -> shareGalleryZipFile(effect.zipFile)
+        is GalleryEffect.Share -> shareGalleryFile(effect.zipFile)
     }
 }
 

@@ -56,19 +56,18 @@ fun ZoomableImage(
             .pointerInput(Unit) {
                 detectTransformGestures { centroid, pan, zoom, rotation ->
                     scale.value *= zoom
-                    rotationState.value += rotation
+                    //rotationState.value += rotation
                     offsetX += pan.x * zoom
                     offsetY += pan.y * zoom
                 }
             }
     ) {
         val imageModifier = Modifier
-            .align(Alignment.Center) // keep the image centralized into the Box
+            .align(Alignment.Center)
             .graphicsLayer(
-                // adding some zoom limits (min 50%, max 200%)
                 scaleX = maxOf(minScale, minOf(maxScale, scale.value)),
                 scaleY = maxOf(minScale, minOf(maxScale, scale.value)),
-                rotationZ = rotationState.value,
+                //rotationZ = rotationState.value,
                 translationX = offsetX,
                 translationY = offsetY,
             )

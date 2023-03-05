@@ -12,15 +12,10 @@ class GallerySharing {
     private val fileProviderDescriptor: FileProviderDescriptor
             by inject(FileProviderDescriptor::class.java)
 
-    operator fun invoke(context: Context, file: File) = context.shareFile(
+    operator fun invoke(context: Context, file: File, mimeType: String) = context.shareFile(
         file = file,
         fileProviderPath = fileProviderDescriptor.providerPath,
-        fileMimeType = MIME_TYPE,
+        fileMimeType = mimeType,
         shareChooserTitle = "Export gallery archive",
     )
-
-
-    companion object {
-        private const val MIME_TYPE = "application/zip"
-    }
 }
