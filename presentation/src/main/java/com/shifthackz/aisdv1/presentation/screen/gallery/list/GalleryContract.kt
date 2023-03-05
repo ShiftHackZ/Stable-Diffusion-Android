@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.screen.gallery
+package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.model.UiText
@@ -25,4 +25,7 @@ data class GalleryState(
     }
 }
 
-data class GalleryGridItemUi(val bitmap: Bitmap)
+data class GalleryGridItemUi(
+    val id: Long,
+    val bitmap: Bitmap,
+)

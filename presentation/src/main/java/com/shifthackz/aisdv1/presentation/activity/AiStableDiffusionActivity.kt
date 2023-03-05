@@ -8,19 +8,25 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.screen.gallery.GalleryScreen
-import com.shifthackz.aisdv1.presentation.screen.gallery.GallerySharing
+import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
+import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
+import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryScreen
+import com.shifthackz.aisdv1.presentation.screen.gallery.list.GallerySharing
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationItem
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationScreen
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashLoaderScreen
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreen
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import org.koin.android.ext.android.inject
+import org.koin.androidx.compose.getViewModel
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 class AiStableDiffusionActivity : ComponentActivity() {
 
@@ -83,16 +89,44 @@ class AiStableDiffusionActivity : ComponentActivity() {
                                 content = {
                                     GalleryScreen(
                                         viewModel = koinViewModel(),
-                                        shareGalleryZipFile = { zipFile ->
+                                        shareGalleryFile = { zipFile ->
                                             gallerySharing(
                                                 context = this@AiStableDiffusionActivity,
                                                 file = zipFile,
+                                                mimeType = Constants.MIME_TYPE_ZIP,
                                             )
+                                        },
+                                        openGalleryItemDetails = { galleryItemId ->
+                                            navController
+                                                .navigate("${Constants.ROUTE_GALLERY_DETAIL}/$galleryItemId")
                                         }
                                     ).Build()
-                                }
+                                },
                             )
                         ),
+                    ).Build()
+                }
+
+                composable(
+                    route = Constants.ROUTE_GALLERY_DETAIL_FULL,
+                    arguments = listOf(
+                        navArgument(Constants.PARAM_ITEM_ID) { type = NavType.LongType },
+                    ),
+                ) { entry ->
+                    val itemId = entry.arguments?.getLong(Constants.PARAM_ITEM_ID) ?: -1L
+                    val viewModel = getViewModel<GalleryDetailViewModel>(
+                        parameters = { parametersOf(itemId) }
+                    )
+                    GalleryDetailScreen(
+                        viewModel = viewModel,
+                        onNavigateBack = { navController.navigateUp() },
+                        shareGalleryFile = { jpgFile ->
+                            gallerySharing(
+                                context = this@AiStableDiffusionActivity,
+                                file = jpgFile,
+                                mimeType = Constants.MIME_TYPE_JPG,
+                            )
+                        },
                     ).Build()
                 }
             }

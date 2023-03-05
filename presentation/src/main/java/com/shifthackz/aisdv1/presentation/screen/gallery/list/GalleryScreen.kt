@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package com.shifthackz.aisdv1.presentation.screen.gallery
+package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,14 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifthackz.aisdv1.core.extensions.items
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -33,11 +33,13 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
+import kotlinx.coroutines.flow.Flow
 import java.io.File
 
 class GalleryScreen(
     private val viewModel: GalleryViewModel,
-    private val shareGalleryZipFile: (File) -> Unit = {},
+    private val shareGalleryFile: (File) -> Unit = {},
+    private val openGalleryItemDetails: (Long) -> Unit = {},
 ) : MviScreen<GalleryState, GalleryEffect>(viewModel) {
 
     @Composable
@@ -45,10 +47,11 @@ class GalleryScreen(
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = viewModel.state.collectAsState().value,
-            lazyGalleryItems = viewModel.pagingFlow.collectAsLazyPagingItems(),
+            pagingFlow = viewModel.pagingFlow,
             onExportToolbarClick = viewModel::launchGalleryExportConfirmation,
             onExportConfirmClick = viewModel::launchGalleryExport,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
+            onGalleryItemClick = { item -> openGalleryItemDetails(item.id) }
         )
     }
 
@@ -56,7 +59,7 @@ class GalleryScreen(
     override fun ApplySystemUiColors() = Unit
 
     override fun processEffect(effect: GalleryEffect) = when (effect) {
-        is GalleryEffect.Share -> shareGalleryZipFile(effect.zipFile)
+        is GalleryEffect.Share -> shareGalleryFile(effect.zipFile)
     }
 }
 
@@ -64,11 +67,21 @@ class GalleryScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryState,
-    lazyGalleryItems: LazyPagingItems<GalleryGridItemUi>,
+    pagingFlow: Flow<PagingData<GalleryGridItemUi>>,
     onExportToolbarClick: () -> Unit = {},
     onExportConfirmClick: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
+    onGalleryItemClick: (GalleryGridItemUi) -> Unit = {},
 ) {
+    val listState = rememberLazyGridState()
+    val lazyGalleryItems = pagingFlow.collectAsLazyPagingItems()
+
+    val emptyStatePredicate: () -> Boolean = {
+        lazyGalleryItems.loadState.refresh is LoadState.NotLoading
+                && lazyGalleryItems.itemCount == 0
+                && lazyGalleryItems.loadState.append.endOfPaginationReached
+    }
+
     Box(modifier) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -92,36 +105,24 @@ private fun ScreenContent(
                 )
             },
             content = { paddingValues ->
-                val configuration = LocalConfiguration.current
-                val height = configuration.screenHeightDp
-                LazyVerticalGrid(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    columns = GridCells.Fixed(
-                        if (lazyGalleryItems.itemCount == 0) 1 else 2
-                    ),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    items(lazyGalleryItems) { galleryItemUi ->
-                        galleryItemUi?.run {
-                            GalleryUiItem(
-                                item = this,
-                            )
-                        }
-                    }
-                    lazyGalleryItems.run {
-                        when {
-                            // Empty state
-                            loadState.refresh is LoadState.NotLoading
-                                    && lazyGalleryItems.itemCount == 0
-                                    && loadState.append.endOfPaginationReached -> item {
-                                GalleryEmptyState(
-                                    Modifier
-                                        .fillMaxWidth(1f)
-                                        .height((height * 0.7).dp)
+                when {
+                    emptyStatePredicate() -> GalleryEmptyState(Modifier.fillMaxSize())
+                    lazyGalleryItems.itemCount == 0 -> Unit
+                    else -> LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        state = listState,
+                    ) {
+                        items(lazyGalleryItems) { galleryItemUi ->
+                            galleryItemUi?.run {
+                                GalleryUiItem(
+                                    item = this,
+                                    onClick = onGalleryItemClick,
                                 )
                             }
                         }

@@ -17,6 +17,9 @@ interface GenerationResultDao {
     @Query("SELECT * FROM ${GenerationResultContract.TABLE} ORDER BY ${GenerationResultContract.CREATED_AT} DESC LIMIT :limit OFFSET :offset ")
     fun queryPage(limit: Int, offset: Int): Single<List<GenerationResultEntity>>
 
+    @Query("SELECT * FROM ${GenerationResultContract.TABLE} WHERE ${GenerationResultContract.ID} = :id LIMIT 1")
+    fun queryById(id: Long): Single<GenerationResultEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: GenerationResultEntity): Single<Long>
 }

@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.screen.gallery
+package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -7,7 +7,6 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Output
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapProcessor
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryPageUseCase
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.core.Observable
@@ -34,9 +33,11 @@ class GalleryPagingSource(
         )
             .subscribeOn(schedulersProvider.io)
             .flatMapObservable { Observable.fromIterable(it) }
-            .map(AiGenerationResultDomain::image)
-            .map(::Input)
-            .flatMapSingle(base64ToBitmapConverter::invoke)
+            .map { ai -> ai.id to ai.image }
+            .map { (id, base64) -> id to Input(base64) }
+            .flatMapSingle { (id, input) ->
+                base64ToBitmapConverter(input).map { out -> id to out }
+            }
             .map(::mapOutputToUi)
             .toList()
             .map { payload ->
@@ -44,13 +45,16 @@ class GalleryPagingSource(
                     data = payload,
                     prevKey = if (pageNext == FIRST_KEY) null else pageNext - 1,
                     nextKey = if (payload.isEmpty()) null else pageNext + 1,
-                ).let(::Wrapper)
+                ).let(GalleryPagingSource::Wrapper)
             }
             .onErrorReturn { t -> Wrapper(LoadResult.Error(t)) }
             .map(Wrapper::loadResult)
     }
 
-    private fun mapOutputToUi(output: Output) = GalleryGridItemUi(output.bitmap)
+    private fun mapOutputToUi(output: Pair<Long, Output>) = GalleryGridItemUi(
+        output.first,
+        output.second.bitmap,
+    )
 
     private data class Wrapper(val loadResult: GalleryPagedResult)
 
