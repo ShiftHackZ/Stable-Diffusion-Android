@@ -1,18 +1,27 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery
 
 import android.graphics.Bitmap
+import com.shifthackz.aisdv1.core.model.UiText
+import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
+import java.io.File
 
-sealed interface GalleryState : MviState {
+sealed interface GalleryEffect : MviEffect {
+    data class Share(val zipFile: File) : GalleryEffect
+}
 
-    val screenDialog: ScreenDialog
+data class GalleryState(
+    val screenDialog: Dialog = Dialog.None,
+) : MviState {
 
-    data class Paginated(
-        override val screenDialog: ScreenDialog = ScreenDialog.None,
-    ) : GalleryState
+    sealed interface Dialog {
+        object None : Dialog
 
-    sealed interface ScreenDialog {
-        object None : ScreenDialog
+        object ConfirmExport : Dialog
+
+        object ExportInProgress : Dialog
+
+        data class Error(val error: UiText) : Dialog
     }
 }
 

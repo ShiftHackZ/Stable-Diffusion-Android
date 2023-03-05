@@ -9,7 +9,6 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Output
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapProcessor
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.io.File
@@ -21,7 +20,7 @@ class GalleryExporter(
     private val schedulersProvider: SchedulersProvider,
 ) {
 
-    operator fun invoke(): Completable = getAllGalleryUseCase()
+    operator fun invoke(): Single<File> = getAllGalleryUseCase()
         .subscribeOn(schedulersProvider.io)
         .flatMapObservable { Observable.fromIterable(it) }
         .map { aiDomain -> aiDomain to Input(aiDomain.image) }
@@ -31,7 +30,6 @@ class GalleryExporter(
         .flatMapSingle(::saveBitmapToFile)
         .toList()
         .flatMap(::saveFilesToZip)
-        .ignoreElement()
 
     private fun saveBitmapToFile(data: Pair<AiGenerationResultDomain, Output>) = Single
         .create { emitter ->

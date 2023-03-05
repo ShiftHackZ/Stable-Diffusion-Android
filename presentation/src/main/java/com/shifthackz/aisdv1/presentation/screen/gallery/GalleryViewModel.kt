@@ -8,7 +8,7 @@ import androidx.paging.cachedIn
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapProcessor
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
+import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryPageUseCase
 import com.shifthackz.aisdv1.presentation.utils.Constants
@@ -20,9 +20,9 @@ class GalleryViewModel(
     private val base64ToBitmapConverter: Base64ToBitmapProcessor,
     private val galleryExporter: GalleryExporter,
     private val schedulersProvider: SchedulersProvider,
-) : MviRxViewModel<GalleryState, EmptyEffect>() {
+) : MviRxViewModel<GalleryState, GalleryEffect>() {
 
-    override val emptyState = GalleryState.Paginated()
+    override val emptyState = GalleryState()
 
     private val config = PagingConfig(
         pageSize = Constants.PAGINATION_PAYLOAD_SIZE,
@@ -48,15 +48,31 @@ class GalleryViewModel(
         )
     }
 
-    fun exportData() = galleryExporter()
+    fun dismissScreenDialog() = setActiveDialog(GalleryState.Dialog.None)
+
+    fun launchGalleryExportConfirmation() = setActiveDialog(GalleryState.Dialog.ConfirmExport)
+
+    fun launchGalleryExport() = galleryExporter()
+        .doOnSubscribe { setActiveDialog(GalleryState.Dialog.ExportInProgress) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
             onError = {
                 it.printStackTrace()
+                setActiveDialog(
+                    GalleryState.Dialog.Error(
+                        (it.localizedMessage ?: "Something went wrong").asUiText()
+                    )
+                )
             },
-            onComplete = {
+            onSuccess = { zipFile ->
                 println("DBG0: Export complete")
+                setActiveDialog(GalleryState.Dialog.None)
+                emitEffect(GalleryEffect.Share(zipFile))
             }
         )
         .addToDisposable()
+
+    private fun setActiveDialog(dialog: GalleryState.Dialog) = currentState
+        .copy(screenDialog = dialog)
+        .let(::setState)
 }

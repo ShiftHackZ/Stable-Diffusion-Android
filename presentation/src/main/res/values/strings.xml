@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
     <string name="width">Width</string>
     <string name="height">Height</string>
     <string name="splash_status_initializing">Initializing…</string>
@@ -8,6 +10,7 @@
     <string name="splash_status_launching">Launching application!</string>
 
     <string name="action_generate">Generate</string>
+    <string name="action_export">Export</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -24,6 +27,15 @@
 
     <string name="communicating_progress_title">Hang tight, communicating with server…</string>
     <string name="communicating_progress_sub_title">This could take up to 60 seconds</string>
+
+    <string name="exporting_progress_title">Exporting your gallery…</string>
+    <string name="exporting_progress_sub_title">It can take some time, depending on photos amount</string>
+
+    <string name="interaction_export_title">Gallery Export</string>
+    <string name="interaction_export_sub_title">This will export all the gallery images as *.zip archive. This process may be long if you have many images, would you like to proceed?</string>
+
+    <string name="gallery_empty_title">There is nothing here yet…</string>
+    <string name="gallery_empty_sub_title">Try to generate something, and you will see your image here!</string>
 
     <string name="error_title">Error</string>
     <string name="error_empty">Field can\'t be empty</string>

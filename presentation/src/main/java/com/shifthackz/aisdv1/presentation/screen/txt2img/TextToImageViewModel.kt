@@ -48,35 +48,31 @@ class TextToImageViewModel(
         .copy(cfgScale = value)
         .let(::setState)
 
-    fun dismissScreenDialog() = currentState
-        .copy(screenDialog = TextToImageState.Dialog.None)
-        .let(::setState)
+    fun dismissScreenDialog() = setActiveDialog(TextToImageState.Dialog.None)
 
     fun generate() = currentState
         .mapToPayload()
         .let(textToImageUseCase::invoke)
         .doOnSubscribe {
-            currentState
-                .copy(screenDialog = TextToImageState.Dialog.Communicating)
-                .let(::setState)
+            setActiveDialog(TextToImageState.Dialog.Communicating)
         }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
             onError = {
                 it.printStackTrace()
-                currentState
-                    .copy(
-                        screenDialog = TextToImageState.Dialog.Error(
-                            (it.localizedMessage ?: "Something went wrong").asUiText()
-                        )
+                setActiveDialog(
+                    TextToImageState.Dialog.Error(
+                        (it.localizedMessage ?: "Something went wrong").asUiText()
                     )
-                    .let(::setState)
+                )
             },
             onSuccess = {
-                currentState
-                    .copy(screenDialog = TextToImageState.Dialog.Image(it.image))
-                    .let(::setState)
+                setActiveDialog(TextToImageState.Dialog.Image(it.image))
             }
         )
         .addToDisposable()
+
+    private fun setActiveDialog(dialog: TextToImageState.Dialog) = currentState
+        .copy(screenDialog = dialog)
+        .let(::setState)
 }

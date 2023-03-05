@@ -13,14 +13,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.gallery.GalleryScreen
+import com.shifthackz.aisdv1.presentation.screen.gallery.GallerySharing
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationItem
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationScreen
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashLoaderScreen
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreen
 import com.shifthackz.aisdv1.presentation.utils.Constants
+import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 
 class AiStableDiffusionActivity : ComponentActivity() {
+
+    private val gallerySharing: GallerySharing by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +81,15 @@ class AiStableDiffusionActivity : ComponentActivity() {
                                     modifier = Modifier.size(24.dp),
                                 ),
                                 content = {
-                                    GalleryScreen(viewModel = koinViewModel()).Build()
+                                    GalleryScreen(
+                                        viewModel = koinViewModel(),
+                                        shareGalleryZipFile = { zipFile ->
+                                            gallerySharing(
+                                                context = this@AiStableDiffusionActivity,
+                                                file = zipFile,
+                                            )
+                                        }
+                                    ).Build()
                                 }
                             )
                         ),
