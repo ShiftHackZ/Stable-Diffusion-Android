@@ -12,6 +12,6 @@ val viewModelModule = module {
     viewModel { TextToImageViewModel(get(), get(), get(), get()) }
     viewModel { GalleryViewModel(get(), get(), get(), get()) }
     viewModel { parameters ->
-        GalleryDetailViewModel(parameters.get(), get(), get(), get(), get())
+        GalleryDetailViewModel(parameters.get(), get(), get(), get(), get(), get())
     }
 }

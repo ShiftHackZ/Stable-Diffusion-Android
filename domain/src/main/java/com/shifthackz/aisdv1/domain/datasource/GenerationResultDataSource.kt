@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.domain.datasource
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
 sealed interface GenerationResultDataSource {
@@ -10,5 +11,6 @@ sealed interface GenerationResultDataSource {
         fun queryAll(): Single<List<AiGenerationResult>>
         fun queryPage(limit: Int, offset: Int): Single<List<AiGenerationResult>>
         fun queryById(id: Long): Single<AiGenerationResult>
+        fun deleteById(id: Long): Completable
     }
 }

@@ -49,6 +49,10 @@ val domainModule = module {
         GetGalleryItemUseCaseImpl(get())
     }
 
+    factory<DeleteGalleryItemUseCase> {
+        DeleteGalleryItemUseCaseImpl(get())
+    }
+
     factory<GetStableDiffusionSamplersUseCase> {
         GetStableDiffusionSamplersUseCaseImpl(get())
     }
