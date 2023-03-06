@@ -35,6 +35,7 @@ fun GenerationInputForm(
     samplingSteps: Int,
     cfgScale: Float,
     restoreFaces: Boolean,
+    seed: String,
     selectedSampler: String,
     availableSamplers: List<String>,
     onPromptUpdated: (String) -> Unit = {},
@@ -44,6 +45,7 @@ fun GenerationInputForm(
     onSamplingStepsUpdated: (Int) -> Unit = {},
     onCfgScaleUpdated: (Float) -> Unit = {},
     onRestoreFacesUpdated: (Boolean) -> Unit = {},
+    onSeedUpdated: (String) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
     widthValidationError: UiText? = null,
     heightValidationError: UiText? = null,
@@ -105,7 +107,6 @@ fun GenerationInputForm(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
         }
-
         DropdownTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -115,10 +116,22 @@ fun GenerationInputForm(
             items = availableSamplers,
             onItemSelected = onSamplerUpdated,
         )
-
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            value = seed,
+            onValueChange = { value ->
+                value
+                    .filter { it.isDigit() }
+                    .let(onSeedUpdated)
+            },
+            label = { Text(stringResource(id = R.string.hint_seed)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.hint_sampling_steps, "$samplingSteps")
+            text = stringResource(id = R.string.hint_sampling_steps, "$samplingSteps"),
         )
         Slider(
             value = samplingSteps * 1f,
@@ -132,7 +145,7 @@ fun GenerationInputForm(
 
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.hint_cfg_scale, "$cfgScale")
+            text = stringResource(id = R.string.hint_cfg_scale, "$cfgScale"),
         )
         Slider(
             value = cfgScale,
@@ -154,7 +167,7 @@ fun GenerationInputForm(
                 onCheckedChange = onRestoreFacesUpdated,
             )
             Text(
-                text = stringResource(id = R.string.hint_restore_faces)
+                text = stringResource(id = R.string.hint_restore_faces),
             )
         }
     }
@@ -171,6 +184,7 @@ private fun GenerationInputFormPreview() {
         samplingSteps = 55,
         cfgScale = 7f,
         restoreFaces = true,
+        seed = "5598",
         selectedSampler = "Euler",
         availableSamplers = listOf("Euler")
     )

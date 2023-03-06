@@ -72,6 +72,10 @@ class TextToImageViewModel(
         .copy(restoreFaces = value)
         .let(::setState)
 
+    fun updateSeed(value: String) = currentState
+        .copy(seed = value)
+        .let(::setState)
+
     fun updateSampler(value: String) = currentState
         .copy(selectedSampler = value)
         .let(::setState)
@@ -81,9 +85,7 @@ class TextToImageViewModel(
     fun generate() = !currentState
         .mapToPayload()
         .let(textToImageUseCase::invoke)
-        .doOnSubscribe {
-            setActiveDialog(TextToImageState.Dialog.Communicating)
-        }
+        .doOnSubscribe { setActiveDialog(TextToImageState.Dialog.Communicating) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
             onError = {
@@ -96,7 +98,7 @@ class TextToImageViewModel(
             },
             onSuccess = {
                 setActiveDialog(TextToImageState.Dialog.Image(it.image))
-            }
+            },
         )
 
     private fun setActiveDialog(dialog: TextToImageState.Dialog) = currentState
