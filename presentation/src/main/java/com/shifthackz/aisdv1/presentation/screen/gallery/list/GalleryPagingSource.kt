@@ -35,7 +35,7 @@ class GalleryPagingSource(
             .flatMapObservable { Observable.fromIterable(it) }
             .map { ai -> ai.id to ai.image }
             .map { (id, base64) -> id to Input(base64) }
-            .flatMapSingle { (id, input) ->
+            .concatMapSingle { (id, input) ->
                 base64ToBitmapConverter(input).map { out -> id to out }
             }
             .map(::mapOutputToUi)
