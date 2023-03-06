@@ -17,6 +17,7 @@ fun TextToImagePayload.mapToRequest(): TextToImageRequest = with(this) {
         width = width,
         height = height,
         restoreFaces = restoreFaces,
+        seed = seed.trim().ifEmpty { null },
         samplerIndex = sampler,
     )
 }
@@ -36,7 +37,7 @@ fun Pair<TextToImagePayload, TextToImageResponse>.mapToAiGenResult(): AiGenerati
             cfgScale = payload.cfgScale,
             restoreFaces = payload.restoreFaces,
             sampler = payload.sampler,
-            seed = mapSeed(response.info),
+            seed = if (payload.seed.trim().isNotEmpty()) payload.seed else mapSeed(response.info),
         )
     }
 

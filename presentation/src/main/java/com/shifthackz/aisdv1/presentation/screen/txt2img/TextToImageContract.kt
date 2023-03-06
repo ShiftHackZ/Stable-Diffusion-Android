@@ -17,6 +17,7 @@ data class TextToImageState(
     val samplingSteps: Int = 20,
     val cfgScale: Float = 7f,
     val restoreFaces: Boolean = false,
+    val seed: String = "",
     val selectedSampler: String = "",
     val availableSamplers: List<String> = emptyList(),
     val widthValidationError: UiText? = null,
@@ -36,13 +37,14 @@ data class TextToImageState(
 
 fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
     TextToImagePayload(
-        prompt = prompt,
-        negativePrompt = negativePrompt,
+        prompt = prompt.trim(),
+        negativePrompt = negativePrompt.trim(),
         samplingSteps = samplingSteps,
         cfgScale = cfgScale,
         width = width.toIntOrNull() ?: 64,
         height = height.toIntOrNull() ?: 64,
         restoreFaces = restoreFaces,
+        seed = seed.trim(),
         sampler = selectedSampler,
     )
 }

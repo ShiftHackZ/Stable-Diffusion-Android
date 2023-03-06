@@ -8,5 +8,6 @@ data class TextToImagePayload(
     val width: Int,
     val height: Int,
     val restoreFaces: Boolean,
+    val seed: String,
     val sampler: String,
 )
