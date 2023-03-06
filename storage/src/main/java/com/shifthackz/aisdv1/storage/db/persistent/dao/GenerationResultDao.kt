@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.shifthackz.aisdv1.storage.db.persistent.contract.GenerationResultContract
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
 @Dao
@@ -22,4 +23,7 @@ interface GenerationResultDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: GenerationResultEntity): Single<Long>
+
+    @Query("DELETE FROM ${GenerationResultContract.TABLE} WHERE ${GenerationResultContract.ID} = :id")
+    fun deleteById(id: Long): Completable
 }

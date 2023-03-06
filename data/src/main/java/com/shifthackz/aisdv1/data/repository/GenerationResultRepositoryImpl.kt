@@ -12,4 +12,6 @@ class GenerationResultRepositoryImpl(
     override fun getPage(limit: Int, offset: Int) = localDataSource.queryPage(limit, offset)
 
     override fun getById(id: Long) = localDataSource.queryById(id)
+
+    override fun deleteById(id: Long) = localDataSource.deleteById(id)
 }

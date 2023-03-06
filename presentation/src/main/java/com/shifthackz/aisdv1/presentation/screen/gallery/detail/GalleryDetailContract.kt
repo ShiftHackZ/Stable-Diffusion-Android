@@ -12,17 +12,24 @@ import java.io.File
 
 sealed interface GalleryDetailEffect : MviEffect {
 
+    object NavigateBack : GalleryDetailEffect
+
     data class ShareImageFile(val file: File) : GalleryDetailEffect
 }
 
 sealed interface GalleryDetailState : MviState {
 
     val tab: Tab
+    val screenDialog: Dialog
 
-    data class Loading(override val tab: Tab = Tab.IMAGE) : GalleryDetailState
+    data class Loading(
+        override val tab: Tab = Tab.IMAGE,
+        override val screenDialog: Dialog = Dialog.None,
+    ) : GalleryDetailState
 
     data class Content(
         override val tab: Tab = Tab.IMAGE,
+        override val screenDialog: Dialog = Dialog.None,
         val id: Long,
         val bitmap: Bitmap,
         val createdAt: UiText,
@@ -39,12 +46,22 @@ sealed interface GalleryDetailState : MviState {
 
     fun withTab(tab: Tab): GalleryDetailState = when (this) {
         is Content -> copy(tab = tab)
-        is Loading -> Loading(tab)
+        is Loading -> copy(tab = tab)
+    }
+
+    fun withDialog(dialog: Dialog) = when (this) {
+        is Content -> copy(screenDialog = dialog)
+        is Loading -> copy(screenDialog = dialog)
     }
 
     enum class Tab {
         IMAGE,
         INFO;
+    }
+
+    sealed interface Dialog {
+        object None : Dialog
+        object DeleteConfirm : Dialog
     }
 }
 

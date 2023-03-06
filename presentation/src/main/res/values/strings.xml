@@ -13,6 +13,7 @@
 
     <string name="action_generate">Generate</string>
     <string name="action_export">Export</string>
+    <string name="action_delete_image">Delete image</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -53,6 +54,9 @@
 
     <string name="interaction_export_title">Gallery Export</string>
     <string name="interaction_export_sub_title">This will export all the gallery images as *.zip archive. This process may be long if you have many images, would you like to proceed?</string>
+
+    <string name="interaction_delete_generation_title">Delete image</string>
+    <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently remove this image?</string>
 
     <string name="gallery_empty_title">There is nothing here yet…</string>
     <string name="gallery_empty_sub_title">Try to generate something, and you will see your image here!</string>

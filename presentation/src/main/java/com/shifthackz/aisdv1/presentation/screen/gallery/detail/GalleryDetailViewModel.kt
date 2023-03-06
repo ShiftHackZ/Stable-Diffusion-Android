@@ -5,12 +5,14 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapProcessor
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemUseCase
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class GalleryDetailViewModel(
-    private val itemId: Long,
-    private val getGalleryItemUseCase: GetGalleryItemUseCase,
+    itemId: Long,
+    getGalleryItemUseCase: GetGalleryItemUseCase,
+    private val deleteGalleryItemUseCase: DeleteGalleryItemUseCase,
     private val galleryDetailBitmapExporter: GalleryDetailBitmapExporter,
     private val base64ToBitmapConverter: Base64ToBitmapProcessor,
     private val schedulersProvider: SchedulersProvider,
@@ -39,6 +41,10 @@ class GalleryDetailViewModel(
 
     fun selectTab(tab: GalleryDetailState.Tab) = currentState.withTab(tab).let(::setState)
 
+    fun showDeleteConfirmDialog() = setActiveDialog(GalleryDetailState.Dialog.DeleteConfirm)
+
+    fun dismissScreenDialog() = setActiveDialog(GalleryDetailState.Dialog.None)
+
     fun share() {
         if (currentState !is GalleryDetailState.Content) return
         !galleryDetailBitmapExporter((currentState as GalleryDetailState.Content).bitmap)
@@ -52,4 +58,19 @@ class GalleryDetailViewModel(
                 }
             )
     }
+
+    fun delete() {
+        dismissScreenDialog()
+        if (currentState !is GalleryDetailState.Content) return
+        !deleteGalleryItemUseCase((currentState as GalleryDetailState.Content).id)
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = { t -> t.printStackTrace() },
+                onComplete = { emitEffect(GalleryDetailEffect.NavigateBack) },
+            )
+    }
+
+    private fun setActiveDialog(dialog: GalleryDetailState.Dialog) = currentState
+        .withDialog(dialog)
+        .let(::setState)
 }
