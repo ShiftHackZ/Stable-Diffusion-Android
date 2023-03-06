@@ -68,6 +68,10 @@ class TextToImageViewModel(
         .copy(cfgScale = value)
         .let(::setState)
 
+    fun updateRestoreFaces(value: Boolean) = currentState
+        .copy(restoreFaces = value)
+        .let(::setState)
+
     fun updateSampler(value: String) = currentState
         .copy(selectedSampler = value)
         .let(::setState)

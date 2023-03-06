@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.presentation.extensions.mapToUi
 import java.io.File
 
 sealed interface GalleryDetailEffect : MviEffect {
@@ -59,7 +60,7 @@ fun Pair<AiGenerationResult, Base64ToBitmapConverter.Output>.mapToUi(): GalleryD
             size = "${ai.width} X ${ai.height}".asUiText(),
             samplingSteps = ai.samplingSteps.toString().asUiText(),
             cfgScale = ai.cfgScale.toString().asUiText(),
-            restoreFaces = ai.restoreFaces.toString().asUiText(),
+            restoreFaces = ai.restoreFaces.mapToUi(),
             sampler = ai.sampler.asUiText(),
             seed = ai.seed.asUiText(),
         )
