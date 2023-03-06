@@ -15,5 +15,6 @@ object GenerationResultContract {
     const val SAMPLING_STEPS = "sampling_steps"
     const val CFG_SCALE = "cfg_scale"
     const val RESTORE_FACES = "restore_faces"
+    const val SAMPLER = "sampler"
     const val SEED = "seed"
 }

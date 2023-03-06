@@ -31,6 +31,8 @@ data class GenerationResultEntity(
     val cfgScale: Float,
     @ColumnInfo(name = GenerationResultContract.RESTORE_FACES)
     val restoreFaces: Boolean,
+    @ColumnInfo(name = GenerationResultContract.SAMPLER)
+    val sampler: String,
     @ColumnInfo(name = GenerationResultContract.SEED)
     val seed: String,
 )

@@ -155,7 +155,7 @@ private fun ScreenContent(
 @Composable
 private fun GalleryUiItem(
     item: GalleryGridItemUi,
-    onClick: (GalleryGridItemUi) -> Unit = { _ -> },
+    onClick: (GalleryGridItemUi) -> Unit = {},
 ) {
     Image(
         modifier = Modifier

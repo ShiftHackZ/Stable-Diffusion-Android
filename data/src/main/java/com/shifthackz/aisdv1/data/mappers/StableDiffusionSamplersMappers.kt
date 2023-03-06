@@ -1,15 +1,15 @@
 package com.shifthackz.aisdv1.data.mappers
 
-import com.shifthackz.aisdv1.domain.entity.StableDiffusionSamplerDomain
+import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.network.model.StableDiffusionSamplerRaw
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionSamplerEntity
 
 //region RAW --> DOMAIN
-fun List<StableDiffusionSamplerRaw>.mapToDomain(): List<StableDiffusionSamplerDomain> =
-    map(StableDiffusionSamplerRaw::mapToDomain)
+fun List<StableDiffusionSamplerRaw>.mapRawToDomain(): List<StableDiffusionSampler> =
+    map(StableDiffusionSamplerRaw::mapRawToDomain)
 
-fun StableDiffusionSamplerRaw.mapToDomain(): StableDiffusionSamplerDomain = with(this) {
-    StableDiffusionSamplerDomain(
+fun StableDiffusionSamplerRaw.mapRawToDomain(): StableDiffusionSampler = with(this) {
+    StableDiffusionSampler(
         name = name,
         aliases = aliases,
         options = options,
@@ -17,16 +17,29 @@ fun StableDiffusionSamplerRaw.mapToDomain(): StableDiffusionSamplerDomain = with
 }
 //endregion
 
-//region DOMAIN -> ENTITY
-fun List<StableDiffusionSamplerDomain>.mapToEntity(): List<StableDiffusionSamplerEntity> =
-    map(StableDiffusionSamplerDomain::mapToEntity)
+//region DOMAIN --> ENTITY
+fun List<StableDiffusionSampler>.mapDomainToEntity(): List<StableDiffusionSamplerEntity> =
+    map(StableDiffusionSampler::mapDomainToEntity)
 
-fun StableDiffusionSamplerDomain.mapToEntity(): StableDiffusionSamplerEntity = with(this) {
+fun StableDiffusionSampler.mapDomainToEntity(): StableDiffusionSamplerEntity = with(this) {
     StableDiffusionSamplerEntity(
         id = name,
         name = name,
         aliases = aliases,
         options = options,
+    )
+}
+//endregion
+
+//region ENTITY --> DOMAIN
+fun List<StableDiffusionSamplerEntity>.mapEntityToDomain(): List<StableDiffusionSampler> =
+    map(StableDiffusionSamplerEntity::mapEntityToDomain)
+
+fun StableDiffusionSamplerEntity.mapEntityToDomain(): StableDiffusionSampler = with(this) {
+    StableDiffusionSampler(
+        name = name,
+        aliases = aliases,
+        options = options
     )
 }
 //endregion

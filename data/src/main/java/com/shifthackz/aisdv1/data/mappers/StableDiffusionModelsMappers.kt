@@ -1,15 +1,15 @@
 package com.shifthackz.aisdv1.data.mappers
 
-import com.shifthackz.aisdv1.domain.entity.StableDiffusionModelDomain
+import com.shifthackz.aisdv1.domain.entity.StableDiffusionModel
 import com.shifthackz.aisdv1.network.model.StableDiffusionModelRaw
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionModelEntity
 
 //region RAW --> DOMAIN
-fun List<StableDiffusionModelRaw>.mapRawToDomain(): List<StableDiffusionModelDomain> =
+fun List<StableDiffusionModelRaw>.mapRawToDomain(): List<StableDiffusionModel> =
     map(StableDiffusionModelRaw::mapRawToDomain)
 
-fun StableDiffusionModelRaw.mapRawToDomain(): StableDiffusionModelDomain = with(this) {
-    StableDiffusionModelDomain(
+fun StableDiffusionModelRaw.mapRawToDomain(): StableDiffusionModel = with(this) {
+    StableDiffusionModel(
         title = title,
         modelName = modelName,
         hash = hash ?: "",
@@ -21,10 +21,10 @@ fun StableDiffusionModelRaw.mapRawToDomain(): StableDiffusionModelDomain = with(
 //endregion
 
 //region DOMAIN --> ENTITY
-fun List<StableDiffusionModelDomain>.mapDomainToEntity(): List<StableDiffusionModelEntity> =
-    map(StableDiffusionModelDomain::mapDomainToEntity)
+fun List<StableDiffusionModel>.mapDomainToEntity(): List<StableDiffusionModelEntity> =
+    map(StableDiffusionModel::mapDomainToEntity)
 
-fun StableDiffusionModelDomain.mapDomainToEntity(): StableDiffusionModelEntity = with(this) {
+fun StableDiffusionModel.mapDomainToEntity(): StableDiffusionModelEntity = with(this) {
     StableDiffusionModelEntity(
         id = "${title}_${hash}".trim(),
         title = title,
@@ -38,11 +38,11 @@ fun StableDiffusionModelDomain.mapDomainToEntity(): StableDiffusionModelEntity =
 //endregion
 
 //region ENTITY --> DOMAIN
-fun List<StableDiffusionModelEntity>.mapEntityToDomain(): List<StableDiffusionModelDomain> =
+fun List<StableDiffusionModelEntity>.mapEntityToDomain(): List<StableDiffusionModel> =
     map(StableDiffusionModelEntity::mapEntityToDomain)
 
-fun StableDiffusionModelEntity.mapEntityToDomain(): StableDiffusionModelDomain = with(this) {
-    StableDiffusionModelDomain(
+fun StableDiffusionModelEntity.mapEntityToDomain(): StableDiffusionModel = with(this) {
+    StableDiffusionModel(
         title = title,
         modelName = name,
         hash = hash,

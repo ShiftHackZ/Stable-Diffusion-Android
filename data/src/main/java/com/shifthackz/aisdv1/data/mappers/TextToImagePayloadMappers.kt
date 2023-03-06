@@ -2,13 +2,13 @@ package com.shifthackz.aisdv1.data.mappers
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
-import com.shifthackz.aisdv1.domain.entity.TextToImagePayloadDomain
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.TextToImageRequest
 import com.shifthackz.aisdv1.network.response.TextToImageResponse
 import java.util.*
 
-fun TextToImagePayloadDomain.mapToRequest(): TextToImageRequest = with(this) {
+fun TextToImagePayload.mapToRequest(): TextToImageRequest = with(this) {
     TextToImageRequest(
         prompt = prompt,
         negativePrompt = negativePrompt,
@@ -17,28 +17,29 @@ fun TextToImagePayloadDomain.mapToRequest(): TextToImageRequest = with(this) {
         width = width,
         height = height,
         restoreFaces = restoreFaces,
+        samplerIndex = sampler,
     )
 }
 
-fun Pair<TextToImagePayloadDomain, TextToImageResponse>.mapToAiGenResult(): AiGenerationResultDomain =
-    with(this) {
-        let { (payload, response) ->
-            AiGenerationResultDomain(
-                0L,
-                response.images.firstOrNull() ?: "",
-                Date(),
-                AiGenerationResultDomain.Type.TEXT_TO_IMAGE,
-                payload.prompt,
-                payload.negativePrompt,
-                payload.width,
-                payload.height,
-                payload.samplingSteps,
-                payload.cfgScale,
-                payload.restoreFaces,
-                mapSeed(response.info)
-            )
-        }
+fun Pair<TextToImagePayload, TextToImageResponse>.mapToAiGenResult(): AiGenerationResult =
+    let { (payload, response) ->
+        AiGenerationResult(
+            id = 0L,
+            image = response.images.firstOrNull() ?: "",
+            createdAt = Date(),
+            type = AiGenerationResult.Type.TEXT_TO_IMAGE,
+            prompt = payload.prompt,
+            negativePrompt = payload.negativePrompt,
+            width = payload.width,
+            height = payload.height,
+            samplingSteps = payload.samplingSteps,
+            cfgScale = payload.cfgScale,
+            restoreFaces = payload.restoreFaces,
+            sampler = payload.sampler,
+            seed = mapSeed(response.info),
+        )
     }
+
 
 private fun mapSeed(infoString: String): String {
     return try {

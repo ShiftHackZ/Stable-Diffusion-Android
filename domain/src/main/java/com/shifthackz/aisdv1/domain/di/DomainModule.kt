@@ -11,6 +11,8 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseC
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCaseImpl
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -45,5 +47,9 @@ val domainModule = module {
 
     factory<GetGalleryItemUseCase> {
         GetGalleryItemUseCaseImpl(get())
+    }
+
+    factory<GetStableDiffusionSamplersUseCase> {
+        GetStableDiffusionSamplersUseCaseImpl(get())
     }
 }

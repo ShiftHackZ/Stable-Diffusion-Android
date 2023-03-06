@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.domain.entity
 
-data class StableDiffusionModelDomain(
+data class StableDiffusionModel(
     val title: String,
     val modelName: String,
     val hash: String,

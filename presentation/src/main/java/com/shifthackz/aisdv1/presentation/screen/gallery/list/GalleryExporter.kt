@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Output
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapProcessor
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
 import com.shifthackz.aisdv1.presentation.utils.FileSavableExporter
 import io.reactivex.rxjava3.core.Observable
@@ -30,6 +30,6 @@ class GalleryExporter(
         .toList()
         .flatMap(::saveFilesToZip)
 
-    private fun saveBitmapToFileImpl(data: Pair<AiGenerationResultDomain, Output>) =
+    private fun saveBitmapToFileImpl(data: Pair<AiGenerationResult, Output>) =
         saveBitmapToFile(data.first.hashCode().toString(), data.second.bitmap)
 }

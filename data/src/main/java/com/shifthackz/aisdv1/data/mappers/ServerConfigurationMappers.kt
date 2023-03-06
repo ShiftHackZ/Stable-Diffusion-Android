@@ -1,19 +1,19 @@
 package com.shifthackz.aisdv1.data.mappers
 
-import com.shifthackz.aisdv1.domain.entity.ServerConfigurationDomain
+import com.shifthackz.aisdv1.domain.entity.ServerConfiguration
 import com.shifthackz.aisdv1.network.model.ServerConfigurationRaw
 import com.shifthackz.aisdv1.storage.db.cache.entity.ServerConfigurationEntity
 
 //region RAW --> DOMAIN
-fun ServerConfigurationRaw.mapToDomain(): ServerConfigurationDomain = with(this) {
-    ServerConfigurationDomain(
+fun ServerConfigurationRaw.mapToDomain(): ServerConfiguration = with(this) {
+    ServerConfiguration(
         sdModelCheckpoint = sdModelCheckpoint,
     )
 }
 //endregion
 
 //region DOMAIN --> RAW
-fun ServerConfigurationDomain.mapToRequest(): ServerConfigurationRaw = with(this) {
+fun ServerConfiguration.mapToRequest(): ServerConfigurationRaw = with(this) {
     ServerConfigurationRaw(
         sdModelCheckpoint = sdModelCheckpoint,
     )
@@ -21,7 +21,7 @@ fun ServerConfigurationDomain.mapToRequest(): ServerConfigurationRaw = with(this
 //endregion
 
 //region DOMAIN --> ENTITY
-fun ServerConfigurationDomain.mapToEntity(): ServerConfigurationEntity = with(this) {
+fun ServerConfiguration.mapToEntity(): ServerConfigurationEntity = with(this) {
     ServerConfigurationEntity(
         serverId = "server0",
         sdModelCheckpoint = sdModelCheckpoint,
@@ -30,8 +30,8 @@ fun ServerConfigurationDomain.mapToEntity(): ServerConfigurationEntity = with(th
 //endregion
 
 //region ENTITY --> DOMAIN
-fun ServerConfigurationEntity.mapToDomain(): ServerConfigurationDomain = with(this) {
-    ServerConfigurationDomain(
+fun ServerConfigurationEntity.mapToDomain(): ServerConfiguration = with(this) {
+    ServerConfiguration(
         sdModelCheckpoint = sdModelCheckpoint,
     )
 }

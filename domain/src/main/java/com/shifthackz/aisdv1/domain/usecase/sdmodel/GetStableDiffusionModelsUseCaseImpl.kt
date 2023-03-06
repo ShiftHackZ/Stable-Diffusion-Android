@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.domain.usecase.sdmodel
 
-import com.shifthackz.aisdv1.domain.entity.StableDiffusionModelDomain
+import com.shifthackz.aisdv1.domain.entity.StableDiffusionModel
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
 import io.reactivex.rxjava3.core.Single
@@ -10,7 +10,7 @@ class GetStableDiffusionModelsUseCaseImpl(
     private val sdModelsRepository: StableDiffusionModelsRepository,
 ) : GetStableDiffusionModelsUseCase {
 
-    override operator fun invoke(): Single<List<Pair<StableDiffusionModelDomain, Boolean>>> =
+    override operator fun invoke(): Single<List<Pair<StableDiffusionModel, Boolean>>> =
         serverConfigurationRepository
             .fetchAndGetConfiguration()
             .flatMap { config ->

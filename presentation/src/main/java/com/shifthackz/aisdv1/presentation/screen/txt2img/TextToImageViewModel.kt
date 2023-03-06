@@ -6,16 +6,36 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
+    getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     private val textToImageUseCase: TextToImageUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val dimensionValidator: DimensionValidator,
 ) : MviRxViewModel<TextToImageState, EmptyEffect>() {
 
     override val emptyState = TextToImageState()
+
+    init {
+        !getStableDiffusionSamplersUseCase()
+            .map { samplers -> samplers.map(StableDiffusionSampler::name) }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = {
+                    it.printStackTrace()
+                },
+                onSuccess = { samplers ->
+                    println("DBG0: samplers - $samplers")
+                    currentState
+                        .copy(availableSamplers = samplers, selectedSampler = samplers.first())
+                        .let(::setState)
+                }
+            )
+    }
 
     override fun setState(state: TextToImageState) = super.setState(
         state.copy(
@@ -48,9 +68,13 @@ class TextToImageViewModel(
         .copy(cfgScale = value)
         .let(::setState)
 
+    fun updateSampler(value: String) = currentState
+        .copy(selectedSampler = value)
+        .let(::setState)
+
     fun dismissScreenDialog() = setActiveDialog(TextToImageState.Dialog.None)
 
-    fun generate() = currentState
+    fun generate() = !currentState
         .mapToPayload()
         .let(textToImageUseCase::invoke)
         .doOnSubscribe {
@@ -70,7 +94,6 @@ class TextToImageViewModel(
                 setActiveDialog(TextToImageState.Dialog.Image(it.image))
             }
         )
-        .addToDisposable()
 
     private fun setActiveDialog(dialog: TextToImageState.Dialog) = currentState
         .copy(screenDialog = dialog)

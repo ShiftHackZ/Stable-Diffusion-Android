@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.data.local
 import com.shifthackz.aisdv1.data.mappers.mapDomainToEntity
 import com.shifthackz.aisdv1.data.mappers.mapEntityToDomain
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.storage.db.persistent.dao.GenerationResultDao
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
 import io.reactivex.rxjava3.core.Single
@@ -12,10 +12,10 @@ class GenerationResultLocalDataSource(
     private val dao: GenerationResultDao,
 ) : GenerationResultDataSource.Local {
 
-    override fun insert(result: AiGenerationResultDomain) = dao
+    override fun insert(result: AiGenerationResult) = dao
         .insert(result.mapDomainToEntity())
 
-    override fun queryAll(): Single<List<AiGenerationResultDomain>> = dao
+    override fun queryAll(): Single<List<AiGenerationResult>> = dao
         .query()
         .map(List<GenerationResultEntity>::mapEntityToDomain)
 
