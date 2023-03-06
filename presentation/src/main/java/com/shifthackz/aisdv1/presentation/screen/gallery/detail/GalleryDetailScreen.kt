@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
@@ -63,8 +64,7 @@ private fun ScreenContent(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-//                    Text(stringResource(id = R.string.title_gallery))
-                    Text("Details")
+                    Text(stringResource(id = R.string.title_gallery_details))
                 },
                 navigationIcon = {
                     IconButton(
@@ -109,13 +109,13 @@ private fun ScreenContent(
                 NavigationBarItem(
                     selected = state.tab == GalleryDetailState.Tab.IMAGE,
                     label = {
-                        Text("Image")
+                        Text(stringResource(id = R.string.gallery_tab_image))
                     },
                     icon = {
                         Image(
                             modifier = Modifier.size(24.dp),
                             painter = painterResource(R.drawable.ic_image),
-                            contentDescription = "Image",
+                            contentDescription = stringResource(id = R.string.gallery_tab_image),
                         )
                     },
                     onClick = {
@@ -125,13 +125,13 @@ private fun ScreenContent(
                 NavigationBarItem(
                     selected = state.tab == GalleryDetailState.Tab.INFO,
                     label = {
-                        Text("Info")
+                        Text(stringResource(id = R.string.gallery_tab_info))
                     },
                     icon = {
                         Image(
                             modifier = Modifier.size(24.dp),
                             painter = painterResource(R.drawable.ic_text),
-                            contentDescription = "Info",
+                            contentDescription = stringResource(id = R.string.gallery_tab_info),
                         )
                     },
                     onClick = {
@@ -179,52 +179,52 @@ private fun GalleryDetailsTable(
         val colorEven = Color(0xFFe6def5)
         GalleryDetailRow(
             modifier = Modifier.background(color = colorOdd),
-            name = "Created".asUiText(),
+            name = R.string.gallery_info_field_date.asUiText(),
             value = state.createdAt,
         )
         GalleryDetailRow(
             modifier = Modifier.background(color = colorEven),
-            name = "Type".asUiText(),
+            name = R.string.gallery_info_field_type.asUiText(),
             value = state.type,
         )
         GalleryDetailRow(
             modifier = Modifier.background(color = colorOdd),
-            name = "Prompt".asUiText(),
+            name = R.string.gallery_info_field_prompt.asUiText(),
             value = state.prompt,
         )
         GalleryDetailRow(
             modifier = Modifier.background(color = colorEven),
-            name = "Negative prompt".asUiText(),
+            name = R.string.gallery_info_field_negative_prompt.asUiText(),
             value = state.negativePrompt,
         )
         GalleryDetailRow(
             modifier = Modifier.background(color = colorOdd),
-            name = "Size".asUiText(),
+            name = R.string.gallery_info_field_size.asUiText(),
             value = state.size,
         )
         GalleryDetailRow(
             modifier = Modifier.background(color = colorEven),
-            name = "Sampling steps".asUiText(),
+            name = R.string.gallery_info_field_sampling_steps.asUiText(),
             value = state.samplingSteps,
         )
         GalleryDetailRow(
             modifier = Modifier.background(color = colorOdd),
-            name = "CFG Scale".asUiText(),
+            name = R.string.gallery_info_field_cfg.asUiText(),
             value = state.cfgScale,
         )
         GalleryDetailRow(
             modifier = Modifier.background(color = colorEven),
-            name = "Restore faces".asUiText(),
+            name = R.string.gallery_info_field_restore_faces.asUiText(),
             value = state.restoreFaces,
         )
         GalleryDetailRow(
             modifier = Modifier.background(color = colorOdd),
-            name = "Sampling method".asUiText(),
+            name = R.string.gallery_info_field_sampler.asUiText(),
             value = state.sampler,
         )
         GalleryDetailRow(
             modifier = Modifier.background(color = colorEven),
-            name = "Seed".asUiText(),
+            name = R.string.gallery_info_field_seed.asUiText(),
             value = state.seed,
         )
     }
