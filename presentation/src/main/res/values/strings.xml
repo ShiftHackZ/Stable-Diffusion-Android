@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="cancel">Cancel</string>
-
     <string name="width">Width</string>
     <string name="height">Height</string>
+
     <string name="splash_status_initializing">Initializing…</string>
     <string name="splash_status_fetching">Fetching data…</string>
     <string name="splash_status_launching">Launching application!</string>
@@ -17,6 +19,7 @@
     <string name="hint_sampling_steps">Sampling steps: %1$s</string>
     <string name="hint_cfg_scale">CFG Scale: %1$s</string>
     <string name="hint_sampler">Sampling method</string>
+    <string name="hint_restore_faces">Restore faces</string>
 
     <string name="home_tab_txt_to_img">Text &gt; Image</string>
     <string name="home_tab_img_to_img">Image &gt; Image</string>

@@ -2,13 +2,11 @@
 
 package com.shifthackz.aisdv1.presentation.widget
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -36,6 +34,7 @@ fun GenerationInputForm(
     height: String,
     samplingSteps: Int,
     cfgScale: Float,
+    restoreFaces: Boolean,
     selectedSampler: String,
     availableSamplers: List<String>,
     onPromptUpdated: (String) -> Unit = {},
@@ -44,6 +43,7 @@ fun GenerationInputForm(
     onHeightUpdated: (String) -> Unit = {},
     onSamplingStepsUpdated: (Int) -> Unit = {},
     onCfgScaleUpdated: (Float) -> Unit = {},
+    onRestoreFacesUpdated: (Boolean) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
     widthValidationError: UiText? = null,
     heightValidationError: UiText? = null,
@@ -143,6 +143,20 @@ fun GenerationInputForm(
                 onCfgScaleUpdated(it.roundTo(1))
             },
         )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = restoreFaces,
+                onCheckedChange = onRestoreFacesUpdated,
+            )
+            Text(
+                text = stringResource(id = R.string.hint_restore_faces)
+            )
+        }
     }
 }
 
@@ -156,6 +170,7 @@ private fun GenerationInputFormPreview() {
         height = "512",
         samplingSteps = 55,
         cfgScale = 7f,
+        restoreFaces = true,
         selectedSampler = "Euler",
         availableSamplers = listOf("Euler")
     )

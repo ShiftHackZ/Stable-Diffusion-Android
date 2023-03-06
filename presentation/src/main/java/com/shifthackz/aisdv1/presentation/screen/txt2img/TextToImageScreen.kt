@@ -37,6 +37,7 @@ class TextToImageScreen(
             onHeightUpdated = viewModel::updateHeight,
             onSamplingStepsUpdated = viewModel::updateSamplingSteps,
             onCfgScaleUpdated = viewModel::updateCfgScale,
+            onRestoreFacesUpdated = viewModel::updateRestoreFaces,
             onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
@@ -57,6 +58,7 @@ private fun ScreenContent(
     onHeightUpdated: (String) -> Unit = {},
     onSamplingStepsUpdated: (Int) -> Unit = {},
     onCfgScaleUpdated: (Float) -> Unit = {},
+    onRestoreFacesUpdated: (Boolean) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
@@ -91,8 +93,6 @@ private fun ScreenContent(
                         .verticalScroll(scrollState)
                         .padding(horizontal = 16.dp),
                 ) {
-
-
                     GenerationInputForm(
                         prompt = state.prompt,
                         negativePrompt = state.negativePrompt,
@@ -100,6 +100,7 @@ private fun ScreenContent(
                         height = state.height,
                         samplingSteps = state.samplingSteps,
                         cfgScale = state.cfgScale,
+                        restoreFaces = state.restoreFaces,
                         selectedSampler = state.selectedSampler,
                         availableSamplers = state.availableSamplers,
                         onPromptUpdated = onPromptUpdated,
@@ -108,6 +109,7 @@ private fun ScreenContent(
                         onHeightUpdated = onHeightUpdated,
                         onSamplingStepsUpdated = onSamplingStepsUpdated,
                         onCfgScaleUpdated = onCfgScaleUpdated,
+                        onRestoreFacesUpdated = onRestoreFacesUpdated,
                         onSamplerUpdated = onSamplerUpdated,
                         widthValidationError = state.widthValidationError,
                         heightValidationError = state.heightValidationError,
