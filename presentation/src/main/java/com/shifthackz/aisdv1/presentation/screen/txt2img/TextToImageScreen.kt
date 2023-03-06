@@ -37,6 +37,7 @@ class TextToImageScreen(
             onHeightUpdated = viewModel::updateHeight,
             onSamplingStepsUpdated = viewModel::updateSamplingSteps,
             onCfgScaleUpdated = viewModel::updateCfgScale,
+            onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
         )
@@ -50,12 +51,13 @@ class TextToImageScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: TextToImageState,
-    onPromptUpdated: (String) -> Unit = { _ -> },
-    onNegativePromptUpdated: (String) -> Unit = { _ -> },
-    onWidthUpdated: (String) -> Unit = { _ -> },
-    onHeightUpdated: (String) -> Unit = { _ -> },
-    onSamplingStepsUpdated: (Int) -> Unit = { _ -> },
-    onCfgScaleUpdated: (Float) -> Unit = { _ -> },
+    onPromptUpdated: (String) -> Unit = {},
+    onNegativePromptUpdated: (String) -> Unit = {},
+    onWidthUpdated: (String) -> Unit = {},
+    onHeightUpdated: (String) -> Unit = {},
+    onSamplingStepsUpdated: (Int) -> Unit = {},
+    onCfgScaleUpdated: (Float) -> Unit = {},
+    onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) {
@@ -98,12 +100,15 @@ private fun ScreenContent(
                         height = state.height,
                         samplingSteps = state.samplingSteps,
                         cfgScale = state.cfgScale,
+                        selectedSampler = state.selectedSampler,
+                        availableSamplers = state.availableSamplers,
                         onPromptUpdated = onPromptUpdated,
                         onNegativePromptUpdated = onNegativePromptUpdated,
                         onWidthUpdated = onWidthUpdated,
                         onHeightUpdated = onHeightUpdated,
                         onSamplingStepsUpdated = onSamplingStepsUpdated,
                         onCfgScaleUpdated = onCfgScaleUpdated,
+                        onSamplerUpdated = onSamplerUpdated,
                         widthValidationError = state.widthValidationError,
                         heightValidationError = state.heightValidationError,
                     )
@@ -152,6 +157,7 @@ fun PreviewStateContent() {
             prompt = "Opel Astra H OPC",
             negativePrompt = "White background",
             samplingSteps = 55,
+            availableSamplers = listOf("Euler a")
         )
     )
 }

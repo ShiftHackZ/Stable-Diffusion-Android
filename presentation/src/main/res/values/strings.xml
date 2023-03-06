@@ -16,6 +16,7 @@
     <string name="hint_prompt_negative">Negative prompt</string>
     <string name="hint_sampling_steps">Sampling steps: %1$s</string>
     <string name="hint_cfg_scale">CFG Scale: %1$s</string>
+    <string name="hint_sampler">Sampling method</string>
 
     <string name="home_tab_txt_to_img">Text &gt; Image</string>
     <string name="home_tab_img_to_img">Image &gt; Image</string>

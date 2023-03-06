@@ -1,5 +1,5 @@
 package com.shifthackz.aisdv1.domain.entity
 
-data class ServerConfigurationDomain(
+data class ServerConfiguration(
     val sdModelCheckpoint: String,
 )

@@ -6,7 +6,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import java.io.File
 
 sealed interface GalleryDetailEffect : MviEffect {
@@ -32,6 +32,7 @@ sealed interface GalleryDetailState : MviState {
         val samplingSteps: UiText,
         val cfgScale: UiText,
         val restoreFaces: UiText,
+        val sampler: UiText,
         val seed: UiText,
     ) : GalleryDetailState
 
@@ -46,7 +47,7 @@ sealed interface GalleryDetailState : MviState {
     }
 }
 
-fun Pair<AiGenerationResultDomain, Base64ToBitmapConverter.Output>.mapToUi(): GalleryDetailState.Content =
+fun Pair<AiGenerationResult, Base64ToBitmapConverter.Output>.mapToUi(): GalleryDetailState.Content =
     let { (ai, out) ->
         GalleryDetailState.Content(
             id = ai.id,
@@ -59,6 +60,7 @@ fun Pair<AiGenerationResultDomain, Base64ToBitmapConverter.Output>.mapToUi(): Ga
             samplingSteps = ai.samplingSteps.toString().asUiText(),
             cfgScale = ai.cfgScale.toString().asUiText(),
             restoreFaces = ai.restoreFaces.toString().asUiText(),
+            sampler = ai.sampler.asUiText(),
             seed = ai.seed.asUiText(),
         )
     }

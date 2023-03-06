@@ -5,6 +5,8 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.*
@@ -169,6 +171,7 @@ private fun GalleryDetailsTable(
 ) {
     Column(
         modifier = modifier
+            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .padding(16.dp),
     ) {
@@ -216,6 +219,11 @@ private fun GalleryDetailsTable(
         )
         GalleryDetailRow(
             modifier = Modifier.background(color = colorOdd),
+            name = "Sampling method".asUiText(),
+            value = state.sampler,
+        )
+        GalleryDetailRow(
+            modifier = Modifier.background(color = colorEven),
             name = "Seed".asUiText(),
             value = state.seed,
         )

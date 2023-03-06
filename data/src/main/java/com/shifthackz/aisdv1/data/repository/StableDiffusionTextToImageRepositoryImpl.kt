@@ -2,8 +2,8 @@ package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionTextToImageDataSource
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResultDomain
-import com.shifthackz.aisdv1.domain.entity.TextToImagePayloadDomain
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionTextToImageRepository
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -15,7 +15,7 @@ class StableDiffusionTextToImageRepositoryImpl(
 
     override fun checkApiAvailability(): Completable = remoteDataSource.checkAvailability()
 
-    override fun generateAndGetImage(payload: TextToImagePayloadDomain): Single<AiGenerationResultDomain> =
+    override fun generateAndGetImage(payload: TextToImagePayload): Single<AiGenerationResult> =
         remoteDataSource
             .textToImage(payload)
             .flatMap { aiResult ->

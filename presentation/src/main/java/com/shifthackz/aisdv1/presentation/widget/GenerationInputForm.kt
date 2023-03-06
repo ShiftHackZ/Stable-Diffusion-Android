@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
+import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MAX
@@ -35,12 +36,15 @@ fun GenerationInputForm(
     height: String,
     samplingSteps: Int,
     cfgScale: Float,
-    onPromptUpdated: (String) -> Unit = { _ -> },
-    onNegativePromptUpdated: (String) -> Unit = { _ -> },
-    onWidthUpdated: (String) -> Unit = { _ -> },
-    onHeightUpdated: (String) -> Unit = { _ -> },
-    onSamplingStepsUpdated: (Int) -> Unit = { _ -> },
-    onCfgScaleUpdated: (Float) -> Unit = { _ -> },
+    selectedSampler: String,
+    availableSamplers: List<String>,
+    onPromptUpdated: (String) -> Unit = {},
+    onNegativePromptUpdated: (String) -> Unit = {},
+    onWidthUpdated: (String) -> Unit = {},
+    onHeightUpdated: (String) -> Unit = {},
+    onSamplingStepsUpdated: (Int) -> Unit = {},
+    onCfgScaleUpdated: (Float) -> Unit = {},
+    onSamplerUpdated: (String) -> Unit = {},
     widthValidationError: UiText? = null,
     heightValidationError: UiText? = null,
 ) {
@@ -102,6 +106,16 @@ fun GenerationInputForm(
             )
         }
 
+        DropdownTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            label = R.string.hint_sampler.asUiText(),
+            value = selectedSampler,
+            items = availableSamplers,
+            onItemSelected = onSamplerUpdated,
+        )
+
         Text(
             modifier = Modifier.padding(top = 8.dp),
             text = stringResource(id = R.string.hint_sampling_steps, "$samplingSteps")
@@ -142,5 +156,7 @@ private fun GenerationInputFormPreview() {
         height = "512",
         samplingSteps = 55,
         cfgScale = 7f,
+        selectedSampler = "Euler",
+        availableSamplers = listOf("Euler")
     )
 }

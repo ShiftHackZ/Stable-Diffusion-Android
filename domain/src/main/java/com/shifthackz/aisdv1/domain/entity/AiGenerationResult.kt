@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.entity
 
 import java.util.*
 
-data class AiGenerationResultDomain(
+data class AiGenerationResult(
     val id: Long,
     val image: String,
     val createdAt: Date,
@@ -14,6 +14,7 @@ data class AiGenerationResultDomain(
     val samplingSteps: Int,
     val cfgScale: Float,
     val restoreFaces: Boolean,
+    val sampler: String,
     val seed: String,
 ) {
     enum class Type(val key: String) {

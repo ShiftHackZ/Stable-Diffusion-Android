@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.core.validation.model.ValidationResult
-import com.shifthackz.aisdv1.domain.entity.TextToImagePayloadDomain
+import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.presentation.R
 
 data class TextToImageState(
@@ -16,6 +16,8 @@ data class TextToImageState(
     val height: String = 512.toString(),
     val samplingSteps: Int = 20,
     val cfgScale: Float = 7f,
+    val selectedSampler: String = "",
+    val availableSamplers: List<String> = emptyList(),
     val widthValidationError: UiText? = null,
     val heightValidationError: UiText? = null,
 ) : MviState {
@@ -31,15 +33,16 @@ data class TextToImageState(
     }
 }
 
-fun TextToImageState.mapToPayload(): TextToImagePayloadDomain = with(this) {
-    TextToImagePayloadDomain(
+fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
+    TextToImagePayload(
         prompt = prompt,
         negativePrompt = negativePrompt,
         samplingSteps = samplingSteps,
         cfgScale = cfgScale,
         width = width.toIntOrNull() ?: 64,
         height = height.toIntOrNull() ?: 64,
-        restoreFaces = true
+        restoreFaces = true,
+        sampler = selectedSampler,
     )
 }
 

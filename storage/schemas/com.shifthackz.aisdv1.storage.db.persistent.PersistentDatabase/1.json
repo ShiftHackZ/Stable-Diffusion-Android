@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "90ec3cf04c5bfc78572312a7add8774b",
+    "identityHash": "f3229ea9c78ae76bccf40292f0a8330f",
     "entities": [
       {
         "tableName": "generation_results",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `image_base_64` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `generation_type` TEXT NOT NULL, `prompt` TEXT NOT NULL, `negative_prompt` TEXT NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `sampling_steps` INTEGER NOT NULL, `cfg_scale` REAL NOT NULL, `restore_faces` INTEGER NOT NULL, `seed` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `image_base_64` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `generation_type` TEXT NOT NULL, `prompt` TEXT NOT NULL, `negative_prompt` TEXT NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `sampling_steps` INTEGER NOT NULL, `cfg_scale` REAL NOT NULL, `restore_faces` INTEGER NOT NULL, `sampler` TEXT NOT NULL, `seed` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -75,6 +75,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "sampler",
+            "columnName": "sampler",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "seed",
             "columnName": "seed",
             "affinity": "TEXT",
@@ -94,7 +100,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '90ec3cf04c5bfc78572312a7add8774b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f3229ea9c78ae76bccf40292f0a8330f')"
     ]
   }
 }
