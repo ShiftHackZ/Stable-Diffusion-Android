@@ -37,4 +37,6 @@ dependencies {
     implementation reactive.rxjava
     implementation reactive.rxkotlin
     implementation reactive.rxandroid
+
+    implementation ui.imagePicker
 }

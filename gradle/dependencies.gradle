@@ -10,6 +10,7 @@ ext {
     rxAndroidVersion = '3.0.2'
     pagingVersion = '3.1.1'
     pagingComposeVersion = '1.0.0-alpha18'
+    imagePickerVersion = '2.0.2'
 
     androidx = [
             core                        : "androidx.core:core-ktx:1.9.0",
@@ -31,32 +32,35 @@ ext {
             pagingCompose               : "androidx.paging:paging-compose:$pagingComposeVersion",
     ]
     google = [
-            gson: "com.google.code.gson:gson:2.9.1",
-            material: "com.google.android.material:material:1.8.0",
+            gson                         : "com.google.code.gson:gson:2.9.1",
+            material                     : "com.google.android.material:material:1.8.0",
             accompanistSystemUiController: "com.google.accompanist:accompanist-systemuicontroller:0.28.0",
     ]
     di = [
-            koinCore: "io.insert-koin:koin-core:$koinVersion",
+            koinCore   : "io.insert-koin:koin-core:$koinVersion",
             koinAndroid: "io.insert-koin:koin-android:$koinVersion",
             koinCompose: "io.insert-koin:koin-androidx-compose:$koinComposeVersion",
     ]
     retrofit = [
-            core: "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            core         : "com.squareup.retrofit2:retrofit:$retrofitVersion",
             converterGson: "com.squareup.retrofit2:converter-gson:$retrofitVersion",
-            adapterRx: "com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion",
+            adapterRx    : "com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion",
     ]
     okhttp = [
-            core: "com.squareup.okhttp3:okhttp:$okHttpVersion",
+            core   : "com.squareup.okhttp3:okhttp:$okHttpVersion",
             logging: "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
     ]
     database = [
-            roomRuntime: "androidx.room:room-runtime:$roomVersion",
+            roomRuntime : "androidx.room:room-runtime:$roomVersion",
             roomCompiler: "androidx.room:room-compiler:$roomVersion",
-            roomRx3: "androidx.room:room-rxjava3:$roomVersion",
+            roomRx3     : "androidx.room:room-rxjava3:$roomVersion",
     ]
     reactive = [
-            rxjava: "io.reactivex.rxjava3:rxjava:$rxJavaVersion",
-            rxkotlin: "io.reactivex.rxjava3:rxkotlin:$rxKotlinVersion",
+            rxjava   : "io.reactivex.rxjava3:rxjava:$rxJavaVersion",
+            rxkotlin : "io.reactivex.rxjava3:rxkotlin:$rxKotlinVersion",
             rxandroid: "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion",
+    ]
+    ui = [
+            imagePicker: "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion"
     ]
 }
