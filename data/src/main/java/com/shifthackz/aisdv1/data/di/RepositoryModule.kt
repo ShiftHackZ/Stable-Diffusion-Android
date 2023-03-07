@@ -6,8 +6,8 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
 
-    factory<StableDiffusionTextToImageRepository> {
-        StableDiffusionTextToImageRepositoryImpl(get(), get())
+    factory<StableDiffusionGenerationRepository> {
+        StableDiffusionGenerationRepositoryImpl(get(), get())
     }
 
     factory<StableDiffusionModelsRepository> {

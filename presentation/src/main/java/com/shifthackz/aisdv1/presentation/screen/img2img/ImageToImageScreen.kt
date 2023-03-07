@@ -17,10 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.widget.ErrorDialog
+import com.shifthackz.aisdv1.presentation.widget.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
+import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
 
 class ImageToImageScreen(
@@ -46,6 +51,8 @@ class ImageToImageScreen(
             onRestoreFacesUpdated = viewModel::updateRestoreFaces,
             onSeedUpdated = viewModel::updateSeed,
             onSamplerUpdated = viewModel::updateSampler,
+            onGenerateClicked = viewModel::generate,
+            onDismissScreenDialog = viewModel::dismissScreenDialog,
         )
     }
 
@@ -114,7 +121,35 @@ private fun ScreenContent(
                     )
                 }
             },
+            bottomBar = {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp)
+                        .padding(bottom = 16.dp),
+                    onClick = onGenerateClicked,
+                    enabled = !state.hasValidationErrors && !state.imageState.isEmpty
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.action_generate)
+                    )
+                }
+            }
         )
+        when (state.screenDialog) {
+            ImageToImageState.Dialog.Communicating -> ProgressDialog(
+                canDismiss = false,
+            )
+            is ImageToImageState.Dialog.Error -> ErrorDialog(
+                text = state.screenDialog.error,
+                onDismissScreenDialog,
+            )
+            is ImageToImageState.Dialog.Image -> GenerationImageResultDialog(
+                state.screenDialog.image,
+                onDismissScreenDialog,
+            )
+            ImageToImageState.Dialog.None -> Unit
+        }
     }
 }
 

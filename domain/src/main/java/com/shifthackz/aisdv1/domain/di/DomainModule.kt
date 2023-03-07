@@ -5,6 +5,8 @@ import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.*
+import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
@@ -19,6 +21,10 @@ val domainModule = module {
 
     factory<TextToImageUseCase> {
         TextToImageUseCaseImpl(get())
+    }
+
+    factory<ImageToImageUseCase> {
+        ImageToImageUseCaseImpl(get())
     }
 
     factory<PingStableDiffusionServiceUseCase> {

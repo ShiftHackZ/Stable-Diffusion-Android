@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
-import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapProcessor
+import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryPageUseCase
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GalleryViewModel(
     private val getGalleryPageUseCase: GetGalleryPageUseCase,
-    private val base64ToBitmapConverter: Base64ToBitmapProcessor,
+    private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val galleryExporter: GalleryExporter,
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<GalleryState, GalleryEffect>() {

@@ -1,13 +1,14 @@
 package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
-import com.shifthackz.aisdv1.network.request.TextToImageRequest
+import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
+import com.shifthackz.aisdv1.network.request.ImageToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import java.util.*
 
-fun TextToImagePayload.mapToRequest(): TextToImageRequest = with(this) {
-    TextToImageRequest(
+fun ImageToImagePayload.mapToRequest(): ImageToImageRequest = with(this) {
+    ImageToImageRequest(
+        initImages = listOf(base64Image),
         prompt = prompt,
         negativePrompt = negativePrompt,
         steps = samplingSteps,
@@ -20,7 +21,7 @@ fun TextToImagePayload.mapToRequest(): TextToImageRequest = with(this) {
     )
 }
 
-fun Pair<TextToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerationResult =
+fun Pair<ImageToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerationResult =
     let { (payload, response) ->
         AiGenerationResult(
             id = 0L,
