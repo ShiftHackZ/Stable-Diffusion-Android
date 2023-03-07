@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -13,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
@@ -20,17 +20,21 @@ import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GallerySharing
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationItem
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationScreen
+import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageScreen
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashLoaderScreen
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreen
 import com.shifthackz.aisdv1.presentation.utils.Constants
+import com.shifthackz.aisdv1.presentation.utils.ImagePickerCapability
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.getViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-class AiStableDiffusionActivity : ComponentActivity() {
+class AiStableDiffusionActivity : ComponentActivity(), ImagePickerCapability {
 
     private val gallerySharing: GallerySharing by inject()
+
+    override val fileProviderDescriptor: FileProviderDescriptor by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +80,15 @@ class AiStableDiffusionActivity : ComponentActivity() {
                                     modifier = Modifier.size(24.dp),
                                 ),
                                 content = {
-                                    Text("Not implemented")
+                                    ImageToImageScreen(
+                                        viewModel = koinViewModel(),
+                                        pickImage = {
+                                            pickPhoto(this@AiStableDiffusionActivity, it)
+                                        },
+                                        takePhoto = {
+                                            takePhoto(this@AiStableDiffusionActivity, it)
+                                        },
+                                    ).Build()
                                 },
                             ),
                             HomeNavigationItem(

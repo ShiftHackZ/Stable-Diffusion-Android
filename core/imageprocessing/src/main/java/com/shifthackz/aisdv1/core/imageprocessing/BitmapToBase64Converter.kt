@@ -1,18 +1,18 @@
 package com.shifthackz.aisdv1.core.imageprocessing
 
 import android.graphics.Bitmap
-import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
-import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Output
+import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter.Input
+import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter.Output
 import com.shifthackz.aisdv1.core.imageprocessing.contract.RxImageProcessor
-import com.shifthackz.aisdv1.core.imageprocessing.utils.base64ToBitmap
+import com.shifthackz.aisdv1.core.imageprocessing.utils.bitmapToBase64
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.Single
 
-private typealias Base64ToBitmapProcessor = RxImageProcessor<Input, Output>
+private typealias BitmapToBase64Processor = RxImageProcessor<Input, Output>
 
-class Base64ToBitmapConverter(
+class BitmapToBase64Converter(
     private val processingScheduler: Scheduler,
-) : Base64ToBitmapProcessor {
+) : BitmapToBase64Processor {
 
     override operator fun invoke(input: Input): Single<Output> = Single
         .create { emitter ->
@@ -24,9 +24,9 @@ class Base64ToBitmapConverter(
         .subscribeOn(processingScheduler)
 
     private fun convert(input: Input): Result<Output> = runCatching {
-        Output(base64ToBitmap(input.base64ImageString))
+        Output(bitmapToBase64(input.bitmap))
     }
 
-    data class Input(val base64ImageString: String)
-    data class Output(val bitmap: Bitmap)
+    data class Input(val bitmap: Bitmap)
+    data class Output(val base64ImageString: String)
 }

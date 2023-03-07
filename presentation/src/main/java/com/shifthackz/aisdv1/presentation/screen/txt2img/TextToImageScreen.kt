@@ -96,16 +96,7 @@ private fun ScreenContent(
                         .padding(horizontal = 16.dp),
                 ) {
                     GenerationInputForm(
-                        prompt = state.prompt,
-                        negativePrompt = state.negativePrompt,
-                        width = state.width,
-                        height = state.height,
-                        samplingSteps = state.samplingSteps,
-                        cfgScale = state.cfgScale,
-                        restoreFaces = state.restoreFaces,
-                        seed = state.seed,
-                        selectedSampler = state.selectedSampler,
-                        availableSamplers = state.availableSamplers,
+                        state = state,
                         onPromptUpdated = onPromptUpdated,
                         onNegativePromptUpdated = onNegativePromptUpdated,
                         onWidthUpdated = onWidthUpdated,

@@ -3,4 +3,7 @@
     <cache-path
         name="folder_images"
         path="images/" />
+
+    <external-path name="media" path="." />
+    <external-path name="external_files" path="."/>
 </paths>

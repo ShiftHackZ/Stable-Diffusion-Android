@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.network.response
 
 import com.google.gson.annotations.SerializedName
 
-data class TextToImageResponse(
+data class SdGenerationResponse(
     @SerializedName("images")
     val images: List<String>,
     @SerializedName("info")

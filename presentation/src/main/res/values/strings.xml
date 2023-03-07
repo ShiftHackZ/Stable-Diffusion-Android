@@ -22,6 +22,7 @@
     <string name="hint_sampler">Sampling method</string>
     <string name="hint_restore_faces">Restore faces</string>
     <string name="hint_seed">Seed</string>
+    <string name="hint_denoising_strength">Denoising Strength: %1$s</string>
 
     <string name="home_tab_txt_to_img">Text &gt; Image</string>
     <string name="home_tab_img_to_img">Image &gt; Image</string>

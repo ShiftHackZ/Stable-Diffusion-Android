@@ -1,15 +1,19 @@
-package com.shifthackz.aisdv1.presentation.screen.txt2img
+package com.shifthackz.aisdv1.presentation.screen.img2img
 
+import android.graphics.Bitmap
+import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
-import com.shifthackz.aisdv1.core.validation.model.ValidationResult
-import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
-import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.core.ui.MviEffect
+import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 
-data class TextToImageState(
+sealed interface ImageToImageEffect : MviEffect
+
+data class ImageToImageState(
+    val imageState: ImageState = ImageState.None,
+    val imageBase64: String = "",
     val screenDialog: Dialog = Dialog.None,
+    val denoisingStrength: Float = 0.75f,
     override val prompt: String = "",
     override val negativePrompt: String = "",
     override val width: String = 512.toString(),
@@ -23,6 +27,15 @@ data class TextToImageState(
     override val widthValidationError: UiText? = null,
     override val heightValidationError: UiText? = null,
 ) : GenerationMviState() {
+
+    sealed interface ImageState {
+
+        val isEmpty: Boolean
+            get() = this is None
+
+        object None : ImageState
+        data class Image(val bitmap: Bitmap) : ImageState
+    }
 
     sealed interface Dialog {
         object None : Dialog
@@ -58,10 +71,19 @@ data class TextToImageState(
         widthValidationError = widthValidationError,
         heightValidationError = heightValidationError,
     )
+
+    fun preProcessed(output: BitmapToBase64Converter.Output): ImageToImageState =
+        copy(imageBase64 = output.base64ImageString)
 }
 
-fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
-    TextToImagePayload(
+enum class ImagePickButton {
+    PHOTO, CAMERA
+}
+
+fun ImageToImageState.mapToPayload(): ImageToImagePayload = with(this) {
+    ImageToImagePayload(
+        base64Image = imageBase64,
+        denoisingStrength = denoisingStrength,
         prompt = prompt.trim(),
         negativePrompt = negativePrompt.trim(),
         samplingSteps = samplingSteps,
@@ -72,20 +94,4 @@ fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
         seed = seed.trim(),
         sampler = selectedSampler,
     )
-}
-
-fun ValidationResult<DimensionValidator.Error>.mapToUi(): UiText? {
-    if (this.isValid) return null
-    return when (validationError as DimensionValidator.Error) {
-        DimensionValidator.Error.Empty -> R.string.error_empty.asUiText()
-        is DimensionValidator.Error.LessThanMinimum -> UiText.Resource(
-            R.string.error_min_size,
-            (validationError as DimensionValidator.Error.LessThanMinimum).min,
-        )
-        is DimensionValidator.Error.BiggerThanMaximum -> UiText.Resource(
-            R.string.error_max_size,
-            (validationError as DimensionValidator.Error.BiggerThanMaximum).max,
-        )
-        else -> R.string.error_invalid.asUiText()
-    }
 }

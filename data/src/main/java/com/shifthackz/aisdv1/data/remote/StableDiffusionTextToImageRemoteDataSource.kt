@@ -3,9 +3,10 @@ package com.shifthackz.aisdv1.data.remote
 import com.shifthackz.aisdv1.data.mappers.mapToAiGenResult
 import com.shifthackz.aisdv1.data.mappers.mapToRequest
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionTextToImageDataSource
+import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
-import com.shifthackz.aisdv1.network.response.TextToImageResponse
+import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import io.reactivex.rxjava3.core.Completable
 
 class StableDiffusionTextToImageRemoteDataSource(
@@ -17,5 +18,10 @@ class StableDiffusionTextToImageRemoteDataSource(
     override fun textToImage(payload: TextToImagePayload) = api
         .textToImage(payload.mapToRequest())
         .map { response -> payload to response }
-        .map(Pair<TextToImagePayload, TextToImageResponse>::mapToAiGenResult)
+        .map(Pair<TextToImagePayload, SdGenerationResponse>::mapToAiGenResult)
+
+    override fun imageToImage(payload: ImageToImagePayload) = api
+        .imageToImage(payload.mapToRequest())
+        .map { response -> payload to response }
+        .map(Pair<ImageToImagePayload, SdGenerationResponse>::mapToAiGenResult)
 }

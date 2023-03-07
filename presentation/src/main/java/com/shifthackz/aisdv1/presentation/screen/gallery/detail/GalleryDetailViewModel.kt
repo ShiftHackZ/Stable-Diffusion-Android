@@ -2,8 +2,8 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
+import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
-import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapProcessor
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemUseCase
@@ -14,7 +14,7 @@ class GalleryDetailViewModel(
     getGalleryItemUseCase: GetGalleryItemUseCase,
     private val deleteGalleryItemUseCase: DeleteGalleryItemUseCase,
     private val galleryDetailBitmapExporter: GalleryDetailBitmapExporter,
-    private val base64ToBitmapConverter: Base64ToBitmapProcessor,
+    private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<GalleryDetailState, GalleryDetailEffect>() {
 

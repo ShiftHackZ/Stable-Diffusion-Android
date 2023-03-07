@@ -37,4 +37,7 @@ dependencies {
     implementation reactive.rxjava
     implementation reactive.rxkotlin
     implementation reactive.rxandroid
+
+    implementation ui.imagePicker
+    implementation "androidx.exifinterface:exifinterface:1.3.6"
 }

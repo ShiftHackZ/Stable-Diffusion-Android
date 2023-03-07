@@ -17,6 +17,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MIN
@@ -28,16 +29,7 @@ import kotlin.math.roundToInt
 @Composable
 fun GenerationInputForm(
     modifier: Modifier = Modifier,
-    prompt: String,
-    negativePrompt: String,
-    width: String,
-    height: String,
-    samplingSteps: Int,
-    cfgScale: Float,
-    restoreFaces: Boolean,
-    seed: String,
-    selectedSampler: String,
-    availableSamplers: List<String>,
+    state: GenerationMviState,
     onPromptUpdated: (String) -> Unit = {},
     onNegativePromptUpdated: (String) -> Unit = {},
     onWidthUpdated: (String) -> Unit = {},
@@ -49,13 +41,14 @@ fun GenerationInputForm(
     onSamplerUpdated: (String) -> Unit = {},
     widthValidationError: UiText? = null,
     heightValidationError: UiText? = null,
+    afterSlidersSection: @Composable () -> Unit = {},
 ) {
     Column(modifier = modifier) {
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
-            value = prompt,
+            value = state.prompt,
             onValueChange = onPromptUpdated,
             label = { Text(stringResource(id = R.string.hint_prompt)) },
         )
@@ -63,7 +56,7 @@ fun GenerationInputForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
-            value = negativePrompt,
+            value = state.negativePrompt,
             onValueChange = onNegativePromptUpdated,
             label = { Text(stringResource(id = R.string.hint_prompt_negative)) },
         )
@@ -76,7 +69,7 @@ fun GenerationInputForm(
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 4.dp),
-                value = width,
+                value = state.width,
                 onValueChange = { value ->
                     if (value.length <= 4) {
                         value
@@ -93,7 +86,7 @@ fun GenerationInputForm(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 4.dp),
-                value = height,
+                value = state.height,
                 onValueChange = { value ->
                     if (value.length <= 4) {
                         value
@@ -112,15 +105,15 @@ fun GenerationInputForm(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
             label = R.string.hint_sampler.asUiText(),
-            value = selectedSampler,
-            items = availableSamplers,
+            value = state.selectedSampler,
+            items = state.availableSamplers,
             onItemSelected = onSamplerUpdated,
         )
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
-            value = seed,
+            value = state.seed,
             onValueChange = { value ->
                 value
                     .filter { it.isDigit() }
@@ -131,10 +124,10 @@ fun GenerationInputForm(
         )
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.hint_sampling_steps, "$samplingSteps"),
+            text = stringResource(id = R.string.hint_sampling_steps, "${state.samplingSteps}"),
         )
         Slider(
-            value = samplingSteps * 1f,
+            value = state.samplingSteps * 1f,
             valueRange = (SAMPLING_STEPS_RANGE_MIN * 1f)..(SAMPLING_STEPS_RANGE_MAX * 1f),
             steps = abs(SAMPLING_STEPS_RANGE_MAX - SAMPLING_STEPS_RANGE_MIN) - 1,
             colors = sliderColors,
@@ -142,13 +135,12 @@ fun GenerationInputForm(
                 onSamplingStepsUpdated(it.roundToInt())
             },
         )
-
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.hint_cfg_scale, "$cfgScale"),
+            text = stringResource(id = R.string.hint_cfg_scale, "${state.cfgScale}"),
         )
         Slider(
-            value = cfgScale,
+            value = state.cfgScale,
             valueRange = (CFG_SCALE_RANGE_MIN * 1f)..(CFG_SCALE_RANGE_MAX * 1f),
             steps = abs(CFG_SCALE_RANGE_MAX - CFG_SCALE_RANGE_MIN) * 2 - 1,
             colors = sliderColors,
@@ -156,6 +148,7 @@ fun GenerationInputForm(
                 onCfgScaleUpdated(it.roundTo(1))
             },
         )
+        afterSlidersSection()
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -163,7 +156,7 @@ fun GenerationInputForm(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
-                checked = restoreFaces,
+                checked = state.restoreFaces,
                 onCheckedChange = onRestoreFacesUpdated,
             )
             Text(
@@ -177,15 +170,19 @@ fun GenerationInputForm(
 @Preview(showBackground = true)
 private fun GenerationInputFormPreview() {
     GenerationInputForm(
-        prompt = "Opel Astra H OPC",
-        negativePrompt = "White background",
-        width = "512",
-        height = "512",
-        samplingSteps = 55,
-        cfgScale = 7f,
-        restoreFaces = true,
-        seed = "5598",
-        selectedSampler = "Euler",
-        availableSamplers = listOf("Euler")
+        state = object : GenerationMviState() {
+            override val prompt: String = "Opel Astra H OPC"
+            override val negativePrompt: String = "Bad roads"
+            override val width: String = "512"
+            override val height: String = "512"
+            override val samplingSteps: Int = 20
+            override val cfgScale: Float = 11.5f
+            override val restoreFaces: Boolean = true
+            override val seed: String = "-1"
+            override val selectedSampler: String = "Euler a"
+            override val availableSamplers: List<String> = listOf("Euler a")
+            override val widthValidationError: UiText? = null
+            override val heightValidationError: UiText? = null
+        },
     )
 }
