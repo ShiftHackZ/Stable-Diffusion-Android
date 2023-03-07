@@ -19,6 +19,9 @@ object Constants {
     const val CFG_SCALE_RANGE_MIN = 1
     const val CFG_SCALE_RANGE_MAX = 30
 
+    const val DENOISING_STRENGTH_MIN = 0f
+    const val DENOISING_STRENGTH_MAX = 1f
+
     const val MIME_TYPE_ZIP = "application/zip"
     const val MIME_TYPE_JPG = "image/jpeg"
 }

@@ -20,8 +20,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.theme.sliderColors
+import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
@@ -42,6 +45,7 @@ class ImageToImageScreen(
             onPickImage = { pickImage(viewModel::updateInputImage) },
             onTakePhoto = { takePhoto(viewModel::updateInputImage) },
             onClearPhoto = viewModel::clearInputImage,
+            onDenoisingStrengthUpdated = viewModel::updateDenoisingStrength,
             onPromptUpdated = viewModel::updatePrompt,
             onNegativePromptUpdated = viewModel::updateNegativePrompt,
             onWidthUpdated = viewModel::updateWidth,
@@ -67,6 +71,7 @@ private fun ScreenContent(
     onPickImage: () -> Unit = {},
     onTakePhoto: () -> Unit = {},
     onClearPhoto: () -> Unit = {},
+    onDenoisingStrengthUpdated: (Float) -> Unit,
     onPromptUpdated: (String) -> Unit = {},
     onNegativePromptUpdated: (String) -> Unit = {},
     onWidthUpdated: (String) -> Unit = {},
@@ -76,7 +81,6 @@ private fun ScreenContent(
     onRestoreFacesUpdated: (Boolean) -> Unit = {},
     onSeedUpdated: (String) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
-
     onGenerateClicked: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) {
@@ -118,6 +122,24 @@ private fun ScreenContent(
                         onSamplerUpdated = onSamplerUpdated,
                         widthValidationError = state.widthValidationError,
                         heightValidationError = state.heightValidationError,
+                        afterSlidersSection = {
+                            Text(
+                                modifier = Modifier.padding(top = 8.dp),
+                                text = stringResource(
+                                    id = R.string.hint_denoising_strength,
+                                    "${state.denoisingStrength.roundTo(2)}"
+                                ),
+                            )
+                            Slider(
+                                value = state.denoisingStrength,
+                                valueRange = Constants.DENOISING_STRENGTH_MIN..Constants.DENOISING_STRENGTH_MAX,
+//                                steps = abs(Constants.DENOISING_STRENGTH_MAX - Constants.DENOISING_STRENGTH_MIN) * 2 - 1,
+                                colors = sliderColors,
+                                onValueChange = {
+                                    onDenoisingStrengthUpdated(it.roundTo(2))
+                                },
+                            )
+                        }
                     )
                 }
             },

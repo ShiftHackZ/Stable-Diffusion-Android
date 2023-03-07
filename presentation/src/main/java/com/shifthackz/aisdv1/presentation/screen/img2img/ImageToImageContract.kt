@@ -13,6 +13,7 @@ data class ImageToImageState(
     val imageState: ImageState = ImageState.None,
     val imageBase64: String = "",
     val screenDialog: Dialog = Dialog.None,
+    val denoisingStrength: Float = 0.75f,
     override val prompt: String = "",
     override val negativePrompt: String = "",
     override val width: String = 512.toString(),
@@ -82,6 +83,7 @@ enum class ImagePickButton {
 fun ImageToImageState.mapToPayload(): ImageToImagePayload = with(this) {
     ImageToImagePayload(
         base64Image = imageBase64,
+        denoisingStrength = denoisingStrength,
         prompt = prompt.trim(),
         negativePrompt = negativePrompt.trim(),
         samplingSteps = samplingSteps,

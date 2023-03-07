@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.domain.entity
 
 data class ImageToImagePayload(
     val base64Image: String,
+    val denoisingStrength: Float,
     val prompt: String,
     val negativePrompt: String,
     val samplingSteps: Int,

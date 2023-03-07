@@ -41,6 +41,7 @@ fun GenerationInputForm(
     onSamplerUpdated: (String) -> Unit = {},
     widthValidationError: UiText? = null,
     heightValidationError: UiText? = null,
+    afterSlidersSection: @Composable () -> Unit = {},
 ) {
     Column(modifier = modifier) {
         TextField(
@@ -134,7 +135,6 @@ fun GenerationInputForm(
                 onSamplingStepsUpdated(it.roundToInt())
             },
         )
-
         Text(
             modifier = Modifier.padding(top = 8.dp),
             text = stringResource(id = R.string.hint_cfg_scale, "${state.cfgScale}"),
@@ -148,6 +148,7 @@ fun GenerationInputForm(
                 onCfgScaleUpdated(it.roundTo(1))
             },
         )
+        afterSlidersSection()
         Row(
             modifier = Modifier
                 .fillMaxWidth()

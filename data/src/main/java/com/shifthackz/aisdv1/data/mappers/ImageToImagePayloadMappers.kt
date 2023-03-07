@@ -9,6 +9,7 @@ import java.util.*
 fun ImageToImagePayload.mapToRequest(): ImageToImageRequest = with(this) {
     ImageToImageRequest(
         initImages = listOf(base64Image),
+        denoisingStrength = denoisingStrength,
         prompt = prompt,
         negativePrompt = negativePrompt,
         steps = samplingSteps,

@@ -35,6 +35,10 @@ class ImageToImageViewModel(
 
     fun dismissScreenDialog() = setActiveDialog(ImageToImageState.Dialog.None)
 
+    fun updateDenoisingStrength(value: Float) = currentState
+        .copy(denoisingStrength = value)
+        .let(::setState)
+
     fun updateInputImage(value: PickedResult) = when (value) {
         is PickedResult.Single -> currentState
             .copy(imageState = ImageToImageState.ImageState.Image(value.image.bitmap))
