@@ -8,13 +8,13 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 abstract class Screen {
 
-    protected open val statusBarColor
+    protected open val statusBarColor: Color
         get() = Color.Transparent
 
-    protected open val statusBarDarkIcons
+    protected open val statusBarDarkIcons: Boolean
         get() = statusBarColor.luminance() > 0.5f
 
-    protected open val navigationBarColor
+    protected open val navigationBarColor: Color
         get() = Color.White
 
     @Composable
