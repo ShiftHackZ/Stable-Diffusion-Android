@@ -1,5 +1,15 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
+import com.shifthackz.aisdv1.core.ui.EmptyEffect
+import com.shifthackz.aisdv1.core.viewmodel.MviViewModel
+
+class SettingsViewModel : MviViewModel<SettingsState, EmptyEffect>() {
+
+    override val emptyState = SettingsState.Uninitialized
+
+
+}
+
 /*
     getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,

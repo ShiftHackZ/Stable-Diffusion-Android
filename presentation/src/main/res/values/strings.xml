@@ -24,9 +24,10 @@
     <string name="hint_seed">Seed</string>
     <string name="hint_denoising_strength">Denoising Strength: %1$s</string>
 
-    <string name="home_tab_txt_to_img">Text &gt; Image</string>
-    <string name="home_tab_img_to_img">Image &gt; Image</string>
+    <string name="home_tab_txt_to_img">Txt2Img</string>
+    <string name="home_tab_img_to_img">Img2Img</string>
     <string name="home_tab_gallery">Gallery</string>
+    <string name="home_tab_settings">Settings</string>
 
     <string name="gallery_tab_image">Image</string>
     <string name="gallery_tab_info">Info</string>

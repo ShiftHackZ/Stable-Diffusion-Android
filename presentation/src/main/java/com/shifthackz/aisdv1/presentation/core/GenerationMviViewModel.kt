@@ -23,7 +23,10 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
                 onError = { t -> t.printStackTrace() },
                 onSuccess = { samplers ->
                     currentState
-                        .copyState(availableSamplers = samplers, selectedSampler = samplers.first())
+                        .copyState(
+                            availableSamplers = samplers,
+                            selectedSampler = samplers.firstOrNull() ?: "",
+                        )
                         .let(::setGenerationState)
                 }
             )

@@ -31,6 +31,8 @@ class SplashLoaderViewModel(
                 onError = {
                     it.printStackTrace()
                     setState(SplashLoaderState.StatusNotification("Failed loading data".asUiText()))
+                    emitEffect(SplashLoaderEffect.ProceedNavigation)
+
                 },
                 onComplete = {
                     setState(
