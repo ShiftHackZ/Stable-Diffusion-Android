@@ -15,51 +15,20 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUs
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCaseImpl
+import org.koin.core.module.dsl.factoryOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val domainModule = module {
-
-    factory<TextToImageUseCase> {
-        TextToImageUseCaseImpl(get())
-    }
-
-    factory<ImageToImageUseCase> {
-        ImageToImageUseCaseImpl(get())
-    }
-
-    factory<PingStableDiffusionServiceUseCase> {
-        PingStableDiffusionServiceUseCaseImpl(get())
-    }
-
-    factory<DataPreLoaderUseCase> {
-        DataPreLoaderUseCaseImpl(get(), get(), get())
-    }
-
-    factory<GetStableDiffusionModelsUseCase> {
-        GetStableDiffusionModelsUseCaseImpl(get(), get())
-    }
-
-    factory<SelectStableDiffusionModelUseCase> {
-        SelectStableDiffusionModelUseCaseImpl(get())
-    }
-
-    factory<GetGalleryPageUseCase> {
-        GetGalleryPageUseCaseImpl(get())
-    }
-
-    factory<GetAllGalleryUseCase> {
-        GetAllGalleryUseCaseImpl(get())
-    }
-
-    factory<GetGalleryItemUseCase> {
-        GetGalleryItemUseCaseImpl(get())
-    }
-
-    factory<DeleteGalleryItemUseCase> {
-        DeleteGalleryItemUseCaseImpl(get())
-    }
-
-    factory<GetStableDiffusionSamplersUseCase> {
-        GetStableDiffusionSamplersUseCaseImpl(get())
-    }
+    factoryOf(::TextToImageUseCaseImpl) bind TextToImageUseCase::class
+    factoryOf(::ImageToImageUseCaseImpl) bind ImageToImageUseCase::class
+    factoryOf(::PingStableDiffusionServiceUseCaseImpl) bind PingStableDiffusionServiceUseCase::class
+    factoryOf(::DataPreLoaderUseCaseImpl) bind DataPreLoaderUseCase::class
+    factoryOf(::GetStableDiffusionModelsUseCaseImpl) bind GetStableDiffusionModelsUseCase::class
+    factoryOf(::SelectStableDiffusionModelUseCaseImpl) bind SelectStableDiffusionModelUseCase::class
+    factoryOf(::GetGalleryPageUseCaseImpl) bind GetGalleryPageUseCase::class
+    factoryOf(::GetAllGalleryUseCaseImpl) bind GetAllGalleryUseCase::class
+    factoryOf(::GetGalleryItemUseCaseImpl) bind GetGalleryItemUseCase::class
+    factoryOf(::DeleteGalleryItemUseCaseImpl) bind DeleteGalleryItemUseCase::class
+    factoryOf(::GetStableDiffusionSamplersUseCaseImpl) bind GetStableDiffusionSamplersUseCase::class
 }

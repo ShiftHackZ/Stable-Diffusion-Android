@@ -7,14 +7,16 @@ import com.shifthackz.aisdv1.presentation.screen.settings.SettingsViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashLoaderViewModel
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { SplashLoaderViewModel(get(), get()) }
-    viewModel { ImageToImageViewModel(get(), get(), get(), get(), get()) }
-    viewModel { TextToImageViewModel(get(), get(), get(), get()) }
-    viewModel { SettingsViewModel(get(), get(), get()) }
-    viewModel { GalleryViewModel(get(), get(), get(), get()) }
+    viewModelOf(::SplashLoaderViewModel)
+    viewModelOf(::ImageToImageViewModel)
+    viewModelOf(::TextToImageViewModel)
+    viewModelOf(::SettingsViewModel)
+    viewModelOf(::GalleryViewModel)
+
     viewModel { parameters ->
         GalleryDetailViewModel(parameters.get(), get(), get(), get(), get(), get())
     }

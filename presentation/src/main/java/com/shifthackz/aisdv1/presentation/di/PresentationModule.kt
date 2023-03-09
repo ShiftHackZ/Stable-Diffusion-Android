@@ -4,15 +4,12 @@ import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailBit
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryExporter
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GallerySharing
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsStateProducer
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val presentationModule = (viewModelModule + module {
-
-    factory { GalleryExporter(get(), get(), get(), get()) }
-
-    factory { GalleryDetailBitmapExporter(get()) }
-
-    factory { GallerySharing() }
-
-    factory { SettingsStateProducer(get(), get()) }
+    factoryOf(::GalleryExporter)
+    factoryOf(::GalleryDetailBitmapExporter)
+    factoryOf(::GallerySharing)
+    factoryOf(::SettingsStateProducer)
 }).toTypedArray()

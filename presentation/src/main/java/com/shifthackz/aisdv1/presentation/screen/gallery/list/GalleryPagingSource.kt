@@ -49,7 +49,6 @@ class GalleryPagingSource(
             }
             .onErrorReturn { t ->
                 t.printStackTrace()
-                //println("PAGED_UC -> limit=$limit, offset=$offset, payload=${it.size}")
                 Wrapper(LoadResult.Error(t))
             }
             .map(Wrapper::loadResult)

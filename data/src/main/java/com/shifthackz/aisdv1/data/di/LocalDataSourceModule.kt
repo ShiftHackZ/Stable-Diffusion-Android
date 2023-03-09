@@ -8,23 +8,13 @@ import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
+import org.koin.core.module.dsl.factoryOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val localDataSourceModule = module {
-
-    factory<StableDiffusionModelsDataSource.Local> {
-        StableDiffusionModelsLocalDataSource(get())
-    }
-
-    factory<StableDiffusionSamplersDataSource.Local> {
-        StableDiffusionSamplersLocalDataSource(get())
-    }
-
-    factory<ServerConfigurationDataSource.Local> {
-        ServerConfigurationLocalDataSource(get())
-    }
-
-    factory<GenerationResultDataSource.Local> {
-        GenerationResultLocalDataSource(get())
-    }
+    factoryOf(::StableDiffusionModelsLocalDataSource) bind StableDiffusionModelsDataSource.Local::class
+    factoryOf(::StableDiffusionSamplersLocalDataSource) bind StableDiffusionSamplersDataSource.Local::class
+    factoryOf(::ServerConfigurationLocalDataSource) bind ServerConfigurationDataSource.Local::class
+    factoryOf(::GenerationResultLocalDataSource) bind GenerationResultDataSource.Local::class
 }
