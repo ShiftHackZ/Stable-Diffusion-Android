@@ -88,7 +88,10 @@ private fun ScreenContent(
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {
-                        Text(stringResource(id = R.string.title_gallery))
+                        Text(
+                            text = stringResource(id = R.string.title_gallery),
+                            style = MaterialTheme.typography.headlineMedium,
+                        )
                     },
                     actions = {
                         if (lazyGalleryItems.itemCount > 0) IconButton(

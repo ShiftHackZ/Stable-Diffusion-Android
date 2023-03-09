@@ -89,8 +89,10 @@ private fun ScreenContent(
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {
-//                        Text(stringResource(id = R.string.title_text_to_image))
-                        Text("Image to Image")
+                        Text(
+                            text = stringResource(id = R.string.title_image_to_image),
+                            style = MaterialTheme.typography.headlineMedium,
+                        )
                     },
                 )
             },

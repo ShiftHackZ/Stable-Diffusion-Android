@@ -3,14 +3,10 @@ package com.shifthackz.aisdv1.network.di
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import com.shifthackz.aisdv1.network.BuildConfig
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
-import com.shifthackz.aisdv1.network.qualifiers.RetrofitCallAdapters
-import com.shifthackz.aisdv1.network.qualifiers.HttpInterceptor
-import com.shifthackz.aisdv1.network.qualifiers.NetworkInterceptor
-import com.shifthackz.aisdv1.network.qualifiers.RetrofitConverterFactories
+import com.shifthackz.aisdv1.network.qualifiers.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -61,7 +57,6 @@ val networkModule = module {
     }
 
     single {
-        println("DBG0: ${ get<List<NetworkInterceptor>>()}")
         OkHttpClient
             .Builder()
             .apply {

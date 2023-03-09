@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.app.di
 
 import com.shifthackz.aisdv1.app.BuildConfig
+import com.shifthackz.aisdv1.core.common.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
@@ -17,6 +18,15 @@ val providersModule = module {
     single<ApiUrlProvider> {
         object : ApiUrlProvider {
             override val stableDiffusionAutomaticApiUrl: String = BuildConfig.SERVER_URL
+        }
+    }
+
+    single<BuildInfoProvider> {
+        object : BuildInfoProvider {
+            override val buildNumber: Int = BuildConfig.VERSION_CODE
+            override val version: String = BuildConfig.VERSION_NAME
+
+            override fun toString(): String = "$version ($buildNumber)"
         }
     }
 

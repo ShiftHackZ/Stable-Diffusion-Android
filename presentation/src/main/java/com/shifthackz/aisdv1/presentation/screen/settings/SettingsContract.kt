@@ -14,6 +14,7 @@ interface SettingsState : MviState {
         override val screenDialog: Dialog = Dialog.None,
         val sdModels: List<String>,
         val sdModelSelected: String,
+        val appVersion: String,
     ) : SettingsState
 
     fun withDialog(value: Dialog): SettingsState = when (this) {
@@ -24,5 +25,6 @@ interface SettingsState : MviState {
     sealed interface Dialog {
         object None : Dialog
         object Communicating : Dialog
+        data class SelectSdModel(val models: List<String>, val selected: String) : Dialog
     }
 }
