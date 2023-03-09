@@ -1,23 +1,23 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
+import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
-import com.shifthackz.aisdv1.core.viewmodel.MviViewModel
+import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
+import io.reactivex.rxjava3.kotlin.subscribeBy
 
-class SettingsViewModel : MviViewModel<SettingsState, EmptyEffect>() {
+class SettingsViewModel(
+    getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
+    private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
+    private val schedulersProvider: SchedulersProvider,
+) : MviRxViewModel<SettingsState, EmptyEffect>() {
 
     override val emptyState = SettingsState.Uninitialized
 
-
-}
-
-/*
-    getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
-    private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
- */
-
-/*
     init {
-        getStableDiffusionModelsUseCase()
+        !getStableDiffusionModelsUseCase()
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = { t ->
@@ -25,25 +25,19 @@ class SettingsViewModel : MviViewModel<SettingsState, EmptyEffect>() {
                 },
                 onSuccess = { data ->
                     setState(
-                        TextToImageState.Content(
-                            models = data.map { (model, _) -> model.title },
-                            selectedModel = UiText.Static(
-                                data.firstOrNull { it.second }?.first?.title ?: "",
-                            ),
+                        SettingsState.Content(
+                            sdModels = data.map { (model, _) -> model.title },
+                            sdModelSelected = data.firstOrNull { it.second }?.first?.title ?: "",
                         )
                     )
                 },
             )
-            .addToDisposable()
     }
- */
 
-/*
-fun selectStableDiffusionModel(value: String) = (currentState as? TextToImageState.Content)
-        ?.copy(selectedModel = value.asUiText())
+    fun selectStableDiffusionModel(value: String) = (currentState as? SettingsState.Content)
+        ?.copy(sdModelSelected = value)
         ?.also(::setState)
-        ?.let(TextToImageState.Content::selectedModel)
-        ?.let(UiText::toString)
+        ?.let(SettingsState.Content::sdModelSelected)
         ?.let(selectStableDiffusionModelUseCase::invoke)
         ?.subscribeOnMainThread(schedulersProvider)
         ?.subscribeBy(
@@ -55,4 +49,4 @@ fun selectStableDiffusionModel(value: String) = (currentState as? TextToImageSta
             },
         )
         ?.addToDisposable()
- */
+}
