@@ -33,9 +33,6 @@ class GalleryDetailScreen(
     private val shareGalleryFile: (File) -> Unit = {},
 ) : MviScreen<GalleryDetailState, GalleryDetailEffect>(viewModel) {
 
-    override val statusBarColor: Color = Color.White
-    override val navigationBarColor: Color = Color.Black
-
     @Composable
     override fun Content() {
         ScreenContent(

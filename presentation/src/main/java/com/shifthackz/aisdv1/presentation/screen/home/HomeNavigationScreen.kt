@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,9 +17,6 @@ import com.shifthackz.aisdv1.core.ui.Screen
 class HomeNavigationScreen(
     private val navItems: List<HomeNavigationItem> = emptyList(),
 ) : Screen() {
-
-    override val statusBarColor: Color = Color.White
-    override val navigationBarColor: Color = Color.Black
 
     @Composable
     override fun Content() {

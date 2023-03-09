@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -18,8 +17,6 @@ class SplashLoaderScreen(
     private val viewModel: SplashLoaderViewModel,
     private val onNavigateNextScreen: () -> Unit = {},
 ) : MviScreen<SplashLoaderState, SplashLoaderEffect>(viewModel) {
-
-    override val statusBarColor: Color = Color.White
 
     @Composable
     override fun Content() {

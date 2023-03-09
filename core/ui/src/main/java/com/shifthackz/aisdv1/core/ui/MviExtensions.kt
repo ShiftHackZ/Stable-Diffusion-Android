@@ -18,14 +18,14 @@ fun <S : MviState, E : MviEffect> MviComposable(
     content: @Composable (S) -> Unit,
 ) = object : MviScreen<S, E>(viewModel) {
 
-    override val statusBarColor: Color
-        get() = statusBarColor
+    @Composable
+    override fun statusBarColor(): Color = statusBarColor
 
-    override val statusBarDarkIcons: Boolean
-        get() = statusBarDarkIcons
+    @Composable
+    override fun statusBarDarkIcons(): Boolean = statusBarDarkIcons
 
-    override val navigationBarColor: Color
-        get() = navigationBarColor
+    @Composable
+    override fun navigationBarColor(): Color = navigationBarColor
 
     @Composable
     override fun Content() {

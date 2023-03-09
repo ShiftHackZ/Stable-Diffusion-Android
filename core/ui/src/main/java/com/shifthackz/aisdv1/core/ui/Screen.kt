@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.core.ui
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
@@ -8,14 +9,14 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 abstract class Screen {
 
-    protected open val statusBarColor: Color
-        get() = Color.Transparent
+    @Composable
+    protected open fun statusBarColor(): Color = MaterialTheme.colorScheme.background
 
-    protected open val statusBarDarkIcons: Boolean
-        get() = statusBarColor.luminance() > 0.5f
+    @Composable
+    protected open fun statusBarDarkIcons(): Boolean = statusBarColor().luminance() > 0.5f
 
-    protected open val navigationBarColor: Color
-        get() = Color.White
+    @Composable
+    protected open fun navigationBarColor(): Color = MaterialTheme.colorScheme.background
 
     @Composable
     open fun Build() {
@@ -29,6 +30,9 @@ abstract class Screen {
     @Composable
     protected open fun ApplySystemUiColors() {
         val systemUiController = rememberSystemUiController()
+        val statusBarColor = statusBarColor()
+        val statusBarDarkIcons = statusBarDarkIcons()
+        val navigationBarColor = navigationBarColor()
         SideEffect {
             systemUiController.setStatusBarColor(statusBarColor, statusBarDarkIcons)
             systemUiController.setNavigationBarColor(navigationBarColor)
