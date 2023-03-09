@@ -4,6 +4,8 @@ import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.*
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCaseImpl
@@ -15,6 +17,12 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUs
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.GetServerUrlUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.GetServerUrlUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.SetServerUrlUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.SetServerUrlUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
+import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCaseImpl
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -31,4 +39,8 @@ val domainModule = module {
     factoryOf(::GetGalleryItemUseCaseImpl) bind GetGalleryItemUseCase::class
     factoryOf(::DeleteGalleryItemUseCaseImpl) bind DeleteGalleryItemUseCase::class
     factoryOf(::GetStableDiffusionSamplersUseCaseImpl) bind GetStableDiffusionSamplersUseCase::class
+    factoryOf(::SplashNavigationUseCaseImpl) bind SplashNavigationUseCase::class
+    factoryOf(::GetServerUrlUseCaseImpl) bind GetServerUrlUseCase::class
+    factoryOf(::SetServerUrlUseCaseImpl) bind SetServerUrlUseCase::class
+    factoryOf(::TestConnectivityUseCaseImpl) bind TestConnectivityUseCase::class
 }

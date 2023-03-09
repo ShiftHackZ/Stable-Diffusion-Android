@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Single
 
 interface StableDiffusionGenerationRepository {
     fun checkApiAvailability(): Completable
+    fun checkApiAvailability(url: String): Completable
     fun generateFromText(payload: TextToImagePayload): Single<AiGenerationResult>
     fun generateFromImage(payload: ImageToImagePayload): Single<AiGenerationResult>
 }

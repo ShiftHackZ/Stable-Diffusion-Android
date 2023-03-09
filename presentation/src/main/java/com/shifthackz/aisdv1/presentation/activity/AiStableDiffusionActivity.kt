@@ -13,7 +13,9 @@ import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScr
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GallerySharing
 import com.shifthackz.aisdv1.presentation.screen.home.homeScreenNavGraph
-import com.shifthackz.aisdv1.presentation.screen.splash.SplashLoaderScreen
+import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
+import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreen
+import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreen
 import com.shifthackz.aisdv1.presentation.theme.AiStableDiffusionAppTheme
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.utils.ImagePickerCapability
@@ -38,15 +40,49 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerCapability {
                     startDestination = Constants.ROUTE_SPLASH,
                 ) {
                     composable(Constants.ROUTE_SPLASH) {
-                        SplashLoaderScreen(
+                        SplashScreen(
                             viewModel = koinViewModel(),
-                            onNavigateNextScreen = {
-                                navController.navigate(Constants.ROUTE_HOME) {
+                            navigateOnBoarding = {},
+                            navigateServerSetup = {
+                                navController.navigate(Constants.ROUTE_SERVER_SETUP) {
                                     popUpTo(Constants.ROUTE_SPLASH) {
                                         inclusive = true
                                     }
                                 }
+                            },
+                            navigateHome = {
+                                navController.navigate(Constants.ROUTE_CONFIG_LOADER) {
+                                    popUpTo(Constants.ROUTE_SPLASH) {
+                                        inclusive = true
+                                    }
+                                }
+                            },
+                        ).Build()
+                    }
+
+                    composable(Constants.ROUTE_SERVER_SETUP) {
+                        ServerSetupScreen(
+                            viewModel = koinViewModel(),
+                            onServerSetupComplete = {
+                                navController.navigate(Constants.ROUTE_HOME) {
+                                    popUpTo(Constants.ROUTE_SERVER_SETUP) {
+                                        inclusive = true
+                                    }
+                                }
                             }
+                        ).Build()
+                    }
+
+                    composable(Constants.ROUTE_CONFIG_LOADER) {
+                        ConfigurationLoaderScreen(
+                            viewModel = koinViewModel(),
+                            onNavigateNextScreen = {
+                                navController.navigate(Constants.ROUTE_HOME) {
+                                    popUpTo(Constants.ROUTE_CONFIG_LOADER) {
+                                        inclusive = true
+                                    }
+                                }
+                            },
                         ).Build()
                     }
 

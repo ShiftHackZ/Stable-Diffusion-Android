@@ -6,6 +6,8 @@ object Constants {
     const val PARAM_ITEM_ID = "itemId"
 
     const val ROUTE_SPLASH = "splash"
+    const val ROUTE_SERVER_SETUP = "server_setup"
+    const val ROUTE_CONFIG_LOADER = "config_loader"
     const val ROUTE_HOME = "home"
     const val ROUTE_TXT_TO_IMG = "text_to_image"
     const val ROUTE_IMG_TO_IMG = "image_to_image"
