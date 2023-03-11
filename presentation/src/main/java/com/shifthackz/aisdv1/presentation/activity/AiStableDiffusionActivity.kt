@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
+import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GallerySharing
 import com.shifthackz.aisdv1.presentation.screen.home.homeScreenNavGraph
@@ -29,6 +30,7 @@ import org.koin.core.parameter.parametersOf
 class AiStableDiffusionActivity : ComponentActivity(), ImagePickerCapability {
 
     private val gallerySharing: GallerySharing by inject()
+    private val galleryDetailSharing: GalleryDetailSharing by inject()
 
     override val fileProviderDescriptor: FileProviderDescriptor by inject()
 
@@ -139,6 +141,12 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerCapability {
                                     context = this@AiStableDiffusionActivity,
                                     file = jpgFile,
                                     mimeType = Constants.MIME_TYPE_JPG,
+                                )
+                            },
+                            shareGenerationParams = { uiState ->
+                                galleryDetailSharing(
+                                    context = this@AiStableDiffusionActivity,
+                                    state = uiState,
                                 )
                             },
                         ).Build()

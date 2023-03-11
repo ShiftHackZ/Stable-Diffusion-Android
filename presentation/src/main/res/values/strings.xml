@@ -18,6 +18,7 @@
     <string name="action_delete_image">Delete image</string>
     <string name="action_select">Select</string>
     <string name="action_connect">Connect</string>
+    <string name="action_share_prompt">Share prompt</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
