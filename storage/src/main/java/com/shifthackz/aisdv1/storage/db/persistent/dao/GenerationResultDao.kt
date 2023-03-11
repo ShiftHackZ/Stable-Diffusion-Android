@@ -26,4 +26,7 @@ interface GenerationResultDao {
 
     @Query("DELETE FROM ${GenerationResultContract.TABLE} WHERE ${GenerationResultContract.ID} = :id")
     fun deleteById(id: Long): Completable
+
+    @Query("DELETE FROM ${GenerationResultContract.TABLE}")
+    fun deleteAll(): Completable
 }

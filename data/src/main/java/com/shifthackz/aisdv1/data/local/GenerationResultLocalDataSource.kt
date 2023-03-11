@@ -28,4 +28,6 @@ class GenerationResultLocalDataSource(
         .map(GenerationResultEntity::mapEntityToDomain)
 
     override fun deleteById(id: Long) = dao.deleteById(id)
+
+    override fun deleteAll() = dao.deleteAll()
 }

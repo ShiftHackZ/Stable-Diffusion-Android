@@ -25,6 +25,7 @@ interface SettingsState : MviState {
     sealed interface Dialog {
         object None : Dialog
         object Communicating : Dialog
+        object ClearAppCache : Dialog
         data class SelectSdModel(val models: List<String>, val selected: String) : Dialog
     }
 }

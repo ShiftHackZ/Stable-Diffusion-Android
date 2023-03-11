@@ -12,5 +12,6 @@ sealed interface GenerationResultDataSource {
         fun queryPage(limit: Int, offset: Int): Single<List<AiGenerationResult>>
         fun queryById(id: Long): Single<AiGenerationResult>
         fun deleteById(id: Long): Completable
+        fun deleteAll(): Completable
     }
 }
