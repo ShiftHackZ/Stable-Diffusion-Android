@@ -5,8 +5,10 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemUseCase
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class GalleryDetailViewModel(
@@ -23,9 +25,7 @@ class GalleryDetailViewModel(
     init {
         !getGalleryItemUseCase(itemId)
             .subscribeOnMainThread(schedulersProvider)
-            .flatMap { ai ->
-                base64ToBitmapConverter(Input(ai.image)).map { bmp -> ai to bmp }
-            }
+            .postProcess()
             .subscribeBy(
                 onError = {
                     it.printStackTrace()
@@ -33,7 +33,7 @@ class GalleryDetailViewModel(
                 onSuccess = { aiData ->
                     aiData
                         .mapToUi()
-                        .withTab(currentState.tab)
+                        .withTab(currentState.selectedTab)
                         .let(::setState)
                 },
             )
@@ -73,4 +73,22 @@ class GalleryDetailViewModel(
     private fun setActiveDialog(dialog: GalleryDetailState.Dialog) = currentState
         .withDialog(dialog)
         .let(::setState)
+
+    private fun Single<AiGenerationResult>.postProcess() = this
+        .flatMap { ai ->
+            base64ToBitmapConverter(Input(ai.image)).map { bmp -> ai to bmp }
+        }
+        .flatMap { (ai, bmp) ->
+            when (ai.type) {
+                AiGenerationResult.Type.TEXT_TO_IMAGE -> Single.just(Triple(ai, bmp, null))
+                AiGenerationResult.Type.IMAGE_TO_IMAGE ->
+                    base64ToBitmapConverter(Input(ai.inputImage)).map { bmp2 ->
+                        Triple(
+                            ai,
+                            bmp,
+                            bmp2,
+                        )
+                    }
+            }
+        }
 }

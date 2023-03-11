@@ -38,6 +38,7 @@
     <string name="home_tab_settings">Settings</string>
 
     <string name="gallery_tab_image">Image</string>
+    <string name="gallery_tab_original">Original</string>
     <string name="gallery_tab_info">Info</string>
 
     <string name="title_text_to_image">Text to Image</string>

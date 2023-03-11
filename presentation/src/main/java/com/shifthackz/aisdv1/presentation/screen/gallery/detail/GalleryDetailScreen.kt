@@ -111,42 +111,7 @@ private fun ScreenContent(
                     is GalleryDetailState.Loading -> Text("Load")
                 }
             },
-            bottomBar = {
-                NavigationBar {
-                    NavigationBarItem(
-                        selected = state.tab == GalleryDetailState.Tab.IMAGE,
-                        label = {
-                            Text(stringResource(id = R.string.gallery_tab_image))
-                        },
-                        icon = {
-                            Image(
-                                modifier = Modifier.size(24.dp),
-                                painter = painterResource(R.drawable.ic_image),
-                                contentDescription = stringResource(id = R.string.gallery_tab_image),
-                            )
-                        },
-                        onClick = {
-                            onTabSelected(GalleryDetailState.Tab.IMAGE)
-                        }
-                    )
-                    NavigationBarItem(
-                        selected = state.tab == GalleryDetailState.Tab.INFO,
-                        label = {
-                            Text(stringResource(id = R.string.gallery_tab_info))
-                        },
-                        icon = {
-                            Image(
-                                modifier = Modifier.size(24.dp),
-                                painter = painterResource(R.drawable.ic_text),
-                                contentDescription = stringResource(id = R.string.gallery_tab_info),
-                            )
-                        },
-                        onClick = {
-                            onTabSelected(GalleryDetailState.Tab.INFO)
-                        }
-                    )
-                }
-            }
+            bottomBar = { GalleryDetailNavigationBar(state, onTabSelected) },
         )
         when (state.screenDialog) {
             GalleryDetailState.Dialog.DeleteConfirm -> DecisionInteractiveDialog(
@@ -163,6 +128,31 @@ private fun ScreenContent(
 }
 
 @Composable
+private fun GalleryDetailNavigationBar(
+    state: GalleryDetailState,
+    onTabSelected: (GalleryDetailState.Tab) -> Unit,
+) {
+    NavigationBar {
+        state.tabs.forEach { tab ->
+            NavigationBarItem(
+                selected = state.selectedTab == tab,
+                label = {
+                    Text(stringResource(id = tab.label))
+                },
+                icon = {
+                    Image(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(tab.iconRes),
+                        contentDescription = stringResource(id = R.string.gallery_tab_image),
+                    )
+                },
+                onClick = { onTabSelected(tab) },
+            )
+        }
+    }
+}
+
+@Composable
 private fun GalleryDetailContentState(
     modifier: Modifier = Modifier,
     state: GalleryDetailState.Content,
@@ -171,11 +161,17 @@ private fun GalleryDetailContentState(
     Column(
         modifier = modifier,
     ) {
-        when (state.tab) {
+        when (state.selectedTab) {
             GalleryDetailState.Tab.IMAGE -> ZoomableImage(
                 modifier = Modifier.fillMaxSize(),
                 source = ZoomableImageSource.Bmp(state.bitmap),
             )
+            GalleryDetailState.Tab.ORIGINAL -> state.inputBitmap?.let { bmp ->
+                ZoomableImage(
+                    modifier = Modifier.fillMaxSize(),
+                    source = ZoomableImageSource.Bmp(bmp),
+                )
+            }
             GalleryDetailState.Tab.INFO -> GalleryDetailsTable(
                 modifier = Modifier.fillMaxSize(),
                 state = state,

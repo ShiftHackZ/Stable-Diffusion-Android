@@ -5,6 +5,7 @@ object GenerationResultContract {
 
     const val ID = "id"
     const val IMAGE_BASE_64 = "image_base_64"
+    const val ORIGINAL_IMAGE_BASE_64 = "original_image_base_64"
     const val CREATED_AT = "created_at"
     const val GENERATION_TYPE = "generation_type"
 

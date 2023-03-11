@@ -27,8 +27,9 @@ fun Pair<ImageToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenera
         AiGenerationResult(
             id = 0L,
             image = response.images.firstOrNull() ?: "",
+            inputImage = payload.base64Image,
             createdAt = Date(),
-            type = AiGenerationResult.Type.TEXT_TO_IMAGE,
+            type = AiGenerationResult.Type.IMAGE_TO_IMAGE,
             prompt = payload.prompt,
             negativePrompt = payload.negativePrompt,
             width = payload.width,
