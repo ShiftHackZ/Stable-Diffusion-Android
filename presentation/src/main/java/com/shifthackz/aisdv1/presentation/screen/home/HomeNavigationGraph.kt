@@ -26,6 +26,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     takePhoto: (ImagePickerCallback) -> Unit = {},
     shareGalleryFile: (File) -> Unit = {},
     openGalleryItemDetails: (Long) -> Unit = {},
+    launchSetup: () -> Unit = {},
 ) {
     addDestination(
         ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
@@ -34,7 +35,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                     txt2ImgTab(),
                     img2imgTab(pickImage, takePhoto),
                     galleryTab(shareGalleryFile, openGalleryItemDetails),
-                    settingsTab(),
+                    settingsTab(launchSetup),
                 ),
             ).Build()
         }.apply { this.route = route }
@@ -95,7 +96,9 @@ private fun galleryTab(
 )
 
 @Composable
-private fun settingsTab() = HomeNavigationItem(
+private fun settingsTab(
+    launchSetup: () -> Unit = {},
+) = HomeNavigationItem(
     stringResource(id = R.string.home_tab_settings),
     Constants.ROUTE_SETTINGS,
     HomeNavigationItem.Icon.Vector(
@@ -104,6 +107,7 @@ private fun settingsTab() = HomeNavigationItem(
     content = {
         SettingsScreen(
             viewModel = koinViewModel(),
+            launchSetup = launchSetup,
         ).Build()
     }
 )

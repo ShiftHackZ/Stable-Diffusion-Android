@@ -13,8 +13,10 @@ sealed interface ServerSetupEffect : MviEffect {
 }
 
 data class ServerSetupState(
+    val showBackNavArrow: Boolean = false,
     val screenDialog: Dialog = Dialog.None,
-    val serverUrl: String = "http://192.168.228.16:7860/",
+    val serverUrl: String = "",
+    val originalSeverUrl: String = "",
     val validationError: UiText? = null,
 ) : MviState {
 
@@ -22,6 +24,15 @@ data class ServerSetupState(
         object None : Dialog
         object Communicating : Dialog
         data class Error(val error: UiText) : Dialog
+    }
+}
+
+enum class ServerSetupLaunchSource(val key: Int) {
+    SPLASH(0),
+    SETTINGS(1);
+
+    companion object {
+        fun fromKey(key: Int) = values().firstOrNull { it.key == key } ?: SPLASH
     }
 }
 

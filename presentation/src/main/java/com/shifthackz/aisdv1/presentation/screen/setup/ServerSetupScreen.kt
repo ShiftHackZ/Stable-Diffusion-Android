@@ -3,6 +3,8 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,6 +21,7 @@ import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
 
 class ServerSetupScreen(
     private val viewModel: ServerSetupViewModel,
+    private val onNavigateBack: () -> Unit = {},
     private val onServerSetupComplete: () -> Unit,
 ) : MviScreen<ServerSetupState, ServerSetupEffect>(viewModel) {
 
@@ -27,6 +30,7 @@ class ServerSetupScreen(
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = viewModel.state.collectAsState().value,
+            onNavigateBack = onNavigateBack,
             onServerUrlUpdated = viewModel::updateServerUrl,
             onSetupButtonClick = viewModel::connectToServer,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
@@ -42,6 +46,7 @@ class ServerSetupScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
+    onNavigateBack: () -> Unit = {},
     onServerUrlUpdated: (String) -> Unit = {},
     onSetupButtonClick: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
@@ -54,6 +59,17 @@ private fun ScreenContent(
                         Text(
                             text = stringResource(id = R.string.title_server_setup),
                             style = MaterialTheme.typography.headlineMedium,
+                        )
+                    },
+                    navigationIcon = {
+                        if (state.showBackNavArrow) IconButton(
+                            onClick = onNavigateBack,
+                            content = {
+                                Icon(
+                                    Icons.Outlined.ArrowBack,
+                                    contentDescription = "Back button",
+                                )
+                            },
                         )
                     },
                 )

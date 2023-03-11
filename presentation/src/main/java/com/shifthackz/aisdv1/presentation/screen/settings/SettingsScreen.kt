@@ -33,6 +33,7 @@ import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
 
 class SettingsScreen(
     private val viewModel: SettingsViewModel,
+    private val launchSetup: () -> Unit = {},
 ) : MviScreen<SettingsState, EmptyEffect>(viewModel) {
 
     @Composable
@@ -40,6 +41,7 @@ class SettingsScreen(
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = viewModel.state.collectAsState().value,
+            onConfigurationItemClick = launchSetup,
             onSdModelItemClick = viewModel::launchSdModelSelectionDialog,
             onSdModelSelected = viewModel::selectStableDiffusionModel,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
@@ -54,6 +56,7 @@ class SettingsScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: SettingsState,
+    onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
 
     onSdModelSelected: (String) -> Unit = {},
@@ -79,6 +82,7 @@ private fun ScreenContent(
                     is SettingsState.Content -> ContentSettingsState(
                         modifier = contentModifier.padding(horizontal = 16.dp),
                         state = state,
+                        onConfigurationItemClick = onConfigurationItemClick,
                         onSdModelItemClick = onSdModelItemClick,
                     )
                 }
@@ -120,6 +124,7 @@ private fun ScreenContent(
 private fun ContentSettingsState(
     modifier: Modifier = Modifier,
     state: SettingsState.Content,
+    onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
 ) {
     Column(
@@ -147,7 +152,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             startIcon = Icons.Default.SettingsEthernet,
             text = R.string.settings_item_config.asUiText(),
-            onClick = {},
+            onClick = onConfigurationItemClick,
         )
         SettingsItem(
             modifier = itemModifier,

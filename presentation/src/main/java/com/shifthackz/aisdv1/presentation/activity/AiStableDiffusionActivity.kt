@@ -14,7 +14,9 @@ import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailVie
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GallerySharing
 import com.shifthackz.aisdv1.presentation.screen.home.homeScreenNavGraph
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
+import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreen
+import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreen
 import com.shifthackz.aisdv1.presentation.theme.AiStableDiffusionAppTheme
 import com.shifthackz.aisdv1.presentation.utils.Constants
@@ -44,7 +46,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerCapability {
                             viewModel = koinViewModel(),
                             navigateOnBoarding = {},
                             navigateServerSetup = {
-                                navController.navigate(Constants.ROUTE_SERVER_SETUP) {
+                                navController.navigate("${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SPLASH.key}") {
                                     popUpTo(Constants.ROUTE_SPLASH) {
                                         inclusive = true
                                     }
@@ -60,9 +62,21 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerCapability {
                         ).Build()
                     }
 
-                    composable(Constants.ROUTE_SERVER_SETUP) {
+                    composable(
+                        route = Constants.ROUTE_SERVER_SETUP_FULL,
+                        arguments = listOf(
+                            navArgument(Constants.PARAM_SOURCE) { type = NavType.IntType }
+                        )
+                    ) { entry ->
+                        val sourceKey = entry.arguments
+                            ?.getInt(Constants.PARAM_SOURCE)
+                            ?: ServerSetupLaunchSource.SPLASH.key
+                        val viewModel = getViewModel<ServerSetupViewModel>(
+                            parameters = { parametersOf(sourceKey) }
+                        )
                         ServerSetupScreen(
-                            viewModel = koinViewModel(),
+                            viewModel = viewModel,
+                            onNavigateBack = { navController.navigateUp() },
                             onServerSetupComplete = {
                                 navController.navigate(Constants.ROUTE_HOME) {
                                     popUpTo(Constants.ROUTE_SERVER_SETUP) {
@@ -101,6 +115,10 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerCapability {
                             navController
                                 .navigate("${Constants.ROUTE_GALLERY_DETAIL}/$galleryItemId")
                         },
+                        launchSetup = {
+                            navController
+                                .navigate("${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.key}")
+                        }
                     )
 
                     composable(

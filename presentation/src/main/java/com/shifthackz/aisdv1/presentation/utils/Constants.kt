@@ -4,9 +4,11 @@ object Constants {
     const val PAGINATION_PAYLOAD_SIZE = 20
 
     const val PARAM_ITEM_ID = "itemId"
+    const val PARAM_SOURCE = "source"
 
     const val ROUTE_SPLASH = "splash"
     const val ROUTE_SERVER_SETUP = "server_setup"
+    const val ROUTE_SERVER_SETUP_FULL = "$ROUTE_SERVER_SETUP/{$PARAM_SOURCE}"
     const val ROUTE_CONFIG_LOADER = "config_loader"
     const val ROUTE_HOME = "home"
     const val ROUTE_TXT_TO_IMG = "text_to_image"

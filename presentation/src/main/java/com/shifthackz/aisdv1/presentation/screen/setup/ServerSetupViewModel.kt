@@ -9,9 +9,11 @@ import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetServerUrlUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerUrlUseCase
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ServerSetupViewModel(
+    private val launchSource: ServerSetupLaunchSource,
     private val urlValidator: UrlValidator,
     private val getServerUrlUseCase: GetServerUrlUseCase,
     private val testConnectivityUseCase: TestConnectivityUseCase,
@@ -20,13 +22,17 @@ class ServerSetupViewModel(
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<ServerSetupState, ServerSetupEffect>() {
 
-    override val emptyState = ServerSetupState()
+    override val emptyState = ServerSetupState(
+        showBackNavArrow = launchSource == ServerSetupLaunchSource.SETTINGS
+    )
 
     init {
         !getServerUrlUseCase()
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(Throwable::printStackTrace) { url ->
-                currentState.copy(serverUrl = url).let(::setState)
+                currentState
+                    .copy(serverUrl = url, originalSeverUrl = url)
+                    .let(::setState)
             }
     }
 
@@ -40,20 +46,27 @@ class ServerSetupViewModel(
             .doOnSubscribe { setScreenDialog(ServerSetupState.Dialog.Communicating) }
             .andThen(setServerUrlUseCase(currentState.serverUrl))
             .andThen(dataPreLoaderUseCase())
+            .andThen(Single.just(Result.success(Unit)))
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(
-                onError = { t ->
-                    setScreenDialog(
-                        ServerSetupState.Dialog.Error(
-                            (t.localizedMessage ?: "Error connecting to server").asUiText(),
+            .onErrorResumeNext { t ->
+                setServerUrlUseCase(currentState.originalSeverUrl)
+                    .andThen(Single.just(Result.failure(t)))
+            }
+            .subscribeBy(Throwable::printStackTrace) { result ->
+                result.fold(
+                    onSuccess = {
+                        dismissScreenDialog()
+                        emitEffect(ServerSetupEffect.CompleteSetup)
+                    },
+                    onFailure = { t ->
+                        setScreenDialog(
+                            ServerSetupState.Dialog.Error(
+                                (t.localizedMessage ?: "Error connecting to server").asUiText(),
+                            )
                         )
-                    )
-                },
-                onComplete = {
-                    dismissScreenDialog()
-                    emitEffect(ServerSetupEffect.CompleteSetup)
-                }
-            )
+                    }
+                )
+            }
     }
 
     fun dismissScreenDialog() = setScreenDialog(ServerSetupState.Dialog.None)
