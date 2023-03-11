@@ -25,6 +25,7 @@ fun Pair<TextToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerat
         AiGenerationResult(
             id = 0L,
             image = response.images.firstOrNull() ?: "",
+            inputImage = "",
             createdAt = Date(),
             type = AiGenerationResult.Type.TEXT_TO_IMAGE,
             prompt = payload.prompt,

@@ -1,48 +1,39 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
-/*
-    getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
+import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
+import com.shifthackz.aisdv1.core.ui.EmptyEffect
+import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
+import io.reactivex.rxjava3.kotlin.subscribeBy
+
+class SettingsViewModel(
+    private val settingsStateProducer: SettingsStateProducer,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
- */
+    private val schedulersProvider: SchedulersProvider,
+) : MviRxViewModel<SettingsState, EmptyEffect>() {
 
-/*
+    override val emptyState = SettingsState.Uninitialized
+
     init {
-        getStableDiffusionModelsUseCase()
+        !settingsStateProducer()
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(
-                onError = { t ->
-                    t.printStackTrace()
-                },
-                onSuccess = { data ->
-                    setState(
-                        TextToImageState.Content(
-                            models = data.map { (model, _) -> model.title },
-                            selectedModel = UiText.Static(
-                                data.firstOrNull { it.second }?.first?.title ?: "",
-                            ),
-                        )
-                    )
-                },
-            )
-            .addToDisposable()
+            .subscribeBy(Throwable::printStackTrace, ::setState)
     }
- */
 
-/*
-fun selectStableDiffusionModel(value: String) = (currentState as? TextToImageState.Content)
-        ?.copy(selectedModel = value.asUiText())
-        ?.also(::setState)
-        ?.let(TextToImageState.Content::selectedModel)
-        ?.let(UiText::toString)
-        ?.let(selectStableDiffusionModelUseCase::invoke)
-        ?.subscribeOnMainThread(schedulersProvider)
-        ?.subscribeBy(
-            onError = {
+    fun launchSdModelSelectionDialog() = (currentState as? SettingsState.Content)?.let { state ->
+        setActiveDialog(SettingsState.Dialog.SelectSdModel(state.sdModels, state.sdModelSelected))
+    }
 
-            },
-            onComplete = {
+    fun dismissScreenDialog() = setActiveDialog(SettingsState.Dialog.None)
 
-            },
-        )
-        ?.addToDisposable()
- */
+    fun selectStableDiffusionModel(value: String) = !selectStableDiffusionModelUseCase(value)
+        .andThen(settingsStateProducer())
+        .doOnSubscribe { setActiveDialog(SettingsState.Dialog.Communicating) }
+        .subscribeOnMainThread(schedulersProvider)
+        .subscribeBy(Throwable::printStackTrace, ::setState)
+
+    private fun setActiveDialog(dialog: SettingsState.Dialog) = currentState
+        .withDialog(value = dialog)
+        .let(::setState)
+}

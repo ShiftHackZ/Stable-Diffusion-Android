@@ -14,7 +14,7 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "AI Stable Diffusion Client"
+rootProject.name = "AI Stable Diffusion Client v1"
 
 def libraries = [
         ':app',

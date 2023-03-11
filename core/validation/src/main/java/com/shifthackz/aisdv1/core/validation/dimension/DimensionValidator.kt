@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.core.validation.dimension
 
-import com.shifthackz.aisdv1.core.validation.model.ValidationResult
+import com.shifthackz.aisdv1.core.validation.ValidationResult
 
 fun interface DimensionValidator {
 

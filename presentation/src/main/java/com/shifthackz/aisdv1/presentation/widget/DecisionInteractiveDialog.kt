@@ -21,6 +21,7 @@ fun DecisionInteractiveDialog(
     @StringRes dismissActionResId: Int = R.string.cancel,
     onConfirmAction: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
+    content: @Composable () -> Unit = {},
 ) {
     AlertDialog(
         shape = RoundedCornerShape(24.dp),
@@ -46,6 +47,8 @@ fun DecisionInteractiveDialog(
                 text = text.asString(),
                 fontSize = 14.sp,
             )
+            content()
         }
     )
 }
+

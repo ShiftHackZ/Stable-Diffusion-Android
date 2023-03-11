@@ -1,12 +1,15 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
 import android.graphics.Bitmap
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.extensions.mapToUi
 import java.io.File
 
@@ -19,19 +22,23 @@ sealed interface GalleryDetailEffect : MviEffect {
 
 sealed interface GalleryDetailState : MviState {
 
-    val tab: Tab
+    val tabs: List<Tab>
+    val selectedTab: Tab
     val screenDialog: Dialog
 
     data class Loading(
-        override val tab: Tab = Tab.IMAGE,
+        override val tabs: List<Tab> = emptyList(),
+        override val selectedTab: Tab = Tab.IMAGE,
         override val screenDialog: Dialog = Dialog.None,
     ) : GalleryDetailState
 
     data class Content(
-        override val tab: Tab = Tab.IMAGE,
+        override val tabs: List<Tab> = emptyList(),
+        override val selectedTab: Tab = Tab.IMAGE,
         override val screenDialog: Dialog = Dialog.None,
         val id: Long,
         val bitmap: Bitmap,
+        val inputBitmap: Bitmap?,
         val createdAt: UiText,
         val type: UiText,
         val prompt: UiText,
@@ -45,8 +52,8 @@ sealed interface GalleryDetailState : MviState {
     ) : GalleryDetailState
 
     fun withTab(tab: Tab): GalleryDetailState = when (this) {
-        is Content -> copy(tab = tab)
-        is Loading -> copy(tab = tab)
+        is Content -> copy(selectedTab = tab)
+        is Loading -> copy(selectedTab = tab)
     }
 
     fun withDialog(dialog: Dialog) = when (this) {
@@ -54,9 +61,22 @@ sealed interface GalleryDetailState : MviState {
         is Loading -> copy(screenDialog = dialog)
     }
 
-    enum class Tab {
-        IMAGE,
-        INFO;
+    enum class Tab(
+        @StringRes val label: Int,
+        @DrawableRes val iconRes: Int,
+    ) {
+        IMAGE(R.string.gallery_tab_image, R.drawable.ic_image),
+        ORIGINAL(R.string.gallery_tab_original, R.drawable.ic_image),
+        INFO(R.string.gallery_tab_info, R.drawable.ic_text);
+
+        companion object {
+            fun consume(type: AiGenerationResult.Type): List<Tab> = when (type) {
+                AiGenerationResult.Type.TEXT_TO_IMAGE -> listOf(
+                    IMAGE, INFO,
+                )
+                AiGenerationResult.Type.IMAGE_TO_IMAGE -> values().toList()
+            }
+        }
     }
 
     sealed interface Dialog {
@@ -65,11 +85,13 @@ sealed interface GalleryDetailState : MviState {
     }
 }
 
-fun Pair<AiGenerationResult, Base64ToBitmapConverter.Output>.mapToUi(): GalleryDetailState.Content =
-    let { (ai, out) ->
+fun Triple<AiGenerationResult, Base64ToBitmapConverter.Output, Base64ToBitmapConverter.Output?>.mapToUi(): GalleryDetailState.Content =
+    let { (ai, out, original) ->
         GalleryDetailState.Content(
+            tabs = GalleryDetailState.Tab.consume(ai.type),
             id = ai.id,
             bitmap = out.bitmap,
+            inputBitmap = original?.bitmap,
             createdAt = ai.createdAt.toString().asUiText(),
             type = ai.type.key.asUiText(),
             prompt = ai.prompt.asUiText(),

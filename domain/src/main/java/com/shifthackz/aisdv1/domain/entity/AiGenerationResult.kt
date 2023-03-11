@@ -5,6 +5,7 @@ import java.util.*
 data class AiGenerationResult(
     val id: Long,
     val image: String,
+    val inputImage: String,
     val createdAt: Date,
     val type: Type,
     val prompt: String,

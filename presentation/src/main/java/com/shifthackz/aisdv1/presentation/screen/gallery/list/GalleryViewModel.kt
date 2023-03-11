@@ -58,7 +58,6 @@ class GalleryViewModel(
                 )
             },
             onSuccess = { zipFile ->
-                println("DBG0: Export complete")
                 setActiveDialog(GalleryState.Dialog.None)
                 emitEffect(GalleryEffect.Share(zipFile))
             }

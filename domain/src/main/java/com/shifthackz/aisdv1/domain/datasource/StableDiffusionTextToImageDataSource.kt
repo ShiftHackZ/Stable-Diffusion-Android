@@ -9,6 +9,7 @@ import io.reactivex.rxjava3.core.Single
 sealed interface StableDiffusionTextToImageDataSource {
     interface Remote : StableDiffusionTextToImageDataSource {
         fun checkAvailability(): Completable
+        fun checkAvailability(url: String): Completable
         fun textToImage(payload: TextToImagePayload): Single<AiGenerationResult>
         fun imageToImage(payload: ImageToImagePayload): Single<AiGenerationResult>
     }

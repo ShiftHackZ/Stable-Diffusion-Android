@@ -14,6 +14,8 @@ class StableDiffusionGenerationRepositoryImpl(
 
     override fun checkApiAvailability() = remoteDataSource.checkAvailability()
 
+    override fun checkApiAvailability(url: String) = remoteDataSource.checkAvailability(url)
+
     override fun generateFromText(payload: TextToImagePayload) = remoteDataSource
         .textToImage(payload)
         .flatMap(::insertGenerationResult)

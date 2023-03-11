@@ -13,6 +13,8 @@ data class GenerationResultEntity(
     val id: Long,
     @ColumnInfo(name = GenerationResultContract.IMAGE_BASE_64)
     val imageBase64: String,
+    @ColumnInfo(name = GenerationResultContract.ORIGINAL_IMAGE_BASE_64)
+    val originalImageBase64: String,
     @ColumnInfo(name = GenerationResultContract.CREATED_AT)
     val createdAt: Date,
     @ColumnInfo(name = GenerationResultContract.GENERATION_TYPE)

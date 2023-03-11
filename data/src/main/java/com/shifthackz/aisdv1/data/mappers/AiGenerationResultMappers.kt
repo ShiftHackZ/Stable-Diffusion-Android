@@ -11,6 +11,7 @@ fun AiGenerationResult.mapDomainToEntity(): GenerationResultEntity = with(this) 
     GenerationResultEntity(
         id = id,
         imageBase64 = image,
+        originalImageBase64 = inputImage,
         createdAt = createdAt,
         generationType = type.key,
         prompt = prompt,
@@ -34,6 +35,7 @@ fun GenerationResultEntity.mapEntityToDomain(): AiGenerationResult = with(this) 
     AiGenerationResult(
         id = id,
         image = imageBase64,
+        inputImage = originalImageBase64,
         createdAt = createdAt,
         type = AiGenerationResult.Type.parse(generationType),
         prompt = prompt,
