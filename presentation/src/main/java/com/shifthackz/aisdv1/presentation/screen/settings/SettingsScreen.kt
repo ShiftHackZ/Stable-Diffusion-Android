@@ -43,7 +43,9 @@ class SettingsScreen(
             state = viewModel.state.collectAsState().value,
             onConfigurationItemClick = launchSetup,
             onSdModelItemClick = viewModel::launchSdModelSelectionDialog,
+            onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
             onSdModelSelected = viewModel::selectStableDiffusionModel,
+            onClearAppCacheConfirm = viewModel::clearAppCache,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
         )
     }
@@ -58,8 +60,10 @@ private fun ScreenContent(
     state: SettingsState,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
+    onClearAppCacheItemClick: () -> Unit = {},
 
     onSdModelSelected: (String) -> Unit = {},
+    onClearAppCacheConfirm: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) {
 
@@ -84,6 +88,7 @@ private fun ScreenContent(
                         state = state,
                         onConfigurationItemClick = onConfigurationItemClick,
                         onSdModelItemClick = onSdModelItemClick,
+                        onClearAppCacheItemClick = onClearAppCacheItemClick,
                     )
                 }
             }
@@ -101,7 +106,7 @@ private fun ScreenContent(
                 }
                 DecisionInteractiveDialog(
                     title = "Select sd model".asUiText(),
-                    text = "Select to render bal blas".asUiText(),
+                    text = UiText.empty,
                     confirmActionResId = R.string.action_select,
                     onConfirmAction = { onSdModelSelected(selectedItem) },
                     onDismissRequest = onDismissScreenDialog,
@@ -116,6 +121,14 @@ private fun ScreenContent(
                     }
                 )
             }
+            SettingsState.Dialog.ClearAppCache -> DecisionInteractiveDialog(
+                title = "Clear app cache".asUiText(),
+                text = "This will reset app settings and delete all the generated images. Do you want to proceed?".asUiText(),
+                confirmActionResId = R.string.yes,
+                dismissActionResId = R.string.no,
+                onDismissRequest = onDismissScreenDialog,
+                onConfirmAction = onClearAppCacheConfirm,
+            )
         }
     }
 }
@@ -126,6 +139,7 @@ private fun ContentSettingsState(
     state: SettingsState.Content,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
+    onClearAppCacheItemClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
@@ -177,7 +191,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             startIcon = Icons.Default.DeleteForever,
             text = R.string.settings_item_clear_cache.asUiText(),
-            onClick = {},
+            onClick = onClearAppCacheItemClick,
         )
 
         Text(
@@ -221,6 +235,7 @@ private fun SettingsItem(
     startIcon: ImageVector,
     text: UiText,
     endValueText: UiText = UiText.empty,
+    endValueContent: @Composable () -> Unit = {},
     onClick: () -> Unit,
 ) {
     Row(
@@ -249,13 +264,15 @@ private fun SettingsItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            val value = endValueText.asString()
+            if (value.isNotEmpty()) Text(
                 modifier = Modifier.fillMaxWidth(0.5f),
                 text = endValueText.asString(),
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
+            endValueContent()
             Icon(
                 modifier = Modifier.padding(horizontal = 6.dp),
                 imageVector = Icons.Default.ChevronRight,

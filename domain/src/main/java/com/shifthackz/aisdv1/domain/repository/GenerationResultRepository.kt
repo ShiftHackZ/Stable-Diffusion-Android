@@ -13,4 +13,6 @@ interface GenerationResultRepository {
     fun getById(id: Long): Single<AiGenerationResult>
 
     fun deleteById(id: Long): Completable
+
+    fun deleteAll(): Completable
 }

@@ -14,4 +14,6 @@ class GenerationResultRepositoryImpl(
     override fun getById(id: Long) = localDataSource.queryById(id)
 
     override fun deleteById(id: Long) = localDataSource.deleteById(id)
+
+    override fun deleteAll() = localDataSource.deleteAll()
 }

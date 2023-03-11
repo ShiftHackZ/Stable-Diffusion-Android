@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.domain.di
 
+import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCase
@@ -31,6 +33,7 @@ val domainModule = module {
     factoryOf(::TextToImageUseCaseImpl) bind TextToImageUseCase::class
     factoryOf(::ImageToImageUseCaseImpl) bind ImageToImageUseCase::class
     factoryOf(::PingStableDiffusionServiceUseCaseImpl) bind PingStableDiffusionServiceUseCase::class
+    factoryOf(::ClearAppCacheUseCaseImpl) bind ClearAppCacheUseCase::class
     factoryOf(::DataPreLoaderUseCaseImpl) bind DataPreLoaderUseCase::class
     factoryOf(::GetStableDiffusionModelsUseCaseImpl) bind GetStableDiffusionModelsUseCase::class
     factoryOf(::SelectStableDiffusionModelUseCaseImpl) bind SelectStableDiffusionModelUseCase::class
