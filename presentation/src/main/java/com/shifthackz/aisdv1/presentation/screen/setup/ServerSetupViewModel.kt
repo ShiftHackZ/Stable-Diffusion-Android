@@ -13,9 +13,9 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ServerSetupViewModel(
-    private val launchSource: ServerSetupLaunchSource,
+    launchSource: ServerSetupLaunchSource,
+    getServerUrlUseCase: GetServerUrlUseCase,
     private val urlValidator: UrlValidator,
-    private val getServerUrlUseCase: GetServerUrlUseCase,
     private val testConnectivityUseCase: TestConnectivityUseCase,
     private val setServerUrlUseCase: SetServerUrlUseCase,
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
