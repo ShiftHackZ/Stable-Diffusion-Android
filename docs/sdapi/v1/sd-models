@@ -1,0 +1,10 @@
+[
+  {
+    "title": "Default",
+    "model_name": "Default",
+    "hash": "default",
+    "sha256": null,
+    "filename": "default.ckpt",
+    "config": null
+  }
+]
