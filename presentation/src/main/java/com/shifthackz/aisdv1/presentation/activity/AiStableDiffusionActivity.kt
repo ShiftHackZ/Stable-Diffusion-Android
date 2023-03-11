@@ -9,6 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.core.extensions.openUrl
+import com.shifthackz.aisdv1.presentation.features.ImagePickerFeature
+import com.shifthackz.aisdv1.presentation.features.InAppReviewFeature
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
@@ -21,16 +24,16 @@ import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreen
 import com.shifthackz.aisdv1.presentation.theme.AiStableDiffusionAppTheme
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import com.shifthackz.aisdv1.presentation.utils.ImagePickerCapability
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.getViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-class AiStableDiffusionActivity : ComponentActivity(), ImagePickerCapability {
+class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
 
     private val gallerySharing: GallerySharing by inject()
     private val galleryDetailSharing: GalleryDetailSharing by inject()
+    private val inAppReview: InAppReviewFeature by inject()
 
     override val fileProviderDescriptor: FileProviderDescriptor by inject()
 
@@ -120,7 +123,11 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerCapability {
                         launchSetup = {
                             navController
                                 .navigate("${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.key}")
-                        }
+                        },
+                        launchInAppReview = {
+                            inAppReview.invoke(this@AiStableDiffusionActivity)
+                        },
+                        launchUrl = ::openUrl
                     )
 
                     composable(
