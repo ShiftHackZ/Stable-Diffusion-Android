@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -13,6 +14,7 @@ class SettingsViewModel(
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
     private val clearAppCacheUseCase: ClearAppCacheUseCase,
     private val schedulersProvider: SchedulersProvider,
+    private val preferenceManager: PreferenceManager,
 ) : MviRxViewModel<SettingsState, EmptyEffect>() {
 
     override val emptyState = SettingsState.Uninitialized
@@ -51,6 +53,11 @@ class SettingsViewModel(
         .doOnSubscribe { dismissScreenDialog() }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(Throwable::printStackTrace, ::setState)
+
+    fun changeAutoSaveAuResultSetting(value: Boolean) = (currentState as? SettingsState.Content)
+        ?.also { preferenceManager.autoSaveAiResults = value }
+        ?.copy(autoSaveAiResults = value)
+        ?.let(::setState)
     //endregion
 
     //region UI STATES METHODS

@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 
@@ -40,7 +41,7 @@ data class ImageToImageState(
     sealed interface Dialog {
         object None : Dialog
         object Communicating : Dialog
-        data class Image(val image: String) : Dialog
+        data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Dialog
         data class Error(val error: UiText) : Dialog
     }
 

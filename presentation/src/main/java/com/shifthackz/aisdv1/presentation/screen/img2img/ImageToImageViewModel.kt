@@ -5,7 +5,10 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
@@ -16,8 +19,10 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 class ImageToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     private val imageToImageUseCase: ImageToImageUseCase,
+    private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
     private val dimensionValidator: DimensionValidator,
+    private val preferenceManager: PreferenceManager,
     private val schedulersProvider: SchedulersProvider,
 ) : GenerationMviViewModel<ImageToImageState, ImageToImageEffect>(
     getStableDiffusionSamplersUseCase,
@@ -70,12 +75,21 @@ class ImageToImageViewModel(
                         )
                     )
                 },
-                onSuccess = {
-                    setActiveDialog(ImageToImageState.Dialog.Image(it.image))
+                onSuccess = { ai ->
+                    setActiveDialog(
+                        ImageToImageState.Dialog.Image(
+                            ai,
+                            preferenceManager.autoSaveAiResults
+                        )
+                    )
                 }
             )
         else -> Unit
     }
+
+    fun saveGeneratedResult(ai: AiGenerationResult) = !saveGenerationResultUseCase(ai)
+        .subscribeOnMainThread(schedulersProvider)
+        .subscribeBy(Throwable::printStackTrace) { dismissScreenDialog() }
 
     private fun setActiveDialog(dialog: ImageToImageState.Dialog) = currentState
         .copy(screenDialog = dialog)

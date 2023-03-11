@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.domain.usecase.sdmodel
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import io.reactivex.rxjava3.core.Completable
 
-class SelectStableDiffusionModelUseCaseImpl(
+internal class SelectStableDiffusionModelUseCaseImpl(
     private val serverConfigurationRepository: ServerConfigurationRepository,
 ) : SelectStableDiffusionModelUseCase {
 

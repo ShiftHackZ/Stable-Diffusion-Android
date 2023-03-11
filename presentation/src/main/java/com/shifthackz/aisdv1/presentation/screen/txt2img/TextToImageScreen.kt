@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.GenerationImageResultDialog
@@ -41,6 +42,7 @@ class TextToImageScreen(
             onSeedUpdated = viewModel::updateSeed,
             onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
+            onSaveGeneratedImage = viewModel::saveGeneratedResult,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
         )
     }
@@ -63,6 +65,7 @@ private fun ScreenContent(
     onSeedUpdated: (String) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
+    onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) {
     Box(modifier) {
@@ -134,8 +137,10 @@ private fun ScreenContent(
                 canDismiss = false,
             )
             is TextToImageState.Dialog.Image -> GenerationImageResultDialog(
-                state.screenDialog.image,
-                onDismissScreenDialog,
+                imageBase64 = state.screenDialog.result.image,
+                showSaveButton = !state.screenDialog.autoSaveEnabled,
+                onDismissRequest = onDismissScreenDialog,
+                onSaveRequest = { onSaveGeneratedImage(state.screenDialog.result) },
             )
             is TextToImageState.Dialog.Error -> ErrorDialog(
                 text = state.screenDialog.error,

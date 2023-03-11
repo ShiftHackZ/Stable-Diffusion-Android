@@ -45,12 +45,12 @@ class SettingsScreen(
 
     @Composable
     override fun Content() {
-
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = viewModel.state.collectAsState().value,
             onConfigurationItemClick = launchSetup,
             onSdModelItemClick = viewModel::launchSdModelSelectionDialog,
+            onAutoSaveAiResultChanged = viewModel::changeAutoSaveAuResultSetting,
             onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
             onRateUsItemClick = launchInAppReview,
             onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
@@ -72,6 +72,8 @@ private fun ScreenContent(
     state: SettingsState,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
+    onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
+
     onClearAppCacheItemClick: () -> Unit = {},
     onRateUsItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
@@ -104,6 +106,7 @@ private fun ScreenContent(
                         state = state,
                         onConfigurationItemClick = onConfigurationItemClick,
                         onSdModelItemClick = onSdModelItemClick,
+                        onAutoSaveAiResultChanged = onAutoSaveAiResultChanged,
                         onClearAppCacheItemClick = onClearAppCacheItemClick,
                         onRateUsItemClick = onRateUsItemClick,
                         onServerInstructionsItemClick = onServerInstructionsItemClick,
@@ -166,6 +169,7 @@ private fun ContentSettingsState(
     state: SettingsState.Content,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
+    onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
     onRateUsItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
@@ -202,6 +206,18 @@ private fun ContentSettingsState(
             modifier = headerModifier,
             text = stringResource(id = R.string.settings_header_app),
             style = MaterialTheme.typography.headlineSmall,
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            startIcon = Icons.Default.Save,
+            text = R.string.settings_item_auto_save.asUiText(),
+            endValueContent = {
+                Switch(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    checked = state.autoSaveAiResults,
+                    onCheckedChange = onAutoSaveAiResultChanged,
+                )
+            }
         )
         SettingsItem(
             modifier = itemModifier,
@@ -257,8 +273,8 @@ private fun SettingsItem(
     startIcon: ImageVector,
     text: UiText,
     endValueText: UiText = UiText.empty,
-    endValueContent: @Composable () -> Unit = {},
-    onClick: () -> Unit,
+    endValueContent: (@Composable () -> Unit)? = null,
+    onClick: () -> Unit = {},
 ) {
     Row(
         modifier = modifier
@@ -286,21 +302,22 @@ private fun SettingsItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            endValueContent()
-            val value = endValueText.asString()
-            if (value.isNotEmpty()) Text(
-                modifier = Modifier.fillMaxWidth(0.5f),
-                text = endValueText.asString(),
-                style = MaterialTheme.typography.bodySmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Right,
-            )
-            Icon(
-                modifier = Modifier.padding(horizontal = 6.dp),
-                imageVector = Icons.Default.ChevronRight,
-                contentDescription = null,
-            )
+            endValueContent?.invoke() ?: run {
+                val value = endValueText.asString()
+                if (value.isNotEmpty()) Text(
+                    modifier = Modifier.fillMaxWidth(0.5f),
+                    text = endValueText.asString(),
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Right,
+                )
+                Icon(
+                    modifier = Modifier.padding(horizontal = 6.dp),
+                    imageVector = Icons.Default.ChevronRight,
+                    contentDescription = null,
+                )
+            }
         }
     }
 }
@@ -314,6 +331,7 @@ private fun PreviewStateContent() {
             sdModels = listOf("Stable diffusion v1.5"),
             sdModelSelected = "Stable diffusion v1.5",
             appVersion = "1.0.0 (10)",
+            autoSaveAiResults = true,
             showRateGooglePlay = true,
         )
     )

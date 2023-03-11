@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.connectivity
 
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 
-class TestConnectivityUseCaseImpl(
+internal class TestConnectivityUseCaseImpl(
     private val repository: StableDiffusionGenerationRepository,
 ) : TestConnectivityUseCase {
 

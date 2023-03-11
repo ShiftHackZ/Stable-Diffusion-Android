@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
 import io.reactivex.rxjava3.core.Completable
 
-class DataPreLoaderUseCaseImpl(
+internal class DataPreLoaderUseCaseImpl(
     private val serverConfigurationRepository: ServerConfigurationRepository,
     private val sdModelsRepository: StableDiffusionModelsRepository,
     private val sdSamplersRepository: StableDiffusionSamplersRepository,

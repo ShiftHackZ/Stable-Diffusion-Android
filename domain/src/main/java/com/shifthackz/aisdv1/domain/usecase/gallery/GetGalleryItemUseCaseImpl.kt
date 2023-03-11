@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.gallery
 
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 
-class GetGalleryItemUseCaseImpl(
+internal class GetGalleryItemUseCaseImpl(
     private val repository: GenerationResultRepository,
 ) : GetGalleryItemUseCase {
 
