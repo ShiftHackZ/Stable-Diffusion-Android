@@ -12,15 +12,15 @@ android {
         applicationId "com.shifthackz.aisdv1.app"
     }
 
-    flavorDimensions "server"
+    flavorDimensions "type"
     productFlavors {
-        local {
-            dimension "server"
-            buildConfigField "String", "SERVER_URL", "\"http://192.168.228.16:7860\""
+        foss {
+            dimension "type"
+            buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"FOSS\""
         }
-        sdWebServer1 {
-            dimension "server"
-            buildConfigField "String", "SERVER_URL", "\"https://stablediffusionaiservice1.moroz.cc\""
+        playstore {
+            dimension "type"
+            buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"GOOGLE_PLAY\""
         }
     }
 }

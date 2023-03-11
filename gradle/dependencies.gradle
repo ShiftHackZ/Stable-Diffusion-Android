@@ -1,5 +1,6 @@
 ext {
     composeBomVersion = '2023.01.00'
+    composeMaterialVersion = '1.1.0-alpha08'
     koinVersion = '3.3.3'
     koinComposeVersion = '3.4.2'
     retrofitVersion = '2.9.0'
@@ -18,7 +19,7 @@ ext {
             activity                    : "androidx.activity:activity-ktx:1.6.1",
             composeBom                  : "androidx.compose:compose-bom:$composeBomVersion",
             composeRuntime              : "androidx.compose.runtime:runtime",
-            composeMaterial3            : "androidx.compose.material3:material3",
+            composeMaterial3            : "androidx.compose.material3:material3:$composeMaterialVersion",
             composeMaterialIconsExtended: "androidx.compose.material:material-icons-extended",
             composeUiGraphics           : "androidx.compose.ui:ui-graphics",
             composeUiTooling            : "androidx.compose.ui:ui-tooling:1.3.3",

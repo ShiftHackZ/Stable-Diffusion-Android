@@ -120,7 +120,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerCapability {
                         launchSetup = {
                             navController
                                 .navigate("${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.key}")
-                        }
+                        },
                     )
 
                     composable(

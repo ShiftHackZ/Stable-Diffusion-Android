@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language">Українська</string>
+    <string name="ok">OK</string>
+    <string name="yes">Так</string>
+    <string name="no">Ні</string>
+    <string name="cancel">Скасувати</string>
+    <string name="width">Довжина</string>
+    <string name="height">Висота</string>
+
+    <string name="version">Версія %1$s</string>
+
+    <string name="splash_status_initializing">Ініціалізація…</string>
+    <string name="splash_status_fetching">Завантаження даних…</string>
+    <string name="splash_status_launching">Запускаємо додаток!</string>
+
+    <string name="action_generate">Сгенерувати</string>
+    <string name="action_export">Експорт</string>
+    <string name="action_delete_image">Видалити зображення</string>
+    <string name="action_select">Обрати</string>
+    <string name="action_connect">Підключитися</string>
+    <string name="action_share_prompt">Поділитися запитом</string>
+
+    <string name="hint_prompt">Запит</string>
+    <string name="hint_prompt_negative">Негативний запит</string>
+    <string name="hint_sampling_steps">Етапи вибірки: %1$s</string>
+    <string name="hint_cfg_scale">CFG Шкала: %1$s</string>
+    <string name="hint_sampler">Метод вибірки</string>
+    <string name="hint_restore_faces">Відновлення обличч</string>
+    <string name="hint_seed">Seed ідентифікатор</string>
+    <string name="hint_denoising_strength">Сила шумозаглушення: %1$s</string>
+    <string name="hint_server_url">URL-адреса сервера</string>
+
+    <string name="hint_server_setup_title">Укажіть свою URL-адресу Stable Diffusion WebUI</string>
+    <string name="hint_valid_urls">Ось приклади URL-адрес сервера:\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
+
+    <string name="home_tab_txt_to_img">Txt2Img</string>
+    <string name="home_tab_img_to_img">Img2Img</string>
+    <string name="home_tab_gallery">Галерея</string>
+    <string name="home_tab_settings">Параметри</string>
+
+    <string name="gallery_tab_image">Зображення</string>
+    <string name="gallery_tab_original">Оригінал</string>
+    <string name="gallery_tab_info">Подробиці</string>
+
+    <string name="title_text_to_image">Текст в Картинку</string>
+    <string name="title_image_to_image">Картинка в Картинку</string>
+    <string name="title_gallery">Галерея</string>
+    <string name="title_gallery_details">Результат генерації</string>
+    <string name="title_settings">Параметри</string>
+    <string name="title_server_setup">Конфігурація</string>
+
+    <string name="gallery_info_field_date">Створене</string>
+    <string name="gallery_info_field_type">Тип</string>
+    <string name="gallery_info_field_prompt">Запит</string>
+    <string name="gallery_info_field_negative_prompt">Негативний запит</string>
+    <string name="gallery_info_field_size">Розмір</string>
+    <string name="gallery_info_field_sampling_steps">Етапи вибірки</string>
+    <string name="gallery_info_field_cfg">CFG Шкала</string>
+    <string name="gallery_info_field_restore_faces">Відновлення обличч</string>
+    <string name="gallery_info_field_sampler">Метод вибірки</string>
+    <string name="gallery_info_field_seed">Seed</string>
+
+    <string name="settings_header_server">Паратметри сервера</string>
+    <string name="settings_header_app">Параметри додатку</string>
+    <string name="settings_header_info">Інформація</string>
+
+    <string name="settings_item_config">Конфігурація</string>
+    <string name="settings_item_sd_model">SD Модель</string>
+
+    <string name="settings_item_language">Мова</string>
+    <string name="settings_item_clear_cache">Очистити кеш</string>
+
+    <string name="settings_item_policy">Політика конфіденційності</string>
+    <string name="settings_item_source">Вихідний код</string>
+    <string name="settings_item_rate">Оцініть додаток в Google Play</string>
+
+    <string name="communicating_progress_title">Зачекайте, йде коммунікація із сервером…</string>
+    <string name="communicating_progress_sub_title">На це може знадобитися деякий час</string>
+
+    <string name="exporting_progress_title">Експортування вашої галереї…</string>
+    <string name="exporting_progress_sub_title">Це може зайняти деякий час, залежно від кількості фотографій</string>
+
+    <string name="interaction_export_title">Експорт галереї</string>
+    <string name="interaction_export_sub_title">Ця функція експортує всі зображення галереї у архів *.zip. Цей процес може тривати довго, якщо у вас багато зображень. Бажаєте продовжити?</string>
+
+    <string name="interaction_delete_generation_title">Видалити зображення</string>
+    <string name="interaction_delete_generation_sub_title">Ви впевнені, що хочете остаточно видалити це зображення?</string>
+
+    <string name="gallery_empty_title">Тут ще нічого немає…</string>
+    <string name="gallery_empty_sub_title">Спробуйте створити щось, і ви побачите своє зображення тут!</string>
+
+    <string name="error_title">Помилка</string>
+    <string name="error_empty">Поле не може бути порожнім</string>
+    <string name="error_empty_url">URL-адреса не повинна бути пустою</string>
+    <string name="error_invalid">Неправильні дані</string>
+    <string name="error_invalid_scheme">URL має починатися з <b>http://</b> або <b>https://</b></string>
+    <string name="error_invalid_url">Недійсна URL-адреса сервера</string>
+    <string name="error_min_size">Мінімальний розмір %1$s</string>
+    <string name="error_max_size">Максимальний розмір %1$s</string>
+</resources>

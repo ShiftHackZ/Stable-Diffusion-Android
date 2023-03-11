@@ -47,6 +47,7 @@ class SettingsScreen(
             onSdModelSelected = viewModel::selectStableDiffusionModel,
             onClearAppCacheConfirm = viewModel::clearAppCache,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
+            onDismissBottomSheet = viewModel::dismissBottomSheet,
         )
     }
 
@@ -65,6 +66,7 @@ private fun ScreenContent(
     onSdModelSelected: (String) -> Unit = {},
     onClearAppCacheConfirm: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
+    onDismissBottomSheet: () -> Unit = {},
 ) {
 
     Box(modifier) {
@@ -130,6 +132,14 @@ private fun ScreenContent(
                 onConfirmAction = onClearAppCacheConfirm,
             )
         }
+        when (state.bottomSheet) {
+            SettingsState.Sheet.None -> Unit
+            SettingsState.Sheet.SelectLanguage -> ModalBottomSheet(
+                onDismissRequest = onDismissBottomSheet,
+            ) {
+
+            }
+        }
     }
 }
 
@@ -139,6 +149,7 @@ private fun ContentSettingsState(
     state: SettingsState.Content,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
+    onLanguageItemClick: () -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
 ) {
     Column(
@@ -180,12 +191,6 @@ private fun ContentSettingsState(
             modifier = headerModifier,
             text = stringResource(id = R.string.settings_header_app),
             style = MaterialTheme.typography.headlineSmall,
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            startIcon = Icons.Default.Translate,
-            text = R.string.settings_item_language.asUiText(),
-            onClick = {},
         )
         SettingsItem(
             modifier = itemModifier,
@@ -264,6 +269,7 @@ private fun SettingsItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            endValueContent()
             val value = endValueText.asString()
             if (value.isNotEmpty()) Text(
                 modifier = Modifier.fillMaxWidth(0.5f),
@@ -271,8 +277,8 @@ private fun SettingsItem(
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Right,
             )
-            endValueContent()
             Icon(
                 modifier = Modifier.padding(horizontal = 6.dp),
                 imageVector = Icons.Default.ChevronRight,
@@ -290,7 +296,7 @@ private fun PreviewStateContent() {
         state = SettingsState.Content(
             sdModels = listOf("Stable diffusion v1.5"),
             sdModelSelected = "Stable diffusion v1.5",
-            appVersion = "1.0.0 (10)"
+            appVersion = "1.0.0 (10)",
         )
     )
 }
