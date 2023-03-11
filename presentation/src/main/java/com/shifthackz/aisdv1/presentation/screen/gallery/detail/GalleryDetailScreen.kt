@@ -31,6 +31,7 @@ class GalleryDetailScreen(
     private val viewModel: GalleryDetailViewModel,
     private val onNavigateBack: () -> Unit = {},
     private val shareGalleryFile: (File) -> Unit = {},
+    private val shareGenerationParams: (GalleryDetailState) -> Unit = {},
 ) : MviScreen<GalleryDetailState, GalleryDetailEffect>(viewModel) {
 
     @Composable
@@ -40,7 +41,8 @@ class GalleryDetailScreen(
             state = viewModel.state.collectAsState().value,
             onNavigateBack = onNavigateBack,
             onTabSelected = viewModel::selectTab,
-            onExportToolbarClick = viewModel::share,
+            onExportImageToolbarClick = viewModel::share,
+            onExportParamsClick = shareGenerationParams,
             onDeleteButtonClick = viewModel::showDeleteConfirmDialog,
             onDeleteConfirmClick = viewModel::delete,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
@@ -59,7 +61,8 @@ private fun ScreenContent(
     state: GalleryDetailState,
     onNavigateBack: () -> Unit = {},
     onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
-    onExportToolbarClick: () -> Unit = {},
+    onExportImageToolbarClick: () -> Unit = {},
+    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
     onDeleteButtonClick: () -> Unit = {},
     onDeleteConfirmClick: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
@@ -85,7 +88,7 @@ private fun ScreenContent(
                     },
                     actions = {
                         IconButton(
-                            onClick = onExportToolbarClick,
+                            onClick = onExportImageToolbarClick,
                             content = {
                                 Image(
                                     modifier = Modifier.size(24.dp),
@@ -107,8 +110,9 @@ private fun ScreenContent(
                         modifier = contentModifier,
                         state = state,
                         onDeleteButtonClick = onDeleteButtonClick,
+                        onExportParamsClick = onExportParamsClick,
                     )
-                    is GalleryDetailState.Loading -> Text("Load")
+                    is GalleryDetailState.Loading -> Unit
                 }
             },
             bottomBar = { GalleryDetailNavigationBar(state, onTabSelected) },
@@ -157,6 +161,7 @@ private fun GalleryDetailContentState(
     modifier: Modifier = Modifier,
     state: GalleryDetailState.Content,
     onDeleteButtonClick: () -> Unit = {},
+    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -176,6 +181,7 @@ private fun GalleryDetailContentState(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
                 onDeleteButtonClick = onDeleteButtonClick,
+                onExportParamsClick = onExportParamsClick,
             )
         }
     }
@@ -186,6 +192,7 @@ private fun GalleryDetailsTable(
     modifier: Modifier = Modifier,
     state: GalleryDetailState.Content,
     onDeleteButtonClick: () -> Unit = {},
+    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
 ) {
     Scaffold(
         content = { paddingValues ->
@@ -251,16 +258,33 @@ private fun GalleryDetailsTable(
             }
         },
         bottomBar = {
-            Button(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
-                    .padding(bottom = 16.dp),
-                onClick = onDeleteButtonClick,
+                    .background(color = MaterialTheme.colorScheme.background)
             ) {
-                Text(
-                    text = stringResource(id = R.string.action_delete_image)
-                )
+                OutlinedButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp)
+                        .padding(bottom = 6.dp),
+                    onClick = { onExportParamsClick(state) },
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.action_share_prompt)
+                    )
+                }
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp)
+                        .padding(bottom = 16.dp),
+                    onClick = onDeleteButtonClick,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.action_delete_image)
+                    )
+                }
             }
         },
     )
