@@ -5,6 +5,9 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
@@ -13,8 +16,10 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 class TextToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     private val textToImageUseCase: TextToImageUseCase,
+    private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val dimensionValidator: DimensionValidator,
+    private val preferenceManager: PreferenceManager,
 ) : GenerationMviViewModel<TextToImageState, EmptyEffect>(
     getStableDiffusionSamplersUseCase,
     schedulersProvider
@@ -45,10 +50,16 @@ class TextToImageViewModel(
                     )
                 )
             },
-            onSuccess = {
-                setActiveDialog(TextToImageState.Dialog.Image(it.image))
+            onSuccess = { ai ->
+                setActiveDialog(
+                    TextToImageState.Dialog.Image(ai, preferenceManager.autoSaveAiResults)
+                )
             },
         )
+
+    fun saveGeneratedResult(ai: AiGenerationResult) = !saveGenerationResultUseCase(ai)
+        .subscribeOnMainThread(schedulersProvider)
+        .subscribeBy(Throwable::printStackTrace) { dismissScreenDialog() }
 
     private fun setActiveDialog(dialog: TextToImageState.Dialog) = currentState
         .copy(screenDialog = dialog)

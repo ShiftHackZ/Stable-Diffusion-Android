@@ -9,10 +9,7 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServ
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.*
-import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.generation.*
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
@@ -46,4 +43,5 @@ val domainModule = module {
     factoryOf(::GetServerUrlUseCaseImpl) bind GetServerUrlUseCase::class
     factoryOf(::SetServerUrlUseCaseImpl) bind SetServerUrlUseCase::class
     factoryOf(::TestConnectivityUseCaseImpl) bind TestConnectivityUseCase::class
+    factoryOf(::SaveGenerationResultUseCaseImpl) bind SaveGenerationResultUseCase::class
 }

@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.caching
 
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 
-class ClearAppCacheUseCaseImpl(
+internal class ClearAppCacheUseCaseImpl(
     private val repository: GenerationResultRepository,
 ) : ClearAppCacheUseCase {
 

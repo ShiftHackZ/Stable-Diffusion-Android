@@ -17,6 +17,7 @@ sealed interface SettingsState : MviState {
         override val bottomSheet: Sheet = Sheet.None,
         val sdModels: List<String>,
         val sdModelSelected: String,
+        val autoSaveAiResults: Boolean,
         val appVersion: String,
         val showRateGooglePlay: Boolean,
     ) : SettingsState

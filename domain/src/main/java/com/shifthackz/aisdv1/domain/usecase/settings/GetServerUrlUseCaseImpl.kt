@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.domain.usecase.settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.reactivex.rxjava3.core.Single
 
-class GetServerUrlUseCaseImpl(
+internal class GetServerUrlUseCaseImpl(
     private val preferenceManager: PreferenceManager,
 ) : GetServerUrlUseCase {
 

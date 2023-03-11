@@ -13,7 +13,14 @@ class PreferenceManagerImpl(
             .putString(KEY_SERVER_URL, value)
             .apply()
 
+    override var autoSaveAiResults: Boolean
+        get() = preferences.getBoolean(KEY_AI_AUTO_SAVE, true)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_AI_AUTO_SAVE, value)
+            .apply()
+
     companion object {
         private const val KEY_SERVER_URL = "key_server_url"
+        private const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
     }
 }

@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
@@ -27,7 +28,7 @@ data class TextToImageState(
     sealed interface Dialog {
         object None : Dialog
         object Communicating : Dialog
-        data class Image(val image: String) : Dialog
+        data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Dialog
         data class Error(val error: UiText) : Dialog
     }
 

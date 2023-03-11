@@ -4,7 +4,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase.Action
 import io.reactivex.rxjava3.core.Single
 
-class SplashNavigationUseCaseImpl(
+internal class SplashNavigationUseCaseImpl(
     private val preferenceManager: PreferenceManager,
 ) : SplashNavigationUseCase {
 

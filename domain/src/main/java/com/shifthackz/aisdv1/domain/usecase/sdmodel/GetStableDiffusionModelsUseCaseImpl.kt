@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
 import io.reactivex.rxjava3.core.Single
 
-class GetStableDiffusionModelsUseCaseImpl(
+internal class GetStableDiffusionModelsUseCaseImpl(
     private val serverConfigurationRepository: ServerConfigurationRepository,
     private val sdModelsRepository: StableDiffusionModelsRepository,
 ) : GetStableDiffusionModelsUseCase {

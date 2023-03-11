@@ -5,11 +5,14 @@ import com.shifthackz.aisdv1.domain.datasource.StableDiffusionTextToImageDataSou
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
+import io.reactivex.rxjava3.core.Single
 
 class StableDiffusionGenerationRepositoryImpl(
     private val remoteDataSource: StableDiffusionTextToImageDataSource.Remote,
     private val localDataSource: GenerationResultDataSource.Local,
+    private val preferenceManager: PreferenceManager,
 ) : StableDiffusionGenerationRepository {
 
     override fun checkApiAvailability() = remoteDataSource.checkAvailability()
@@ -24,7 +27,10 @@ class StableDiffusionGenerationRepositoryImpl(
         .imageToImage(payload)
         .flatMap(::insertGenerationResult)
 
-    private fun insertGenerationResult(ai: AiGenerationResult) = localDataSource
-        .insert(ai)
-        .map { id -> ai.copy(id) }
+    private fun insertGenerationResult(ai: AiGenerationResult): Single<AiGenerationResult> {
+        if (!preferenceManager.autoSaveAiResults) return Single.just(ai)
+        return localDataSource
+            .insert(ai)
+            .map { id -> ai.copy(id) }
+    }
 }

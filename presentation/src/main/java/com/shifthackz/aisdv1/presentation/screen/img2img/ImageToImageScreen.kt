@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
@@ -56,6 +57,7 @@ class ImageToImageScreen(
             onSeedUpdated = viewModel::updateSeed,
             onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
+            onSaveGeneratedImage = viewModel::saveGeneratedResult,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
         )
     }
@@ -82,6 +84,7 @@ private fun ScreenContent(
     onSeedUpdated: (String) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
+    onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) {
     Box(modifier) {
@@ -169,8 +172,10 @@ private fun ScreenContent(
                 onDismissScreenDialog,
             )
             is ImageToImageState.Dialog.Image -> GenerationImageResultDialog(
-                state.screenDialog.image,
-                onDismissScreenDialog,
+                imageBase64 = state.screenDialog.result.image,
+                showSaveButton = !state.screenDialog.autoSaveEnabled,
+                onDismissRequest = onDismissScreenDialog,
+                onSaveRequest = { onSaveGeneratedImage(state.screenDialog.result) },
             )
             ImageToImageState.Dialog.None -> Unit
         }

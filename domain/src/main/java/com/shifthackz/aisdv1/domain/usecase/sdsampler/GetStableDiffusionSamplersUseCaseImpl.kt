@@ -4,7 +4,7 @@ import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
 import io.reactivex.rxjava3.core.Single
 
-class GetStableDiffusionSamplersUseCaseImpl(
+internal class GetStableDiffusionSamplersUseCaseImpl(
     private val repository: StableDiffusionSamplersRepository,
 ) : GetStableDiffusionSamplersUseCase {
 
