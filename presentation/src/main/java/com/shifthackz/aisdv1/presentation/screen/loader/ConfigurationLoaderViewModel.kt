@@ -32,7 +32,6 @@ class ConfigurationLoaderViewModel(
                     it.printStackTrace()
                     setState(ConfigurationLoaderState.StatusNotification("Failed loading data".asUiText()))
                     emitEffect(ConfigurationLoaderEffect.ProceedNavigation)
-
                 },
                 onComplete = {
                     setState(

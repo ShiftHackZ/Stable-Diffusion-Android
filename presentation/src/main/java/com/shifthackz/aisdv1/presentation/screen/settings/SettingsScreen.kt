@@ -211,6 +211,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             startIcon = Icons.Default.Save,
             text = R.string.settings_item_auto_save.asUiText(),
+            onClick = { onAutoSaveAiResultChanged(!state.autoSaveAiResults) },
             endValueContent = {
                 Switch(
                     modifier = Modifier.padding(horizontal = 8.dp),

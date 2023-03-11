@@ -3,6 +3,8 @@ package com.shifthackz.aisdv1.storage.di
 import androidx.room.Room
 import com.shifthackz.aisdv1.storage.db.cache.CacheDatabase
 import com.shifthackz.aisdv1.storage.db.persistent.PersistentDatabase
+import com.shifthackz.aisdv1.storage.gateway.GatewayClearCacheDb
+import com.shifthackz.aisdv1.storage.gateway.GatewayClearPersistentDb
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
@@ -22,6 +24,16 @@ val databaseModule = module {
         )
             .fallbackToDestructiveMigration()
             .build()
+    }
+    //endregion
+
+    //region GATEWAYS
+    single {
+        GatewayClearCacheDb { get<CacheDatabase>().clearAllTables() }
+    }
+
+    single {
+        GatewayClearPersistentDb { get<PersistentDatabase>().clearAllTables() }
     }
     //endregion
 

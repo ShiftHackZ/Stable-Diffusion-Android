@@ -1,14 +1,16 @@
 package com.shifthackz.aisdv1.presentation.screen.loader
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
@@ -38,15 +40,28 @@ private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ConfigurationLoaderState,
 ) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+    Box(
+        modifier = modifier.background(MaterialTheme.colorScheme.background),
     ) {
-        Text(
-            text = (state as? ConfigurationLoaderState.StatusNotification)?.statusNotification?.asString()
-                ?: ""
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Spacer(modifier = Modifier.fillMaxHeight(0.1f))
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(60.dp)
+                    .aspectRatio(1f),
+            )
+            Spacer(modifier = Modifier.fillMaxHeight(0.2f))
+            Text(
+                text = (state as? ConfigurationLoaderState.StatusNotification)?.statusNotification?.asString()
+                    ?: "",
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+        }
+
     }
 }
 

@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -100,7 +101,8 @@ private fun ScreenContent(
                                 Image(
                                     modifier = Modifier.size(24.dp),
                                     painter = painterResource(id = R.drawable.ic_share),
-                                    contentDescription = "Export"
+                                    contentDescription = "Export",
+                                    colorFilter = ColorFilter.tint(LocalContentColor.current),
                                 )
                             },
                         )

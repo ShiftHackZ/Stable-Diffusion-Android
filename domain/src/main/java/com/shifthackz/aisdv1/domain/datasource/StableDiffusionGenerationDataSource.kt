@@ -6,8 +6,8 @@ import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
-sealed interface StableDiffusionTextToImageDataSource {
-    interface Remote : StableDiffusionTextToImageDataSource {
+sealed interface StableDiffusionGenerationDataSource {
+    interface Remote : StableDiffusionGenerationDataSource {
         fun checkAvailability(): Completable
         fun checkAvailability(url: String): Completable
         fun textToImage(payload: TextToImagePayload): Single<AiGenerationResult>

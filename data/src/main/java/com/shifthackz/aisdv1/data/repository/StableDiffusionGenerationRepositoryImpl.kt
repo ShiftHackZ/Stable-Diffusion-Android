@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
-import com.shifthackz.aisdv1.domain.datasource.StableDiffusionTextToImageDataSource
+import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
@@ -10,7 +10,7 @@ import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationReposito
 import io.reactivex.rxjava3.core.Single
 
 class StableDiffusionGenerationRepositoryImpl(
-    private val remoteDataSource: StableDiffusionTextToImageDataSource.Remote,
+    private val remoteDataSource: StableDiffusionGenerationDataSource.Remote,
     private val localDataSource: GenerationResultDataSource.Local,
     private val preferenceManager: PreferenceManager,
 ) : StableDiffusionGenerationRepository {

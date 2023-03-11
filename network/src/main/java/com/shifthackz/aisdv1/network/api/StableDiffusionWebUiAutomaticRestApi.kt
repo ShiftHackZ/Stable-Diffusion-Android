@@ -15,37 +15,30 @@ import retrofit2.http.Url
 
 interface StableDiffusionWebUiAutomaticRestApi {
 
-    //    @GET(PATH_HEALTH_CHECK)
     @GET
     fun healthCheck(@Url url: String): Completable
 
-    //    @GET(PATH_SD_OPTIONS)
     @GET
     fun fetchConfiguration(@Url url: String): Single<ServerConfigurationRaw>
 
-    //    @POST(PATH_SD_OPTIONS)
     @POST
     fun updateConfiguration(
         @Url url: String,
         @Body request: ServerConfigurationRaw,
     ): Completable
 
-    //    @GET(PATH_SD_MODELS)
     @GET
     fun fetchSdModels(@Url url: String): Single<List<StableDiffusionModelRaw>>
 
-    //    @GET(PATH_SAMPLERS)
     @GET
     fun fetchSamplers(@Url url: String): Single<List<StableDiffusionSamplerRaw>>
 
-    //    @POST(PATH_TXT_TO_IMG)
     @POST
     fun textToImage(
         @Url url: String,
         @Body request: TextToImageRequest,
     ): Single<SdGenerationResponse>
 
-    //    @POST(PATH_IMG_TO_IMG)
     @POST
     fun imageToImage(
         @Url url: String,
@@ -53,7 +46,6 @@ interface StableDiffusionWebUiAutomaticRestApi {
     ): Single<SdGenerationResponse>
 
     companion object {
-        //const val PATH_HEALTH_CHECK = "/"
         const val PATH_SD_OPTIONS = "sdapi/v1/options"
         const val PATH_SD_MODELS = "sdapi/v1/sd-models"
         const val PATH_SAMPLERS = "sdapi/v1/samplers"

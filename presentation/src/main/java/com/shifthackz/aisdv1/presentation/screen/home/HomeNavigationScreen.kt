@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -40,6 +41,7 @@ class HomeNavigationScreen(
                                         modifier = item.icon.modifier,
                                         painter = painterResource(item.icon.resId),
                                         contentDescription = "",
+                                        colorFilter = ColorFilter.tint(LocalContentColor.current),
                                     )
                                     is HomeNavigationItem.Icon.Vector -> Icon(
                                         modifier = item.icon.modifier,

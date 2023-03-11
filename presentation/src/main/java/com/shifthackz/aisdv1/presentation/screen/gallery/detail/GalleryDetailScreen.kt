@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -93,7 +94,8 @@ private fun ScreenContent(
                                 Image(
                                     modifier = Modifier.size(24.dp),
                                     painter = painterResource(id = R.drawable.ic_share),
-                                    contentDescription = "Export"
+                                    contentDescription = "Export",
+                                    colorFilter = ColorFilter.tint(LocalContentColor.current),
                                 )
                             },
                         )
@@ -148,6 +150,7 @@ private fun GalleryDetailNavigationBar(
                         modifier = Modifier.size(24.dp),
                         painter = painterResource(tab.iconRes),
                         contentDescription = stringResource(id = R.string.gallery_tab_image),
+                        colorFilter = ColorFilter.tint(LocalContentColor.current),
                     )
                 },
                 onClick = { onTabSelected(tab) },
@@ -203,82 +206,91 @@ private fun GalleryDetailsTable(
                     .padding(16.dp)
                     .padding(paddingValues),
             ) {
-                val colorOdd = Color(0xFFefedf5)
-                val colorEven = Color(0xFFe6def5)
+                val colorOddBg = MaterialTheme.colorScheme.secondaryContainer
+                val colorOddText = MaterialTheme.colorScheme.onSecondaryContainer
+                val colorEvenBg = MaterialTheme.colorScheme.tertiaryContainer
+                val colorEvenText = MaterialTheme.colorScheme.onTertiaryContainer
                 GalleryDetailRow(
-                    modifier = Modifier.background(color = colorOdd),
+                    modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_date.asUiText(),
                     value = state.createdAt,
+                    color = colorOddText,
                 )
                 GalleryDetailRow(
-                    modifier = Modifier.background(color = colorEven),
+                    modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_type.asUiText(),
                     value = state.type,
+                    color = colorEvenText,
                 )
                 GalleryDetailRow(
-                    modifier = Modifier.background(color = colorOdd),
+                    modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_prompt.asUiText(),
                     value = state.prompt,
+                    color = colorOddText,
                 )
                 GalleryDetailRow(
-                    modifier = Modifier.background(color = colorEven),
+                    modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_negative_prompt.asUiText(),
                     value = state.negativePrompt,
+                    color = colorEvenText,
                 )
                 GalleryDetailRow(
-                    modifier = Modifier.background(color = colorOdd),
+                    modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_size.asUiText(),
                     value = state.size,
+                    color = colorOddText,
                 )
                 GalleryDetailRow(
-                    modifier = Modifier.background(color = colorEven),
+                    modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_sampling_steps.asUiText(),
                     value = state.samplingSteps,
+                    color = colorEvenText,
                 )
                 GalleryDetailRow(
-                    modifier = Modifier.background(color = colorOdd),
+                    modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_cfg.asUiText(),
                     value = state.cfgScale,
+                    color = colorOddText,
                 )
                 GalleryDetailRow(
-                    modifier = Modifier.background(color = colorEven),
+                    modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_restore_faces.asUiText(),
                     value = state.restoreFaces,
+                    color = colorEvenText,
                 )
                 GalleryDetailRow(
-                    modifier = Modifier.background(color = colorOdd),
+                    modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_sampler.asUiText(),
                     value = state.sampler,
+                    color = colorOddText,
                 )
                 GalleryDetailRow(
-                    modifier = Modifier.background(color = colorEven),
+                    modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_seed.asUiText(),
                     value = state.seed,
+                    color = colorEvenText,
                 )
             }
         },
         bottomBar = {
-            Column(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp)
                     .background(color = MaterialTheme.colorScheme.background)
             ) {
                 OutlinedButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 32.dp)
-                        .padding(bottom = 6.dp),
+                    modifier = Modifier.weight(1f),
                     onClick = { onExportParamsClick(state) },
                 ) {
                     Text(
                         text = stringResource(id = R.string.action_share_prompt)
                     )
                 }
+                Spacer(modifier = Modifier.width(8.dp))
                 Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 32.dp)
-                        .padding(bottom = 16.dp),
+                    modifier = Modifier.weight(1f),
                     onClick = onDeleteButtonClick,
                 ) {
                     Text(
@@ -297,15 +309,18 @@ private fun GalleryDetailRow(
     column2Weight: Float = 0.7f,
     name: UiText,
     value: UiText,
+    color: Color,
 ) {
     Row(modifier) {
         GalleryDetailCell(
             text = name,
-            modifier = Modifier.weight(column1Weight)
+            modifier = Modifier.weight(column1Weight),
+            color = color,
         )
         GalleryDetailCell(
             text = value,
-            modifier = Modifier.weight(column2Weight)
+            modifier = Modifier.weight(column2Weight),
+            color = color,
         )
     }
 }
@@ -314,10 +329,11 @@ private fun GalleryDetailRow(
 private fun GalleryDetailCell(
     modifier: Modifier = Modifier,
     text: UiText,
+    color: Color,
 ) {
     Text(
         text = text.asString(),
-        modifier = modifier
-            .padding(8.dp)
+        modifier = modifier.padding(8.dp),
+        color = color,
     )
 }

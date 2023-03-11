@@ -247,7 +247,10 @@ private fun ImagePickButtonBox(
 ) {
     Column(
         modifier = modifier
-            .background(Color.LightGray, shape = RoundedCornerShape(16.dp))
+            .background(
+                MaterialTheme.colorScheme.secondaryContainer,
+                shape = RoundedCornerShape(16.dp)
+            )
             .clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -261,6 +264,7 @@ private fun ImagePickButtonBox(
                 ImagePickButton.CAMERA -> Icons.Default.Camera
             },
             contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSecondaryContainer,
         )
         Text(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
@@ -269,6 +273,7 @@ private fun ImagePickButtonBox(
                 ImagePickButton.CAMERA -> "Take new photo"
             },
             fontSize = 17.sp,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
         )
     }
 }
