@@ -18,6 +18,7 @@ sealed interface SettingsState : MviState {
         val sdModels: List<String>,
         val sdModelSelected: String,
         val appVersion: String,
+        val showRateGooglePlay: Boolean,
     ) : SettingsState
 
     fun withDialog(value: Dialog): SettingsState = when (this) {

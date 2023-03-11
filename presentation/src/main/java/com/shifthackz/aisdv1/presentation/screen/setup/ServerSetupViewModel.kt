@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.GetServerUrlUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerUrlUseCase
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import java.util.concurrent.TimeUnit
 
 class ServerSetupViewModel(
     launchSource: ServerSetupLaunchSource,
@@ -47,6 +48,7 @@ class ServerSetupViewModel(
             .andThen(setServerUrlUseCase(currentState.serverUrl))
             .andThen(dataPreLoaderUseCase())
             .andThen(Single.just(Result.success(Unit)))
+            .timeout(30L, TimeUnit.SECONDS)
             .subscribeOnMainThread(schedulersProvider)
             .onErrorResumeNext { t ->
                 setServerUrlUseCase(currentState.originalSeverUrl)

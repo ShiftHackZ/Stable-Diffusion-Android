@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.utils
+package com.shifthackz.aisdv1.presentation.features
 
 import android.content.Context
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
@@ -6,7 +6,7 @@ import com.shz.imagepicker.imagepicker.ImagePicker
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
 import com.shz.imagepicker.imagepicker.model.GalleryPicker
 
-interface ImagePickerCapability {
+interface ImagePickerFeature {
 
     val fileProviderDescriptor: FileProviderDescriptor
 

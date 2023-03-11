@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import io.reactivex.rxjava3.core.Single
 
@@ -22,6 +23,7 @@ class SettingsStateProducer(
             sdModels = modelData.map { (model, _) -> model.title },
             sdModelSelected = modelData.firstOrNull { it.second }?.first?.title ?: "",
             appVersion = version,
+            showRateGooglePlay = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
         )
     }/*.onErrorResumeNext {
         Single.just(

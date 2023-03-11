@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.core.common.appbuild
 
 interface BuildInfoProvider {
+    val isDebug: Boolean
     val buildNumber: Int
     val version: String
     val buildType: BuildType

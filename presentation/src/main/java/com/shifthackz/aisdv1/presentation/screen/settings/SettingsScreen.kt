@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -30,20 +31,30 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.DropdownTextField
 import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class SettingsScreen(
     private val viewModel: SettingsViewModel,
     private val launchSetup: () -> Unit = {},
-) : MviScreen<SettingsState, EmptyEffect>(viewModel) {
+    private val launchInAppReview: () -> Unit = {},
+    private val launchUrl: (String) -> Unit = {},
+) : MviScreen<SettingsState, EmptyEffect>(viewModel), KoinComponent {
+
+    private val linksProvider: LinksProvider by inject()
 
     @Composable
     override fun Content() {
+
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = viewModel.state.collectAsState().value,
             onConfigurationItemClick = launchSetup,
             onSdModelItemClick = viewModel::launchSdModelSelectionDialog,
             onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
+            onRateUsItemClick = launchInAppReview,
+            onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
+            onGetSourceItemClick = { launchUrl(linksProvider.gitHubSourceUrl) },
             onSdModelSelected = viewModel::selectStableDiffusionModel,
             onClearAppCacheConfirm = viewModel::clearAppCache,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
@@ -62,6 +73,9 @@ private fun ScreenContent(
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
+    onRateUsItemClick: () -> Unit = {},
+    onServerInstructionsItemClick: () -> Unit = {},
+    onGetSourceItemClick: () -> Unit = {},
 
     onSdModelSelected: (String) -> Unit = {},
     onClearAppCacheConfirm: () -> Unit = {},
@@ -91,6 +105,9 @@ private fun ScreenContent(
                         onConfigurationItemClick = onConfigurationItemClick,
                         onSdModelItemClick = onSdModelItemClick,
                         onClearAppCacheItemClick = onClearAppCacheItemClick,
+                        onRateUsItemClick = onRateUsItemClick,
+                        onServerInstructionsItemClick = onServerInstructionsItemClick,
+                        onGetSourceItemClick = onGetSourceItemClick,
                     )
                 }
             }
@@ -149,20 +166,14 @@ private fun ContentSettingsState(
     state: SettingsState.Content,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
-    onLanguageItemClick: () -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
+    onRateUsItemClick: () -> Unit = {},
+    onServerInstructionsItemClick: () -> Unit = {},
+    onGetSourceItemClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
-        /*DropdownTextField(
-            modifier = Modifier.fillMaxWidth(),
-            label = "Selected model".asUiText(),
-            value = state.sdModelSelected,
-            items = state.sdModels,
-            onItemSelected = onSdModelSelected,
-        )*/
-
         val headerModifier = Modifier.padding(vertical = 16.dp)
         val itemModifier = Modifier
             .fillMaxWidth()
@@ -204,11 +215,11 @@ private fun ContentSettingsState(
             text = stringResource(id = R.string.settings_header_info),
             style = MaterialTheme.typography.headlineSmall,
         )
-        SettingsItem(
+        if (state.showRateGooglePlay) SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Filled.Star,
             text = R.string.settings_item_rate.asUiText(),
-            onClick = {},
+            onClick = onRateUsItemClick,
         )
         SettingsItem(
             modifier = itemModifier,
@@ -218,9 +229,15 @@ private fun ContentSettingsState(
         )
         SettingsItem(
             modifier = itemModifier,
+            startIcon = Icons.Default.Help,
+            text = R.string.settings_item_instructions.asUiText(),
+            onClick = onServerInstructionsItemClick,
+        )
+        SettingsItem(
+            modifier = itemModifier,
             startIcon = Icons.Default.Code,
             text = R.string.settings_item_source.asUiText(),
-            onClick = {},
+            onClick = onGetSourceItemClick,
         )
 
         Text(
@@ -297,6 +314,7 @@ private fun PreviewStateContent() {
             sdModels = listOf("Stable diffusion v1.5"),
             sdModelSelected = "Stable diffusion v1.5",
             appVersion = "1.0.0 (10)",
+            showRateGooglePlay = true,
         )
     )
 }

@@ -72,6 +72,7 @@
     <string name="settings_item_clear_cache">Clear app &amp; gallery cache</string>
 
     <string name="settings_item_policy">Privacy and legal policy</string>
+    <string name="settings_item_instructions">Server setup instructions</string>
     <string name="settings_item_source">Get source code</string>
     <string name="settings_item_rate">Rate us on Google Play</string>
 
