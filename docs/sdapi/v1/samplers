@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Default",
+    "aliases": ["Default"],
+    "options": {
+      "default": "Default"
+    }
+  }
+]
