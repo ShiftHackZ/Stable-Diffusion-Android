@@ -49,6 +49,7 @@ class SettingsScreen(
             onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
             onCheckUpdatesItemClick = onCheckUpdatesItemClick,
             onRateUsItemClick = launchInAppReview,
+            onPolicyItemClick = { launchUrl(linksProvider.privacyPolicyUrl) },
             onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
             onGetSourceItemClick = { launchUrl(linksProvider.gitHubSourceUrl) },
             onSdModelSelected = viewModel::selectStableDiffusionModel,
@@ -74,6 +75,7 @@ private fun ScreenContent(
     onClearAppCacheItemClick: () -> Unit = {},
     onCheckUpdatesItemClick: () -> Unit = {},
     onRateUsItemClick: () -> Unit = {},
+    onPolicyItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
     onGetSourceItemClick: () -> Unit = {},
 
@@ -109,6 +111,7 @@ private fun ScreenContent(
                         onClearAppCacheItemClick = onClearAppCacheItemClick,
                         onCheckUpdatesItemClick = onCheckUpdatesItemClick,
                         onRateUsItemClick = onRateUsItemClick,
+                        onPolicyItemClick = onPolicyItemClick,
                         onServerInstructionsItemClick = onServerInstructionsItemClick,
                         onGetSourceItemClick = onGetSourceItemClick,
                     )
@@ -174,6 +177,7 @@ private fun ContentSettingsState(
     onClearAppCacheItemClick: () -> Unit = {},
     onCheckUpdatesItemClick: () -> Unit = {},
     onRateUsItemClick: () -> Unit = {},
+    onPolicyItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
     onGetSourceItemClick: () -> Unit = {},
 ) {
@@ -263,7 +267,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             startIcon = Icons.Default.Gavel,
             text = R.string.settings_item_policy.asUiText(),
-            onClick = {},
+            onClick = onPolicyItemClick,
         )
         SettingsItem(
             modifier = itemModifier,

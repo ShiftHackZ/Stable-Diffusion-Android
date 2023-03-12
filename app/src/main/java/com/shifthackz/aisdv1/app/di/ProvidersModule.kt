@@ -32,6 +32,7 @@ val providersModule = module {
 
     single<LinksProvider> {
         object : LinksProvider {
+            override val privacyPolicyUrl: String = BuildConfig.POLICY_URL
             override val gitHubSourceUrl: String = BuildConfig.GITHUB_SOURCE_URL
             override val setupInstructionsUrl: String = BuildConfig.SETUP_INSTRUCTIONS_URL
             override val demoModeUrl: String = BuildConfig.DEMO_MODE_API_URL
