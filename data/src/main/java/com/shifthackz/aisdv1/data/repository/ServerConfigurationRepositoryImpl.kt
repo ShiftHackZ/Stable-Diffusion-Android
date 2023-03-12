@@ -6,7 +6,7 @@ import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
-class ServerConfigurationRepositoryImpl(
+internal class ServerConfigurationRepositoryImpl(
     private val remoteDataSource: ServerConfigurationDataSource.Remote,
     private val localDataSource: ServerConfigurationDataSource.Local,
 ) : ServerConfigurationRepository {

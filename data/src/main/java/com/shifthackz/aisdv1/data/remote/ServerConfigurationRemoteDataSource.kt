@@ -9,7 +9,7 @@ import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi.Companion.PATH_SD_OPTIONS
 import com.shifthackz.aisdv1.network.model.ServerConfigurationRaw
 
-class ServerConfigurationRemoteDataSource(
+internal class ServerConfigurationRemoteDataSource(
     private val serverUrlProvider: ServerUrlProvider,
     private val api: StableDiffusionWebUiAutomaticRestApi,
 ) : ServerConfigurationDataSource.Remote {

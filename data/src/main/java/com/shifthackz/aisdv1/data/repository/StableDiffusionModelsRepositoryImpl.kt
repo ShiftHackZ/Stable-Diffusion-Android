@@ -6,7 +6,7 @@ import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
-class StableDiffusionModelsRepositoryImpl(
+internal class StableDiffusionModelsRepositoryImpl(
     private val remoteDataSource: StableDiffusionModelsDataSource.Remote,
     private val localDataSource: StableDiffusionModelsDataSource.Local,
 ) : StableDiffusionModelsRepository {

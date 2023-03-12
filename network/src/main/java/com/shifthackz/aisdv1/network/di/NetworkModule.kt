@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.shifthackz.aisdv1.network.BuildConfig
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
+import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
 import com.shifthackz.aisdv1.network.qualifiers.*
 import okhttp3.OkHttpClient
@@ -83,4 +84,6 @@ val networkModule = module {
             .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAutomaticApiUrl)
             .create(StableDiffusionWebUiAutomaticRestApi::class.java)
     }
+
+    single { ConnectivityMonitor() }
 }

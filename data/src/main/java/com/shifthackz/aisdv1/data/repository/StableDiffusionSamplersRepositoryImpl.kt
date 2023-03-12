@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.data.repository
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
 
-class StableDiffusionSamplersRepositoryImpl(
+internal class StableDiffusionSamplersRepositoryImpl(
     private val remoteDataSource: StableDiffusionSamplersDataSource.Remote,
     private val localDataSource: StableDiffusionSamplersDataSource.Local,
 ) : StableDiffusionSamplersRepository {

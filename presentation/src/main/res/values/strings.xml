@@ -94,6 +94,10 @@
     <string name="gallery_empty_title">There is nothing here yet…</string>
     <string name="gallery_empty_sub_title">Try to generate something, and you will see your image here!</string>
 
+    <string name="status_connected">⚡️ Connected</string>
+    <string name="status_disconnected">️❌ Disconnected</string>
+    <string name="status_communicating">️Communicating…</string>
+
     <string name="error_title">Error</string>
     <string name="error_empty">Field can\'t be empty</string>
     <string name="error_empty_url">Server URL should not be empty</string>

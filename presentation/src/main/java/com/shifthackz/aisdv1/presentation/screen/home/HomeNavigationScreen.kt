@@ -3,6 +3,8 @@
 package com.shifthackz.aisdv1.presentation.screen.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -14,6 +16,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.core.ui.Screen
+import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
+import org.koin.androidx.compose.koinViewModel
 
 class HomeNavigationScreen(
     private val navItems: List<HomeNavigationItem> = emptyList(),
@@ -66,17 +70,21 @@ class HomeNavigationScreen(
                 }
             },
             content = { paddingValues ->
-                NavHost(
-                    modifier = Modifier.padding(paddingValues),
-                    navController = navController,
-                    startDestination = navItems.first().route,
-                ) {
-                    navItems.forEach { item ->
-                        composable(item.route) {
-                            item.content()
+                Column(Modifier.padding(paddingValues)) {
+                    ConnectivityComposable(koinViewModel()).Build()
+                    NavHost(
+                        modifier = Modifier.fillMaxSize(),
+                        navController = navController,
+                        startDestination = navItems.first().route,
+                    ) {
+                        navItems.forEach { item ->
+                            composable(item.route) {
+                                item.content()
+                            }
                         }
                     }
                 }
+
             }
         )
     }

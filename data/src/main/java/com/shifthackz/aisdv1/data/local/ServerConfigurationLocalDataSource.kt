@@ -9,7 +9,7 @@ import com.shifthackz.aisdv1.storage.db.cache.entity.ServerConfigurationEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
-class ServerConfigurationLocalDataSource(
+internal class ServerConfigurationLocalDataSource(
     private val dao: ServerConfigurationDao,
 ) : ServerConfigurationDataSource.Local {
 

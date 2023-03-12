@@ -9,7 +9,7 @@ import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionModelEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
-class StableDiffusionModelsLocalDataSource(
+internal class StableDiffusionModelsLocalDataSource(
     private val dao: StableDiffusionModelDao,
 ) : StableDiffusionModelsDataSource.Local {
 

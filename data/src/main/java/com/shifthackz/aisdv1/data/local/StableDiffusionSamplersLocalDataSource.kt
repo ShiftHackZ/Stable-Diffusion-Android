@@ -8,7 +8,7 @@ import com.shifthackz.aisdv1.storage.db.cache.dao.StableDiffusionSamplerDao
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionSamplerEntity
 import io.reactivex.rxjava3.core.Completable
 
-class StableDiffusionSamplersLocalDataSource(
+internal class StableDiffusionSamplersLocalDataSource(
     private val dao: StableDiffusionSamplerDao,
 ) : StableDiffusionSamplersDataSource.Local {
 
