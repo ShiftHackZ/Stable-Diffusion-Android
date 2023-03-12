@@ -17,6 +17,8 @@ data class ServerSetupState(
     val screenDialog: Dialog = Dialog.None,
     val serverUrl: String = "",
     val originalSeverUrl: String = "",
+    val demoMode: Boolean = false,
+    val originalDemoMode: Boolean = false,
     val validationError: UiText? = null,
 ) : MviState {
 

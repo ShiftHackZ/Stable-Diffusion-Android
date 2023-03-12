@@ -37,7 +37,8 @@
     <string name="hint_sd_model">SD Model</string>
 
     <string name="hint_server_setup_title">Provide your Stable Diffusion WebUI URL</string>
-    <string name="hint_valid_urls">Here are the examples of server URLs:\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
+    <string name="hint_valid_urls">Here are the examples of server URLs:\n\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
+    <string name="hint_demo_mode">This mode allows you to test the application behavior, even if you don\'t have Stable Diffusion WebUI server.\n\nIn demo mode app ignores user prompt, does not use AI server, and returns some mock images.</string>
 
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
@@ -76,6 +77,7 @@
     <string name="settings_item_sd_model">SD Model</string>
 
     <string name="settings_item_language">Language</string>
+    <string name="settings_item_demo">Demo mode</string>
     <string name="settings_item_monitor_connection">Monitor connection</string>
     <string name="settings_item_auto_save">Auto save images</string>
     <string name="settings_item_clear_cache">Clear app &amp; gallery cache</string>

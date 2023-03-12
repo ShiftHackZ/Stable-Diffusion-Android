@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.di
 
+import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryViewModel
 import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageViewModel
@@ -28,7 +29,8 @@ val viewModelModule = module {
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())
-        ServerSetupViewModel(launchSource, get(), get(), get(), get(), get(), get())
+        val demoModeUrl = get<LinksProvider>().demoModeUrl
+        ServerSetupViewModel(launchSource, get(), demoModeUrl, get(), get(), get(), get(), get())
     }
 
     viewModel { parameters ->

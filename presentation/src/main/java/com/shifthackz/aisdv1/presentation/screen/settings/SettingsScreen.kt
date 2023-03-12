@@ -2,28 +2,20 @@
 
 package com.shifthackz.aisdv1.presentation.screen.settings
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
@@ -31,6 +23,7 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.DropdownTextField
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -293,61 +286,6 @@ private fun ContentSettingsState(
             style = MaterialTheme.typography.labelMedium,
             textAlign = TextAlign.Center,
         )
-    }
-}
-
-@Composable
-private fun SettingsItem(
-    modifier: Modifier = Modifier,
-    startIcon: ImageVector,
-    text: UiText,
-    endValueText: UiText = UiText.empty,
-    endValueContent: (@Composable () -> Unit)? = null,
-    onClick: () -> Unit = {},
-) {
-    Row(
-        modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(color = MaterialTheme.colorScheme.primaryContainer)
-            .defaultMinSize(minHeight = 50.dp)
-            .clickable { onClick() },
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(
-                modifier = Modifier.padding(horizontal = 8.dp),
-                imageVector = startIcon,
-                contentDescription = null,
-            )
-            Text(
-                text = text.asString(),
-                style = MaterialTheme.typography.bodyLarge,
-            )
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            endValueContent?.invoke() ?: run {
-                val value = endValueText.asString()
-                if (value.isNotEmpty()) Text(
-                    modifier = Modifier.fillMaxWidth(0.5f),
-                    text = endValueText.asString(),
-                    style = MaterialTheme.typography.bodySmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Right,
-                )
-                Icon(
-                    modifier = Modifier.padding(horizontal = 6.dp),
-                    imageVector = Icons.Default.ChevronRight,
-                    contentDescription = null,
-                )
-            }
-        }
     }
 }
 

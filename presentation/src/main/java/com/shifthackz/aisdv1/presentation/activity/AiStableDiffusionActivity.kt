@@ -96,7 +96,8 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
                                             inclusive = true
                                         }
                                     }
-                                }
+                                },
+                                launchUrl = ::openUrl,
                             ).Build()
                         }
 
