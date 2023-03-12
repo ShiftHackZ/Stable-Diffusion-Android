@@ -13,6 +13,12 @@ class PreferenceManagerImpl(
             .putString(KEY_SERVER_URL, value)
             .apply()
 
+    override var demoMode: Boolean
+        get() = preferences.getBoolean(KEY_DEMO_MODE, false)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_DEMO_MODE, value)
+            .apply()
+
     override var monitorConnectivity: Boolean
         get() = preferences.getBoolean(KEY_MONITOR_CONNECTIVITY, true)
         set(value) = preferences.edit()
@@ -27,6 +33,7 @@ class PreferenceManagerImpl(
 
     companion object {
         private const val KEY_SERVER_URL = "key_server_url"
+        private const val KEY_DEMO_MODE = "key_demo_mode"
         private const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
         private const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
     }

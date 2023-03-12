@@ -23,6 +23,7 @@ def libraries = [
         ':core:ui',
         ':core:validation',
         ':data',
+        ':demo',
         ':domain',
         ':network',
         ':presentation',

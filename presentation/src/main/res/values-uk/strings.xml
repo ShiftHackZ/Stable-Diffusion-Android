@@ -37,7 +37,8 @@
     <string name="hint_sd_model">SD Модель</string>
 
     <string name="hint_server_setup_title">Укажіть свою URL-адресу Stable Diffusion WebUI</string>
-    <string name="hint_valid_urls">Ось приклади URL-адрес сервера:\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
+    <string name="hint_valid_urls">Ось приклади URL-адрес сервера:\n\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
+    <string name="hint_demo_mode">Цей режим дозволяє перевірити поведінку програми, навіть якщо у вас немає сервера Stable Diffusion WebUI.\n\nУ демонстраційному режимі програма ігнорує параметри генерації, не використовує сервер штучного інтелекту та повертає фіктивні зображення.</string>
 
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
@@ -76,6 +77,7 @@
     <string name="settings_item_sd_model">SD Модель</string>
 
     <string name="settings_item_language">Мова</string>
+    <string name="settings_item_demo">Демо режим</string>
     <string name="settings_item_monitor_connection">Моніторинг сервера</string>
     <string name="settings_item_auto_save">Авто-збереження фото</string>
     <string name="settings_item_clear_cache">Очистити кеш</string>

@@ -13,10 +13,10 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUs
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.settings.GetServerUrlUseCase
-import com.shifthackz.aisdv1.domain.usecase.settings.GetServerUrlUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.settings.SetServerUrlUseCase
-import com.shifthackz.aisdv1.domain.usecase.settings.SetServerUrlUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.version.CheckAppVersionUpdateUseCase
@@ -39,8 +39,8 @@ val domainModule = module {
     factoryOf(::DeleteGalleryItemUseCaseImpl) bind DeleteGalleryItemUseCase::class
     factoryOf(::GetStableDiffusionSamplersUseCaseImpl) bind GetStableDiffusionSamplersUseCase::class
     factoryOf(::SplashNavigationUseCaseImpl) bind SplashNavigationUseCase::class
-    factoryOf(::GetServerUrlUseCaseImpl) bind GetServerUrlUseCase::class
-    factoryOf(::SetServerUrlUseCaseImpl) bind SetServerUrlUseCase::class
+    factoryOf(::GetConfigurationUseCaseImpl) bind GetConfigurationUseCase::class
+    factoryOf(::SetServerConfigurationUseCaseImpl) bind SetServerConfigurationUseCase::class
     factoryOf(::TestConnectivityUseCaseImpl) bind TestConnectivityUseCase::class
     factoryOf(::SaveGenerationResultUseCaseImpl) bind SaveGenerationResultUseCase::class
     factoryOf(::ObserveSeverConnectivityUseCaseImpl) bind ObserveSeverConnectivityUseCase::class

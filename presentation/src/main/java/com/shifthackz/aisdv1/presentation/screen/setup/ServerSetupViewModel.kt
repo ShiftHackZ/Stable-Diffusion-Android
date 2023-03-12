@@ -7,18 +7,19 @@ import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
-import com.shifthackz.aisdv1.domain.usecase.settings.GetServerUrlUseCase
-import com.shifthackz.aisdv1.domain.usecase.settings.SetServerUrlUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import java.util.concurrent.TimeUnit
 
 class ServerSetupViewModel(
     launchSource: ServerSetupLaunchSource,
-    getServerUrlUseCase: GetServerUrlUseCase,
+    getConfigurationUseCase: GetConfigurationUseCase,
+    private val demoModeUrl: String,
     private val urlValidator: UrlValidator,
     private val testConnectivityUseCase: TestConnectivityUseCase,
-    private val setServerUrlUseCase: SetServerUrlUseCase,
+    private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<ServerSetupState, ServerSetupEffect>() {
@@ -28,11 +29,16 @@ class ServerSetupViewModel(
     )
 
     init {
-        !getServerUrlUseCase()
+        !getConfigurationUseCase()
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(Throwable::printStackTrace) { url ->
+            .subscribeBy(Throwable::printStackTrace) { (url, demoMode) ->
                 currentState
-                    .copy(serverUrl = url, originalSeverUrl = url)
+                    .copy(
+                        serverUrl = url,
+                        originalSeverUrl = url,
+                        demoMode = demoMode,
+                        originalDemoMode = demoMode,
+                    )
                     .let(::setState)
             }
     }
@@ -41,17 +47,26 @@ class ServerSetupViewModel(
         .copy(serverUrl = value, validationError = null)
         .let(::setState)
 
+    fun updateDemoMode(value: Boolean) = currentState
+        .copy(demoMode = value)
+        .let(::setState)
+
     fun connectToServer() {
         if (!validate()) return
-        !testConnectivityUseCase(currentState.serverUrl)
+        val demoMode = currentState.demoMode
+        val connectUrl = if (demoMode) demoModeUrl else currentState.serverUrl
+        !testConnectivityUseCase(connectUrl)
             .doOnSubscribe { setScreenDialog(ServerSetupState.Dialog.Communicating) }
-            .andThen(setServerUrlUseCase(currentState.serverUrl))
+            .andThen(setServerConfigurationUseCase(connectUrl, demoMode))
             .andThen(dataPreLoaderUseCase())
             .andThen(Single.just(Result.success(Unit)))
             .timeout(30L, TimeUnit.SECONDS)
             .subscribeOnMainThread(schedulersProvider)
             .onErrorResumeNext { t ->
-                setServerUrlUseCase(currentState.originalSeverUrl)
+                setServerConfigurationUseCase(
+                    currentState.originalSeverUrl,
+                    currentState.originalDemoMode
+                )
                     .andThen(Single.just(Result.failure(t)))
             }
             .subscribeBy(Throwable::printStackTrace) { result ->
@@ -74,6 +89,7 @@ class ServerSetupViewModel(
     fun dismissScreenDialog() = setScreenDialog(ServerSetupState.Dialog.None)
 
     private fun validate(): Boolean {
+        if (currentState.demoMode) return true
         val validation = urlValidator(currentState.serverUrl)
         currentState.copy(validationError = validation.mapToUi()).let(::setState)
         return validation.isValid

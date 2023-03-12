@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.app.di.providersModule
 import com.shifthackz.aisdv1.core.imageprocessing.di.imageProcessingModule
 import com.shifthackz.aisdv1.core.validation.di.validatorsModule
 import com.shifthackz.aisdv1.data.di.dataModule
+import com.shifthackz.aisdv1.demo.di.demoModule
 import com.shifthackz.aisdv1.domain.di.domainModule
 import com.shifthackz.aisdv1.network.di.networkModule
 import com.shifthackz.aisdv1.presentation.di.presentationModule
@@ -23,6 +24,7 @@ class AiStableDiffusionClientApp : Application() {
     private fun initializeKoin() = startKoin {
         androidContext(this@AiStableDiffusionClientApp)
         modules(
+            demoModule,
             preferenceModule,
             providersModule,
             domainModule,

@@ -12,6 +12,7 @@ android {
         applicationId "com.shifthackz.aisdv1.app"
 
         buildConfigField "String", "UPDATE_API_URL", "\"https://sdai.moroz.cc\""
+        buildConfigField "String", "DEMO_MODE_API_URL", "\"https://sdai.moroz.cc\""
         buildConfigField "String", "GITHUB_SOURCE_URL", "\"https://github.com/ShiftHackZ/Stable-Diffusion-Android\""
         buildConfigField "String", "SETUP_INSTRUCTIONS_URL", "\"https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki\""
     }
@@ -38,6 +39,7 @@ dependencies {
     implementation project(":storage")
     implementation project(":domain")
     implementation project(":data")
+    implementation project(":demo")
     implementation di.koinCore
     implementation di.koinAndroid
     implementation di.koinCompose
