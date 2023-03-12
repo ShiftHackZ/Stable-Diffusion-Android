@@ -1,9 +1,9 @@
 [
   {
-    "name": "Default",
-    "aliases": ["Default"],
+    "name": "Euler a",
+    "aliases": ["Euler a"],
     "options": {
-      "default": "Default"
+      "default": "Euler a"
     }
   }
 ]
