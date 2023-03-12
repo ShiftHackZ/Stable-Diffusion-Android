@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.widget
+package com.shifthackz.aisdv1.presentation.widget.dialog
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

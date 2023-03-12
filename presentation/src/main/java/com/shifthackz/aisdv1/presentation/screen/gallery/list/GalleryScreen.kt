@@ -28,12 +28,13 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifthackz.aisdv1.core.extensions.items
+import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.widget.DecisionInteractiveDialog
-import com.shifthackz.aisdv1.presentation.widget.ErrorDialog
-import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import kotlinx.coroutines.flow.Flow
 import java.io.File
 
@@ -112,7 +113,21 @@ private fun ScreenContent(
             content = { paddingValues ->
                 when {
                     emptyStatePredicate() -> GalleryEmptyState(Modifier.fillMaxSize())
-                    lazyGalleryItems.itemCount == 0 -> Unit
+                    lazyGalleryItems.itemCount == 0 -> LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        (1..6).map {
+                            item(it) {
+                                GalleryUiItemShimmer()
+                            }
+                        }
+                    }
                     else -> LazyVerticalGrid(
                         modifier = Modifier
                             .fillMaxSize()
@@ -124,11 +139,13 @@ private fun ScreenContent(
                         state = listState,
                     ) {
                         items(lazyGalleryItems) { galleryItemUi ->
-                            galleryItemUi?.run {
+                            if (galleryItemUi != null) {
                                 GalleryUiItem(
-                                    item = this,
+                                    item = galleryItemUi,
                                     onClick = onGalleryItemClick,
                                 )
+                            } else {
+                                GalleryUiItemShimmer()
                             }
                         }
                     }
@@ -171,6 +188,17 @@ private fun GalleryUiItem(
         bitmap = item.bitmap.asImageBitmap(),
         contentScale = ContentScale.Crop,
         contentDescription = "gallery_item",
+    )
+}
+
+@Composable
+private fun GalleryUiItemShimmer() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .clip(RoundedCornerShape(12.dp))
+            .shimmer()
     )
 }
 

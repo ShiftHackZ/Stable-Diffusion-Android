@@ -26,10 +26,10 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import com.shifthackz.aisdv1.presentation.widget.ErrorDialog
-import com.shifthackz.aisdv1.presentation.widget.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
-import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
 
 class ImageToImageScreen(

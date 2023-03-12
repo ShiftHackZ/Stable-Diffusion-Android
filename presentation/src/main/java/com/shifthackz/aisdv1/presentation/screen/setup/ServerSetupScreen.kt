@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.widget.ErrorDialog
-import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 
 class ServerSetupScreen(
     private val viewModel: ServerSetupViewModel,

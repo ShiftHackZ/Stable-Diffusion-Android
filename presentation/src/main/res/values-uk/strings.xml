@@ -32,6 +32,7 @@
     <string name="hint_seed">Seed ідентифікатор</string>
     <string name="hint_denoising_strength">Сила шумозаглушення: %1$s</string>
     <string name="hint_server_url">URL-адреса сервера</string>
+    <string name="hint_sd_model">SD Модель</string>
 
     <string name="hint_server_setup_title">Укажіть свою URL-адресу Stable Diffusion WebUI</string>
     <string name="hint_valid_urls">Ось приклади URL-адрес сервера:\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
@@ -51,6 +52,8 @@
     <string name="title_gallery_details">Результат генерації</string>
     <string name="title_settings">Параметри</string>
     <string name="title_server_setup">Конфігурація</string>
+    <string name="title_select_sd_model">Оберіть SD ML модель</string>
+    <string name="title_clear_app_cache">Очистити кеш додатку</string>
 
     <string name="gallery_info_field_date">Створене</string>
     <string name="gallery_info_field_type">Тип</string>
@@ -88,6 +91,7 @@
 
     <string name="interaction_export_title">Експорт галереї</string>
     <string name="interaction_export_sub_title">Ця функція експортує всі зображення галереї у архів *.zip. Цей процес може тривати довго, якщо у вас багато зображень. Бажаєте продовжити?</string>
+    <string name="interaction_cache_sub_title">Це призведе до скидання налаштувань програми та видалення всіх створених зображень. Ви бажаєте продовжити?</string>
 
     <string name="interaction_delete_generation_title">Видалити зображення</string>
     <string name="interaction_delete_generation_sub_title">Ви впевнені, що хочете остаточно видалити це зображення?</string>
