@@ -3,11 +3,17 @@ package com.shifthackz.aisdv1.presentation.widget.connectivity
 import com.shifthackz.aisdv1.core.ui.MviState
 
 sealed interface ConnectivityState : MviState {
-    object Uninitialized : ConnectivityState
-    object Connected : ConnectivityState
-    object Disconnected : ConnectivityState
+
+    val enabled: Boolean
+
+    data class Uninitialized(override val enabled: Boolean = true) : ConnectivityState
+    data class Connected(override val enabled: Boolean = true) : ConnectivityState
+    data class Disconnected(override val enabled: Boolean = true) : ConnectivityState
 
     companion object {
-        fun consume(value: Boolean): ConnectivityState = if (value) Connected else Disconnected
+        fun consume(value: Pair<Boolean, Boolean>): ConnectivityState {
+            val (connected, enabled) = value
+            return if (connected) Connected(enabled) else Disconnected(enabled)
+        }
     }
 }

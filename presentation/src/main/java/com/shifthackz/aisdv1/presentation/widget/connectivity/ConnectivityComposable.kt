@@ -28,7 +28,6 @@ class ConnectivityComposable(
             modifier = Modifier.fillMaxWidth(),
             state = viewModel.state.collectAsState().value,
         )
-
     }
 
     @Composable
@@ -40,10 +39,11 @@ private fun ConnectivityWidgetState(
     modifier: Modifier = Modifier,
     state: ConnectivityState,
 ) {
+    if (!state.enabled) return
     val uiColor = when (state) {
-        ConnectivityState.Connected -> MaterialTheme.colorScheme.primaryContainer
-        ConnectivityState.Disconnected -> MaterialTheme.colorScheme.errorContainer
-        ConnectivityState.Uninitialized -> MaterialTheme.colorScheme.secondaryContainer
+        is ConnectivityState.Connected -> MaterialTheme.colorScheme.primaryContainer
+        is ConnectivityState.Disconnected -> MaterialTheme.colorScheme.errorContainer
+        is ConnectivityState.Uninitialized -> MaterialTheme.colorScheme.secondaryContainer
     }
     Column(
         modifier = modifier.padding(top = 4.dp),
@@ -55,15 +55,15 @@ private fun ConnectivityWidgetState(
                 .padding(vertical = 4.dp, horizontal = 16.dp),
             text = stringResource(
                 id = when (state) {
-                    ConnectivityState.Connected -> R.string.status_connected
-                    ConnectivityState.Disconnected -> R.string.status_disconnected
-                    ConnectivityState.Uninitialized -> R.string.status_communicating
+                    is ConnectivityState.Connected -> R.string.status_connected
+                    is ConnectivityState.Disconnected -> R.string.status_disconnected
+                    is ConnectivityState.Uninitialized -> R.string.status_communicating
                 }
             ),
             color = when (state) {
-                ConnectivityState.Connected -> MaterialTheme.colorScheme.onPrimaryContainer
-                ConnectivityState.Disconnected -> MaterialTheme.colorScheme.onErrorContainer
-                ConnectivityState.Uninitialized -> MaterialTheme.colorScheme.onSurface
+                is ConnectivityState.Connected -> MaterialTheme.colorScheme.onPrimaryContainer
+                is ConnectivityState.Disconnected -> MaterialTheme.colorScheme.onErrorContainer
+                is ConnectivityState.Uninitialized -> MaterialTheme.colorScheme.onSurface
             }
         )
     }
@@ -74,7 +74,7 @@ private fun ConnectivityWidgetState(
 private fun PreviewConnectivityComposableConnected() {
     ConnectivityWidgetState(
         Modifier.fillMaxWidth(),
-        ConnectivityState.Connected,
+        ConnectivityState.Connected(true),
     )
 }
 
@@ -83,7 +83,7 @@ private fun PreviewConnectivityComposableConnected() {
 private fun PreviewConnectivityComposableDisconnected() {
     ConnectivityWidgetState(
         Modifier.fillMaxWidth(),
-        ConnectivityState.Disconnected,
+        ConnectivityState.Disconnected(true),
     )
 }
 
@@ -92,6 +92,6 @@ private fun PreviewConnectivityComposableDisconnected() {
 private fun PreviewConnectivityComposableUninitialized() {
     ConnectivityWidgetState(
         Modifier.fillMaxWidth(),
-        ConnectivityState.Uninitialized,
+        ConnectivityState.Uninitialized(true),
     )
 }

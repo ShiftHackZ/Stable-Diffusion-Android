@@ -16,7 +16,6 @@ class ConnectivityMonitor {
                 connection.requestMethod = "GET"
                 try {
                     val code = connection.responseCode
-
                     if (code == 200) {
                         emitter.onNext(true)
                     } else {
