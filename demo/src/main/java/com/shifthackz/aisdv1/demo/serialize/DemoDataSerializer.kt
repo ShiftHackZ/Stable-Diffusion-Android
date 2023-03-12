@@ -9,11 +9,6 @@ class DemoDataSerializer(private val contextProvider: () -> Context) {
 
     fun readDemoAssets(): List<String> {
         val rawString = contextProvider().resources.assets
-            .apply {
-                this.list("")?.forEach {
-                    println("DBG0 --> $it")
-                }
-            }
             .open(FILENAME)
             .bufferedReader()
             .use(BufferedReader::readText)

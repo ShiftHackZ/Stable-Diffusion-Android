@@ -27,6 +27,29 @@ android {
         buildConfigField "String", "SETUP_INSTRUCTIONS_URL", "\"https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki\""
     }
 
+    signingConfigs {
+        release {
+            def tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
+            def allFilesFromDir = new File(tmpFilePath).listFiles()
+
+            if (allFilesFromDir != null) {
+                def keystoreFile = allFilesFromDir.first()
+                keystoreFile.renameTo("$project.rootDir/keystore/aisdv1.jks")
+            }
+
+            storeFile = file("$project.rootDir/keystore/aisdv1.jks")
+            storePassword System.getenv("AISDV1_STORE_PASSWORD")
+            keyAlias System.getenv("AISDV1_KEY_ALIAS")
+            keyPassword System.getenv("AISDV1_KEY_PASSWORD")
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
     flavorDimensions "type"
     productFlavors {
         foss {
