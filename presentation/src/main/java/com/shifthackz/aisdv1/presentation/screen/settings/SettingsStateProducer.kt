@@ -28,6 +28,7 @@ class SettingsStateProducer(
             autoSaveAiResults = preferenceManager.autoSaveAiResults,
             appVersion = version,
             showRateGooglePlay = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
+            showGitHubLink = buildInfoProvider.buildType == BuildType.FOSS,
         )
     }
 }

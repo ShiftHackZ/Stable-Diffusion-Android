@@ -21,6 +21,7 @@ sealed interface SettingsState : MviState {
         val autoSaveAiResults: Boolean,
         val appVersion: String,
         val showRateGooglePlay: Boolean,
+        val showGitHubLink: Boolean,
     ) : SettingsState
 
     fun withDialog(value: Dialog): SettingsState = when (this) {

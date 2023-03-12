@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "457071394222",
+    "project_id": "stable-diffusion-android",
+    "storage_bucket": "stable-diffusion-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457071394222:android:df6ae3f3e640d255c39c3f",
+        "android_client_info": {
+          "package_name": "com.shifthackz.aisdv1.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457071394222-sre4vtc3rcsla98f22vqcpvui4rsg9a2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shifthackz.aisdv1.app",
+            "certificate_hash": "c00bf2d57403fbf23efbe7b1de6fecd58bf4cffa"
+          }
+        },
+        {
+          "client_id": "457071394222-k0bu4kaj80h5jntcud5fjoppavt4atbt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHdAfmzEBUyxaNk_xjz25Z9-TPm7bwfSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457071394222-k0bu4kaj80h5jntcud5fjoppavt4atbt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

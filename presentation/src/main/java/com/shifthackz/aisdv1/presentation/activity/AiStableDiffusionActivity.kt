@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.extensions.openMarket
 import com.shifthackz.aisdv1.core.extensions.openUrl
+import com.shifthackz.aisdv1.domain.feature.AdFeature
 import com.shifthackz.aisdv1.presentation.features.ImagePickerFeature
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
@@ -37,6 +38,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
 
     private val gallerySharing: GallerySharing by inject()
     private val galleryDetailSharing: GalleryDetailSharing by inject()
+    private val adFeature: AdFeature by inject()
 
     private val versionCheckerViewModel: VersionCheckerViewModel by viewModel()
 
@@ -44,6 +46,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        adFeature.initialize(this)
         setContent {
             val navController = rememberNavController()
             AiStableDiffusionAppTheme {

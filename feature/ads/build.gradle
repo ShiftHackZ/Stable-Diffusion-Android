@@ -1,0 +1,33 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: "$project.rootDir/gradle/common.gradle"
+
+android {
+    namespace 'com.shifthackz.aisdv1.feature.ads'
+    buildTypes {
+        release {
+            buildConfigField "String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-5994265132349884/9250961993\""
+        }
+        debug {
+            buildConfigField "String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\""
+        }
+    }
+    flavorDimensions "type"
+    productFlavors {
+        foss {
+            dimension "type"
+        }
+        playstore {
+            dimension "type"
+        }
+    }
+}
+
+dependencies {
+    implementation project(":domain")
+    implementation di.koinCore
+    playstoreImplementation proprietary.playServicesAds
+}

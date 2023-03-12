@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.app
 
 import android.app.Application
+import com.shifthackz.aisdv1.app.di.featureModule
 import com.shifthackz.aisdv1.app.di.preferenceModule
 import com.shifthackz.aisdv1.app.di.providersModule
 import com.shifthackz.aisdv1.core.imageprocessing.di.imageProcessingModule
@@ -25,6 +26,7 @@ class AiStableDiffusionClientApp : Application() {
         androidContext(this@AiStableDiffusionClientApp)
         modules(
             demoModule,
+            featureModule,
             preferenceModule,
             providersModule,
             domainModule,
