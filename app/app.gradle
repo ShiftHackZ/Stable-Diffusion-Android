@@ -34,10 +34,10 @@ android {
 
             if (allFilesFromDir != null) {
                 def keystoreFile = allFilesFromDir.first()
-                keystoreFile.renameTo("$project.rootDir/keystore/aisdv1.jks")
+                keystoreFile.renameTo("keystore/aisdv1.jks")
             }
 
-            storeFile = file("$project.rootDir/keystore/aisdv1.jks")
+            storeFile = file("keystore/aisdv1.jks")
             storePassword System.getenv("AISDV1_STORE_PASSWORD")
             keyAlias System.getenv("AISDV1_KEY_ALIAS")
             keyPassword System.getenv("AISDV1_KEY_PASSWORD")
