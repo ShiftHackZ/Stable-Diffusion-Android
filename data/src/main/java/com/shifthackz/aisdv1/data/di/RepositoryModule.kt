@@ -12,4 +12,5 @@ val repositoryModule = module {
     factoryOf(::StableDiffusionSamplersRepositoryImpl) bind StableDiffusionSamplersRepository::class
     factoryOf(::ServerConfigurationRepositoryImpl) bind ServerConfigurationRepository::class
     factoryOf(::GenerationResultRepositoryImpl) bind GenerationResultRepository::class
+    factoryOf(::AppVersionRepositoryImpl) bind AppVersionRepository::class
 }

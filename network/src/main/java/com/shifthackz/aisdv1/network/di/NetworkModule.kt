@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.shifthackz.aisdv1.network.BuildConfig
+import com.shifthackz.aisdv1.network.api.StableDiffusionAppUpdateRestApi
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
@@ -83,6 +84,12 @@ val networkModule = module {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAutomaticApiUrl)
             .create(StableDiffusionWebUiAutomaticRestApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppUpdateApiUrl)
+            .create(StableDiffusionAppUpdateRestApi::class.java)
     }
 
     single { ConnectivityMonitor() }

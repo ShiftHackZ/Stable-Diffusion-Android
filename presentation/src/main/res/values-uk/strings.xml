@@ -22,6 +22,8 @@
     <string name="action_share_prompt">Поділитися запитом</string>
     <string name="action_close">Закрити</string>
     <string name="action_save">Зберегти</string>
+    <string name="action_update">Оновити</string>
+    <string name="action_skip">Пропустити</string>
 
     <string name="hint_prompt">Запит</string>
     <string name="hint_prompt_negative">Негативний запит</string>
@@ -81,6 +83,7 @@
     <string name="settings_item_policy">Політика конфіденційності</string>
     <string name="settings_item_instructions">Як налаштувати сервер</string>
     <string name="settings_item_source">Вихідний код</string>
+    <string name="settings_item_check_updates">Перевірити оновлення</string>
     <string name="settings_item_rate">Оцініть додаток в Google Play</string>
 
     <string name="communicating_progress_title">Зачекайте, йде коммунікація із сервером…</string>
@@ -92,6 +95,11 @@
     <string name="interaction_export_title">Експорт галереї</string>
     <string name="interaction_export_sub_title">Ця функція експортує всі зображення галереї у архів *.zip. Цей процес може тривати довго, якщо у вас багато зображень. Бажаєте продовжити?</string>
     <string name="interaction_cache_sub_title">Це призведе до скидання налаштувань програми та видалення всіх створених зображень. Ви бажаєте продовжити?</string>
+
+    <string name="update_no_need_title">Немає оновлень</string>
+    <string name="update_no_need_sub_title">Ви використовуєте найновішу версію додатку</string>
+    <string name="update_title">Доступне оновлення</string>
+    <string name="update_sub_title">Ми випустили оновлену версію %1$s для вас. Бажаєте оновити додаток?</string>
 
     <string name="interaction_delete_generation_title">Видалити зображення</string>
     <string name="interaction_delete_generation_sub_title">Ви впевнені, що хочете остаточно видалити це зображення?</string>

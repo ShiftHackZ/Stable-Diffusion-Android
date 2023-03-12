@@ -13,7 +13,8 @@ ext {
     pagingVersion = '3.1.1'
     pagingComposeVersion = '1.0.0-alpha18'
     imagePickerVersion = 'v2.0.2'
-    playReviewVersion = '2.0.1'
+
+    testJunitVersion = '4.13.2'
 
     androidx = [
             core                        : "androidx.core:core-ktx:1.9.0",
@@ -38,7 +39,6 @@ ext {
             gson                         : "com.google.code.gson:gson:2.9.1",
             material                     : "com.google.android.material:material:1.8.0",
             accompanistSystemUiController: "com.google.accompanist:accompanist-systemuicontroller:0.28.0",
-            playReview                   : "com.google.android.play:review-ktx:$playReviewVersion",
     ]
     di = [
             koinCore   : "io.insert-koin:koin-core:$koinVersion",
@@ -67,5 +67,8 @@ ext {
     ]
     ui = [
             imagePicker: "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion"
+    ]
+    test = [
+            junit: "junit:junit:$testJunitVersion"
     ]
 }
