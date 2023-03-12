@@ -2,6 +2,7 @@
 
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -95,6 +96,7 @@ private fun ScreenContent(
             bottomBar = {
                 Button(
                     modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
                         .fillMaxWidth()
                         .padding(horizontal = 32.dp)
                         .padding(bottom = 16.dp),

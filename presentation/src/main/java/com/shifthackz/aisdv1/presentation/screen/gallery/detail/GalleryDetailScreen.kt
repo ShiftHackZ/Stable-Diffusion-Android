@@ -277,10 +277,10 @@ private fun GalleryDetailsTable(
         bottomBar = {
             Row(
                 modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.background)
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp)
-                    .background(color = MaterialTheme.colorScheme.background)
+                    .padding(bottom = 16.dp, top = 2.dp),
             ) {
                 OutlinedButton(
                     modifier = Modifier.weight(1f),
