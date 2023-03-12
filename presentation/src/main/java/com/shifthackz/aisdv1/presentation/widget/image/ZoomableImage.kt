@@ -61,7 +61,7 @@ fun ZoomableImage(
                     offsetX += pan.x * zoom
                     offsetY += pan.y * zoom
                 }
-            }
+            },
     ) {
         val imageModifier = Modifier
             .align(Alignment.Center)

@@ -9,25 +9,12 @@
         android:name=".AiStableDiffusionClientApp"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
-        android:theme="@style/Theme.AiSdCompose">
+        android:theme="@style/Theme.AiSdCompose"
+        android:usesCleartextTraffic="true">
 
         <activity
             android:name="com.shifthackz.aisdv1.presentation.activity.AiStableDiffusionActivity"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:taskAffinity=""
-            android:windowSoftInputMode="adjustResize">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
-        </activity>
-
-        <activity
-            android:name="com.shifthackz.aisdv1.presentation.activity.TestCrashActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
@@ -39,6 +26,18 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.shifthackz.aisdv1.presentation.activity.TestCrashActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""
+            android:windowSoftInputMode="adjustResize">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -49,5 +48,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
         </provider>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5994265132349884~9645142847" />
+
     </application>
 </manifest>

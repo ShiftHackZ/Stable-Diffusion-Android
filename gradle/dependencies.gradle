@@ -15,6 +15,7 @@ ext {
     imagePickerVersion = 'v2.0.2'
 
     firebaseBomVersion = '31.2.3'
+    playServicesAdsVersion = '21.5.0'
 
     testJunitVersion = '4.13.2'
 
@@ -74,6 +75,7 @@ ext {
             firebaseBom        : "com.google.firebase:firebase-bom:$firebaseBomVersion",
             firebaseAnalytics  : "com.google.firebase:firebase-analytics-ktx",
             firebaseCrashlytics: "com.google.firebase:firebase-crashlytics-ktx",
+            playServicesAds    : "com.google.android.gms:play-services-ads:$playServicesAdsVersion",
     ]
     test = [
             junit: "junit:junit:$testJunitVersion",
