@@ -6,12 +6,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+#       - name: Decode Keystore
+#         id: decode_keystore
+#         uses: timheuer/base64-to-file@v1
+#         with:
+#           fileName: 'keystore/your_signing_keystore.jks'
+#           encodedString: ${{ secrets.KEYSTORE }}
       - name: Decode Keystore
-        id: decode_keystore
-        uses: timheuer/base64-to-file@v1
-        with:
-          fileName: 'keystore/your_signing_keystore.jks'
-          encodedString: ${{ secrets.KEYSTORE }}
+        env:
+            ENCODED_STRING: ${{ secrets.KEYSTORE }}
+        run: |
+            TMP_KEYSTORE_FILE_PATH="${RUNNER_TEMP}"/keystore
+            mkdir "${TMP_KEYSTORE_FILE_PATH}"
+            echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/aisdv1.jks
       - uses: actions/checkout@v2
       - name: set up JDK 11.0.15
         uses: actions/setup-java@v1
