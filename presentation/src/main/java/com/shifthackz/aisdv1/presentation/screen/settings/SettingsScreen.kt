@@ -50,7 +50,8 @@ class SettingsScreen(
             state = viewModel.state.collectAsState().value,
             onConfigurationItemClick = launchSetup,
             onSdModelItemClick = viewModel::launchSdModelSelectionDialog,
-            onAutoSaveAiResultChanged = viewModel::changeAutoSaveAuResultSetting,
+            onMonitorConnectivityChanged = viewModel::changeMonitorConnectivitySetting,
+            onAutoSaveAiResultChanged = viewModel::changeAutoSaveAiResultSetting,
             onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
             onRateUsItemClick = launchInAppReview,
             onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
@@ -72,6 +73,7 @@ private fun ScreenContent(
     state: SettingsState,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
+    onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
 
     onClearAppCacheItemClick: () -> Unit = {},
@@ -106,6 +108,7 @@ private fun ScreenContent(
                         state = state,
                         onConfigurationItemClick = onConfigurationItemClick,
                         onSdModelItemClick = onSdModelItemClick,
+                        onMonitorConnectivityChanged = onMonitorConnectivityChanged,
                         onAutoSaveAiResultChanged = onAutoSaveAiResultChanged,
                         onClearAppCacheItemClick = onClearAppCacheItemClick,
                         onRateUsItemClick = onRateUsItemClick,
@@ -170,6 +173,7 @@ private fun ContentSettingsState(
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
+    onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
     onRateUsItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
@@ -206,6 +210,19 @@ private fun ContentSettingsState(
             modifier = headerModifier,
             text = stringResource(id = R.string.settings_header_app),
             style = MaterialTheme.typography.headlineSmall,
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            startIcon = Icons.Default.Refresh,
+            text = R.string.settings_item_monitor_connection.asUiText(),
+            onClick = { onAutoSaveAiResultChanged(!state.autoSaveAiResults) },
+            endValueContent = {
+                Switch(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    checked = state.monitorConnectivity,
+                    onCheckedChange = onMonitorConnectivityChanged,
+                )
+            }
         )
         SettingsItem(
             modifier = itemModifier,
@@ -332,6 +349,7 @@ private fun PreviewStateContent() {
             sdModels = listOf("Stable diffusion v1.5"),
             sdModelSelected = "Stable diffusion v1.5",
             appVersion = "1.0.0 (10)",
+            monitorConnectivity = true,
             autoSaveAiResults = true,
             showRateGooglePlay = true,
         )

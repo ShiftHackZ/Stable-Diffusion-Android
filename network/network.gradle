@@ -19,4 +19,5 @@ dependencies {
     implementation okhttp.logging
     implementation di.koinCore
     implementation reactive.rxkotlin
+    implementation reactive.rxnetwork
 }

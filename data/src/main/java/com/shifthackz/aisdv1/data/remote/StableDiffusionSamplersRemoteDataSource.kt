@@ -7,7 +7,7 @@ import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi.Companion.PATH_SAMPLERS
 import com.shifthackz.aisdv1.network.model.StableDiffusionSamplerRaw
 
-class StableDiffusionSamplersRemoteDataSource(
+internal class StableDiffusionSamplersRemoteDataSource(
     private val serverUrlProvider: ServerUrlProvider,
     private val api: StableDiffusionWebUiAutomaticRestApi,
 ) : StableDiffusionSamplersDataSource.Remote {

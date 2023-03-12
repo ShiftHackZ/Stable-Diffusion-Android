@@ -9,7 +9,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import io.reactivex.rxjava3.core.Single
 
-class StableDiffusionGenerationRepositoryImpl(
+internal class StableDiffusionGenerationRepositoryImpl(
     private val remoteDataSource: StableDiffusionGenerationDataSource.Remote,
     private val localDataSource: GenerationResultDataSource.Local,
     private val preferenceManager: PreferenceManager,

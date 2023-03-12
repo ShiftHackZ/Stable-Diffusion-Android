@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.widget
+package com.shifthackz.aisdv1.presentation.widget.image
 
 import android.graphics.Bitmap
 import androidx.annotation.DrawableRes

@@ -8,7 +8,7 @@ import com.shifthackz.aisdv1.storage.db.persistent.dao.GenerationResultDao
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
 import io.reactivex.rxjava3.core.Single
 
-class GenerationResultLocalDataSource(
+internal class GenerationResultLocalDataSource(
     private val dao: GenerationResultDao,
 ) : GenerationResultDataSource.Local {
 

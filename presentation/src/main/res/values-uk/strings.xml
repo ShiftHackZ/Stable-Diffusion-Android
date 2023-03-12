@@ -71,6 +71,7 @@
     <string name="settings_item_sd_model">SD Модель</string>
 
     <string name="settings_item_language">Мова</string>
+    <string name="settings_item_monitor_connection">Моніторинг сервера</string>
     <string name="settings_item_auto_save">Авто-збереження фото</string>
     <string name="settings_item_clear_cache">Очистити кеш</string>
 
@@ -93,6 +94,10 @@
 
     <string name="gallery_empty_title">Тут ще нічого немає…</string>
     <string name="gallery_empty_sub_title">Спробуйте створити щось, і ви побачите своє зображення тут!</string>
+
+    <string name="status_connected">⚡️ З\'єднано</string>
+    <string name="status_disconnected">️❌ Від\'єднано</string>
+    <string name="status_communicating">Оновлення…</string>
 
     <string name="error_title">Помилка</string>
     <string name="error_empty">Поле не може бути порожнім</string>

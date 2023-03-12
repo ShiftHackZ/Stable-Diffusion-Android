@@ -54,7 +54,12 @@ class SettingsViewModel(
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(Throwable::printStackTrace, ::setState)
 
-    fun changeAutoSaveAuResultSetting(value: Boolean) = (currentState as? SettingsState.Content)
+    fun changeMonitorConnectivitySetting(value: Boolean) = (currentState as? SettingsState.Content)
+        ?.also { preferenceManager.monitorConnectivity = value }
+        ?.copy(monitorConnectivity = value)
+        ?.let(::setState)
+
+    fun changeAutoSaveAiResultSetting(value: Boolean) = (currentState as? SettingsState.Content)
         ?.also { preferenceManager.autoSaveAiResults = value }
         ?.copy(autoSaveAiResults = value)
         ?.let(::setState)

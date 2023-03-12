@@ -11,7 +11,7 @@ import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi.Co
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi.Companion.PATH_TXT_TO_IMG
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 
-class StableDiffusionGenerationRemoteDataSource(
+internal class StableDiffusionGenerationRemoteDataSource(
     private val serverUrlProvider: ServerUrlProvider,
     private val api: StableDiffusionWebUiAutomaticRestApi,
 ) : StableDiffusionGenerationDataSource.Remote {

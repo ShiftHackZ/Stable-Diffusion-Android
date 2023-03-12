@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
@@ -24,8 +25,9 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.DecisionInteractiveDialog
-import com.shifthackz.aisdv1.presentation.widget.ZoomableImage
-import com.shifthackz.aisdv1.presentation.widget.ZoomableImageSource
+import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
+import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
+
 import java.io.File
 
 class GalleryDetailScreen(
@@ -285,7 +287,8 @@ private fun GalleryDetailsTable(
                     onClick = { onExportParamsClick(state) },
                 ) {
                     Text(
-                        text = stringResource(id = R.string.action_share_prompt)
+                        text = stringResource(id = R.string.action_share_prompt),
+                        textAlign = TextAlign.Center,
                     )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
@@ -294,7 +297,8 @@ private fun GalleryDetailsTable(
                     onClick = onDeleteButtonClick,
                 ) {
                     Text(
-                        text = stringResource(id = R.string.action_delete_image)
+                        text = stringResource(id = R.string.action_delete_image),
+                        textAlign = TextAlign.Center,
                     )
                 }
             }

@@ -24,18 +24,10 @@ class SettingsStateProducer(
         SettingsState.Content(
             sdModels = modelData.map { (model, _) -> model.title },
             sdModelSelected = modelData.firstOrNull { it.second }?.first?.title ?: "",
+            monitorConnectivity = preferenceManager.monitorConnectivity,
             autoSaveAiResults = preferenceManager.autoSaveAiResults,
             appVersion = version,
             showRateGooglePlay = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
         )
-    }/*.onErrorResumeNext {
-        Single.just(
-            SettingsState.Content(
-                sdModels = emptyList(),
-                sdModelSelected = "Unknown",
-                appVersion = "Unknown",
-                localization = Localization.ENGLISH
-            ) as SettingsState
-        )
-    }*/
+    }
 }

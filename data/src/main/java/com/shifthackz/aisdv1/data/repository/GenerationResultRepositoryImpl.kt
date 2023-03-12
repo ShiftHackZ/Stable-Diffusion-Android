@@ -4,7 +4,7 @@ import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 
-class GenerationResultRepositoryImpl(
+internal class GenerationResultRepositoryImpl(
     private val localDataSource: GenerationResultDataSource.Local,
 ) : GenerationResultRepository {
 
