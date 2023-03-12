@@ -213,7 +213,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             startIcon = Icons.Default.Refresh,
             text = R.string.settings_item_monitor_connection.asUiText(),
-            onClick = { onAutoSaveAiResultChanged(!state.autoSaveAiResults) },
+            onClick = { onMonitorConnectivityChanged(!state.monitorConnectivity) },
             endValueContent = {
                 Switch(
                     modifier = Modifier.padding(horizontal = 8.dp),

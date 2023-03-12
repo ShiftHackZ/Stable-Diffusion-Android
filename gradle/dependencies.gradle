@@ -14,6 +14,8 @@ ext {
     pagingComposeVersion = '1.0.0-alpha18'
     imagePickerVersion = 'v2.0.2'
 
+    firebaseBomVersion = '31.2.3'
+
     testJunitVersion = '4.13.2'
 
     androidx = [
@@ -68,7 +70,12 @@ ext {
     ui = [
             imagePicker: "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion"
     ]
+    proprietary = [
+            firebaseBom        : "com.google.firebase:firebase-bom:$firebaseBomVersion",
+            firebaseAnalytics  : "com.google.firebase:firebase-analytics-ktx",
+            firebaseCrashlytics: "com.google.firebase:firebase-crashlytics-ktx",
+    ]
     test = [
-            junit: "junit:junit:$testJunitVersion"
+            junit: "junit:junit:$testJunitVersion",
     ]
 }

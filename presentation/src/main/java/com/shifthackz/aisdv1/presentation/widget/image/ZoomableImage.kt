@@ -44,7 +44,7 @@ fun ZoomableImage(
     val width = configuration.screenWidthDp
 
     val scale = remember { mutableStateOf(calculateInitialScale(source, width)) }
-    val rotationState = remember { mutableStateOf(1f) }
+//    val rotationState = remember { mutableStateOf(1f) }
 
     var offsetX by remember { mutableStateOf(0f) }
     var offsetY by remember { mutableStateOf(0f) }
@@ -55,7 +55,7 @@ fun ZoomableImage(
             .fillMaxSize()
             .background(backgroundColor)
             .pointerInput(Unit) {
-                detectTransformGestures { centroid, pan, zoom, rotation ->
+                detectTransformGestures { _, pan, zoom, _ ->
                     scale.value *= zoom
                     //rotationState.value += rotation
                     offsetX += pan.x * zoom
@@ -81,7 +81,7 @@ fun ZoomableImage(
             is ZoomableImageSource.Resource -> Image(
                 modifier = imageModifier,
                 contentDescription = null,
-                painter = painterResource(id = source.resId)
+                painter = painterResource(id = source.resId),
             )
         }
     }

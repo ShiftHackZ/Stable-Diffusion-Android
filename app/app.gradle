@@ -2,6 +2,16 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services' apply false
+    id 'com.google.firebase.crashlytics' apply false
+}
+
+def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
+def isGooglePlay = !(taskRequests.contains("Foss") || taskRequests.contains("foss"))
+
+if (isGooglePlay) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'com.google.firebase.crashlytics'
 }
 
 apply from: "$project.rootDir/gradle/common.gradle"
@@ -45,6 +55,10 @@ dependencies {
     implementation di.koinCompose
     implementation reactive.rxkotlin
     implementation reactive.rxandroid
+
+    playstoreImplementation platform(proprietary.firebaseBom)
+    playstoreImplementation proprietary.firebaseAnalytics
+    playstoreImplementation proprietary.firebaseCrashlytics
 }
 
 kapt {
