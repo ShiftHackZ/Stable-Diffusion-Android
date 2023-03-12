@@ -2,8 +2,8 @@ package com.shifthackz.aisdv1.presentation.di
 
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.testing.FakeReviewManager
-import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.common.appbuild.BuildType
+import com.shifthackz.aisdv1.domain.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.domain.appbuild.BuildType
 import com.shifthackz.aisdv1.presentation.features.InAppGooglePlayReview
 import com.shifthackz.aisdv1.presentation.features.InAppReviewFeature
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailBitmapExporter

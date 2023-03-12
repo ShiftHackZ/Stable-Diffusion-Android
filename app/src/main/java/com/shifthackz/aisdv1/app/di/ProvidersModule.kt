@@ -1,11 +1,12 @@
 package com.shifthackz.aisdv1.app.di
 
 import com.shifthackz.aisdv1.app.BuildConfig
-import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.domain.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.domain.appbuild.BuildType
+import com.shifthackz.aisdv1.domain.entity.AppVersion
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
@@ -25,6 +26,7 @@ val providersModule = module {
     single<ApiUrlProvider> {
         object : ApiUrlProvider {
             override val stableDiffusionAutomaticApiUrl: String = DEFAULT_SERVER_URL
+            override val stableDiffusionAppUpdateApiUrl: String = BuildConfig.UPDATE_API_URL
         }
     }
 
@@ -39,7 +41,7 @@ val providersModule = module {
         object : BuildInfoProvider {
             override val isDebug: Boolean = BuildConfig.DEBUG
             override val buildNumber: Int = BuildConfig.VERSION_CODE
-            override val version: String = BuildConfig.VERSION_NAME
+            override val version: AppVersion = AppVersion(BuildConfig.VERSION_NAME)
             override val buildType: BuildType = BuildType.parse(BuildConfig.BUILD_FLAVOR_TYPE)
 
             override fun toString(): String = buildString {

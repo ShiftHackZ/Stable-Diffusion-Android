@@ -19,6 +19,8 @@ import com.shifthackz.aisdv1.domain.usecase.settings.SetServerUrlUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerUrlUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.version.CheckAppVersionUpdateUseCase
+import com.shifthackz.aisdv1.domain.usecase.version.CheckAppVersionUpdateUseCaseImpl
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -42,4 +44,5 @@ val domainModule = module {
     factoryOf(::TestConnectivityUseCaseImpl) bind TestConnectivityUseCase::class
     factoryOf(::SaveGenerationResultUseCaseImpl) bind SaveGenerationResultUseCase::class
     factoryOf(::ObserveSeverConnectivityUseCaseImpl) bind ObserveSeverConnectivityUseCase::class
+    factoryOf(::CheckAppVersionUpdateUseCaseImpl) bind CheckAppVersionUpdateUseCase::class
 }
