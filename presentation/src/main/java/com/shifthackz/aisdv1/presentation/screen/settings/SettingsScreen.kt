@@ -37,6 +37,7 @@ import org.koin.core.component.inject
 class SettingsScreen(
     private val viewModel: SettingsViewModel,
     private val launchSetup: () -> Unit = {},
+    private val onCheckUpdatesItemClick: () -> Unit = {},
     private val launchInAppReview: () -> Unit = {},
     private val launchUrl: (String) -> Unit = {},
 ) : MviScreen<SettingsState, EmptyEffect>(viewModel), KoinComponent {
@@ -53,6 +54,7 @@ class SettingsScreen(
             onMonitorConnectivityChanged = viewModel::changeMonitorConnectivitySetting,
             onAutoSaveAiResultChanged = viewModel::changeAutoSaveAiResultSetting,
             onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
+            onCheckUpdatesItemClick = onCheckUpdatesItemClick,
             onRateUsItemClick = launchInAppReview,
             onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
             onGetSourceItemClick = { launchUrl(linksProvider.gitHubSourceUrl) },
@@ -77,6 +79,7 @@ private fun ScreenContent(
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
 
     onClearAppCacheItemClick: () -> Unit = {},
+    onCheckUpdatesItemClick: () -> Unit = {},
     onRateUsItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
     onGetSourceItemClick: () -> Unit = {},
@@ -111,6 +114,7 @@ private fun ScreenContent(
                         onMonitorConnectivityChanged = onMonitorConnectivityChanged,
                         onAutoSaveAiResultChanged = onAutoSaveAiResultChanged,
                         onClearAppCacheItemClick = onClearAppCacheItemClick,
+                        onCheckUpdatesItemClick = onCheckUpdatesItemClick,
                         onRateUsItemClick = onRateUsItemClick,
                         onServerInstructionsItemClick = onServerInstructionsItemClick,
                         onGetSourceItemClick = onGetSourceItemClick,
@@ -175,6 +179,7 @@ private fun ContentSettingsState(
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
+    onCheckUpdatesItemClick: () -> Unit = {},
     onRateUsItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
     onGetSourceItemClick: () -> Unit = {},
@@ -248,6 +253,12 @@ private fun ContentSettingsState(
             modifier = headerModifier,
             text = stringResource(id = R.string.settings_header_info),
             style = MaterialTheme.typography.headlineSmall,
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            startIcon = Icons.Filled.GetApp,
+            text = R.string.settings_item_check_updates.asUiText(),
+            onClick = onCheckUpdatesItemClick,
         )
         if (state.showRateGooglePlay) SettingsItem(
             modifier = itemModifier,

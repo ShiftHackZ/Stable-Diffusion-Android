@@ -27,6 +27,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     shareGalleryFile: (File) -> Unit = {},
     openGalleryItemDetails: (Long) -> Unit = {},
     launchSetup: () -> Unit = {},
+    launchUpdateCheck: () -> Unit = {},
     launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
 ) {
@@ -37,7 +38,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                     txt2ImgTab(),
                     img2imgTab(pickImage, takePhoto),
                     galleryTab(shareGalleryFile, openGalleryItemDetails),
-                    settingsTab(launchSetup, launchInAppReview, launchUrl),
+                    settingsTab(launchSetup, launchUpdateCheck, launchInAppReview, launchUrl),
                 ),
             ).Build()
         }.apply { this.route = route }
@@ -100,6 +101,7 @@ private fun galleryTab(
 @Composable
 private fun settingsTab(
     launchSetup: () -> Unit = {},
+    launchUpdateCheck: () -> Unit = {},
     launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
 ) = HomeNavigationItem(
@@ -112,6 +114,7 @@ private fun settingsTab(
         SettingsScreen(
             viewModel = koinViewModel(),
             launchSetup = launchSetup,
+            onCheckUpdatesItemClick = launchUpdateCheck,
             launchInAppReview = launchInAppReview,
             launchUrl = launchUrl,
         ).Build()

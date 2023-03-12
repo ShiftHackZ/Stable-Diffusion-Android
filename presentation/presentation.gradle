@@ -33,7 +33,6 @@ dependencies {
     implementation androidx.pagingRx3
 
     implementation google.material
-    implementation google.playReview
 
     implementation reactive.rxjava
     implementation reactive.rxkotlin

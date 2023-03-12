@@ -18,7 +18,7 @@ class VersionCheckerViewModel(
         checkForUpdate()
     }
 
-    private fun checkForUpdate() = !checkAppVersionUpdateUseCase()
+    fun checkForUpdate(notifyIfSame: Boolean = false) = !checkAppVersionUpdateUseCase()
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(Throwable::printStackTrace) { result ->
             val state = when (result) {
@@ -26,7 +26,8 @@ class VersionCheckerViewModel(
                     VersionCheckerState.UpdatePopUp(result)
                 }
                 CheckAppVersionUpdateUseCase.Result.NoUpdateNeeded -> {
-                    VersionCheckerState.Idle
+                    if (notifyIfSame) VersionCheckerState.UpdatePopUp(result)
+                    else VersionCheckerState.Idle
                 }
             }
             setState(state)
