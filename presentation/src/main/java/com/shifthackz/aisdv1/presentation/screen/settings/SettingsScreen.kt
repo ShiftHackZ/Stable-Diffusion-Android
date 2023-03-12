@@ -28,9 +28,9 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.widget.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.DropdownTextField
-import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -130,7 +130,7 @@ private fun ScreenContent(
                     )
                 }
                 DecisionInteractiveDialog(
-                    title = "Select sd model".asUiText(),
+                    title = R.string.title_select_sd_model.asUiText(),
                     text = UiText.empty,
                     confirmActionResId = R.string.action_select,
                     onConfirmAction = { onSdModelSelected(selectedItem) },
@@ -138,7 +138,7 @@ private fun ScreenContent(
                     content = {
                         DropdownTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            label = "Selected model".asUiText(),
+                            label = R.string.hint_sd_model.asUiText(),
                             value = selectedItem,
                             items = (state.screenDialog as SettingsState.Dialog.SelectSdModel).models,
                             onItemSelected = { selectedItem = it },
@@ -147,8 +147,8 @@ private fun ScreenContent(
                 )
             }
             SettingsState.Dialog.ClearAppCache -> DecisionInteractiveDialog(
-                title = "Clear app cache".asUiText(),
-                text = "This will reset app settings and delete all the generated images. Do you want to proceed?".asUiText(),
+                title = R.string.title_clear_app_cache.asUiText(),
+                text = R.string.interaction_cache_sub_title.asUiText(),
                 confirmActionResId = R.string.yes,
                 dismissActionResId = R.string.no,
                 onDismissRequest = onDismissScreenDialog,

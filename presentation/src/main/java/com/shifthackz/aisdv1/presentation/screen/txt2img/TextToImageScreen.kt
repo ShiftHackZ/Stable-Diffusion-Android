@@ -17,10 +17,10 @@ import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.widget.ErrorDialog
-import com.shifthackz.aisdv1.presentation.widget.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
-import com.shifthackz.aisdv1.presentation.widget.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 
 class TextToImageScreen(
     private val viewModel: TextToImageViewModel,
