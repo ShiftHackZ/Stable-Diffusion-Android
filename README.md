@@ -19,3 +19,17 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
   - Unique **seed** input
   - Dynamic **sampling steps** in range from 1 to 150
   - Dynamic **CFG scale** in range from 1.0 to 30.0
+  - **Restore faces** option
+  - ( Img2Img ONLY ) : Image selection from device gallery _(requires user permission)_
+  - ( Img2Img ONLY ) : Capture input image from camera _(requires user permission)_
+- In-app Gallery, stored locally, contains all AI generated images
+  - Displays generated images grid
+  - Image detail view: Zoom, Pinch, Generation Info. 
+  - Export all gallery to **.zip** file
+  - Export single photo to **.zip** file
+- Settings
+  - WebUI server URL
+  - Active SD Model selection
+  - Server availability monitoring (http-ping method)
+  - Enable/Disable auto-saving of generated images
+  - Clear gallery / app cache
