@@ -60,3 +60,11 @@ User interface of the app is translated for languages listed in this table:
 
 Any contributions to the translations are welcome.
 
+## Donate
+
+Main **foss** flavor of the app is open source, and you are welcome to use it for free. 
+Only **play** flavor contains small ad-banner at the bottom navigation.
+
+The donation is optional, if you'd like to say thanks and show a little support, here is the button:
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/shifthackz)
