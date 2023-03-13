@@ -47,3 +47,16 @@ You can have it running either on your own hardware with modern GPU from Nvidia 
 
 If for some reason you have no ability to run your server instance, you can toggle the **Demo mode** swith on server setup page: it will allow you to test the app and get familiar with it, but it will return some mock images instead of AI-generated ones.
 
+## Supported languages
+
+App uses the language provided by OS default settings.
+
+User interface of the app is translated for languages listed in this table:
+
+| Language | Since version | Status |
+| --- | --- | --- |
+| English | 0.1.0 | `Translated` |
+| Ukrainian | 0.1.0 | `Translated` |
+
+Any contributions to the translations are welcome.
+
