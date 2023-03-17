@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.domain.feature
+package com.shifthackz.aisdv1.domain.feature.ad
 
 import android.app.Activity
 import android.content.Context

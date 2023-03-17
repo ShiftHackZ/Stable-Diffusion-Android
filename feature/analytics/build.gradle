@@ -1,0 +1,26 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: "$project.rootDir/gradle/common.gradle"
+
+android {
+    namespace 'com.shifthackz.aisdv1.feature.analytics'
+    flavorDimensions "type"
+    productFlavors {
+        foss {
+            dimension "type"
+        }
+        playstore {
+            dimension "type"
+        }
+    }
+}
+
+dependencies {
+    implementation project(":domain")
+    implementation di.koinCore
+    playstoreImplementation platform(proprietary.firebaseBom)
+    playstoreImplementation proprietary.firebaseAnalytics
+}

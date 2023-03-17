@@ -6,11 +6,13 @@ import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
+import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
 import com.shz.imagepicker.imagepicker.model.PickedResult
 import io.reactivex.rxjava3.core.Single
@@ -24,6 +26,7 @@ class ImageToImageViewModel(
     private val dimensionValidator: DimensionValidator,
     private val preferenceManager: PreferenceManager,
     private val schedulersProvider: SchedulersProvider,
+    private val analytics: Analytics,
 ) : GenerationMviViewModel<ImageToImageState, ImageToImageEffect>(
     getStableDiffusionSamplersUseCase,
     schedulersProvider,
@@ -76,10 +79,11 @@ class ImageToImageViewModel(
                     )
                 },
                 onSuccess = { ai ->
+                    analytics.logEvent(AiImageGenerated(ai))
                     setActiveDialog(
                         ImageToImageState.Dialog.Image(
                             ai,
-                            preferenceManager.autoSaveAiResults
+                            preferenceManager.autoSaveAiResults,
                         )
                     )
                 }

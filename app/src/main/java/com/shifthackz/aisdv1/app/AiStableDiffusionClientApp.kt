@@ -26,7 +26,7 @@ class AiStableDiffusionClientApp : Application() {
         androidContext(this@AiStableDiffusionClientApp)
         modules(
             demoModule,
-            featureModule,
+            *featureModule,
             preferenceModule,
             providersModule,
             domainModule,

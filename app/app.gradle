@@ -73,6 +73,7 @@ dependencies {
     implementation project(":storage")
     implementation project(":domain")
     implementation project(":feature:ads")
+    implementation project(":feature:analytics")
     implementation project(":data")
     implementation project(":demo")
     implementation di.koinCore

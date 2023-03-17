@@ -32,7 +32,7 @@ import org.koin.core.component.inject
 class ServerSetupScreen(
     private val viewModel: ServerSetupViewModel,
     private val onNavigateBack: () -> Unit = {},
-    private val onServerSetupComplete: () -> Unit,
+    private val onServerSetupComplete: () -> Unit = {},
     private val launchUrl: (String) -> Unit = {},
 ) : MviScreen<ServerSetupState, ServerSetupEffect>(viewModel), KoinComponent {
 

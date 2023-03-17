@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class HomeNavigationItem(
     val name: String,
     val route: String,
-    val icon: HomeNavigationItem.Icon,
+    val icon: Icon,
     val content: @Composable () -> Unit,
 ) {
     sealed interface Icon {

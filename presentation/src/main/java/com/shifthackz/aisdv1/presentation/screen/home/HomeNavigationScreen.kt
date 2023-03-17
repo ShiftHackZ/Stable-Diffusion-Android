@@ -14,7 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.core.ui.Screen
-import com.shifthackz.aisdv1.domain.feature.AdFeature
+import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
 import org.koin.androidx.compose.koinViewModel
@@ -22,6 +22,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class HomeNavigationScreen(
+    private val viewModel: HomeNavigationViewModel,
     private val navItems: List<HomeNavigationItem> = emptyList(),
 ) : Screen(), KoinComponent {
 
@@ -76,6 +77,7 @@ class HomeNavigationScreen(
                                         launchSingleTop = true
                                         restoreState = true
                                     }
+                                    viewModel.logNavItemClickEvent(item)
                                 },
                             )
                         }

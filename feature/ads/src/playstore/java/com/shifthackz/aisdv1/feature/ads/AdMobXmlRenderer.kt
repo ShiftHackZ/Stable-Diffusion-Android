@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
-import com.shifthackz.aisdv1.domain.feature.AdFeature
+import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 
 class AdMobXmlRenderer {
 

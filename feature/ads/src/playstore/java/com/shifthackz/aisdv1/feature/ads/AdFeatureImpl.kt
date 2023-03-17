@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import androidx.annotation.LayoutRes
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAdView
-import com.shifthackz.aisdv1.domain.feature.AdFeature
+import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 
 class AdFeatureImpl : AdFeature {
 

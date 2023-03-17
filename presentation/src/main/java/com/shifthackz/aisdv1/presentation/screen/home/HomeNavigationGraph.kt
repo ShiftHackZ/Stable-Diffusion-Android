@@ -34,6 +34,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     addDestination(
         ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
             HomeNavigationScreen(
+                viewModel = koinViewModel(),
                 navItems = listOf(
                     txt2ImgTab(),
                     img2imgTab(pickImage, takePhoto),

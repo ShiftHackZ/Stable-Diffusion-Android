@@ -23,7 +23,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
-import com.shifthackz.aisdv1.domain.feature.AdFeature
+import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
