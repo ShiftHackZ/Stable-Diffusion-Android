@@ -47,7 +47,9 @@ val providersModule = module {
             override val buildType: BuildType = BuildType.parse(BuildConfig.BUILD_FLAVOR_TYPE)
 
             override fun toString(): String = buildString {
-                append("$version ($buildNumber)")
+                append("$version")
+                if (BuildConfig.DEBUG) append("-dev")
+                append(" ($buildNumber)")
                 buildType.takeIf { it == BuildType.FOSS }?.let { append(" $it") }
             }
         }
