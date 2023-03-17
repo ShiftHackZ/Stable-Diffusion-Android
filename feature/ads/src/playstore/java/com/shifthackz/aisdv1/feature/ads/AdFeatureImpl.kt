@@ -2,53 +2,34 @@ package com.shifthackz.aisdv1.feature.ads
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
-import android.view.View
+import android.view.LayoutInflater
+import androidx.annotation.LayoutRes
 import com.google.android.gms.ads.*
+import com.google.android.gms.ads.nativead.NativeAdView
 import com.shifthackz.aisdv1.domain.feature.AdFeature
 
 class AdFeatureImpl : AdFeature {
 
-    override fun initialize(activity: Activity) {
-        MobileAds.initialize(activity)
+    override fun initialize(activity: Activity) = MobileAds.initialize(activity)
+
+    override fun getHomeScreenBannerAdView(context: Context) = AdFeature.Ad(
+        view = inflateNativeAdView(context, R.layout.native_small_ad_view),
+        id = BuildConfig.BANNER_AD_UNIT_ID,
+    )
+
+    override fun loadAd(ad: AdFeature.Ad) {
+        inflateAdLoader(ad)?.loadAd(AdRequest.Builder().build())
     }
 
-    override fun getBannerAdView(context: Context): View {
-        val adId = BuildConfig.BANNER_AD_UNIT_ID
-        val adView = AdView(context)
-        adView.setAdSize(AdSize.BANNER)
-        adView.adUnitId = adId
-        if (BuildConfig.DEBUG) adView.adListener = object : AdListener() {
-            override fun onAdClicked() {
-                Log.d(this::class.simpleName, "[$adId] onAdClicked")
-            }
-
-            override fun onAdClosed() {
-                Log.d(this::class.simpleName, "[$adId] onAdClosed")
-            }
-
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                Log.d(this::class.simpleName, "[$adId] onAdFailedToLoad : $adError")
-            }
-
-            override fun onAdImpression() {
-                Log.d(this::class.simpleName, "[$adId] onAdImpression")
-            }
-
-            override fun onAdLoaded() {
-                Log.d(this::class.simpleName, "[$adId] onAdLoaded")
-            }
-
-            override fun onAdOpened() {
-                Log.d(this::class.simpleName, "[$adId] onAdOpened")
-            }
-        }
-        return adView
+    private fun inflateNativeAdView(context: Context, @LayoutRes layoutId: Int): NativeAdView {
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        return inflater.inflate(layoutId, null) as NativeAdView
     }
 
-    override fun loadAd(view: View) {
-        if (view !is AdView) return
-        val adRequest = AdRequest.Builder().build()
-        view.loadAd(adRequest)
+    private fun inflateAdLoader(ad: AdFeature.Ad) = ad.view?.context?.let { ctx ->
+        AdLoader.Builder(ctx, ad.id)
+            .forNativeAd { nativeAd -> AdMobRenderer().invoke(ad, nativeAd) }
+            .applyLoggableAdListener(ad.id)
+            .build()
     }
 }

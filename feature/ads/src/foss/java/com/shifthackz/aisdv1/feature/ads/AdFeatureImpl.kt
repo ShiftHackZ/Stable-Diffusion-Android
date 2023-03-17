@@ -9,7 +9,7 @@ class AdFeatureImpl : AdFeature {
 
     override fun initialize(activity: Activity) = Unit
 
-    override fun getBannerAdView(context: Context): View? = null
+    override fun getHomeScreenBannerAdView(context: Context) = AdFeature.Ad()
 
-    override fun loadAd(view: View) = Unit
+    override fun loadAd(ad: AdFeature.Ad) = Unit
 }

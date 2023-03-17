@@ -9,10 +9,11 @@ android {
     namespace 'com.shifthackz.aisdv1.feature.ads'
     buildTypes {
         release {
-            buildConfigField "String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-5994265132349884/9250961993\""
+            buildConfigField "String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-5994265132349884~9645142847\""
         }
         debug {
-            buildConfigField "String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\""
+//            buildConfigField "String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-5994265132349884/9338284416\""
+            buildConfigField "String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\""
         }
     }
     flavorDimensions "type"

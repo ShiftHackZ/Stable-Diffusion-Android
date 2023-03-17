@@ -17,6 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.core.ui.Screen
 import com.shifthackz.aisdv1.domain.feature.AdFeature
+import com.shifthackz.aisdv1.presentation.widget.ad.HomeBannedAd
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.component.KoinComponent
@@ -36,16 +37,12 @@ class HomeNavigationScreen(
         Scaffold(
             bottomBar = {
                 Column {
-
-                    adFeature.getBannerAdView(LocalContext.current)?.let { adView ->
-                        AndroidView(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(),
-                            factory = { adView.also(adFeature::loadAd) }
-                        )
-                    }
-
+                    HomeBannedAd(
+                        modifier =  Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        adFeature = adFeature,
+                    )
                     NavigationBar {
                         val currentRoute = backStackEntry.value?.destination?.route
                         navItems.forEach { item ->
