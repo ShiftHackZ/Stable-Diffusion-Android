@@ -6,7 +6,8 @@ import android.view.View
 
 interface AdFeature {
     fun initialize(activity: Activity)
-    fun getHomeScreenBannerAdView(context: Context): Ad
+    fun getHomeScreenBannerAd(context: Context): Ad
+    fun getGalleryDetailBannerAd(context: Context): Ad
     fun loadAd(ad: Ad)
 
     data class Ad(

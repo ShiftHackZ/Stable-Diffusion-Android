@@ -8,16 +8,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.core.ui.Screen
 import com.shifthackz.aisdv1.domain.feature.AdFeature
-import com.shifthackz.aisdv1.presentation.widget.ad.HomeBannedAd
+import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.component.KoinComponent
@@ -37,11 +35,12 @@ class HomeNavigationScreen(
         Scaffold(
             bottomBar = {
                 Column {
-                    HomeBannedAd(
+                    AdMobBanner(
                         modifier =  Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(),
                         adFeature = adFeature,
+                        adFactory = adFeature::getHomeScreenBannerAd,
                     )
                     NavigationBar {
                         val currentRoute = backStackEntry.value?.destination?.route

@@ -23,10 +23,14 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.domain.feature.AdFeature
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 import java.io.File
 
@@ -35,13 +39,16 @@ class GalleryDetailScreen(
     private val onNavigateBack: () -> Unit = {},
     private val shareGalleryFile: (File) -> Unit = {},
     private val shareGenerationParams: (GalleryDetailState) -> Unit = {},
-) : MviScreen<GalleryDetailState, GalleryDetailEffect>(viewModel) {
+) : MviScreen<GalleryDetailState, GalleryDetailEffect>(viewModel), KoinComponent {
+
+    private val adFeature: AdFeature by inject()
 
     @Composable
     override fun Content() {
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = viewModel.state.collectAsState().value,
+            adFeature = adFeature,
             onNavigateBack = onNavigateBack,
             onTabSelected = viewModel::selectTab,
             onExportImageToolbarClick = viewModel::share,
@@ -62,6 +69,7 @@ class GalleryDetailScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryDetailState,
+    adFeature: AdFeature,
     onNavigateBack: () -> Unit = {},
     onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
     onExportImageToolbarClick: () -> Unit = {},
@@ -119,7 +127,7 @@ private fun ScreenContent(
                     is GalleryDetailState.Loading -> Unit
                 }
             },
-            bottomBar = { GalleryDetailNavigationBar(state, onTabSelected) },
+            bottomBar = { GalleryDetailNavigationBar(adFeature, state, onTabSelected) },
         )
         when (state.screenDialog) {
             GalleryDetailState.Dialog.DeleteConfirm -> DecisionInteractiveDialog(
@@ -137,28 +145,39 @@ private fun ScreenContent(
 
 @Composable
 private fun GalleryDetailNavigationBar(
+    adFeature: AdFeature,
     state: GalleryDetailState,
     onTabSelected: (GalleryDetailState.Tab) -> Unit,
 ) {
-    NavigationBar {
-        state.tabs.forEach { tab ->
-            NavigationBarItem(
-                selected = state.selectedTab == tab,
-                label = {
-                    Text(stringResource(id = tab.label))
-                },
-                icon = {
-                    Image(
-                        modifier = Modifier.size(24.dp),
-                        painter = painterResource(tab.iconRes),
-                        contentDescription = stringResource(id = R.string.gallery_tab_image),
-                        colorFilter = ColorFilter.tint(LocalContentColor.current),
-                    )
-                },
-                onClick = { onTabSelected(tab) },
-            )
+    Column {
+        AdMobBanner(
+            modifier =  Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            adFeature = adFeature,
+            adFactory = adFeature::getGalleryDetailBannerAd,
+        )
+        NavigationBar {
+            state.tabs.forEach { tab ->
+                NavigationBarItem(
+                    selected = state.selectedTab == tab,
+                    label = {
+                        Text(stringResource(id = tab.label))
+                    },
+                    icon = {
+                        Image(
+                            modifier = Modifier.size(24.dp),
+                            painter = painterResource(tab.iconRes),
+                            contentDescription = stringResource(id = R.string.gallery_tab_image),
+                            colorFilter = ColorFilter.tint(LocalContentColor.current),
+                        )
+                    },
+                    onClick = { onTabSelected(tab) },
+                )
+            }
         }
     }
+
 }
 
 @Composable

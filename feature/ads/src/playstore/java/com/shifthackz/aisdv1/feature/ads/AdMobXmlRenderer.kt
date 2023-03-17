@@ -1,3 +1,5 @@
+@file:Suppress("DUPLICATE_LABEL_IN_WHEN")
+
 package com.shifthackz.aisdv1.feature.ads
 
 import android.view.View
@@ -13,7 +15,8 @@ class AdMobXmlRenderer {
         if (ad.view == null) return
         if (ad.view?.context == null) return
         when (ad.id) {
-            BuildConfig.BANNER_HOMESCREEN_AD_UNIT_ID -> renderHomeScreenBannedAd(ad.view, nativeAd)
+            BuildConfig.BANNER_HOMESCREEN_AD_UNIT_ID,
+            BuildConfig.BANNER_GALLERY_AD_UNIT_ID -> renderHomeScreenBannedAd(ad.view, nativeAd)
         }
     }
 

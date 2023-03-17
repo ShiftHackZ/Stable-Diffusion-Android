@@ -12,9 +12,14 @@ class AdFeatureImpl : AdFeature {
 
     override fun initialize(activity: Activity) = MobileAds.initialize(activity)
 
-    override fun getHomeScreenBannerAdView(context: Context) = AdFeature.Ad(
+    override fun getHomeScreenBannerAd(context: Context) = AdFeature.Ad(
         view = inflateNativeAdView(context, R.layout.native_small_ad_view),
         id = BuildConfig.BANNER_HOMESCREEN_AD_UNIT_ID,
+    )
+
+    override fun getGalleryDetailBannerAd(context: Context) = AdFeature.Ad(
+        view = inflateNativeAdView(context, R.layout.native_small_ad_view),
+        id = BuildConfig.BANNER_GALLERY_AD_UNIT_ID,
     )
 
     override fun loadAd(ad: AdFeature.Ad) {
