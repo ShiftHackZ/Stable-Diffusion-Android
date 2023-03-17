@@ -9,10 +9,12 @@ android {
     namespace 'com.shifthackz.aisdv1.feature.ads'
     buildTypes {
         release {
-            buildConfigField "String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-5994265132349884/9250961993\""
+            buildConfigField "String", "BANNER_HOMESCREEN_AD_UNIT_ID", "\"ca-app-pub-5994265132349884/9338284416\""
+            buildConfigField "String", "BANNER_GALLERY_AD_UNIT_ID", "\"ca-app-pub-5994265132349884/8450925763\""
         }
         debug {
-            buildConfigField "String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\""
+            buildConfigField "String", "BANNER_HOMESCREEN_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\""
+            buildConfigField "String", "BANNER_GALLERY_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\""
         }
     }
     flavorDimensions "type"
@@ -29,5 +31,6 @@ android {
 dependencies {
     implementation project(":domain")
     implementation di.koinCore
+    playstoreImplementation androidx.constraintLayout
     playstoreImplementation proprietary.playServicesAds
 }
