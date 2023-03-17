@@ -6,8 +6,11 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemUseCase
+import com.shifthackz.aisdv1.presentation.features.GalleryDetailTabClick
+import com.shifthackz.aisdv1.presentation.features.GalleryItemDelete
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
@@ -18,6 +21,7 @@ class GalleryDetailViewModel(
     private val galleryDetailBitmapExporter: GalleryDetailBitmapExporter,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val schedulersProvider: SchedulersProvider,
+    private val analytics: Analytics,
 ) : MviRxViewModel<GalleryDetailState, GalleryDetailEffect>() {
 
     override val emptyState = GalleryDetailState.Loading()
@@ -39,7 +43,10 @@ class GalleryDetailViewModel(
             )
     }
 
-    fun selectTab(tab: GalleryDetailState.Tab) = currentState.withTab(tab).let(::setState)
+    fun selectTab(tab: GalleryDetailState.Tab) = currentState
+        .withTab(tab)
+        .let(::setState)
+        .also { analytics.logEvent(GalleryDetailTabClick(tab)) }
 
     fun showDeleteConfirmDialog() = setActiveDialog(GalleryDetailState.Dialog.DeleteConfirm)
 
@@ -62,6 +69,7 @@ class GalleryDetailViewModel(
     fun delete() {
         dismissScreenDialog()
         if (currentState !is GalleryDetailState.Content) return
+        analytics.logEvent(GalleryItemDelete)
         !deleteGalleryItemUseCase((currentState as GalleryDetailState.Content).id)
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(

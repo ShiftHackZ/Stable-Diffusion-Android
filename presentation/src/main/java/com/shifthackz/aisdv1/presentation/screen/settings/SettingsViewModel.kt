@@ -4,9 +4,14 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
+import com.shifthackz.aisdv1.presentation.features.AutoSaveAiResultsChanged
+import com.shifthackz.aisdv1.presentation.features.MonitorConnectionChanged
+import com.shifthackz.aisdv1.presentation.features.SdModelSelected
+import com.shifthackz.aisdv1.presentation.features.SettingsCacheCleared
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class SettingsViewModel(
@@ -15,6 +20,7 @@ class SettingsViewModel(
     private val clearAppCacheUseCase: ClearAppCacheUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
+    private val analytics: Analytics,
 ) : MviRxViewModel<SettingsState, EmptyEffect>() {
 
     override val emptyState = SettingsState.Uninitialized
@@ -46,23 +52,31 @@ class SettingsViewModel(
         .andThen(settingsStateProducer())
         .doOnSubscribe { setActiveDialog(SettingsState.Dialog.Communicating) }
         .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(Throwable::printStackTrace, ::setState)
+        .subscribeBy(Throwable::printStackTrace) { state ->
+            analytics.logEvent(SdModelSelected(value))
+            setState(state)
+        }
 
     fun clearAppCache() = !clearAppCacheUseCase()
         .andThen(settingsStateProducer())
         .doOnSubscribe { dismissScreenDialog() }
         .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(Throwable::printStackTrace, ::setState)
+        .subscribeBy(Throwable::printStackTrace) { state ->
+            analytics.logEvent(SettingsCacheCleared)
+            setState(state)
+        }
 
     fun changeMonitorConnectivitySetting(value: Boolean) = (currentState as? SettingsState.Content)
         ?.also { preferenceManager.monitorConnectivity = value }
         ?.copy(monitorConnectivity = value)
         ?.let(::setState)
+        ?.also { analytics.logEvent(MonitorConnectionChanged(value)) }
 
     fun changeAutoSaveAiResultSetting(value: Boolean) = (currentState as? SettingsState.Content)
         ?.also { preferenceManager.autoSaveAiResults = value }
         ?.copy(autoSaveAiResults = value)
         ?.let(::setState)
+        ?.also { analytics.logEvent(AutoSaveAiResultsChanged(value)) }
     //endregion
 
     //region UI STATES METHODS

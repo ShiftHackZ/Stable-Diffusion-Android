@@ -2,8 +2,7 @@ package com.shifthackz.aisdv1.feature.ads
 
 import android.app.Activity
 import android.content.Context
-import android.view.View
-import com.shifthackz.aisdv1.domain.feature.AdFeature
+import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 
 class AdFeatureImpl : AdFeature {
     override fun initialize(activity: Activity) = Unit

@@ -12,8 +12,9 @@ import androidx.navigation.navArgument
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.extensions.openMarket
 import com.shifthackz.aisdv1.core.extensions.openUrl
-import com.shifthackz.aisdv1.domain.feature.AdFeature
-import com.shifthackz.aisdv1.presentation.features.ImagePickerFeature
+import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
+import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
+import com.shifthackz.aisdv1.presentation.features.*
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
@@ -39,6 +40,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
     private val gallerySharing: GallerySharing by inject()
     private val galleryDetailSharing: GalleryDetailSharing by inject()
     private val adFeature: AdFeature by inject()
+    private val analytics: Analytics by inject()
 
     private val versionCheckerViewModel: VersionCheckerViewModel by viewModel()
 
@@ -47,6 +49,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adFeature.initialize(this)
+        analytics.initialize()
         setContent {
             val navController = rememberNavController()
             AiStableDiffusionAppTheme {
@@ -122,6 +125,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
                             pickImage = { clb -> pickPhoto(this@AiStableDiffusionActivity, clb) },
                             takePhoto = { clb -> takePhoto(this@AiStableDiffusionActivity, clb) },
                             shareGalleryFile = { zipFile ->
+                                analytics.logEvent(GalleryExportZip)
                                 gallerySharing(
                                     context = this@AiStableDiffusionActivity,
                                     file = zipFile,
@@ -129,17 +133,25 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
                                 )
                             },
                             openGalleryItemDetails = { galleryItemId ->
+                                analytics.logEvent(GalleryGridItemClick)
                                 navController
                                     .navigate("${Constants.ROUTE_GALLERY_DETAIL}/$galleryItemId")
                             },
                             launchSetup = {
+                                analytics.logEvent(SettingsConfigurationClick)
                                 navController.navigate(
                                     "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.key}"
                                 )
                             },
-                            launchUpdateCheck = { versionCheckerViewModel.checkForUpdate(true) },
-                            launchInAppReview = { openMarket() },
-                            launchUrl = ::openUrl
+                            launchUpdateCheck = {
+                                analytics.logEvent(SettingsCheckUpdate)
+                                versionCheckerViewModel.checkForUpdate(true)
+                            },
+                            launchInAppReview = {
+                                analytics.logEvent(SettingsOpenMarket)
+                                openMarket()
+                            },
+                            launchUrl = ::openUrl,
                         )
 
                         composable(
@@ -156,6 +168,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
                                 viewModel = viewModel,
                                 onNavigateBack = { navController.navigateUp() },
                                 shareGalleryFile = { jpgFile ->
+                                    analytics.logEvent(GalleryItemImageShare)
                                     gallerySharing(
                                         context = this@AiStableDiffusionActivity,
                                         file = jpgFile,
@@ -163,6 +176,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
                                     )
                                 },
                                 shareGenerationParams = { uiState ->
+                                    analytics.logEvent(GalleryItemInfoShare)
                                     galleryDetailSharing(
                                         context = this@AiStableDiffusionActivity,
                                         state = uiState,

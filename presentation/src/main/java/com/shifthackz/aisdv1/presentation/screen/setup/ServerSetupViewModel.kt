@@ -5,10 +5,14 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
+import com.shifthackz.aisdv1.presentation.features.SetupConnectEvent
+import com.shifthackz.aisdv1.presentation.features.SetupConnectFailure
+import com.shifthackz.aisdv1.presentation.features.SetupConnectSuccess
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import java.util.concurrent.TimeUnit
@@ -22,6 +26,7 @@ class ServerSetupViewModel(
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
     private val schedulersProvider: SchedulersProvider,
+    private val analytics: Analytics,
 ) : MviRxViewModel<ServerSetupState, ServerSetupEffect>() {
 
     override val emptyState = ServerSetupState(
@@ -55,6 +60,7 @@ class ServerSetupViewModel(
         if (!validate()) return
         val demoMode = currentState.demoMode
         val connectUrl = if (demoMode) demoModeUrl else currentState.serverUrl
+        analytics.logEvent(SetupConnectEvent(connectUrl, demoMode))
         !testConnectivityUseCase(connectUrl)
             .doOnSubscribe { setScreenDialog(ServerSetupState.Dialog.Communicating) }
             .andThen(setServerConfigurationUseCase(connectUrl, demoMode))
@@ -72,15 +78,14 @@ class ServerSetupViewModel(
             .subscribeBy(Throwable::printStackTrace) { result ->
                 result.fold(
                     onSuccess = {
+                        analytics.logEvent(SetupConnectSuccess)
                         dismissScreenDialog()
                         emitEffect(ServerSetupEffect.CompleteSetup)
                     },
                     onFailure = { t ->
-                        setScreenDialog(
-                            ServerSetupState.Dialog.Error(
-                                (t.localizedMessage ?: "Error connecting to server").asUiText(),
-                            )
-                        )
+                        val message = t.localizedMessage ?: "Error connecting to server"
+                        analytics.logEvent(SetupConnectFailure(message))
+                        setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
                     }
                 )
             }
