@@ -14,7 +14,7 @@ class AdFeatureImpl : AdFeature {
 
     override fun getHomeScreenBannerAdView(context: Context) = AdFeature.Ad(
         view = inflateNativeAdView(context, R.layout.native_small_ad_view),
-        id = BuildConfig.BANNER_AD_UNIT_ID,
+        id = BuildConfig.BANNER_HOMESCREEN_AD_UNIT_ID,
     )
 
     override fun loadAd(ad: AdFeature.Ad) {
@@ -28,7 +28,7 @@ class AdFeatureImpl : AdFeature {
 
     private fun inflateAdLoader(ad: AdFeature.Ad) = ad.view?.context?.let { ctx ->
         AdLoader.Builder(ctx, ad.id)
-            .forNativeAd { nativeAd -> AdMobRenderer().invoke(ad, nativeAd) }
+            .forNativeAd { nativeAd -> AdMobXmlRenderer().invoke(ad, nativeAd) }
             .applyLoggableAdListener(ad.id)
             .build()
     }

@@ -13,6 +13,7 @@ ext {
     pagingVersion = '3.1.1'
     pagingComposeVersion = '1.0.0-alpha18'
     imagePickerVersion = 'v2.0.2'
+    constraintVersion = '2.1.4'
 
     firebaseBomVersion = '31.2.3'
     playServicesAdsVersion = '21.5.0'
@@ -23,6 +24,7 @@ ext {
             core                        : "androidx.core:core-ktx:1.9.0",
             appcompat                   : "androidx.appcompat:appcompat:1.6.0",
             activity                    : "androidx.activity:activity-ktx:1.6.1",
+            constraintLayout            : "androidx.constraintlayout:constraintlayout:$constraintVersion",
             composeBom                  : "androidx.compose:compose-bom:$composeBomVersion",
             composeRuntime              : "androidx.compose.runtime:runtime",
             composeMaterial3            : "androidx.compose.material3:material3:$composeMaterialVersion",
