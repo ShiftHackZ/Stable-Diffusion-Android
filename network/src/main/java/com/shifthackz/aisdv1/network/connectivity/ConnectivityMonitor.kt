@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.network.connectivity
 
-import android.util.Log
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import io.reactivex.rxjava3.core.Observable
 import java.net.HttpURLConnection
 import java.net.URL
@@ -11,27 +11,20 @@ class ConnectivityMonitor {
     fun observe(serverUrl: String): Observable<Boolean> = Observable
         .interval(CONFIG_INTERVAL_PING, TimeUnit.MILLISECONDS)
         .flatMap {
-            Observable.create { emitter ->
-                val connection = URL(serverUrl).openConnection() as HttpURLConnection
-                connection.requestMethod = "GET"
-                try {
-                    val code = connection.responseCode
-                    if (code == 200) {
-                        emitter.onNext(true)
-                    } else {
-                        emitter.onNext(false)
-                    }
-                } catch (e: Exception) {
-                    emitter.onNext(false)
-                }
+            val connection = URL(serverUrl).openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+            val result = try {
+                connection.responseCode == 200
+            } catch (e: Exception) {
+                false
             }
+            Observable.just(result)
         }
         .doAfterNext { state -> logConnection(serverUrl, state) }
 
-    private fun logConnection(url: String, isConnected: Boolean) {
-        val message = "$url --> ${if (isConnected) "✅ CONNECTED" else "️❌ DISCONNECTED"}"
-        Log.d(ConnectivityMonitor::class.simpleName, message)
-    }
+    private fun logConnection(url: String, isConnected: Boolean) = debugLog(
+        "$url --> ${if (isConnected) "✅ CONNECTED" else "️❌ DISCONNECTED"}"
+    )
 
     companion object {
         private const val CONFIG_INTERVAL_PING = 5_000L

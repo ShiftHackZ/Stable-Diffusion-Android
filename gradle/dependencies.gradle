@@ -14,6 +14,7 @@ ext {
     pagingComposeVersion = '1.0.0-alpha18'
     imagePickerVersion = 'v2.0.2'
     constraintVersion = '2.1.4'
+    timberVersion = '5.0.1'
 
     firebaseBomVersion = '31.2.3'
     playServicesAdsVersion = '21.5.0'
@@ -72,6 +73,9 @@ ext {
     ]
     ui = [
             imagePicker: "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion"
+    ]
+    log = [
+            timber: "com.jakewharton.timber:timber:$timberVersion",
     ]
     proprietary = [
             firebaseBom        : "com.google.firebase:firebase-bom:$firebaseBomVersion",

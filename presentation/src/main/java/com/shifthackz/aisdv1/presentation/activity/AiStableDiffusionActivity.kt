@@ -18,7 +18,6 @@ import com.shifthackz.aisdv1.presentation.features.*
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
-import com.shifthackz.aisdv1.presentation.screen.gallery.list.GallerySharing
 import com.shifthackz.aisdv1.presentation.screen.home.homeScreenNavGraph
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
@@ -35,9 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
+class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileSharingFeature {
 
-    private val gallerySharing: GallerySharing by inject()
     private val galleryDetailSharing: GalleryDetailSharing by inject()
     private val adFeature: AdFeature by inject()
     private val analytics: Analytics by inject()
@@ -126,7 +124,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
                             takePhoto = { clb -> takePhoto(this@AiStableDiffusionActivity, clb) },
                             shareGalleryFile = { zipFile ->
                                 analytics.logEvent(GalleryExportZip)
-                                gallerySharing(
+                                shareFile(
                                     context = this@AiStableDiffusionActivity,
                                     file = zipFile,
                                     mimeType = Constants.MIME_TYPE_ZIP,
@@ -152,6 +150,9 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
                                 openMarket()
                             },
                             launchUrl = ::openUrl,
+                            shareLogFile = {
+                                ReportProblemEmailComposer().invoke(this@AiStableDiffusionActivity)
+                            },
                         )
 
                         composable(
@@ -169,7 +170,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature {
                                 onNavigateBack = { navController.navigateUp() },
                                 shareGalleryFile = { jpgFile ->
                                     analytics.logEvent(GalleryItemImageShare)
-                                    gallerySharing(
+                                    shareFile(
                                         context = this@AiStableDiffusionActivity,
                                         file = jpgFile,
                                         mimeType = Constants.MIME_TYPE_JPG,

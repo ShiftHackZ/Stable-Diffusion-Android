@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -36,7 +37,7 @@ class ServerSetupViewModel(
     init {
         !getConfigurationUseCase()
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(Throwable::printStackTrace) { (url, demoMode) ->
+            .subscribeBy(::errorLog) { (url, demoMode) ->
                 currentState
                     .copy(
                         serverUrl = url,
@@ -75,7 +76,7 @@ class ServerSetupViewModel(
                 )
                     .andThen(Single.just(Result.failure(t)))
             }
-            .subscribeBy(Throwable::printStackTrace) { result ->
+            .subscribeBy(::errorLog) { result ->
                 result.fold(
                     onSuccess = {
                         analytics.logEvent(SetupConnectSuccess)

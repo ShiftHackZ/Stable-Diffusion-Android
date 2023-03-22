@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
@@ -69,14 +70,15 @@ class ImageToImageViewModel(
             .flatMap(imageToImageUseCase::invoke)
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
-                onError = {
+                onError = { t ->
                     setActiveDialog(
                         ImageToImageState.Dialog.Error(
                             UiText.Static(
-                                it.localizedMessage ?: "Error"
+                                t.localizedMessage ?: "Error"
                             )
                         )
                     )
+                    errorLog(t)
                 },
                 onSuccess = { ai ->
                     analytics.logEvent(AiImageGenerated(ai))
@@ -93,7 +95,7 @@ class ImageToImageViewModel(
 
     fun saveGeneratedResult(ai: AiGenerationResult) = !saveGenerationResultUseCase(ai)
         .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(Throwable::printStackTrace) { dismissScreenDialog() }
+        .subscribeBy(::errorLog) { dismissScreenDialog() }
 
     private fun setActiveDialog(dialog: ImageToImageState.Dialog) = currentState
         .copy(screenDialog = dialog)

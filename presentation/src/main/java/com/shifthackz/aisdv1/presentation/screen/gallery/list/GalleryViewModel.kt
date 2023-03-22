@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.list
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
@@ -49,13 +50,13 @@ class GalleryViewModel(
         .doOnSubscribe { setActiveDialog(GalleryState.Dialog.ExportInProgress) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
-            onError = {
-                it.printStackTrace()
+            onError = { t ->
                 setActiveDialog(
                     GalleryState.Dialog.Error(
-                        (it.localizedMessage ?: "Something went wrong").asUiText()
+                        (t.localizedMessage ?: "Something went wrong").asUiText()
                     )
                 )
+                errorLog(t)
             },
             onSuccess = { zipFile ->
                 setActiveDialog(GalleryState.Dialog.None)
