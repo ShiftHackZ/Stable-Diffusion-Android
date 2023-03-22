@@ -4,6 +4,10 @@
         name="folder_images"
         path="images/" />
 
+    <cache-path
+        name="folder_logs"
+        path="logs/" />
+
     <external-path name="media" path="." />
     <external-path name="external_files" path="."/>
 </paths>

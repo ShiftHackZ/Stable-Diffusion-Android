@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
-import com.shifthackz.aisdv1.domain.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.domain.appbuild.BuildType
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import io.reactivex.rxjava3.core.Single

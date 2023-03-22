@@ -33,6 +33,7 @@ class SettingsScreen(
     private val onCheckUpdatesItemClick: () -> Unit = {},
     private val launchInAppReview: () -> Unit = {},
     private val launchUrl: (String) -> Unit = {},
+    private val shareLogFile: () -> Unit = {},
 ) : MviScreen<SettingsState, EmptyEffect>(viewModel), KoinComponent {
 
     private val linksProvider: LinksProvider by inject()
@@ -47,6 +48,7 @@ class SettingsScreen(
             onMonitorConnectivityChanged = viewModel::changeMonitorConnectivitySetting,
             onAutoSaveAiResultChanged = viewModel::changeAutoSaveAiResultSetting,
             onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
+            onReportProblemItemClick = shareLogFile,
             onCheckUpdatesItemClick = onCheckUpdatesItemClick,
             onRateUsItemClick = launchInAppReview,
             onPolicyItemClick = { launchUrl(linksProvider.privacyPolicyUrl) },
@@ -73,6 +75,7 @@ private fun ScreenContent(
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
 
     onClearAppCacheItemClick: () -> Unit = {},
+    onReportProblemItemClick: () -> Unit = {},
     onCheckUpdatesItemClick: () -> Unit = {},
     onRateUsItemClick: () -> Unit = {},
     onPolicyItemClick: () -> Unit = {},
@@ -109,6 +112,7 @@ private fun ScreenContent(
                         onMonitorConnectivityChanged = onMonitorConnectivityChanged,
                         onAutoSaveAiResultChanged = onAutoSaveAiResultChanged,
                         onClearAppCacheItemClick = onClearAppCacheItemClick,
+                        onReportProblemItemClick = onReportProblemItemClick,
                         onCheckUpdatesItemClick = onCheckUpdatesItemClick,
                         onRateUsItemClick = onRateUsItemClick,
                         onPolicyItemClick = onPolicyItemClick,
@@ -175,6 +179,7 @@ private fun ContentSettingsState(
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
+    onReportProblemItemClick: () -> Unit = {},
     onCheckUpdatesItemClick: () -> Unit = {},
     onRateUsItemClick: () -> Unit = {},
     onPolicyItemClick: () -> Unit = {},
@@ -250,6 +255,12 @@ private fun ContentSettingsState(
             modifier = headerModifier,
             text = stringResource(id = R.string.settings_header_info),
             style = MaterialTheme.typography.headlineSmall,
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            startIcon = Icons.Default.Report,
+            text = R.string.settings_item_report_problem.asUiText(),
+            onClick = onReportProblemItemClick,
         )
         SettingsItem(
             modifier = itemModifier,

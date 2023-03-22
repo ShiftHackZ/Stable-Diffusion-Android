@@ -82,6 +82,7 @@ dependencies {
     implementation di.koinCompose
     implementation reactive.rxkotlin
     implementation reactive.rxandroid
+    implementation log.timber
 
     playstoreImplementation platform(proprietary.firebaseBom)
     playstoreImplementation proprietary.firebaseAnalytics

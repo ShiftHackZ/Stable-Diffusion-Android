@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.loader
 
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -32,10 +33,11 @@ class ConfigurationLoaderViewModel(
             }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
-                onError = {
-                    analytics.logEvent(ConfigurationLoadFailure(it.message ?: ""))
+                onError = { t ->
+                    analytics.logEvent(ConfigurationLoadFailure(t.message ?: ""))
                     setState(ConfigurationLoaderState.StatusNotification("Failed loading data".asUiText()))
                     emitEffect(ConfigurationLoaderEffect.ProceedNavigation)
+                    errorLog(t)
                 },
                 onComplete = {
                     analytics.logEvent(ConfigurationLoadSuccess)

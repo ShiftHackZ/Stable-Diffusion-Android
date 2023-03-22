@@ -1,6 +1,6 @@
-package com.shifthackz.aisdv1.domain.entity
+package com.shifthackz.aisdv1.core.common.appbuild
 
-class AppVersion : Comparable<AppVersion> {
+class BuildVersion : Comparable<BuildVersion> {
     private var major: Int = 0
     private var minor: Int = 0
     private var patch: Int = 0
@@ -37,7 +37,7 @@ class AppVersion : Comparable<AppVersion> {
         }
     }
 
-    override fun compareTo(other: AppVersion): Int {
+    override fun compareTo(other: BuildVersion): Int {
         if (this.major > other.major) return 1
         if (this.major < other.major) return -1
         if (this.minor > other.minor) return 1
@@ -51,7 +51,7 @@ class AppVersion : Comparable<AppVersion> {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as AppVersion
+        other as BuildVersion
 
         if (major != other.major) return false
         if (minor != other.minor) return false

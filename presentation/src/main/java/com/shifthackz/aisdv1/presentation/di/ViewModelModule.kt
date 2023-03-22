@@ -19,7 +19,6 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModelOf(::SplashViewModel)
-    viewModelOf(::ServerSetupViewModel)
     viewModelOf(::HomeNavigationViewModel)
     viewModelOf(::ConfigurationLoaderViewModel)
     viewModelOf(::ImageToImageViewModel)
