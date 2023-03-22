@@ -30,6 +30,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     launchUpdateCheck: () -> Unit = {},
     launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
+    shareLogFile: () -> Unit = {},
 ) {
     addDestination(
         ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
@@ -39,7 +40,13 @@ fun NavGraphBuilder.homeScreenNavGraph(
                     txt2ImgTab(),
                     img2imgTab(pickImage, takePhoto),
                     galleryTab(shareGalleryFile, openGalleryItemDetails),
-                    settingsTab(launchSetup, launchUpdateCheck, launchInAppReview, launchUrl),
+                    settingsTab(
+                        launchSetup,
+                        launchUpdateCheck,
+                        launchInAppReview,
+                        launchUrl,
+                        shareLogFile,
+                    ),
                 ),
             ).Build()
         }.apply { this.route = route }
@@ -105,6 +112,7 @@ private fun settingsTab(
     launchUpdateCheck: () -> Unit = {},
     launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
+    shareLogFile: () -> Unit = {},
 ) = HomeNavigationItem(
     stringResource(id = R.string.home_tab_settings),
     Constants.ROUTE_SETTINGS,
@@ -118,6 +126,7 @@ private fun settingsTab(
             onCheckUpdatesItemClick = launchUpdateCheck,
             launchInAppReview = launchInAppReview,
             launchUrl = launchUrl,
+            shareLogFile = shareLogFile,
         ).Build()
     }
 )

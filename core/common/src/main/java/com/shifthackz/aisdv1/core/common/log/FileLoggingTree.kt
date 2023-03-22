@@ -81,7 +81,8 @@ class FileLoggingTree : Timber.Tree(), KoinComponent {
     companion object {
         private const val LOGGER_TIMESTAMP_FORMAT = "dd.MM.yyyy HH:mm:SS"
         private const val LOGGER_DEFAULT_TAG = "[SDAI]"
-        private const val LOGGER_FILENAME = "sdaiv1.log"
+
+        const val LOGGER_FILENAME = "sdaiv1.log"
 
         fun clearLog(fileProviderDescriptor: FileProviderDescriptor) {
             val cacheDirectory = File(fileProviderDescriptor.logsCacheDirPath)
