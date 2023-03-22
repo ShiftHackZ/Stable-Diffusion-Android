@@ -68,7 +68,7 @@ class FileLoggingTree : Timber.Tree(), KoinComponent {
         run {
             val cacheDirectory = File(fileProviderDescriptor.logsCacheDirPath)
             if (!cacheDirectory.exists()) cacheDirectory.mkdirs()
-            val outFile = File(cacheDirectory, FILENAME)
+            val outFile = File(cacheDirectory, LOGGER_FILENAME)
             if (!outFile.exists()) outFile.createNewFile()
             FileOutputStream(outFile, true).use { fos ->
                 val payload = message.toByteArray()
@@ -81,7 +81,11 @@ class FileLoggingTree : Timber.Tree(), KoinComponent {
     companion object {
         private const val LOGGER_TIMESTAMP_FORMAT = "dd.MM.yyyy HH:mm:SS"
         private const val LOGGER_DEFAULT_TAG = "[SDAI]"
+        private const val LOGGER_FILENAME = "sdaiv1.log"
 
-        const val FILENAME = "sdaiv1.log"
+        fun clearLog(fileProviderDescriptor: FileProviderDescriptor) {
+            val cacheDirectory = File(fileProviderDescriptor.logsCacheDirPath)
+            cacheDirectory.deleteRecursively()
+        }
     }
 }
