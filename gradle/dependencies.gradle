@@ -17,7 +17,7 @@ ext {
 
     firebaseBomVersion = '31.2.3'
     playServicesAdsVersion = '21.5.0'
-    billingVersion = '5.1.1'
+    billingVersion = '5.1.0'
 
     testJunitVersion = '4.13.2'
 
