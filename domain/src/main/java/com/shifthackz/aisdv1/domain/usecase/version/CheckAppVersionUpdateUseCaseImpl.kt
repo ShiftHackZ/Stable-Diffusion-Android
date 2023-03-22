@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.domain.usecase.version
 
-import com.shifthackz.aisdv1.domain.entity.AppVersion
+import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.domain.repository.AppVersionRepository
 import io.reactivex.rxjava3.core.Single
 
@@ -8,13 +8,13 @@ internal class CheckAppVersionUpdateUseCaseImpl(
     private val repository: AppVersionRepository,
 ) : CheckAppVersionUpdateUseCase {
 
-    private val remoteVersionProducer: () -> Single<AppVersion> = {
+    private val remoteVersionProducer: () -> Single<BuildVersion> = {
         repository
             .getActualVersion()
-            .onErrorReturn { AppVersion() }
+            .onErrorReturn { BuildVersion() }
     }
 
-    private val localVersionProducer: () -> Single<AppVersion> = {
+    private val localVersionProducer: () -> Single<BuildVersion> = {
         repository.getLocalVersion()
     }
 

@@ -82,6 +82,7 @@
     <string name="settings_item_auto_save">Auto save images</string>
     <string name="settings_item_clear_cache">Clear app &amp; gallery cache</string>
 
+    <string name="settings_item_report_problem">Report a problem</string>
     <string name="settings_item_policy">Privacy and legal policy</string>
     <string name="settings_item_instructions">Server setup instructions</string>
     <string name="settings_item_source">Get source code</string>

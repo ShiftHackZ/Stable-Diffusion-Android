@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.domain.appbuild
+package com.shifthackz.aisdv1.core.common.appbuild
 
 enum class BuildType {
     FOSS,

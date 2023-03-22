@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
@@ -28,7 +29,7 @@ class SettingsViewModel(
     init {
         !settingsStateProducer()
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(Throwable::printStackTrace, ::setState)
+            .subscribeBy(::errorLog, ::setState)
     }
 
     //region DIALOG LAUNCHER METHODS
@@ -52,7 +53,7 @@ class SettingsViewModel(
         .andThen(settingsStateProducer())
         .doOnSubscribe { setActiveDialog(SettingsState.Dialog.Communicating) }
         .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(Throwable::printStackTrace) { state ->
+        .subscribeBy(::errorLog) { state ->
             analytics.logEvent(SdModelSelected(value))
             setState(state)
         }
@@ -61,7 +62,7 @@ class SettingsViewModel(
         .andThen(settingsStateProducer())
         .doOnSubscribe { dismissScreenDialog() }
         .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(Throwable::printStackTrace) { state ->
+        .subscribeBy(::errorLog) { state ->
             analytics.logEvent(SettingsCacheCleared)
             setState(state)
         }

@@ -1,9 +1,8 @@
 package com.shifthackz.aisdv1.network.di
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.shifthackz.aisdv1.network.BuildConfig
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.network.api.StableDiffusionAppUpdateRestApi
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
@@ -17,6 +16,7 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+private const val HTTP_TAG = "HTTP"
 private const val HTTP_TIMEOUT = 10L
 
 val networkModule = module {
@@ -47,14 +47,12 @@ val networkModule = module {
 
     single<List<NetworkInterceptor>> {
         buildList {
-            if (BuildConfig.DEBUG) {
-                val loggingInterceptor = HttpLoggingInterceptor { message ->
-                    Log.d("HTTP", message)
-                }.apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                }
-                add(NetworkInterceptor(loggingInterceptor))
+            val loggingInterceptor = HttpLoggingInterceptor { message ->
+                debugLog(HTTP_TAG, message)
+            }.apply {
+                level = HttpLoggingInterceptor.Level.BODY
             }
+            add(NetworkInterceptor(loggingInterceptor))
         }
     }
 
