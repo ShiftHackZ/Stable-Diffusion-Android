@@ -74,6 +74,7 @@ dependencies {
     implementation project(":domain")
     implementation project(":feature:ads")
     implementation project(":feature:analytics")
+    implementation project(":feature:billing")
     implementation project(":data")
     implementation project(":demo")
     implementation di.koinCore
@@ -86,6 +87,7 @@ dependencies {
     playstoreImplementation proprietary.firebaseAnalytics
     playstoreImplementation proprietary.firebaseCrashlytics
     playstoreImplementation proprietary.playServicesAds
+    playstoreImplementation proprietary.billing
 }
 
 kapt {

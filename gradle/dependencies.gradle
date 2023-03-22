@@ -17,6 +17,7 @@ ext {
 
     firebaseBomVersion = '31.2.3'
     playServicesAdsVersion = '21.5.0'
+    billingVersion = '5.1.1'
 
     testJunitVersion = '4.13.2'
 
@@ -71,13 +72,14 @@ ext {
             rxnetwork: "io.github.softartdev:reactivenetwork-rx3:$rxNetworkVersion",
     ]
     ui = [
-            imagePicker: "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion"
+            imagePicker: "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion",
     ]
     proprietary = [
             firebaseBom        : "com.google.firebase:firebase-bom:$firebaseBomVersion",
             firebaseAnalytics  : "com.google.firebase:firebase-analytics-ktx",
             firebaseCrashlytics: "com.google.firebase:firebase-crashlytics-ktx",
             playServicesAds    : "com.google.android.gms:play-services-ads:$playServicesAdsVersion",
+            billing            : "com.android.billingclient:billing:$billingVersion",
     ]
     test = [
             junit: "junit:junit:$testJunitVersion",
