@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
@@ -30,17 +31,12 @@ class GalleryDetailViewModel(
         !getGalleryItemUseCase(itemId)
             .subscribeOnMainThread(schedulersProvider)
             .postProcess()
-            .subscribeBy(
-                onError = {
-                    it.printStackTrace()
-                },
-                onSuccess = { aiData ->
-                    aiData
-                        .mapToUi()
-                        .withTab(currentState.selectedTab)
-                        .let(::setState)
-                },
-            )
+            .subscribeBy(::errorLog) { aiData ->
+                aiData
+                    .mapToUi()
+                    .withTab(currentState.selectedTab)
+                    .let(::setState)
+            }
     }
 
     fun selectTab(tab: GalleryDetailState.Tab) = currentState
@@ -56,14 +52,9 @@ class GalleryDetailViewModel(
         if (currentState !is GalleryDetailState.Content) return
         !galleryDetailBitmapExporter((currentState as GalleryDetailState.Content).bitmap)
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(
-                onError = {
-
-                },
-                onSuccess = { file ->
-                    emitEffect(GalleryDetailEffect.ShareImageFile(file))
-                }
-            )
+            .subscribeBy(::errorLog) { file ->
+                emitEffect(GalleryDetailEffect.ShareImageFile(file))
+            }
     }
 
     fun delete() {
@@ -72,10 +63,7 @@ class GalleryDetailViewModel(
         analytics.logEvent(GalleryItemDelete)
         !deleteGalleryItemUseCase((currentState as GalleryDetailState.Content).id)
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(
-                onError = { t -> t.printStackTrace() },
-                onComplete = { emitEffect(GalleryDetailEffect.NavigateBack) },
-            )
+            .subscribeBy(::errorLog) { emitEffect(GalleryDetailEffect.NavigateBack) }
     }
 
     private fun setActiveDialog(dialog: GalleryDetailState.Dialog) = currentState

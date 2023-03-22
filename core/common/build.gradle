@@ -10,5 +10,7 @@ android {
 }
 
 dependencies {
+    implementation di.koinCore
     implementation reactive.rxjava
+    implementation log.timber
 }

@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -45,13 +46,13 @@ class TextToImageViewModel(
         .doOnSubscribe { setActiveDialog(TextToImageState.Dialog.Communicating) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
-            onError = {
-                it.printStackTrace()
+            onError = { t ->
                 setActiveDialog(
                     TextToImageState.Dialog.Error(
-                        (it.localizedMessage ?: "Something went wrong").asUiText()
+                        (t.localizedMessage ?: "Something went wrong").asUiText()
                     )
                 )
+                errorLog(t)
             },
             onSuccess = { ai ->
                 analytics.logEvent(AiImageGenerated(ai))
@@ -63,7 +64,7 @@ class TextToImageViewModel(
 
     fun saveGeneratedResult(ai: AiGenerationResult) = !saveGenerationResultUseCase(ai)
         .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(Throwable::printStackTrace) { dismissScreenDialog() }
+        .subscribeBy(::errorLog) { dismissScreenDialog() }
 
     private fun setActiveDialog(dialog: TextToImageState.Dialog) = currentState
         .copy(screenDialog = dialog)

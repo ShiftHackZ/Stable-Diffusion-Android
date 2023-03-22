@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.splash
 
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.EmptyState
@@ -18,6 +19,6 @@ class SplashViewModel(
         !splashNavigationUseCase()
             .map(SplashNavigationUseCase.Action::toEffect)
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(Throwable::printStackTrace, ::emitEffect)
+            .subscribeBy(::errorLog, ::emitEffect)
     }
 }
