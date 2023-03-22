@@ -14,6 +14,7 @@ import com.shifthackz.aisdv1.core.extensions.openMarket
 import com.shifthackz.aisdv1.core.extensions.openUrl
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
+import com.shifthackz.aisdv1.domain.feature.billing.BillingFeature
 import com.shifthackz.aisdv1.presentation.features.*
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
@@ -39,6 +40,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
     private val galleryDetailSharing: GalleryDetailSharing by inject()
     private val adFeature: AdFeature by inject()
     private val analytics: Analytics by inject()
+    private val billing: BillingFeature by inject()
 
     private val versionCheckerViewModel: VersionCheckerViewModel by viewModel()
 
@@ -47,6 +49,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adFeature.initialize(this)
+        billing.initialize(this)
         analytics.initialize()
         setContent {
             val navController = rememberNavController()
