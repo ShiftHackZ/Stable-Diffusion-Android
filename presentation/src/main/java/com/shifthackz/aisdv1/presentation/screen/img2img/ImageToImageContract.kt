@@ -27,6 +27,7 @@ data class ImageToImageState(
     override val availableSamplers: List<String> = emptyList(),
     override val widthValidationError: UiText? = null,
     override val heightValidationError: UiText? = null,
+    override val generateButtonEnabled: Boolean = true,
 ) : GenerationMviState() {
 
     sealed interface ImageState {
@@ -57,7 +58,8 @@ data class ImageToImageState(
         selectedSampler: String,
         availableSamplers: List<String>,
         widthValidationError: UiText?,
-        heightValidationError: UiText?
+        heightValidationError: UiText?,
+        generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
         prompt = prompt,
         negativePrompt = negativePrompt,
@@ -71,6 +73,7 @@ data class ImageToImageState(
         availableSamplers = availableSamplers,
         widthValidationError = widthValidationError,
         heightValidationError = heightValidationError,
+        generateButtonEnabled = generateButtonEnabled,
     )
 
     fun preProcessed(output: BitmapToBase64Converter.Output): ImageToImageState =

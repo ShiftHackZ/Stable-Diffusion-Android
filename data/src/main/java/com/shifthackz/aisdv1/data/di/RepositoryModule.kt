@@ -13,4 +13,5 @@ val repositoryModule = module {
     factoryOf(::ServerConfigurationRepositoryImpl) bind ServerConfigurationRepository::class
     factoryOf(::GenerationResultRepositoryImpl) bind GenerationResultRepository::class
     factoryOf(::AppVersionRepositoryImpl) bind AppVersionRepository::class
+    factoryOf(::CoinRepositoryImpl) bind CoinRepository::class
 }

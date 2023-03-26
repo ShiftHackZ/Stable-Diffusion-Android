@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -9,6 +10,7 @@ import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
@@ -18,6 +20,8 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    buildInfoProvider: BuildInfoProvider,
+    observeCoinsUseCase: ObserveCoinsUseCase,
     private val textToImageUseCase: TextToImageUseCase,
     private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
     private val schedulersProvider: SchedulersProvider,
@@ -25,8 +29,10 @@ class TextToImageViewModel(
     private val preferenceManager: PreferenceManager,
     private val analytics: Analytics,
 ) : GenerationMviViewModel<TextToImageState, EmptyEffect>(
+    buildInfoProvider,
+    observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
-    schedulersProvider
+    schedulersProvider,
 ) {
 
     override val emptyState = TextToImageState()

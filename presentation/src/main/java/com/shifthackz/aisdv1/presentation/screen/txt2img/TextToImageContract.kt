@@ -23,6 +23,7 @@ data class TextToImageState(
     override val availableSamplers: List<String> = emptyList(),
     override val widthValidationError: UiText? = null,
     override val heightValidationError: UiText? = null,
+    override val generateButtonEnabled: Boolean = true,
 ) : GenerationMviState() {
 
     sealed interface Dialog {
@@ -44,7 +45,8 @@ data class TextToImageState(
         selectedSampler: String,
         availableSamplers: List<String>,
         widthValidationError: UiText?,
-        heightValidationError: UiText?
+        heightValidationError: UiText?,
+        generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
         prompt = prompt,
         negativePrompt = negativePrompt,
@@ -58,6 +60,7 @@ data class TextToImageState(
         availableSamplers = availableSamplers,
         widthValidationError = widthValidationError,
         heightValidationError = heightValidationError,
+        generateButtonEnabled = generateButtonEnabled,
     )
 }
 

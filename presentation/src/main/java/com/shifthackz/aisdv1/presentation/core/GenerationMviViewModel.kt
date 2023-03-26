@@ -2,15 +2,22 @@
 
 package com.shifthackz.aisdv1.presentation.core
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
+import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
+import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
+    buildInfoProvider: BuildInfoProvider,
+    observeCoinsUseCase: ObserveCoinsUseCase,
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<S, E>() {
@@ -30,6 +37,20 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
                         .let(::setGenerationState)
                 }
             )
+
+        if (buildInfoProvider.buildType == BuildType.GOOGLE_PLAY) {
+            !observeCoinsUseCase()
+                .subscribeOnMainThread(schedulersProvider)
+                .map {result ->
+                    when (result) {
+                        is ObserveCoinsUseCase.Result.Coins -> {
+                            currentState.copyState(generateButtonEnabled = result.value > 0)
+                        }
+                        else -> currentState
+                    }
+                }
+                .subscribeBy(::errorLog, EmptyLambda, ::setGenerationState)
+        }
     }
 
     fun updatePrompt(value: String) = (currentState)

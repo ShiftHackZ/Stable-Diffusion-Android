@@ -18,9 +18,11 @@ import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
+import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
+import org.koin.androidx.compose.koinViewModel
 
 class TextToImageScreen(
     private val viewModel: TextToImageViewModel,
@@ -118,17 +120,23 @@ private fun ScreenContent(
                 }
             },
             bottomBar = {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 32.dp)
-                        .padding(bottom = 16.dp),
-                    onClick = onGenerateClicked,
-                    enabled = !state.hasValidationErrors
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.action_generate)
-                    )
+                Column(Modifier.fillMaxWidth()) {
+                    AvailableCoinsComposable(
+                        modifier = Modifier.fillMaxWidth(),
+                        viewModel = koinViewModel()
+                    ).Build()
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp)
+                            .padding(bottom = 16.dp),
+                        onClick = onGenerateClicked,
+                        enabled = !state.hasValidationErrors && state.generateButtonEnabled
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.action_generate)
+                        )
+                    }
                 }
             }
         )

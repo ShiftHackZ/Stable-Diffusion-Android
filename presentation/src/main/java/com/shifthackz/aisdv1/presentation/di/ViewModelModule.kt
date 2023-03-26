@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashViewModel
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageViewModel
+import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsViewModel
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityViewModel
 import com.shifthackz.aisdv1.presentation.widget.version.VersionCheckerViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -27,6 +28,7 @@ val viewModelModule = module {
     viewModelOf(::GalleryViewModel)
     viewModelOf(::ConnectivityViewModel)
     viewModelOf(::VersionCheckerViewModel)
+    viewModelOf(::AvailableCoinsViewModel)
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())

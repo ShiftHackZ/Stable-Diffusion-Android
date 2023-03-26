@@ -17,4 +17,5 @@ val localDataSourceModule = module {
     factoryOf(::ServerConfigurationLocalDataSource) bind ServerConfigurationDataSource.Local::class
     factoryOf(::GenerationResultLocalDataSource) bind GenerationResultDataSource.Local::class
     factoryOf(::AppVersionLocalDataSource) bind AppVersionDataSource.Local::class
+    factoryOf(::CoinLocalDataSource) bind CoinDataSource.Local::class
 }
