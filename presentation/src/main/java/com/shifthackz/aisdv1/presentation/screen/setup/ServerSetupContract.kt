@@ -14,6 +14,7 @@ sealed interface ServerSetupEffect : MviEffect {
 
 data class ServerSetupState(
     val showBackNavArrow: Boolean = false,
+    val mode: Mode = Mode.OWN_SERVER,
     val screenDialog: Dialog = Dialog.None,
     val serverUrl: String = "",
     val originalSeverUrl: String = "",
@@ -26,6 +27,11 @@ data class ServerSetupState(
         object None : Dialog
         object Communicating : Dialog
         data class Error(val error: UiText) : Dialog
+    }
+
+    enum class Mode {
+        SD_AI_CLOUD,
+        OWN_SERVER;
     }
 }
 

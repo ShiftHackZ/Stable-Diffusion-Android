@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.network.api.StableDiffusionAppUpdateRestApi
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
+import com.shifthackz.aisdv1.network.interceptor.NetworkChainHeaderInterceptor
 import com.shifthackz.aisdv1.network.qualifiers.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -39,29 +40,33 @@ val networkModule = module {
         )
     }
 
-    single<List<HttpInterceptor>> {
-        buildList {
-
-        }
+    single {
+        HttpInterceptors(
+            listOf(
+                HttpInterceptor(NetworkChainHeaderInterceptor(get()))
+            )
+        )
     }
 
-    single<List<NetworkInterceptor>> {
-        buildList {
-            val loggingInterceptor = HttpLoggingInterceptor { message ->
-                debugLog(HTTP_TAG, message)
-            }.apply {
-                level = HttpLoggingInterceptor.Level.BODY
+    single {
+        NetworkInterceptors(
+            buildList {
+                val loggingInterceptor = HttpLoggingInterceptor { message ->
+                    debugLog(HTTP_TAG, message)
+                }.apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
+                add(NetworkInterceptor(loggingInterceptor))
             }
-            add(NetworkInterceptor(loggingInterceptor))
-        }
+        )
     }
 
     single {
         OkHttpClient
             .Builder()
             .apply {
-                get<List<HttpInterceptor>>().forEach(::addInterceptor)
-                get<List<NetworkInterceptor>>().forEach(::addNetworkInterceptor)
+                get<HttpInterceptors>().interceptors.forEach(::addInterceptor)
+                get<NetworkInterceptors>().interceptors.forEach(::addNetworkInterceptor)
             }
             .connectTimeout(HTTP_TIMEOUT, TimeUnit.MINUTES)
             .readTimeout(HTTP_TIMEOUT, TimeUnit.MINUTES)

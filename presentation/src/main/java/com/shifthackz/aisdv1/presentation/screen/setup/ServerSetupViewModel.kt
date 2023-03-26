@@ -49,6 +49,10 @@ class ServerSetupViewModel(
             }
     }
 
+    fun updateServerMode(value: ServerSetupState.Mode) = currentState
+        .copy(mode = value)
+        .let(::setState)
+
     fun updateServerUrl(value: String) = currentState
         .copy(serverUrl = value, validationError = null)
         .let(::setState)
