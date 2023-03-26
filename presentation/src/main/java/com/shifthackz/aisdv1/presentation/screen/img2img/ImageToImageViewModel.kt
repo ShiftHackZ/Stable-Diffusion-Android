@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -9,6 +10,7 @@ import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
@@ -21,6 +23,8 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ImageToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    observeCoinsUseCase: ObserveCoinsUseCase,
+    buildInfoProvider: BuildInfoProvider,
     private val imageToImageUseCase: ImageToImageUseCase,
     private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
@@ -29,6 +33,8 @@ class ImageToImageViewModel(
     private val schedulersProvider: SchedulersProvider,
     private val analytics: Analytics,
 ) : GenerationMviViewModel<ImageToImageState, ImageToImageEffect>(
+    buildInfoProvider,
+    observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
     schedulersProvider,
 ) {
@@ -59,38 +65,46 @@ class ImageToImageViewModel(
         .copy(imageState = ImageToImageState.ImageState.None)
         .let(::setState)
 
-    fun generate() = when (currentState.imageState) {
-        is ImageToImageState.ImageState.Image -> !Single
-            .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
-            .doOnSubscribe { setActiveDialog(ImageToImageState.Dialog.Communicating) }
-            .map(BitmapToBase64Converter::Input)
-            .flatMap(bitmapToBase64Converter::invoke)
-            .map(currentState::preProcessed)
-            .map(ImageToImageState::mapToPayload)
-            .flatMap(imageToImageUseCase::invoke)
-            .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(
-                onError = { t ->
-                    setActiveDialog(
-                        ImageToImageState.Dialog.Error(
-                            UiText.Static(
-                                t.localizedMessage ?: "Error"
-                            )
-                        )
-                    )
-                    errorLog(t)
-                },
-                onSuccess = { ai ->
-                    analytics.logEvent(AiImageGenerated(ai))
-                    setActiveDialog(
-                        ImageToImageState.Dialog.Image(
-                            ai,
-                            preferenceManager.autoSaveAiResults,
-                        )
-                    )
+    fun generate() {
+        when (currentState.imageState) {
+            is ImageToImageState.ImageState.Image -> {
+                if (!currentState.generateButtonEnabled) {
+                    setActiveDialog(ImageToImageState.Dialog.NoSdAiCoins)
+                    return
                 }
-            )
-        else -> Unit
+                !Single
+                    .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
+                    .doOnSubscribe { setActiveDialog(ImageToImageState.Dialog.Communicating) }
+                    .map(BitmapToBase64Converter::Input)
+                    .flatMap(bitmapToBase64Converter::invoke)
+                    .map(currentState::preProcessed)
+                    .map(ImageToImageState::mapToPayload)
+                    .flatMap(imageToImageUseCase::invoke)
+                    .subscribeOnMainThread(schedulersProvider)
+                    .subscribeBy(
+                        onError = { t ->
+                            setActiveDialog(
+                                ImageToImageState.Dialog.Error(
+                                    UiText.Static(
+                                        t.localizedMessage ?: "Error"
+                                    )
+                                )
+                            )
+                            errorLog(t)
+                        },
+                        onSuccess = { ai ->
+                            analytics.logEvent(AiImageGenerated(ai))
+                            setActiveDialog(
+                                ImageToImageState.Dialog.Image(
+                                    ai,
+                                    preferenceManager.autoSaveAiResults,
+                                )
+                            )
+                        }
+                    )
+            }
+            else -> Unit
+        }
     }
 
     fun saveGeneratedResult(ai: AiGenerationResult) = !saveGenerationResultUseCase(ai)

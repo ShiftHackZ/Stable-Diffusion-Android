@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="language">Українська</string>
     <string name="ok">OK</string>
     <string name="yes">Так</string>
@@ -25,6 +25,9 @@
     <string name="action_update">Оновити</string>
     <string name="action_skip">Пропустити</string>
 
+    <string name="srv_type_cloud">Я хочу використовувати сервер SDAI</string>
+    <string name="srv_type_own">Я хочу використовувати власний сервер AUTOMATIC1111</string>
+
     <string name="hint_prompt">Запит</string>
     <string name="hint_prompt_negative">Негативний запит</string>
     <string name="hint_sampling_steps">Етапи вибірки: %1$s</string>
@@ -37,8 +40,12 @@
     <string name="hint_sd_model">SD Модель</string>
 
     <string name="hint_server_setup_title">Укажіть свою URL-адресу Stable Diffusion WebUI</string>
-    <string name="hint_valid_urls">Ось приклади URL-адрес сервера:\n\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
+    <string name="hint_valid_urls">Ось приклади URL-адрес сервера:\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
     <string name="hint_demo_mode">Цей режим дозволяє перевірити поведінку програми, навіть якщо у вас немає сервера Stable Diffusion WebUI.\n\nУ демонстраційному режимі програма ігнорує параметри генерації, не використовує сервер штучного інтелекту та повертає фіктивні зображення.</string>
+    <string name="hint_args_warning" tools:ignore="TypographyDashes">Перед підключенням переконайтеся, що:\n• ви використовуєте AUTOMATIC1111 WebUI з аргументами --api --listen\n• ваш брандмауер не блокує порт 7860\n• телефон підключено до однієї мережі Wi-Fi з вашим ПК</string>
+
+    <string name="hint_server_sdai_title">Підключитися до сервера SDAI</string>
+    <string name="hint_server_sdai_sub_title">Цей режим дозволяє використовувати загальнодоступний хмарний екземпляр SDAI.\n\nОскільки наш проект є неприбутковим, ми можемо включити додатковий ліміт швидкості для деяких користувачів або обмежити його певними обчислювальними годинами.</string>
 
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
@@ -113,6 +120,9 @@
     <string name="status_connected">⚡️ З\'єднано</string>
     <string name="status_disconnected">️❌ Від\'єднано</string>
     <string name="status_communicating">Оновлення…</string>
+
+    <string name="sdai_coins_zero_title">Закінчилися монети SDAI</string>
+    <string name="sdai_coins_zero_sub_title">Ви витратили всі свої монети SDAI за сьогодні.\nПоверніться завтра, щоб отримати більше монет!\n\nПримітка: вам не потрібно мати монети SDAI, якщо ви використовуєте власний сервер.</string>
 
     <string name="error_title">Помилка</string>
     <string name="error_empty">Поле не може бути порожнім</string>

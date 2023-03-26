@@ -5,8 +5,6 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -18,9 +16,12 @@ import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
+import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.NoSdAiCoinsDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
+import org.koin.androidx.compose.koinViewModel
 
 class TextToImageScreen(
     private val viewModel: TextToImageViewModel,
@@ -78,19 +79,6 @@ private fun ScreenContent(
                             style = MaterialTheme.typography.headlineMedium,
                         )
                     },
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                //ToDo implement info bottom sheet
-                            },
-                            content = {
-                                Icon(
-                                    imageVector = Icons.Rounded.Info,
-                                    contentDescription = "Info",
-                                )
-                            },
-                        )
-                    },
                 )
             },
             content = { paddingValues ->
@@ -118,23 +106,32 @@ private fun ScreenContent(
                 }
             },
             bottomBar = {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 32.dp)
-                        .padding(bottom = 16.dp),
-                    onClick = onGenerateClicked,
-                    enabled = !state.hasValidationErrors
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.action_generate)
-                    )
+                Column(Modifier.fillMaxWidth()) {
+                    AvailableCoinsComposable(
+                        modifier = Modifier.fillMaxWidth(),
+                        viewModel = koinViewModel()
+                    ).Build()
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp)
+                            .padding(bottom = 16.dp),
+                        onClick = onGenerateClicked,
+                        enabled = !state.hasValidationErrors
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.action_generate)
+                        )
+                    }
                 }
             }
         )
         when (state.screenDialog) {
             TextToImageState.Dialog.Communicating -> ProgressDialog(
                 canDismiss = false,
+            )
+            TextToImageState.Dialog.NoSdAiCoins -> NoSdAiCoinsDialog(
+                onDismissScreenDialog,
             )
             is TextToImageState.Dialog.Image -> GenerationImageResultDialog(
                 imageBase64 = state.screenDialog.result.image,

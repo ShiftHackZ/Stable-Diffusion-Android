@@ -205,7 +205,7 @@ private fun ContentSettingsState(
             text = R.string.settings_item_config.asUiText(),
             onClick = onConfigurationItemClick,
         )
-        SettingsItem(
+        if (state.showSdModelSelector) SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Default.AutoFixNormal,
             text = R.string.settings_item_sd_model.asUiText(),
@@ -218,7 +218,7 @@ private fun ContentSettingsState(
             text = stringResource(id = R.string.settings_header_app),
             style = MaterialTheme.typography.headlineSmall,
         )
-        SettingsItem(
+        if (state.showMonitorConnectionOption) SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Default.Refresh,
             text = R.string.settings_item_monitor_connection.asUiText(),
@@ -315,6 +315,8 @@ private fun PreviewStateContent() {
             appVersion = "1.0.0 (10)",
             monitorConnectivity = true,
             autoSaveAiResults = true,
+            showSdModelSelector = true,
+            showMonitorConnectionOption = true,
             showRateGooglePlay = true,
             showGitHubLink = true,
         )

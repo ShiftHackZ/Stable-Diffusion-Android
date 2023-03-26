@@ -1,6 +1,5 @@
 package com.shifthackz.aisdv1.presentation.widget.dialog
 
-
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults

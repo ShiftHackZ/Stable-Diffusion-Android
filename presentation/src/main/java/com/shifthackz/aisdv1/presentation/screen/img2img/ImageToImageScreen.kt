@@ -27,10 +27,13 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
+import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.NoSdAiCoinsDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
+import org.koin.androidx.compose.koinViewModel
 
 class ImageToImageScreen(
     private val viewModel: ImageToImageViewModel,
@@ -149,23 +152,32 @@ private fun ScreenContent(
                 }
             },
             bottomBar = {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 32.dp)
-                        .padding(bottom = 16.dp),
-                    onClick = onGenerateClicked,
-                    enabled = !state.hasValidationErrors && !state.imageState.isEmpty
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.action_generate)
-                    )
+                Column(Modifier.fillMaxWidth()) {
+                    AvailableCoinsComposable(
+                        modifier = Modifier.fillMaxWidth(),
+                        viewModel = koinViewModel()
+                    ).Build()
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp)
+                            .padding(bottom = 16.dp),
+                        onClick = onGenerateClicked,
+                        enabled = !state.hasValidationErrors && !state.imageState.isEmpty,
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.action_generate)
+                        )
+                    }
                 }
             }
         )
         when (state.screenDialog) {
             ImageToImageState.Dialog.Communicating -> ProgressDialog(
                 canDismiss = false,
+            )
+            ImageToImageState.Dialog.NoSdAiCoins -> NoSdAiCoinsDialog(
+                onDismissScreenDialog,
             )
             is ImageToImageState.Dialog.Error -> ErrorDialog(
                 text = state.screenDialog.error,
