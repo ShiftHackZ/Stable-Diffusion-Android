@@ -11,10 +11,11 @@ import java.time.ZoneOffset
 
 internal class CoinRepositoryImpl(
     private val coinLocalDataSource: CoinDataSource.Local,
+    private val coinRemoteDateSource: CoinDataSource.Remote,
     private val preferenceManager: PreferenceManager,
 ) : CoinRepository {
 
-    private val availableCoinsPerDay = 10
+    private var availableCoinsPerDay = 10
 
     override fun observeAvailableCoinsForToday(): Flowable<Int> {
         val now = LocalDateTime.now()
@@ -22,7 +23,16 @@ internal class CoinRepositoryImpl(
         val end = now.with(LocalTime.MAX).toInstant(ZoneOffset.MIN).toEpochMilli()
         return coinLocalDataSource
             .observeQuerySpentCoinsForPeriod(start, end)
-            .map { availableCoinsPerDay - it }
+            .flatMap {
+                coinRemoteDateSource
+                    .fetchCoinsConfig()
+                    .toFlowable()
+                    .map { coinsPerDay ->
+                        availableCoinsPerDay = coinsPerDay
+                        coinsPerDay - it
+                    }
+            }
+            .map { coins -> if (coins < 0) 0 else coins }
     }
 
     override fun spendCoin(): Completable {

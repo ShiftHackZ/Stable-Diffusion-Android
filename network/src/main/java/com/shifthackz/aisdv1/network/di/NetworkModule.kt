@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.network.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.shifthackz.aisdv1.network.api.StableDiffusionAppUpdateRestApi
+import com.shifthackz.aisdv1.network.api.StableDiffusionCoinsRestApi
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
@@ -49,7 +50,7 @@ val networkModule = module {
     single {
         NetworkInterceptors(
             listOf(
-                NetworkInterceptor(LoggingInterceptor(get(), get()).get()),
+                NetworkInterceptor(LoggingInterceptor(get()).get()),
             )
         )
     }
@@ -86,6 +87,12 @@ val networkModule = module {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppUpdateApiUrl)
             .create(StableDiffusionAppUpdateRestApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppUpdateApiUrl)
+            .create(StableDiffusionCoinsRestApi::class.java)
     }
 
     factory {params ->

@@ -5,8 +5,6 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -79,19 +77,6 @@ private fun ScreenContent(
                         Text(
                             text = stringResource(id = R.string.title_text_to_image),
                             style = MaterialTheme.typography.headlineMedium,
-                        )
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                //ToDo implement info bottom sheet
-                            },
-                            content = {
-                                Icon(
-                                    imageVector = Icons.Rounded.Info,
-                                    contentDescription = "Info",
-                                )
-                            },
                         )
                     },
                 )

@@ -30,6 +30,7 @@ val remoteDataSourceModule = module {
     factoryOf(::StableDiffusionModelsRemoteDataSource) bind StableDiffusionModelsDataSource.Remote::class
     factoryOf(::ServerConfigurationRemoteDataSource) bind ServerConfigurationDataSource.Remote::class
     factoryOf(::AppVersionRemoteDataSource) bind AppVersionDataSource.Remote::class
+    factoryOf(::CoinRemoteDateSource) bind CoinDataSource.Remote::class
 
     factory<ServerConnectivityGateway> {
         val lambda: () -> Boolean = { get<PreferenceManager>().useSdAiCloud }
