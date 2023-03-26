@@ -8,9 +8,10 @@ class PreferenceManagerImpl(
 ) : PreferenceManager {
 
     override var serverUrl: String
-        get() = preferences.getString(KEY_SERVER_URL, "") ?: ""
+        get() = if (useSdAiCloud) ""
+        else preferences.getString(KEY_SERVER_URL, "") ?: ""
         set(value) = preferences.edit()
-            .putString(KEY_SERVER_URL, value)
+            .putString(KEY_SERVER_URL, if (useSdAiCloud) "" else value)
             .apply()
 
     override var demoMode: Boolean
@@ -19,8 +20,15 @@ class PreferenceManagerImpl(
             .putBoolean(KEY_DEMO_MODE, value)
             .apply()
 
+    override var useSdAiCloud: Boolean
+        get() = preferences.getBoolean(KEY_SD_AI_CLOUD_MODE, false)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_SD_AI_CLOUD_MODE, value)
+            .apply()
+
     override var monitorConnectivity: Boolean
-        get() = preferences.getBoolean(KEY_MONITOR_CONNECTIVITY, true)
+        get() = if (useSdAiCloud) false
+        else preferences.getBoolean(KEY_MONITOR_CONNECTIVITY, true)
         set(value) = preferences.edit()
             .putBoolean(KEY_MONITOR_CONNECTIVITY, value)
             .apply()
@@ -34,6 +42,7 @@ class PreferenceManagerImpl(
     companion object {
         private const val KEY_SERVER_URL = "key_server_url"
         private const val KEY_DEMO_MODE = "key_demo_mode"
+        private const val KEY_SD_AI_CLOUD_MODE = "key_sd_ai_cloud_mode"
         private const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
         private const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
     }

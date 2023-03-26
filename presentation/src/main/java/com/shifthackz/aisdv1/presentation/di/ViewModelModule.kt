@@ -31,7 +31,20 @@ val viewModelModule = module {
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())
         val demoModeUrl = get<LinksProvider>().demoModeUrl
-        ServerSetupViewModel(launchSource, get(), demoModeUrl, get(), get(), get(), get(), get(), get())
+        val cloudUrl = get<LinksProvider>().cloudUrl
+        ServerSetupViewModel(
+            launchSource = launchSource,
+            getConfigurationUseCase = get(),
+            demoModeUrl = demoModeUrl,
+            cloudUrl = cloudUrl,
+            urlValidator = get(),
+            testConnectivityUseCase = get(),
+            setServerConfigurationUseCase = get(),
+            dataPreLoaderUseCase = get(),
+            schedulersProvider = get(),
+            buildInfoProvider = get(),
+            analytics = get(),
+        )
     }
 
     viewModel { parameters ->

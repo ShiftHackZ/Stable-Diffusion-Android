@@ -15,6 +15,8 @@ sealed interface ServerSetupEffect : MviEffect {
 data class ServerSetupState(
     val showBackNavArrow: Boolean = false,
     val mode: Mode = Mode.OWN_SERVER,
+    val allowModeModification: Boolean = true,
+    val originalCloudAiMode: Boolean = false,
     val screenDialog: Dialog = Dialog.None,
     val serverUrl: String = "",
     val originalSeverUrl: String = "",
@@ -22,6 +24,21 @@ data class ServerSetupState(
     val originalDemoMode: Boolean = false,
     val validationError: UiText? = null,
 ) : MviState {
+
+    fun withCloudMode(value: Boolean) = this.copy(
+        originalCloudAiMode = value,
+        mode = if (value) Mode.SD_AI_CLOUD else Mode.OWN_SERVER,
+    )
+
+    fun withDemoMode(value: Boolean) = this.copy(
+        originalDemoMode = value,
+        demoMode = value,
+    )
+
+    fun withServerUrl(value: String) = this.copy(
+        serverUrl = value,
+        originalSeverUrl = value,
+    )
 
     sealed interface Dialog {
         object None : Dialog

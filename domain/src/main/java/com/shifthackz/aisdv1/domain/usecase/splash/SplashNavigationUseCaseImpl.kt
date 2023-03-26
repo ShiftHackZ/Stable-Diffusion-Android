@@ -10,7 +10,9 @@ internal class SplashNavigationUseCaseImpl(
 
     override fun invoke(): Single<Action> = Single.create { emitter ->
         val action = when {
-            preferenceManager.serverUrl.isEmpty() -> Action.LAUNCH_SERVER_SETUP
+            preferenceManager.serverUrl.isEmpty() && !preferenceManager.useSdAiCloud -> {
+                Action.LAUNCH_SERVER_SETUP
+            }
             else -> Action.LAUNCH_HOME
         }
         emitter.onSuccess(action)

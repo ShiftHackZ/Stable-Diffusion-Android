@@ -20,6 +20,8 @@ sealed interface SettingsState : MviState {
         val monitorConnectivity: Boolean,
         val autoSaveAiResults: Boolean,
         val appVersion: String,
+        val showSdModelSelector: Boolean,
+        val showMonitorConnectionOption: Boolean,
         val showRateGooglePlay: Boolean,
         val showGitHubLink: Boolean,
     ) : SettingsState

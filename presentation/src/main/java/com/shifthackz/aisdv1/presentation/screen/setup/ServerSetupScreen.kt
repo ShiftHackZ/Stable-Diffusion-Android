@@ -114,7 +114,7 @@ private fun ScreenContent(
                 Column(
                     modifier = Modifier.padding(paddingValues),
                 ) {
-                    Row(
+                    if (state.allowModeModification) Row(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {

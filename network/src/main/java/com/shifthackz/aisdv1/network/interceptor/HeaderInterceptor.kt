@@ -1,11 +1,10 @@
 package com.shifthackz.aisdv1.network.interceptor
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class NetworkChainHeaderInterceptor(
+class HeaderInterceptor(
     private val buildInfoProvider: BuildInfoProvider,
 ) : Interceptor {
 
@@ -14,9 +13,6 @@ class NetworkChainHeaderInterceptor(
         .newBuilder()
         .addHeader(HEADER_APP_VERSION, buildInfoProvider.version.toString())
         .build()
-        .also {
-            debugLog("hd -> ${it.headers}")
-        }
         .let(chain::proceed)
 
     companion object {

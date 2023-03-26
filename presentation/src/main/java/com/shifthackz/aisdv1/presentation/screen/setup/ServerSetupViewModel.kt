@@ -1,6 +1,9 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.reactive.retryWithDelay
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -14,6 +17,8 @@ import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCa
 import com.shifthackz.aisdv1.presentation.features.SetupConnectEvent
 import com.shifthackz.aisdv1.presentation.features.SetupConnectFailure
 import com.shifthackz.aisdv1.presentation.features.SetupConnectSuccess
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import java.util.concurrent.TimeUnit
@@ -22,11 +27,13 @@ class ServerSetupViewModel(
     launchSource: ServerSetupLaunchSource,
     getConfigurationUseCase: GetConfigurationUseCase,
     private val demoModeUrl: String,
+    private val cloudUrl: String,
     private val urlValidator: UrlValidator,
     private val testConnectivityUseCase: TestConnectivityUseCase,
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
     private val schedulersProvider: SchedulersProvider,
+    private val buildInfoProvider: BuildInfoProvider,
     private val analytics: Analytics,
 ) : MviRxViewModel<ServerSetupState, ServerSetupEffect>() {
 
@@ -37,14 +44,12 @@ class ServerSetupViewModel(
     init {
         !getConfigurationUseCase()
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog) { (url, demoMode) ->
+            .subscribeBy(::errorLog) { configuration ->
                 currentState
-                    .copy(
-                        serverUrl = url,
-                        originalSeverUrl = url,
-                        demoMode = demoMode,
-                        originalDemoMode = demoMode,
-                    )
+                    .copy(allowModeModification = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY)
+                    .withCloudMode(configuration.cloudAiMode)
+                    .withDemoMode(configuration.demoMode)
+                    .withServerUrl(configuration.serverUrl)
                     .let(::setState)
             }
     }
@@ -64,21 +69,39 @@ class ServerSetupViewModel(
     fun connectToServer() {
         if (!validate()) return
         val demoMode = currentState.demoMode
-        val connectUrl = if (demoMode) demoModeUrl else currentState.serverUrl
+        val connectUrl = when (currentState.mode) {
+            ServerSetupState.Mode.SD_AI_CLOUD -> cloudUrl
+            ServerSetupState.Mode.OWN_SERVER -> {
+                if (demoMode) demoModeUrl else currentState.serverUrl
+            }
+        }
         analytics.logEvent(SetupConnectEvent(connectUrl, demoMode))
         !testConnectivityUseCase(connectUrl)
             .doOnSubscribe { setScreenDialog(ServerSetupState.Dialog.Communicating) }
-            .andThen(setServerConfigurationUseCase(connectUrl, demoMode))
-            .andThen(dataPreLoaderUseCase())
+            .andThen(
+                Completable.concatArray(
+                    setServerConfigurationUseCase(
+                        url = connectUrl,
+                        demoMode = demoMode,
+                        useSdAiCloud = currentState.mode == ServerSetupState.Mode.SD_AI_CLOUD,
+                    ),
+                    Observable
+                        .timer(5L, TimeUnit.SECONDS)
+                        .flatMapCompletable {
+                            dataPreLoaderUseCase()
+                                .retryWithDelay(3L, 1L, TimeUnit.SECONDS)
+                        }
+                )
+            )
             .andThen(Single.just(Result.success(Unit)))
             .timeout(30L, TimeUnit.SECONDS)
             .subscribeOnMainThread(schedulersProvider)
             .onErrorResumeNext { t ->
                 setServerConfigurationUseCase(
                     currentState.originalSeverUrl,
-                    currentState.originalDemoMode
-                )
-                    .andThen(Single.just(Result.failure(t)))
+                    currentState.originalDemoMode,
+                    currentState.originalCloudAiMode,
+                ).andThen(Single.just(Result.failure(t)))
             }
             .subscribeBy(::errorLog) { result ->
                 result.fold(
@@ -99,6 +122,7 @@ class ServerSetupViewModel(
     fun dismissScreenDialog() = setScreenDialog(ServerSetupState.Dialog.None)
 
     private fun validate(): Boolean {
+        if (currentState.mode == ServerSetupState.Mode.SD_AI_CLOUD) return true
         if (currentState.demoMode) return true
         val validation = urlValidator(currentState.serverUrl)
         currentState.copy(validationError = validation.mapToUi()).let(::setState)

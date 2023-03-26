@@ -2,22 +2,20 @@ package com.shifthackz.aisdv1.network.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.network.api.StableDiffusionAppUpdateRestApi
 import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
-import com.shifthackz.aisdv1.network.interceptor.NetworkChainHeaderInterceptor
+import com.shifthackz.aisdv1.network.interceptor.HeaderInterceptor
+import com.shifthackz.aisdv1.network.interceptor.LoggingInterceptor
 import com.shifthackz.aisdv1.network.qualifiers.*
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-private const val HTTP_TAG = "HTTP"
 private const val HTTP_TIMEOUT = 10L
 
 val networkModule = module {
@@ -43,21 +41,16 @@ val networkModule = module {
     single {
         HttpInterceptors(
             listOf(
-                HttpInterceptor(NetworkChainHeaderInterceptor(get()))
+                HttpInterceptor(HeaderInterceptor(get())),
             )
         )
     }
 
     single {
         NetworkInterceptors(
-            buildList {
-                val loggingInterceptor = HttpLoggingInterceptor { message ->
-                    debugLog(HTTP_TAG, message)
-                }.apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                }
-                add(NetworkInterceptor(loggingInterceptor))
-            }
+            listOf(
+                NetworkInterceptor(LoggingInterceptor(get(), get()).get()),
+            )
         )
     }
 
@@ -95,5 +88,7 @@ val networkModule = module {
             .create(StableDiffusionAppUpdateRestApi::class.java)
     }
 
-    single { ConnectivityMonitor() }
+    factory {params ->
+        ConnectivityMonitor(params.get())
+    }
 }
