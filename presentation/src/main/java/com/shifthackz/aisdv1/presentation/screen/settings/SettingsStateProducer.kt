@@ -27,6 +27,8 @@ class SettingsStateProducer(
             monitorConnectivity = preferenceManager.monitorConnectivity,
             autoSaveAiResults = preferenceManager.autoSaveAiResults,
             appVersion = version,
+            showSdModelSelector = !preferenceManager.useSdAiCloud,
+            showMonitorConnectionOption = !preferenceManager.useSdAiCloud,
             showRateGooglePlay = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
             showGitHubLink = buildInfoProvider.buildType == BuildType.FOSS,
         )

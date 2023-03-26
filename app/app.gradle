@@ -21,6 +21,7 @@ android {
     defaultConfig {
         applicationId "com.shifthackz.aisdv1.app"
 
+        buildConfigField "String", "CLOUD_AI_URL", "\"https://sdai.moroz.cc\""
         buildConfigField "String", "UPDATE_API_URL", "\"https://sdai.moroz.cc\""
         buildConfigField "String", "DEMO_MODE_API_URL", "\"https://sdai.moroz.cc\""
         buildConfigField "String", "POLICY_URL", "\"https://sdai.moroz.cc/policy.html\""

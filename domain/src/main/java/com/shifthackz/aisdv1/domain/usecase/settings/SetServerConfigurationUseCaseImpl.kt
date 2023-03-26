@@ -7,8 +7,10 @@ internal class SetServerConfigurationUseCaseImpl(
     private val preferenceManager: PreferenceManager,
 ) : SetServerConfigurationUseCase {
 
-    override fun invoke(url: String, demoMode: Boolean): Completable = Completable.fromAction {
-        preferenceManager.serverUrl = url
-        preferenceManager.demoMode = demoMode
-    }
+    override fun invoke(url: String, demoMode: Boolean, useSdAiCloud: Boolean) =
+        Completable.fromAction {
+            preferenceManager.useSdAiCloud = useSdAiCloud
+            preferenceManager.serverUrl = url
+            preferenceManager.demoMode = demoMode
+        }
 }

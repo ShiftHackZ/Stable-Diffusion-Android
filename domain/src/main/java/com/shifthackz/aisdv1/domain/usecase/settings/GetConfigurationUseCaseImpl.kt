@@ -7,7 +7,11 @@ internal class GetConfigurationUseCaseImpl(
     private val preferenceManager: PreferenceManager,
 ) : GetConfigurationUseCase {
 
-    override fun invoke(): Single<Pair<String, Boolean>> = Single.just(
-        preferenceManager.serverUrl to preferenceManager.demoMode
+    override fun invoke(): Single<GetConfigurationUseCase.Configuration> = Single.just(
+        GetConfigurationUseCase.Configuration(
+            preferenceManager.serverUrl,
+            preferenceManager.demoMode,
+            preferenceManager.useSdAiCloud,
+        )
     )
 }

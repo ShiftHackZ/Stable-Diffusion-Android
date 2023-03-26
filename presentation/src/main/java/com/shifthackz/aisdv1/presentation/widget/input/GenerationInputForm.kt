@@ -183,6 +183,7 @@ private fun GenerationInputFormPreview() {
             override val availableSamplers: List<String> = listOf("Euler a")
             override val widthValidationError: UiText? = null
             override val heightValidationError: UiText? = null
+            override val generateButtonEnabled: Boolean = true
         },
     )
 }
