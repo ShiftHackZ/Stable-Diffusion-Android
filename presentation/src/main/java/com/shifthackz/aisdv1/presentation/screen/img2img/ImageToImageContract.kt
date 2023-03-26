@@ -42,6 +42,7 @@ data class ImageToImageState(
     sealed interface Dialog {
         object None : Dialog
         object Communicating : Dialog
+        object NoSdAiCoins : Dialog
         data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Dialog
         data class Error(val error: UiText) : Dialog
     }

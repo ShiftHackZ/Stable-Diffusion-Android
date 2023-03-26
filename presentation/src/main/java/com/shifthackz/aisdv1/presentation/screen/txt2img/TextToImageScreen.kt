@@ -21,6 +21,7 @@ import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.NoSdAiCoinsDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import org.koin.androidx.compose.koinViewModel
 
@@ -131,7 +132,7 @@ private fun ScreenContent(
                             .padding(horizontal = 32.dp)
                             .padding(bottom = 16.dp),
                         onClick = onGenerateClicked,
-                        enabled = !state.hasValidationErrors && state.generateButtonEnabled
+                        enabled = !state.hasValidationErrors
                     ) {
                         Text(
                             text = stringResource(id = R.string.action_generate)
@@ -143,6 +144,9 @@ private fun ScreenContent(
         when (state.screenDialog) {
             TextToImageState.Dialog.Communicating -> ProgressDialog(
                 canDismiss = false,
+            )
+            TextToImageState.Dialog.NoSdAiCoins -> NoSdAiCoinsDialog(
+                onDismissScreenDialog,
             )
             is TextToImageState.Dialog.Image -> GenerationImageResultDialog(
                 imageBase64 = state.screenDialog.result.image,

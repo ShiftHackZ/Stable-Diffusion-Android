@@ -46,27 +46,33 @@ class TextToImageViewModel(
 
     fun dismissScreenDialog() = setActiveDialog(TextToImageState.Dialog.None)
 
-    fun generate() = !currentState
-        .mapToPayload()
-        .let(textToImageUseCase::invoke)
-        .doOnSubscribe { setActiveDialog(TextToImageState.Dialog.Communicating) }
-        .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(
-            onError = { t ->
-                setActiveDialog(
-                    TextToImageState.Dialog.Error(
-                        (t.localizedMessage ?: "Something went wrong").asUiText()
+    fun generate() {
+        if (!currentState.generateButtonEnabled) {
+            setActiveDialog(TextToImageState.Dialog.NoSdAiCoins)
+            return
+        }
+        !currentState
+            .mapToPayload()
+            .let(textToImageUseCase::invoke)
+            .doOnSubscribe { setActiveDialog(TextToImageState.Dialog.Communicating) }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = { t ->
+                    setActiveDialog(
+                        TextToImageState.Dialog.Error(
+                            (t.localizedMessage ?: "Something went wrong").asUiText()
+                        )
                     )
-                )
-                errorLog(t)
-            },
-            onSuccess = { ai ->
-                analytics.logEvent(AiImageGenerated(ai))
-                setActiveDialog(
-                    TextToImageState.Dialog.Image(ai, preferenceManager.autoSaveAiResults)
-                )
-            },
-        )
+                    errorLog(t)
+                },
+                onSuccess = { ai ->
+                    analytics.logEvent(AiImageGenerated(ai))
+                    setActiveDialog(
+                        TextToImageState.Dialog.Image(ai, preferenceManager.autoSaveAiResults)
+                    )
+                },
+            )
+    }
 
     fun saveGeneratedResult(ai: AiGenerationResult) = !saveGenerationResultUseCase(ai)
         .subscribeOnMainThread(schedulersProvider)

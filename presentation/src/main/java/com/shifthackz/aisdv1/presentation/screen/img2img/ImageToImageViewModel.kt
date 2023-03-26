@@ -65,38 +65,46 @@ class ImageToImageViewModel(
         .copy(imageState = ImageToImageState.ImageState.None)
         .let(::setState)
 
-    fun generate() = when (currentState.imageState) {
-        is ImageToImageState.ImageState.Image -> !Single
-            .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
-            .doOnSubscribe { setActiveDialog(ImageToImageState.Dialog.Communicating) }
-            .map(BitmapToBase64Converter::Input)
-            .flatMap(bitmapToBase64Converter::invoke)
-            .map(currentState::preProcessed)
-            .map(ImageToImageState::mapToPayload)
-            .flatMap(imageToImageUseCase::invoke)
-            .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(
-                onError = { t ->
-                    setActiveDialog(
-                        ImageToImageState.Dialog.Error(
-                            UiText.Static(
-                                t.localizedMessage ?: "Error"
-                            )
-                        )
-                    )
-                    errorLog(t)
-                },
-                onSuccess = { ai ->
-                    analytics.logEvent(AiImageGenerated(ai))
-                    setActiveDialog(
-                        ImageToImageState.Dialog.Image(
-                            ai,
-                            preferenceManager.autoSaveAiResults,
-                        )
-                    )
+    fun generate() {
+        when (currentState.imageState) {
+            is ImageToImageState.ImageState.Image -> {
+                if (!currentState.generateButtonEnabled) {
+                    setActiveDialog(ImageToImageState.Dialog.NoSdAiCoins)
+                    return
                 }
-            )
-        else -> Unit
+                !Single
+                    .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
+                    .doOnSubscribe { setActiveDialog(ImageToImageState.Dialog.Communicating) }
+                    .map(BitmapToBase64Converter::Input)
+                    .flatMap(bitmapToBase64Converter::invoke)
+                    .map(currentState::preProcessed)
+                    .map(ImageToImageState::mapToPayload)
+                    .flatMap(imageToImageUseCase::invoke)
+                    .subscribeOnMainThread(schedulersProvider)
+                    .subscribeBy(
+                        onError = { t ->
+                            setActiveDialog(
+                                ImageToImageState.Dialog.Error(
+                                    UiText.Static(
+                                        t.localizedMessage ?: "Error"
+                                    )
+                                )
+                            )
+                            errorLog(t)
+                        },
+                        onSuccess = { ai ->
+                            analytics.logEvent(AiImageGenerated(ai))
+                            setActiveDialog(
+                                ImageToImageState.Dialog.Image(
+                                    ai,
+                                    preferenceManager.autoSaveAiResults,
+                                )
+                            )
+                        }
+                    )
+            }
+            else -> Unit
+        }
     }
 
     fun saveGeneratedResult(ai: AiGenerationResult) = !saveGenerationResultUseCase(ai)

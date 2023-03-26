@@ -9,15 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.presentation.R
 
 @Composable
-fun ErrorDialog(
-    text: UiText,
-    onDismissRequest: () -> Unit = {},
-) {
+fun NoSdAiCoinsDialog(onDismissRequest: () -> Unit = {}) {
     AlertDialog(
         shape = RoundedCornerShape(24.dp),
         onDismissRequest = onDismissRequest,
@@ -28,14 +23,14 @@ fun ErrorDialog(
         },
         title = {
             Text(
-                text = stringResource(id = R.string.error_title),
+                text = stringResource(id = R.string.sdai_coins_zero_title),
                 fontSize = 18.sp,
                 color = AlertDialogDefaults.titleContentColor,
             )
         },
         text = {
             Text(
-                text = text.asString(),
+                text = stringResource(id = R.string.sdai_coins_zero_sub_title),
                 fontSize = 14.sp,
                 color = AlertDialogDefaults.textContentColor,
             )
