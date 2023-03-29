@@ -78,6 +78,9 @@ ext {
     log = [
             timber: "com.jakewharton.timber:timber:$timberVersion",
     ]
+    log = [
+            timber: "com.jakewharton.timber:timber:$timberVersion",
+    ]
     proprietary = [
             firebaseBom        : "com.google.firebase:firebase-bom:$firebaseBomVersion",
             firebaseAnalytics  : "com.google.firebase:firebase-analytics-ktx",
