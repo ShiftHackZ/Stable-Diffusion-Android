@@ -18,7 +18,7 @@ internal class ObserveCoinsUseCaseImpl(
             return Flowable.just(ObserveCoinsUseCase.Result.FeatureNotAvailable)
         }
         val coinsProducer: () -> Flowable<ObserveCoinsUseCase.Result> = {
-            coinRepository.observeAvailableCoinsForToday()
+            coinRepository.observeAvailableCoins()
                 .map { coins ->
                     if (preferenceManager.useSdAiCloud) ObserveCoinsUseCase.Result.Coins(coins)
                     else ObserveCoinsUseCase.Result.UsingOwnServer

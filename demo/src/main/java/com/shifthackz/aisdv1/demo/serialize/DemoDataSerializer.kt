@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.BufferedReader
 
-class DemoDataSerializer(private val contextProvider: () -> Context) {
+internal class DemoDataSerializer(private val contextProvider: () -> Context) {
 
     fun readDemoAssets(): List<String> {
         val rawString = contextProvider().resources.assets

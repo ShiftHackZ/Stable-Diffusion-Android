@@ -26,7 +26,7 @@ import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionSamplerEntit
     MapConverters::class,
     ListConverters::class,
 )
-abstract class CacheDatabase : RoomDatabase() {
+internal abstract class CacheDatabase : RoomDatabase() {
     abstract fun serverConfigurationDao(): ServerConfigurationDao
     abstract fun sdModelDao(): StableDiffusionModelDao
     abstract fun sdSamplerDao(): StableDiffusionSamplerDao

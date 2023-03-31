@@ -30,6 +30,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     launchUpdateCheck: () -> Unit = {},
     launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
+    launchRewarded: () -> Unit = {},
     shareLogFile: () -> Unit = {},
 ) {
     addDestination(
@@ -37,8 +38,12 @@ fun NavGraphBuilder.homeScreenNavGraph(
             HomeNavigationScreen(
                 viewModel = koinViewModel(),
                 navItems = listOf(
-                    txt2ImgTab(),
-                    img2imgTab(pickImage, takePhoto),
+                    txt2ImgTab(launchRewarded = launchRewarded),
+                    img2imgTab(
+                        pickImage = pickImage,
+                        takePhoto = takePhoto,
+                        launchRewarded = launchRewarded
+                    ),
                     galleryTab(shareGalleryFile, openGalleryItemDetails),
                     settingsTab(
                         launchSetup,
@@ -54,7 +59,9 @@ fun NavGraphBuilder.homeScreenNavGraph(
 }
 
 @Composable
-private fun txt2ImgTab() = HomeNavigationItem(
+private fun txt2ImgTab(
+    launchRewarded: () -> Unit,
+) = HomeNavigationItem(
     name = stringResource(R.string.home_tab_txt_to_img),
     route = Constants.ROUTE_TXT_TO_IMG,
     icon = HomeNavigationItem.Icon.Resource(
@@ -62,7 +69,10 @@ private fun txt2ImgTab() = HomeNavigationItem(
         modifier = Modifier.size(24.dp),
     ),
     content = {
-        TextToImageScreen(viewModel = koinViewModel()).Build()
+        TextToImageScreen(
+            viewModel = koinViewModel(),
+            launchRewarded = launchRewarded,
+        ).Build()
     },
 )
 
@@ -70,6 +80,7 @@ private fun txt2ImgTab() = HomeNavigationItem(
 private fun img2imgTab(
     pickImage: (ImagePickerCallback) -> Unit = {},
     takePhoto: (ImagePickerCallback) -> Unit = {},
+    launchRewarded: () -> Unit = {},
 ) = HomeNavigationItem(
     name = stringResource(R.string.home_tab_img_to_img),
     route = Constants.ROUTE_IMG_TO_IMG,
@@ -82,6 +93,7 @@ private fun img2imgTab(
             viewModel = koinViewModel(),
             pickImage = pickImage,
             takePhoto = takePhoto,
+            launchRewarded = launchRewarded,
         ).Build()
     },
 )

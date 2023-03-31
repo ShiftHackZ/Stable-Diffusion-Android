@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.di
 
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
+import com.shifthackz.aisdv1.presentation.activity.AiStableDiffusionViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryViewModel
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationViewModel
@@ -19,6 +20,7 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelModule = module {
+    viewModelOf(::AiStableDiffusionViewModel)
     viewModelOf(::SplashViewModel)
     viewModelOf(::HomeNavigationViewModel)
     viewModelOf(::ConfigurationLoaderViewModel)

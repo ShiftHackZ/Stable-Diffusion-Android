@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.storage.db.cache.contract
 
-object StableDiffusionModelContract {
+internal object StableDiffusionModelContract {
     const val TABLE = "sd_models"
 
     const val ID = "id"

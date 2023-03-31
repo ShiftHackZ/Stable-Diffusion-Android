@@ -20,47 +20,68 @@ internal class CoinRepositoryImpl(
     private val sessionPreference: SessionPreference,
 ) : CoinRepository {
 
-    private val eventCoinSpent: PublishSubject<Unit> = PublishSubject.create()
+    private val eventCoinsUpdated: PublishSubject<Unit> = PublishSubject.create()
 
-    override fun observeAvailableCoinsForToday(): Flowable<Int> {
-        val coinsPerDayProducer: () -> Single<Int> = {
-            val availableCoinsPerDay = sessionPreference.coinsPerDay
-            if (availableCoinsPerDay != -1) Single.just(availableCoinsPerDay)
-            else coinRemoteDateSource
-                .fetchCoinsConfig()
-                .doOnSuccess { sessionPreference.coinsPerDay = it }
-        }
-
+    override fun observeAvailableCoins(): Flowable<Int> {
         val coinsCalculationProducer: () -> Flowable<Int> = {
-            val (start, end) = Date().getDayRange()
-            coinsPerDayProducer()
-                .zipWith(
-                    coinLocalDataSource.querySpentCoinsForPeriod(start.time, end.time),
-                    ::Pair,
-                )
-                .map { (availableToday, spentToday) -> availableToday - spentToday }
-                .map { coins -> if (coins < 0) 0 else coins }
+            Single.zip(
+                calculateAvailableDailyCoins(),
+                calculateAvailableEarnedCoins(),
+                ::Pair,
+            )
+                .map { (daily, earned) -> daily + earned }
                 .toFlowable()
         }
 
-        val coinSpentEventProducer: () -> Flowable<*> = {
-            eventCoinSpent.toFlowable(BackpressureStrategy.LATEST)
+        val coinsUpdatedEventProducer: () -> Flowable<*> = {
+            eventCoinsUpdated.toFlowable(BackpressureStrategy.LATEST)
         }
 
         val coreTickProducer: () -> Flowable<*> = {
-            Flowable.interval(10L, TimeUnit.SECONDS)
+            Flowable.interval(5L, TimeUnit.SECONDS)
         }
 
         return Flowable
-            .merge(coinsCalculationProducer(), coreTickProducer(), coinSpentEventProducer())
+            .merge(coinsCalculationProducer(), coreTickProducer(), coinsUpdatedEventProducer())
             .flatMap { coinsCalculationProducer() }
             .replay(1)
             .refCount(1, TimeUnit.SECONDS)
     }
 
     override fun spendCoin(): Completable {
-        eventCoinSpent.onNext(Unit)
-        return if (preferenceManager.useSdAiCloud) coinLocalDataSource.onCoinSpent()
+        eventCoinsUpdated.onNext(Unit)
+        return if (preferenceManager.useSdAiCloud) {
+            calculateAvailableDailyCoins()
+                .flatMapCompletable {
+                    if (it > 0) coinLocalDataSource.onDailyCoinSpent()
+                    else coinLocalDataSource.onEarnedCoinSpent()
+                }
+                .doOnComplete { eventCoinsUpdated.onNext(Unit) }
+        }
         else Completable.complete()
     }
+
+    override fun earnCoins(amount: Int) = coinLocalDataSource.onEarnedCoinsRewarded(amount)
+
+    private fun getAvailableCoinsPerDay(): Single<Int> {
+        val availableCoinsPerDay = sessionPreference.coinsPerDay
+        return if (availableCoinsPerDay != -1) Single.just(availableCoinsPerDay)
+        else coinRemoteDateSource
+            .fetchCoinsConfig()
+            .doOnSuccess { sessionPreference.coinsPerDay = it }
+    }
+
+    private fun calculateAvailableDailyCoins(): Single<Int> {
+        val (start, end) = Date().getDayRange()
+        return getAvailableCoinsPerDay()
+            .zipWith(
+                coinLocalDataSource.querySpentDailyCoinsForPeriod(start.time, end.time),
+                ::Pair,
+            )
+            .map { (availableToday, spentToday) -> availableToday - spentToday }
+            .map { coins -> if (coins < 0) 0 else coins }
+    }
+
+    private fun calculateAvailableEarnedCoins(): Single<Int> =
+        coinLocalDataSource.queryEarnedCoins()
 }

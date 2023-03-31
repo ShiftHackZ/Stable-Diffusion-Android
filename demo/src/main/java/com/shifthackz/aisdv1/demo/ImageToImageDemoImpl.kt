@@ -6,7 +6,7 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import java.util.*
 
-class ImageToImageDemoImpl(
+internal class ImageToImageDemoImpl(
     override val demoDataSerializer: DemoDataSerializer,
 ) : ImageToImageDemo, DemoFeature<ImageToImagePayload> {
 

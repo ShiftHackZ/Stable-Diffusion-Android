@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.storage.db.persistent.contract
 
-object GenerationResultContract {
+internal object GenerationResultContract {
     const val TABLE = "generation_results"
 
     const val ID = "id"

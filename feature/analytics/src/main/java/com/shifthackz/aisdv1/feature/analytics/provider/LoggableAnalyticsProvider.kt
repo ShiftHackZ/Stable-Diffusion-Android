@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.domain.BuildConfig
 import com.shifthackz.aisdv1.domain.feature.analytics.AnalyticsEvent
 import com.shifthackz.aisdv1.feature.analytics.AnalyticsProvider
 
-class LoggableAnalyticsProvider : AnalyticsProvider {
+internal class LoggableAnalyticsProvider : AnalyticsProvider {
 
     override fun create() = Unit
 

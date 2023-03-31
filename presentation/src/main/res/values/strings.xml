@@ -126,6 +126,8 @@
     <string name="sdai_coins_zero_title">Out of SDAI coins</string>
     <string name="sdai_coins_zero_sub_title">You spent all your SDAI coins for today.\nCome back tomorrow to receive more coins!\n\nNote: you don\'t need to have SDAI coins in case your are running own server.</string>
 
+    <string name="sdai_coins_free">Free coins</string>
+
     <string name="error_title">Error</string>
     <string name="error_empty">Field can\'t be empty</string>
     <string name="error_empty_url">Server URL should not be empty</string>

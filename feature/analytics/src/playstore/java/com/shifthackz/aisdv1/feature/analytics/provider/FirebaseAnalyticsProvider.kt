@@ -7,7 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.shifthackz.aisdv1.domain.feature.analytics.AnalyticsEvent
 import com.shifthackz.aisdv1.feature.analytics.AnalyticsProvider
 
-class FirebaseAnalyticsProvider : AnalyticsProvider {
+internal class FirebaseAnalyticsProvider : AnalyticsProvider {
 
     private var firebaseAnalytics: FirebaseAnalytics? = null
 

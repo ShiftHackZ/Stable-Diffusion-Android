@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
-class PreferenceManagerImpl(
+internal class PreferenceManagerImpl(
     private val preferences: SharedPreferences,
 ) : PreferenceManager {
 

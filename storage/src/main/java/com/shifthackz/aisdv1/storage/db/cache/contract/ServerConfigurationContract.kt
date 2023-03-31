@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.storage.db.cache.contract
 
-object ServerConfigurationContract {
+internal object ServerConfigurationContract {
     const val TABLE = "server_config"
 
     const val SERVER_ID = "server_id"

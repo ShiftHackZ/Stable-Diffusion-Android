@@ -9,6 +9,7 @@ interface AdFeature {
     fun getHomeScreenBannerAd(context: Context): Ad
     fun getGalleryDetailBannerAd(context: Context): Ad
     fun loadAd(ad: Ad)
+    fun showRewardedCoinsAd(activity: Activity, rewardCallback: (Int) -> Unit)
 
     data class Ad(
         val id: String = "",

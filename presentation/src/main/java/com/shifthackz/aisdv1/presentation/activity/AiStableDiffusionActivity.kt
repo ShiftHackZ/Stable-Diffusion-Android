@@ -40,6 +40,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
     private val adFeature: AdFeature by inject()
     private val analytics: Analytics by inject()
 
+    private val viewModel: AiStableDiffusionViewModel by viewModel()
     private val versionCheckerViewModel: VersionCheckerViewModel by viewModel()
 
     override val fileProviderDescriptor: FileProviderDescriptor by inject()
@@ -150,6 +151,12 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                 openMarket()
                             },
                             launchUrl = ::openUrl,
+                            launchRewarded = {
+                                adFeature.showRewardedCoinsAd(
+                                    activity = this@AiStableDiffusionActivity,
+                                    rewardCallback = viewModel::earnRewardedCoins,
+                                )
+                            },
                             shareLogFile = {
                                 ReportProblemEmailComposer().invoke(this@AiStableDiffusionActivity)
                             },

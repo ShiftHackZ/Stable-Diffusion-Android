@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.storage.converters
 import androidx.room.TypeConverter
 import java.util.*
 
-class DateConverters {
+internal class DateConverters {
 
     @TypeConverter
     fun dateToLong(date: Date): Long = date.time

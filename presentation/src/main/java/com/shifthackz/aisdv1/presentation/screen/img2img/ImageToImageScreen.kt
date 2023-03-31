@@ -39,6 +39,7 @@ class ImageToImageScreen(
     private val viewModel: ImageToImageViewModel,
     private val pickImage: (ImagePickerCallback) -> Unit,
     private val takePhoto: (ImagePickerCallback) -> Unit,
+    private val launchRewarded: () -> Unit,
 ) : MviScreen<ImageToImageState, ImageToImageEffect>(viewModel) {
 
     @Composable
@@ -62,6 +63,7 @@ class ImageToImageScreen(
             onGenerateClicked = viewModel::generate,
             onSaveGeneratedImage = viewModel::saveGeneratedResult,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
+            onLaunchRewarded = launchRewarded,
         )
     }
 
@@ -89,6 +91,7 @@ private fun ScreenContent(
     onGenerateClicked: () -> Unit = {},
     onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
+    onLaunchRewarded: () -> Unit = {},
 ) {
     Box(modifier) {
         Scaffold(
@@ -177,11 +180,12 @@ private fun ScreenContent(
                 canDismiss = false,
             )
             ImageToImageState.Dialog.NoSdAiCoins -> NoSdAiCoinsDialog(
-                onDismissScreenDialog,
+                onDismissRequest = onDismissScreenDialog,
+                launchRewarded = onLaunchRewarded,
             )
             is ImageToImageState.Dialog.Error -> ErrorDialog(
                 text = state.screenDialog.error,
-                onDismissScreenDialog,
+                onDismissRequest = onDismissScreenDialog,
             )
             is ImageToImageState.Dialog.Image -> GenerationImageResultDialog(
                 imageBase64 = state.screenDialog.result.image,
