@@ -110,6 +110,8 @@
     <string name="update_no_need_sub_title">Your app version is up to date</string>
     <string name="update_title">Update available</string>
     <string name="update_sub_title">We have a new version %1$s for you. Would you like to update your app?</string>
+    <string name="update_required_title">Update</string>
+    <string name="update_required_sub_title">Please update SDAI app to the latest version to continue using it.</string>
 
     <string name="interaction_delete_generation_title">Delete image</string>
     <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently remove this image?</string>

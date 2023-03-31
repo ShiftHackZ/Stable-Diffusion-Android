@@ -143,7 +143,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                             },
                             launchUpdateCheck = {
                                 analytics.logEvent(SettingsCheckUpdate)
-                                versionCheckerViewModel.checkForUpdate(true)
+                                versionCheckerViewModel.checkForUpdate(notifyIfSame = true)
                             },
                             launchInAppReview = {
                                 analytics.logEvent(SettingsOpenMarket)
