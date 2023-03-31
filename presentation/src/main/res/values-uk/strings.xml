@@ -110,6 +110,8 @@
     <string name="update_no_need_sub_title">Ви використовуєте найновішу версію додатку</string>
     <string name="update_title">Доступне оновлення</string>
     <string name="update_sub_title">Ми випустили оновлену версію %1$s для вас. Бажаєте оновити додаток?</string>
+    <string name="update_required_title">Важливе оновлення</string>
+    <string name="update_required_sub_title">Будь ласка, оновіть додаток SDAI до останньої версії щоб продовжити користуватися ним.</string>
 
     <string name="interaction_delete_generation_title">Видалити зображення</string>
     <string name="interaction_delete_generation_sub_title">Ви впевнені, що хочете остаточно видалити це зображення?</string>

@@ -10,8 +10,8 @@ internal class CoinLocalDataSource(
     private val coinDao: CoinDao,
 ) : CoinDataSource.Local {
 
-    override fun observeQuerySpentCoinsForPeriod(start: Long, end: Long) = coinDao
-        .observeQueryAvailableCoinsForPeriod(start, end)
+    override fun querySpentCoinsForPeriod(start: Long, end: Long) = coinDao
+        .queryAvailableCoinsForPeriod(start, end)
         .map { it.size }
 
     override fun onCoinSpent(): Completable = coinDao.insert(

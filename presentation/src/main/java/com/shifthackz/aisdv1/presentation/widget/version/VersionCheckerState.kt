@@ -5,6 +5,8 @@ import com.shifthackz.aisdv1.domain.usecase.version.CheckAppVersionUpdateUseCase
 
 interface VersionCheckerState : MviState {
     object Idle : VersionCheckerState
-    data class UpdatePopUp(val result: CheckAppVersionUpdateUseCase.Result) :
-        VersionCheckerState
+    data class UpdatePopUp(
+        val result: CheckAppVersionUpdateUseCase.Result,
+        val forceUserToUpdate: Boolean,
+    ) : VersionCheckerState
 }
