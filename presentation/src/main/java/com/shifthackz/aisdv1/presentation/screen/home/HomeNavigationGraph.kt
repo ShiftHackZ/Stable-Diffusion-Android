@@ -38,19 +38,25 @@ fun NavGraphBuilder.homeScreenNavGraph(
             HomeNavigationScreen(
                 viewModel = koinViewModel(),
                 navItems = listOf(
-                    txt2ImgTab(launchRewarded = launchRewarded),
+                    txt2ImgTab(
+                        launchRewarded = launchRewarded,
+                    ),
                     img2imgTab(
                         pickImage = pickImage,
                         takePhoto = takePhoto,
                         launchRewarded = launchRewarded
                     ),
-                    galleryTab(shareGalleryFile, openGalleryItemDetails),
+                    galleryTab(
+                        shareGalleryFile = shareGalleryFile,
+                        openGalleryItemDetails = openGalleryItemDetails,
+                    ),
                     settingsTab(
-                        launchSetup,
-                        launchUpdateCheck,
-                        launchInAppReview,
-                        launchUrl,
-                        shareLogFile,
+                        launchSetup = launchSetup,
+                        launchUpdateCheck = launchUpdateCheck,
+                        launchInAppReview = launchInAppReview,
+                        launchUrl = launchUrl,
+                        launchRewarded = launchRewarded,
+                        shareLogFile = shareLogFile,
                     ),
                 ),
             ).Build()
@@ -124,6 +130,7 @@ private fun settingsTab(
     launchUpdateCheck: () -> Unit = {},
     launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
+    launchRewarded: () -> Unit = {},
     shareLogFile: () -> Unit = {},
 ) = HomeNavigationItem(
     stringResource(id = R.string.home_tab_settings),
@@ -138,6 +145,7 @@ private fun settingsTab(
             onCheckUpdatesItemClick = launchUpdateCheck,
             launchInAppReview = launchInAppReview,
             launchUrl = launchUrl,
+            launchRewarded = launchRewarded,
             shareLogFile = shareLogFile,
         ).Build()
     }

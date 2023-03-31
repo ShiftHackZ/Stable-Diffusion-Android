@@ -82,6 +82,7 @@
 
     <string name="settings_item_config">Configuration</string>
     <string name="settings_item_sd_model">SD Model</string>
+    <string name="settings_item_rewarded">FREE SDAI Coins</string>
 
     <string name="settings_item_language">Language</string>
     <string name="settings_item_demo">Demo mode</string>

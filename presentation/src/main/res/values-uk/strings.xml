@@ -82,6 +82,7 @@
 
     <string name="settings_item_config">Конфігурація</string>
     <string name="settings_item_sd_model">SD Модель</string>
+    <string name="settings_item_rewarded">Безкоштовні SDAI Монети</string>
 
     <string name="settings_item_language">Мова</string>
     <string name="settings_item_demo">Демо режим</string>
