@@ -126,6 +126,8 @@
     <string name="sdai_coins_zero_title">Закінчилися монети SDAI</string>
     <string name="sdai_coins_zero_sub_title">Ви витратили всі свої монети SDAI за сьогодні.\nПоверніться завтра, щоб отримати більше монет!\n\nПримітка: вам не потрібно мати монети SDAI, якщо ви використовуєте власний сервер.</string>
 
+    <string name="sdai_coins_free">Безкоштовні монети</string>
+
     <string name="error_title">Помилка</string>
     <string name="error_empty">Поле не може бути порожнім</string>
     <string name="error_empty_url">URL-адреса не повинна бути пустою</string>
