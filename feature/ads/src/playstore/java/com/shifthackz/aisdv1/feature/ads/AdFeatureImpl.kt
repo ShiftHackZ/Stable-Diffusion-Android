@@ -9,7 +9,6 @@ import com.google.android.gms.ads.nativead.NativeAdView
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 
@@ -46,7 +45,6 @@ internal class AdFeatureImpl : AdFeature {
             loadRewardedCoinsAd(activity)
         }
         val show: (RewardedAd) -> Unit = { ad ->
-            debugLog("TRYING SHOW AD")
             ad.show(activity, rewardReducer)
         }
         rewardedAd
@@ -74,13 +72,11 @@ internal class AdFeatureImpl : AdFeature {
             object : RewardedAdLoadCallback() {
                 override fun onAdLoaded(p0: RewardedAd) {
                     super.onAdLoaded(p0)
-                    debugLog("ON AD LOADED")
                     rewardedAd = p0
                     onAdReady(p0)
                 }
 
                 override fun onAdFailedToLoad(p0: LoadAdError) {
-
                     super.onAdFailedToLoad(p0)
                     errorLog(Exception(p0.message), "${p0.code} - ${p0.cause}")
                 }
