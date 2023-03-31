@@ -25,6 +25,7 @@ import org.koin.androidx.compose.koinViewModel
 
 class TextToImageScreen(
     private val viewModel: TextToImageViewModel,
+    private val launchRewarded: () -> Unit,
 ) : MviScreen<TextToImageState, EmptyEffect>(viewModel) {
 
     @Composable
@@ -45,6 +46,7 @@ class TextToImageScreen(
             onGenerateClicked = viewModel::generate,
             onSaveGeneratedImage = viewModel::saveGeneratedResult,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
+            onLaunchRewarded = launchRewarded,
         )
     }
 
@@ -68,6 +70,7 @@ private fun ScreenContent(
     onGenerateClicked: () -> Unit = {},
     onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
+    onLaunchRewarded: () -> Unit = {},
 ) {
     Box(modifier) {
         Scaffold(
@@ -131,7 +134,8 @@ private fun ScreenContent(
                 canDismiss = false,
             )
             TextToImageState.Dialog.NoSdAiCoins -> NoSdAiCoinsDialog(
-                onDismissScreenDialog,
+                onDismissRequest = onDismissScreenDialog,
+                launchRewarded = onLaunchRewarded,
             )
             is TextToImageState.Dialog.Image -> GenerationImageResultDialog(
                 imageBase64 = state.screenDialog.result.image,

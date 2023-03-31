@@ -6,8 +6,11 @@ import io.reactivex.rxjava3.core.Single
 sealed interface CoinDataSource {
 
     interface Local : CoinDataSource {
-        fun querySpentCoinsForPeriod(start: Long, end: Long): Single<Int>
-        fun onCoinSpent(): Completable
+        fun querySpentDailyCoinsForPeriod(start: Long, end: Long): Single<Int>
+        fun queryEarnedCoins(): Single<Int>
+        fun onDailyCoinSpent(): Completable
+        fun onEarnedCoinSpent(): Completable
+        fun onEarnedCoinsRewarded(amount: Int): Completable
     }
 
     interface Remote : CoinDataSource {

@@ -5,7 +5,7 @@ import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.LoadAdError
 import com.shifthackz.aisdv1.core.common.log.debugLog
 
-fun AdLoader.Builder.applyLoggableAdListener(adId: String = "Unknown") = apply {
+internal fun AdLoader.Builder.applyLoggableAdListener(adId: String = "Unknown") = apply {
     if (BuildConfig.DEBUG) withAdListener(
         object : AdListener() {
             override fun onAdClicked() = debugLog("[$adId] onAdClicked")

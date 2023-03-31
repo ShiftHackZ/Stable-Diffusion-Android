@@ -9,7 +9,7 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 
-class AdMobXmlRenderer {
+internal class AdMobXmlRenderer {
 
     fun invoke(ad: AdFeature.Ad, nativeAd: NativeAd) {
         if (ad.view == null) return

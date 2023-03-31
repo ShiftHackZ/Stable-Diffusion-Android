@@ -60,5 +60,6 @@ val databaseModule = module {
 
     //region COIN DB DAOs
     single { get<CoinDatabase>().coinDao() }
+    single { get<CoinDatabase>().earnedCoinDao() }
     //endregion
 }

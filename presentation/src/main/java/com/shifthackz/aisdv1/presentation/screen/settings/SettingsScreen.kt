@@ -33,6 +33,7 @@ class SettingsScreen(
     private val onCheckUpdatesItemClick: () -> Unit = {},
     private val launchInAppReview: () -> Unit = {},
     private val launchUrl: (String) -> Unit = {},
+    private val launchRewarded: () -> Unit = {},
     private val shareLogFile: () -> Unit = {},
 ) : MviScreen<SettingsState, EmptyEffect>(viewModel), KoinComponent {
 
@@ -45,6 +46,7 @@ class SettingsScreen(
             state = viewModel.state.collectAsState().value,
             onConfigurationItemClick = launchSetup,
             onSdModelItemClick = viewModel::launchSdModelSelectionDialog,
+            onLaunchRewarded = launchRewarded,
             onMonitorConnectivityChanged = viewModel::changeMonitorConnectivitySetting,
             onAutoSaveAiResultChanged = viewModel::changeAutoSaveAiResultSetting,
             onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
@@ -71,6 +73,7 @@ private fun ScreenContent(
     state: SettingsState,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
+    onLaunchRewarded: () -> Unit = {},
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
 
@@ -109,6 +112,7 @@ private fun ScreenContent(
                         state = state,
                         onConfigurationItemClick = onConfigurationItemClick,
                         onSdModelItemClick = onSdModelItemClick,
+                        onLaunchRewarded = onLaunchRewarded,
                         onMonitorConnectivityChanged = onMonitorConnectivityChanged,
                         onAutoSaveAiResultChanged = onAutoSaveAiResultChanged,
                         onClearAppCacheItemClick = onClearAppCacheItemClick,
@@ -176,6 +180,7 @@ private fun ContentSettingsState(
     state: SettingsState.Content,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
+    onLaunchRewarded: () -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
@@ -211,6 +216,14 @@ private fun ContentSettingsState(
             text = R.string.settings_item_sd_model.asUiText(),
             endValueText = state.sdModelSelected.asUiText(),
             onClick = onSdModelItemClick,
+        )
+        if (state.showRewardedSdAiAd) SettingsItem(
+            modifier = itemModifier,
+            startIcon = Icons.Default.Toll,
+            text = R.string.settings_item_rewarded.asUiText(),
+            endValueText = state.sdModelSelected.asUiText(),
+            animateBackground = true,
+            onClick = onLaunchRewarded,
         )
 
         Text(
@@ -313,6 +326,7 @@ private fun PreviewStateContent() {
             sdModels = listOf("Stable diffusion v1.5"),
             sdModelSelected = "Stable diffusion v1.5",
             appVersion = "1.0.0 (10)",
+            showRewardedSdAiAd = true,
             monitorConnectivity = true,
             autoSaveAiResults = true,
             showSdModelSelector = true,

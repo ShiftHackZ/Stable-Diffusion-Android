@@ -16,7 +16,7 @@ import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
     ],
 )
 @TypeConverters(DateConverters::class)
-abstract class PersistentDatabase : RoomDatabase() {
+internal abstract class PersistentDatabase : RoomDatabase() {
     abstract fun generationResultDao(): GenerationResultDao
 
     companion object {
