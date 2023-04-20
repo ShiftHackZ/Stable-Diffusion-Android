@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.feature.analytics
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.analytics.AnalyticsEvent
 
-class AnalyticsClient(
+internal class AnalyticsClient(
     private val providers: List<AnalyticsProvider>,
 ) : Analytics {
 

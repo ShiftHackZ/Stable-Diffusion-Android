@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class MapConverters {
+internal class MapConverters {
 
     @TypeConverter
     fun mapToString(value: Map<String, String>): String = Gson().toJson(value)

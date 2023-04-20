@@ -16,18 +16,21 @@ class VersionCheckerViewModel(
     override val emptyState = VersionCheckerState.Idle
 
     init {
-        checkForUpdate()
+        checkForUpdate(forceUserToUpdate = true)
     }
 
-    fun checkForUpdate(notifyIfSame: Boolean = false) = !checkAppVersionUpdateUseCase()
+    fun checkForUpdate(
+        notifyIfSame: Boolean = false,
+        forceUserToUpdate: Boolean = false,
+    ) = !checkAppVersionUpdateUseCase()
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(::errorLog) { result ->
             val state = when (result) {
                 is CheckAppVersionUpdateUseCase.Result.NewVersionAvailable -> {
-                    VersionCheckerState.UpdatePopUp(result)
+                    VersionCheckerState.UpdatePopUp(result, forceUserToUpdate)
                 }
                 CheckAppVersionUpdateUseCase.Result.NoUpdateNeeded -> {
-                    if (notifyIfSame) VersionCheckerState.UpdatePopUp(result)
+                    if (notifyIfSame) VersionCheckerState.UpdatePopUp(result, forceUserToUpdate)
                     else VersionCheckerState.Idle
                 }
             }

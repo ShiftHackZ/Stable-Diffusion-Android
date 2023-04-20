@@ -20,6 +20,7 @@ import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.usecase.version.CheckAppVersionUpdateUseCase
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ForceUpdateDialog
 
 class VersionCheckerComposable(
     private val viewModel: VersionCheckerViewModel,
@@ -34,7 +35,7 @@ class VersionCheckerComposable(
             (state as VersionCheckerState.UpdatePopUp)
             when (state.result) {
                 is CheckAppVersionUpdateUseCase.Result.NewVersionAvailable -> {
-                    DecisionInteractiveDialog(
+                    if (!state.forceUserToUpdate) DecisionInteractiveDialog(
                         title = R.string.update_title.asUiText(),
                         text = UiText.Resource(
                             R.string.update_sub_title,
@@ -48,6 +49,7 @@ class VersionCheckerComposable(
                         },
                         onDismissRequest = viewModel::skipUpdate,
                     )
+                    else ForceUpdateDialog(openMarket = launchMarket)
                 }
                 CheckAppVersionUpdateUseCase.Result.NoUpdateNeeded -> {
                     AlertDialog(

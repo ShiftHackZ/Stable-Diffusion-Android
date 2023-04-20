@@ -4,7 +4,7 @@ import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import okhttp3.logging.HttpLoggingInterceptor
 
-class LoggingInterceptor(
+internal class LoggingInterceptor(
     private val apiUrlProvider: ApiUrlProvider,
 ) {
 

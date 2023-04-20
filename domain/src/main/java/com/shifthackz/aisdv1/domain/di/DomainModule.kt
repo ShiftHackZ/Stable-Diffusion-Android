@@ -4,6 +4,8 @@ import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.coin.EarnRewardedCoinsUseCase
+import com.shifthackz.aisdv1.domain.usecase.coin.EarnRewardedCoinsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.*
@@ -48,4 +50,5 @@ val domainModule = module {
     factoryOf(::ObserveSeverConnectivityUseCaseImpl) bind ObserveSeverConnectivityUseCase::class
     factoryOf(::CheckAppVersionUpdateUseCaseImpl) bind CheckAppVersionUpdateUseCase::class
     factoryOf(::ObserveCoinsUseCaseImpl) bind ObserveCoinsUseCase::class
+    factoryOf(::EarnRewardedCoinsUseCaseImpl) bind EarnRewardedCoinsUseCase::class
 }

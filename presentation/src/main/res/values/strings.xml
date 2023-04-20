@@ -82,6 +82,7 @@
 
     <string name="settings_item_config">Configuration</string>
     <string name="settings_item_sd_model">SD Model</string>
+    <string name="settings_item_rewarded">FREE SDAI Coins</string>
 
     <string name="settings_item_language">Language</string>
     <string name="settings_item_demo">Demo mode</string>
@@ -110,6 +111,8 @@
     <string name="update_no_need_sub_title">Your app version is up to date</string>
     <string name="update_title">Update available</string>
     <string name="update_sub_title">We have a new version %1$s for you. Would you like to update your app?</string>
+    <string name="update_required_title">Update</string>
+    <string name="update_required_sub_title">Please update SDAI app to the latest version to continue using it.</string>
 
     <string name="interaction_delete_generation_title">Delete image</string>
     <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently remove this image?</string>
@@ -123,6 +126,8 @@
 
     <string name="sdai_coins_zero_title">Out of SDAI coins</string>
     <string name="sdai_coins_zero_sub_title">You spent all your SDAI coins for today.\nCome back tomorrow to receive more coins!\n\nNote: you don\'t need to have SDAI coins in case your are running own server.</string>
+
+    <string name="sdai_coins_free">Free coins</string>
 
     <string name="error_title">Error</string>
     <string name="error_empty">Field can\'t be empty</string>
