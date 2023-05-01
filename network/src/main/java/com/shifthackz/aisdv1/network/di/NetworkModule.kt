@@ -2,14 +2,21 @@ package com.shifthackz.aisdv1.network.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.shifthackz.aisdv1.network.api.StableDiffusionAppUpdateRestApi
-import com.shifthackz.aisdv1.network.api.StableDiffusionCoinsRestApi
-import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
+import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
+import com.shifthackz.aisdv1.network.api.sdai.AppUpdateRestApi
+import com.shifthackz.aisdv1.network.api.sdai.CoinsRestApi
+import com.shifthackz.aisdv1.network.api.sdai.MotdRestApi
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
 import com.shifthackz.aisdv1.network.interceptor.HeaderInterceptor
 import com.shifthackz.aisdv1.network.interceptor.LoggingInterceptor
-import com.shifthackz.aisdv1.network.qualifiers.*
+import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
+import com.shifthackz.aisdv1.network.qualifiers.HttpInterceptor
+import com.shifthackz.aisdv1.network.qualifiers.HttpInterceptors
+import com.shifthackz.aisdv1.network.qualifiers.NetworkInterceptor
+import com.shifthackz.aisdv1.network.qualifiers.NetworkInterceptors
+import com.shifthackz.aisdv1.network.qualifiers.RetrofitCallAdapters
+import com.shifthackz.aisdv1.network.qualifiers.RetrofitConverterFactories
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -80,19 +87,25 @@ val networkModule = module {
     single {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAutomaticApiUrl)
-            .create(StableDiffusionWebUiAutomaticRestApi::class.java)
+            .create(Automatic1111RestApi::class.java)
     }
 
     single {
         get<Retrofit.Builder>()
-            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppUpdateApiUrl)
-            .create(StableDiffusionAppUpdateRestApi::class.java)
+            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
+            .create(AppUpdateRestApi::class.java)
     }
 
     single {
         get<Retrofit.Builder>()
-            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppUpdateApiUrl)
-            .create(StableDiffusionCoinsRestApi::class.java)
+            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
+            .create(CoinsRestApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
+            .create(MotdRestApi::class.java)
     }
 
     factory {params ->

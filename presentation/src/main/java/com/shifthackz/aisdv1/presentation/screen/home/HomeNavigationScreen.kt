@@ -17,6 +17,7 @@ import com.shifthackz.aisdv1.core.ui.Screen
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
+import com.shifthackz.aisdv1.presentation.widget.motd.MotdComposable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -37,7 +38,7 @@ class HomeNavigationScreen(
             bottomBar = {
                 Column {
                     AdMobBanner(
-                        modifier =  Modifier
+                        modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(),
                         adFeature = adFeature,
@@ -87,6 +88,7 @@ class HomeNavigationScreen(
             content = { paddingValues ->
                 Column(Modifier.padding(paddingValues)) {
                     ConnectivityComposable(koinViewModel()).Build()
+                    MotdComposable(koinViewModel()).Build()
                     NavHost(
                         modifier = Modifier.fillMaxSize(),
                         navController = navController,

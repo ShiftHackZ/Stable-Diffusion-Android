@@ -6,15 +6,15 @@ import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
-import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi
-import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi.Companion.PATH_IMG_TO_IMG
-import com.shifthackz.aisdv1.network.api.StableDiffusionWebUiAutomaticRestApi.Companion.PATH_TXT_TO_IMG
+import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
+import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi.Companion.PATH_IMG_TO_IMG
+import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi.Companion.PATH_TXT_TO_IMG
 import com.shifthackz.aisdv1.network.extensions.withExceptionMapper
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 
 internal class StableDiffusionGenerationRemoteDataSource(
     private val serverUrlProvider: ServerUrlProvider,
-    private val api: StableDiffusionWebUiAutomaticRestApi,
+    private val api: Automatic1111RestApi,
 ) : StableDiffusionGenerationDataSource.Remote {
 
     override fun checkAvailability() = serverUrlProvider("/")
