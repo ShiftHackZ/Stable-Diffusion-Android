@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.network.api
+package com.shifthackz.aisdv1.network.api.automatic1111
 
 import com.shifthackz.aisdv1.network.model.ServerConfigurationRaw
 import com.shifthackz.aisdv1.network.model.StableDiffusionModelRaw
@@ -13,7 +13,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Url
 
-interface StableDiffusionWebUiAutomaticRestApi {
+interface Automatic1111RestApi {
 
     @GET
     fun healthCheck(@Url url: String): Completable

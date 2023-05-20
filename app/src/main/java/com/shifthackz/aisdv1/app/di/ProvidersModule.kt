@@ -26,7 +26,7 @@ val providersModule = module {
     single<ApiUrlProvider> {
         object : ApiUrlProvider {
             override val stableDiffusionAutomaticApiUrl: String = DEFAULT_SERVER_URL
-            override val stableDiffusionAppUpdateApiUrl: String = BuildConfig.UPDATE_API_URL
+            override val stableDiffusionAppApiUrl: String = BuildConfig.UPDATE_API_URL
             override val stableDiffusionCloudAiApiUrl: String = BuildConfig.CLOUD_AI_URL
         }
     }

@@ -3,8 +3,20 @@ package com.shifthackz.aisdv1.data.di
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.data.gateway.ServerConnectivityGatewayImpl
 import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
-import com.shifthackz.aisdv1.data.remote.*
-import com.shifthackz.aisdv1.domain.datasource.*
+import com.shifthackz.aisdv1.data.remote.AppVersionRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.CoinRemoteDateSource
+import com.shifthackz.aisdv1.data.remote.MotdRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.ServerConfigurationRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.StableDiffusionGenerationRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.StableDiffusionModelsRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.StableDiffusionSamplersRemoteDataSource
+import com.shifthackz.aisdv1.domain.datasource.AppVersionDataSource
+import com.shifthackz.aisdv1.domain.datasource.CoinDataSource
+import com.shifthackz.aisdv1.domain.datasource.MotdDataSource
+import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
+import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
+import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
+import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
 import com.shifthackz.aisdv1.domain.gateway.ServerConnectivityGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
@@ -31,6 +43,7 @@ val remoteDataSourceModule = module {
     factoryOf(::ServerConfigurationRemoteDataSource) bind ServerConfigurationDataSource.Remote::class
     factoryOf(::AppVersionRemoteDataSource) bind AppVersionDataSource.Remote::class
     factoryOf(::CoinRemoteDateSource) bind CoinDataSource.Remote::class
+    factoryOf(::MotdRemoteDataSource) bind MotdDataSource.Remote::class
 
     factory<ServerConnectivityGateway> {
         val lambda: () -> Boolean = { get<PreferenceManager>().useSdAiCloud }
