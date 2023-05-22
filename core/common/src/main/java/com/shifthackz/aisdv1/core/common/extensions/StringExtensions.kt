@@ -13,5 +13,11 @@ fun String.withoutUrlProtocol(): String {
 fun String.fixUrlSlashes(): String = this
     .replace(PROTOCOL_DELIMITER, PROTOCOL_HOLDER)
     .replace(Regex("/{2,}"), "/")
-    .let { str -> if (str.last() == '/') str.substring(0, str.lastIndex) else str }
+    .let { str ->
+        when {
+            str.isEmpty() -> ""
+            str.last() == '/' -> str.substring(0, str.lastIndex)
+            else -> str
+        }
+    }
     .replace(PROTOCOL_HOLDER, PROTOCOL_DELIMITER)
