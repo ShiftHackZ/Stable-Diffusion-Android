@@ -8,19 +8,34 @@ import com.shifthackz.aisdv1.domain.feature.billing.BillingType
 
 class BillingProductsQueryBuilder {
 
-    private val removeAdsProduct = Product
+    private val productRemoveAds = Product
         .newBuilder()
         .setProductId(SKU_REMOVE_ADS)
         .setProductType(ProductType.INAPP)
         .build()
 
+    private val subscriptionMonthly = Product
+        .newBuilder()
+        .setProductId(SKU_SUBSCRIPTION_MONTHLY)
+        .setProductType(ProductType.SUBS)
+        .build()
+
+    private val allProducts = listOf(
+        productRemoveAds,
+        subscriptionMonthly
+    )
+
     fun allProducts() = QueryProductDetailsParams
         .newBuilder()
-        .setProductList(listOf(removeAdsProduct))
+        .setProductList(allProducts)
         .build()
 
     fun allPurchases() = QueryPurchasesParams.newBuilder()
         .setProductType(ProductType.INAPP)
+        .build()
+
+    fun allSubscriptions() = QueryPurchasesParams.newBuilder()
+        .setProductType(ProductType.SUBS)
         .build()
 
     fun skuByType(type: BillingType) = when (type) {
@@ -29,5 +44,6 @@ class BillingProductsQueryBuilder {
 
     companion object {
         private const val SKU_REMOVE_ADS = "sdai_remove_ads"
+        private const val SKU_SUBSCRIPTION_MONTHLY = "sdai_month"
     }
 }

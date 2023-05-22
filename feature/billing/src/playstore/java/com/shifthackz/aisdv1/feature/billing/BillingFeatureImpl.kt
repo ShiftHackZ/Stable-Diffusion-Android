@@ -2,8 +2,14 @@ package com.shifthackz.aisdv1.feature.billing
 
 import android.app.Activity
 import android.content.Context
-import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchasesUpdatedListener
 import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.infoLog
 import com.shifthackz.aisdv1.domain.feature.billing.BillingFeature
@@ -52,14 +58,16 @@ class BillingFeatureImpl : BillingFeature, BillingClientStateListener, Purchases
     }
 
     override fun onBillingServiceDisconnected() {
+        infoLog("Disconnected from GooglePlay billing... Retrying connection...")
         billingClient?.startConnection(this)
     }
 
     override fun onBillingSetupFinished(billingResult: BillingResult) {
         if (billingResult.responseCode == BillingResponseCode.OK) {
-            infoLog("Connection to GooglePlay billing SUCCESSFUL")
+            infoLog("Connected to GooglePlay billing!")
             queryProducts()
             queryPurchases()
+            querySubscriptions()
         }
     }
 
@@ -73,17 +81,27 @@ class BillingFeatureImpl : BillingFeature, BillingClientStateListener, Purchases
         if (billingResult.responseCode == BillingResponseCode.OK) {
             this.products.clear()
             this.products.addAll(products)
+            debugLog("----------------------------------------")
             products.forEach {
-                debugLog(it)
+                debugLog("Product : $it")
             }
+            debugLog("----------------------------------------")
         }
     }
 
     private fun queryPurchases() = billingClient?.queryPurchasesAsync(
         queryBuilder.allPurchases()
     ) { billingResult, purchases ->
-        purchases?.forEach {
-            handlePurchase(it)
+        purchases.forEach { purchase ->
+            handlePurchase(purchase)
+        }
+    }
+
+    private fun querySubscriptions() = billingClient?.queryPurchasesAsync(
+        queryBuilder.allSubscriptions()
+    ) { billingResult, purchases ->
+        purchases.forEach { purchase ->
+            handlePurchase(purchase)
         }
     }
 }
