@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.data.remote
 
+import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
 import com.shifthackz.aisdv1.data.mappers.mapToAiGenResult
 import com.shifthackz.aisdv1.data.mappers.mapToRequest
 import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
@@ -20,7 +21,7 @@ internal class StableDiffusionGenerationRemoteDataSource(
     override fun checkAvailability() = serverUrlProvider("/")
         .flatMapCompletable(api::healthCheck)
 
-    override fun checkAvailability(url: String) = api.healthCheck(url)
+    override fun checkAvailability(url: String) = api.healthCheck(url.fixUrlSlashes())
 
     override fun textToImage(payload: TextToImagePayload) = serverUrlProvider(PATH_TXT_TO_IMG)
         .flatMap { url -> api.textToImage(url, payload.mapToRequest()) }

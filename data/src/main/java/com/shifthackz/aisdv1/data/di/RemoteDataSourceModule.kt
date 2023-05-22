@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.data.di
 
+import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.data.gateway.ServerConnectivityGatewayImpl
 import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
@@ -33,7 +34,10 @@ val remoteDataSourceModule = module {
             val links = get<LinksProvider>()
             val chain = if (prefs.useSdAiCloud) Single.fromCallable(links::cloudUrl)
             else Single.fromCallable(prefs::serverUrl)
-            chain.map { baseUrl -> "$baseUrl/$endpoint" }
+
+            chain
+                .map(String::fixUrlSlashes)
+                .map { baseUrl -> "$baseUrl/$endpoint" }
         }
     }
 

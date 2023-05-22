@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.preference
 
 import android.content.SharedPreferences
+import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.reactivex.rxjava3.core.BackpressureStrategy
@@ -15,10 +16,10 @@ class PreferenceManagerImpl(
         BehaviorSubject.createDefault(Unit)
 
     override var serverUrl: String
-        get() = if (useSdAiCloud) ""
-        else preferences.getString(KEY_SERVER_URL, "") ?: ""
+        get() = (if (useSdAiCloud) "" else preferences.getString(KEY_SERVER_URL, "")
+            ?: "").fixUrlSlashes()
         set(value) = preferences.edit()
-            .putString(KEY_SERVER_URL, if (useSdAiCloud) "" else value)
+            .putString(KEY_SERVER_URL, (if (useSdAiCloud) "" else value).fixUrlSlashes())
             .apply()
             .also { onPreferencesChanged() }
 
