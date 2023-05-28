@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.domain.entity
 
-import java.util.*
+import java.util.Date
 
 data class AiGenerationResult(
     val id: Long,
@@ -17,6 +17,9 @@ data class AiGenerationResult(
     val restoreFaces: Boolean,
     val sampler: String,
     val seed: String,
+    val subSeed: String,
+    val subSeedStrength: Float,
+    val denoisingStrength: Float,
 ) {
     enum class Type(val key: String) {
         TEXT_TO_IMAGE("txt2img"),

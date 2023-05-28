@@ -4,7 +4,7 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.TextToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
-import java.util.*
+import java.util.Date
 
 fun TextToImagePayload.mapToRequest(): TextToImageRequest = with(this) {
     TextToImageRequest(
@@ -16,6 +16,8 @@ fun TextToImagePayload.mapToRequest(): TextToImageRequest = with(this) {
         height = height,
         restoreFaces = restoreFaces,
         seed = seed.trim().ifEmpty { null },
+        subSeed = subSeed.trim().ifEmpty { null },
+        subSeedStrength = subSeedStrength,
         samplerIndex = sampler,
     )
 }
@@ -28,6 +30,7 @@ fun Pair<TextToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerat
             inputImage = "",
             createdAt = Date(),
             type = AiGenerationResult.Type.TEXT_TO_IMAGE,
+            denoisingStrength = 0f,
             prompt = payload.prompt,
             negativePrompt = payload.negativePrompt,
             width = payload.width,
@@ -36,8 +39,10 @@ fun Pair<TextToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerat
             cfgScale = payload.cfgScale,
             restoreFaces = payload.restoreFaces,
             sampler = payload.sampler,
-            seed = if (payload.seed.trim().isNotEmpty()) payload.seed else mapSeedFromRemote(
-                response.info
-            ),
+            seed = if (payload.seed.trim().isNotEmpty()) payload.seed
+            else mapSeedFromRemote(response.info),
+            subSeed = if (payload.subSeed.trim().isNotEmpty()) payload.subSeed
+            else mapSubSeedFromRemote(response.info),
+            subSeedStrength = payload.subSeedStrength,
         )
     }

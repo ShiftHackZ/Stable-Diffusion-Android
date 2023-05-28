@@ -109,6 +109,14 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
         .copyState(seed = value)
         .let(::setGenerationState)
 
+    fun updateSubSeed(value: String) = currentState
+        .copyState(subSeed = value)
+        .let(::setGenerationState)
+
+    fun updateSubSeedStrength(value: Float) = currentState
+        .copyState(subSeedStrength = value)
+        .let(::setGenerationState)
+
     fun updateSampler(value: String) = currentState
         .copyState(selectedSampler = value)
         .let(::setGenerationState)

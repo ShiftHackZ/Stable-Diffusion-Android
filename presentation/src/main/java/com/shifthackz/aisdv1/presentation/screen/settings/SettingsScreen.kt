@@ -328,8 +328,16 @@ private fun ContentSettingsState(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .padding(top = 16.dp),
             text = stringResource(id = R.string.version, state.appVersion),
+            style = MaterialTheme.typography.labelMedium,
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            text = stringResource(id = R.string.version_postscriptum),
             style = MaterialTheme.typography.labelMedium,
             textAlign = TextAlign.Center,
         )

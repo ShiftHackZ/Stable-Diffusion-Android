@@ -18,4 +18,7 @@ internal object GenerationResultContract {
     const val RESTORE_FACES = "restore_faces"
     const val SAMPLER = "sampler"
     const val SEED = "seed"
+    const val SUB_SEED = "sub_seed"
+    const val SUB_SEED_STRENGTH = "sub_seed_strength"
+    const val DENOISING_STRENGTH = "denoising_strength"
 }
