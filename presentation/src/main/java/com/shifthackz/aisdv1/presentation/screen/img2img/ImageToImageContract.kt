@@ -13,7 +13,7 @@ sealed interface ImageToImageEffect : MviEffect
 data class ImageToImageState(
     val imageState: ImageState = ImageState.None,
     val imageBase64: String = "",
-    val screenDialog: Dialog = Dialog.None,
+    val screenModal: Modal = Modal.None,
     val denoisingStrength: Float = 0.75f,
     override val advancedToggleButtonVisible: Boolean = true,
     override val advancedOptionsVisible: Boolean = false,
@@ -43,12 +43,13 @@ data class ImageToImageState(
         data class Image(val bitmap: Bitmap) : ImageState
     }
 
-    sealed interface Dialog {
-        object None : Dialog
-        object Communicating : Dialog
-        object NoSdAiCoins : Dialog
-        data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Dialog
-        data class Error(val error: UiText) : Dialog
+    sealed interface Modal {
+        object None : Modal
+        object Communicating : Modal
+        object NoSdAiCoins : Modal
+        object PromptBottomSheet : Modal
+        data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Modal
+        data class Error(val error: UiText) : Modal
     }
 
     override fun copyState(

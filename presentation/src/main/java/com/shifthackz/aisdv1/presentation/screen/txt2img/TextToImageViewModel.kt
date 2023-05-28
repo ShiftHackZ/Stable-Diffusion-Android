@@ -45,24 +45,24 @@ class TextToImageViewModel(
         )
     )
 
-    fun openPreviousGenerationInput() = setActiveDialog(TextToImageState.Dialog.PromptBottomSheet)
+    fun openPreviousGenerationInput() = setActiveDialog(TextToImageState.Modal.PromptBottomSheet)
 
-    fun dismissScreenDialog() = setActiveDialog(TextToImageState.Dialog.None)
+    fun dismissScreenDialog() = setActiveDialog(TextToImageState.Modal.None)
 
     fun generate() {
         if (!currentState.generateButtonEnabled) {
-            setActiveDialog(TextToImageState.Dialog.NoSdAiCoins)
+            setActiveDialog(TextToImageState.Modal.NoSdAiCoins)
             return
         }
         !currentState
             .mapToPayload()
             .let(textToImageUseCase::invoke)
-            .doOnSubscribe { setActiveDialog(TextToImageState.Dialog.Communicating) }
+            .doOnSubscribe { setActiveDialog(TextToImageState.Modal.Communicating) }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = { t ->
                     setActiveDialog(
-                        TextToImageState.Dialog.Error(
+                        TextToImageState.Modal.Error(
                             (t.localizedMessage ?: "Something went wrong").asUiText()
                         )
                     )
@@ -71,7 +71,7 @@ class TextToImageViewModel(
                 onSuccess = { ai ->
                     analytics.logEvent(AiImageGenerated(ai))
                     setActiveDialog(
-                        TextToImageState.Dialog.Image(ai, preferenceManager.autoSaveAiResults)
+                        TextToImageState.Modal.Image(ai, preferenceManager.autoSaveAiResults)
                     )
                 },
             )
@@ -81,7 +81,7 @@ class TextToImageViewModel(
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(::errorLog) { dismissScreenDialog() }
 
-    private fun setActiveDialog(dialog: TextToImageState.Dialog) = currentState
-        .copy(screenDialog = dialog)
+    private fun setActiveDialog(modal: TextToImageState.Modal) = currentState
+        .copy(screenModal = modal)
         .let(::setState)
 }

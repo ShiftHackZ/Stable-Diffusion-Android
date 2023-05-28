@@ -74,7 +74,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
         }
     }
 
-    fun updateFormPreviousAiGeneration(ai: AiGenerationResult) = currentState
+    open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) = currentState
         .copyState(
             prompt = ai.prompt,
             negativePrompt = ai.negativePrompt,

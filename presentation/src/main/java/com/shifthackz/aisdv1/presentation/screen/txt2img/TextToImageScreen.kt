@@ -104,7 +104,7 @@ private fun ScreenContent(
                                 contentDescription = null,
                             )
                         }
-                    }
+                    },
                 )
             },
             content = { paddingValues ->
@@ -161,25 +161,25 @@ private fun ScreenContent(
                 }
             }
         )
-        when (state.screenDialog) {
-            TextToImageState.Dialog.Communicating -> ProgressDialog(
+        when (state.screenModal) {
+            TextToImageState.Modal.Communicating -> ProgressDialog(
                 canDismiss = false,
             )
-            TextToImageState.Dialog.NoSdAiCoins -> NoSdAiCoinsDialog(
+            TextToImageState.Modal.NoSdAiCoins -> NoSdAiCoinsDialog(
                 onDismissRequest = onDismissScreenDialog,
                 launchRewarded = onLaunchRewarded,
             )
-            is TextToImageState.Dialog.Image -> GenerationImageResultDialog(
-                imageBase64 = state.screenDialog.result.image,
-                showSaveButton = !state.screenDialog.autoSaveEnabled,
+            is TextToImageState.Modal.Image -> GenerationImageResultDialog(
+                imageBase64 = state.screenModal.result.image,
+                showSaveButton = !state.screenModal.autoSaveEnabled,
                 onDismissRequest = onDismissScreenDialog,
-                onSaveRequest = { onSaveGeneratedImage(state.screenDialog.result) },
+                onSaveRequest = { onSaveGeneratedImage(state.screenModal.result) },
             )
-            is TextToImageState.Dialog.Error -> ErrorDialog(
-                text = state.screenDialog.error,
+            is TextToImageState.Modal.Error -> ErrorDialog(
+                text = state.screenModal.error,
                 onDismissScreenDialog,
             )
-            is TextToImageState.Dialog.PromptBottomSheet -> ModalBottomSheet(
+            is TextToImageState.Modal.PromptBottomSheet -> ModalBottomSheet(
                 onDismissRequest = onDismissScreenDialog,
                 shape = RectangleShape,
             ) {

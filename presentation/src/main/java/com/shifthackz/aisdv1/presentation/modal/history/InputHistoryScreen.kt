@@ -147,6 +147,7 @@ private fun InputHistoryItem(
                 overflow = TextOverflow.Ellipsis,
             )
             val tags = buildList {
+                add(generation.type.key)
                 add("${generation.width} X ${generation.height}")
                 add(generation.sampler)
                 add(stringResource(id = R.string.tag_steps, generation.samplingSteps))
