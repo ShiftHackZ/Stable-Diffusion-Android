@@ -22,6 +22,8 @@
     <string name="action_select">Обрати</string>
     <string name="action_connect">Підключитися</string>
     <string name="action_share_prompt">Поділитися запитом</string>
+    <string name="action_send_to_txt2img">Відправити в txt2img</string>
+    <string name="action_send_to_img2img">Відправити в img2img</string>
     <string name="action_close">Закрити</string>
     <string name="action_save">Зберегти</string>
     <string name="action_update">Оновити</string>
