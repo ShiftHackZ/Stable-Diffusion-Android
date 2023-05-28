@@ -11,23 +11,43 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
     buildInfoProvider: BuildInfoProvider,
+    preferenceManager: PreferenceManager,
     observeCoinsUseCase: ObserveCoinsUseCase,
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<S, E>() {
 
     init {
+        !preferenceManager.observe()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = ::errorLog,
+                onComplete = EmptyLambda,
+                onNext = { settings ->
+                    currentState
+                        .copyState(
+                            advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow
+                        )
+                        .let { state ->
+                            if (!settings.formAdvancedOptionsAlwaysShow) state
+                            else state.copyState(advancedOptionsVisible = true)
+                        }
+                        .let(::setGenerationState)
+                }
+            )
+
         !getStableDiffusionSamplersUseCase()
             .map { samplers -> samplers.map(StableDiffusionSampler::name) }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
-                onError = { t -> t.printStackTrace() },
+                onError = ::errorLog,
                 onSuccess = { samplers ->
                     currentState
                         .copyState(
@@ -53,7 +73,11 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
         }
     }
 
-    fun updatePrompt(value: String) = (currentState)
+    fun toggleAdvancedOptions(value: Boolean) = currentState
+        .copyState(advancedOptionsVisible = value)
+        .let(::setGenerationState)
+
+    fun updatePrompt(value: String) = currentState
         .copyState(prompt = value)
         .let(::setGenerationState)
 

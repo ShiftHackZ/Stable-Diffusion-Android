@@ -14,7 +14,7 @@
     <string name="splash_status_fetching">Fetching data…</string>
     <string name="splash_status_launching">Launching application!</string>
 
-    <string name="action_generate">Generate</string>
+    <string name="action_generate">Imagine</string>
     <string name="action_export">Export</string>
     <string name="action_delete_image">Delete image</string>
     <string name="action_select">Select</string>
@@ -24,6 +24,8 @@
     <string name="action_save">Save</string>
     <string name="action_update">Update</string>
     <string name="action_skip">Skip</string>
+    <string name="action_options_show">Show advanced options</string>
+    <string name="action_options_hide">Hide advanced options</string>
 
     <string name="srv_type_cloud">I want to use SDAI cloud</string>
     <string name="srv_type_own">I want to use own AUTOMATIC1111 instance</string>
@@ -88,6 +90,7 @@
     <string name="settings_item_demo">Demo mode</string>
     <string name="settings_item_monitor_connection">Monitor connection</string>
     <string name="settings_item_auto_save">Auto save images</string>
+    <string name="settings_item_advanced_form_default">Always show advanced options</string>
     <string name="settings_item_clear_cache">Clear app &amp; gallery cache</string>
 
     <string name="settings_item_report_problem">Report a problem</string>

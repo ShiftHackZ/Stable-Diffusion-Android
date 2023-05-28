@@ -30,6 +30,7 @@ class TextToImageViewModel(
     private val analytics: Analytics,
 ) : GenerationMviViewModel<TextToImageState, EmptyEffect>(
     buildInfoProvider,
+    preferenceManager,
     observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
     schedulersProvider,

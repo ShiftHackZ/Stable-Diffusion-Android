@@ -9,6 +9,7 @@ interface PreferenceManager {
     var useSdAiCloud: Boolean
     var monitorConnectivity: Boolean
     var autoSaveAiResults: Boolean
+    var formAdvancedOptionsAlwaysShow: Boolean
 
     fun observe(): Flowable<Settings>
 }

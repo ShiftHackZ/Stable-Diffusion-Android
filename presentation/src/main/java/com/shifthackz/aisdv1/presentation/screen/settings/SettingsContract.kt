@@ -19,6 +19,7 @@ sealed interface SettingsState : MviState {
         val sdModelSelected: String,
         val monitorConnectivity: Boolean,
         val autoSaveAiResults: Boolean,
+        val formAdvancedOptionsAlwaysShow: Boolean,
         val appVersion: String,
         val showRewardedSdAiAd: Boolean,
         val showSdModelSelector: Boolean,

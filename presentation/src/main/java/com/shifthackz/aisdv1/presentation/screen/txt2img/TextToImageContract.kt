@@ -11,6 +11,8 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 
 data class TextToImageState(
     val screenDialog: Dialog = Dialog.None,
+    override val advancedToggleButtonVisible: Boolean = true,
+    override val advancedOptionsVisible: Boolean = false,
     override val prompt: String = "",
     override val negativePrompt: String = "",
     override val width: String = 512.toString(),
@@ -35,6 +37,8 @@ data class TextToImageState(
     }
 
     override fun copyState(
+        advancedToggleButtonVisible: Boolean,
+        advancedOptionsVisible: Boolean,
         prompt: String,
         negativePrompt: String,
         width: String,
@@ -49,6 +53,8 @@ data class TextToImageState(
         heightValidationError: UiText?,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
+        advancedToggleButtonVisible = advancedToggleButtonVisible,
+        advancedOptionsVisible = advancedOptionsVisible,
         prompt = prompt,
         negativePrompt = negativePrompt,
         width = width,
