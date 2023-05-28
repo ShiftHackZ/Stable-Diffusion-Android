@@ -52,6 +52,7 @@ class PreferenceManagerImpl(
             .putBoolean(KEY_AI_AUTO_SAVE, value)
             .apply()
             .also { onPreferencesChanged() }
+
     override var formAdvancedOptionsAlwaysShow: Boolean
         get() = preferences.getBoolean(KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS, false)
         set(value) = preferences.edit()
