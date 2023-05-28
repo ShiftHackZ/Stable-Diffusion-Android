@@ -15,6 +15,8 @@ data class ImageToImageState(
     val imageBase64: String = "",
     val screenDialog: Dialog = Dialog.None,
     val denoisingStrength: Float = 0.75f,
+    override val advancedToggleButtonVisible: Boolean = true,
+    override val advancedOptionsVisible: Boolean = false,
     override val prompt: String = "",
     override val negativePrompt: String = "",
     override val width: String = 512.toString(),
@@ -48,6 +50,8 @@ data class ImageToImageState(
     }
 
     override fun copyState(
+        advancedToggleButtonVisible: Boolean,
+        advancedOptionsVisible: Boolean,
         prompt: String,
         negativePrompt: String,
         width: String,
@@ -62,6 +66,8 @@ data class ImageToImageState(
         heightValidationError: UiText?,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
+        advancedToggleButtonVisible = advancedToggleButtonVisible,
+        advancedOptionsVisible = advancedOptionsVisible,
         prompt = prompt,
         negativePrompt = negativePrompt,
         width = width,

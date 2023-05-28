@@ -6,6 +6,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.BrowseGallery
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Delete
@@ -26,12 +27,12 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.NoSdAiCoinsDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
 import org.koin.androidx.compose.koinViewModel
 
@@ -51,6 +52,7 @@ class ImageToImageScreen(
             onTakePhoto = { takePhoto(viewModel::updateInputImage) },
             onClearPhoto = viewModel::clearInputImage,
             onDenoisingStrengthUpdated = viewModel::updateDenoisingStrength,
+            onShowAdvancedOptionsToggle = viewModel::toggleAdvancedOptions,
             onPromptUpdated = viewModel::updatePrompt,
             onNegativePromptUpdated = viewModel::updateNegativePrompt,
             onWidthUpdated = viewModel::updateWidth,
@@ -79,6 +81,7 @@ private fun ScreenContent(
     onTakePhoto: () -> Unit = {},
     onClearPhoto: () -> Unit = {},
     onDenoisingStrengthUpdated: (Float) -> Unit,
+    onShowAdvancedOptionsToggle: (Boolean) -> Unit = {},
     onPromptUpdated: (String) -> Unit = {},
     onNegativePromptUpdated: (String) -> Unit = {},
     onWidthUpdated: (String) -> Unit = {},
@@ -122,6 +125,7 @@ private fun ScreenContent(
                     )
                     GenerationInputForm(
                         state = state,
+                        onShowAdvancedOptionsToggle = onShowAdvancedOptionsToggle,
                         onPromptUpdated = onPromptUpdated,
                         onNegativePromptUpdated = onNegativePromptUpdated,
                         onWidthUpdated = onWidthUpdated,
@@ -168,7 +172,13 @@ private fun ScreenContent(
                         onClick = onGenerateClicked,
                         enabled = !state.hasValidationErrors && !state.imageState.isEmpty,
                     ) {
+                        Icon(
+                            modifier = Modifier.size(18.dp),
+                            imageVector = Icons.Default.AutoFixNormal,
+                            contentDescription = "Imagine",
+                        )
                         Text(
+                            modifier = Modifier.padding(start = 8.dp),
                             text = stringResource(id = R.string.action_generate)
                         )
                     }

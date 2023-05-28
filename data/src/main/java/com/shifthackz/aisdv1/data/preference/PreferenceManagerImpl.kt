@@ -52,6 +52,12 @@ class PreferenceManagerImpl(
             .putBoolean(KEY_AI_AUTO_SAVE, value)
             .apply()
             .also { onPreferencesChanged() }
+    override var formAdvancedOptionsAlwaysShow: Boolean
+        get() = preferences.getBoolean(KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS, false)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS, value)
+            .apply()
+            .also { onPreferencesChanged() }
 
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
@@ -62,6 +68,7 @@ class PreferenceManagerImpl(
                 useSdAiCloud = useSdAiCloud,
                 monitorConnectivity = monitorConnectivity,
                 autoSaveAiResults = autoSaveAiResults,
+                formAdvancedOptionsAlwaysShow = formAdvancedOptionsAlwaysShow,
             )
         }
 
@@ -73,5 +80,6 @@ class PreferenceManagerImpl(
         private const val KEY_SD_AI_CLOUD_MODE = "key_sd_ai_cloud_mode"
         private const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
         private const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
+        private const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
     }
 }
