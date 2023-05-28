@@ -8,6 +8,8 @@ interface GenerationResultRepository {
 
     fun getAll(): Single<List<AiGenerationResult>>
 
+    fun getAllIds(): Single<List<Long>>
+
     fun getPage(limit: Int, offset: Int): Single<List<AiGenerationResult>>
 
     fun getById(id: Long): Single<AiGenerationResult>

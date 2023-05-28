@@ -14,10 +14,17 @@ import com.shifthackz.aisdv1.core.extensions.openMarket
 import com.shifthackz.aisdv1.core.extensions.openUrl
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
-import com.shifthackz.aisdv1.presentation.features.*
-import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
+import com.shifthackz.aisdv1.presentation.features.FileSharingFeature
+import com.shifthackz.aisdv1.presentation.features.GalleryExportZip
+import com.shifthackz.aisdv1.presentation.features.GalleryGridItemClick
+import com.shifthackz.aisdv1.presentation.features.ImagePickerFeature
+import com.shifthackz.aisdv1.presentation.features.ReportProblemEmailComposer
+import com.shifthackz.aisdv1.presentation.features.SettingsCheckUpdate
+import com.shifthackz.aisdv1.presentation.features.SettingsConfigurationClick
+import com.shifthackz.aisdv1.presentation.features.SettingsOpenMarket
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
-import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
+import com.shifthackz.aisdv1.presentation.screen.gallery.v2.GallerySlideScreen
+import com.shifthackz.aisdv1.presentation.screen.gallery.v2.GallerySlideViewModel
 import com.shifthackz.aisdv1.presentation.screen.home.homeScreenNavGraph
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
@@ -169,10 +176,11 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                             ),
                         ) { entry ->
                             val itemId = entry.arguments?.getLong(Constants.PARAM_ITEM_ID) ?: -1L
-                            val viewModel = getViewModel<GalleryDetailViewModel>(
+//                            val viewModel = getViewModel<GalleryDetailViewModel>(
+                            val viewModel = getViewModel<GallerySlideViewModel>(
                                 parameters = { parametersOf(itemId) }
                             )
-                            GalleryDetailScreen(
+                            /*GalleryDetailScreen(
                                 viewModel = viewModel,
                                 onNavigateBack = { navController.navigateUp() },
                                 shareGalleryFile = { jpgFile ->
@@ -190,6 +198,11 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                         state = uiState,
                                     )
                                 },
+                            ).Build()*/
+
+                            GallerySlideScreen(
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.navigateUp() },
                             ).Build()
                         }
                     }

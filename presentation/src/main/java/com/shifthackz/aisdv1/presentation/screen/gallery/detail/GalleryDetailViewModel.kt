@@ -11,8 +11,8 @@ import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
-import com.shifthackz.aisdv1.presentation.features.GalleryDetailTabClick
 import com.shifthackz.aisdv1.presentation.features.GalleryItemDelete
+import com.shifthackz.aisdv1.presentation.screen.gallery.v2.GalleryDetailEffect
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
@@ -52,7 +52,7 @@ class GalleryDetailViewModel(
     fun selectTab(tab: GalleryDetailState.Tab) = currentState
         .withTab(tab)
         .let(::setState)
-        .also { analytics.logEvent(GalleryDetailTabClick(tab)) }
+//        .also { analytics.logEvent(GalleryDetailTabClick(tab)) }
 
     fun showDeleteConfirmDialog() = setActiveDialog(GalleryDetailState.Dialog.DeleteConfirm)
 

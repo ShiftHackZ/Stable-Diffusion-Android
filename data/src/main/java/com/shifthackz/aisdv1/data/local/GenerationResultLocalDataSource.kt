@@ -19,6 +19,8 @@ internal class GenerationResultLocalDataSource(
         .query()
         .map(List<GenerationResultEntity>::mapEntityToDomain)
 
+    override fun queryAllIds(): Single<List<Long>> = dao.queryIds()
+
     override fun queryPage(limit: Int, offset: Int) = dao
         .queryPage(limit, offset)
         .map(List<GenerationResultEntity>::mapEntityToDomain)

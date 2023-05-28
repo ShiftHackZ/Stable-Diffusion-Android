@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.presentation.features
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.analytics.AnalyticsEvent
-import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailState
+import com.shifthackz.aisdv1.presentation.screen.gallery.v2.GalleryTab
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationItem
 
 //region SETUP SCREEN
@@ -93,7 +93,7 @@ object GalleryItemInfoShare : AnalyticsEvent(name = "gallery_item_info_share")
 
 object GalleryItemDelete : AnalyticsEvent("gallery_item_delete")
 
-data class GalleryDetailTabClick(val tab :  GalleryDetailState.Tab):AnalyticsEvent(
+data class GalleryDetailTabClick(val tab : GalleryTab):AnalyticsEvent(
     name = "gallery_detail_tab_${tab.toString().lowercase()}_click"
 )
 //endregion

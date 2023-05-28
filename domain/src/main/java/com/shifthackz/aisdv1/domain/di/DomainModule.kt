@@ -18,6 +18,8 @@ import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultIdsUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultIdsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
@@ -71,4 +73,5 @@ val domainModule = module {
     factoryOf(::ObserveCoinsUseCaseImpl) bind ObserveCoinsUseCase::class
     factoryOf(::EarnRewardedCoinsUseCaseImpl) bind EarnRewardedCoinsUseCase::class
     factoryOf(::ObserveMotdUseCaseImpl) bind ObserveMotdUseCase::class
+    factoryOf(::GetGenerationResultIdsUseCaseImpl) bind GetGenerationResultIdsUseCase::class
 }

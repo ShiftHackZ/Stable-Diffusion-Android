@@ -10,6 +10,8 @@ internal class GenerationResultRepositoryImpl(
 
     override fun getAll() = localDataSource.queryAll()
 
+    override fun getAllIds() = localDataSource.queryAllIds()
+
     override fun getPage(limit: Int, offset: Int) = localDataSource.queryPage(limit, offset)
 
     override fun getById(id: Long) = localDataSource.queryById(id)

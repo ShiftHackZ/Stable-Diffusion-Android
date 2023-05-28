@@ -5,12 +5,26 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.list
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -53,7 +67,7 @@ class GalleryScreen(
             onExportToolbarClick = viewModel::launchGalleryExportConfirmation,
             onExportConfirmClick = viewModel::launchGalleryExport,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
-            onGalleryItemClick = { item -> openGalleryItemDetails(item.id) }
+            onGalleryItemClick = { item -> openGalleryItemDetails(item.ai.id) }
         )
     }
 
@@ -69,11 +83,11 @@ class GalleryScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryState,
-    pagingFlow: Flow<PagingData<GalleryGridItemUi>>,
+    pagingFlow: Flow<PagingData<GalleryItemUi>>,
     onExportToolbarClick: () -> Unit = {},
     onExportConfirmClick: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
-    onGalleryItemClick: (GalleryGridItemUi) -> Unit = {},
+    onGalleryItemClick: (GalleryItemUi) -> Unit = {},
 ) {
     val listState = rememberLazyGridState()
     val lazyGalleryItems = pagingFlow.collectAsLazyPagingItems()
@@ -176,8 +190,8 @@ private fun ScreenContent(
 
 @Composable
 private fun GalleryUiItem(
-    item: GalleryGridItemUi,
-    onClick: (GalleryGridItemUi) -> Unit = {},
+    item: GalleryItemUi,
+    onClick: (GalleryItemUi) -> Unit = {},
 ) {
     Image(
         modifier = Modifier

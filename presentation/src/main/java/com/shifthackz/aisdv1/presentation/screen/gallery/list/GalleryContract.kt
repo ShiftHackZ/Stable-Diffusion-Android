@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import java.io.File
 
 sealed interface GalleryEffect : MviEffect {
@@ -25,7 +26,7 @@ data class GalleryState(
     }
 }
 
-data class GalleryGridItemUi(
-    val id: Long,
+data class GalleryItemUi(
+    val ai: AiGenerationResult,
     val bitmap: Bitmap,
 )

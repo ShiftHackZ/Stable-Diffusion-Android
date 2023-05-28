@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.presentation.activity.AiStableDiffusionViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryViewModel
+import com.shifthackz.aisdv1.presentation.screen.gallery.v2.GallerySlideViewModel
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationViewModel
 import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageViewModel
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderViewModel
@@ -57,5 +58,9 @@ val viewModelModule = module {
 
     viewModel { parameters ->
         GalleryDetailViewModel(parameters.get(), get(), get(), get(), get(), get(), get(), get())
+    }
+
+    viewModel { parameters ->
+        GallerySlideViewModel(parameters.get(), get(), get(), get(), get(), get())
     }
 }

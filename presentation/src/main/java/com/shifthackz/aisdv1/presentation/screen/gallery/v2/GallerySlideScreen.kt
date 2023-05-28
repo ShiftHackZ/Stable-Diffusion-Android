@@ -1,24 +1,50 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package com.shifthackz.aisdv1.presentation.screen.gallery.detail
+package com.shifthackz.aisdv1.presentation.screen.gallery.v2
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -26,22 +52,16 @@ import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.screen.gallery.v2.GalleryDetailEffect
+import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryItemUi
 import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
-import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
-import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
-import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
+import kotlinx.coroutines.flow.Flow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-import java.io.File
-
-class GalleryDetailScreen(
-    private val viewModel: GalleryDetailViewModel,
+class GallerySlideScreen(
+    private val viewModel: GallerySlideViewModel,
     private val onNavigateBack: () -> Unit = {},
-    private val shareGalleryFile: (File) -> Unit = {},
-    private val shareGenerationParams: (GalleryDetailState) -> Unit = {},
-) : MviScreen<GalleryDetailState, GalleryDetailEffect>(viewModel), KoinComponent {
+) : MviScreen<GalleryStateV2, GalleryDetailEffect>(viewModel), KoinComponent {
 
     private val adFeature: AdFeature by inject()
 
@@ -50,40 +70,26 @@ class GalleryDetailScreen(
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = viewModel.state.collectAsState().value,
+            pagingFlow = viewModel.pagingFlow,
             adFeature = adFeature,
             onNavigateBack = onNavigateBack,
             onTabSelected = viewModel::selectTab,
-            onSendToTxt2Img = viewModel::sendPromptToTxt2Img,
-            onSendToImg2Img = viewModel::sendPromptToImg2Img,
-            onExportImageToolbarClick = viewModel::share,
-            onExportParamsClick = shareGenerationParams,
-            onDeleteButtonClick = viewModel::showDeleteConfirmDialog,
-            onDeleteConfirmClick = viewModel::delete,
-            onDismissScreenDialog = viewModel::dismissScreenDialog,
+//            onPageSelected = viewModel::onPageSelected,
         )
-    }
-
-    override fun processEffect(effect: GalleryDetailEffect) = when (effect) {
-        is GalleryDetailEffect.ShareImageFile -> shareGalleryFile(effect.file)
-        GalleryDetailEffect.NavigateBack -> onNavigateBack()
     }
 }
 
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
-    state: GalleryDetailState,
+    state: GalleryStateV2,
+    pagingFlow: Flow<PagingData<GalleryItemUi>>,
     adFeature: AdFeature,
     onNavigateBack: () -> Unit = {},
-    onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
-    onSendToTxt2Img: () -> Unit = {},
-    onSendToImg2Img: () -> Unit = {},
-    onExportImageToolbarClick: () -> Unit = {},
-    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
-    onDeleteButtonClick: () -> Unit = {},
-    onDeleteConfirmClick: () -> Unit = {},
-    onDismissScreenDialog: () -> Unit = {},
+    onTabSelected: (GalleryTab) -> Unit = {},
+//    onPageSelected: (Int) -> Unit = {},
 ) {
+    if (state !is GalleryStateV2.Initialized) return
     Box(modifier = modifier) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -104,17 +110,17 @@ private fun ScreenContent(
                         )
                     },
                     actions = {
-                        IconButton(
-                            onClick = onExportImageToolbarClick,
-                            content = {
-                                Image(
-                                    modifier = Modifier.size(24.dp),
-                                    painter = painterResource(id = R.drawable.ic_share),
-                                    contentDescription = "Export",
-                                    colorFilter = ColorFilter.tint(LocalContentColor.current),
-                                )
-                            },
-                        )
+//                        IconButton(
+//                            onClick = onExportImageToolbarClick,
+//                            content = {
+//                                Image(
+//                                    modifier = Modifier.size(24.dp),
+//                                    painter = painterResource(id = R.drawable.ic_share),
+//                                    contentDescription = "Export",
+//                                    colorFilter = ColorFilter.tint(LocalContentColor.current),
+//                                )
+//                            },
+//                        )
                     }
                 )
             },
@@ -123,39 +129,65 @@ private fun ScreenContent(
                     .fillMaxSize()
                     .padding(paddingValues)
 
-                when (state) {
-                    is GalleryDetailState.Content -> GalleryDetailContentState(
-                        modifier = contentModifier,
-                        state = state,
-                        onSendToTxt2Img = onSendToTxt2Img,
-                        onSendToImg2Img = onSendToImg2Img,
-                        onDeleteButtonClick = onDeleteButtonClick,
-                        onExportParamsClick = onExportParamsClick,
-                    )
-                    is GalleryDetailState.Loading -> Unit
+                val images = pagingFlow.collectAsLazyPagingItems()
+
+                val pagerState = rememberPagerState(initialPage = state.initialIndex)
+//                LaunchedEffect(pagerState) {
+//                    snapshotFlow {
+//                        pagerState.currentPage
+//                    }.collect {
+//                        onPageSelected(it)
+//                    }
+//                }
+
+                when {
+                    images.itemCount > 0 -> when (state.selectedTab) {
+                        GalleryTab.IMAGE -> HorizontalPager(
+                            modifier = contentModifier,
+                            pageCount = state.totalPageCount,
+                            state = pagerState,
+                            key = { state.keys[it] }
+                        ) { index ->
+                            images[index]?.let { itemUi ->
+                                Image(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentDescription = null,
+                                    bitmap = itemUi.bitmap.asImageBitmap(),
+                                )
+                            }
+                        }
+                        GalleryTab.INFO -> images[pagerState.currentPage]?.let { itemUi ->
+                            GalleryDetailsTable(
+                                modifier = contentModifier,
+                                result = itemUi.ai,
+                            )
+                        }
+                    }
                 }
             },
-            bottomBar = { GalleryDetailNavigationBar(adFeature, state, onTabSelected) },
+            bottomBar = {
+                GalleryDetailNavigationBar(adFeature, state.selectedTab, onTabSelected)
+            },
         )
-        when (state.screenDialog) {
-            GalleryDetailState.Dialog.DeleteConfirm -> DecisionInteractiveDialog(
-                title = R.string.interaction_delete_generation_title.asUiText(),
-                text = R.string.interaction_delete_generation_sub_title.asUiText(),
-                confirmActionResId = R.string.yes,
-                dismissActionResId = R.string.no,
-                onConfirmAction = onDeleteConfirmClick,
-                onDismissRequest = onDismissScreenDialog,
-            )
-            GalleryDetailState.Dialog.None -> Unit
-        }
+//        when (state.screenDialog) {
+//            GalleryDetailState.Dialog.DeleteConfirm -> DecisionInteractiveDialog(
+//                title = R.string.interaction_delete_generation_title.asUiText(),
+//                text = R.string.interaction_delete_generation_sub_title.asUiText(),
+//                confirmActionResId = R.string.yes,
+//                dismissActionResId = R.string.no,
+//                onConfirmAction = onDeleteConfirmClick,
+//                onDismissRequest = onDismissScreenDialog,
+//            )
+//            GalleryDetailState.Dialog.None -> Unit
+//        }
     }
 }
 
 @Composable
 private fun GalleryDetailNavigationBar(
     adFeature: AdFeature,
-    state: GalleryDetailState,
-    onTabSelected: (GalleryDetailState.Tab) -> Unit,
+    selectedTab: GalleryTab,
+    onTabSelected: (GalleryTab) -> Unit,
 ) {
     Column {
         AdMobBanner(
@@ -166,9 +198,9 @@ private fun GalleryDetailNavigationBar(
             adFactory = adFeature::getGalleryDetailBannerAd,
         )
         NavigationBar {
-            state.tabs.forEach { tab ->
+            GalleryTab.values().forEach { tab ->
                 NavigationBarItem(
-                    selected = state.selectedTab == tab,
+                    selected = selectedTab == tab,
                     label = {
                         Text(stringResource(id = tab.label))
                     },
@@ -188,53 +220,19 @@ private fun GalleryDetailNavigationBar(
 }
 
 @Composable
-private fun GalleryDetailContentState(
-    modifier: Modifier = Modifier,
-    state: GalleryDetailState.Content,
-    onSendToTxt2Img: () -> Unit = {},
-    onSendToImg2Img: () -> Unit = {},
-    onDeleteButtonClick: () -> Unit = {},
-    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
-) {
-    Column(
-        modifier = modifier,
-    ) {
-        when (state.selectedTab) {
-            GalleryDetailState.Tab.IMAGE -> ZoomableImage(
-                modifier = Modifier.fillMaxSize(),
-                source = ZoomableImageSource.Bmp(state.bitmap),
-            )
-            GalleryDetailState.Tab.ORIGINAL -> state.inputBitmap?.let { bmp ->
-                ZoomableImage(
-                    modifier = Modifier.fillMaxSize(),
-                    source = ZoomableImageSource.Bmp(bmp),
-                )
-            }
-            GalleryDetailState.Tab.INFO -> GalleryDetailsTable(
-                modifier = Modifier.fillMaxSize(),
-                state = state,
-                onSendToTxt2Img = onSendToTxt2Img,
-                onSendToImg2Img = onSendToImg2Img,
-                onDeleteButtonClick = onDeleteButtonClick,
-                onExportParamsClick = onExportParamsClick,
-            )
-        }
-    }
-}
-
-@Composable
 private fun GalleryDetailsTable(
     modifier: Modifier = Modifier,
-    state: GalleryDetailState.Content,
+    result: AiGenerationResult,
     onSendToTxt2Img: () -> Unit = {},
     onSendToImg2Img: () -> Unit = {},
     onDeleteButtonClick: () -> Unit = {},
-    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
+    onExportParamsClick: (AiGenerationResult) -> Unit = {},
 ) {
     Scaffold(
+        modifier = modifier,
         content = { paddingValues ->
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .fillMaxSize()
                     .padding(16.dp)
@@ -247,79 +245,79 @@ private fun GalleryDetailsTable(
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_date.asUiText(),
-                    value = state.createdAt,
+                    value = "${result.createdAt}".asUiText(),
                     color = colorOddText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_type.asUiText(),
-                    value = state.type,
+                    value = result.type.key.asUiText(),
                     color = colorEvenText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_prompt.asUiText(),
-                    value = state.prompt,
+                    value = result.prompt.asUiText(),
                     color = colorOddText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_negative_prompt.asUiText(),
-                    value = state.negativePrompt,
+                    value = result.negativePrompt.asUiText(),
                     color = colorEvenText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_size.asUiText(),
-                    value = state.size,
+                    value = "${result.width} X ${result.height}".asUiText(),
                     color = colorOddText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_sampling_steps.asUiText(),
-                    value = state.samplingSteps,
+                    value = "${result.samplingSteps}".asUiText(),
                     color = colorEvenText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_cfg.asUiText(),
-                    value = state.cfgScale,
+                    value = "${result.cfgScale}".asUiText(),
                     color = colorOddText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_restore_faces.asUiText(),
-                    value = state.restoreFaces,
+                    value = "${result.restoreFaces}".asUiText(),
                     color = colorEvenText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_sampler.asUiText(),
-                    value = state.sampler,
+                    value = result.sampler.asUiText(),
                     color = colorOddText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_seed.asUiText(),
-                    value = state.seed,
+                    value = result.seed.asUiText(),
                     color = colorEvenText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_sub_seed.asUiText(),
-                    value = state.subSeed,
+                    value = result.subSeed.asUiText(),
                     color = colorOddText,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_sub_seed_strength.asUiText(),
-                    value = state.subSeedStrength,
+                    value = "${result.subSeedStrength}".asUiText(),
                     color = colorEvenText,
                 )
-                if (state.generationType == AiGenerationResult.Type.IMAGE_TO_IMAGE) GalleryDetailRow(
+                if (result.type == AiGenerationResult.Type.IMAGE_TO_IMAGE) GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_denoising_strength.asUiText(),
-                    value = state.denoisingStrength,
+                    value = "${result.denoisingStrength}".asUiText(),
                     color = colorOddText,
                 )
             }
@@ -327,10 +325,10 @@ private fun GalleryDetailsTable(
         bottomBar = {
             Column(
                 modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 16.dp, top = 2.dp),
+                    .background(color = MaterialTheme.colorScheme.background)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp, top = 2.dp),
             ) {
                 Row {
                     OutlinedButton(
@@ -356,7 +354,7 @@ private fun GalleryDetailsTable(
                 Row {
                     OutlinedButton(
                         modifier = Modifier.weight(1f),
-                        onClick = { onExportParamsClick(state) },
+                        onClick = { onExportParamsClick(result) },
                     ) {
                         Text(
                             text = stringResource(id = R.string.action_share_prompt),
@@ -375,7 +373,6 @@ private fun GalleryDetailsTable(
                     }
                 }
             }
-
         },
     )
 }
