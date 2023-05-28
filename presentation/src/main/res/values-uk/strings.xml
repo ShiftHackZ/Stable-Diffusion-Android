@@ -144,6 +144,7 @@
     <string name="error_invalid">Неправильні дані</string>
     <string name="error_invalid_scheme">URL має починатися з <b>http://</b> або <b>https://</b></string>
     <string name="error_invalid_url">Недійсна URL-адреса сервера</string>
+    <string name="error_localhost_url">Ви не можете використовувати localhost (127.0.0.1) URL-адресу для підключення до сервера.</string>
     <string name="error_min_size">Мінімальний розмір %1$s</string>
     <string name="error_max_size">Максимальний розмір %1$s</string>
 </resources>

@@ -144,6 +144,7 @@
     <string name="error_invalid">Invalid input</string>
     <string name="error_invalid_scheme">Server URL should start with <b>http://</b> or <b>https://</b></string>
     <string name="error_invalid_url">Invalid Server URL</string>
+    <string name="error_localhost_url">You can not use localhost (127.0.0.1) URL to connect to server.</string>
     <string name="error_min_size">Minimum size is %1$s</string>
     <string name="error_max_size">Maximum size is %1$s</string>
 </resources>
