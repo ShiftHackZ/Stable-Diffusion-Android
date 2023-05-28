@@ -33,6 +33,8 @@ import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_MIN
+import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MAX
+import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MIN
 import com.shifthackz.aisdv1.presentation.widget.DropdownTextField
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -50,6 +52,8 @@ fun GenerationInputForm(
     onCfgScaleUpdated: (Float) -> Unit = {},
     onRestoreFacesUpdated: (Boolean) -> Unit = {},
     onSeedUpdated: (String) -> Unit = {},
+    onSubSeedUpdated: (String) -> Unit = {},
+    onSubSeedStrengthUpdated: (Float) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
     widthValidationError: UiText? = null,
     heightValidationError: UiText? = null,
@@ -152,6 +156,34 @@ fun GenerationInputForm(
                     label = { Text(stringResource(id = R.string.hint_seed)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    value = state.subSeed,
+                    onValueChange = { value ->
+                        value
+                            .filter { it.isDigit() }
+                            .let(onSubSeedUpdated)
+                    },
+                    label = { Text(stringResource(id = R.string.hint_sub_seed)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+                Text(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = stringResource(
+                        id = R.string.hint_sub_seed_strength,
+                        "${state.subSeedStrength.roundTo(2)}",
+                    ),
+                )
+                Slider(
+                    value = state.subSeedStrength,
+                    valueRange = SUB_SEED_STRENGTH_MIN..SUB_SEED_STRENGTH_MAX,
+                    colors = sliderColors,
+                    onValueChange = {
+                        onSubSeedStrengthUpdated(it.roundTo(2))
+                    },
+                )
                 Text(
                     modifier = Modifier.padding(top = 8.dp),
                     text = stringResource(id = R.string.hint_sampling_steps, "${state.samplingSteps}"),
@@ -213,6 +245,8 @@ private fun GenerationInputFormPreview() {
             override val cfgScale: Float = 11.5f
             override val restoreFaces: Boolean = true
             override val seed: String = "-1"
+            override val subSeed: String = "-1"
+            override val subSeedStrength: Float = 0f
             override val selectedSampler: String = "Euler a"
             override val availableSamplers: List<String> = listOf("Euler a")
             override val widthValidationError: UiText? = null
@@ -237,6 +271,8 @@ private fun GenerationInputFormPreviewWithOptions() {
             override val cfgScale: Float = 11.5f
             override val restoreFaces: Boolean = true
             override val seed: String = "-1"
+            override val subSeed: String = "-1"
+            override val subSeedStrength: Float = 0f
             override val selectedSampler: String = "Euler a"
             override val availableSamplers: List<String> = listOf("Euler a")
             override val widthValidationError: UiText? = null

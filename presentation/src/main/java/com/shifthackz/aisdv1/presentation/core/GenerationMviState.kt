@@ -14,6 +14,8 @@ abstract class GenerationMviState : MviState {
     abstract val cfgScale: Float
     abstract val restoreFaces: Boolean
     abstract val seed: String
+    abstract val subSeed: String
+    abstract val subSeedStrength: Float
     abstract val selectedSampler: String
     abstract val availableSamplers: List<String>
     abstract val widthValidationError: UiText?
@@ -34,6 +36,8 @@ abstract class GenerationMviState : MviState {
         cfgScale: Float = this.cfgScale,
         restoreFaces: Boolean = this.restoreFaces,
         seed: String = this.seed,
+        subSeed: String = this.subSeed,
+        subSeedStrength: Float = this.subSeedStrength,
         selectedSampler: String = this.selectedSampler,
         availableSamplers: List<String> = this.availableSamplers,
         widthValidationError: UiText? = this.widthValidationError,

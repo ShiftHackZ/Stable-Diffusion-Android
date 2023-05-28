@@ -18,6 +18,9 @@ object Constants {
     const val ROUTE_GALLERY_DETAIL_FULL = "$ROUTE_GALLERY_DETAIL/{$PARAM_ITEM_ID}"
     const val ROUTE_SETTINGS = "settings"
 
+    const val SUB_SEED_STRENGTH_MIN = 0f
+    const val SUB_SEED_STRENGTH_MAX = 1f
+
     const val SAMPLING_STEPS_RANGE_MIN = 1
     const val SAMPLING_STEPS_RANGE_MAX = 150
 

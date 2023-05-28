@@ -23,6 +23,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
@@ -291,6 +292,24 @@ private fun GalleryDetailsTable(
                     value = state.seed,
                     color = colorEvenText,
                 )
+                GalleryDetailRow(
+                    modifier = Modifier.background(color = colorOddBg),
+                    name = R.string.gallery_info_field_sub_seed.asUiText(),
+                    value = state.subSeed,
+                    color = colorOddText,
+                )
+                GalleryDetailRow(
+                    modifier = Modifier.background(color = colorEvenBg),
+                    name = R.string.gallery_info_field_sub_seed_strength.asUiText(),
+                    value = state.subSeedStrength,
+                    color = colorEvenText,
+                )
+                if (state.generationType == AiGenerationResult.Type.IMAGE_TO_IMAGE) GalleryDetailRow(
+                    modifier = Modifier.background(color = colorOddBg),
+                    name = R.string.gallery_info_field_denoising_strength.asUiText(),
+                    value = state.denoisingStrength,
+                    color = colorOddText,
+                )
             }
         },
         bottomBar = {
@@ -328,8 +347,8 @@ private fun GalleryDetailsTable(
 @Composable
 private fun GalleryDetailRow(
     modifier: Modifier = Modifier,
-    column1Weight: Float = 0.3f,
-    column2Weight: Float = 0.7f,
+    column1Weight: Float = 0.4f,
+    column2Weight: Float = 0.6f,
     name: UiText,
     value: UiText,
     color: Color,
