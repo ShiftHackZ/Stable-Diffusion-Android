@@ -18,7 +18,7 @@
 
     <string name="action_generate">Уявити</string>
     <string name="action_export">Експорт</string>
-    <string name="action_delete_image">Видалити зображення</string>
+    <string name="action_delete_image">Видалити</string>
     <string name="action_select">Обрати</string>
     <string name="action_connect">Підключитися</string>
     <string name="action_share_prompt">Поділитися запитом</string>
