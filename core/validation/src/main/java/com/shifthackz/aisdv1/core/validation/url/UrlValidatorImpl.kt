@@ -19,6 +19,10 @@ class UrlValidatorImpl : UrlValidator {
             isValid = false,
             validationError = UrlValidator.Error.BadScheme,
         )
+        input.contains(LOCALHOST_IPV4) -> ValidationResult(
+            isValid = false,
+            validationError = UrlValidator.Error.Localhost,
+        )
         !URLUtil.isValidUrl(input) -> ValidationResult(
             isValid = false,
             validationError = UrlValidator.Error.Invalid,
@@ -33,5 +37,6 @@ class UrlValidatorImpl : UrlValidator {
     companion object {
         private const val SCHEME_HTTPS = "https://"
         private const val SCHEME_HTTP = "http://"
+        private const val LOCALHOST_IPV4 = "127.0.0.1"
     }
 }
