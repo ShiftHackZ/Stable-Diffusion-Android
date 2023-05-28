@@ -7,9 +7,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoFixNormal
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,6 +19,7 @@ import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
@@ -50,6 +53,8 @@ class TextToImageScreen(
             onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
             onSaveGeneratedImage = viewModel::saveGeneratedResult,
+            onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
+            onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
             onLaunchRewarded = launchRewarded,
         )
@@ -77,6 +82,8 @@ private fun ScreenContent(
     onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
     onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
+    onOpenPreviousGenerationInput: () -> Unit = {},
+    onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
     onLaunchRewarded: () -> Unit = {},
 ) {
@@ -90,6 +97,14 @@ private fun ScreenContent(
                             style = MaterialTheme.typography.headlineMedium,
                         )
                     },
+                    actions = {
+                        IconButton(onClick = onOpenPreviousGenerationInput) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = null,
+                            )
+                        }
+                    }
                 )
             },
             content = { paddingValues ->
@@ -164,6 +179,18 @@ private fun ScreenContent(
                 text = state.screenDialog.error,
                 onDismissScreenDialog,
             )
+            is TextToImageState.Dialog.PromptBottomSheet -> ModalBottomSheet(
+                onDismissRequest = onDismissScreenDialog,
+                shape = RectangleShape,
+            ) {
+                InputHistoryScreen(
+                    viewModel = koinViewModel(),
+                    onGenerationSelected = { ai ->
+                        onUpdateFromPreviousAiGeneration(ai)
+                        onDismissScreenDialog()
+                    },
+                ).Build()
+            }
             else -> Unit
         }
     }

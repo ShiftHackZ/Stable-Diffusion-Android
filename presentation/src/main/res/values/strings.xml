@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="empty">Empty</string>
     <string name="language">English</string>
     <string name="ok">OK</string>
     <string name="yes">Yes</string>
@@ -137,6 +138,10 @@
     <string name="sdai_coins_zero_sub_title">You spent all your SDAI coins for today.\nCome back tomorrow to receive more coins!\n\nNote: you don\'t need to have SDAI coins in case your are running own server.</string>
 
     <string name="sdai_coins_free">Free coins</string>
+
+    <string name="tag_steps">Steps: %1$s</string>
+    <string name="tag_cfg">CFG: %1$s</string>
+    <string name="tag_denoising">Denoising: %1$s</string>
 
     <string name="error_title">Error</string>
     <string name="error_empty">Field can\'t be empty</string>

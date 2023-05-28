@@ -35,7 +35,6 @@ import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_M
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MIN
-import com.shifthackz.aisdv1.presentation.widget.DropdownTextField
 import kotlin.math.abs
 import kotlin.math.roundToInt
 

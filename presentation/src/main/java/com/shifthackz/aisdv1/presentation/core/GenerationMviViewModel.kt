@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
@@ -72,6 +73,25 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
                 .subscribeBy(::errorLog, EmptyLambda, ::setGenerationState)
         }
     }
+
+    fun updateFormPreviousAiGeneration(ai: AiGenerationResult) = currentState
+        .copyState(
+            prompt = ai.prompt,
+            negativePrompt = ai.negativePrompt,
+            width = "${ai.width}",
+            height = "${ai.height}",
+            seed = ai.seed,
+            subSeed = ai.subSeed,
+            subSeedStrength = ai.subSeedStrength,
+            samplingSteps = ai.samplingSteps,
+            cfgScale = ai.cfgScale,
+            restoreFaces = ai.restoreFaces,
+        )
+        .let { state ->
+            if (!state.availableSamplers.contains(ai.sampler)) state
+            else state.copyState(selectedSampler = ai.sampler)
+        }
+        .let(::setGenerationState)
 
     fun toggleAdvancedOptions(value: Boolean) = currentState
         .copyState(advancedOptionsVisible = value)

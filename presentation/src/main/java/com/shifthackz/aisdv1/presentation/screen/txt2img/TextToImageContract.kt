@@ -34,6 +34,7 @@ data class TextToImageState(
         object None : Dialog
         object Communicating : Dialog
         object NoSdAiCoins : Dialog
+        object PromptBottomSheet : Dialog
         data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Dialog
         data class Error(val error: UiText) : Dialog
     }

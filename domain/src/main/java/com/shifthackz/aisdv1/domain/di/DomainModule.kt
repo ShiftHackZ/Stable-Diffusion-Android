@@ -20,8 +20,8 @@ import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryPageUseCase
-import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryPageUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
@@ -56,7 +56,7 @@ val domainModule = module {
     factoryOf(::DataPreLoaderUseCaseImpl) bind DataPreLoaderUseCase::class
     factoryOf(::GetStableDiffusionModelsUseCaseImpl) bind GetStableDiffusionModelsUseCase::class
     factoryOf(::SelectStableDiffusionModelUseCaseImpl) bind SelectStableDiffusionModelUseCase::class
-    factoryOf(::GetGalleryPageUseCaseImpl) bind GetGalleryPageUseCase::class
+    factoryOf(::GetGenerationResultPagedUseCaseImpl) bind GetGenerationResultPagedUseCase::class
     factoryOf(::GetAllGalleryUseCaseImpl) bind GetAllGalleryUseCase::class
     factoryOf(::GetGalleryItemUseCaseImpl) bind GetGalleryItemUseCase::class
     factoryOf(::DeleteGalleryItemUseCaseImpl) bind DeleteGalleryItemUseCase::class

@@ -45,6 +45,8 @@ class TextToImageViewModel(
         )
     )
 
+    fun openPreviousGenerationInput() = setActiveDialog(TextToImageState.Dialog.PromptBottomSheet)
+
     fun dismissScreenDialog() = setActiveDialog(TextToImageState.Dialog.None)
 
     fun generate() {
