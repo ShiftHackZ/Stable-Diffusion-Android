@@ -14,6 +14,7 @@ import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -22,6 +23,7 @@ class TextToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     buildInfoProvider: BuildInfoProvider,
     observeCoinsUseCase: ObserveCoinsUseCase,
+    generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val textToImageUseCase: TextToImageUseCase,
     private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
     private val schedulersProvider: SchedulersProvider,
@@ -37,6 +39,15 @@ class TextToImageViewModel(
 ) {
 
     override val emptyState = TextToImageState()
+
+    init {
+        !generationFormUpdateEvent.observeTxt2ImgForm()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = ::errorLog,
+                onNext = ::updateFormPreviousAiGeneration,
+            )
+    }
 
     override fun setState(state: TextToImageState) = super.setState(
         state.copy(

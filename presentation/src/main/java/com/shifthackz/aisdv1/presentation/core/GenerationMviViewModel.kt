@@ -76,6 +76,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
 
     open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) = currentState
         .copyState(
+            advancedOptionsVisible = true,
             prompt = ai.prompt,
             negativePrompt = ai.negativePrompt,
             width = "${ai.width}",

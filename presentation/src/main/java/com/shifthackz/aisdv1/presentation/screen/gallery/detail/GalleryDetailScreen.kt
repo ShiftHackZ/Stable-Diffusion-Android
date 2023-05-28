@@ -52,6 +52,8 @@ class GalleryDetailScreen(
             adFeature = adFeature,
             onNavigateBack = onNavigateBack,
             onTabSelected = viewModel::selectTab,
+            onSendToTxt2Img = viewModel::sendPromptToTxt2Img,
+            onSendToImg2Img = viewModel::sendPromptToImg2Img,
             onExportImageToolbarClick = viewModel::share,
             onExportParamsClick = shareGenerationParams,
             onDeleteButtonClick = viewModel::showDeleteConfirmDialog,
@@ -73,6 +75,8 @@ private fun ScreenContent(
     adFeature: AdFeature,
     onNavigateBack: () -> Unit = {},
     onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
+    onSendToTxt2Img: () -> Unit = {},
+    onSendToImg2Img: () -> Unit = {},
     onExportImageToolbarClick: () -> Unit = {},
     onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
     onDeleteButtonClick: () -> Unit = {},
@@ -122,6 +126,8 @@ private fun ScreenContent(
                     is GalleryDetailState.Content -> GalleryDetailContentState(
                         modifier = contentModifier,
                         state = state,
+                        onSendToTxt2Img = onSendToTxt2Img,
+                        onSendToImg2Img = onSendToImg2Img,
                         onDeleteButtonClick = onDeleteButtonClick,
                         onExportParamsClick = onExportParamsClick,
                     )
@@ -152,7 +158,7 @@ private fun GalleryDetailNavigationBar(
 ) {
     Column {
         AdMobBanner(
-            modifier =  Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
             adFeature = adFeature,
@@ -185,6 +191,8 @@ private fun GalleryDetailNavigationBar(
 private fun GalleryDetailContentState(
     modifier: Modifier = Modifier,
     state: GalleryDetailState.Content,
+    onSendToTxt2Img: () -> Unit = {},
+    onSendToImg2Img: () -> Unit = {},
     onDeleteButtonClick: () -> Unit = {},
     onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
 ) {
@@ -205,6 +213,8 @@ private fun GalleryDetailContentState(
             GalleryDetailState.Tab.INFO -> GalleryDetailsTable(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
+                onSendToTxt2Img = onSendToTxt2Img,
+                onSendToImg2Img = onSendToImg2Img,
                 onDeleteButtonClick = onDeleteButtonClick,
                 onExportParamsClick = onExportParamsClick,
             )
@@ -216,6 +226,8 @@ private fun GalleryDetailContentState(
 private fun GalleryDetailsTable(
     modifier: Modifier = Modifier,
     state: GalleryDetailState.Content,
+    onSendToTxt2Img: () -> Unit = {},
+    onSendToImg2Img: () -> Unit = {},
     onDeleteButtonClick: () -> Unit = {},
     onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
 ) {
@@ -313,33 +325,57 @@ private fun GalleryDetailsTable(
             }
         },
         bottomBar = {
-            Row(
+            Column(
                 modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.background)
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp, top = 2.dp),
+                .background(color = MaterialTheme.colorScheme.background)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 16.dp, top = 2.dp),
             ) {
-                OutlinedButton(
-                    modifier = Modifier.weight(1f),
-                    onClick = { onExportParamsClick(state) },
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.action_share_prompt),
-                        textAlign = TextAlign.Center,
-                    )
+                Row {
+                    OutlinedButton(
+                        modifier = Modifier.weight(1f),
+                        onClick = onSendToTxt2Img,
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.action_send_to_txt2img),
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    OutlinedButton(
+                        modifier = Modifier.weight(1f),
+                        onClick = onSendToImg2Img,
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.action_send_to_img2img),
+                            textAlign = TextAlign.Center,
+                        )
+                    }
                 }
-                Spacer(modifier = Modifier.width(8.dp))
-                Button(
-                    modifier = Modifier.weight(1f),
-                    onClick = onDeleteButtonClick,
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.action_delete_image),
-                        textAlign = TextAlign.Center,
-                    )
+                Row {
+                    OutlinedButton(
+                        modifier = Modifier.weight(1f),
+                        onClick = { onExportParamsClick(state) },
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.action_share_prompt),
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = onDeleteButtonClick,
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.action_delete_image),
+                            textAlign = TextAlign.Center,
+                        )
+                    }
                 }
             }
+
         },
     )
 }

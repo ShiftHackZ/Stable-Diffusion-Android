@@ -15,6 +15,7 @@ import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
@@ -26,6 +27,7 @@ class ImageToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     observeCoinsUseCase: ObserveCoinsUseCase,
     buildInfoProvider: BuildInfoProvider,
+    generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val imageToImageUseCase: ImageToImageUseCase,
     private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
@@ -44,6 +46,15 @@ class ImageToImageViewModel(
 
     override val emptyState = ImageToImageState()
 
+    init {
+        !generationFormUpdateEvent.observeImg2ImgForm()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = ::errorLog,
+                onNext = ::updateFormPreviousAiGeneration,
+            )
+    }
+
     override fun setState(state: ImageToImageState) = super.setState(
         state.copy(
             widthValidationError = dimensionValidator(state.width).mapToUi(),
@@ -52,17 +63,16 @@ class ImageToImageViewModel(
     )
 
     override fun updateFormPreviousAiGeneration(ai: AiGenerationResult): Result<Unit> {
-        if (ai.type == AiGenerationResult.Type.IMAGE_TO_IMAGE && ai.inputImage.isNotEmpty()) {
-            !base64ToBitmapConverter(Base64ToBitmapConverter.Input(ai.inputImage))
-                .map(Base64ToBitmapConverter.Output::bitmap)
-                .map(ImageToImageState.ImageState::Image)
-                .map { imageState -> currentState.copy(imageState = imageState) }
-                .subscribeOnMainThread(schedulersProvider)
-                .subscribeBy(
-                    onError = ::errorLog,
-                    onSuccess = ::setState
-                )
-        }
+        !base64ToBitmapConverter(Base64ToBitmapConverter.Input(ai.image))
+            .map(Base64ToBitmapConverter.Output::bitmap)
+            .map(ImageToImageState.ImageState::Image)
+            .map { imageState -> currentState.copy(imageState = imageState) }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = ::errorLog,
+                onSuccess = ::setState
+            )
+
         return super.updateFormPreviousAiGeneration(ai)
     }
 

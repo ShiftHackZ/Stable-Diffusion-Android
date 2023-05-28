@@ -9,26 +9,28 @@ import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
-import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
+import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.features.GalleryDetailTabClick
 import com.shifthackz.aisdv1.presentation.features.GalleryItemDelete
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class GalleryDetailViewModel(
-    itemId: Long,
-    getGalleryItemUseCase: GetGalleryItemUseCase,
+    private val itemId: Long,
+    private val getGenerationResultUseCase: GetGenerationResultUseCase,
     private val deleteGalleryItemUseCase: DeleteGalleryItemUseCase,
     private val galleryDetailBitmapExporter: GalleryDetailBitmapExporter,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val schedulersProvider: SchedulersProvider,
+    private val generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val analytics: Analytics,
 ) : MviRxViewModel<GalleryDetailState, GalleryDetailEffect>() {
 
     override val emptyState = GalleryDetailState.Loading()
 
     init {
-        !getGalleryItemUseCase(itemId)
+        !getGenerationResultUseCase(itemId)
             .subscribeOnMainThread(schedulersProvider)
             .postProcess()
             .subscribeBy(::errorLog) { aiData ->
@@ -38,6 +40,14 @@ class GalleryDetailViewModel(
                     .let(::setState)
             }
     }
+
+    fun sendPromptToTxt2Img() = sendPromptToGenerationScreen(
+        AiGenerationResult.Type.TEXT_TO_IMAGE,
+    )
+
+    fun sendPromptToImg2Img() = sendPromptToGenerationScreen(
+        AiGenerationResult.Type.IMAGE_TO_IMAGE,
+    )
 
     fun selectTab(tab: GalleryDetailState.Tab) = currentState
         .withTab(tab)
@@ -87,4 +97,12 @@ class GalleryDetailViewModel(
                     }
             }
         }
+
+    private fun sendPromptToGenerationScreen(screenType: AiGenerationResult.Type) =
+        !getGenerationResultUseCase(itemId)
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog) { ai ->
+                generationFormUpdateEvent.update(ai, screenType)
+                emitEffect(GalleryDetailEffect.NavigateBack)
+            }
 }
