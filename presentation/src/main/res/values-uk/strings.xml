@@ -14,7 +14,7 @@
     <string name="splash_status_fetching">Завантаження даних…</string>
     <string name="splash_status_launching">Запускаємо додаток!</string>
 
-    <string name="action_generate">Сгенерувати</string>
+    <string name="action_generate">Уявити</string>
     <string name="action_export">Експорт</string>
     <string name="action_delete_image">Видалити зображення</string>
     <string name="action_select">Обрати</string>
@@ -24,6 +24,8 @@
     <string name="action_save">Зберегти</string>
     <string name="action_update">Оновити</string>
     <string name="action_skip">Пропустити</string>
+    <string name="action_options_show">Показати всі опції</string>
+    <string name="action_options_hide">Сховати всі опції</string>
 
     <string name="srv_type_cloud">Я хочу використовувати сервер SDAI</string>
     <string name="srv_type_own">Я хочу використовувати власний сервер AUTOMATIC1111</string>
@@ -88,6 +90,7 @@
     <string name="settings_item_demo">Демо режим</string>
     <string name="settings_item_monitor_connection">Моніторинг сервера</string>
     <string name="settings_item_auto_save">Авто-збереження фото</string>
+    <string name="settings_item_advanced_form_default">Завжди показувати всі опції</string>
     <string name="settings_item_clear_cache">Очистити кеш</string>
 
     <string name="settings_item_report_problem">Повідомити про проблему</string>

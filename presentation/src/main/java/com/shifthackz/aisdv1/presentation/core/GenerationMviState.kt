@@ -4,6 +4,8 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.ui.MviState
 
 abstract class GenerationMviState : MviState {
+    abstract val advancedToggleButtonVisible: Boolean
+    abstract val advancedOptionsVisible: Boolean
     abstract val prompt: String
     abstract val negativePrompt: String
     abstract val width: String
@@ -22,6 +24,8 @@ abstract class GenerationMviState : MviState {
         get() = widthValidationError != null || heightValidationError != null
 
     open fun copyState(
+        advancedToggleButtonVisible: Boolean = this.advancedToggleButtonVisible,
+        advancedOptionsVisible: Boolean = this.advancedOptionsVisible,
         prompt: String = this.prompt,
         negativePrompt: String = this.negativePrompt,
         width: String = this.width,

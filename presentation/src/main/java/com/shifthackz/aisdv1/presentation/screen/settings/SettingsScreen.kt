@@ -49,6 +49,7 @@ class SettingsScreen(
             onLaunchRewarded = launchRewarded,
             onMonitorConnectivityChanged = viewModel::changeMonitorConnectivitySetting,
             onAutoSaveAiResultChanged = viewModel::changeAutoSaveAiResultSetting,
+            onFormAdvancedOptionsAlwaysShowChanged = viewModel::changeFormAdvancedOptionsAlwaysShow,
             onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
             onReportProblemItemClick = shareLogFile,
             onCheckUpdatesItemClick = onCheckUpdatesItemClick,
@@ -76,6 +77,7 @@ private fun ScreenContent(
     onLaunchRewarded: () -> Unit = {},
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
+    onFormAdvancedOptionsAlwaysShowChanged: (Boolean) -> Unit = {},
 
     onClearAppCacheItemClick: () -> Unit = {},
     onReportProblemItemClick: () -> Unit = {},
@@ -115,6 +117,7 @@ private fun ScreenContent(
                         onLaunchRewarded = onLaunchRewarded,
                         onMonitorConnectivityChanged = onMonitorConnectivityChanged,
                         onAutoSaveAiResultChanged = onAutoSaveAiResultChanged,
+                        onFormAdvancedOptionsAlwaysShowChanged = onFormAdvancedOptionsAlwaysShowChanged,
                         onClearAppCacheItemClick = onClearAppCacheItemClick,
                         onReportProblemItemClick = onReportProblemItemClick,
                         onCheckUpdatesItemClick = onCheckUpdatesItemClick,
@@ -182,6 +185,7 @@ private fun ContentSettingsState(
     onSdModelItemClick: () -> Unit = {},
     onLaunchRewarded: () -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
+    onFormAdvancedOptionsAlwaysShowChanged: (Boolean) -> Unit = {},
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
     onReportProblemItemClick: () -> Unit = {},
@@ -259,6 +263,21 @@ private fun ContentSettingsState(
         )
         SettingsItem(
             modifier = itemModifier,
+            startIcon = Icons.Default.DynamicForm,
+            text = R.string.settings_item_advanced_form_default.asUiText(),
+            onClick = {
+                onFormAdvancedOptionsAlwaysShowChanged(!state.formAdvancedOptionsAlwaysShow)
+            },
+            endValueContent = {
+                Switch(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    checked = state.formAdvancedOptionsAlwaysShow,
+                    onCheckedChange = onFormAdvancedOptionsAlwaysShowChanged,
+                )
+            }
+        )
+        SettingsItem(
+            modifier = itemModifier,
             startIcon = Icons.Default.DeleteForever,
             text = R.string.settings_item_clear_cache.asUiText(),
             onClick = onClearAppCacheItemClick,
@@ -329,6 +348,7 @@ private fun PreviewStateContent() {
             showRewardedSdAiAd = true,
             monitorConnectivity = true,
             autoSaveAiResults = true,
+            formAdvancedOptionsAlwaysShow = false,
             showSdModelSelector = true,
             showMonitorConnectionOption = true,
             showRateGooglePlay = true,
