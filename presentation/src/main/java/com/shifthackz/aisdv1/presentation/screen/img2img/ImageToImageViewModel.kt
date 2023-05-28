@@ -34,6 +34,7 @@ class ImageToImageViewModel(
     private val analytics: Analytics,
 ) : GenerationMviViewModel<ImageToImageState, ImageToImageEffect>(
     buildInfoProvider,
+    preferenceManager,
     observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
     schedulersProvider,

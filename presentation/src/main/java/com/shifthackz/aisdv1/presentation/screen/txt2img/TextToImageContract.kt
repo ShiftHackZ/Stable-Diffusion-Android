@@ -11,6 +11,8 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 
 data class TextToImageState(
     val screenDialog: Dialog = Dialog.None,
+    override val advancedToggleButtonVisible: Boolean = true,
+    override val advancedOptionsVisible: Boolean = false,
     override val prompt: String = "",
     override val negativePrompt: String = "",
     override val width: String = 512.toString(),
@@ -19,6 +21,8 @@ data class TextToImageState(
     override val cfgScale: Float = 7f,
     override val restoreFaces: Boolean = false,
     override val seed: String = "",
+    override val subSeed: String = "",
+    override val subSeedStrength: Float = 0f,
     override val selectedSampler: String = "",
     override val availableSamplers: List<String> = emptyList(),
     override val widthValidationError: UiText? = null,
@@ -35,6 +39,8 @@ data class TextToImageState(
     }
 
     override fun copyState(
+        advancedToggleButtonVisible: Boolean,
+        advancedOptionsVisible: Boolean,
         prompt: String,
         negativePrompt: String,
         width: String,
@@ -43,12 +49,16 @@ data class TextToImageState(
         cfgScale: Float,
         restoreFaces: Boolean,
         seed: String,
+        subSeed: String,
+        subSeedStrength: Float,
         selectedSampler: String,
         availableSamplers: List<String>,
         widthValidationError: UiText?,
         heightValidationError: UiText?,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
+        advancedToggleButtonVisible = advancedToggleButtonVisible,
+        advancedOptionsVisible = advancedOptionsVisible,
         prompt = prompt,
         negativePrompt = negativePrompt,
         width = width,
@@ -57,6 +67,8 @@ data class TextToImageState(
         cfgScale = cfgScale,
         restoreFaces = restoreFaces,
         seed = seed,
+        subSeed = subSeed,
+        subSeedStrength = subSeedStrength,
         selectedSampler = selectedSampler,
         availableSamplers = availableSamplers,
         widthValidationError = widthValidationError,
@@ -75,6 +87,8 @@ fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
         height = height.toIntOrNull() ?: 64,
         restoreFaces = restoreFaces,
         seed = seed.trim(),
+        subSeed = subSeed.trim(),
+        subSeedStrength = subSeedStrength,
         sampler = selectedSampler,
     )
 }

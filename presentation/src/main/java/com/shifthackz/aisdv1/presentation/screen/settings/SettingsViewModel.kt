@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import com.shifthackz.aisdv1.presentation.features.AutoSaveAiResultsChanged
+import com.shifthackz.aisdv1.presentation.features.FormAdvancedOptionsAlwaysShowChanged
 import com.shifthackz.aisdv1.presentation.features.MonitorConnectionChanged
 import com.shifthackz.aisdv1.presentation.features.SdModelSelected
 import com.shifthackz.aisdv1.presentation.features.SettingsCacheCleared
@@ -78,6 +79,12 @@ class SettingsViewModel(
         ?.copy(autoSaveAiResults = value)
         ?.let(::setState)
         ?.also { analytics.logEvent(AutoSaveAiResultsChanged(value)) }
+
+    fun changeFormAdvancedOptionsAlwaysShow(value: Boolean) = (currentState as? SettingsState.Content)
+        ?.also { preferenceManager.formAdvancedOptionsAlwaysShow = value }
+        ?.copy(formAdvancedOptionsAlwaysShow = value)
+        ?.let(::setState)
+        ?.also { analytics.logEvent(FormAdvancedOptionsAlwaysShowChanged(value)) }
     //endregion
 
     //region UI STATES METHODS

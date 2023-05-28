@@ -9,12 +9,13 @@
     <string name="height">Висота</string>
 
     <string name="version">Версія %1$s</string>
+    <string name="version_postscriptum">Зроблено для вас з ❤️ в 🇺🇦</string>
 
     <string name="splash_status_initializing">Ініціалізація…</string>
     <string name="splash_status_fetching">Завантаження даних…</string>
     <string name="splash_status_launching">Запускаємо додаток!</string>
 
-    <string name="action_generate">Сгенерувати</string>
+    <string name="action_generate">Уявити</string>
     <string name="action_export">Експорт</string>
     <string name="action_delete_image">Видалити зображення</string>
     <string name="action_select">Обрати</string>
@@ -24,6 +25,8 @@
     <string name="action_save">Зберегти</string>
     <string name="action_update">Оновити</string>
     <string name="action_skip">Пропустити</string>
+    <string name="action_options_show">Показати всі опції</string>
+    <string name="action_options_hide">Сховати всі опції</string>
 
     <string name="srv_type_cloud">Я хочу використовувати сервер SDAI</string>
     <string name="srv_type_own">Я хочу використовувати власний сервер AUTOMATIC1111</string>
@@ -35,7 +38,9 @@
     <string name="hint_sampler">Метод вибірки</string>
     <string name="hint_restore_faces">Відновлення обличч</string>
     <string name="hint_seed">Seed ідентифікатор</string>
-    <string name="hint_denoising_strength">Сила шумозаглушення: %1$s</string>
+    <string name="hint_sub_seed">Seed варіації</string>
+    <string name="hint_sub_seed_strength">Коефіцієнт варіації: %1$s</string>
+    <string name="hint_denoising_strength">Коефіцієнт шумозаглушення: %1$s</string>
     <string name="hint_server_url">URL-адреса сервера</string>
     <string name="hint_sd_model">SD Модель</string>
 
@@ -75,6 +80,9 @@
     <string name="gallery_info_field_restore_faces">Відновлення обличч</string>
     <string name="gallery_info_field_sampler">Метод вибірки</string>
     <string name="gallery_info_field_seed">Seed</string>
+    <string name="gallery_info_field_sub_seed">Seed варіації</string>
+    <string name="gallery_info_field_sub_seed_strength">Коефіцієнт варіації</string>
+    <string name="gallery_info_field_denoising_strength">Коефіцієнт шумозаглушення</string>
 
     <string name="settings_header_server">Паратметри сервера</string>
     <string name="settings_header_app">Параметри додатку</string>
@@ -88,6 +96,7 @@
     <string name="settings_item_demo">Демо режим</string>
     <string name="settings_item_monitor_connection">Моніторинг сервера</string>
     <string name="settings_item_auto_save">Авто-збереження фото</string>
+    <string name="settings_item_advanced_form_default">Завжди показувати всі опції</string>
     <string name="settings_item_clear_cache">Очистити кеш</string>
 
     <string name="settings_item_report_problem">Повідомити про проблему</string>
@@ -135,6 +144,7 @@
     <string name="error_invalid">Неправильні дані</string>
     <string name="error_invalid_scheme">URL має починатися з <b>http://</b> або <b>https://</b></string>
     <string name="error_invalid_url">Недійсна URL-адреса сервера</string>
+    <string name="error_localhost_url">Ви не можете використовувати localhost (127.0.0.1) URL-адресу для підключення до сервера.</string>
     <string name="error_min_size">Мінімальний розмір %1$s</string>
     <string name="error_max_size">Максимальний розмір %1$s</string>
 </resources>

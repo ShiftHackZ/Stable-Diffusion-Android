@@ -10,5 +10,6 @@ interface UrlValidator {
         object Empty : Error
         object BadScheme : Error
         object Invalid : Error
+        object Localhost : Error
     }
 }

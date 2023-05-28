@@ -11,6 +11,10 @@ data class SdGenerationResponse(
     data class Info(
         @SerializedName("seed")
         val seed: Long,
+        @SerializedName("subseed")
+        val subSeed: Long,
+        @SerializedName("subseed_strength")
+        val subSeedStrength: Float,
     )
 }
 

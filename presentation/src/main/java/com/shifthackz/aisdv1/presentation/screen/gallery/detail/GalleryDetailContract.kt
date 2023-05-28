@@ -21,7 +21,6 @@ sealed interface GalleryDetailEffect : MviEffect {
 }
 
 sealed interface GalleryDetailState : MviState {
-
     val tabs: List<Tab>
     val selectedTab: Tab
     val screenDialog: Dialog
@@ -36,6 +35,7 @@ sealed interface GalleryDetailState : MviState {
         override val tabs: List<Tab> = emptyList(),
         override val selectedTab: Tab = Tab.IMAGE,
         override val screenDialog: Dialog = Dialog.None,
+        val generationType: AiGenerationResult.Type,
         val id: Long,
         val bitmap: Bitmap,
         val inputBitmap: Bitmap?,
@@ -49,6 +49,9 @@ sealed interface GalleryDetailState : MviState {
         val restoreFaces: UiText,
         val sampler: UiText,
         val seed: UiText,
+        val subSeed: UiText,
+        val subSeedStrength: UiText,
+        val denoisingStrength: UiText,
     ) : GalleryDetailState
 
     fun withTab(tab: Tab): GalleryDetailState = when (this) {
@@ -89,6 +92,7 @@ fun Triple<AiGenerationResult, Base64ToBitmapConverter.Output, Base64ToBitmapCon
     let { (ai, out, original) ->
         GalleryDetailState.Content(
             tabs = GalleryDetailState.Tab.consume(ai.type),
+            generationType = ai.type,
             id = ai.id,
             bitmap = out.bitmap,
             inputBitmap = original?.bitmap,
@@ -102,5 +106,8 @@ fun Triple<AiGenerationResult, Base64ToBitmapConverter.Output, Base64ToBitmapCon
             restoreFaces = ai.restoreFaces.mapToUi(),
             sampler = ai.sampler.asUiText(),
             seed = ai.seed.asUiText(),
+            subSeed = ai.subSeed.asUiText(),
+            subSeedStrength = ai.subSeedStrength.toString().asUiText(),
+            denoisingStrength = ai.denoisingStrength.toString().asUiText(),
         )
     }

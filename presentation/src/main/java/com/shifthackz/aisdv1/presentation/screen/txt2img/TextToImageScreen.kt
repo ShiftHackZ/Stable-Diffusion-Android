@@ -5,6 +5,8 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -15,12 +17,12 @@ import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.widget.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.NoSdAiCoinsDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import org.koin.androidx.compose.koinViewModel
 
 class TextToImageScreen(
@@ -34,6 +36,7 @@ class TextToImageScreen(
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
+            onShowAdvancedOptionsToggle = viewModel::toggleAdvancedOptions,
             onPromptUpdated = viewModel::updatePrompt,
             onNegativePromptUpdated = viewModel::updateNegativePrompt,
             onWidthUpdated = viewModel::updateWidth,
@@ -42,6 +45,8 @@ class TextToImageScreen(
             onCfgScaleUpdated = viewModel::updateCfgScale,
             onRestoreFacesUpdated = viewModel::updateRestoreFaces,
             onSeedUpdated = viewModel::updateSeed,
+            onSubSeedUpdated = viewModel::updateSubSeed,
+            onSubSeedStrengthUpdated = viewModel::updateSubSeedStrength,
             onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
             onSaveGeneratedImage = viewModel::saveGeneratedResult,
@@ -58,6 +63,7 @@ class TextToImageScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: TextToImageState,
+    onShowAdvancedOptionsToggle: (Boolean) -> Unit = {},
     onPromptUpdated: (String) -> Unit = {},
     onNegativePromptUpdated: (String) -> Unit = {},
     onWidthUpdated: (String) -> Unit = {},
@@ -66,6 +72,8 @@ private fun ScreenContent(
     onCfgScaleUpdated: (Float) -> Unit = {},
     onRestoreFacesUpdated: (Boolean) -> Unit = {},
     onSeedUpdated: (String) -> Unit = {},
+    onSubSeedUpdated: (String) -> Unit = {},
+    onSubSeedStrengthUpdated: (Float) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
     onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
@@ -94,6 +102,7 @@ private fun ScreenContent(
                 ) {
                     GenerationInputForm(
                         state = state,
+                        onShowAdvancedOptionsToggle = onShowAdvancedOptionsToggle,
                         onPromptUpdated = onPromptUpdated,
                         onNegativePromptUpdated = onNegativePromptUpdated,
                         onWidthUpdated = onWidthUpdated,
@@ -102,6 +111,8 @@ private fun ScreenContent(
                         onCfgScaleUpdated = onCfgScaleUpdated,
                         onRestoreFacesUpdated = onRestoreFacesUpdated,
                         onSeedUpdated = onSeedUpdated,
+                        onSubSeedUpdated = onSubSeedUpdated,
+                        onSubSeedStrengthUpdated = onSubSeedStrengthUpdated,
                         onSamplerUpdated = onSamplerUpdated,
                         widthValidationError = state.widthValidationError,
                         heightValidationError = state.heightValidationError,
@@ -122,7 +133,13 @@ private fun ScreenContent(
                         onClick = onGenerateClicked,
                         enabled = !state.hasValidationErrors
                     ) {
+                        Icon(
+                            modifier = Modifier.size(18.dp),
+                            imageVector = Icons.Default.AutoFixNormal,
+                            contentDescription = "Imagine",
+                        )
                         Text(
+                            modifier = Modifier.padding(start = 8.dp),
                             text = stringResource(id = R.string.action_generate)
                         )
                     }

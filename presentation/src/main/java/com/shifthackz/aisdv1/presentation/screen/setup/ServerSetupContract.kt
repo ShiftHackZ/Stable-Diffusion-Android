@@ -67,5 +67,6 @@ fun ValidationResult<UrlValidator.Error>.mapToUi(): UiText? {
         UrlValidator.Error.BadScheme -> R.string.error_invalid_scheme
         UrlValidator.Error.Empty -> R.string.error_empty_url
         UrlValidator.Error.Invalid -> R.string.error_invalid_url
+        UrlValidator.Error.Localhost -> R.string.error_localhost_url
     }.asUiText()
 }

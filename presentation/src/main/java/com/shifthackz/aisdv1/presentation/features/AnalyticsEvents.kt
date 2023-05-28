@@ -60,6 +60,11 @@ data class AutoSaveAiResultsChanged(val value: Boolean) : AnalyticsEvent(
     name = "settings_auto_save_change",
     parameters = mapOf("enabled" to "$value"),
 )
+
+data class FormAdvancedOptionsAlwaysShowChanged(val value: Boolean) : AnalyticsEvent(
+    name = "settings_form_advanced_options_always_show_change",
+    parameters = mapOf("enabled" to "$value"),
+)
 //endregion
 
 //region GENERATION EVENTS

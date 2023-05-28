@@ -4,7 +4,7 @@ import com.shifthackz.aisdv1.demo.serialize.DemoDataSerializer
 import com.shifthackz.aisdv1.domain.demo.TextToImageDemo
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
-import java.util.*
+import java.util.Date
 
 internal class TextToImageDemoImpl(
     override val demoDataSerializer: DemoDataSerializer,
@@ -25,6 +25,9 @@ internal class TextToImageDemoImpl(
         restoreFaces = input.restoreFaces,
         sampler = input.sampler,
         seed = System.currentTimeMillis().toString(),
+        subSeed = System.currentTimeMillis().toString(),
+        subSeedStrength = 0f,
+        denoisingStrength = 0f,
     )
 
     override fun getDemoBase64(payload: TextToImagePayload) = execute(payload)

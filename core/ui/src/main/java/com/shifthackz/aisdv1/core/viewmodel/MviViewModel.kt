@@ -2,17 +2,20 @@
 
 package com.shifthackz.aisdv1.core.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shifthackz.aisdv1.core.ui.BuildConfig
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 abstract class MviViewModel<S : MviState, E : MviEffect> : ViewModel() {
@@ -33,6 +36,9 @@ abstract class MviViewModel<S : MviState, E : MviEffect> : ViewModel() {
     abstract val emptyState: S
 
     open fun setState(state: S) {
+        if (BuildConfig.DEBUG) {
+            Log.d(this::class.simpleName, "NEW STATE : $state")
+        }
         mutableState.tryEmit(state)
     }
 

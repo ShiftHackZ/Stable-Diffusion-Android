@@ -9,12 +9,13 @@
     <string name="height">Height</string>
 
     <string name="version">Version %1$s</string>
+    <string name="version_postscriptum">Made for you with ❤️ from 🇺🇦</string>
 
     <string name="splash_status_initializing">Initializing…</string>
     <string name="splash_status_fetching">Fetching data…</string>
     <string name="splash_status_launching">Launching application!</string>
 
-    <string name="action_generate">Generate</string>
+    <string name="action_generate">Imagine</string>
     <string name="action_export">Export</string>
     <string name="action_delete_image">Delete image</string>
     <string name="action_select">Select</string>
@@ -24,6 +25,8 @@
     <string name="action_save">Save</string>
     <string name="action_update">Update</string>
     <string name="action_skip">Skip</string>
+    <string name="action_options_show">Show advanced options</string>
+    <string name="action_options_hide">Hide advanced options</string>
 
     <string name="srv_type_cloud">I want to use SDAI cloud</string>
     <string name="srv_type_own">I want to use own AUTOMATIC1111 instance</string>
@@ -35,6 +38,8 @@
     <string name="hint_sampler">Sampling method</string>
     <string name="hint_restore_faces">Restore faces</string>
     <string name="hint_seed">Seed</string>
+    <string name="hint_sub_seed">Variation seed</string>
+    <string name="hint_sub_seed_strength">Variation strength: %1$s</string>
     <string name="hint_denoising_strength">Denoising Strength: %1$s</string>
     <string name="hint_server_url">Server URL</string>
     <string name="hint_sd_model">SD Model</string>
@@ -75,6 +80,9 @@
     <string name="gallery_info_field_restore_faces">Restore faces</string>
     <string name="gallery_info_field_sampler">Sampling method</string>
     <string name="gallery_info_field_seed">Seed</string>
+    <string name="gallery_info_field_sub_seed">Variation seed</string>
+    <string name="gallery_info_field_sub_seed_strength">Variation strength</string>
+    <string name="gallery_info_field_denoising_strength">Denoising strength</string>
 
     <string name="settings_header_server">Server settings</string>
     <string name="settings_header_app">App settings</string>
@@ -88,6 +96,7 @@
     <string name="settings_item_demo">Demo mode</string>
     <string name="settings_item_monitor_connection">Monitor connection</string>
     <string name="settings_item_auto_save">Auto save images</string>
+    <string name="settings_item_advanced_form_default">Always show advanced options</string>
     <string name="settings_item_clear_cache">Clear app &amp; gallery cache</string>
 
     <string name="settings_item_report_problem">Report a problem</string>
@@ -135,6 +144,7 @@
     <string name="error_invalid">Invalid input</string>
     <string name="error_invalid_scheme">Server URL should start with <b>http://</b> or <b>https://</b></string>
     <string name="error_invalid_url">Invalid Server URL</string>
+    <string name="error_localhost_url">You can not use localhost (127.0.0.1) URL to connect to server.</string>
     <string name="error_min_size">Minimum size is %1$s</string>
     <string name="error_max_size">Maximum size is %1$s</string>
 </resources>
