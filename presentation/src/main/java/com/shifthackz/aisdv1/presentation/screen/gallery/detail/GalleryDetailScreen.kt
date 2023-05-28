@@ -298,11 +298,17 @@ private fun GalleryDetailsTable(
                     value = state.subSeed,
                     color = colorOddText,
                 )
-                if (state.generationType == AiGenerationResult.Type.IMAGE_TO_IMAGE) GalleryDetailRow(
+                GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
+                    name = R.string.gallery_info_field_sub_seed_strength.asUiText(),
+                    value = state.subSeedStrength,
+                    color = colorEvenText,
+                )
+                if (state.generationType == AiGenerationResult.Type.IMAGE_TO_IMAGE) GalleryDetailRow(
+                    modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_denoising_strength.asUiText(),
                     value = state.denoisingStrength,
-                    color = colorEvenText,
+                    color = colorOddText,
                 )
             }
         },

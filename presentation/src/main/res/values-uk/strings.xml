@@ -80,6 +80,9 @@
     <string name="gallery_info_field_restore_faces">Відновлення обличч</string>
     <string name="gallery_info_field_sampler">Метод вибірки</string>
     <string name="gallery_info_field_seed">Seed</string>
+    <string name="gallery_info_field_sub_seed">Seed варіації</string>
+    <string name="gallery_info_field_sub_seed_strength">Коефіцієнт варіації</string>
+    <string name="gallery_info_field_denoising_strength">Коефіцієнт шумозаглушення</string>
 
     <string name="settings_header_server">Паратметри сервера</string>
     <string name="settings_header_app">Параметри додатку</string>
