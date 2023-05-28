@@ -37,10 +37,10 @@ data class GenerationResultEntity(
     val sampler: String,
     @ColumnInfo(name = GenerationResultContract.SEED)
     val seed: String,
-    @ColumnInfo(name = GenerationResultContract.SUB_SEED)
+    @ColumnInfo(name = GenerationResultContract.SUB_SEED, defaultValue = "")
     val subSeed: String,
-    @ColumnInfo(name = GenerationResultContract.SUB_SEED_STRENGTH)
+    @ColumnInfo(name = GenerationResultContract.SUB_SEED_STRENGTH, defaultValue = "${0f}")
     val subSeedStrength: Float,
-    @ColumnInfo(name = GenerationResultContract.DENOISING_STRENGTH)
+    @ColumnInfo(name = GenerationResultContract.DENOISING_STRENGTH, defaultValue = "${0f}")
     val denoisingStrength: Float,
 )

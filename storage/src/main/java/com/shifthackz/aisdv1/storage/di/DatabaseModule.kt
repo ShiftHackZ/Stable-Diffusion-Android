@@ -23,7 +23,6 @@ val databaseModule = module {
             PersistentDatabase::class.java,
             PersistentDatabase.DB_NAME,
         )
-//            .fallbackToDestructiveMigration()
             .build()
     }
 
