@@ -19,6 +19,10 @@ data class TextToImageRequest(
     val restoreFaces: Boolean,
     @SerializedName("seed")
     val seed: String?,
+    @SerializedName("subseed")
+    val subSeed: String?,
+    @SerializedName("subseed_strength")
+    val subSeedStrength: Float?,
     @SerializedName("sampler_index")
     val samplerIndex: String,
 )

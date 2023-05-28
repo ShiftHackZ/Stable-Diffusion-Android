@@ -11,5 +11,7 @@ data class ImageToImagePayload(
     val height: Int,
     val restoreFaces: Boolean,
     val seed: String,
+    val subSeed: String,
+    val subSeedStrength: Float,
     val sampler: String,
 )

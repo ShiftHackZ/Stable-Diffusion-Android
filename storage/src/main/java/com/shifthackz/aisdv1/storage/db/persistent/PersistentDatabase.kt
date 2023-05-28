@@ -21,6 +21,6 @@ internal abstract class PersistentDatabase : RoomDatabase() {
 
     companion object {
         const val DB_NAME = "ai_sd_v1_storage_db"
-        const val DB_VERSION = 1
+        const val DB_VERSION = 2
     }
 }

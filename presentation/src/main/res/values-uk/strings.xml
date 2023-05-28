@@ -9,6 +9,7 @@
     <string name="height">Висота</string>
 
     <string name="version">Версія %1$s</string>
+    <string name="version_postscriptum">Зроблено для вас з ❤️ в 🇺🇦</string>
 
     <string name="splash_status_initializing">Ініціалізація…</string>
     <string name="splash_status_fetching">Завантаження даних…</string>
@@ -37,7 +38,9 @@
     <string name="hint_sampler">Метод вибірки</string>
     <string name="hint_restore_faces">Відновлення обличч</string>
     <string name="hint_seed">Seed ідентифікатор</string>
-    <string name="hint_denoising_strength">Сила шумозаглушення: %1$s</string>
+    <string name="hint_sub_seed">Seed варіації</string>
+    <string name="hint_sub_seed_strength">Коефіцієнт варіації: %1$s</string>
+    <string name="hint_denoising_strength">Коефіцієнт шумозаглушення: %1$s</string>
     <string name="hint_server_url">URL-адреса сервера</string>
     <string name="hint_sd_model">SD Модель</string>
 

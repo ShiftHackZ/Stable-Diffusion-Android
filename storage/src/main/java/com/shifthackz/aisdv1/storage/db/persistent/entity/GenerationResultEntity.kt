@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.shifthackz.aisdv1.storage.db.persistent.contract.GenerationResultContract
-import java.util.*
+import java.util.Date
 
 @Entity(tableName = GenerationResultContract.TABLE)
 data class GenerationResultEntity(
@@ -37,4 +37,10 @@ data class GenerationResultEntity(
     val sampler: String,
     @ColumnInfo(name = GenerationResultContract.SEED)
     val seed: String,
+    @ColumnInfo(name = GenerationResultContract.SUB_SEED)
+    val subSeed: String,
+    @ColumnInfo(name = GenerationResultContract.SUB_SEED_STRENGTH)
+    val subSeedStrength: Float,
+    @ColumnInfo(name = GenerationResultContract.DENOISING_STRENGTH)
+    val denoisingStrength: Float,
 )

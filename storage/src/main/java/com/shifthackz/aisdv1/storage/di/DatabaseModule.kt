@@ -13,7 +13,7 @@ val databaseModule = module {
     //region DATABASES
     single {
         Room.inMemoryDatabaseBuilder(androidApplication(), CacheDatabase::class.java)
-            .fallbackToDestructiveMigration()
+//            .fallbackToDestructiveMigration()
             .build()
     }
 

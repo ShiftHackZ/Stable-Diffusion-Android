@@ -23,6 +23,9 @@ fun AiGenerationResult.mapDomainToEntity(): GenerationResultEntity = with(this) 
         restoreFaces = restoreFaces,
         sampler = sampler,
         seed = seed,
+        subSeed = subSeed,
+        subSeedStrength = subSeedStrength,
+        denoisingStrength = denoisingStrength,
     )
 }
 //endregion
@@ -47,6 +50,9 @@ fun GenerationResultEntity.mapEntityToDomain(): AiGenerationResult = with(this) 
         restoreFaces = restoreFaces,
         sampler = sampler,
         seed = seed,
+        subSeed = subSeed,
+        subSeedStrength = subSeedStrength,
+        denoisingStrength = denoisingStrength,
     )
 }
 //endregion
