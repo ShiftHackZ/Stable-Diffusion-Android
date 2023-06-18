@@ -16,6 +16,8 @@ interface GenerationResultRepository {
 
     fun insert(result: AiGenerationResult): Single<Long>
 
+    fun insert(results: List<AiGenerationResult>): Completable
+
     fun deleteById(id: Long): Completable
 
     fun deleteAll(): Completable

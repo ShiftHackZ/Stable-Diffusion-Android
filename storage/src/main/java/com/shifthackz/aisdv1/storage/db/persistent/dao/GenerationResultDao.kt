@@ -27,6 +27,9 @@ interface GenerationResultDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: GenerationResultEntity): Single<Long>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: List<GenerationResultEntity>): Completable
+
     @Query("DELETE FROM ${GenerationResultContract.TABLE} WHERE ${GenerationResultContract.ID} = :id")
     fun deleteById(id: Long): Completable
 

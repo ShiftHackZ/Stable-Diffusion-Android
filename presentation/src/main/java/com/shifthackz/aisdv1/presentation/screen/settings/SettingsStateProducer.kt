@@ -33,6 +33,7 @@ class SettingsStateProducer(
             showMonitorConnectionOption = !preferenceManager.useSdAiCloud,
             showRateGooglePlay = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
             showGitHubLink = buildInfoProvider.buildType == BuildType.FOSS,
+            showDeveloperOptions = buildInfoProvider.isDebug && buildInfoProvider.buildType == BuildType.FOSS,
         )
     }
 }

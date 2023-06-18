@@ -18,6 +18,8 @@ internal class GenerationResultRepositoryImpl(
 
     override fun insert(result: AiGenerationResult) = localDataSource.insert(result)
 
+    override fun insert(results: List<AiGenerationResult>) = localDataSource.insert(results)
+
     override fun deleteById(id: Long) = localDataSource.deleteById(id)
 
     override fun deleteAll() = localDataSource.deleteAll()

@@ -1,0 +1,18 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: "$project.rootDir/gradle/common.gradle"
+
+android {
+    namespace 'com.shifthackz.aisdv1.feature.dev'
+}
+
+dependencies {
+    implementation project(":core:common")
+    implementation project(":core:imageprocessing")
+    implementation project(":domain")
+    implementation di.koinCore
+    implementation reactive.rxkotlin
+}

@@ -61,6 +61,7 @@ class SettingsScreen(
             onClearAppCacheConfirm = viewModel::clearAppCache,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
             onDismissBottomSheet = viewModel::dismissBottomSheet,
+            onDevSpawnGalleryPageClick = viewModel::devSpawnGalleryPage,
         )
     }
 
@@ -91,6 +92,8 @@ private fun ScreenContent(
     onClearAppCacheConfirm: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
     onDismissBottomSheet: () -> Unit = {},
+
+    onDevSpawnGalleryPageClick: () -> Unit = {},
 ) {
 
     Box(modifier) {
@@ -125,6 +128,7 @@ private fun ScreenContent(
                         onPolicyItemClick = onPolicyItemClick,
                         onServerInstructionsItemClick = onServerInstructionsItemClick,
                         onGetSourceItemClick = onGetSourceItemClick,
+                        onDevSpawnGalleryPageClick = onDevSpawnGalleryPageClick,
                     )
                 }
             }
@@ -194,6 +198,8 @@ private fun ContentSettingsState(
     onPolicyItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
     onGetSourceItemClick: () -> Unit = {},
+
+    onDevSpawnGalleryPageClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
@@ -325,6 +331,21 @@ private fun ContentSettingsState(
             onClick = onGetSourceItemClick,
         )
 
+        if (state.showDeveloperOptions) {
+            Text(
+                modifier = headerModifier,
+//                text = stringResource(id = R.string.settings_header_info),
+                text = "Developer Options",
+                style = MaterialTheme.typography.headlineSmall,
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                startIcon = Icons.Default.Image,
+                text = "Spawn Mock Gallery Page".asUiText(),
+                onClick = onDevSpawnGalleryPageClick,
+            )
+        }
+
         Text(
             modifier = Modifier
                 .fillMaxWidth()
@@ -361,6 +382,7 @@ private fun PreviewStateContent() {
             showMonitorConnectionOption = true,
             showRateGooglePlay = true,
             showGitHubLink = true,
+            showDeveloperOptions = true,
         )
     )
 }

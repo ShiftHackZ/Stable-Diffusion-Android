@@ -52,15 +52,20 @@ import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailState
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryItemUi
 import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
+import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import kotlinx.coroutines.flow.Flow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.File
 
 class GallerySlideScreen(
     private val viewModel: GallerySlideViewModel,
     private val onNavigateBack: () -> Unit = {},
+    private val shareGalleryFile: (File) -> Unit = {},
+    private val shareGenerationParams: (GalleryDetailState) -> Unit = {},
 ) : MviScreen<GalleryStateV2, GalleryDetailEffect>(viewModel), KoinComponent {
 
     private val adFeature: AdFeature by inject()
@@ -74,7 +79,12 @@ class GallerySlideScreen(
             adFeature = adFeature,
             onNavigateBack = onNavigateBack,
             onTabSelected = viewModel::selectTab,
-//            onPageSelected = viewModel::onPageSelected,
+
+            onExportImageToolbarClick = viewModel::share,
+
+            onDeleteButtonClick = viewModel::showDeleteConfirmModal,
+            onDeleteConfirmClick = viewModel::delete,
+            onDismissScreenModal = viewModel::dismissScreenModal,
         )
     }
 }
@@ -87,9 +97,17 @@ private fun ScreenContent(
     adFeature: AdFeature,
     onNavigateBack: () -> Unit = {},
     onTabSelected: (GalleryTab) -> Unit = {},
-//    onPageSelected: (Int) -> Unit = {},
+
+    onExportImageToolbarClick: (Long) -> Unit = {},
+
+    onDeleteButtonClick: () -> Unit = {},
+    onDeleteConfirmClick: (Long) -> Unit = {},
+    onDismissScreenModal: () -> Unit = {},
+
 ) {
     if (state !is GalleryStateV2.Initialized) return
+    val pagerState = rememberPagerState(initialPage = state.initialIndex)
+    val images = pagingFlow.collectAsLazyPagingItems()
     Box(modifier = modifier) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -110,17 +128,22 @@ private fun ScreenContent(
                         )
                     },
                     actions = {
-//                        IconButton(
-//                            onClick = onExportImageToolbarClick,
-//                            content = {
-//                                Image(
-//                                    modifier = Modifier.size(24.dp),
-//                                    painter = painterResource(id = R.drawable.ic_share),
-//                                    contentDescription = "Export",
-//                                    colorFilter = ColorFilter.tint(LocalContentColor.current),
-//                                )
-//                            },
-//                        )
+                        IconButton(
+                            onClick = {
+                                images[pagerState.currentPage]
+                                    ?.ai
+                                    ?.id
+                                    ?.let(onExportImageToolbarClick::invoke)
+                            },
+                            content = {
+                                Image(
+                                    modifier = Modifier.size(24.dp),
+                                    painter = painterResource(id = R.drawable.ic_share),
+                                    contentDescription = "Export",
+                                    colorFilter = ColorFilter.tint(LocalContentColor.current),
+                                )
+                            },
+                        )
                     }
                 )
             },
@@ -129,9 +152,9 @@ private fun ScreenContent(
                     .fillMaxSize()
                     .padding(paddingValues)
 
-                val images = pagingFlow.collectAsLazyPagingItems()
 
-                val pagerState = rememberPagerState(initialPage = state.initialIndex)
+
+
 //                LaunchedEffect(pagerState) {
 //                    snapshotFlow {
 //                        pagerState.currentPage
@@ -160,6 +183,7 @@ private fun ScreenContent(
                             GalleryDetailsTable(
                                 modifier = contentModifier,
                                 result = itemUi.ai,
+                                onDeleteButtonClick = onDeleteButtonClick,
                             )
                         }
                     }
@@ -169,17 +193,22 @@ private fun ScreenContent(
                 GalleryDetailNavigationBar(adFeature, state.selectedTab, onTabSelected)
             },
         )
-//        when (state.screenDialog) {
-//            GalleryDetailState.Dialog.DeleteConfirm -> DecisionInteractiveDialog(
-//                title = R.string.interaction_delete_generation_title.asUiText(),
-//                text = R.string.interaction_delete_generation_sub_title.asUiText(),
-//                confirmActionResId = R.string.yes,
-//                dismissActionResId = R.string.no,
-//                onConfirmAction = onDeleteConfirmClick,
-//                onDismissRequest = onDismissScreenDialog,
-//            )
-//            GalleryDetailState.Dialog.None -> Unit
-//        }
+        when (state.modal) {
+            GalleryStateV2.Modal.DeleteConfirm -> DecisionInteractiveDialog(
+                title = R.string.interaction_delete_generation_title.asUiText(),
+                text = R.string.interaction_delete_generation_sub_title.asUiText(),
+                confirmActionResId = R.string.yes,
+                dismissActionResId = R.string.no,
+                onConfirmAction = {
+                    images[pagerState.currentPage]
+                        ?.ai
+                        ?.id
+                        ?.let(onDeleteConfirmClick::invoke)
+                },
+                onDismissRequest = onDismissScreenModal,
+            )
+            GalleryStateV2.Modal.None -> Unit
+        }
     }
 }
 

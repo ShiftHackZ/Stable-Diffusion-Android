@@ -15,6 +15,9 @@ internal class GenerationResultLocalDataSource(
     override fun insert(result: AiGenerationResult) = dao
         .insert(result.mapDomainToEntity())
 
+    override fun insert(results: List<AiGenerationResult>) = dao
+        .insert(results.mapDomainToEntity())
+
     override fun queryAll(): Single<List<AiGenerationResult>> = dao
         .query()
         .map(List<GenerationResultEntity>::mapEntityToDomain)

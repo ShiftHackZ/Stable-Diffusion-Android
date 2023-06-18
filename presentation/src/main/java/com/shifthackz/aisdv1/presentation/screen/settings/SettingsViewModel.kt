@@ -8,18 +8,21 @@ import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.dev.SpawnGalleryPageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import com.shifthackz.aisdv1.presentation.features.AutoSaveAiResultsChanged
 import com.shifthackz.aisdv1.presentation.features.FormAdvancedOptionsAlwaysShowChanged
 import com.shifthackz.aisdv1.presentation.features.MonitorConnectionChanged
 import com.shifthackz.aisdv1.presentation.features.SdModelSelected
 import com.shifthackz.aisdv1.presentation.features.SettingsCacheCleared
+import com.shifthackz.aisdv1.presentation.utils.Constants.PAGINATION_PAYLOAD_SIZE
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class SettingsViewModel(
     private val settingsStateProducer: SettingsStateProducer,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
     private val clearAppCacheUseCase: ClearAppCacheUseCase,
+    private val devSpawnGalleryPageUseCase: SpawnGalleryPageUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
     private val analytics: Analytics,
@@ -85,6 +88,12 @@ class SettingsViewModel(
         ?.copy(formAdvancedOptionsAlwaysShow = value)
         ?.let(::setState)
         ?.also { analytics.logEvent(FormAdvancedOptionsAlwaysShowChanged(value)) }
+    //endregion
+
+    //region DEVELOPER OPTIONS METHODS
+    fun devSpawnGalleryPage() = !devSpawnGalleryPageUseCase(PAGINATION_PAYLOAD_SIZE)
+        .subscribeOnMainThread(schedulersProvider)
+        .subscribeBy(::errorLog)
     //endregion
 
     //region UI STATES METHODS

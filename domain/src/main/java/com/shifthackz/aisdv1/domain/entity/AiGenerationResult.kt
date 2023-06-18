@@ -30,4 +30,26 @@ data class AiGenerationResult(
                 .find { it.key == input } ?: TEXT_TO_IMAGE
         }
     }
+
+    companion object {
+        fun empty(): AiGenerationResult = AiGenerationResult(
+            id = System.currentTimeMillis(),
+            image = "",
+            inputImage = "",
+            createdAt = Date(),
+            type = Type.TEXT_TO_IMAGE,
+            prompt = "",
+            negativePrompt = "",
+            width = 512,
+            height = 512,
+            samplingSteps = 0,
+            cfgScale = 0f,
+            restoreFaces = false,
+            sampler = "",
+            seed = "",
+            subSeed = "",
+            subSeedStrength = 0f,
+            denoisingStrength = 0f,
+        )
+    }
 }

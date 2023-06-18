@@ -61,6 +61,6 @@ val viewModelModule = module {
     }
 
     viewModel { parameters ->
-        GallerySlideViewModel(parameters.get(), get(), get(), get(), get(), get())
+        GallerySlideViewModel(parameters.get(), get(), get(), get(), get(), get(), get())
     }
 }

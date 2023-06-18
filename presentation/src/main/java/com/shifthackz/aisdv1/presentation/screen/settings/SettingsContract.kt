@@ -26,6 +26,7 @@ sealed interface SettingsState : MviState {
         val showMonitorConnectionOption: Boolean,
         val showRateGooglePlay: Boolean,
         val showGitHubLink: Boolean,
+        val showDeveloperOptions: Boolean,
     ) : SettingsState
 
     fun withDialog(value: Dialog): SettingsState = when (this) {
