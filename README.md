@@ -2,7 +2,7 @@
 
 # Stable-Diffusion-Android
 
-[![Version](https://img.shields.io/badge/Version-0.4.0-blue)](https://github.com/ShiftHackZ/Stable-Diffusion-Android/releases)
+[![Version](https://img.shields.io/badge/Version-0.4.1-blue)](https://github.com/ShiftHackZ/Stable-Diffusion-Android/releases)
 
 
 [![Google Play](docs/assets/google_play.png)](https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app)
