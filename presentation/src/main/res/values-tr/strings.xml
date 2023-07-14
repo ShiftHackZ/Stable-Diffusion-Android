@@ -21,6 +21,8 @@
     <string name="action_select">Seç</string>
     <string name="action_connect">Bağlan</string>
     <string name="action_share_prompt">İstemi paylaş</string>
+    <string name="action_send_to_txt2img">txt2img\'de kullanın</string>
+    <string name="action_send_to_img2img">img2img\'de kullanın</string>
     <string name="action_close">Kapat</string>
     <string name="action_save">Kaydet</string>
     <string name="action_update">Güncelle</string>
