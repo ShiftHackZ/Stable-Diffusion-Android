@@ -11,7 +11,7 @@ import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 fun AdMobBanner(
     modifier: Modifier = Modifier,
     adFeature: AdFeature,
-    adFactory: (Context) -> AdFeature.Ad
+    adFactory: (Context) -> AdFeature.Ad,
 ) {
     val ad = adFactory(LocalContext.current)
     if (ad.isEmpty) return
