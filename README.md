@@ -57,6 +57,7 @@ User interface of the app is translated for languages listed in this table:
 | --- | --- | --- |
 | English | 0.1.0 | `Translated` |
 | Ukrainian | 0.1.0 | `Translated` |
+| Turkish | 0.4.1 | `Translated` |
 
 Any contributions to the translations are welcome.
 
