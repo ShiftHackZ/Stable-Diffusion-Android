@@ -17,6 +17,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
@@ -37,7 +38,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
                 onNext = { settings ->
                     currentState
                         .copyState(
-                            advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow
+                            mode = GenerationInputMode.fromSource(settings.source),
+                            advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow,
                         )
                         .let { state ->
                             if (!settings.formAdvancedOptionsAlwaysShow) state

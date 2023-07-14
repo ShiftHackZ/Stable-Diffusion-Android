@@ -16,9 +16,11 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatus
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
+import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
@@ -32,6 +34,7 @@ class TextToImageViewModel(
     private val schedulersProvider: SchedulersProvider,
     private val dimensionValidator: DimensionValidator,
     private val preferenceManager: PreferenceManager,
+    private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
 ) : GenerationMviViewModel<TextToImageState, EmptyEffect>(
     buildInfoProvider,
@@ -82,6 +85,10 @@ class TextToImageViewModel(
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = { t ->
+                    notificationManager.show(
+                        R.string.notification_fail_title.asUiText(),
+                        R.string.notification_fail_sub_title.asUiText(),
+                    )
                     setActiveDialog(
                         TextToImageState.Modal.Error(
                             (t.localizedMessage ?: "Something went wrong").asUiText()
@@ -91,6 +98,10 @@ class TextToImageViewModel(
                 },
                 onSuccess = { ai ->
                     analytics.logEvent(AiImageGenerated(ai))
+                    notificationManager.show(
+                        R.string.notification_finish_title.asUiText(),
+                        R.string.notification_finish_sub_title.asUiText(),
+                    )
                     setActiveDialog(
                         TextToImageState.Modal.Image(ai, preferenceManager.autoSaveAiResults)
                     )

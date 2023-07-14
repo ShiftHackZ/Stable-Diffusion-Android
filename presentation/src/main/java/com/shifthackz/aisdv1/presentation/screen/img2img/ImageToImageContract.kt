@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 
 sealed interface ImageToImageEffect : MviEffect
 
@@ -16,6 +17,7 @@ data class ImageToImageState(
     val imageBase64: String = "",
     val screenModal: Modal = Modal.None,
     val denoisingStrength: Float = 0.75f,
+    override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,
     override val advancedOptionsVisible: Boolean = false,
     override val prompt: String = "",
@@ -54,6 +56,7 @@ data class ImageToImageState(
     }
 
     override fun copyState(
+        mode: GenerationInputMode,
         advancedToggleButtonVisible: Boolean,
         advancedOptionsVisible: Boolean,
         prompt: String,
@@ -72,6 +75,7 @@ data class ImageToImageState(
         heightValidationError: UiText?,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
+        mode = mode,
         advancedToggleButtonVisible = advancedToggleButtonVisible,
         advancedOptionsVisible = advancedOptionsVisible,
         prompt = prompt,

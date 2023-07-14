@@ -166,4 +166,10 @@
     <string name="error_localhost_url">You can not use localhost (127.0.0.1) URL to connect to server.</string>
     <string name="error_min_size">Minimum size is %1$s</string>
     <string name="error_max_size">Maximum size is %1$s</string>
+
+    <string name="notification_finish_title">Generation complete 🤩</string>
+    <string name="notification_finish_sub_title">Click here to see the result.</string>
+
+    <string name="notification_fail_title">Generation failed 😞</string>
+    <string name="notification_fail_sub_title">Click here to see the details.</string>
 </resources>

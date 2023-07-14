@@ -9,9 +9,11 @@ import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 
 data class TextToImageState(
     val screenModal: Modal = Modal.None,
+    override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,
     override val advancedOptionsVisible: Boolean = false,
     override val prompt: String = "",
@@ -41,6 +43,7 @@ data class TextToImageState(
     }
 
     override fun copyState(
+        mode: GenerationInputMode,
         advancedToggleButtonVisible: Boolean,
         advancedOptionsVisible: Boolean,
         prompt: String,
@@ -59,6 +62,7 @@ data class TextToImageState(
         heightValidationError: UiText?,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
+        mode = mode,
         advancedToggleButtonVisible = advancedToggleButtonVisible,
         advancedOptionsVisible = advancedOptionsVisible,
         prompt = prompt,

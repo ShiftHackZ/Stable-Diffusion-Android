@@ -1,15 +1,22 @@
 package com.shifthackz.aisdv1.presentation.activity
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.extensions.openMarket
 import com.shifthackz.aisdv1.core.extensions.openUrl
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
@@ -43,12 +50,20 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
     private val viewModel: AiStableDiffusionViewModel by viewModel()
     private val versionCheckerViewModel: VersionCheckerViewModel by viewModel()
 
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        debugLog("Notification permission is ${if (granted) "GRANTED" else "DENIED"}.")
+    }
+
     override val fileProviderDescriptor: FileProviderDescriptor by inject()
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adFeature.initialize(this)
         analytics.initialize()
+        requestNotificationPermission()
         setContent {
             val navController = rememberNavController()
             AiStableDiffusionAppTheme {
@@ -199,6 +214,16 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                     ).Build()
                 }
             }
+        }
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 }

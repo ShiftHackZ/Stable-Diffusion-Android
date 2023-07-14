@@ -2,8 +2,10 @@ package com.shifthackz.aisdv1.presentation.core
 
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.ui.MviState
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 
 abstract class GenerationMviState : MviState {
+    abstract val mode: GenerationInputMode
     abstract val advancedToggleButtonVisible: Boolean
     abstract val advancedOptionsVisible: Boolean
     abstract val prompt: String
@@ -26,6 +28,7 @@ abstract class GenerationMviState : MviState {
         get() = widthValidationError != null || heightValidationError != null
 
     open fun copyState(
+        mode: GenerationInputMode = this.mode,
         advancedToggleButtonVisible: Boolean = this.advancedToggleButtonVisible,
         advancedOptionsVisible: Boolean = this.advancedOptionsVisible,
         prompt: String = this.prompt,
