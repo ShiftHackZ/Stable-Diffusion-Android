@@ -13,21 +13,25 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <!--        <TextView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Ad"-->
-        <!--            android:textSize="15sp" />-->
-
+        <TextView
+            android:id="@+id/adTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ads_by_admob"
+            android:textSize="12sp"
+            android:layout_marginHorizontal="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/nativeAdSmallImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:contentDescription="@null"
+            android:layout_marginTop="2dp"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/adTextView"
             tools:background="#0000ff" />
 
         <TextView
@@ -37,9 +41,10 @@
             android:layout_marginHorizontal="@dimen/ad_banner_horizontal_margin"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:layout_marginTop="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/nativeAdSmallImage"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/adTextView"
             tools:text="Ad Title" />
 
         <TextView
