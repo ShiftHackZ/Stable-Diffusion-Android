@@ -1,10 +1,10 @@
-package com.shifthackz.aisdv1.domain.usecase.gallery
+package com.shifthackz.aisdv1.domain.usecase.generation
 
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 
-internal class GetGalleryPageUseCaseImpl(
+internal class GetGenerationResultPagedUseCaseImpl(
     private val repository: GenerationResultRepository,
-) : GetGalleryPageUseCase {
+) : GetGenerationResultPagedUseCase {
 
     override operator fun invoke(limit: Int, offset: Int) = repository.getPage(limit, offset)
 }

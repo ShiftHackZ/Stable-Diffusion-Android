@@ -20,9 +20,9 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.widget.DropdownTextField
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="tag_steps" translatable="false">Steps: %1$s</string>
+    <string name="tag_cfg" translatable="false">CFG: %1$s</string>
+    <string name="tag_denoising" translatable="false">Denoising: %1$s</string>
+
+    <string name="empty">Empty</string>
     <string name="language">English</string>
     <string name="ok">OK</string>
     <string name="yes">Yes</string>
@@ -20,7 +25,9 @@
     <string name="action_delete_image">Delete image</string>
     <string name="action_select">Select</string>
     <string name="action_connect">Connect</string>
-    <string name="action_share_prompt">Share prompt</string>
+    <string name="action_share_prompt">Share</string>
+    <string name="action_send_to_txt2img">Use in txt2img</string>
+    <string name="action_send_to_img2img">Use in img2img</string>
     <string name="action_close">Close</string>
     <string name="action_save">Save</string>
     <string name="action_update">Update</string>

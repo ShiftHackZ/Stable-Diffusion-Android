@@ -7,9 +7,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoFixNormal
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,6 +19,7 @@ import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
@@ -50,6 +53,8 @@ class TextToImageScreen(
             onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
             onSaveGeneratedImage = viewModel::saveGeneratedResult,
+            onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
+            onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
             onLaunchRewarded = launchRewarded,
         )
@@ -77,6 +82,8 @@ private fun ScreenContent(
     onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
     onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
+    onOpenPreviousGenerationInput: () -> Unit = {},
+    onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
     onLaunchRewarded: () -> Unit = {},
 ) {
@@ -89,6 +96,14 @@ private fun ScreenContent(
                             text = stringResource(id = R.string.title_text_to_image),
                             style = MaterialTheme.typography.headlineMedium,
                         )
+                    },
+                    actions = {
+                        IconButton(onClick = onOpenPreviousGenerationInput) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = null,
+                            )
+                        }
                     },
                 )
             },
@@ -146,24 +161,36 @@ private fun ScreenContent(
                 }
             }
         )
-        when (state.screenDialog) {
-            TextToImageState.Dialog.Communicating -> ProgressDialog(
+        when (state.screenModal) {
+            TextToImageState.Modal.Communicating -> ProgressDialog(
                 canDismiss = false,
             )
-            TextToImageState.Dialog.NoSdAiCoins -> NoSdAiCoinsDialog(
+            TextToImageState.Modal.NoSdAiCoins -> NoSdAiCoinsDialog(
                 onDismissRequest = onDismissScreenDialog,
                 launchRewarded = onLaunchRewarded,
             )
-            is TextToImageState.Dialog.Image -> GenerationImageResultDialog(
-                imageBase64 = state.screenDialog.result.image,
-                showSaveButton = !state.screenDialog.autoSaveEnabled,
+            is TextToImageState.Modal.Image -> GenerationImageResultDialog(
+                imageBase64 = state.screenModal.result.image,
+                showSaveButton = !state.screenModal.autoSaveEnabled,
                 onDismissRequest = onDismissScreenDialog,
-                onSaveRequest = { onSaveGeneratedImage(state.screenDialog.result) },
+                onSaveRequest = { onSaveGeneratedImage(state.screenModal.result) },
             )
-            is TextToImageState.Dialog.Error -> ErrorDialog(
-                text = state.screenDialog.error,
+            is TextToImageState.Modal.Error -> ErrorDialog(
+                text = state.screenModal.error,
                 onDismissScreenDialog,
             )
+            is TextToImageState.Modal.PromptBottomSheet -> ModalBottomSheet(
+                onDismissRequest = onDismissScreenDialog,
+                shape = RectangleShape,
+            ) {
+                InputHistoryScreen(
+                    viewModel = koinViewModel(),
+                    onGenerationSelected = { ai ->
+                        onUpdateFromPreviousAiGeneration(ai)
+                        onDismissScreenDialog()
+                    },
+                ).Build()
+            }
             else -> Unit
         }
     }

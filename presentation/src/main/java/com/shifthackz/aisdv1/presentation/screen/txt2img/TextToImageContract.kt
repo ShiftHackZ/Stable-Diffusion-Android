@@ -10,7 +10,7 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 
 data class TextToImageState(
-    val screenDialog: Dialog = Dialog.None,
+    val screenModal: Modal = Modal.None,
     override val advancedToggleButtonVisible: Boolean = true,
     override val advancedOptionsVisible: Boolean = false,
     override val prompt: String = "",
@@ -30,12 +30,13 @@ data class TextToImageState(
     override val generateButtonEnabled: Boolean = true,
 ) : GenerationMviState() {
 
-    sealed interface Dialog {
-        object None : Dialog
-        object Communicating : Dialog
-        object NoSdAiCoins : Dialog
-        data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Dialog
-        data class Error(val error: UiText) : Dialog
+    sealed interface Modal {
+        object None : Modal
+        object Communicating : Modal
+        object NoSdAiCoins : Modal
+        object PromptBottomSheet : Modal
+        data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Modal
+        data class Error(val error: UiText) : Modal
     }
 
     override fun copyState(

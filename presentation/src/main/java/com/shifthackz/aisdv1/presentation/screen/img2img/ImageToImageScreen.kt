@@ -10,12 +10,14 @@ import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.BrowseGallery
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -25,6 +27,7 @@ import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
@@ -66,6 +69,8 @@ class ImageToImageScreen(
             onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
             onSaveGeneratedImage = viewModel::saveGeneratedResult,
+            onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
+            onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
             onLaunchRewarded = launchRewarded,
         )
@@ -97,6 +102,8 @@ private fun ScreenContent(
     onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
     onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
+    onOpenPreviousGenerationInput: () -> Unit = {},
+    onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
     onLaunchRewarded: () -> Unit = {},
 ) {
@@ -109,6 +116,14 @@ private fun ScreenContent(
                             text = stringResource(id = R.string.title_image_to_image),
                             style = MaterialTheme.typography.headlineMedium,
                         )
+                    },
+                    actions = {
+                        IconButton(onClick = onOpenPreviousGenerationInput) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = null,
+                            )
+                        }
                     },
                 )
             },
@@ -191,25 +206,37 @@ private fun ScreenContent(
                 }
             }
         )
-        when (state.screenDialog) {
-            ImageToImageState.Dialog.Communicating -> ProgressDialog(
+        when (state.screenModal) {
+            ImageToImageState.Modal.Communicating -> ProgressDialog(
                 canDismiss = false,
             )
-            ImageToImageState.Dialog.NoSdAiCoins -> NoSdAiCoinsDialog(
+            ImageToImageState.Modal.NoSdAiCoins -> NoSdAiCoinsDialog(
                 onDismissRequest = onDismissScreenDialog,
                 launchRewarded = onLaunchRewarded,
             )
-            is ImageToImageState.Dialog.Error -> ErrorDialog(
-                text = state.screenDialog.error,
+            is ImageToImageState.Modal.Error -> ErrorDialog(
+                text = state.screenModal.error,
                 onDismissRequest = onDismissScreenDialog,
             )
-            is ImageToImageState.Dialog.Image -> GenerationImageResultDialog(
-                imageBase64 = state.screenDialog.result.image,
-                showSaveButton = !state.screenDialog.autoSaveEnabled,
+            is ImageToImageState.Modal.Image -> GenerationImageResultDialog(
+                imageBase64 = state.screenModal.result.image,
+                showSaveButton = !state.screenModal.autoSaveEnabled,
                 onDismissRequest = onDismissScreenDialog,
-                onSaveRequest = { onSaveGeneratedImage(state.screenDialog.result) },
+                onSaveRequest = { onSaveGeneratedImage(state.screenModal.result) },
             )
-            ImageToImageState.Dialog.None -> Unit
+            is ImageToImageState.Modal.PromptBottomSheet -> ModalBottomSheet(
+                onDismissRequest = onDismissScreenDialog,
+                shape = RectangleShape,
+            ) {
+                InputHistoryScreen(
+                    viewModel = koinViewModel(),
+                    onGenerationSelected = { ai ->
+                        onUpdateFromPreviousAiGeneration(ai)
+                        onDismissScreenDialog()
+                    },
+                ).Build()
+            }
+            else -> Unit
         }
     }
 }

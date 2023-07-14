@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.shifthackz.aisdv1.presentation.widget
+package com.shifthackz.aisdv1.presentation.widget.input
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*

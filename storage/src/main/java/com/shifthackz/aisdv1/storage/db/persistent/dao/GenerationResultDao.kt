@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.core.Single
 @Dao
 interface GenerationResultDao {
 
-    @Query("SELECT * FROM ${GenerationResultContract.TABLE}")
+    @Query("SELECT * FROM ${GenerationResultContract.TABLE} ORDER BY ${GenerationResultContract.CREATED_AT} DESC")
     fun query(): Single<List<GenerationResultEntity>>
 
     @Query("SELECT * FROM ${GenerationResultContract.TABLE} ORDER BY ${GenerationResultContract.CREATED_AT} DESC LIMIT :limit OFFSET :offset ")

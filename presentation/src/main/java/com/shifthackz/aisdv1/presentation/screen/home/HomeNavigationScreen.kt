@@ -1,11 +1,19 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.shifthackz.aisdv1.presentation.screen.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -34,6 +42,19 @@ class HomeNavigationScreen(
         require(navItems.isNotEmpty()) { "navItems collection must not be empty." }
         val navController = rememberNavController()
         val backStackEntry = navController.currentBackStackEntryAsState()
+
+        val navigate: (String) -> Unit = { route ->
+            navController.navigate(route) {
+                navController.graph.startDestinationRoute?.let { route ->
+                    popUpTo(route) {
+                        saveState = true
+                    }
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
+
         Scaffold(
             bottomBar = {
                 Column {
@@ -69,15 +90,7 @@ class HomeNavigationScreen(
                                     }
                                 },
                                 onClick = {
-                                    navController.navigate(item.route) {
-                                        navController.graph.startDestinationRoute?.let { route ->
-                                            popUpTo(route) {
-                                                saveState = true
-                                            }
-                                        }
-                                        launchSingleTop = true
-                                        restoreState = true
-                                    }
+                                    navigate(item.route)
                                     viewModel.logNavItemClickEvent(item)
                                 },
                             )
@@ -104,5 +117,12 @@ class HomeNavigationScreen(
 
             }
         )
+        LaunchedEffect(KEY_HOME_NAV_ROUTE_EFFECT_PROCESSOR) {
+            viewModel.routeEffectStream.collect { route -> navigate(route) }
+        }
+    }
+
+    companion object {
+        private const val KEY_HOME_NAV_ROUTE_EFFECT_PROCESSOR = "home_nav_route_effect"
     }
 }

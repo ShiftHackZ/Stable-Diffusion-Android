@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="empty">Порожньо</string>
     <string name="language">Українська</string>
     <string name="ok">OK</string>
     <string name="yes">Так</string>
@@ -17,10 +18,12 @@
 
     <string name="action_generate">Уявити</string>
     <string name="action_export">Експорт</string>
-    <string name="action_delete_image">Видалити зображення</string>
+    <string name="action_delete_image">Видалити</string>
     <string name="action_select">Обрати</string>
     <string name="action_connect">Підключитися</string>
     <string name="action_share_prompt">Поділитися запитом</string>
+    <string name="action_send_to_txt2img">Відправити в txt2img</string>
+    <string name="action_send_to_img2img">Відправити в img2img</string>
     <string name="action_close">Закрити</string>
     <string name="action_save">Зберегти</string>
     <string name="action_update">Оновити</string>

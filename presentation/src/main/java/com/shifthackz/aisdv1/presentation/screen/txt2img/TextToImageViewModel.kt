@@ -14,6 +14,7 @@ import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -22,6 +23,7 @@ class TextToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     buildInfoProvider: BuildInfoProvider,
     observeCoinsUseCase: ObserveCoinsUseCase,
+    generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val textToImageUseCase: TextToImageUseCase,
     private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
     private val schedulersProvider: SchedulersProvider,
@@ -38,6 +40,15 @@ class TextToImageViewModel(
 
     override val emptyState = TextToImageState()
 
+    init {
+        !generationFormUpdateEvent.observeTxt2ImgForm()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = ::errorLog,
+                onNext = ::updateFormPreviousAiGeneration,
+            )
+    }
+
     override fun setState(state: TextToImageState) = super.setState(
         state.copy(
             widthValidationError = dimensionValidator(state.width).mapToUi(),
@@ -45,22 +56,24 @@ class TextToImageViewModel(
         )
     )
 
-    fun dismissScreenDialog() = setActiveDialog(TextToImageState.Dialog.None)
+    fun openPreviousGenerationInput() = setActiveDialog(TextToImageState.Modal.PromptBottomSheet)
+
+    fun dismissScreenDialog() = setActiveDialog(TextToImageState.Modal.None)
 
     fun generate() {
         if (!currentState.generateButtonEnabled) {
-            setActiveDialog(TextToImageState.Dialog.NoSdAiCoins)
+            setActiveDialog(TextToImageState.Modal.NoSdAiCoins)
             return
         }
         !currentState
             .mapToPayload()
             .let(textToImageUseCase::invoke)
-            .doOnSubscribe { setActiveDialog(TextToImageState.Dialog.Communicating) }
+            .doOnSubscribe { setActiveDialog(TextToImageState.Modal.Communicating) }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = { t ->
                     setActiveDialog(
-                        TextToImageState.Dialog.Error(
+                        TextToImageState.Modal.Error(
                             (t.localizedMessage ?: "Something went wrong").asUiText()
                         )
                     )
@@ -69,7 +82,7 @@ class TextToImageViewModel(
                 onSuccess = { ai ->
                     analytics.logEvent(AiImageGenerated(ai))
                     setActiveDialog(
-                        TextToImageState.Dialog.Image(ai, preferenceManager.autoSaveAiResults)
+                        TextToImageState.Modal.Image(ai, preferenceManager.autoSaveAiResults)
                     )
                 },
             )
@@ -79,7 +92,7 @@ class TextToImageViewModel(
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(::errorLog) { dismissScreenDialog() }
 
-    private fun setActiveDialog(dialog: TextToImageState.Dialog) = currentState
-        .copy(screenDialog = dialog)
+    private fun setActiveDialog(modal: TextToImageState.Modal) = currentState
+        .copy(screenModal = modal)
         .let(::setState)
 }
