@@ -37,6 +37,7 @@
 
     <string name="srv_type_cloud">I want to use SDAI cloud</string>
     <string name="srv_type_own">I want to use own AUTOMATIC1111 instance</string>
+    <string name="src_type_horde">I want to use AI HORDE</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -114,7 +115,9 @@
     <string name="settings_item_rate">Rate us on Google Play</string>
 
     <string name="communicating_progress_title">Hang tight, communicating with server…</string>
-    <string name="communicating_progress_sub_title">This could take up to 60 seconds</string>
+    <string name="communicating_progress_sub_title">This could take some time</string>
+    <string name="communicating_wait_time">Wait time: %1$s</string>
+    <string name="communicating_status_queue">Position in queue: %1$s</string>
 
     <string name="exporting_progress_title">Exporting your gallery…</string>
     <string name="exporting_progress_sub_title">It can take some time, depending on photos amount</string>

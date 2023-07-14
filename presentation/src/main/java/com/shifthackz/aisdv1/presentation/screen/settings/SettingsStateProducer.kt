@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.screen.settings
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import io.reactivex.rxjava3.core.Single
@@ -29,8 +30,8 @@ class SettingsStateProducer(
             formAdvancedOptionsAlwaysShow = preferenceManager.formAdvancedOptionsAlwaysShow,
             appVersion = version,
             showRewardedSdAiAd = preferenceManager.useSdAiCloud,
-            showSdModelSelector = !preferenceManager.useSdAiCloud,
-            showMonitorConnectionOption = !preferenceManager.useSdAiCloud,
+            showSdModelSelector = preferenceManager.source == ServerSource.CUSTOM,
+            showMonitorConnectionOption = preferenceManager.source == ServerSource.CUSTOM,
             showRateGooglePlay = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
             showGitHubLink = buildInfoProvider.buildType == BuildType.FOSS,
         )

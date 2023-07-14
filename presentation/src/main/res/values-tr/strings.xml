@@ -109,7 +109,7 @@
     <string name="settings_item_rate">Bizi Google Play üzerinden değerlendirin</string>
 
     <string name="communicating_progress_title">Lütfen bekleyin, sunucu ile iletişime geçiliyor…</string>
-    <string name="communicating_progress_sub_title">bu süreç 60 saniye kadar sürebilir.</string>
+    <string name="communicating_progress_sub_title">Bu biraz zaman alabilir.</string>
 
     <string name="exporting_progress_title">Galeriniz dışarı aktarılıyor…</string>
     <string name="exporting_progress_sub_title">Resim sayısına göre bu biraz zaman alabilir...</string>

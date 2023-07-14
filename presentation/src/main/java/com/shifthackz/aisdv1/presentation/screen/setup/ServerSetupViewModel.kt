@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
@@ -46,8 +47,8 @@ class ServerSetupViewModel(
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { configuration ->
                 currentState
-                    .copy(allowModeModification = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY)
-                    .withCloudMode(configuration.cloudAiMode)
+                    .copy(allowedModes = buildInfoProvider.buildType.allowedModes)
+                    .withSource(configuration.source)
                     .withDemoMode(configuration.demoMode)
                     .withServerUrl(configuration.serverUrl)
                     .let(::setState)
@@ -68,12 +69,27 @@ class ServerSetupViewModel(
 
     fun connectToServer() {
         if (!validate()) return
+        if (currentState.mode != ServerSetupState.Mode.HORDE) {
+            return connectToAutomaticInstance()
+        }
+        return connectToHorde();
+    }
+
+    fun dismissScreenDialog() = setScreenDialog(ServerSetupState.Dialog.None)
+
+    private fun validate(): Boolean {
+        if (currentState.mode != ServerSetupState.Mode.OWN_SERVER) return true
+        if (currentState.demoMode) return true
+        val validation = urlValidator(currentState.serverUrl)
+        currentState.copy(validationError = validation.mapToUi()).let(::setState)
+        return validation.isValid
+    }
+
+    private fun connectToAutomaticInstance() {
         val demoMode = currentState.demoMode
         val connectUrl = when (currentState.mode) {
             ServerSetupState.Mode.SD_AI_CLOUD -> cloudUrl
-            ServerSetupState.Mode.OWN_SERVER -> {
-                if (demoMode) demoModeUrl else currentState.serverUrl
-            }
+            else -> if (demoMode) demoModeUrl else currentState.serverUrl
         }
         analytics.logEvent(SetupConnectEvent(connectUrl, demoMode))
         !testConnectivityUseCase(connectUrl)
@@ -83,7 +99,7 @@ class ServerSetupViewModel(
                     setServerConfigurationUseCase(
                         url = connectUrl,
                         demoMode = demoMode,
-                        useSdAiCloud = currentState.mode == ServerSetupState.Mode.SD_AI_CLOUD,
+                        source = currentState.mode.toSource(),
                     ),
                     Observable
                         .timer(5L, TimeUnit.SECONDS)
@@ -100,7 +116,7 @@ class ServerSetupViewModel(
                 setServerConfigurationUseCase(
                     currentState.originalSeverUrl,
                     currentState.originalDemoMode,
-                    currentState.originalCloudAiMode,
+                    currentState.originalMode.toSource(),
                 ).andThen(Single.just(Result.failure(t)))
             }
             .subscribeBy(::errorLog) { result ->
@@ -119,15 +135,16 @@ class ServerSetupViewModel(
             }
     }
 
-    fun dismissScreenDialog() = setScreenDialog(ServerSetupState.Dialog.None)
-
-    private fun validate(): Boolean {
-        if (currentState.mode == ServerSetupState.Mode.SD_AI_CLOUD) return true
-        if (currentState.demoMode) return true
-        val validation = urlValidator(currentState.serverUrl)
-        currentState.copy(validationError = validation.mapToUi()).let(::setState)
-        return validation.isValid
-    }
+    private fun connectToHorde() = !setServerConfigurationUseCase(
+        url = "http://127.0.0.1",
+        demoMode = false,
+        source = ServerSource.HORDE,
+    )
+        .subscribeOnMainThread(schedulersProvider)
+        .subscribeBy(::errorLog) {
+            analytics.logEvent(SetupConnectSuccess)
+            emitEffect(ServerSetupEffect.CompleteSetup)
+        }
 
     private fun setScreenDialog(value: ServerSetupState.Dialog) = currentState
         .copy(screenDialog = value)

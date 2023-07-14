@@ -4,6 +4,10 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -114,27 +118,20 @@ private fun ScreenContent(
                 Column(
                     modifier = Modifier.padding(paddingValues),
                 ) {
-                    if (state.allowModeModification) Row(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        val buttonModifier = Modifier
-                            .aspectRatio(1f)
-                            .weight(1f)
-                        ConfigurationModeButton(
-                            modifier = buttonModifier,
-                            state = state,
-                            mode = ServerSetupState.Mode.OWN_SERVER,
-                            onClick = onServerModeUpdated,
-                        )
-                        ConfigurationModeButton(
-                            modifier = buttonModifier,
-                            state = state,
-                            mode = ServerSetupState.Mode.SD_AI_CLOUD,
-                            onClick = onServerModeUpdated,
-                        )
+                    if (state.allowedModes.size > 1) {
+                        LazyColumn {
+                            items(state.allowedModes.size) { index ->
+                                ConfigurationModeButton(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                                    state = state,
+                                    mode = state.allowedModes[index],
+                                    onClick = onServerModeUpdated,
+                                )
+                            }
+                        }
                     }
-
                     when (state.mode) {
                         ServerSetupState.Mode.SD_AI_CLOUD -> SdaiCloudSetupTab()
                         ServerSetupState.Mode.OWN_SERVER -> OwnServerSetupTab(
@@ -144,6 +141,7 @@ private fun ScreenContent(
                             onDemoModeUpdated = onDemoModeUpdated,
                             onServerInstructionsItemClick = onServerInstructionsItemClick,
                         )
+                        else -> {}
                     }
                 }
             },
@@ -272,7 +270,7 @@ private fun ConfigurationModeButton(
     mode: ServerSetupState.Mode,
     onClick: (ServerSetupState.Mode) -> Unit = {},
 ) {
-    Column(
+    Row(
         modifier = modifier
             .background(
                 MaterialTheme.colorScheme.secondaryContainer,
@@ -282,32 +280,33 @@ private fun ConfigurationModeButton(
                 width = 2.dp,
                 shape = RoundedCornerShape(16.dp),
                 color = if (state.mode == mode) MaterialTheme.colorScheme.secondary
-                        else MaterialTheme.colorScheme.secondaryContainer,
+                else MaterialTheme.colorScheme.secondaryContainer,
             )
             .clickable { onClick(mode) },
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly,
     ) {
         Icon(
             modifier = Modifier
-                .size(48.dp)
-                .padding(top = 16.dp),
+                .size(42.dp)
+                .padding(top = 8.dp, bottom = 8.dp),
             imageVector = when (mode) {
                 ServerSetupState.Mode.SD_AI_CLOUD -> Icons.Default.Cloud
                 ServerSetupState.Mode.OWN_SERVER -> Icons.Default.Computer
+                ServerSetupState.Mode.HORDE -> Icons.Default.Class
             },
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSecondaryContainer,
         )
         Text(
-            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
+            modifier = Modifier.align(Alignment.CenterVertically).padding(top = 8.dp, bottom = 8.dp),
             text = stringResource(id = when (mode) {
                 ServerSetupState.Mode.SD_AI_CLOUD -> R.string.srv_type_cloud
                 ServerSetupState.Mode.OWN_SERVER -> R.string.srv_type_own
+                ServerSetupState.Mode.HORDE -> R.string.src_type_horde
             }),
-            fontSize = 17.sp,
+            fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             textAlign = TextAlign.Center,
+            lineHeight = 15.sp,
         )
     }
 }

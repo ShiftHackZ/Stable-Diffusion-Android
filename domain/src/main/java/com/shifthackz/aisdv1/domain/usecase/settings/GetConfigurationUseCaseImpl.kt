@@ -11,7 +11,7 @@ internal class GetConfigurationUseCaseImpl(
         GetConfigurationUseCase.Configuration(
             preferenceManager.serverUrl,
             preferenceManager.demoMode,
-            preferenceManager.useSdAiCloud,
+            preferenceManager.source,
         )
     )
 }

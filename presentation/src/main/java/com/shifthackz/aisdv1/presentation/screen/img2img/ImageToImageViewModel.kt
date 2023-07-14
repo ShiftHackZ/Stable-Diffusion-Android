@@ -13,6 +13,7 @@ import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
@@ -25,6 +26,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ImageToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeCoinsUseCase: ObserveCoinsUseCase,
     buildInfoProvider: BuildInfoProvider,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
@@ -41,6 +43,7 @@ class ImageToImageViewModel(
     preferenceManager,
     observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase,
     schedulersProvider,
 ) {
 

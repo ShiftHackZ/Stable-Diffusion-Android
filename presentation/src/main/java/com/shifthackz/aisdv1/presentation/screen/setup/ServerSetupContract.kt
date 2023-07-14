@@ -1,11 +1,13 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 
 sealed interface ServerSetupEffect : MviEffect {
@@ -15,8 +17,8 @@ sealed interface ServerSetupEffect : MviEffect {
 data class ServerSetupState(
     val showBackNavArrow: Boolean = false,
     val mode: Mode = Mode.OWN_SERVER,
-    val allowModeModification: Boolean = true,
-    val originalCloudAiMode: Boolean = false,
+    val allowedModes: List<Mode> = listOf(Mode.OWN_SERVER),
+    val originalMode: Mode = Mode.OWN_SERVER,
     val screenDialog: Dialog = Dialog.None,
     val serverUrl: String = "",
     val originalSeverUrl: String = "",
@@ -25,9 +27,9 @@ data class ServerSetupState(
     val validationError: UiText? = null,
 ) : MviState {
 
-    fun withCloudMode(value: Boolean) = this.copy(
-        originalCloudAiMode = value,
-        mode = if (value) Mode.SD_AI_CLOUD else Mode.OWN_SERVER,
+    fun withSource(value: ServerSource) = this.copy(
+        originalMode = Mode.fromSource(value),
+        mode = Mode.fromSource(value),
     )
 
     fun withDemoMode(value: Boolean) = this.copy(
@@ -47,8 +49,23 @@ data class ServerSetupState(
     }
 
     enum class Mode {
+        OWN_SERVER,
         SD_AI_CLOUD,
-        OWN_SERVER;
+        HORDE;
+
+        fun toSource() = when (this) {
+            SD_AI_CLOUD -> ServerSource.SDAI
+            OWN_SERVER -> ServerSource.CUSTOM
+            HORDE -> ServerSource.HORDE
+        }
+
+        companion object {
+            fun fromSource(source: ServerSource) = when (source) {
+                ServerSource.CUSTOM -> OWN_SERVER
+                ServerSource.SDAI -> SD_AI_CLOUD
+                ServerSource.HORDE -> HORDE
+            }
+        }
     }
 }
 
@@ -70,3 +87,9 @@ fun ValidationResult<UrlValidator.Error>.mapToUi(): UiText? {
         UrlValidator.Error.Localhost -> R.string.error_localhost_url
     }.asUiText()
 }
+
+val BuildType.allowedModes: List<ServerSetupState.Mode>
+    get() = when (this) {
+        BuildType.FOSS -> listOf(ServerSetupState.Mode.OWN_SERVER, ServerSetupState.Mode.HORDE)
+        BuildType.GOOGLE_PLAY -> ServerSetupState.Mode.values().toList()
+    }

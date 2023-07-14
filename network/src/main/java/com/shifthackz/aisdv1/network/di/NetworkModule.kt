@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.network.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
+import com.shifthackz.aisdv1.network.api.horde.HordeRestApi
 import com.shifthackz.aisdv1.network.api.sdai.AppUpdateRestApi
 import com.shifthackz.aisdv1.network.api.sdai.CoinsRestApi
 import com.shifthackz.aisdv1.network.api.sdai.MotdRestApi
@@ -106,6 +107,12 @@ val networkModule = module {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
             .create(MotdRestApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().hordeApiUrl)
+            .create(HordeRestApi::class.java)
     }
 
     factory {params ->

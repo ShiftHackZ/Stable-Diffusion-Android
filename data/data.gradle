@@ -12,6 +12,7 @@ android {
 
 dependencies {
     implementation project(":core:common")
+    implementation project(":core:imageprocessing")
     implementation project(":domain")
     implementation project(":network")
     implementation project(":storage")

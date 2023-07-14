@@ -28,12 +28,14 @@ val providersModule = module {
             override val stableDiffusionAutomaticApiUrl: String = DEFAULT_SERVER_URL
             override val stableDiffusionAppApiUrl: String = BuildConfig.UPDATE_API_URL
             override val stableDiffusionCloudAiApiUrl: String = BuildConfig.CLOUD_AI_URL
+            override val hordeApiUrl: String = BuildConfig.HORDE_AI_URL
         }
     }
 
     single<LinksProvider> {
         object : LinksProvider {
             override val cloudUrl: String = BuildConfig.CLOUD_AI_URL
+            override val hordeUrl: String = BuildConfig.HORDE_AI_URL
             override val privacyPolicyUrl: String = BuildConfig.POLICY_URL
             override val gitHubSourceUrl: String = BuildConfig.GITHUB_SOURCE_URL
             override val setupInstructionsUrl: String = BuildConfig.SETUP_INSTRUCTIONS_URL

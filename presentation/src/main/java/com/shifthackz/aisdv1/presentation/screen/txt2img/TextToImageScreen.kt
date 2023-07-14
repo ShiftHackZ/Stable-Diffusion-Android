@@ -25,6 +25,7 @@ import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.NoSdAiCoinsDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialogStatus
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import org.koin.androidx.compose.koinViewModel
 
@@ -162,8 +163,10 @@ private fun ScreenContent(
             }
         )
         when (state.screenModal) {
-            TextToImageState.Modal.Communicating -> ProgressDialog(
+            is TextToImageState.Modal.Communicating -> ProgressDialog(
                 canDismiss = false,
+                waitTimeSeconds = state.screenModal.hordeProcessStatus?.waitTimeSeconds,
+                positionInQueue = state.screenModal.hordeProcessStatus?.queuePosition,
             )
             TextToImageState.Modal.NoSdAiCoins -> NoSdAiCoinsDialog(
                 onDismissRequest = onDismissScreenDialog,

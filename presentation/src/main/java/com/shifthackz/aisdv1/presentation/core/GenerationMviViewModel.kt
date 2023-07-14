@@ -11,9 +11,11 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
@@ -22,6 +24,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
     preferenceManager: PreferenceManager,
     observeCoinsUseCase: ObserveCoinsUseCase,
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<S, E>() {
 
@@ -59,6 +62,14 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
                 }
             )
 
+        !observeHordeProcessStatusUseCase()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = ::errorLog,
+                onNext = ::onReceivedHordeStatus,
+                onComplete = EmptyLambda,
+            )
+
         if (buildInfoProvider.buildType == BuildType.GOOGLE_PLAY) {
             !observeCoinsUseCase()
                 .subscribeOnMainThread(schedulersProvider)
@@ -93,6 +104,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
             else state.copyState(selectedSampler = ai.sampler)
         }
         .let(::setGenerationState)
+
+    open fun onReceivedHordeStatus(status: HordeProcessStatus) {}
 
     fun toggleAdvancedOptions(value: Boolean) = currentState
         .copyState(advancedOptionsVisible = value)

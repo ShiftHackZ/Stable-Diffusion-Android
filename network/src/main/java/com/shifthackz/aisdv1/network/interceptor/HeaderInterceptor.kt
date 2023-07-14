@@ -12,10 +12,12 @@ internal class HeaderInterceptor(
         .request()
         .newBuilder()
         .addHeader(HEADER_APP_VERSION, buildInfoProvider.version.toString())
+        .addHeader(HEADER_API_KEY, "0000000000")
         .build()
         .let(chain::proceed)
 
     companion object {
         private const val HEADER_APP_VERSION = "X-App-Version"
+        private const val HEADER_API_KEY = "apikey"
     }
 }

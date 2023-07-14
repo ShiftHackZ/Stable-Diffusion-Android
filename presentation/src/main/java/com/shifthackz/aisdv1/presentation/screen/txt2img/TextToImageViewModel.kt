@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -8,9 +9,11 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
@@ -21,6 +24,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     buildInfoProvider: BuildInfoProvider,
     observeCoinsUseCase: ObserveCoinsUseCase,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
@@ -35,6 +39,7 @@ class TextToImageViewModel(
     preferenceManager,
     observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase,
     schedulersProvider,
 ) {
 
@@ -56,6 +61,13 @@ class TextToImageViewModel(
         )
     )
 
+    override fun onReceivedHordeStatus(status: HordeProcessStatus) {
+        debugLog("HORDE PROCESS STATUS: $status")
+        if (currentState.screenModal is TextToImageState.Modal.Communicating) {
+            setActiveDialog(TextToImageState.Modal.Communicating(status))
+        }
+    }
+
     fun openPreviousGenerationInput() = setActiveDialog(TextToImageState.Modal.PromptBottomSheet)
 
     fun dismissScreenDialog() = setActiveDialog(TextToImageState.Modal.None)
@@ -68,7 +80,7 @@ class TextToImageViewModel(
         !currentState
             .mapToPayload()
             .let(textToImageUseCase::invoke)
-            .doOnSubscribe { setActiveDialog(TextToImageState.Modal.Communicating) }
+            .doOnSubscribe { setActiveDialog(TextToImageState.Modal.Communicating()) }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = { t ->

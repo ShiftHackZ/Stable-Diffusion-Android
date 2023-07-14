@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.utils.formatDuration
+import java.time.Duration
 
 @Composable
 fun ProgressDialog(
@@ -27,6 +29,8 @@ fun ProgressDialog(
     @StringRes subTitleResId: Int = R.string.communicating_progress_sub_title,
     canDismiss: Boolean = true,
     onDismissRequest: () -> Unit = {},
+    waitTimeSeconds: Int? = null,
+    positionInQueue: Int? = null,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -46,14 +50,16 @@ fun ProgressDialog(
                     fontWeight = FontWeight.Bold,
                     color = AlertDialogDefaults.titleContentColor,
                 )
-
                 Text(
-                    modifier = Modifier.padding(top = 24.dp),
+                    modifier = Modifier.padding(top = 14.dp),
                     text = stringResource(id = subTitleResId),
                     style = TextStyle(fontSize = 14.sp),
                     color = AlertDialogDefaults.textContentColor,
                 )
-
+                ProgressDialogStatus(
+                    waitTimeSeconds = waitTimeSeconds,
+                    positionInQueue = positionInQueue,
+                )
                 LinearProgressIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -62,6 +68,30 @@ fun ProgressDialog(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ProgressDialogStatus(
+    modifier: Modifier = Modifier,
+    waitTimeSeconds: Int?,
+    positionInQueue: Int?,
+) {
+    Column(modifier.padding(vertical = 4.dp)) {
+        Text(
+            text = waitTimeSeconds?.let { seconds ->
+                stringResource(id = R.string.communicating_wait_time, formatDuration(seconds))
+            } ?: "",
+            style = TextStyle(fontSize = 12.sp),
+            color = AlertDialogDefaults.textContentColor,
+        )
+        Text(
+            text = positionInQueue?.let { position ->
+                stringResource(id = R.string.communicating_status_queue, position)
+            } ?: "",
+            style = TextStyle(fontSize = 12.sp),
+            color = AlertDialogDefaults.textContentColor,
+        )
     }
 }
 

@@ -8,7 +8,7 @@ import com.shifthackz.aisdv1.core.ui.EmptyState
 import com.shifthackz.aisdv1.core.ui.MviScreen
 
 class SplashScreen(
-    private val viewModel: SplashViewModel,
+    viewModel: SplashViewModel,
     private val navigateOnBoarding: () -> Unit,
     private val navigateServerSetup: () -> Unit,
     private val navigateHome: () -> Unit,

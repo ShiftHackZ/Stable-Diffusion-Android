@@ -24,6 +24,8 @@ import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCas
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
@@ -71,4 +73,5 @@ val domainModule = module {
     factoryOf(::ObserveCoinsUseCaseImpl) bind ObserveCoinsUseCase::class
     factoryOf(::EarnRewardedCoinsUseCaseImpl) bind EarnRewardedCoinsUseCase::class
     factoryOf(::ObserveMotdUseCaseImpl) bind ObserveMotdUseCase::class
+    factoryOf(::ObserveHordeProcessStatusUseCaseImpl) bind ObserveHordeProcessStatusUseCase::class
 }
