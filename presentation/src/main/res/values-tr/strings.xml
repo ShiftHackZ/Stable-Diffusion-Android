@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="language">Türkçe</string>
+    <string name="ok">Tamam</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="cancel">İptal</string>
+    <string name="width">Genişlik</string>
+    <string name="height">Yükseklik</string>
+
+    <string name="version">Versiyon %1$s</string>
+    <string name="version_postscriptum">Senin için ❤️'la 🇺🇦'da hazırlardı</string>
+
+    <string name="splash_status_initializing">Başlatılıyor…</string>
+    <string name="splash_status_fetching">Veri Alınıyor…</string>
+    <string name="splash_status_launching">Uygulama Başlatılıyor!</string>
+
+    <string name="action_generate">Resim Oluştur</string>
+    <string name="action_export">Dışa aktar</string>
+    <string name="action_delete_image">Resmi Sil</string>
+    <string name="action_select">Seç</string>
+    <string name="action_connect">Bağlan</string>
+    <string name="action_share_prompt">İstemi paylaş</string>
+    <string name="action_close">Kapat</string>
+    <string name="action_save">Kaydet</string>
+    <string name="action_update">Güncelle</string>
+    <string name="action_skip">Atla</string>
+    <string name="action_options_show">Gelişmiş seçenekleri göster</string>
+    <string name="action_options_hide">Gelişmiş seçenekleri gizle</string>
+
+    <string name="srv_type_cloud">SDAI Bulut hizmetini kullanmak istiyorum</string>
+    <string name="srv_type_own">Kendi AUTOMATIC1111 hizmetimi kullanmak istiyorum.</string>
+
+    <string name="hint_prompt">İstem (prompt)</string>
+    <string name="hint_prompt_negative">Negatif istem</string>
+    <string name="hint_sampling_steps">Örnekleme Adım Sayısı: %1$s</string>
+    <string name="hint_cfg_scale">CFG Scale: %1$s</string>
+    <string name="hint_sampler">Örneklerme Yöntemi</string>
+    <string name="hint_restore_faces">Yüzleri Düzelt</string>
+    <string name="hint_seed">Başlangıç Noktası (Seed)</string>
+    <string name="hint_sub_seed">Varyasyon Noktası (Variation seed)</string>
+    <string name="hint_sub_seed_strength">Varyasyon Yoğunluğu: %1$s</string>
+    <string name="hint_denoising_strength">Gürültü Arındırma Yoğunluğu: %1$s</string>
+    <string name="hint_server_url">Sunucu URL'i</string>
+    <string name="hint_sd_model">SD Modeli</string>
+
+    <string name="hint_server_setup_title">Lütfen Stable Diffusion WebUI(AUTOMATIC1111) URL adresinizi yazın.</string>
+    <string name="hint_valid_urls">Bazı sunucu örnekleri:\n• http://192.168.0.2:7860\n• http://alanadiniz.com:7860\n• https://alanadiniz.com</string>
+    <string name="hint_demo_mode">This mode allows you to test the application behavior, even if you don\'t have Stable Diffusion WebUI server.\n\nIn demo mode app ignores user prompt, does not use AI server, and returns some mock images.</string>
+    <string name="hint_args_warning" tools:ignore="TypographyDashes">Before connecting ensure that:\n• you are running AUTOMATIC1111 WebUI with flags --api --listen\n• your firewall is not blocking 7860 port\n• phone is on the same WiFi with your PC</string>
+
+    <string name="hint_server_sdai_title">SDAI Bulut hizmetine bağlan.</string>
+    <string name="hint_server_sdai_sub_title">This mode allows to use public SDAI cloud instance.\n\nAs our project is non-profitable, we may include additional rate-limit for some users, or restrict it by certain computing hours.</string>
+
+    <string name="home_tab_txt_to_img">Txt2Img</string>
+    <string name="home_tab_img_to_img">Img2Img</string>
+    <string name="home_tab_gallery">Galeri</string>
+    <string name="home_tab_settings">Ayarlar</string>
+
+    <string name="gallery_tab_image">Resim</string>
+    <string name="gallery_tab_original">Orjinal</string>
+    <string name="gallery_tab_info">Bilgi</string>
+
+    <string name="title_text_to_image">Yazıdan Resime</string>
+    <string name="title_image_to_image">Resimden Resime</string>
+    <string name="title_gallery">Galeri</string>
+    <string name="title_gallery_details">Detaylar</string>
+    <string name="title_settings">Ayarlar</string>
+    <string name="title_server_setup">Sunucu Kurulumu</string>
+    <string name="title_select_sd_model">SD Modeli seçin</string>
+    <string name="title_clear_app_cache">Uygulama önbelleğini temizle</string>
+
+    <string name="gallery_info_field_date">Oluşturulma</string>
+    <string name="gallery_info_field_type">Tür</string>
+    <string name="gallery_info_field_prompt">İstem</string>
+    <string name="gallery_info_field_negative_prompt">Negatif istem</string>
+    <string name="gallery_info_field_size">Boyut</string>
+    <string name="gallery_info_field_sampling_steps">Örnekleme adımları</string>
+    <string name="gallery_info_field_cfg">CFG Scale</string>
+    <string name="gallery_info_field_restore_faces">Yüz düzeltme</string>
+    <string name="gallery_info_field_sampler">Örnekleme metodu</string>
+    <string name="gallery_info_field_seed">Başlangıç noktası (Seed)</string>
+    <string name="gallery_info_field_sub_seed">Varyasyon başlangıç noktası (Variation seed)</string>
+    <string name="gallery_info_field_sub_seed_strength">Varyasyon oranı</string>
+    <string name="gallery_info_field_denoising_strength">Gürültü Azaltma oranı</string>
+
+    <string name="settings_header_server">Sunucu ayarları</string>
+    <string name="settings_header_app">Uygulama ayarları</string>
+    <string name="settings_header_info">Bilgi</string>
+
+    <string name="settings_item_config">Ayarlar</string>
+    <string name="settings_item_sd_model">SD Modeli</string>
+    <string name="settings_item_rewarded">Ücretsiz SDAI jetonları</string>
+
+    <string name="settings_item_language">Dil</string>
+    <string name="settings_item_demo">Demo modu</string>
+    <string name="settings_item_monitor_connection">Bağlantıyı incele</string>
+    <string name="settings_item_auto_save">Resimeleri otomatik kaydet</string>
+    <string name="settings_item_advanced_form_default">Always show advanced options</string>
+    <string name="settings_item_clear_cache">Uygulama ve galeri önbelleğini temizleyin</string>
+
+    <string name="settings_item_report_problem">Hata Bildirin</string>
+    <string name="settings_item_policy">Gizlilik ve Hukuksal Politikalar</string>
+    <string name="settings_item_instructions">Sunucu kurulum talimatları</string>
+    <string name="settings_item_source">Kaynak kodunu alın</string>
+    <string name="settings_item_check_updates">Güncellemeleri denetleyin</string>
+    <string name="settings_item_rate">Bizi Google Play üzerinden değerlendirin</string>
+
+    <string name="communicating_progress_title">Lütfen bekleyin, sunucu ile iletişime geçiliyor…</string>
+    <string name="communicating_progress_sub_title">bu süreç 60 saniye kadar sürebilir.</string>
+
+    <string name="exporting_progress_title">Galeriniz dışarı aktarılıyor…</string>
+    <string name="exporting_progress_sub_title">Resim sayısına göre bu biraz zaman alabilir...</string>
+
+    <string name="interaction_export_title">Galeriyi Dışa Aktar</string>
+    <string name="interaction_export_sub_title">Bu işlem bütün galerideki resimleri tek bir .zip arşivi dosyası olarak dışa aktaracaktır. Galerinizin boyutuna göre bu işlem uzun bir zaman alabailir. Devam etmek istiyor musunuz?</string>
+    <string name="interaction_cache_sub_title">Bu işlem bütün uygulama ayarlarını ve oluşturulan resimleri silecektir. Devam etmek istiyor musunuz?</string>
+
+    <string name="update_no_need_title">Güncelleme yok</string>
+    <string name="update_no_need_sub_title">Uygulama sürümünüz güncel</string>
+    <string name="update_title">Güncelleme mevcut</string>
+    <string name="update_sub_title">%1$s sürümü çıktı. Uygulamayı şimdi güncellemek ister misiniz?</string>
+    <string name="update_required_title">Güncelle</string>
+    <string name="update_required_sub_title">Lütfen SDAI uygulamasını kullanmaya devam etmek için güncelleyin.</string>
+
+    <string name="interaction_delete_generation_title">Resmi sil</string>
+    <string name="interaction_delete_generation_sub_title">Kalıcı olarak bu resmi silmek istediğinize emin misiniz?</string>
+
+    <string name="gallery_empty_title">Burada henüz bir şey yok…</string>
+    <string name="gallery_empty_sub_title">Bir şeyler üretmeyi deneyin! Ürettiğiniz resimler burada gözükecektir.</string>
+
+    <string name="status_connected">⚡️ Bağlandı</string>
+    <string name="status_disconnected">️❌ Bağlantı Kesildi</string>
+    <string name="status_communicating">Bağlanıyor…</string>
+
+    <string name="sdai_coins_zero_title">SDAI Jetonlarınız Bitti</string>
+    <string name="sdai_coins_zero_sub_title">SDAI için bütün jetonlarınız bitti.\nDaha fazla jeton kazanmak için yarın tekrar gelin!\n\nNot: Kendi sunucunuzu çalıştırdığınızda SDAI jetonlarına ihtiyaç duymazsınız.</string>
+
+    <string name="sdai_coins_free">Ücretsiz jetonlar</string>
+
+    <string name="error_title">Hata</string>
+    <string name="error_empty">Alan boş olamaz</string>
+    <string name="error_empty_url">Sunucu URL adresi boş olamaz</string>
+    <string name="error_invalid">Geçerli olmayan bilgi girişi</string>
+    <string name="error_invalid_scheme">Sunucu adresi <b>http://</b> veya <b>https://</b> ile başlamalıdır.</string>
+    <string name="error_invalid_url">Geçersiz sunucu adresi.</string>
+    <string name="error_localhost_url">Sunucuya bağlanmak için localhost (127.0.0.1) URL adresi kullanamazsınız.</string>
+    <string name="error_min_size">Asgari boyut %1$s</string>
+    <string name="error_max_size">Azami boyut %1$s</string>
+</resources>
