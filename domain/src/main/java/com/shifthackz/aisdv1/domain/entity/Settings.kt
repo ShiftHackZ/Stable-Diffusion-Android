@@ -8,4 +8,5 @@ data class Settings(
     val autoSaveAiResults: Boolean,
     val formAdvancedOptionsAlwaysShow: Boolean,
     val source: ServerSource,
+    val hordeApiKey: String,
 )

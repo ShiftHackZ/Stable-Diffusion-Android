@@ -14,6 +14,8 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServ
 import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
@@ -67,6 +69,7 @@ val domainModule = module {
     factoryOf(::GetConfigurationUseCaseImpl) bind GetConfigurationUseCase::class
     factoryOf(::SetServerConfigurationUseCaseImpl) bind SetServerConfigurationUseCase::class
     factoryOf(::TestConnectivityUseCaseImpl) bind TestConnectivityUseCase::class
+    factoryOf(::TestHordeApiKeyUseCaseImpl) bind TestHordeApiKeyUseCase::class
     factoryOf(::SaveGenerationResultUseCaseImpl) bind SaveGenerationResultUseCase::class
     factoryOf(::ObserveSeverConnectivityUseCaseImpl) bind ObserveSeverConnectivityUseCase::class
     factoryOf(::CheckAppVersionUpdateUseCaseImpl) bind CheckAppVersionUpdateUseCase::class

@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
@@ -65,6 +66,12 @@ class ImageToImageViewModel(
         )
     )
 
+    override fun onReceivedHordeStatus(status: HordeProcessStatus) {
+        if (currentState.screenModal is ImageToImageState.Modal.Communicating) {
+            setActiveDialog(ImageToImageState.Modal.Communicating(status))
+        }
+    }
+
     override fun updateFormPreviousAiGeneration(ai: AiGenerationResult): Result<Unit> {
         !base64ToBitmapConverter(Base64ToBitmapConverter.Input(ai.image))
             .map(Base64ToBitmapConverter.Output::bitmap)
@@ -107,7 +114,7 @@ class ImageToImageViewModel(
                 }
                 !Single
                     .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
-                    .doOnSubscribe { setActiveDialog(ImageToImageState.Modal.Communicating) }
+                    .doOnSubscribe { setActiveDialog(ImageToImageState.Modal.Communicating()) }
                     .map(BitmapToBase64Converter::Input)
                     .flatMap(bitmapToBase64Converter::invoke)
                     .map(currentState::preProcessed)

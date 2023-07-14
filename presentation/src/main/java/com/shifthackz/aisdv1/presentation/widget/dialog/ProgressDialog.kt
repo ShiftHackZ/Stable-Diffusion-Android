@@ -21,7 +21,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.utils.formatDuration
-import java.time.Duration
 
 @Composable
 fun ProgressDialog(

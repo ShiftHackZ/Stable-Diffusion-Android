@@ -37,7 +37,7 @@
 
     <string name="srv_type_cloud">I want to use SDAI cloud</string>
     <string name="srv_type_own">I want to use own AUTOMATIC1111 instance</string>
-    <string name="src_type_horde">I want to use AI HORDE</string>
+    <string name="srv_type_horde">I want to use Horde AI</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -59,6 +59,14 @@
 
     <string name="hint_server_sdai_title">Connect to SDAI cloud</string>
     <string name="hint_server_sdai_sub_title">This mode allows to use public SDAI cloud instance.\n\nAs our project is non-profitable, we may include additional rate-limit for some users, or restrict it by certain computing hours.</string>
+
+    <string name="hint_server_horde_title">Connect to Horde AI cloud</string>
+    <string name="hint_server_horde_sub_title">Horde AI is a crowdsourced distributed cluster of Image generation workers and text generation workers.</string>
+    <string name="hint_server_horde_usage">You can use default API Key to connect anonymously. However anonymous accounts have the lowest priority when there\'s too many concurrent requests</string>
+    <string name="hint_server_horde_api_key">API Key</string>
+    <string name="hint_server_horde_use_default_api_key">Use default API key</string>
+    <string name="hint_server_horde_about">About Horde AI</string>
+    <string name="hint_server_horde_get_api_key">Get your API Key</string>
 
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
@@ -151,6 +159,7 @@
     <string name="error_title">Error</string>
     <string name="error_empty">Field can\'t be empty</string>
     <string name="error_empty_url">Server URL should not be empty</string>
+    <string name="error_empty_api_key">API Key should not be empty</string>
     <string name="error_invalid">Invalid input</string>
     <string name="error_invalid_scheme">Server URL should start with <b>http://</b> or <b>https://</b></string>
     <string name="error_invalid_url">Invalid Server URL</string>

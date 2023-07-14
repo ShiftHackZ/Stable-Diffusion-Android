@@ -9,6 +9,7 @@ import io.reactivex.rxjava3.core.Single
 
 sealed interface HordeGenerationDataSource {
     interface Remote : HordeGenerationDataSource {
+        fun validateApiKey(): Single<Boolean>
         fun textToImage(payload: TextToImagePayload): Single<AiGenerationResult>
         fun imageToImage(payload: ImageToImagePayload): Single<AiGenerationResult>
     }

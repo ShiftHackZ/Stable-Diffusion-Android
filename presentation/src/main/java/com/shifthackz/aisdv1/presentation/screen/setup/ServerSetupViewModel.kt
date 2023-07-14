@@ -1,23 +1,28 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.common.appbuild.BuildType
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.reactive.retryWithDelay
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.core.validation.horde.HordeApiKeyValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.features.SetupConnectEvent
 import com.shifthackz.aisdv1.presentation.features.SetupConnectFailure
 import com.shifthackz.aisdv1.presentation.features.SetupConnectSuccess
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
+import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -30,7 +35,9 @@ class ServerSetupViewModel(
     private val demoModeUrl: String,
     private val cloudUrl: String,
     private val urlValidator: UrlValidator,
+    private val hordeApiKeyValidator: HordeApiKeyValidator,
     private val testConnectivityUseCase: TestConnectivityUseCase,
+    private val testHordeApiKeyUseCase: TestHordeApiKeyUseCase,
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
     private val schedulersProvider: SchedulersProvider,
@@ -51,6 +58,7 @@ class ServerSetupViewModel(
                     .withSource(configuration.source)
                     .withDemoMode(configuration.demoMode)
                     .withServerUrl(configuration.serverUrl)
+                    .withHordeApiKey(configuration.hordeApiKey)
                     .let(::setState)
             }
     }
@@ -60,11 +68,19 @@ class ServerSetupViewModel(
         .let(::setState)
 
     fun updateServerUrl(value: String) = currentState
-        .copy(serverUrl = value, validationError = null)
+        .copy(serverUrl = value, serverUrlValidationError = null)
+        .let(::setState)
+
+    fun updateHordeApiKey(value: String) = currentState
+        .copy(hordeApiKey = value, hordeApiKeyValidationError = null)
         .let(::setState)
 
     fun updateDemoMode(value: Boolean) = currentState
         .copy(demoMode = value)
+        .let(::setState)
+
+    fun updateHordeDefaultApiKeyUsage(value: Boolean) = currentState
+        .copy(hordeDefaultApiKey = value)
         .let(::setState)
 
     fun connectToServer() {
@@ -77,12 +93,24 @@ class ServerSetupViewModel(
 
     fun dismissScreenDialog() = setScreenDialog(ServerSetupState.Dialog.None)
 
-    private fun validate(): Boolean {
-        if (currentState.mode != ServerSetupState.Mode.OWN_SERVER) return true
-        if (currentState.demoMode) return true
-        val validation = urlValidator(currentState.serverUrl)
-        currentState.copy(validationError = validation.mapToUi()).let(::setState)
-        return validation.isValid
+    private fun validate(): Boolean = when (currentState.mode) {
+        ServerSetupState.Mode.OWN_SERVER -> {
+            if (currentState.demoMode) true
+            else {
+                val validation = urlValidator(currentState.serverUrl)
+                currentState.copy(serverUrlValidationError = validation.mapToUi()).let(::setState)
+                validation.isValid
+            }
+        }
+        ServerSetupState.Mode.HORDE -> {
+            if (currentState.hordeDefaultApiKey) true
+            else {
+                val validation = hordeApiKeyValidator(currentState.hordeApiKey)
+                currentState.copy(hordeApiKeyValidationError = validation.mapToUi()).let(::setState)
+                validation.isValid
+            }
+        }
+        else -> true
     }
 
     private fun connectToAutomaticInstance() {
@@ -97,9 +125,12 @@ class ServerSetupViewModel(
             .andThen(
                 Completable.concatArray(
                     setServerConfigurationUseCase(
-                        url = connectUrl,
-                        demoMode = demoMode,
-                        source = currentState.mode.toSource(),
+                        Configuration(
+                            serverUrl = connectUrl,
+                            demoMode = demoMode,
+                            source = currentState.mode.toSource(),
+                            hordeApiKey = currentState.hordeApiKey,
+                        ),
                     ),
                     Observable
                         .timer(5L, TimeUnit.SECONDS)
@@ -114,9 +145,12 @@ class ServerSetupViewModel(
             .subscribeOnMainThread(schedulersProvider)
             .onErrorResumeNext { t ->
                 setServerConfigurationUseCase(
-                    currentState.originalSeverUrl,
-                    currentState.originalDemoMode,
-                    currentState.originalMode.toSource(),
+                    Configuration(
+                        serverUrl = currentState.originalSeverUrl,
+                        demoMode =  currentState.originalDemoMode,
+                        source = currentState.originalMode.toSource(),
+                        hordeApiKey = currentState.originalHordeApiKey,
+                    ),
                 ).andThen(Single.just(Result.failure(t)))
             }
             .subscribeBy(::errorLog) { result ->
@@ -135,16 +169,50 @@ class ServerSetupViewModel(
             }
     }
 
-    private fun connectToHorde() = !setServerConfigurationUseCase(
-        url = "http://127.0.0.1",
-        demoMode = false,
-        source = ServerSource.HORDE,
-    )
-        .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(::errorLog) {
-            analytics.logEvent(SetupConnectSuccess)
-            emitEffect(ServerSetupEffect.CompleteSetup)
-        }
+    private fun connectToHorde() {
+        val testApiKey = if (currentState.hordeDefaultApiKey) Constants.HORDE_DEFAULT_API_KEY
+        else currentState.hordeApiKey
+
+        !setServerConfigurationUseCase(
+            Configuration(
+                serverUrl = "http://127.0.0.1",
+                demoMode = false,
+                source = ServerSource.HORDE,
+                hordeApiKey = testApiKey,
+            ),
+        )
+            .andThen(testHordeApiKeyUseCase())
+            .flatMap {
+                if (it) Single.just(Result.success(Unit))
+                else Single.error(Throwable("Bad key"))
+            }
+            .onErrorResumeNext { t ->
+                debugLog("Reverting old api key")
+                setServerConfigurationUseCase(
+                    Configuration(
+                        serverUrl = currentState.originalSeverUrl,
+                        demoMode =  currentState.originalDemoMode,
+                        source = currentState.originalMode.toSource(),
+                        hordeApiKey = currentState.originalHordeApiKey,
+                    )
+                ).andThen(Single.just(Result.failure(t)))
+            }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog) { result ->
+                result.fold(
+                    onSuccess = {
+                        analytics.logEvent(SetupConnectSuccess)
+                        dismissScreenDialog()
+                        emitEffect(ServerSetupEffect.CompleteSetup)
+                    },
+                    onFailure = { t ->
+                        val message = t.localizedMessage ?: "Bad key"
+                        analytics.logEvent(SetupConnectFailure(message))
+                        setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
+                    },
+                )
+            }
+    }
 
     private fun setScreenDialog(value: ServerSetupState.Dialog) = currentState
         .copy(screenDialog = value)

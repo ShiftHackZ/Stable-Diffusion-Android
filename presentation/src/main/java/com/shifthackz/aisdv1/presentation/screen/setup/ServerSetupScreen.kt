@@ -4,10 +4,6 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -28,6 +24,7 @@ import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
@@ -52,8 +49,12 @@ class ServerSetupScreen(
             onNavigateBack = onNavigateBack,
             onServerModeUpdated = viewModel::updateServerMode,
             onServerUrlUpdated = viewModel::updateServerUrl,
+            onHordeApiKeyUpdated = viewModel::updateHordeApiKey,
             onDemoModeUpdated = viewModel::updateDemoMode,
+            onHordeDefaultApiKeyUsageUpdated = viewModel::updateHordeDefaultApiKeyUsage,
             onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
+            onOpenHordeWebSite = { launchUrl(linksProvider.hordeUrl) },
+            onOpenHordeSignUpWebSite = { launchUrl(linksProvider.hordeSignUpUrl) },
             onSetupButtonClick = viewModel::connectToServer,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
         )
@@ -72,8 +73,12 @@ private fun ScreenContent(
     onNavigateBack: () -> Unit = {},
     onServerModeUpdated: (ServerSetupState.Mode) -> Unit = {},
     onServerUrlUpdated: (String) -> Unit = {},
+    onHordeApiKeyUpdated: (String) -> Unit = {},
     onDemoModeUpdated: (Boolean) -> Unit = {},
+    onHordeDefaultApiKeyUsageUpdated: (Boolean) -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
+    onOpenHordeWebSite: () -> Unit = {},
+    onOpenHordeSignUpWebSite: () -> Unit = {},
     onSetupButtonClick: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) {
@@ -116,17 +121,19 @@ private fun ScreenContent(
             },
             content = { paddingValues ->
                 Column(
-                    modifier = Modifier.padding(paddingValues),
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(paddingValues),
                 ) {
                     if (state.allowedModes.size > 1) {
-                        LazyColumn {
-                            items(state.allowedModes.size) { index ->
+                        Column {
+                            state.allowedModes.forEach { mode ->
                                 ConfigurationModeButton(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(horizontal = 16.dp, vertical = 4.dp),
                                     state = state,
-                                    mode = state.allowedModes[index],
+                                    mode = mode,
                                     onClick = onServerModeUpdated,
                                 )
                             }
@@ -141,7 +148,13 @@ private fun ScreenContent(
                             onDemoModeUpdated = onDemoModeUpdated,
                             onServerInstructionsItemClick = onServerInstructionsItemClick,
                         )
-                        else -> {}
+                        ServerSetupState.Mode.HORDE -> HordeAiSetupTab(
+                            state = state,
+                            onHordeApiKeyUpdated = onHordeApiKeyUpdated,
+                            onHordeDefaultApiKeyUsageUpdated = onHordeDefaultApiKeyUsageUpdated,
+                            onOpenHordeWebSite = onOpenHordeWebSite,
+                            onOpenHordeSignUpWebSite = onOpenHordeSignUpWebSite,
+                        )
                     }
                 }
             },
@@ -170,7 +183,6 @@ private fun OwnServerSetupTab(
 ) {
     Column(
         modifier = modifier
-            .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp),
     ) {
         Text(
@@ -190,9 +202,9 @@ private fun OwnServerSetupTab(
             onValueChange = onServerUrlUpdated,
             label = { Text(stringResource(id = R.string.hint_server_url)) },
             enabled = !state.demoMode,
-            isError = state.validationError != null && !state.demoMode,
+            isError = state.serverUrlValidationError != null && !state.demoMode,
             supportingText = {
-                state.validationError
+                state.serverUrlValidationError
                     ?.takeIf { !state.demoMode }
                     ?.let { Text(it.asString()) }
             },
@@ -264,6 +276,85 @@ private fun SdaiCloudSetupTab(
 }
 
 @Composable
+private fun HordeAiSetupTab(
+    modifier: Modifier = Modifier,
+    state: ServerSetupState,
+    onHordeApiKeyUpdated: (String) -> Unit = {},
+    onHordeDefaultApiKeyUsageUpdated: (Boolean) -> Unit = {},
+    onOpenHordeWebSite: () -> Unit = {},
+    onOpenHordeSignUpWebSite: () -> Unit = {},
+) {
+    Column(
+        modifier = modifier.padding(horizontal = 16.dp),
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.hint_server_horde_title),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = R.string.hint_server_horde_sub_title),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.secondary,
+        )
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            value = if (state.hordeDefaultApiKey) Constants.HORDE_DEFAULT_API_KEY else state.hordeApiKey,
+            onValueChange = onHordeApiKeyUpdated,
+            label = { Text(stringResource(id = R.string.hint_server_horde_api_key)) },
+            enabled = !state.hordeDefaultApiKey,
+            isError = state.hordeApiKeyValidationError != null && !state.hordeDefaultApiKey,
+            supportingText = {
+                state.hordeApiKeyValidationError
+                    ?.takeIf { !state.hordeDefaultApiKey }
+                    ?.let { Text(it.asString()) }
+            },
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = state.hordeDefaultApiKey,
+                onCheckedChange = onHordeDefaultApiKeyUsageUpdated,
+            )
+            Text(text = stringResource(id = R.string.hint_server_horde_use_default_api_key))
+        }
+        SettingsItem(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth(),
+            startIcon = Icons.Default.Help,
+            text = R.string.hint_server_horde_about.asUiText(),
+            onClick = onOpenHordeWebSite,
+        )
+        SettingsItem(
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .fillMaxWidth(),
+            startIcon = Icons.Default.Api,
+            text = R.string.hint_server_horde_get_api_key.asUiText(),
+            onClick = onOpenHordeSignUpWebSite,
+        )
+        Text(
+            modifier = Modifier.padding(bottom = 16.dp, top = 8.dp),
+            text = stringResource(id = R.string.hint_server_horde_usage),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.secondary,
+        )
+    }
+}
+
+@Composable
 private fun ConfigurationModeButton(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
@@ -291,17 +382,19 @@ private fun ConfigurationModeButton(
             imageVector = when (mode) {
                 ServerSetupState.Mode.SD_AI_CLOUD -> Icons.Default.Cloud
                 ServerSetupState.Mode.OWN_SERVER -> Icons.Default.Computer
-                ServerSetupState.Mode.HORDE -> Icons.Default.Class
+                ServerSetupState.Mode.HORDE -> Icons.Default.Cloud
             },
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSecondaryContainer,
         )
         Text(
-            modifier = Modifier.align(Alignment.CenterVertically).padding(top = 8.dp, bottom = 8.dp),
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(top = 8.dp, bottom = 8.dp),
             text = stringResource(id = when (mode) {
                 ServerSetupState.Mode.SD_AI_CLOUD -> R.string.srv_type_cloud
                 ServerSetupState.Mode.OWN_SERVER -> R.string.srv_type_own
-                ServerSetupState.Mode.HORDE -> R.string.src_type_horde
+                ServerSetupState.Mode.HORDE -> R.string.srv_type_horde
             }),
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSecondaryContainer,

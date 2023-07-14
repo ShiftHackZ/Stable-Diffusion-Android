@@ -12,6 +12,7 @@ interface PreferenceManager {
     var autoSaveAiResults: Boolean
     var formAdvancedOptionsAlwaysShow: Boolean
     var source: ServerSource
+    var hordeApiKey: String
 
     fun observe(): Flowable<Settings>
 }

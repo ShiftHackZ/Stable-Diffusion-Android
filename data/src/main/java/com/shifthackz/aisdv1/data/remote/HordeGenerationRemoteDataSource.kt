@@ -1,11 +1,11 @@
 package com.shifthackz.aisdv1.data.remote
 
 import android.graphics.BitmapFactory
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.data.mappers.mapHordeToAiGenResult
 import com.shifthackz.aisdv1.data.mappers.mapToHordeRequest
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
@@ -16,7 +16,6 @@ import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import java.net.URL
 import java.util.concurrent.TimeUnit
@@ -27,14 +26,22 @@ internal class HordeGenerationRemoteDataSource(
     private val statusSource: HordeGenerationDataSource.StatusSource,
 ) : HordeGenerationDataSource.Remote {
 
-    override fun textToImage(payload: TextToImagePayload) =
-        executeRequestChain(payload.mapToHordeRequest())
-            .map { base64 -> payload to base64 }
-            .map(Pair<TextToImagePayload, String>::mapHordeToAiGenResult)
+    override fun validateApiKey() = hordeApi
+        .checkHordeApiKey()
+        .map { user -> user.id != null }
+        .onErrorReturn { false }
 
-    override fun imageToImage(payload: ImageToImagePayload): Single<AiGenerationResult> {
-        return Single.error(Throwable("Not implemented"))
-    }
+    override fun textToImage(payload: TextToImagePayload) = Single
+        .just(payload.mapToHordeRequest())
+        .flatMap(::executeRequestChain)
+        .map { base64 -> payload to base64 }
+        .map(Pair<TextToImagePayload, String>::mapHordeToAiGenResult)
+
+    override fun imageToImage(payload: ImageToImagePayload) = Single
+        .just(payload.mapToHordeRequest())
+        .flatMap(::executeRequestChain)
+        .map { base64 -> payload to base64 }
+        .map(Pair<ImageToImagePayload, String>::mapHordeToAiGenResult)
 
     private fun executeRequestChain(request: HordeGenerationAsyncRequest): Single<String> {
         val observableChain = hordeApi
@@ -59,12 +66,10 @@ internal class HordeGenerationRemoteDataSource(
                         .retryWhen { obs ->
                             obs.flatMap {
                                 if (it is RetryException) {
-//                                    val hordeWaitTime = it.response.waitTime
-                                    val waitTime = 10//if (hordeWaitTime <= 0) 10 else hordeWaitTime
                                     return@flatMap Observable
-                                        .timer(waitTime * 1L, TimeUnit.SECONDS)
+                                        .timer(HORDE_SOCKET_PING_TIME_SECONDS, TimeUnit.SECONDS)
                                         .doOnNext {
-                                            println("retry")
+                                            debugLog("Retrying HORDE status check...")
                                         }
                                 }
                                 return@flatMap Observable.error(it)
@@ -88,6 +93,10 @@ internal class HordeGenerationRemoteDataSource(
     }
 
     private class RetryException(val response: HordeGenerationCheckResponse): Throwable()
+
+    companion object {
+        private val HORDE_SOCKET_PING_TIME_SECONDS = 10L
+    }
 }
 
 internal class HordeStatusSource : HordeGenerationDataSource.StatusSource {

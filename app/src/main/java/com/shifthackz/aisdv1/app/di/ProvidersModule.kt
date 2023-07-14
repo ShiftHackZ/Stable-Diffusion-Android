@@ -7,7 +7,9 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
+import com.shifthackz.aisdv1.network.qualifiers.HordeApiKeyProvider
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -32,10 +34,15 @@ val providersModule = module {
         }
     }
 
+    single {
+        HordeApiKeyProvider { get<PreferenceManager>().hordeApiKey }
+    }
+
     single<LinksProvider> {
         object : LinksProvider {
             override val cloudUrl: String = BuildConfig.CLOUD_AI_URL
             override val hordeUrl: String = BuildConfig.HORDE_AI_URL
+            override val hordeSignUpUrl: String = BuildConfig.HORDE_AI_SIGN_UP_URL
             override val privacyPolicyUrl: String = BuildConfig.POLICY_URL
             override val gitHubSourceUrl: String = BuildConfig.GITHUB_SOURCE_URL
             override val setupInstructionsUrl: String = BuildConfig.SETUP_INSTRUCTIONS_URL

@@ -2,13 +2,10 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
-import com.shifthackz.aisdv1.core.validation.ValidationResult
-import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.utils.Constants
 
 sealed interface ServerSetupEffect : MviEffect {
     object CompleteSetup : ServerSetupEffect
@@ -22,9 +19,13 @@ data class ServerSetupState(
     val screenDialog: Dialog = Dialog.None,
     val serverUrl: String = "",
     val originalSeverUrl: String = "",
+    val hordeApiKey: String = "",
+    val originalHordeApiKey: String = "",
+    val hordeDefaultApiKey: Boolean = false,
     val demoMode: Boolean = false,
     val originalDemoMode: Boolean = false,
-    val validationError: UiText? = null,
+    val serverUrlValidationError: UiText? = null,
+    val hordeApiKeyValidationError: UiText? = null,
 ) : MviState {
 
     fun withSource(value: ServerSource) = this.copy(
@@ -40,6 +41,12 @@ data class ServerSetupState(
     fun withServerUrl(value: String) = this.copy(
         serverUrl = value,
         originalSeverUrl = value,
+    )
+
+    fun withHordeApiKey(value: String) = this.copy(
+        hordeApiKey = value,
+        originalHordeApiKey = value,
+        hordeDefaultApiKey = value == Constants.HORDE_DEFAULT_API_KEY,
     )
 
     sealed interface Dialog {
@@ -78,15 +85,6 @@ enum class ServerSetupLaunchSource(val key: Int) {
     }
 }
 
-fun ValidationResult<UrlValidator.Error>.mapToUi(): UiText? {
-    if (this.isValid) return null
-    return when (validationError as UrlValidator.Error) {
-        UrlValidator.Error.BadScheme -> R.string.error_invalid_scheme
-        UrlValidator.Error.Empty -> R.string.error_empty_url
-        UrlValidator.Error.Invalid -> R.string.error_invalid_url
-        UrlValidator.Error.Localhost -> R.string.error_localhost_url
-    }.asUiText()
-}
 
 val BuildType.allowedModes: List<ServerSetupState.Mode>
     get() = when (this) {

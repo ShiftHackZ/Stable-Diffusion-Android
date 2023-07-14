@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.response.HordeGenerationAsyncResponse
 import com.shifthackz.aisdv1.network.response.HordeGenerationCheckFullResponse
 import com.shifthackz.aisdv1.network.response.HordeGenerationCheckResponse
+import com.shifthackz.aisdv1.network.response.HordeUserResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,4 +21,7 @@ interface HordeRestApi {
 
     @GET("/api/v2/generate/status/{id}")
     fun checkStatus(@Path("id") id: String): Single<HordeGenerationCheckFullResponse>
+
+    @GET("/api/v2/find_user")
+    fun checkHordeApiKey(): Single<HordeUserResponse>
 }

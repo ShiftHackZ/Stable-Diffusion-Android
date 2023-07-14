@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 
@@ -45,7 +46,7 @@ data class ImageToImageState(
 
     sealed interface Modal {
         object None : Modal
-        object Communicating : Modal
+        data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
         object NoSdAiCoins : Modal
         object PromptBottomSheet : Modal
         data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Modal

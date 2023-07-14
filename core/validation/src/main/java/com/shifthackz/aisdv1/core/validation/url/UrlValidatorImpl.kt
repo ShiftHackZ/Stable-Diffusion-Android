@@ -4,7 +4,7 @@ import android.util.Patterns
 import android.webkit.URLUtil
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 
-class UrlValidatorImpl : UrlValidator {
+internal class UrlValidatorImpl : UrlValidator {
 
     override operator fun invoke(input: String?): ValidationResult<UrlValidator.Error> = when {
         input == null -> ValidationResult(

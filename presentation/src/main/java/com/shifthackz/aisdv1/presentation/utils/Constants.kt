@@ -32,4 +32,6 @@ object Constants {
 
     const val MIME_TYPE_ZIP = "application/zip"
     const val MIME_TYPE_JPG = "image/jpeg"
+
+    const val HORDE_DEFAULT_API_KEY = "0000000000"
 }

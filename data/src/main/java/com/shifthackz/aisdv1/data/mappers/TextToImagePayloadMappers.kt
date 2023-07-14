@@ -4,7 +4,6 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.TextToImageRequest
-import com.shifthackz.aisdv1.network.response.HordeGenerationCheckFullResponse
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import java.util.Date
 
@@ -28,6 +27,8 @@ fun TextToImagePayload.mapToHordeRequest(): HordeGenerationAsyncRequest = with(t
     HordeGenerationAsyncRequest(
         prompt = prompt,
         nsfw = false,
+        sourceProcessing = null,
+        sourceImage = null,
         params = HordeGenerationAsyncRequest.Params(
             cfgScale = cfgScale,
             width = width,

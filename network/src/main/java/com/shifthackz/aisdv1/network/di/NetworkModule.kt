@@ -50,7 +50,7 @@ val networkModule = module {
     single {
         HttpInterceptors(
             listOf(
-                HttpInterceptor(HeaderInterceptor(get())),
+                HttpInterceptor(HeaderInterceptor(get(), get())),
             )
         )
     }

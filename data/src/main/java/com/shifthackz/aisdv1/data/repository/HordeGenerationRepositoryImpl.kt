@@ -17,10 +17,11 @@ internal class HordeGenerationRepositoryImpl(
 
     override fun observeStatus() = statusSource.observe()
 
+    override fun validateApiKey() = remoteDataSource.validateApiKey()
+
     override fun generateFromText(payload: TextToImagePayload) = remoteDataSource
         .textToImage(payload)
         .flatMap(::insertGenerationResult)
-
 
     override fun generateFromImage(payload: ImageToImagePayload) = remoteDataSource
         .imageToImage(payload)

@@ -9,7 +9,10 @@ data class HordeGenerationAsyncRequest(
     val params: Params,
     @SerializedName("nsfw")
     val nsfw: Boolean,
-
+    @SerializedName("source_processing")
+    val sourceProcessing: String?,
+    @SerializedName("source_image")
+    val sourceImage: String?
 ) {
     data class Params(
         @SerializedName("cfg_scale")

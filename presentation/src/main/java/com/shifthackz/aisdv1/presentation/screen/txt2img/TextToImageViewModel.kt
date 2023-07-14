@@ -1,7 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -62,7 +61,6 @@ class TextToImageViewModel(
     )
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {
-        debugLog("HORDE PROCESS STATUS: $status")
         if (currentState.screenModal is TextToImageState.Modal.Communicating) {
             setActiveDialog(TextToImageState.Modal.Communicating(status))
         }
