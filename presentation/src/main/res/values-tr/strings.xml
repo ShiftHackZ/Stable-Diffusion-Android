@@ -9,7 +9,7 @@
     <string name="height">Yükseklik</string>
 
     <string name="version">Versiyon %1$s</string>
-    <string name="version_postscriptum">Senin için ❤️'la 🇺🇦'da hazırlardı</string>
+    <string name="version_postscriptum">Senin için ❤️\'la 🇺🇦\'da hazırlardı</string>
 
     <string name="splash_status_initializing">Başlatılıyor…</string>
     <string name="splash_status_fetching">Veri Alınıyor…</string>
@@ -41,7 +41,7 @@
     <string name="hint_sub_seed">Varyasyon Noktası (Variation seed)</string>
     <string name="hint_sub_seed_strength">Varyasyon Yoğunluğu: %1$s</string>
     <string name="hint_denoising_strength">Gürültü Arındırma Yoğunluğu: %1$s</string>
-    <string name="hint_server_url">Sunucu URL'i</string>
+    <string name="hint_server_url">Sunucu URL\'i</string>
     <string name="hint_sd_model">SD Modeli</string>
 
     <string name="hint_server_setup_title">Lütfen Stable Diffusion WebUI(AUTOMATIC1111) URL adresinizi yazın.</string>
@@ -96,7 +96,7 @@
     <string name="settings_item_demo">Demo modu</string>
     <string name="settings_item_monitor_connection">Bağlantıyı incele</string>
     <string name="settings_item_auto_save">Resimeleri otomatik kaydet</string>
-    <string name="settings_item_advanced_form_default">Always show advanced options</string>
+    <string name="settings_item_advanced_form_default">Her zaman gelişmiş seçenekleri göster</string>
     <string name="settings_item_clear_cache">Uygulama ve galeri önbelleğini temizleyin</string>
 
     <string name="settings_item_report_problem">Hata Bildirin</string>
