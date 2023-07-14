@@ -27,6 +27,7 @@ ext {
 
     firebaseBomVersion = '32.0.0'
     playServicesAdsVersion = '22.1.0'
+    umpVerson = '2.0.0'
 
     testJunitVersion = '4.13.2'
 
@@ -91,6 +92,7 @@ ext {
             firebaseAnalytics  : "com.google.firebase:firebase-analytics-ktx",
             firebaseCrashlytics: "com.google.firebase:firebase-crashlytics-ktx",
             playServicesAds    : "com.google.android.gms:play-services-ads:$playServicesAdsVersion",
+            ump                : "com.google.android.ump:user-messaging-platform:$umpVerson",
     ]
     test = [
             junit: "junit:junit:$testJunitVersion",

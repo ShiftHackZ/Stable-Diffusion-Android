@@ -11,18 +11,25 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-internal class AdFeatureImpl : AdFeature {
+internal class AdFeatureImpl : AdFeature, KoinComponent {
+
+    private val ump: Ump by inject()
 
     private var rewardedAd: RewardedAd? = null
 
-    override fun initialize(activity: Activity) = MobileAds.initialize(activity) {
-        if (BuildConfig.DEBUG) MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder()
-            .setTestDeviceIds(activity.resources.getStringArray(R.array.test_device_ids).asList())
-            .build()
-        )
-        loadRewardedCoinsAd(activity)
+    override fun initialize(activity: Activity) {
+        ump.request(activity)
+        MobileAds.initialize(activity) {
+            if (BuildConfig.DEBUG) MobileAds.setRequestConfiguration(
+                RequestConfiguration.Builder()
+                    .setTestDeviceIds(activity.resources.getStringArray(R.array.test_device_ids).asList())
+                    .build()
+            )
+            loadRewardedCoinsAd(activity)
+        }
     }
 
     override fun getHomeScreenBannerAd(context: Context) = AdFeature.Ad(

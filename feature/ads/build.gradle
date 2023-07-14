@@ -36,4 +36,5 @@ dependencies {
     implementation di.koinCore
     playstoreImplementation androidx.constraintLayout
     playstoreImplementation proprietary.playServicesAds
+    playstoreImplementation proprietary.ump
 }
