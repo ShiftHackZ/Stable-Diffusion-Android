@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.core.validation.horde
 
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 
-interface HordeApiKeyValidator {
+interface CommonStringValidator {
 
     operator fun invoke(input: String?) : ValidationResult<Error>
 

@@ -2,12 +2,12 @@ package com.shifthackz.aisdv1.core.validation.horde
 
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 
-internal class HordeApiKeyValidatorImpl : HordeApiKeyValidator {
+internal class CommonStringValidatorImpl : CommonStringValidator {
 
-    override fun invoke(input: String?): ValidationResult<HordeApiKeyValidator.Error> = when {
+    override fun invoke(input: String?): ValidationResult<CommonStringValidator.Error> = when {
         input.isNullOrEmpty() || input.isBlank() -> ValidationResult(
             isValid = false,
-            validationError = HordeApiKeyValidator.Error.Empty,
+            validationError = CommonStringValidator.Error.Empty,
         )
         else -> ValidationResult(isValid = true)
     }

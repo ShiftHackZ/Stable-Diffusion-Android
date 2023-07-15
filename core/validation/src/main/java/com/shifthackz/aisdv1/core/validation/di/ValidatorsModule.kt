@@ -2,8 +2,8 @@ package com.shifthackz.aisdv1.core.validation.di
 
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidatorImpl
-import com.shifthackz.aisdv1.core.validation.horde.HordeApiKeyValidator
-import com.shifthackz.aisdv1.core.validation.horde.HordeApiKeyValidatorImpl
+import com.shifthackz.aisdv1.core.validation.horde.CommonStringValidator
+import com.shifthackz.aisdv1.core.validation.horde.CommonStringValidatorImpl
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidatorImpl
 import org.koin.core.module.dsl.factoryOf
@@ -15,5 +15,5 @@ val validatorsModule = module {
     factory<DimensionValidator> { DimensionValidatorImpl() }
 
     factoryOf(::UrlValidatorImpl) bind UrlValidator::class
-    factoryOf(::HordeApiKeyValidatorImpl) bind HordeApiKeyValidator::class
+    factoryOf(::CommonStringValidatorImpl) bind CommonStringValidator::class
 }

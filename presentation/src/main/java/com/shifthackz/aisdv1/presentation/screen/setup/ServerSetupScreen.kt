@@ -5,6 +5,7 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.ArrowBack
@@ -15,6 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,6 +57,7 @@ class ServerSetupScreen(
             onAuthTypeSelected = viewModel::updateAuthType,
             onLoginUpdated = viewModel::updateLogin,
             onPasswordUpdated = viewModel::updatePassword,
+            onTogglePasswordVisibility = viewModel::updatePasswordVisibility,
             onHordeApiKeyUpdated = viewModel::updateHordeApiKey,
             onDemoModeUpdated = viewModel::updateDemoMode,
             onHordeDefaultApiKeyUsageUpdated = viewModel::updateHordeDefaultApiKeyUsage,
@@ -80,6 +85,7 @@ private fun ScreenContent(
     onAuthTypeSelected: (ServerSetupState.AuthType) -> Unit = {},
     onLoginUpdated: (String) -> Unit = {},
     onPasswordUpdated: (String) -> Unit = {},
+    onTogglePasswordVisibility: (Boolean) -> Unit = {},
     onHordeApiKeyUpdated: (String) -> Unit = {},
     onDemoModeUpdated: (Boolean) -> Unit = {},
     onHordeDefaultApiKeyUsageUpdated: (Boolean) -> Unit = {},
@@ -155,6 +161,7 @@ private fun ScreenContent(
                             onAuthTypeSelected = onAuthTypeSelected,
                             onLoginUpdated = onLoginUpdated,
                             onPasswordUpdated = onPasswordUpdated,
+                            onTogglePasswordVisibility = onTogglePasswordVisibility,
                             onDemoModeUpdated = onDemoModeUpdated,
                             onServerInstructionsItemClick = onServerInstructionsItemClick,
                         )
@@ -191,6 +198,7 @@ private fun OwnServerSetupTab(
     onAuthTypeSelected: (ServerSetupState.AuthType) -> Unit = {},
     onLoginUpdated: (String) -> Unit = {},
     onPasswordUpdated: (String) -> Unit = {},
+    onTogglePasswordVisibility: (Boolean) -> Unit = {},
     onDemoModeUpdated: (Boolean) -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
 ) {
@@ -207,24 +215,23 @@ private fun OwnServerSetupTab(
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
         )
+        val fieldModifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
         TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
+            modifier = fieldModifier,
             value = if (!state.demoMode) state.serverUrl else demoModeUrl,
             onValueChange = onServerUrlUpdated,
             label = { Text(stringResource(id = R.string.hint_server_url)) },
             enabled = !state.demoMode,
             isError = state.serverUrlValidationError != null && !state.demoMode,
-            supportingText = {
-                state.serverUrlValidationError
-                    ?.takeIf { !state.demoMode }
-                    ?.let { Text(it.asString()) }
-            },
+            supportingText = state.serverUrlValidationError
+                ?.takeIf { !state.demoMode }
+                ?.let { { Text(it.asString()) } },
         )
         if (!state.demoMode) {
             DropdownTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = fieldModifier,
                 label = "Authorization".asUiText(),
                 items = ServerSetupState.AuthType.values().toList(),
                 value = state.authType,
@@ -238,20 +245,38 @@ private fun OwnServerSetupTab(
             )
             when (state.authType) {
                 ServerSetupState.AuthType.HTTP_BASIC -> {
-                    val fieldModifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
+
                     TextField(
                         modifier = fieldModifier,
                         value = state.login,
                         onValueChange = onLoginUpdated,
                         label = { Text(stringResource(id = R.string.hint_login)) },
+                        isError = state.loginValidationError != null,
+                        supportingText = state.loginValidationError?.let {
+                            { Text(it.asString()) }
+                        },
                     )
                     TextField(
                         modifier = fieldModifier,
                         value = state.password,
                         onValueChange = onPasswordUpdated,
                         label = { Text(stringResource(id = R.string.hint_password)) },
+                        isError = state.passwordValidationError != null,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        visualTransformation = if (state.passwordVisible) VisualTransformation.None
+                        else PasswordVisualTransformation(),
+                        supportingText = state.passwordValidationError?.let {
+                            { Text(it.asString()) }
+                        },
+                        trailingIcon = {
+                            val image = if (state.passwordVisible) Icons.Filled.Visibility
+                            else Icons.Filled.VisibilityOff
+                            val description = if (state.passwordVisible) "Hide password" else "Show password"
+                            IconButton(
+                                onClick = { onTogglePasswordVisibility(state.passwordVisible) },
+                                content = { Icon(image, description) },
+                            )
+                        }
                     )
                 }
                 else -> Unit

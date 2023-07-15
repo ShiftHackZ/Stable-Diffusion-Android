@@ -7,7 +7,7 @@ import com.shifthackz.aisdv1.core.common.reactive.retryWithDelay
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.validation.horde.HordeApiKeyValidator
+import com.shifthackz.aisdv1.core.validation.horde.CommonStringValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.authorization.AuthorizationCredentials
@@ -35,7 +35,7 @@ class ServerSetupViewModel(
     private val demoModeUrl: String,
     private val cloudUrl: String,
     private val urlValidator: UrlValidator,
-    private val hordeApiKeyValidator: HordeApiKeyValidator,
+    private val stringValidator: CommonStringValidator,
     private val testConnectivityUseCase: TestConnectivityUseCase,
     private val testHordeApiKeyUseCase: TestHordeApiKeyUseCase,
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
@@ -78,11 +78,15 @@ class ServerSetupViewModel(
         .let(::setState)
 
     fun updateLogin(value: String) = currentState
-        .copy(login = value)
+        .copy(login = value, loginValidationError = null)
         .let(::setState)
 
     fun updatePassword(value: String) = currentState
-        .copy(password = value)
+        .copy(password = value, passwordValidationError = null)
+        .let(::setState)
+
+    fun updatePasswordVisibility(value: Boolean) = currentState
+        .copy(passwordVisible = !value)
         .let(::setState)
 
     fun updateHordeApiKey(value: String) = currentState
@@ -111,15 +115,28 @@ class ServerSetupViewModel(
         ServerSetupState.Mode.OWN_SERVER -> {
             if (currentState.demoMode) true
             else {
-                val validation = urlValidator(currentState.serverUrl)
-                currentState.copy(serverUrlValidationError = validation.mapToUi()).let(::setState)
-                validation.isValid
+                val serverUrlValidation = urlValidator(currentState.serverUrl)
+                var newState = currentState.copy(
+                    serverUrlValidationError = serverUrlValidation.mapToUi()
+                )
+                var isValid = serverUrlValidation.isValid
+                if (currentState.authType == ServerSetupState.AuthType.HTTP_BASIC) {
+                    val loginValidation = stringValidator(currentState.login)
+                    val passwordValidation = stringValidator(currentState.password)
+                    newState = newState.copy(
+                        loginValidationError = loginValidation.mapToUi(),
+                        passwordValidationError = passwordValidation.mapToUi()
+                    )
+                    isValid = isValid && loginValidation.isValid && passwordValidation.isValid
+                }
+                setState(newState)
+                isValid
             }
         }
         ServerSetupState.Mode.HORDE -> {
             if (currentState.hordeDefaultApiKey) true
             else {
-                val validation = hordeApiKeyValidator(currentState.hordeApiKey)
+                val validation = stringValidator(currentState.hordeApiKey)
                 currentState.copy(hordeApiKeyValidationError = validation.mapToUi()).let(::setState)
                 validation.isValid
             }

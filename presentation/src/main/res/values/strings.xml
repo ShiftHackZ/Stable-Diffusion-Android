@@ -164,7 +164,7 @@
     <string name="error_title">Error</string>
     <string name="error_empty">Field can\'t be empty</string>
     <string name="error_empty_url">Server URL should not be empty</string>
-    <string name="error_empty_api_key">API Key should not be empty</string>
+    <string name="error_empty_field">Field should not be empty</string>
     <string name="error_invalid">Invalid input</string>
     <string name="error_invalid_scheme">Server URL should start with <b>http://</b> or <b>https://</b></string>
     <string name="error_invalid_url">Invalid Server URL</string>

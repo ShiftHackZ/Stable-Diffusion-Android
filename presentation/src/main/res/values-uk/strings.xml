@@ -160,7 +160,7 @@
     <string name="error_title">Помилка</string>
     <string name="error_empty">Поле не може бути порожнім</string>
     <string name="error_empty_url">URL-адреса не повинна бути пустою</string>
-    <string name="error_empty_api_key">API Ключ не може бути пустим</string>
+    <string name="error_empty_field">Поле не може бути пустим</string>
     <string name="error_invalid">Неправильні дані</string>
     <string name="error_invalid_scheme">URL має починатися з <b>http://</b> або <b>https://</b></string>
     <string name="error_invalid_url">Недійсна URL-адреса сервера</string>

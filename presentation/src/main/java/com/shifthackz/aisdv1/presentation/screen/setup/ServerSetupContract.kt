@@ -32,7 +32,10 @@ data class ServerSetupState(
     val originalLogin: String = "",
     val password: String = "",
     val originalPassword: String = "",
+    val passwordVisible: Boolean = false,
     val serverUrlValidationError: UiText? = null,
+    val loginValidationError: UiText? = null,
+    val passwordValidationError: UiText? = null,
     val hordeApiKeyValidationError: UiText? = null,
 ) : MviState {
 

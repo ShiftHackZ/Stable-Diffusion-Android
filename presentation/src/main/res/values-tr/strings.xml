@@ -160,7 +160,7 @@
     <string name="error_title">Hata</string>
     <string name="error_empty">Alan boş olamaz</string>
     <string name="error_empty_url">Sunucu URL adresi boş olamaz</string>
-    <string name="error_empty_api_key">API Anahtarı boş olmamalıdır</string>
+    <string name="error_empty_field">Alan boş olmamalıdır</string>
     <string name="error_invalid">Geçerli olmayan bilgi girişi</string>
     <string name="error_invalid_scheme">Sunucu adresi <b>http://</b> veya <b>https://</b> ile başlamalıdır.</string>
     <string name="error_invalid_url">Geçersiz sunucu adresi.</string>
