@@ -207,8 +207,10 @@ private fun ScreenContent(
             }
         )
         when (state.screenModal) {
-            ImageToImageState.Modal.Communicating -> ProgressDialog(
+            is ImageToImageState.Modal.Communicating -> ProgressDialog(
                 canDismiss = false,
+                waitTimeSeconds = state.screenModal.hordeProcessStatus?.waitTimeSeconds,
+                positionInQueue = state.screenModal.hordeProcessStatus?.queuePosition,
             )
             ImageToImageState.Modal.NoSdAiCoins -> NoSdAiCoinsDialog(
                 onDismissRequest = onDismissScreenDialog,

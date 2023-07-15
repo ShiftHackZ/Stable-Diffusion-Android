@@ -7,17 +7,22 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
+import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
+import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
 import com.shz.imagepicker.imagepicker.model.PickedResult
 import io.reactivex.rxjava3.core.Single
@@ -25,6 +30,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ImageToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeCoinsUseCase: ObserveCoinsUseCase,
     buildInfoProvider: BuildInfoProvider,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
@@ -35,12 +41,14 @@ class ImageToImageViewModel(
     private val dimensionValidator: DimensionValidator,
     private val preferenceManager: PreferenceManager,
     private val schedulersProvider: SchedulersProvider,
+    private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
 ) : GenerationMviViewModel<ImageToImageState, ImageToImageEffect>(
     buildInfoProvider,
     preferenceManager,
     observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase,
     schedulersProvider,
 ) {
 
@@ -61,6 +69,12 @@ class ImageToImageViewModel(
             heightValidationError = dimensionValidator(state.height).mapToUi(),
         )
     )
+
+    override fun onReceivedHordeStatus(status: HordeProcessStatus) {
+        if (currentState.screenModal is ImageToImageState.Modal.Communicating) {
+            setActiveDialog(ImageToImageState.Modal.Communicating(status))
+        }
+    }
 
     override fun updateFormPreviousAiGeneration(ai: AiGenerationResult): Result<Unit> {
         !base64ToBitmapConverter(Base64ToBitmapConverter.Input(ai.image))
@@ -104,7 +118,7 @@ class ImageToImageViewModel(
                 }
                 !Single
                     .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
-                    .doOnSubscribe { setActiveDialog(ImageToImageState.Modal.Communicating) }
+                    .doOnSubscribe { setActiveDialog(ImageToImageState.Modal.Communicating()) }
                     .map(BitmapToBase64Converter::Input)
                     .flatMap(bitmapToBase64Converter::invoke)
                     .map(currentState::preProcessed)
@@ -113,6 +127,10 @@ class ImageToImageViewModel(
                     .subscribeOnMainThread(schedulersProvider)
                     .subscribeBy(
                         onError = { t ->
+                            notificationManager.show(
+                                R.string.notification_fail_title.asUiText(),
+                                R.string.notification_fail_sub_title.asUiText(),
+                            )
                             setActiveDialog(
                                 ImageToImageState.Modal.Error(
                                     UiText.Static(
@@ -124,6 +142,10 @@ class ImageToImageViewModel(
                         },
                         onSuccess = { ai ->
                             analytics.logEvent(AiImageGenerated(ai))
+                            notificationManager.show(
+                                R.string.notification_finish_title.asUiText(),
+                                R.string.notification_finish_sub_title.asUiText(),
+                            )
                             setActiveDialog(
                                 ImageToImageState.Modal.Image(
                                     ai,

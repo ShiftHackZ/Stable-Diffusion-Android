@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="empty">Boş</string>
     <string name="language">Türkçe</string>
     <string name="ok">Tamam</string>
     <string name="yes">Evet</string>
@@ -32,6 +33,7 @@
 
     <string name="srv_type_cloud">SDAI Bulut hizmetini kullanmak istiyorum</string>
     <string name="srv_type_own">Kendi AUTOMATIC1111 hizmetimi kullanmak istiyorum.</string>
+    <string name="srv_type_horde">Horde AI bulutunu kullanmak istiyorum</string>
 
     <string name="hint_prompt">İstem (prompt)</string>
     <string name="hint_prompt_negative">Negatif istem</string>
@@ -45,6 +47,11 @@
     <string name="hint_denoising_strength">Gürültü Arındırma Yoğunluğu: %1$s</string>
     <string name="hint_server_url">Sunucu URL\'i</string>
     <string name="hint_sd_model">SD Modeli</string>
+    <string name="hint_login">Giriş yapmak</string>
+    <string name="hint_password">Şifre</string>
+
+    <string name="auth_anonymous">Anonim</string>
+    <string name="auth_http_basic">HTTP Temel</string>
 
     <string name="hint_server_setup_title">Lütfen Stable Diffusion WebUI(AUTOMATIC1111) URL adresinizi yazın.</string>
     <string name="hint_valid_urls">Bazı sunucu örnekleri:\n• http://192.168.0.2:7860\n• http://alanadiniz.com:7860\n• https://alanadiniz.com</string>
@@ -53,6 +60,14 @@
 
     <string name="hint_server_sdai_title">SDAI Bulut hizmetine bağlan.</string>
     <string name="hint_server_sdai_sub_title">This mode allows to use public SDAI cloud instance.\n\nAs our project is non-profitable, we may include additional rate-limit for some users, or restrict it by certain computing hours.</string>
+
+    <string name="hint_server_horde_title">Horde AI bulutuna bağlanın</string>
+    <string name="hint_server_horde_sub_title">Horde AI, Görüntü oluşturma çalışanları ve metin oluşturma çalışanlarından oluşan kitle kaynaklı dağıtılmış bir kümedir.</string>
+    <string name="hint_server_horde_usage">Anonim olarak bağlanmak için varsayılan API Anahtarını kullanabilirsiniz. Ancak çok fazla eşzamanlı istek olduğunda anonim hesaplar en düşük önceliğe sahiptir.</string>
+    <string name="hint_server_horde_api_key">API Anahtar</string>
+    <string name="hint_server_horde_use_default_api_key">Varsayılan API anahtarını kullan</string>
+    <string name="hint_server_horde_about">Hakkında Horde AI</string>
+    <string name="hint_server_horde_get_api_key">API Anahtarınızı alın</string>
 
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
@@ -109,10 +124,12 @@
     <string name="settings_item_rate">Bizi Google Play üzerinden değerlendirin</string>
 
     <string name="communicating_progress_title">Lütfen bekleyin, sunucu ile iletişime geçiliyor…</string>
-    <string name="communicating_progress_sub_title">bu süreç 60 saniye kadar sürebilir.</string>
+    <string name="communicating_progress_sub_title">Bu biraz zaman alabilir.</string>
+    <string name="communicating_wait_time">Bekleme zamanı: %1$s</string>
+    <string name="communicating_status_queue">Sıradaki konumu: %1$s</string>
 
     <string name="exporting_progress_title">Galeriniz dışarı aktarılıyor…</string>
-    <string name="exporting_progress_sub_title">Resim sayısına göre bu biraz zaman alabilir...</string>
+    <string name="exporting_progress_sub_title">Resim sayısına göre bu biraz zaman alabilir…</string>
 
     <string name="interaction_export_title">Galeriyi Dışa Aktar</string>
     <string name="interaction_export_sub_title">Bu işlem bütün galerideki resimleri tek bir .zip arşivi dosyası olarak dışa aktaracaktır. Galerinizin boyutuna göre bu işlem uzun bir zaman alabailir. Devam etmek istiyor musunuz?</string>
@@ -143,10 +160,17 @@
     <string name="error_title">Hata</string>
     <string name="error_empty">Alan boş olamaz</string>
     <string name="error_empty_url">Sunucu URL adresi boş olamaz</string>
+    <string name="error_empty_field">Alan boş olmamalıdır</string>
     <string name="error_invalid">Geçerli olmayan bilgi girişi</string>
     <string name="error_invalid_scheme">Sunucu adresi <b>http://</b> veya <b>https://</b> ile başlamalıdır.</string>
     <string name="error_invalid_url">Geçersiz sunucu adresi.</string>
     <string name="error_localhost_url">Sunucuya bağlanmak için localhost (127.0.0.1) URL adresi kullanamazsınız.</string>
     <string name="error_min_size">Asgari boyut %1$s</string>
     <string name="error_max_size">Azami boyut %1$s</string>
+
+    <string name="notification_finish_title">Nesil tamamlandı 🤩</string>
+    <string name="notification_finish_sub_title">Sonucu görmek için buraya tıklayın.</string>
+
+    <string name="notification_fail_title">Üretim başarısız oldu 😞</string>
+    <string name="notification_fail_sub_title">Ayrıntıları görmek için buraya tıklayın.</string>
 </resources>

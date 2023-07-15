@@ -26,6 +26,7 @@ import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
@@ -37,6 +38,18 @@ import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MIN
 import kotlin.math.abs
 import kotlin.math.roundToInt
+
+enum class GenerationInputMode {
+    AUTOMATIC1111,
+    HORDE;
+
+    companion object {
+        fun fromSource(source: ServerSource) = when (source) {
+            ServerSource.HORDE -> HORDE
+            else -> AUTOMATIC1111
+        }
+    }
+}
 
 @Composable
 fun GenerationInputForm(
@@ -67,7 +80,7 @@ fun GenerationInputForm(
             onValueChange = onPromptUpdated,
             label = { Text(stringResource(id = R.string.hint_prompt)) },
         )
-        TextField(
+        if (state.mode == GenerationInputMode.AUTOMATIC1111) TextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
@@ -133,7 +146,7 @@ fun GenerationInputForm(
         }
         AnimatedVisibility(visible = state.advancedOptionsVisible) {
             Column {
-                DropdownTextField(
+                if (state.mode == GenerationInputMode.AUTOMATIC1111) DropdownTextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
@@ -155,7 +168,7 @@ fun GenerationInputForm(
                     label = { Text(stringResource(id = R.string.hint_seed)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
-                TextField(
+                if (state.mode == GenerationInputMode.AUTOMATIC1111) TextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
@@ -210,7 +223,7 @@ fun GenerationInputForm(
                     },
                 )
                 afterSlidersSection()
-                Row(
+                if (state.mode == GenerationInputMode.AUTOMATIC1111) Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
@@ -231,9 +244,10 @@ fun GenerationInputForm(
 
 @Composable
 @Preview(showBackground = true)
-private fun GenerationInputFormPreview() {
+private fun GenerationInputFormAutomaticPreview() {
     GenerationInputForm(
         state = object : GenerationMviState() {
+            override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111
             override val advancedToggleButtonVisible: Boolean = true
             override val advancedOptionsVisible: Boolean = false
             override val prompt: String = "Opel Astra H OPC"
@@ -257,9 +271,64 @@ private fun GenerationInputFormPreview() {
 
 @Composable
 @Preview(showBackground = true)
-private fun GenerationInputFormPreviewWithOptions() {
+private fun GenerationInputFormAutomaticWithOptionsPreview() {
     GenerationInputForm(
         state = object : GenerationMviState() {
+            override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111
+            override val advancedToggleButtonVisible: Boolean = false
+            override val advancedOptionsVisible: Boolean = true
+            override val prompt: String = "Opel Astra H OPC"
+            override val negativePrompt: String = "Bad roads"
+            override val width: String = "512"
+            override val height: String = "512"
+            override val samplingSteps: Int = 20
+            override val cfgScale: Float = 11.5f
+            override val restoreFaces: Boolean = true
+            override val seed: String = "-1"
+            override val subSeed: String = "-1"
+            override val subSeedStrength: Float = 0f
+            override val selectedSampler: String = "Euler a"
+            override val availableSamplers: List<String> = listOf("Euler a")
+            override val widthValidationError: UiText? = null
+            override val heightValidationError: UiText? = null
+            override val generateButtonEnabled: Boolean = true
+        },
+    )
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun GenerationInputFormHordePreview() {
+    GenerationInputForm(
+        state = object : GenerationMviState() {
+            override val mode: GenerationInputMode = GenerationInputMode.HORDE
+            override val advancedToggleButtonVisible: Boolean = true
+            override val advancedOptionsVisible: Boolean = false
+            override val prompt: String = "Opel Astra H OPC"
+            override val negativePrompt: String = "Bad roads"
+            override val width: String = "512"
+            override val height: String = "512"
+            override val samplingSteps: Int = 20
+            override val cfgScale: Float = 11.5f
+            override val restoreFaces: Boolean = true
+            override val seed: String = "-1"
+            override val subSeed: String = "-1"
+            override val subSeedStrength: Float = 0f
+            override val selectedSampler: String = "Euler a"
+            override val availableSamplers: List<String> = listOf("Euler a")
+            override val widthValidationError: UiText? = null
+            override val heightValidationError: UiText? = null
+            override val generateButtonEnabled: Boolean = true
+        },
+    )
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun GenerationInputFormHordeWithOptionsPreview() {
+    GenerationInputForm(
+        state = object : GenerationMviState() {
+            override val mode: GenerationInputMode = GenerationInputMode.HORDE
             override val advancedToggleButtonVisible: Boolean = false
             override val advancedOptionsVisible: Boolean = true
             override val prompt: String = "Opel Astra H OPC"

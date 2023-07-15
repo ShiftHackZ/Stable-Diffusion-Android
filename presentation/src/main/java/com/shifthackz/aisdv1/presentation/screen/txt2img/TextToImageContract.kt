@@ -5,12 +5,15 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 
 data class TextToImageState(
     val screenModal: Modal = Modal.None,
+    override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,
     override val advancedOptionsVisible: Boolean = false,
     override val prompt: String = "",
@@ -32,7 +35,7 @@ data class TextToImageState(
 
     sealed interface Modal {
         object None : Modal
-        object Communicating : Modal
+        data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
         object NoSdAiCoins : Modal
         object PromptBottomSheet : Modal
         data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Modal
@@ -40,6 +43,7 @@ data class TextToImageState(
     }
 
     override fun copyState(
+        mode: GenerationInputMode,
         advancedToggleButtonVisible: Boolean,
         advancedOptionsVisible: Boolean,
         prompt: String,
@@ -58,6 +62,7 @@ data class TextToImageState(
         heightValidationError: UiText?,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
+        mode = mode,
         advancedToggleButtonVisible = advancedToggleButtonVisible,
         advancedOptionsVisible = advancedOptionsVisible,
         prompt = prompt,

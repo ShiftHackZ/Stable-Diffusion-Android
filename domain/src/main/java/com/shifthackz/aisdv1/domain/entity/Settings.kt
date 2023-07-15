@@ -7,4 +7,6 @@ data class Settings(
     val monitorConnectivity: Boolean,
     val autoSaveAiResults: Boolean,
     val formAdvancedOptionsAlwaysShow: Boolean,
+    val source: ServerSource,
+    val hordeApiKey: String,
 )

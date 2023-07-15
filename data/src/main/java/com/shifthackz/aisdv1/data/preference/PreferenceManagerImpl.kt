@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.data.preference
 
 import android.content.SharedPreferences
 import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.reactivex.rxjava3.core.BackpressureStrategy
@@ -31,15 +32,15 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
-    override var useSdAiCloud: Boolean
-        get() = preferences.getBoolean(KEY_SD_AI_CLOUD_MODE, false)
-        set(value) = preferences.edit()
-            .putBoolean(KEY_SD_AI_CLOUD_MODE, value)
-            .apply()
-            .also { onPreferencesChanged() }
+    override val useSdAiCloud: Boolean
+        get() = source == ServerSource.SDAI
+//        set(value) = preferences.edit()
+//            .putBoolean(KEY_SD_AI_CLOUD_MODE, value)
+//            .apply()
+//            .also { onPreferencesChanged() }
 
     override var monitorConnectivity: Boolean
-        get() = if (useSdAiCloud) false
+        get() = if (source != ServerSource.CUSTOM) false
         else preferences.getBoolean(KEY_MONITOR_CONNECTIVITY, true)
         set(value) = preferences.edit()
             .putBoolean(KEY_MONITOR_CONNECTIVITY, value)
@@ -59,6 +60,24 @@ class PreferenceManagerImpl(
             .putBoolean(KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS, value)
             .apply()
             .also { onPreferencesChanged() }
+    override var source: ServerSource
+        get() = (preferences.getString(KEY_SERVER_SOURCE, ServerSource.CUSTOM.key) ?: ServerSource.CUSTOM.key)
+            .let(ServerSource.Companion::parse)
+        set(value) = preferences.edit()
+            .putString(KEY_SERVER_SOURCE, value.key)
+            .apply()
+            .also { onPreferencesChanged() }
+    override var hordeApiKey: String
+        get() = preferences.getString(KEY_HORDE_API_KEY, "") ?: ""
+        set(value) = preferences.edit()
+            .putString(KEY_HORDE_API_KEY, value)
+            .apply()
+            .also { onPreferencesChanged() }
+    override var forceSetupAfterUpdate: Boolean
+        get() = preferences.getBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, true)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, value)
+            .apply()
 
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
@@ -70,6 +89,8 @@ class PreferenceManagerImpl(
                 monitorConnectivity = monitorConnectivity,
                 autoSaveAiResults = autoSaveAiResults,
                 formAdvancedOptionsAlwaysShow = formAdvancedOptionsAlwaysShow,
+                source = source,
+                hordeApiKey = hordeApiKey,
             )
         }
 
@@ -78,9 +99,11 @@ class PreferenceManagerImpl(
     companion object {
         private const val KEY_SERVER_URL = "key_server_url"
         private const val KEY_DEMO_MODE = "key_demo_mode"
-        private const val KEY_SD_AI_CLOUD_MODE = "key_sd_ai_cloud_mode"
         private const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
         private const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
         private const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
+        private const val KEY_SERVER_SOURCE = "key_server_source"
+        private const val KEY_HORDE_API_KEY = "key_horde_api_key"
+        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.4.1-v0.4.2"
     }
 }

@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.core.validation.dimension
 
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 
-class DimensionValidatorImpl(
+internal class DimensionValidatorImpl(
     private val minimum: Int = MINIMUM,
     private val maximum: Int = MAXIMUM,
 ) : DimensionValidator {

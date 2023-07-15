@@ -3,9 +3,11 @@ package com.shifthackz.aisdv1.network.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
+import com.shifthackz.aisdv1.network.api.horde.HordeRestApi
 import com.shifthackz.aisdv1.network.api.sdai.AppUpdateRestApi
 import com.shifthackz.aisdv1.network.api.sdai.CoinsRestApi
 import com.shifthackz.aisdv1.network.api.sdai.MotdRestApi
+import com.shifthackz.aisdv1.network.authenticator.RestAuthenticator
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
 import com.shifthackz.aisdv1.network.interceptor.HeaderInterceptor
@@ -30,6 +32,8 @@ val networkModule = module {
 
     single<Gson> { GsonBuilder().create() }
 
+    single { RestAuthenticator(get()) }
+
     single {
         RetrofitConverterFactories(
             buildList {
@@ -49,7 +53,7 @@ val networkModule = module {
     single {
         HttpInterceptors(
             listOf(
-                HttpInterceptor(HeaderInterceptor(get())),
+                HttpInterceptor(HeaderInterceptor(get(), get())),
             )
         )
     }
@@ -68,6 +72,7 @@ val networkModule = module {
             .apply {
                 get<HttpInterceptors>().interceptors.forEach(::addInterceptor)
                 get<NetworkInterceptors>().interceptors.forEach(::addNetworkInterceptor)
+                authenticator(get<RestAuthenticator>())
             }
             .connectTimeout(HTTP_TIMEOUT, TimeUnit.MINUTES)
             .readTimeout(HTTP_TIMEOUT, TimeUnit.MINUTES)
@@ -106,6 +111,12 @@ val networkModule = module {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
             .create(MotdRestApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().hordeApiUrl)
+            .create(HordeRestApi::class.java)
     }
 
     factory {params ->

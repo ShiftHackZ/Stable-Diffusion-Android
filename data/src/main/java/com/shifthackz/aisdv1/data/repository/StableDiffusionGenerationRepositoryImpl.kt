@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.data.repository
 
+import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
 import com.shifthackz.aisdv1.domain.demo.ImageToImageDemo
@@ -17,7 +18,7 @@ internal class StableDiffusionGenerationRepositoryImpl(
     private val preferenceManager: PreferenceManager,
     private val textToImageDemo: TextToImageDemo,
     private val imageToImageDemo: ImageToImageDemo,
-) : StableDiffusionGenerationRepository {
+) : CoreGenerationRepository(localDataSource, preferenceManager), StableDiffusionGenerationRepository {
 
     override fun checkApiAvailability() = remoteDataSource.checkAvailability()
 
@@ -37,12 +38,5 @@ internal class StableDiffusionGenerationRepositoryImpl(
             else remoteDataSource.imageToImage(payload)
 
         return chain.flatMap(::insertGenerationResult)
-    }
-
-    private fun insertGenerationResult(ai: AiGenerationResult): Single<AiGenerationResult> {
-        if (!preferenceManager.autoSaveAiResults) return Single.just(ai)
-        return localDataSource
-            .insert(ai)
-            .map { id -> ai.copy(id) }
     }
 }

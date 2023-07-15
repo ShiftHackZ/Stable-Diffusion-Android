@@ -11,10 +11,13 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
@@ -22,6 +25,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
     preferenceManager: PreferenceManager,
     observeCoinsUseCase: ObserveCoinsUseCase,
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<S, E>() {
 
@@ -34,7 +38,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
                 onNext = { settings ->
                     currentState
                         .copyState(
-                            advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow
+                            mode = GenerationInputMode.fromSource(settings.source),
+                            advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow,
                         )
                         .let { state ->
                             if (!settings.formAdvancedOptionsAlwaysShow) state
@@ -57,6 +62,14 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
                         )
                         .let(::setGenerationState)
                 }
+            )
+
+        !observeHordeProcessStatusUseCase()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = ::errorLog,
+                onNext = ::onReceivedHordeStatus,
+                onComplete = EmptyLambda,
             )
 
         if (buildInfoProvider.buildType == BuildType.GOOGLE_PLAY) {
@@ -93,6 +106,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
             else state.copyState(selectedSampler = ai.sampler)
         }
         .let(::setGenerationState)
+
+    open fun onReceivedHordeStatus(status: HordeProcessStatus) {}
 
     fun toggleAdvancedOptions(value: Boolean) = currentState
         .copyState(advancedOptionsVisible = value)

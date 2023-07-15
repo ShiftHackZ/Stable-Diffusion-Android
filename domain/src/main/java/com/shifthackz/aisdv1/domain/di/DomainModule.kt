@@ -14,6 +14,8 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServ
 import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
@@ -24,6 +26,8 @@ import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCas
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
@@ -65,10 +69,12 @@ val domainModule = module {
     factoryOf(::GetConfigurationUseCaseImpl) bind GetConfigurationUseCase::class
     factoryOf(::SetServerConfigurationUseCaseImpl) bind SetServerConfigurationUseCase::class
     factoryOf(::TestConnectivityUseCaseImpl) bind TestConnectivityUseCase::class
+    factoryOf(::TestHordeApiKeyUseCaseImpl) bind TestHordeApiKeyUseCase::class
     factoryOf(::SaveGenerationResultUseCaseImpl) bind SaveGenerationResultUseCase::class
     factoryOf(::ObserveSeverConnectivityUseCaseImpl) bind ObserveSeverConnectivityUseCase::class
     factoryOf(::CheckAppVersionUpdateUseCaseImpl) bind CheckAppVersionUpdateUseCase::class
     factoryOf(::ObserveCoinsUseCaseImpl) bind ObserveCoinsUseCase::class
     factoryOf(::EarnRewardedCoinsUseCaseImpl) bind EarnRewardedCoinsUseCase::class
     factoryOf(::ObserveMotdUseCaseImpl) bind ObserveMotdUseCase::class
+    factoryOf(::ObserveHordeProcessStatusUseCaseImpl) bind ObserveHordeProcessStatusUseCase::class
 }

@@ -46,11 +46,14 @@ val viewModelModule = module {
             demoModeUrl = demoModeUrl,
             cloudUrl = cloudUrl,
             urlValidator = get(),
+            stringValidator = get(),
             testConnectivityUseCase = get(),
+            testHordeApiKeyUseCase = get(),
             setServerConfigurationUseCase = get(),
             dataPreLoaderUseCase = get(),
             schedulersProvider = get(),
             buildInfoProvider = get(),
+            preferenceManager = get(),
             analytics = get(),
         )
     }
