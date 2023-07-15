@@ -4,6 +4,8 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
+import com.shifthackz.aisdv1.domain.authorization.AuthorizationCredentials
+import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.utils.Constants
 
@@ -24,6 +26,12 @@ data class ServerSetupState(
     val hordeDefaultApiKey: Boolean = false,
     val demoMode: Boolean = false,
     val originalDemoMode: Boolean = false,
+    val authType: AuthType = AuthType.ANONYMOUS,
+    val originalAuthType: AuthType = AuthType.ANONYMOUS,
+    val login: String = "",
+    val originalLogin: String = "",
+    val password: String = "",
+    val originalPassword: String = "",
     val serverUrlValidationError: UiText? = null,
     val hordeApiKeyValidationError: UiText? = null,
 ) : MviState {
@@ -48,6 +56,21 @@ data class ServerSetupState(
         originalHordeApiKey = value,
         hordeDefaultApiKey = value == Constants.HORDE_DEFAULT_API_KEY,
     )
+
+    fun withAuthType(value: AuthType) = this.copy(
+        authType = value,
+        originalAuthType = value,
+    )
+
+    fun withCredentials(value: AuthorizationCredentials) = when (value) {
+        is AuthorizationCredentials.HttpBasic -> this.copy(
+            login = value.login,
+            originalLogin = value.login,
+            password = value.password,
+            originalPassword = value.password
+        )
+        AuthorizationCredentials.None -> this
+    }
 
     sealed interface Dialog {
         object None : Dialog
@@ -74,6 +97,11 @@ data class ServerSetupState(
             }
         }
     }
+
+    enum class AuthType {
+        ANONYMOUS,
+        HTTP_BASIC;
+    }
 }
 
 enum class ServerSetupLaunchSource(val key: Int) {
@@ -91,3 +119,27 @@ val BuildType.allowedModes: List<ServerSetupState.Mode>
         BuildType.FOSS -> listOf(ServerSetupState.Mode.OWN_SERVER, ServerSetupState.Mode.HORDE)
         BuildType.GOOGLE_PLAY -> ServerSetupState.Mode.values().toList()
     }
+
+val Configuration.authType: ServerSetupState.AuthType
+    get() {
+        val noCredentials = ServerSetupState.AuthType.ANONYMOUS
+        if (this.demoMode) return noCredentials
+        if (this.source != ServerSource.CUSTOM) return noCredentials
+        return when (this.authCredentials.key) {
+            AuthorizationCredentials.Key.NONE -> noCredentials
+            AuthorizationCredentials.Key.HTTP_BASIC -> ServerSetupState.AuthType.HTTP_BASIC
+        }
+    }
+
+fun ServerSetupState.credentialsDomain(original: Boolean = false): AuthorizationCredentials {
+    return when (this.authType) {
+        ServerSetupState.AuthType.ANONYMOUS -> AuthorizationCredentials.None
+        ServerSetupState.AuthType.HTTP_BASIC -> {
+            if (original) {
+                AuthorizationCredentials.HttpBasic(originalLogin, originalPassword)
+            } else {
+                AuthorizationCredentials.HttpBasic(login, password)
+            }
+        }
+    }
+}

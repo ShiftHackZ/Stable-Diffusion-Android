@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.network.api.horde.HordeRestApi
 import com.shifthackz.aisdv1.network.api.sdai.AppUpdateRestApi
 import com.shifthackz.aisdv1.network.api.sdai.CoinsRestApi
 import com.shifthackz.aisdv1.network.api.sdai.MotdRestApi
+import com.shifthackz.aisdv1.network.authenticator.RestAuthenticator
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
 import com.shifthackz.aisdv1.network.interceptor.HeaderInterceptor
@@ -30,6 +31,8 @@ private const val HTTP_TIMEOUT = 10L
 val networkModule = module {
 
     single<Gson> { GsonBuilder().create() }
+
+    single { RestAuthenticator(get()) }
 
     single {
         RetrofitConverterFactories(
@@ -69,6 +72,7 @@ val networkModule = module {
             .apply {
                 get<HttpInterceptors>().interceptors.forEach(::addInterceptor)
                 get<NetworkInterceptors>().interceptors.forEach(::addNetworkInterceptor)
+                authenticator(get<RestAuthenticator>())
             }
             .connectTimeout(HTTP_TIMEOUT, TimeUnit.MINUTES)
             .readTimeout(HTTP_TIMEOUT, TimeUnit.MINUTES)

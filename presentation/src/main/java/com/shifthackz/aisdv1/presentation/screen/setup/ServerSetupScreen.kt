@@ -27,6 +27,7 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -49,6 +50,9 @@ class ServerSetupScreen(
             onNavigateBack = onNavigateBack,
             onServerModeUpdated = viewModel::updateServerMode,
             onServerUrlUpdated = viewModel::updateServerUrl,
+            onAuthTypeSelected = viewModel::updateAuthType,
+            onLoginUpdated = viewModel::updateLogin,
+            onPasswordUpdated = viewModel::updatePassword,
             onHordeApiKeyUpdated = viewModel::updateHordeApiKey,
             onDemoModeUpdated = viewModel::updateDemoMode,
             onHordeDefaultApiKeyUsageUpdated = viewModel::updateHordeDefaultApiKeyUsage,
@@ -73,6 +77,9 @@ private fun ScreenContent(
     onNavigateBack: () -> Unit = {},
     onServerModeUpdated: (ServerSetupState.Mode) -> Unit = {},
     onServerUrlUpdated: (String) -> Unit = {},
+    onAuthTypeSelected: (ServerSetupState.AuthType) -> Unit = {},
+    onLoginUpdated: (String) -> Unit = {},
+    onPasswordUpdated: (String) -> Unit = {},
     onHordeApiKeyUpdated: (String) -> Unit = {},
     onDemoModeUpdated: (Boolean) -> Unit = {},
     onHordeDefaultApiKeyUsageUpdated: (Boolean) -> Unit = {},
@@ -145,6 +152,9 @@ private fun ScreenContent(
                             state = state,
                             demoModeUrl =  demoModeUrl,
                             onServerUrlUpdated = onServerUrlUpdated,
+                            onAuthTypeSelected = onAuthTypeSelected,
+                            onLoginUpdated = onLoginUpdated,
+                            onPasswordUpdated = onPasswordUpdated,
                             onDemoModeUpdated = onDemoModeUpdated,
                             onServerInstructionsItemClick = onServerInstructionsItemClick,
                         )
@@ -178,6 +188,9 @@ private fun OwnServerSetupTab(
     state: ServerSetupState,
     demoModeUrl: String,
     onServerUrlUpdated: (String) -> Unit = {},
+    onAuthTypeSelected: (ServerSetupState.AuthType) -> Unit = {},
+    onLoginUpdated: (String) -> Unit = {},
+    onPasswordUpdated: (String) -> Unit = {},
     onDemoModeUpdated: (Boolean) -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
 ) {
@@ -209,6 +222,41 @@ private fun OwnServerSetupTab(
                     ?.let { Text(it.asString()) }
             },
         )
+        if (!state.demoMode) {
+            DropdownTextField(
+                modifier = Modifier.fillMaxWidth(),
+                label = "Authorization".asUiText(),
+                items = ServerSetupState.AuthType.values().toList(),
+                value = state.authType,
+                onItemSelected = onAuthTypeSelected,
+                displayDelegate = { type ->
+                    when (type) {
+                        ServerSetupState.AuthType.ANONYMOUS -> R.string.auth_anonymous
+                        ServerSetupState.AuthType.HTTP_BASIC -> R.string.auth_http_basic
+                    }.asUiText()
+                }
+            )
+            when (state.authType) {
+                ServerSetupState.AuthType.HTTP_BASIC -> {
+                    val fieldModifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                    TextField(
+                        modifier = fieldModifier,
+                        value = state.login,
+                        onValueChange = onLoginUpdated,
+                        label = { Text(stringResource(id = R.string.hint_login)) },
+                    )
+                    TextField(
+                        modifier = fieldModifier,
+                        value = state.password,
+                        onValueChange = onPasswordUpdated,
+                        label = { Text(stringResource(id = R.string.hint_password)) },
+                    )
+                }
+                else -> Unit
+            }
+        }
         SettingsItem(
             modifier = Modifier
                 .padding(top = 16.dp)
@@ -239,7 +287,7 @@ private fun OwnServerSetupTab(
             color = MaterialTheme.colorScheme.secondary,
         )
         Text(
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
             text = stringResource(
                 if (state.demoMode) R.string.hint_demo_mode
                 else R.string.hint_valid_urls,
@@ -318,9 +366,7 @@ private fun HordeAiSetupTab(
             },
         )
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(

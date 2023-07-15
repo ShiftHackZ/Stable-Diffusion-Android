@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.horde.HordeApiKeyValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.authorization.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
@@ -23,7 +24,6 @@ import com.shifthackz.aisdv1.presentation.features.SetupConnectFailure
 import com.shifthackz.aisdv1.presentation.features.SetupConnectSuccess
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -58,6 +58,8 @@ class ServerSetupViewModel(
                     .withSource(configuration.source)
                     .withDemoMode(configuration.demoMode)
                     .withServerUrl(configuration.serverUrl)
+                    .withAuthType(configuration.authType)
+                    .withCredentials(configuration.authCredentials)
                     .withHordeApiKey(configuration.hordeApiKey)
                     .let(::setState)
             }
@@ -69,6 +71,18 @@ class ServerSetupViewModel(
 
     fun updateServerUrl(value: String) = currentState
         .copy(serverUrl = value, serverUrlValidationError = null)
+        .let(::setState)
+
+    fun updateAuthType(value: ServerSetupState.AuthType) = currentState
+        .copy(authType = value)
+        .let(::setState)
+
+    fun updateLogin(value: String) = currentState
+        .copy(login = value)
+        .let(::setState)
+
+    fun updatePassword(value: String) = currentState
+        .copy(password = value)
         .let(::setState)
 
     fun updateHordeApiKey(value: String) = currentState
@@ -119,26 +133,31 @@ class ServerSetupViewModel(
             ServerSetupState.Mode.SD_AI_CLOUD -> cloudUrl
             else -> if (demoMode) demoModeUrl else currentState.serverUrl
         }
+        val credentials = when (currentState.mode) {
+            ServerSetupState.Mode.OWN_SERVER -> {
+                if (!demoMode) currentState.credentialsDomain()
+                else AuthorizationCredentials.None
+            }
+            else -> AuthorizationCredentials.None
+        }
         analytics.logEvent(SetupConnectEvent(connectUrl, demoMode))
-        !testConnectivityUseCase(connectUrl)
+        !setServerConfigurationUseCase(
+            Configuration(
+                serverUrl = connectUrl,
+                demoMode = demoMode,
+                source = currentState.mode.toSource(),
+                hordeApiKey = currentState.hordeApiKey,
+                authCredentials = credentials,
+            )
+        )
             .doOnSubscribe { setScreenDialog(ServerSetupState.Dialog.Communicating) }
+            .andThen(testConnectivityUseCase(connectUrl))
             .andThen(
-                Completable.concatArray(
-                    setServerConfigurationUseCase(
-                        Configuration(
-                            serverUrl = connectUrl,
-                            demoMode = demoMode,
-                            source = currentState.mode.toSource(),
-                            hordeApiKey = currentState.hordeApiKey,
-                        ),
-                    ),
-                    Observable
-                        .timer(5L, TimeUnit.SECONDS)
-                        .flatMapCompletable {
-                            dataPreLoaderUseCase()
-                                .retryWithDelay(3L, 1L, TimeUnit.SECONDS)
-                        }
-                )
+                Observable
+                    .timer(5L, TimeUnit.SECONDS)
+                    .flatMapCompletable {
+                        dataPreLoaderUseCase().retryWithDelay(3L, 1L, TimeUnit.SECONDS)
+                    }
             )
             .andThen(Single.just(Result.success(Unit)))
             .timeout(30L, TimeUnit.SECONDS)
@@ -150,6 +169,7 @@ class ServerSetupViewModel(
                         demoMode =  currentState.originalDemoMode,
                         source = currentState.originalMode.toSource(),
                         hordeApiKey = currentState.originalHordeApiKey,
+                        authCredentials = currentState.credentialsDomain(true),
                     ),
                 ).andThen(Single.just(Result.failure(t)))
             }
@@ -175,10 +195,11 @@ class ServerSetupViewModel(
 
         !setServerConfigurationUseCase(
             Configuration(
-                serverUrl = "http://127.0.0.1",
+                serverUrl = "",
                 demoMode = false,
                 source = ServerSource.HORDE,
                 hordeApiKey = testApiKey,
+                authCredentials = AuthorizationCredentials.None,
             ),
         )
             .andThen(testHordeApiKeyUseCase())
@@ -194,6 +215,7 @@ class ServerSetupViewModel(
                         demoMode =  currentState.originalDemoMode,
                         source = currentState.originalMode.toSource(),
                         hordeApiKey = currentState.originalHordeApiKey,
+                        authCredentials = AuthorizationCredentials.None,
                     )
                 ).andThen(Single.just(Result.failure(t)))
             }

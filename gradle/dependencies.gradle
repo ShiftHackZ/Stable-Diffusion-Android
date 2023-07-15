@@ -24,6 +24,7 @@ ext {
     gsonVersion = '2.10.1'
     googleMaterialVersion = '1.9.0'
     accompanistSystemUiControllerVersion = '0.30.1'
+    cryptoVersion = '1.0.0'
 
     firebaseBomVersion = '32.0.0'
     playServicesAdsVersion = '22.1.0'
@@ -50,6 +51,7 @@ ext {
             pagingRuntime               : "androidx.paging:paging-runtime:$pagingVersion",
             pagingRx3                   : "androidx.paging:paging-rxjava3:$pagingVersion",
             pagingCompose               : "androidx.paging:paging-compose:$pagingComposeVersion",
+            crypto                      : "androidx.security:security-crypto:$cryptoVersion",
     ]
     google = [
             gson                         : "com.google.code.gson:gson:$gsonVersion",

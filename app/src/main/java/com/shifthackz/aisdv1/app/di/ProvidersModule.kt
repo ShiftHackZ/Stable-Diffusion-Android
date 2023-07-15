@@ -7,8 +7,11 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.domain.authorization.AuthorizationCredentials
+import com.shifthackz.aisdv1.domain.authorization.AuthorizationStore
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
+import com.shifthackz.aisdv1.network.qualifiers.CredentialsProvider
 import com.shifthackz.aisdv1.network.qualifiers.HordeApiKeyProvider
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
@@ -36,6 +39,21 @@ val providersModule = module {
 
     single {
         HordeApiKeyProvider { get<PreferenceManager>().hordeApiKey }
+    }
+
+    single<CredentialsProvider> {
+        object : CredentialsProvider {
+            override fun invoke(): CredentialsProvider.Data {
+                val store = get<AuthorizationStore>()
+                return when (val credentials = store.getAuthorizationCredentials()) {
+                    is AuthorizationCredentials.HttpBasic -> CredentialsProvider.Data.HttpBasic(
+                        login = credentials.login,
+                        password = credentials.password,
+                    )
+                    else -> CredentialsProvider.Data.None
+                }
+            }
+        }
     }
 
     single<LinksProvider> {

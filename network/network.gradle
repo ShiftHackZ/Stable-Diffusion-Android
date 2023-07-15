@@ -12,6 +12,7 @@ android {
 
 dependencies {
     implementation project(":core:common")
+    implementation project(":feature:auth")
     implementation google.gson
     implementation retrofit.core
     implementation retrofit.converterGson
