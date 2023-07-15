@@ -13,6 +13,7 @@ interface PreferenceManager {
     var formAdvancedOptionsAlwaysShow: Boolean
     var source: ServerSource
     var hordeApiKey: String
+    var forceSetupAfterUpdate: Boolean
 
     fun observe(): Flowable<Settings>
 }

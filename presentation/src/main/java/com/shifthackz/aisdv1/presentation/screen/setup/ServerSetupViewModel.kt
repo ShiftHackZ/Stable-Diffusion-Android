@@ -14,6 +14,7 @@ import com.shifthackz.aisdv1.domain.authorization.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
@@ -42,6 +43,7 @@ class ServerSetupViewModel(
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val buildInfoProvider: BuildInfoProvider,
+    private val preferenceManager: PreferenceManager,
     private val analytics: Analytics,
 ) : MviRxViewModel<ServerSetupState, ServerSetupEffect>() {
 
@@ -192,11 +194,7 @@ class ServerSetupViewModel(
             }
             .subscribeBy(::errorLog) { result ->
                 result.fold(
-                    onSuccess = {
-                        analytics.logEvent(SetupConnectSuccess)
-                        dismissScreenDialog()
-                        emitEffect(ServerSetupEffect.CompleteSetup)
-                    },
+                    onSuccess = { onSetupComplete() },
                     onFailure = { t ->
                         val message = t.localizedMessage ?: "Error connecting to server"
                         analytics.logEvent(SetupConnectFailure(message))
@@ -239,11 +237,7 @@ class ServerSetupViewModel(
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { result ->
                 result.fold(
-                    onSuccess = {
-                        analytics.logEvent(SetupConnectSuccess)
-                        dismissScreenDialog()
-                        emitEffect(ServerSetupEffect.CompleteSetup)
-                    },
+                    onSuccess = { onSetupComplete() },
                     onFailure = { t ->
                         val message = t.localizedMessage ?: "Bad key"
                         analytics.logEvent(SetupConnectFailure(message))
@@ -256,4 +250,11 @@ class ServerSetupViewModel(
     private fun setScreenDialog(value: ServerSetupState.Dialog) = currentState
         .copy(screenDialog = value)
         .let(::setState)
+
+    private fun onSetupComplete() {
+        preferenceManager.forceSetupAfterUpdate = false
+        analytics.logEvent(SetupConnectSuccess)
+        dismissScreenDialog()
+        emitEffect(ServerSetupEffect.CompleteSetup)
+    }
 }

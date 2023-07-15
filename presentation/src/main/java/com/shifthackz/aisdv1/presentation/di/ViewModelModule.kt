@@ -53,6 +53,7 @@ val viewModelModule = module {
             dataPreLoaderUseCase = get(),
             schedulersProvider = get(),
             buildInfoProvider = get(),
+            preferenceManager = get(),
             analytics = get(),
         )
     }

@@ -73,6 +73,11 @@ class PreferenceManagerImpl(
             .putString(KEY_HORDE_API_KEY, value)
             .apply()
             .also { onPreferencesChanged() }
+    override var forceSetupAfterUpdate: Boolean
+        get() = preferences.getBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, true)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, value)
+            .apply()
 
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
@@ -99,5 +104,6 @@ class PreferenceManagerImpl(
         private const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
         private const val KEY_SERVER_SOURCE = "key_server_source"
         private const val KEY_HORDE_API_KEY = "key_horde_api_key"
+        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.4.1-v0.4.2"
     }
 }
