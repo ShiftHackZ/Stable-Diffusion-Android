@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
@@ -25,7 +26,6 @@ import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.NoSdAiCoinsDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
-import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialogStatus
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import org.koin.androidx.compose.koinViewModel
 
@@ -36,7 +36,7 @@ class TextToImageScreen(
 
     @Composable
     override fun Content() {
-        val state = viewModel.state.collectAsState().value
+        val state = viewModel.state.collectAsStateWithLifecycle().value
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,

@@ -30,6 +30,7 @@ dependencies {
 
     api androidx.composeUiGraphics
     api androidx.lifecycleViewModel
+    api androidx.lifecycleCompose
     api google.accompanistSystemUiController
 
     implementation reactive.rxjava

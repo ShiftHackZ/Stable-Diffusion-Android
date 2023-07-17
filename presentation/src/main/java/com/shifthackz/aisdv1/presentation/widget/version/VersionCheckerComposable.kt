@@ -8,11 +8,11 @@ import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
@@ -29,7 +29,7 @@ class VersionCheckerComposable(
 
     @Composable
     override fun Content() {
-        val state = viewModel.state.collectAsState().value
+        val state = viewModel.state.collectAsStateWithLifecycle().value
         if (state == VersionCheckerState.Idle) return
         Box(Modifier.fillMaxSize()) {
             (state as VersionCheckerState.UpdatePopUp)

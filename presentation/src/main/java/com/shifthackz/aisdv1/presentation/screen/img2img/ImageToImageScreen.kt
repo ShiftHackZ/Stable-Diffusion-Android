@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
@@ -50,7 +50,7 @@ class ImageToImageScreen(
     override fun Content() {
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
-            state = viewModel.state.collectAsState().value,
+            state = viewModel.state.collectAsStateWithLifecycle().value,
             onPickImage = { pickImage(viewModel::updateInputImage) },
             onTakePhoto = { takePhoto(viewModel::updateInputImage) },
             onClearPhoto = viewModel::clearInputImage,

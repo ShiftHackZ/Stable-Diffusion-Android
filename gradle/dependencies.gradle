@@ -4,6 +4,7 @@ ext {
     composeUiToolingVersion = '1.4.3'
     composeNavVersion = '2.5.3'
     lifecycleViewModelVersion = '2.6.1'
+    lifecycleComposeVersion = '2.6.0'
     coreKtxVersion = '1.10.1'
     appCompatVersion = '1.6.1'
     activityVersion = '1.7.1'
@@ -48,6 +49,7 @@ ext {
             composeViewModel            : "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleViewModelVersion",
             composeNavigation           : "androidx.navigation:navigation-compose:$composeNavVersion",
             lifecycleViewModel          : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleViewModelVersion",
+            lifecycleCompose            : "androidx.lifecycle:lifecycle-runtime-compose:$lifecycleComposeVersion",
             pagingRuntime               : "androidx.paging:paging-runtime:$pagingVersion",
             pagingRx3                   : "androidx.paging:paging-rxjava3:$pagingVersion",
             pagingCompose               : "androidx.paging:paging-compose:$pagingComposeVersion",

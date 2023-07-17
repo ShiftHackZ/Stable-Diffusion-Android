@@ -8,10 +8,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 
@@ -21,7 +21,7 @@ class MotdComposable(
 
     @Composable
     override fun Content() {
-        val state = viewModel.state.collectAsState().value
+        val state = viewModel.state.collectAsStateWithLifecycle().value
         if (state == MotdState.Hidden) return
         (state as? MotdState.Content)?.let { (title, subTitle) ->
             Column(
