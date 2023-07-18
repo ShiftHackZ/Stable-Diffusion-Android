@@ -3,8 +3,8 @@
 package com.shifthackz.aisdv1.core.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.viewmodel.MviViewModel
 
 @Composable
@@ -29,7 +29,7 @@ fun <S : MviState, E : MviEffect> MviComposable(
 
     @Composable
     override fun Content() {
-        val state = viewModel.state.collectAsState().value
+        val state = viewModel.state.collectAsStateWithLifecycle().value
         content(state)
     }
 

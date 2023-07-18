@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -19,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -48,7 +48,7 @@ class GalleryDetailScreen(
     override fun Content() {
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
-            state = viewModel.state.collectAsState().value,
+            state = viewModel.state.collectAsStateWithLifecycle().value,
             adFeature = adFeature,
             onNavigateBack = onNavigateBack,
             onTabSelected = viewModel::selectTab,
