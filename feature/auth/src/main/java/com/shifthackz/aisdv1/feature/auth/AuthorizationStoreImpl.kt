@@ -1,7 +1,6 @@
 package com.shifthackz.aisdv1.feature.auth
 
 import android.content.SharedPreferences
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.domain.authorization.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.authorization.AuthorizationStore
@@ -12,13 +11,10 @@ internal class AuthorizationStoreImpl(
 
     override fun getAuthorizationCredentials(): AuthorizationCredentials {
         val typeKey = getCredentialsTypeKey()
-        val credentials = getCredentials(typeKey)
-        debugLog("READ -> $credentials")
-        return credentials
+        return getCredentials(typeKey)
     }
 
     override fun storeAuthorizationCredentials(credentials: AuthorizationCredentials) {
-        debugLog("WRITE -> $credentials")
         saveCredentialsTypeKey(credentials.key)
         saveCredentials(credentials)
     }

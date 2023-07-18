@@ -32,13 +32,6 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
-    override val useSdAiCloud: Boolean
-        get() = source == ServerSource.SDAI
-//        set(value) = preferences.edit()
-//            .putBoolean(KEY_SD_AI_CLOUD_MODE, value)
-//            .apply()
-//            .also { onPreferencesChanged() }
-
     override var monitorConnectivity: Boolean
         get() = if (source != ServerSource.CUSTOM) false
         else preferences.getBoolean(KEY_MONITOR_CONNECTIVITY, true)
@@ -46,6 +39,7 @@ class PreferenceManagerImpl(
             .putBoolean(KEY_MONITOR_CONNECTIVITY, value)
             .apply()
             .also { onPreferencesChanged() }
+
 
     override var autoSaveAiResults: Boolean
         get() = preferences.getBoolean(KEY_AI_AUTO_SAVE, true)
@@ -60,6 +54,7 @@ class PreferenceManagerImpl(
             .putBoolean(KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS, value)
             .apply()
             .also { onPreferencesChanged() }
+
     override var source: ServerSource
         get() = (preferences.getString(KEY_SERVER_SOURCE, ServerSource.CUSTOM.key) ?: ServerSource.CUSTOM.key)
             .let(ServerSource.Companion::parse)
@@ -67,17 +62,22 @@ class PreferenceManagerImpl(
             .putString(KEY_SERVER_SOURCE, value.key)
             .apply()
             .also { onPreferencesChanged() }
+
     override var hordeApiKey: String
         get() = preferences.getString(KEY_HORDE_API_KEY, "") ?: ""
         set(value) = preferences.edit()
             .putString(KEY_HORDE_API_KEY, value)
             .apply()
             .also { onPreferencesChanged() }
+
     override var forceSetupAfterUpdate: Boolean
         get() = preferences.getBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, true)
         set(value) = preferences.edit()
             .putBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, value)
             .apply()
+
+    override val useSdAiCloud: Boolean
+        get() = source == ServerSource.SDAI
 
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)

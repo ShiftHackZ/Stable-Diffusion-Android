@@ -7,13 +7,14 @@ import io.reactivex.rxjava3.core.Flowable
 interface PreferenceManager {
     var serverUrl: String
     var demoMode: Boolean
-    val useSdAiCloud: Boolean
     var monitorConnectivity: Boolean
     var autoSaveAiResults: Boolean
     var formAdvancedOptionsAlwaysShow: Boolean
     var source: ServerSource
     var hordeApiKey: String
     var forceSetupAfterUpdate: Boolean
+
+    val useSdAiCloud: Boolean
 
     fun observe(): Flowable<Settings>
 }
