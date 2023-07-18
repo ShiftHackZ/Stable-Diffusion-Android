@@ -1,5 +1,5 @@
 apply from: "$project.rootDir/gradle/ci.gradle"
-apply from: "$project.rootDir/gradle/dependencies.gradle"
+apply from: "$project.rootDir/dependencies.gradle"
 
 android {
     compileSdk rootProject.ext.targetSdk
