@@ -9,12 +9,14 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import kotlinx.coroutines.flow.Flow
 
 class GalleryViewModel(
+    private val getMediaStoreInfoUseCase: GetMediaStoreInfoUseCase,
     private val getGenerationResultPagedUseCase: GetGenerationResultPagedUseCase,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val galleryExporter: GalleryExporter,
@@ -41,6 +43,13 @@ class GalleryViewModel(
     )
 
     val pagingFlow: Flow<PagingData<GalleryGridItemUi>> = pager.flow
+
+    init {
+        !getMediaStoreInfoUseCase()
+            .map { info -> currentState.copy(mediaStoreInfo = info) }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog, ::setState)
+    }
 
     fun dismissScreenDialog() = setActiveDialog(GalleryState.Dialog.None)
 

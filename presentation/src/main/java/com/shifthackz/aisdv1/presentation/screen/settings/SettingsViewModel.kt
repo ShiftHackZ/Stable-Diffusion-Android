@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUs
 import com.shifthackz.aisdv1.presentation.features.AutoSaveAiResultsChanged
 import com.shifthackz.aisdv1.presentation.features.FormAdvancedOptionsAlwaysShowChanged
 import com.shifthackz.aisdv1.presentation.features.MonitorConnectionChanged
+import com.shifthackz.aisdv1.presentation.features.SaveToMediaStoreChanged
 import com.shifthackz.aisdv1.presentation.features.SdModelSelected
 import com.shifthackz.aisdv1.presentation.features.SettingsCacheCleared
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -79,6 +80,12 @@ class SettingsViewModel(
         ?.copy(autoSaveAiResults = value)
         ?.let(::setState)
         ?.also { analytics.logEvent(AutoSaveAiResultsChanged(value)) }
+
+    fun changeSaveToMediaStoreSetting(value: Boolean) = (currentState as? SettingsState.Content)
+        ?.also { preferenceManager.saveToMediaStore = value }
+        ?.copy(saveToMediaStore = value)
+        ?.let(::setState)
+        ?.also { analytics.logEvent(SaveToMediaStoreChanged(value)) }
 
     fun changeFormAdvancedOptionsAlwaysShow(value: Boolean) = (currentState as? SettingsState.Content)
         ?.also { preferenceManager.formAdvancedOptionsAlwaysShow = value }

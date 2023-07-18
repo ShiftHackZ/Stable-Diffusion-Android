@@ -27,6 +27,7 @@ class SettingsStateProducer(
             sdModelSelected = modelData.firstOrNull { it.second }?.first?.title ?: "",
             monitorConnectivity = preferenceManager.monitorConnectivity,
             autoSaveAiResults = preferenceManager.autoSaveAiResults,
+            saveToMediaStore = preferenceManager.saveToMediaStore,
             formAdvancedOptionsAlwaysShow = preferenceManager.formAdvancedOptionsAlwaysShow,
             appVersion = version,
             showRewardedSdAiAd = preferenceManager.useSdAiCloud,

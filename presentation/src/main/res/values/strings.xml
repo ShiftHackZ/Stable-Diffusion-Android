@@ -117,6 +117,7 @@
     <string name="settings_item_demo">Demo mode</string>
     <string name="settings_item_monitor_connection">Monitor connection</string>
     <string name="settings_item_auto_save">Auto save images</string>
+    <string name="settings_item_auto_save_media_store">Auto save to Downloads</string>
     <string name="settings_item_advanced_form_default">Always show advanced options</string>
     <string name="settings_item_clear_cache">Clear app &amp; gallery cache</string>
 

@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.home
 
+import android.content.Intent
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -26,6 +27,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     takePhoto: (ImagePickerCallback) -> Unit = {},
     shareGalleryFile: (File) -> Unit = {},
     openGalleryItemDetails: (Long) -> Unit = {},
+    launchIntent: (Intent) -> Unit = {},
     launchSetup: () -> Unit = {},
     launchUpdateCheck: () -> Unit = {},
     launchInAppReview: () -> Unit = {},
@@ -49,6 +51,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                     galleryTab(
                         shareGalleryFile = shareGalleryFile,
                         openGalleryItemDetails = openGalleryItemDetails,
+                        launchIntent = launchIntent,
                     ),
                     settingsTab(
                         launchSetup = launchSetup,
@@ -108,6 +111,7 @@ private fun img2imgTab(
 private fun galleryTab(
     shareGalleryFile: (File) -> Unit = {},
     openGalleryItemDetails: (Long) -> Unit = {},
+    launchIntent: (Intent) -> Unit = {},
 ) = HomeNavigationItem(
     name = stringResource(R.string.home_tab_gallery),
     route = Constants.ROUTE_GALLERY,
@@ -120,6 +124,7 @@ private fun galleryTab(
             viewModel = koinViewModel(),
             shareGalleryFile = shareGalleryFile,
             openGalleryItemDetails = openGalleryItemDetails,
+            launchIntent = launchIntent,
         ).Build()
     },
 )

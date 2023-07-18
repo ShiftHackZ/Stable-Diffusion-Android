@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.feature.auth.di
 
-import com.shifthackz.aisdv1.domain.authorization.AuthorizationStore
+import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
 import com.shifthackz.aisdv1.feature.auth.AuthorizationStoreImpl
 import com.shifthackz.aisdv1.feature.auth.crypto.CryptoProvider
 import com.shifthackz.aisdv1.feature.auth.crypto.CryptoProviderImpl

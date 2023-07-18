@@ -2,8 +2,8 @@ package com.shifthackz.aisdv1.feature.auth
 
 import android.content.SharedPreferences
 import com.shifthackz.aisdv1.core.common.log.errorLog
-import com.shifthackz.aisdv1.domain.authorization.AuthorizationCredentials
-import com.shifthackz.aisdv1.domain.authorization.AuthorizationStore
+import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
+import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
 
 internal class AuthorizationStoreImpl(
     private val preferences: SharedPreferences,

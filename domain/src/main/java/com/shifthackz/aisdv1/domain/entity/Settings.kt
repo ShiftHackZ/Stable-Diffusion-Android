@@ -6,6 +6,7 @@ data class Settings(
     val useSdAiCloud: Boolean,
     val monitorConnectivity: Boolean,
     val autoSaveAiResults: Boolean,
+    val saveToMediaStore: Boolean,
     val formAdvancedOptionsAlwaysShow: Boolean,
     val source: ServerSource,
     val hordeApiKey: String,

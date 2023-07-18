@@ -61,6 +61,11 @@ data class AutoSaveAiResultsChanged(val value: Boolean) : AnalyticsEvent(
     parameters = mapOf("enabled" to "$value"),
 )
 
+data class SaveToMediaStoreChanged(val value: Boolean) : AnalyticsEvent(
+    name = "settings_save_to_media_store_change",
+    parameters = mapOf("enabled" to "$value"),
+)
+
 data class FormAdvancedOptionsAlwaysShowChanged(val value: Boolean) : AnalyticsEvent(
     name = "settings_form_advanced_options_always_show_change",
     parameters = mapOf("enabled" to "$value"),

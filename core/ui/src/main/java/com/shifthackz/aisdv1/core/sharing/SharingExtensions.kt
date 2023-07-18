@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.core.sharing
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.shifthackz.aisdv1.core.extensions.uriFromFile
+import com.shifthackz.aisdv1.core.common.extensions.uriFromFile
 import java.io.File
 
 fun Context.shareText(

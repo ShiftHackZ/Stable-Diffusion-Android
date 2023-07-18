@@ -16,6 +16,7 @@ android {
 }
 
 dependencies {
+    api project(":core:common")
     api platform(androidx.composeBom)
     api androidx.composeRuntime
     api androidx.composeMaterial3

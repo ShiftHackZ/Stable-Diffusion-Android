@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.core.extensions
+package com.shifthackz.aisdv1.core.common.extensions
 
 import android.content.Context
 import android.content.Intent

@@ -15,10 +15,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.shifthackz.aisdv1.core.common.extensions.openMarket
+import com.shifthackz.aisdv1.core.common.extensions.openUrl
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.log.debugLog
-import com.shifthackz.aisdv1.core.extensions.openMarket
-import com.shifthackz.aisdv1.core.extensions.openUrl
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.presentation.features.*
@@ -151,6 +151,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                 navController
                                     .navigate("${Constants.ROUTE_GALLERY_DETAIL}/$galleryItemId")
                             },
+                            launchIntent = ::startActivity,
                             launchSetup = {
                                 analytics.logEvent(SettingsConfigurationClick)
                                 navController.navigate(
