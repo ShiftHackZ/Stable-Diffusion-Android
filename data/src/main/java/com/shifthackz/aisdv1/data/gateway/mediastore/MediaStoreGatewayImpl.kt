@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.data.gateway
+package com.shifthackz.aisdv1.data.gateway.mediastore
 
 import android.content.ContentUris
 import android.content.ContentValues
@@ -14,6 +14,12 @@ import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import java.io.File
 
+/**
+ * Implementation to support actual Android versions (13 and higher).
+ *
+ * Tested on:
+ * - Android 13 API 33 (Google Pixel 7 Pro, Graphene OS) - 18.07.2023
+ */
 internal class MediaStoreGatewayImpl(
     private val context: Context,
     private val fileProviderDescriptor: FileProviderDescriptor,
@@ -74,12 +80,6 @@ internal class MediaStoreGatewayImpl(
     }
 
     override fun getInfo(): MediaStoreInfo {
-//        val directory: File? = context.getExternalFilesDir("/storage/emulated/0/Documents/SDAI")
-//        return directory?.let { dir ->
-//            debugLog("DIR: $dir")
-//            val uri = context.uriFromFile(dir, fileProviderDescriptor.providerPath)
-//            MediaStoreInfo(dir.listFiles()?.size ?: 0, uri)
-//        } ?: MediaStoreInfo()
         val extVolumeUri: Uri = MediaStore.Files.getContentUri("external")
         val cursor = context.contentResolver.query(
             extVolumeUri,
@@ -96,9 +96,7 @@ internal class MediaStoreGatewayImpl(
                 ?.takeIf(File::exists)
                 ?.takeIf(File::isDirectory)
                 ?.let { dir ->
-                    debugLog("DIR: $dir")
                     val uri = context.uriFromFile(dir, fileProviderDescriptor.providerPath)
-//                    val uri = Uri.fromFile(dir)
                     MediaStoreInfo(dir.listFiles()?.size ?: 0, uri)
                 }
                 ?: MediaStoreInfo()

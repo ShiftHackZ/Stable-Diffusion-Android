@@ -34,6 +34,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     launchUrl: (String) -> Unit = {},
     launchRewarded: () -> Unit = {},
     shareLogFile: () -> Unit = {},
+    requestStoragePermissions: () -> Unit = {},
 ) {
     addDestination(
         ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
@@ -60,6 +61,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                         launchUrl = launchUrl,
                         launchRewarded = launchRewarded,
                         shareLogFile = shareLogFile,
+                        requestStoragePermissions = requestStoragePermissions,
                     ),
                 ),
             ).Build()
@@ -137,6 +139,7 @@ private fun settingsTab(
     launchUrl: (String) -> Unit = {},
     launchRewarded: () -> Unit = {},
     shareLogFile: () -> Unit = {},
+    requestStoragePermissions: () -> Unit = {},
 ) = HomeNavigationItem(
     stringResource(id = R.string.home_tab_settings),
     Constants.ROUTE_SETTINGS,
@@ -152,6 +155,7 @@ private fun settingsTab(
             launchUrl = launchUrl,
             launchRewarded = launchRewarded,
             shareLogFile = shareLogFile,
+            requestStoragePermissions = requestStoragePermissions,
         ).Build()
     }
 )

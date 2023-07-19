@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.core.Flowable
 
 class SettingsStateProducer(
     private val buildInfoProvider: BuildInfoProvider,
@@ -13,26 +13,28 @@ class SettingsStateProducer(
     private val preferenceManager: PreferenceManager,
 ) {
 
-    private val appVersionProducer = Single.fromCallable { buildInfoProvider.toString() }
+    private val appVersionProducer = Flowable.fromCallable { buildInfoProvider.toString() }
 
     private val sdModelsProducer = getStableDiffusionModelsUseCase()
+        .toFlowable()
         .onErrorReturn { emptyList() }
 
-    operator fun invoke(): Single<SettingsState> = Single.zip(
+    operator fun invoke(): Flowable<SettingsState> = Flowable.combineLatest(
         appVersionProducer,
         sdModelsProducer,
-    ) { version, modelData ->
+        preferenceManager.observe(),
+    ) { version, modelData, settings ->
         SettingsState.Content(
             sdModels = modelData.map { (model, _) -> model.title },
             sdModelSelected = modelData.firstOrNull { it.second }?.first?.title ?: "",
-            monitorConnectivity = preferenceManager.monitorConnectivity,
-            autoSaveAiResults = preferenceManager.autoSaveAiResults,
-            saveToMediaStore = preferenceManager.saveToMediaStore,
-            formAdvancedOptionsAlwaysShow = preferenceManager.formAdvancedOptionsAlwaysShow,
+            monitorConnectivity = settings.monitorConnectivity,
+            autoSaveAiResults = settings.autoSaveAiResults,
+            saveToMediaStore = settings.saveToMediaStore,
+            formAdvancedOptionsAlwaysShow = settings.formAdvancedOptionsAlwaysShow,
             appVersion = version,
-            showRewardedSdAiAd = preferenceManager.useSdAiCloud,
-            showSdModelSelector = preferenceManager.source == ServerSource.CUSTOM,
-            showMonitorConnectionOption = preferenceManager.source == ServerSource.CUSTOM,
+            showRewardedSdAiAd = settings.useSdAiCloud,
+            showSdModelSelector = settings.source == ServerSource.CUSTOM,
+            showMonitorConnectionOption = settings.source == ServerSource.CUSTOM,
             showRateGooglePlay = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
             showGitHubLink = buildInfoProvider.buildType == BuildType.FOSS,
         )

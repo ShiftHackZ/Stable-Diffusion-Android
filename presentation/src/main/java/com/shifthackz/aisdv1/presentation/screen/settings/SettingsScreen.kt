@@ -18,7 +18,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
@@ -36,7 +35,8 @@ class SettingsScreen(
     private val launchUrl: (String) -> Unit = {},
     private val launchRewarded: () -> Unit = {},
     private val shareLogFile: () -> Unit = {},
-) : MviScreen<SettingsState, EmptyEffect>(viewModel), KoinComponent {
+    private val requestStoragePermissions: () -> Unit,
+) : MviScreen<SettingsState, SettingsEffect>(viewModel), KoinComponent {
 
     private val linksProvider: LinksProvider by inject()
 
@@ -68,6 +68,10 @@ class SettingsScreen(
 
     @Composable
     override fun ApplySystemUiColors() = Unit
+
+    override fun processEffect(effect: SettingsEffect) = when (effect) {
+        SettingsEffect.RequestStoragePermission -> requestStoragePermissions()
+    }
 }
 
 @Composable

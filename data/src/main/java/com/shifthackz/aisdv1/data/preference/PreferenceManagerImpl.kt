@@ -49,7 +49,7 @@ class PreferenceManagerImpl(
             .also { onPreferencesChanged() }
 
     override var saveToMediaStore: Boolean
-        get() = preferences.getBoolean(KEY_SAVE_TO_MEDIA_STORE, true)
+        get() = preferences.getBoolean(KEY_SAVE_TO_MEDIA_STORE, false)
         set(value) = preferences.edit()
             .putBoolean(KEY_SAVE_TO_MEDIA_STORE, value)
             .apply()

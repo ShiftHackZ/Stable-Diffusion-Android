@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.core
 
 import android.graphics.Bitmap
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
@@ -31,12 +32,17 @@ internal abstract class CoreMediaStoreRepository(
         .map(Base64ToBitmapConverter.Output::bitmap)
         .flatMapCompletable(::processBitmap)
 
-    private fun processBitmap(bmp: Bitmap) = Completable.fromAction {
-        val stream = ByteArrayOutputStream()
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        mediaStoreGateway.exportToFile(
-            "sdai_${System.currentTimeMillis()}",
-            stream.toByteArray()
-        )
-    }
+    private fun processBitmap(bmp: Bitmap) = Completable
+        .fromAction {
+            val stream = ByteArrayOutputStream()
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            mediaStoreGateway.exportToFile(
+                "sdai_${System.currentTimeMillis()}",
+                stream.toByteArray()
+            )
+        }
+        .onErrorComplete { t ->
+            errorLog(t)
+            true
+        }
 }

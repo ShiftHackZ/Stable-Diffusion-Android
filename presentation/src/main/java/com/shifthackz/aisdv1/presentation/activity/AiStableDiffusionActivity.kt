@@ -50,10 +50,17 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
     private val viewModel: AiStableDiffusionViewModel by viewModel()
     private val versionCheckerViewModel: VersionCheckerViewModel by viewModel()
 
-    private val permissionLauncher = registerForActivityResult(
+    private val notificationPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         debugLog("Notification permission is ${if (granted) "GRANTED" else "DENIED"}.")
+    }
+
+    private val storagePermission = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { result ->
+        if (!result.values.any { !it }) viewModel.onStoragePermissionsGranted()
+        debugLog("Storage permission is ${result}.")
     }
 
     override val fileProviderDescriptor: FileProviderDescriptor by inject()
@@ -64,6 +71,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
         adFeature.initialize(this)
         analytics.initialize()
         requestNotificationPermission()
+        requestStoragePermission()
         setContent {
             val navController = rememberNavController()
             AiStableDiffusionAppTheme {
@@ -176,6 +184,10 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                             shareLogFile = {
                                 ReportProblemEmailComposer().invoke(this@AiStableDiffusionActivity)
                             },
+                            requestStoragePermissions = {
+                                val hasPermission = requestStoragePermission()
+                                if (hasPermission) viewModel.onStoragePermissionsGranted()
+                            },
                         )
 
                         composable(
@@ -224,7 +236,30 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+    }
+
+    private fun requestStoragePermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) return false
+        val missingPermissions = buildList {
+            if (ActivityCompat.checkSelfPermission(
+                    this@AiStableDiffusionActivity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+            if (ActivityCompat.checkSelfPermission(
+                    this@AiStableDiffusionActivity,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }
+        if (missingPermissions.isEmpty()) return true
+        storagePermission.launch(missingPermissions.toTypedArray())
+        return false
     }
 }
