@@ -89,7 +89,6 @@ class GalleryScreen(
         is GalleryEffect.Share -> shareGalleryFile(effect.zipFile)
     }
 
-//    private fun onOpenMediaStoreFolder(uri: Uri) = with(Intent(Intent.ACTION_VIEW)) {
     private fun onOpenMediaStoreFolder(uri: Uri) = with(Intent(Intent.ACTION_VIEW)) {
         setDataAndType(uri, DocumentsContract.Document.MIME_TYPE_DIR)
         debugLog("URI: $uri")
