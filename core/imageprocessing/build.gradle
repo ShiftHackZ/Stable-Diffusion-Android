@@ -12,5 +12,6 @@ android {
 dependencies {
     implementation project(":core:common")
     implementation di.koinCore
+    implementation di.koinAndroid
     implementation reactive.rxkotlin
 }

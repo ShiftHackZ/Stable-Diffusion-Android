@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.di
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.presentation.activity.AiStableDiffusionViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryViewModel
+import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryViewModel
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationViewModel
@@ -35,6 +36,7 @@ val viewModelModule = module {
     viewModelOf(::AvailableCoinsViewModel)
     viewModelOf(::MotdViewModel)
     viewModelOf(::InputHistoryViewModel)
+    viewModelOf(::DebugMenuViewModel)
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())

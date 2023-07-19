@@ -22,6 +22,7 @@ import com.shifthackz.aisdv1.core.extensions.openUrl
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.presentation.features.*
+import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
@@ -206,6 +207,10 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                     )
                                 },
                             ).Build()
+                        }
+
+                        composable(Constants.ROUTE_DEBUG) {
+                            DebugMenuScreen(koinViewModel()).Build()
                         }
                     }
                     VersionCheckerComposable(
