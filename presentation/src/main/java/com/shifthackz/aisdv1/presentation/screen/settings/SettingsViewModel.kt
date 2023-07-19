@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
+import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -80,12 +81,23 @@ class SettingsViewModel(
         ?.let(::setState)
         ?.also { analytics.logEvent(AutoSaveAiResultsChanged(value)) }
 
-    fun changeSaveToMediaStoreSetting(value: Boolean) = (currentState as? SettingsState.Content)
-        ?.also { if (value) emitEffect(SettingsEffect.RequestStoragePermission) }
-        ?.takeIf { !value }
-        ?.also { preferenceManager.saveToMediaStore = false }
-        ?.copy(saveToMediaStore = false)
-        ?.let(::setState)
+    fun changeSaveToMediaStoreSetting(value: Boolean) {
+        val oldImpl: () -> Unit = {
+            (currentState as? SettingsState.Content)
+                ?.also { if (value) emitEffect(SettingsEffect.RequestStoragePermission) }
+                ?.takeIf { !value }
+                ?.also { preferenceManager.saveToMediaStore = false }
+                ?.copy(saveToMediaStore = false)
+                ?.let(::setState)
+        }
+        val newImpl: () -> Unit = {
+            (currentState as? SettingsState.Content)
+                ?.also { preferenceManager.saveToMediaStore = value }
+                ?.copy(saveToMediaStore = false)
+                ?.let(::setState)
+        }
+        if (shouldUseNewMediaStore()) newImpl() else oldImpl()
+    }
 
     fun changeFormAdvancedOptionsAlwaysShow(value: Boolean) = (currentState as? SettingsState.Content)
         ?.also { preferenceManager.formAdvancedOptionsAlwaysShow = value }

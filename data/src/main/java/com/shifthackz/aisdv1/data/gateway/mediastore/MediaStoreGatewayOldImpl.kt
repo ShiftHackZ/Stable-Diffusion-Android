@@ -9,8 +9,15 @@ import java.io.File
 /**
  * Implementation to support old Android versions (12 and lower).
  *
- * Tested on:
- * - Android 9 API 28 (Emulator) - 19.07.2023
+ *
+ * Working on:
+ * - Android 9 API 28 (Emulator)
+ * - Android 10 API 29 (Emulator)
+ * - Android 11 API 30 (Emulator)
+ * - Android 12 API 31 (Emulator)
+ *
+ * Not working on:
+ * - Android 12L API 32 (Emulator)
  */
 @Deprecated("Deprecated since Android 12, it is here to support old devices.")
 internal class MediaStoreGatewayOldImpl : MediaStoreGateway {

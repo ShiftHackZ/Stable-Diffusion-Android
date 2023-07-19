@@ -1,8 +1,9 @@
 package com.shifthackz.aisdv1.data.gateway.mediastore
 
 import android.content.Context
-import android.os.Build
+import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 
 internal class MediaStoreGatewayFactory(
@@ -11,9 +12,11 @@ internal class MediaStoreGatewayFactory(
 ) {
 
     operator fun invoke(): MediaStoreGateway {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (shouldUseNewMediaStore()) {
+            debugLog("Using Tiramisu and higher implementation for MediaStore")
             return MediaStoreGatewayImpl(context, fileProviderDescriptor)
         }
+        debugLog("Using deprecated implementation for MediaStore")
         return MediaStoreGatewayOldImpl()
     }
 }

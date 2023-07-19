@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.data.preference
 
 import android.content.SharedPreferences
 import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
+import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -49,7 +50,7 @@ class PreferenceManagerImpl(
             .also { onPreferencesChanged() }
 
     override var saveToMediaStore: Boolean
-        get() = preferences.getBoolean(KEY_SAVE_TO_MEDIA_STORE, false)
+        get() = preferences.getBoolean(KEY_SAVE_TO_MEDIA_STORE, shouldUseNewMediaStore())
         set(value) = preferences.edit()
             .putBoolean(KEY_SAVE_TO_MEDIA_STORE, value)
             .apply()

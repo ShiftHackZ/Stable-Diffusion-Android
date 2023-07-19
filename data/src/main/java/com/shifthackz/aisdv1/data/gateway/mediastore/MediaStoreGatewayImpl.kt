@@ -15,10 +15,12 @@ import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import java.io.File
 
 /**
- * Implementation to support actual Android versions (13 and higher).
+ * Implementation to support actual Android versions (12L and higher).
  *
- * Tested on:
- * - Android 13 API 33 (Google Pixel 7 Pro, Graphene OS) - 18.07.2023
+ *
+ * Works on:
+ * - Android 12 API 32 (Emulator)
+ * - Android 13 API 33 (Google Pixel 7 Pro, Graphene OS)
  */
 internal class MediaStoreGatewayImpl(
     private val context: Context,
