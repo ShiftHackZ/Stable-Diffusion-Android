@@ -41,7 +41,9 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -155,7 +157,10 @@ private fun ScreenContent(
                             modifier = Modifier
                                 .padding(top = 4.dp, start = 16.dp)
                                 .fillMaxWidth(0.65f),
-                            text = "You have ${info.count} photos saved in Downloads",
+                            text = stringResource(
+                                id = R.string.gallery_media_store_banner,
+                                "${info.count}",
+                            ),
                             color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                         Spacer(modifier = Modifier.weight(1f))
@@ -165,7 +170,7 @@ private fun ScreenContent(
                                 state.mediaStoreInfo.folderUri?.let(onOpenMediaStoreFolder::invoke)
                             },
                         ) {
-                            Text(text = "BROWSE")
+                            Text(text = stringResource(id = R.string.browse).toUpperCase(Locale.current))
                         }
                     }
                 }

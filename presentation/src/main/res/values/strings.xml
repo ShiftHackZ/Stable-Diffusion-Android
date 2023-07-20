@@ -12,6 +12,7 @@
     <string name="cancel">Cancel</string>
     <string name="width">Width</string>
     <string name="height">Height</string>
+    <string name="browse">Browse</string>
 
     <string name="version">Version %1$s</string>
     <string name="version_postscriptum">Made for you with ❤️ from 🇺🇦</string>
@@ -92,6 +93,7 @@
     <string name="title_clear_app_cache">Clear app cache</string>
     <string name="title_debug_menu">Debug Menu</string>
 
+    <string name="gallery_media_store_banner">You have %1$s photos saved in Download/SDAI</string>
     <string name="gallery_info_field_date">Created</string>
     <string name="gallery_info_field_type">Type</string>
     <string name="gallery_info_field_prompt">Prompt</string>

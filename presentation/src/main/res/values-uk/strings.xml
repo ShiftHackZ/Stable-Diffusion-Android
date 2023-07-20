@@ -8,6 +8,7 @@
     <string name="cancel">Скасувати</string>
     <string name="width">Довжина</string>
     <string name="height">Висота</string>
+    <string name="browse">Дивитися</string>
 
     <string name="version">Версія %1$s</string>
     <string name="version_postscriptum">Зроблено для вас з ❤️ в 🇺🇦</string>
@@ -86,7 +87,9 @@
     <string name="title_server_setup">Конфігурація</string>
     <string name="title_select_sd_model">Оберіть SD ML модель</string>
     <string name="title_clear_app_cache">Очистити кеш додатку</string>
+    <string name="title_debug_menu">Дебаг Меню</string>
 
+    <string name="gallery_media_store_banner">%1$s файли збережено в Download/SDAI</string>
     <string name="gallery_info_field_date">Створене</string>
     <string name="gallery_info_field_type">Тип</string>
     <string name="gallery_info_field_prompt">Запит</string>
@@ -113,6 +116,7 @@
     <string name="settings_item_demo">Демо режим</string>
     <string name="settings_item_monitor_connection">Моніторинг сервера</string>
     <string name="settings_item_auto_save">Авто-збереження фото</string>
+    <string name="settings_item_auto_save_media_store">Зберігати в Завантажене</string>
     <string name="settings_item_advanced_form_default">Завжди показувати всі опції</string>
     <string name="settings_item_clear_cache">Очистити кеш</string>
 
@@ -173,4 +177,7 @@
 
     <string name="notification_fail_title">Генерування не вдалося 😞</string>
     <string name="notification_fail_sub_title">Натисніть щоб побачити подробиці.</string>
+
+    <string name="debug_section_qa">QA тест-кейси</string>
+    <string name="debug_action_bad_base64">Внести битий Base64 в БД</string>
 </resources>
