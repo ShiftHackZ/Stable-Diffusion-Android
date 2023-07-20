@@ -50,7 +50,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.extensions.items
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -93,7 +92,6 @@ class GalleryScreen(
 
     private fun onOpenMediaStoreFolder(uri: Uri) = with(Intent(Intent.ACTION_VIEW)) {
         setDataAndType(uri, DocumentsContract.Document.MIME_TYPE_DIR)
-        debugLog("URI: $uri")
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         launchIntent(this)

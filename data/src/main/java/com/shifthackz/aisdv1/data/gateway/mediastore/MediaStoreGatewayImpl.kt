@@ -9,7 +9,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import com.shifthackz.aisdv1.core.common.extensions.uriFromFile
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import java.io.File
@@ -104,7 +103,6 @@ internal class MediaStoreGatewayImpl(
                 ?: MediaStoreInfo()
 
         }
-        debugLog("Noting to query")
         return MediaStoreInfo()
     }
 }
