@@ -90,6 +90,7 @@
     <string name="title_server_setup">Server setup</string>
     <string name="title_select_sd_model">Select SD ML Model</string>
     <string name="title_clear_app_cache">Clear app cache</string>
+    <string name="title_debug_menu">Debug Menu</string>
 
     <string name="gallery_info_field_date">Created</string>
     <string name="gallery_info_field_type">Type</string>
@@ -177,4 +178,7 @@
 
     <string name="notification_fail_title">Generation failed 😞</string>
     <string name="notification_fail_sub_title">Click here to see the details.</string>
+
+    <string name="debug_section_qa">QA actions</string>
+    <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>
 </resources>

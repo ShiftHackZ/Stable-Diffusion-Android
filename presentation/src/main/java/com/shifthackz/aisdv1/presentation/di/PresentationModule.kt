@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.di
 import androidx.core.app.NotificationManagerCompat
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
+import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailBitmapExporter
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryExporter
@@ -20,4 +21,5 @@ val presentationModule = (viewModelModule + module {
     factoryOf(::GalleryDetailSharing)
     factoryOf(::SettingsStateProducer)
     singleOf(::GenerationFormUpdateEvent)
+    singleOf(::DebugMenuAccessor)
 }).toTypedArray()

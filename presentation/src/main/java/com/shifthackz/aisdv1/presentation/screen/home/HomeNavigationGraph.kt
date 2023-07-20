@@ -31,6 +31,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
     launchRewarded: () -> Unit = {},
+    launchDebugMenu: () -> Unit = {},
     shareLogFile: () -> Unit = {},
 ) {
     addDestination(
@@ -56,6 +57,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                         launchInAppReview = launchInAppReview,
                         launchUrl = launchUrl,
                         launchRewarded = launchRewarded,
+                        launchDebugMenu = launchDebugMenu,
                         shareLogFile = shareLogFile,
                     ),
                 ),
@@ -131,6 +133,7 @@ private fun settingsTab(
     launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
     launchRewarded: () -> Unit = {},
+    launchDebugMenu: () -> Unit = {},
     shareLogFile: () -> Unit = {},
 ) = HomeNavigationItem(
     stringResource(id = R.string.home_tab_settings),
@@ -146,6 +149,7 @@ private fun settingsTab(
             launchInAppReview = launchInAppReview,
             launchUrl = launchUrl,
             launchRewarded = launchRewarded,
+            launchDebugMenu = launchDebugMenu,
             shareLogFile = shareLogFile,
         ).Build()
     }
