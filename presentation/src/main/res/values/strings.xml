@@ -178,4 +178,7 @@
 
     <string name="notification_fail_title">Generation failed 😞</string>
     <string name="notification_fail_sub_title">Click here to see the details.</string>
+
+    <string name="debug_section_qa">QA actions</string>
+    <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>
 </resources>

@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.utils
 
 object Constants {
     const val PAGINATION_PAYLOAD_SIZE = 20
+    const val DEBUG_MENU_ACCESS_TAPS = 7
 
     const val PARAM_ITEM_ID = "itemId"
     const val PARAM_SOURCE = "source"

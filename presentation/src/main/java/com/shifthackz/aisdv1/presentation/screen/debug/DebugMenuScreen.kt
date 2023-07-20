@@ -6,10 +6,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SettingsEthernet
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,12 +32,14 @@ import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 
 class DebugMenuScreen(
     private val viewModel: DebugMenuViewModel,
+    private val onNavigateBack: () -> Unit = {},
 ) : MviScreen<EmptyState, EmptyEffect>(viewModel) {
 
     @Composable
     override fun Content() {
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
+            onNavigateBack = onNavigateBack,
             onInsertBadBase64 = viewModel::insertBadBase64,
         )
     }
@@ -41,6 +48,7 @@ class DebugMenuScreen(
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit = {},
     onInsertBadBase64: () -> Unit = {},
 ) {
     Scaffold(
@@ -53,11 +61,25 @@ private fun ScreenContent(
                         style = MaterialTheme.typography.headlineMedium,
                     )
                 },
+                navigationIcon = {
+                    IconButton(
+                        onClick = onNavigateBack,
+                        content = {
+                            Icon(
+                                Icons.Outlined.ArrowBack,
+                                contentDescription = "Back button",
+                            )
+                        },
+                    )
+                },
             )
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(paddingValues)
+                .padding(horizontal = 16.dp),
         ) {
             val headerModifier = Modifier.padding(vertical = 16.dp)
             val itemModifier = Modifier
@@ -66,13 +88,13 @@ private fun ScreenContent(
 
             Text(
                 modifier = headerModifier,
-                text = "Stub actions",
+                text = stringResource(id = R.string.debug_section_qa),
                 style = MaterialTheme.typography.headlineSmall,
             )
             SettingsItem(
                 modifier = itemModifier,
                 startIcon = Icons.Default.SettingsEthernet,
-                text = "Insert bad base64".asUiText(),
+                text = R.string.debug_action_bad_base64.asUiText(),
                 onClick = onInsertBadBase64,
             )
         }

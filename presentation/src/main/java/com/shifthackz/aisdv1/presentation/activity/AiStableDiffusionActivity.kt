@@ -22,6 +22,7 @@ import com.shifthackz.aisdv1.core.extensions.openUrl
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.presentation.features.*
+import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
@@ -47,6 +48,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
     private val galleryDetailSharing: GalleryDetailSharing by inject()
     private val adFeature: AdFeature by inject()
     private val analytics: Analytics by inject()
+    private val debugMenuAccessor: DebugMenuAccessor by inject()
 
     private val viewModel: AiStableDiffusionViewModel by viewModel()
     private val versionCheckerViewModel: VersionCheckerViewModel by viewModel()
@@ -173,6 +175,11 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                     rewardCallback = viewModel::earnRewardedCoins,
                                 )
                             },
+                            launchDebugMenu = {
+                                if (debugMenuAccessor.invoke()) {
+                                    navController.navigate(Constants.ROUTE_DEBUG)
+                                }
+                            },
                             shareLogFile = {
                                 ReportProblemEmailComposer().invoke(this@AiStableDiffusionActivity)
                             },
@@ -210,7 +217,10 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                         }
 
                         composable(Constants.ROUTE_DEBUG) {
-                            DebugMenuScreen(koinViewModel()).Build()
+                            DebugMenuScreen(
+                                viewModel = koinViewModel(),
+                                onNavigateBack = { navController.navigateUp() },
+                            ).Build()
                         }
                     }
                     VersionCheckerComposable(
