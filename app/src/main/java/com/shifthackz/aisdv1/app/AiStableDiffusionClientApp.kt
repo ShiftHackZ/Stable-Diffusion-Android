@@ -36,7 +36,7 @@ class AiStableDiffusionClientApp : Application() {
             *featureModule,
             preferenceModule,
             providersModule,
-            domainModule,
+            *domainModule,
             *dataModule,
             networkModule,
             databaseModule,

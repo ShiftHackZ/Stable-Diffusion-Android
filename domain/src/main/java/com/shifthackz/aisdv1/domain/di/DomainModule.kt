@@ -16,6 +16,8 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
+import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
@@ -54,7 +56,7 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-val domainModule = module {
+internal val useCasesModule = module {
     factoryOf(::TextToImageUseCaseImpl) bind TextToImageUseCase::class
     factoryOf(::ImageToImageUseCaseImpl) bind ImageToImageUseCase::class
     factoryOf(::PingStableDiffusionServiceUseCaseImpl) bind PingStableDiffusionServiceUseCase::class
@@ -81,3 +83,9 @@ val domainModule = module {
     factoryOf(::ObserveHordeProcessStatusUseCaseImpl) bind ObserveHordeProcessStatusUseCase::class
     factoryOf(::GetMediaStoreInfoUseCaseImpl) bind GetMediaStoreInfoUseCase::class
 }
+
+internal val debugModule = module {
+    factoryOf(::DebugInsertBadBase64UseCaseImpl) bind DebugInsertBadBase64UseCase::class
+}
+
+val domainModule = (useCasesModule + debugModule).toTypedArray()

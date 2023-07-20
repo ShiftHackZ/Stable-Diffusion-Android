@@ -2,6 +2,8 @@
 
 package com.shifthackz.aisdv1.presentation.screen.settings
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -34,6 +36,7 @@ class SettingsScreen(
     private val launchInAppReview: () -> Unit = {},
     private val launchUrl: (String) -> Unit = {},
     private val launchRewarded: () -> Unit = {},
+    private val launchDebugMenu: () -> Unit = {},
     private val shareLogFile: () -> Unit = {},
     private val requestStoragePermissions: () -> Unit,
 ) : MviScreen<SettingsState, SettingsEffect>(viewModel), KoinComponent {
@@ -59,6 +62,7 @@ class SettingsScreen(
             onPolicyItemClick = { launchUrl(linksProvider.privacyPolicyUrl) },
             onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
             onGetSourceItemClick = { launchUrl(linksProvider.gitHubSourceUrl) },
+            onAppVersionClick = launchDebugMenu,
             onSdModelSelected = viewModel::selectStableDiffusionModel,
             onClearAppCacheConfirm = viewModel::clearAppCache,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
@@ -93,6 +97,7 @@ private fun ScreenContent(
     onPolicyItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
     onGetSourceItemClick: () -> Unit = {},
+    onAppVersionClick: () -> Unit = {},
 
     onSdModelSelected: (String) -> Unit = {},
     onClearAppCacheConfirm: () -> Unit = {},
@@ -133,6 +138,7 @@ private fun ScreenContent(
                         onPolicyItemClick = onPolicyItemClick,
                         onServerInstructionsItemClick = onServerInstructionsItemClick,
                         onGetSourceItemClick = onGetSourceItemClick,
+                        onAppVersionClick = onAppVersionClick,
                     )
                 }
             }
@@ -203,6 +209,7 @@ private fun ContentSettingsState(
     onPolicyItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
     onGetSourceItemClick: () -> Unit = {},
+    onAppVersionClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
@@ -358,7 +365,11 @@ private fun ContentSettingsState(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp),
+                .padding(bottom = 16.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                ) { onAppVersionClick() },
             text = stringResource(id = R.string.version_postscriptum),
             style = MaterialTheme.typography.labelMedium,
             textAlign = TextAlign.Center,

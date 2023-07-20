@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.core.imageprocessing
 
 import android.graphics.Bitmap
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Output
 import com.shifthackz.aisdv1.core.imageprocessing.contract.RxImageProcessor
@@ -12,6 +13,7 @@ private typealias Base64ToBitmapProcessor = RxImageProcessor<Input, Output>
 
 class Base64ToBitmapConverter(
     private val processingScheduler: Scheduler,
+    private val fallbackBitmap: Bitmap,
 ) : Base64ToBitmapProcessor {
 
     override operator fun invoke(input: Input): Single<Output> = Single
@@ -20,6 +22,10 @@ class Base64ToBitmapConverter(
                 onSuccess = emitter::onSuccess,
                 onFailure = emitter::onError,
             )
+        }
+        .onErrorReturn { t ->
+            errorLog(t)
+            Output(fallbackBitmap)
         }
         .subscribeOn(processingScheduler)
 

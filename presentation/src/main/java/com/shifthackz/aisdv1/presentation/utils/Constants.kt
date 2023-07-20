@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.utils
 
 object Constants {
     const val PAGINATION_PAYLOAD_SIZE = 20
+    const val DEBUG_MENU_ACCESS_TAPS = 7
 
     const val PARAM_ITEM_ID = "itemId"
     const val PARAM_SOURCE = "source"
@@ -17,6 +18,7 @@ object Constants {
     const val ROUTE_GALLERY_DETAIL = "gallery_detail"
     const val ROUTE_GALLERY_DETAIL_FULL = "$ROUTE_GALLERY_DETAIL/{$PARAM_ITEM_ID}"
     const val ROUTE_SETTINGS = "settings"
+    const val ROUTE_DEBUG = "debug"
 
     const val SUB_SEED_STRENGTH_MIN = 0f
     const val SUB_SEED_STRENGTH_MAX = 1f

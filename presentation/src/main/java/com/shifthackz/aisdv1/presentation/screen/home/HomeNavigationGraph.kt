@@ -33,6 +33,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
     launchRewarded: () -> Unit = {},
+    launchDebugMenu: () -> Unit = {},
     shareLogFile: () -> Unit = {},
     requestStoragePermissions: () -> Unit = {},
 ) {
@@ -60,6 +61,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                         launchInAppReview = launchInAppReview,
                         launchUrl = launchUrl,
                         launchRewarded = launchRewarded,
+                        launchDebugMenu = launchDebugMenu,
                         shareLogFile = shareLogFile,
                         requestStoragePermissions = requestStoragePermissions,
                     ),
@@ -138,6 +140,7 @@ private fun settingsTab(
     launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
     launchRewarded: () -> Unit = {},
+    launchDebugMenu: () -> Unit = {},
     shareLogFile: () -> Unit = {},
     requestStoragePermissions: () -> Unit = {},
 ) = HomeNavigationItem(
@@ -154,6 +157,7 @@ private fun settingsTab(
             launchInAppReview = launchInAppReview,
             launchUrl = launchUrl,
             launchRewarded = launchRewarded,
+            launchDebugMenu = launchDebugMenu,
             shareLogFile = shareLogFile,
             requestStoragePermissions = requestStoragePermissions,
         ).Build()
