@@ -22,6 +22,8 @@ import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
@@ -79,6 +81,7 @@ internal val useCasesModule = module {
     factoryOf(::EarnRewardedCoinsUseCaseImpl) bind EarnRewardedCoinsUseCase::class
     factoryOf(::ObserveMotdUseCaseImpl) bind ObserveMotdUseCase::class
     factoryOf(::ObserveHordeProcessStatusUseCaseImpl) bind ObserveHordeProcessStatusUseCase::class
+    factoryOf(::GetMediaStoreInfoUseCaseImpl) bind GetMediaStoreInfoUseCase::class
 }
 
 internal val debugModule = module {

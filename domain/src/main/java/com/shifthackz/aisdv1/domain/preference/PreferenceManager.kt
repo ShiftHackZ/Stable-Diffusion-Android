@@ -9,6 +9,7 @@ interface PreferenceManager {
     var demoMode: Boolean
     var monitorConnectivity: Boolean
     var autoSaveAiResults: Boolean
+    var saveToMediaStore: Boolean
     var formAdvancedOptionsAlwaysShow: Boolean
     var source: ServerSource
     var hordeApiKey: String

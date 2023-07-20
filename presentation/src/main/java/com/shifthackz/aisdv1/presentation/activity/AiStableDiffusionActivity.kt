@@ -15,10 +15,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.shifthackz.aisdv1.core.common.extensions.openMarket
+import com.shifthackz.aisdv1.core.common.extensions.openUrl
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.log.debugLog
-import com.shifthackz.aisdv1.core.extensions.openMarket
-import com.shifthackz.aisdv1.core.extensions.openUrl
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.presentation.features.*
@@ -53,10 +53,17 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
     private val viewModel: AiStableDiffusionViewModel by viewModel()
     private val versionCheckerViewModel: VersionCheckerViewModel by viewModel()
 
-    private val permissionLauncher = registerForActivityResult(
+    private val notificationPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         debugLog("Notification permission is ${if (granted) "GRANTED" else "DENIED"}.")
+    }
+
+    private val storagePermission = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { result ->
+        if (!result.values.any { !it }) viewModel.onStoragePermissionsGranted()
+        debugLog("Storage permission is ${result}.")
     }
 
     override val fileProviderDescriptor: FileProviderDescriptor by inject()
@@ -67,6 +74,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
         adFeature.initialize(this)
         analytics.initialize()
         requestNotificationPermission()
+        requestStoragePermission()
         setContent {
             val navController = rememberNavController()
             AiStableDiffusionAppTheme {
@@ -154,6 +162,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                 navController
                                     .navigate("${Constants.ROUTE_GALLERY_DETAIL}/$galleryItemId")
                             },
+                            launchIntent = ::startActivity,
                             launchSetup = {
                                 analytics.logEvent(SettingsConfigurationClick)
                                 navController.navigate(
@@ -182,6 +191,10 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                             },
                             shareLogFile = {
                                 ReportProblemEmailComposer().invoke(this@AiStableDiffusionActivity)
+                            },
+                            requestStoragePermissions = {
+                                val hasPermission = requestStoragePermission()
+                                if (hasPermission) viewModel.onStoragePermissionsGranted()
                             },
                         )
 
@@ -238,7 +251,30 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+    }
+
+    private fun requestStoragePermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) return false
+        val missingPermissions = buildList {
+            if (ActivityCompat.checkSelfPermission(
+                    this@AiStableDiffusionActivity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+            if (ActivityCompat.checkSelfPermission(
+                    this@AiStableDiffusionActivity,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }
+        if (missingPermissions.isEmpty()) return true
+        storagePermission.launch(missingPermissions.toTypedArray())
+        return false
     }
 }

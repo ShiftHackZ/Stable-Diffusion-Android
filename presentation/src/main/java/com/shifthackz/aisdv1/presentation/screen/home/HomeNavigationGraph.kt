@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.home
 
+import android.content.Intent
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -26,6 +27,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     takePhoto: (ImagePickerCallback) -> Unit = {},
     shareGalleryFile: (File) -> Unit = {},
     openGalleryItemDetails: (Long) -> Unit = {},
+    launchIntent: (Intent) -> Unit = {},
     launchSetup: () -> Unit = {},
     launchUpdateCheck: () -> Unit = {},
     launchInAppReview: () -> Unit = {},
@@ -33,6 +35,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     launchRewarded: () -> Unit = {},
     launchDebugMenu: () -> Unit = {},
     shareLogFile: () -> Unit = {},
+    requestStoragePermissions: () -> Unit = {},
 ) {
     addDestination(
         ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
@@ -50,6 +53,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                     galleryTab(
                         shareGalleryFile = shareGalleryFile,
                         openGalleryItemDetails = openGalleryItemDetails,
+                        launchIntent = launchIntent,
                     ),
                     settingsTab(
                         launchSetup = launchSetup,
@@ -59,6 +63,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                         launchRewarded = launchRewarded,
                         launchDebugMenu = launchDebugMenu,
                         shareLogFile = shareLogFile,
+                        requestStoragePermissions = requestStoragePermissions,
                     ),
                 ),
             ).Build()
@@ -110,6 +115,7 @@ private fun img2imgTab(
 private fun galleryTab(
     shareGalleryFile: (File) -> Unit = {},
     openGalleryItemDetails: (Long) -> Unit = {},
+    launchIntent: (Intent) -> Unit = {},
 ) = HomeNavigationItem(
     name = stringResource(R.string.home_tab_gallery),
     route = Constants.ROUTE_GALLERY,
@@ -122,6 +128,7 @@ private fun galleryTab(
             viewModel = koinViewModel(),
             shareGalleryFile = shareGalleryFile,
             openGalleryItemDetails = openGalleryItemDetails,
+            launchIntent = launchIntent,
         ).Build()
     },
 )
@@ -135,6 +142,7 @@ private fun settingsTab(
     launchRewarded: () -> Unit = {},
     launchDebugMenu: () -> Unit = {},
     shareLogFile: () -> Unit = {},
+    requestStoragePermissions: () -> Unit = {},
 ) = HomeNavigationItem(
     stringResource(id = R.string.home_tab_settings),
     Constants.ROUTE_SETTINGS,
@@ -151,6 +159,7 @@ private fun settingsTab(
             launchRewarded = launchRewarded,
             launchDebugMenu = launchDebugMenu,
             shareLogFile = shareLogFile,
+            requestStoragePermissions = requestStoragePermissions,
         ).Build()
     }
 )

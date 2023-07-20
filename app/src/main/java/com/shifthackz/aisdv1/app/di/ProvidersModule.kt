@@ -7,8 +7,8 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
-import com.shifthackz.aisdv1.domain.authorization.AuthorizationCredentials
-import com.shifthackz.aisdv1.domain.authorization.AuthorizationStore
+import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
+import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import com.shifthackz.aisdv1.network.qualifiers.CredentialsProvider

@@ -20,7 +20,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
@@ -39,7 +38,8 @@ class SettingsScreen(
     private val launchRewarded: () -> Unit = {},
     private val launchDebugMenu: () -> Unit = {},
     private val shareLogFile: () -> Unit = {},
-) : MviScreen<SettingsState, EmptyEffect>(viewModel), KoinComponent {
+    private val requestStoragePermissions: () -> Unit,
+) : MviScreen<SettingsState, SettingsEffect>(viewModel), KoinComponent {
 
     private val linksProvider: LinksProvider by inject()
 
@@ -53,6 +53,7 @@ class SettingsScreen(
             onLaunchRewarded = launchRewarded,
             onMonitorConnectivityChanged = viewModel::changeMonitorConnectivitySetting,
             onAutoSaveAiResultChanged = viewModel::changeAutoSaveAiResultSetting,
+            onSaveToMediaStoreChanged = viewModel::changeSaveToMediaStoreSetting,
             onFormAdvancedOptionsAlwaysShowChanged = viewModel::changeFormAdvancedOptionsAlwaysShow,
             onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
             onReportProblemItemClick = shareLogFile,
@@ -71,6 +72,10 @@ class SettingsScreen(
 
     @Composable
     override fun ApplySystemUiColors() = Unit
+
+    override fun processEffect(effect: SettingsEffect) = when (effect) {
+        SettingsEffect.RequestStoragePermission -> requestStoragePermissions()
+    }
 }
 
 @Composable
@@ -82,6 +87,7 @@ private fun ScreenContent(
     onLaunchRewarded: () -> Unit = {},
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
+    onSaveToMediaStoreChanged: (Boolean) -> Unit = {},
     onFormAdvancedOptionsAlwaysShowChanged: (Boolean) -> Unit = {},
 
     onClearAppCacheItemClick: () -> Unit = {},
@@ -123,6 +129,7 @@ private fun ScreenContent(
                         onLaunchRewarded = onLaunchRewarded,
                         onMonitorConnectivityChanged = onMonitorConnectivityChanged,
                         onAutoSaveAiResultChanged = onAutoSaveAiResultChanged,
+                        onSaveToMediaStoreChanged = onSaveToMediaStoreChanged,
                         onFormAdvancedOptionsAlwaysShowChanged = onFormAdvancedOptionsAlwaysShowChanged,
                         onClearAppCacheItemClick = onClearAppCacheItemClick,
                         onReportProblemItemClick = onReportProblemItemClick,
@@ -192,6 +199,7 @@ private fun ContentSettingsState(
     onSdModelItemClick: () -> Unit = {},
     onLaunchRewarded: () -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
+    onSaveToMediaStoreChanged: (Boolean) -> Unit = {},
     onFormAdvancedOptionsAlwaysShowChanged: (Boolean) -> Unit = {},
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
@@ -266,6 +274,19 @@ private fun ContentSettingsState(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     checked = state.autoSaveAiResults,
                     onCheckedChange = onAutoSaveAiResultChanged,
+                )
+            }
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            startIcon = Icons.Default.Folder,
+            text = R.string.settings_item_auto_save_media_store.asUiText(),
+            onClick = { onSaveToMediaStoreChanged(!state.saveToMediaStore) },
+            endValueContent = {
+                Switch(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    checked = state.saveToMediaStore,
+                    onCheckedChange = onSaveToMediaStoreChanged,
                 )
             }
         )
@@ -368,6 +389,7 @@ private fun PreviewStateContent() {
             showRewardedSdAiAd = true,
             monitorConnectivity = true,
             autoSaveAiResults = true,
+            saveToMediaStore = true,
             formAdvancedOptionsAlwaysShow = false,
             showSdModelSelector = true,
             showMonitorConnectionOption = true,

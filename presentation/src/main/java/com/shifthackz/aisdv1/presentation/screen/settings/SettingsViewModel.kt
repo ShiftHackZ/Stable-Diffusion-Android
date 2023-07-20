@@ -1,9 +1,10 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
+import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
+import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -23,14 +24,14 @@ class SettingsViewModel(
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
     private val analytics: Analytics,
-) : MviRxViewModel<SettingsState, EmptyEffect>() {
+) : MviRxViewModel<SettingsState, SettingsEffect>() {
 
     override val emptyState = SettingsState.Uninitialized
 
     init {
         !settingsStateProducer()
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog, ::setState)
+            .subscribeBy(::errorLog, EmptyLambda, ::setState)
     }
 
     //region DIALOG LAUNCHER METHODS
@@ -79,6 +80,24 @@ class SettingsViewModel(
         ?.copy(autoSaveAiResults = value)
         ?.let(::setState)
         ?.also { analytics.logEvent(AutoSaveAiResultsChanged(value)) }
+
+    fun changeSaveToMediaStoreSetting(value: Boolean) {
+        val oldImpl: () -> Unit = {
+            (currentState as? SettingsState.Content)
+                ?.also { if (value) emitEffect(SettingsEffect.RequestStoragePermission) }
+                ?.takeIf { !value }
+                ?.also { preferenceManager.saveToMediaStore = false }
+                ?.copy(saveToMediaStore = false)
+                ?.let(::setState)
+        }
+        val newImpl: () -> Unit = {
+            (currentState as? SettingsState.Content)
+                ?.also { preferenceManager.saveToMediaStore = value }
+                ?.copy(saveToMediaStore = false)
+                ?.let(::setState)
+        }
+        if (shouldUseNewMediaStore()) newImpl() else oldImpl()
+    }
 
     fun changeFormAdvancedOptionsAlwaysShow(value: Boolean) = (currentState as? SettingsState.Content)
         ?.also { preferenceManager.formAdvancedOptionsAlwaysShow = value }

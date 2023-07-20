@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.domain.entity
 
-import com.shifthackz.aisdv1.domain.authorization.AuthorizationCredentials
+import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 
 data class Configuration(
     val serverUrl: String,

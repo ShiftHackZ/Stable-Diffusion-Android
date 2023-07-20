@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.domain.authorization
+package com.shifthackz.aisdv1.domain.feature.auth
 
 interface AuthorizationStore {
     fun getAuthorizationCredentials(): AuthorizationCredentials

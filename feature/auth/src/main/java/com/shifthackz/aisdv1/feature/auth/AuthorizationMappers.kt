@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.feature.auth
 
-import com.shifthackz.aisdv1.domain.authorization.AuthorizationCredentials
+import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.feature.auth.credentials.Credentials
 import com.shifthackz.aisdv1.feature.auth.credentials.EmptyCredentials
 import com.shifthackz.aisdv1.feature.auth.credentials.HttpBasicCredentials

@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.domain.usecase.settings
 
-import com.shifthackz.aisdv1.domain.authorization.AuthorizationStore
 import com.shifthackz.aisdv1.domain.entity.Configuration
+import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.reactivex.rxjava3.core.Single
 

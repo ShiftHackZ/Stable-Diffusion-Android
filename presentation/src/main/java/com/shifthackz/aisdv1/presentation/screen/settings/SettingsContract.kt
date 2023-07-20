@@ -1,6 +1,11 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
+import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
+
+sealed interface SettingsEffect : MviEffect {
+    object RequestStoragePermission : SettingsEffect
+}
 
 sealed interface SettingsState : MviState {
 
@@ -19,6 +24,7 @@ sealed interface SettingsState : MviState {
         val sdModelSelected: String,
         val monitorConnectivity: Boolean,
         val autoSaveAiResults: Boolean,
+        val saveToMediaStore: Boolean,
         val formAdvancedOptionsAlwaysShow: Boolean,
         val appVersion: String,
         val showRewardedSdAiAd: Boolean,

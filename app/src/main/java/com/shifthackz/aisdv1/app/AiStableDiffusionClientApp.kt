@@ -1,6 +1,8 @@
 package com.shifthackz.aisdv1.app
 
 import android.app.Application
+import android.os.StrictMode
+import android.os.StrictMode.VmPolicy
 import com.shifthackz.aisdv1.app.di.featureModule
 import com.shifthackz.aisdv1.app.di.preferenceModule
 import com.shifthackz.aisdv1.app.di.providersModule
@@ -17,10 +19,12 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
+
 class AiStableDiffusionClientApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        StrictMode.setVmPolicy(VmPolicy.Builder().build())
         initializeKoin()
         initializeLogging()
     }

@@ -8,6 +8,7 @@
     <string name="cancel">İptal</string>
     <string name="width">Genişlik</string>
     <string name="height">Yükseklik</string>
+    <string name="browse">Araştır</string>
 
     <string name="version">Versiyon %1$s</string>
     <string name="version_postscriptum">Senin için ❤️\'la 🇺🇦\'da hazırlardı</string>
@@ -86,7 +87,9 @@
     <string name="title_server_setup">Sunucu Kurulumu</string>
     <string name="title_select_sd_model">SD Modeli seçin</string>
     <string name="title_clear_app_cache">Uygulama önbelleğini temizle</string>
+    <string name="title_debug_menu">Hata Ayıklama Menüsü</string>
 
+    <string name="gallery_media_store_banner">Kayıtlı %1$s fotoğrafınız var Download/SDAI</string>
     <string name="gallery_info_field_date">Oluşturulma</string>
     <string name="gallery_info_field_type">Tür</string>
     <string name="gallery_info_field_prompt">İstem</string>
@@ -113,6 +116,7 @@
     <string name="settings_item_demo">Demo modu</string>
     <string name="settings_item_monitor_connection">Bağlantıyı incele</string>
     <string name="settings_item_auto_save">Resimeleri otomatik kaydet</string>
+    <string name="settings_item_auto_save_media_store">İndirilenlere Kaydet</string>
     <string name="settings_item_advanced_form_default">Her zaman gelişmiş seçenekleri göster</string>
     <string name="settings_item_clear_cache">Uygulama ve galeri önbelleğini temizleyin</string>
 
@@ -173,4 +177,7 @@
 
     <string name="notification_fail_title">Üretim başarısız oldu 😞</string>
     <string name="notification_fail_sub_title">Ayrıntıları görmek için buraya tıklayın.</string>
+
+    <string name="debug_section_qa">QA işlemleri</string>
+    <string name="debug_action_bad_base64">Kötü Base64\'ü DB\'ye yerleştirin</string>
 </resources>
