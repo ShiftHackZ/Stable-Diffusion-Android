@@ -7,12 +7,14 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
+import com.shifthackz.aisdv1.domain.usecase.features.GetFeatureFlagsUseCase
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.features.ConfigurationLoadFailure
 import com.shifthackz.aisdv1.presentation.features.ConfigurationLoadSuccess
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ConfigurationLoaderViewModel(
+    getFeatureFlagsUseCase: GetFeatureFlagsUseCase,
     dataPreLoaderUseCase: DataPreLoaderUseCase,
     schedulersProvider: SchedulersProvider,
     analytics: Analytics,
@@ -23,7 +25,9 @@ class ConfigurationLoaderViewModel(
     )
 
     init {
-        dataPreLoaderUseCase()
+        getFeatureFlagsUseCase()
+            .ignoreElement()
+            .andThen(dataPreLoaderUseCase())
             .doOnSubscribe {
                 setState(
                     ConfigurationLoaderState.StatusNotification(

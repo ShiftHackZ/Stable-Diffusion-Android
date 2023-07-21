@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
 import com.shifthackz.aisdv1.network.api.horde.HordeRestApi
 import com.shifthackz.aisdv1.network.api.sdai.AppUpdateRestApi
 import com.shifthackz.aisdv1.network.api.sdai.CoinsRestApi
+import com.shifthackz.aisdv1.network.api.sdai.FeatureFlagsRestApi
 import com.shifthackz.aisdv1.network.api.sdai.MotdRestApi
 import com.shifthackz.aisdv1.network.authenticator.RestAuthenticator
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
@@ -111,6 +112,12 @@ val networkModule = module {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
             .create(MotdRestApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
+            .create(FeatureFlagsRestApi::class.java)
     }
 
     single {
