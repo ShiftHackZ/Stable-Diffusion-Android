@@ -2,7 +2,9 @@ package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.domain.datasource.FeatureFlagsDataSource
+import com.shifthackz.aisdv1.domain.entity.FeatureFlags
 import com.shifthackz.aisdv1.domain.repository.FeatureFlagsRepository
 
 internal class FeatureFlagsRepositoryImpl(
@@ -23,5 +25,8 @@ internal class FeatureFlagsRepositoryImpl(
                     .flatMapCompletable(localDataSource::store)
                     .andThen(localDataSource.get())
             }
+    }.onErrorReturn { t ->
+        errorLog(t)
+        FeatureFlags()
     }
 }

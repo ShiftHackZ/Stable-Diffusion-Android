@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.domain.entity
 
 data class FeatureFlags(
-    val adFeatureEnable: Boolean = false
+    val adHomeBottomEnable: Boolean = false,
+    val adGalleryBottomEnable: Boolean = false,
 )

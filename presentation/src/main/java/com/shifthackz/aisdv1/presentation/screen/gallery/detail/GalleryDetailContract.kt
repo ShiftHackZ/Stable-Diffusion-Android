@@ -24,17 +24,20 @@ sealed interface GalleryDetailState : MviState {
     val tabs: List<Tab>
     val selectedTab: Tab
     val screenDialog: Dialog
+    val bottomAdBanner: Boolean
 
     data class Loading(
         override val tabs: List<Tab> = emptyList(),
         override val selectedTab: Tab = Tab.IMAGE,
         override val screenDialog: Dialog = Dialog.None,
+        override val bottomAdBanner: Boolean = false,
     ) : GalleryDetailState
 
     data class Content(
         override val tabs: List<Tab> = emptyList(),
         override val selectedTab: Tab = Tab.IMAGE,
         override val screenDialog: Dialog = Dialog.None,
+        override val bottomAdBanner: Boolean = false,
         val generationType: AiGenerationResult.Type,
         val id: Long,
         val bitmap: Bitmap,
@@ -62,6 +65,11 @@ sealed interface GalleryDetailState : MviState {
     fun withDialog(dialog: Dialog) = when (this) {
         is Content -> copy(screenDialog = dialog)
         is Loading -> copy(screenDialog = dialog)
+    }
+
+    fun withBanner(enabled: Boolean) = when (this) {
+        is Content -> copy(bottomAdBanner = enabled)
+        is Loading -> copy(bottomAdBanner = enabled)
     }
 
     enum class Tab(

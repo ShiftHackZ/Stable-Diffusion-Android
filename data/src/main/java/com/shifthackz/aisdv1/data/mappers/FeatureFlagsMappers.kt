@@ -4,5 +4,8 @@ import com.shifthackz.aisdv1.domain.entity.FeatureFlags
 import com.shifthackz.aisdv1.network.response.FeatureFlagsResponse
 
 fun FeatureFlagsResponse.mapToDomain(): FeatureFlags = with (this) {
-    FeatureFlags(adFeatureEnable = adBottomEnable ?: false)
+    FeatureFlags(
+        adHomeBottomEnable = adHomeBottomEnable ?: false,
+        adGalleryBottomEnable = adGalleryBottomEnable ?: false,
+    )
 }

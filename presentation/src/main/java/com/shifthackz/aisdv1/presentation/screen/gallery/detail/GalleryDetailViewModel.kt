@@ -7,7 +7,9 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.FeatureFlags
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
+import com.shifthackz.aisdv1.domain.usecase.features.GetFeatureFlagsUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
@@ -17,6 +19,7 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class GalleryDetailViewModel(
+    getFeatureFlagsUseCase: GetFeatureFlagsUseCase,
     private val itemId: Long,
     private val getGenerationResultUseCase: GetGenerationResultUseCase,
     private val deleteGalleryItemUseCase: DeleteGalleryItemUseCase,
@@ -30,13 +33,18 @@ class GalleryDetailViewModel(
     override val emptyState = GalleryDetailState.Loading()
 
     init {
-        !getGenerationResultUseCase(itemId)
+        !Single.zip(
+            getFeatureFlagsUseCase(),
+            getGenerationResultUseCase(itemId),
+            ::Pair,
+        )
             .subscribeOnMainThread(schedulersProvider)
             .postProcess()
-            .subscribeBy(::errorLog) { aiData ->
-                aiData
+            .subscribeBy(::errorLog) { (ff, ai) ->
+                ai
                     .mapToUi()
                     .withTab(currentState.selectedTab)
+                    .withBanner(ff.adGalleryBottomEnable)
                     .let(::setState)
             }
     }
@@ -80,20 +88,17 @@ class GalleryDetailViewModel(
         .withDialog(dialog)
         .let(::setState)
 
-    private fun Single<AiGenerationResult>.postProcess() = this
-        .flatMap { ai ->
-            base64ToBitmapConverter(Input(ai.image)).map { bmp -> ai to bmp }
+    private fun Single<Pair<FeatureFlags, AiGenerationResult>>.postProcess() = this
+        .flatMap { (ff, ai) ->
+            base64ToBitmapConverter(Input(ai.image)).map { bmp -> ff to (ai to bmp) }
         }
-        .flatMap { (ai, bmp) ->
+        .flatMap { (ff, data) ->
+            val (ai, bmp) = data
             when (ai.type) {
-                AiGenerationResult.Type.TEXT_TO_IMAGE -> Single.just(Triple(ai, bmp, null))
+                AiGenerationResult.Type.TEXT_TO_IMAGE -> Single.just(ff to Triple(ai, bmp, null))
                 AiGenerationResult.Type.IMAGE_TO_IMAGE ->
                     base64ToBitmapConverter(Input(ai.inputImage)).map { bmp2 ->
-                        Triple(
-                            ai,
-                            bmp,
-                            bmp2,
-                        )
+                        ff to Triple(ai, bmp, bmp2)
                     }
             }
         }

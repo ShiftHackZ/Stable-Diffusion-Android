@@ -157,13 +157,15 @@ private fun GalleryDetailNavigationBar(
     onTabSelected: (GalleryDetailState.Tab) -> Unit,
 ) {
     Column {
-        AdMobBanner(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            adFeature = adFeature,
-            adFactory = adFeature::getGalleryDetailBannerAd,
-        )
+        if (state.bottomAdBanner) {
+            AdMobBanner(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                adFeature = adFeature,
+                adFactory = adFeature::getGalleryDetailBannerAd,
+            )
+        }
         NavigationBar {
             state.tabs.forEach { tab ->
                 NavigationBarItem(

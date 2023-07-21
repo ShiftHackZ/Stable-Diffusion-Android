@@ -34,7 +34,7 @@ class HomeNavigationViewModel(
     init {
         !getFeatureFlagsUseCase()
             .subscribeOnMainThread(schedulersProvider)
-            .map { flags -> currentState.copy(bottomAdBanner = flags.adFeatureEnable) }
+            .map { flags -> currentState.copy(bottomAdBanner = flags.adHomeBottomEnable) }
             .subscribeBy(::errorLog, ::setState)
 
         !generationFormUpdateEvent
