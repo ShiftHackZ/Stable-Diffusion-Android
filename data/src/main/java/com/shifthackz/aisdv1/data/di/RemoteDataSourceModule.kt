@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.data.gateway.ServerConnectivityGatewayImpl
 import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
 import com.shifthackz.aisdv1.data.remote.AppVersionRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.CoinRemoteDateSource
+import com.shifthackz.aisdv1.data.remote.FeatureFlagsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HordeGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HordeStatusSource
 import com.shifthackz.aisdv1.data.remote.MotdRemoteDataSource
@@ -15,6 +16,7 @@ import com.shifthackz.aisdv1.data.remote.StableDiffusionModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionSamplersRemoteDataSource
 import com.shifthackz.aisdv1.domain.datasource.AppVersionDataSource
 import com.shifthackz.aisdv1.domain.datasource.CoinDataSource
+import com.shifthackz.aisdv1.domain.datasource.FeatureFlagsDataSource
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.MotdDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
@@ -54,6 +56,7 @@ val remoteDataSourceModule = module {
     factoryOf(::AppVersionRemoteDataSource) bind AppVersionDataSource.Remote::class
     factoryOf(::CoinRemoteDateSource) bind CoinDataSource.Remote::class
     factoryOf(::MotdRemoteDataSource) bind MotdDataSource.Remote::class
+    factoryOf(::FeatureFlagsRemoteDataSource) bind FeatureFlagsDataSource.Remote::class
 
     factory<ServerConnectivityGateway> {
         val lambda: () -> Boolean = {

@@ -17,11 +17,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.shifthackz.aisdv1.core.ui.Screen
+import com.shifthackz.aisdv1.core.ui.EmptyEffect
+import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
@@ -33,13 +35,14 @@ import org.koin.core.component.inject
 class HomeNavigationScreen(
     private val viewModel: HomeNavigationViewModel,
     private val navItems: List<HomeNavigationItem> = emptyList(),
-) : Screen(), KoinComponent {
+) : MviScreen<HomeNavigationState, EmptyEffect>(viewModel), KoinComponent {
 
     private val adFeature: AdFeature by inject()
 
     @Composable
     override fun Content() {
         require(navItems.isNotEmpty()) { "navItems collection must not be empty." }
+        val state = viewModel.state.collectAsStateWithLifecycle().value
         val navController = rememberNavController()
         val backStackEntry = navController.currentBackStackEntryAsState()
 
@@ -58,13 +61,15 @@ class HomeNavigationScreen(
         Scaffold(
             bottomBar = {
                 Column {
-                    AdMobBanner(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        adFeature = adFeature,
-                        adFactory = adFeature::getHomeScreenBannerAd,
-                    )
+                    if (state.bottomAdBanner) {
+                        AdMobBanner(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(),
+                            adFeature = adFeature,
+                            adFactory = adFeature::getHomeScreenBannerAd,
+                        )
+                    }
                     NavigationBar {
                         val currentRoute = backStackEntry.value?.destination?.route
                         navItems.forEach { item ->

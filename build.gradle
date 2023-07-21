@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        appVersion = "0.4.2"
+        appVersion = "0.4.3"
         minSdk = 26
         targetSdk = 33
     }

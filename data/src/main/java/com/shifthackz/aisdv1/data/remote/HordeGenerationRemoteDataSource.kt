@@ -95,7 +95,7 @@ internal class HordeGenerationRemoteDataSource(
     private class RetryException(val response: HordeGenerationCheckResponse): Throwable()
 
     companion object {
-        private val HORDE_SOCKET_PING_TIME_SECONDS = 10L
+        private const val HORDE_SOCKET_PING_TIME_SECONDS = 10L
     }
 }
 

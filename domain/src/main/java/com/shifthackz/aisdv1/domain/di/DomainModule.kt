@@ -18,6 +18,8 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.features.GetFeatureFlagsUseCase
+import com.shifthackz.aisdv1.domain.usecase.features.GetFeatureFlagsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
@@ -82,6 +84,7 @@ internal val useCasesModule = module {
     factoryOf(::ObserveMotdUseCaseImpl) bind ObserveMotdUseCase::class
     factoryOf(::ObserveHordeProcessStatusUseCaseImpl) bind ObserveHordeProcessStatusUseCase::class
     factoryOf(::GetMediaStoreInfoUseCaseImpl) bind GetMediaStoreInfoUseCase::class
+    factoryOf(::GetFeatureFlagsUseCaseImpl) bind GetFeatureFlagsUseCase::class
 }
 
 internal val debugModule = module {
