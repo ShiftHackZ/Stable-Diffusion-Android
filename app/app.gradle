@@ -7,11 +7,10 @@ plugins {
 }
 
 def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
-def isGooglePlay = !(taskRequests.contains("Foss") || taskRequests.contains("foss"))
+def isPlay = !(taskRequests.contains("Foss") || taskRequests.contains("foss"))
 
-if (isGooglePlay) {
-    apply plugin: 'com.google.gms.google-services'
-    apply plugin: 'com.google.firebase.crashlytics'
+if (isPlay) {
+    apply from: "$project.rootDir/gradle/plugins.gradle"
 }
 
 apply from: "$project.rootDir/gradle/common.gradle"
@@ -90,10 +89,10 @@ dependencies {
     implementation reactive.rxandroid
     implementation log.timber
 
-    playstoreImplementation platform(proprietary.firebaseBom)
-    playstoreImplementation proprietary.firebaseAnalytics
-    playstoreImplementation proprietary.firebaseCrashlytics
-    playstoreImplementation proprietary.playServicesAds
+    playstoreImplementation platform(proprietary.fbBom)
+    playstoreImplementation proprietary.fbA
+    playstoreImplementation proprietary.fbC
+    playstoreImplementation proprietary.plA
 }
 
 kapt {

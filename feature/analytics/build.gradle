@@ -22,6 +22,6 @@ dependencies {
     implementation project(":core:common")
     implementation project(":domain")
     implementation di.koinCore
-    playstoreImplementation platform(proprietary.firebaseBom)
-    playstoreImplementation proprietary.firebaseAnalytics
+    playstoreImplementation platform(proprietary.fbBom)
+    playstoreImplementation proprietary.fbA
 }
