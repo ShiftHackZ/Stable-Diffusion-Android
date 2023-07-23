@@ -7,7 +7,7 @@ android {
     defaultConfig {
         minSdk rootProject.ext.minSdk
         targetSdk rootProject.ext.targetSdk
-        versionCode getApplicationVersionCode()
+        versionCode rootProject.ext.appCode
         versionName rootProject.ext.appVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
