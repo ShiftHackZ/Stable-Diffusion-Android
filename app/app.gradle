@@ -2,8 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.gms.google-services' apply false
-    id 'com.google.firebase.crashlytics' apply false
 }
 
 def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()

@@ -5,9 +5,13 @@ buildscript {
         minSdk = 26
         targetSdk = 33
     }
+    def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
+    def isPlay = !(taskRequests.contains("Foss") || taskRequests.contains("foss"))
     dependencies {
-        classpath 'com.google.gms:google-services:4.3.15'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.7'
+        if (isPlay) {
+            classpath 'com.google.gms:google-services:4.3.15'
+            classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.7'
+        }
     }
 }
 
