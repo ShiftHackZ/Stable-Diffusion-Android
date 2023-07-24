@@ -30,9 +30,10 @@ android {
         buildConfigField "String", "SETUP_INSTRUCTIONS_URL", "\"https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki\""
     }
 
-    if (new File("keystore/signing.properties").exists()) {
+    def hasPropertiesFile = new File("app/keystore/signing.properties").exists()
+    if (hasPropertiesFile) {
         Properties props = new Properties()
-        props.load(new FileInputStream(file("signing.properties")))
+        props.load(new FileInputStream(file("keystore/signing.properties")))
 
         signingConfigs {
             release {
