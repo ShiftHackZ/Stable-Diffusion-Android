@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.shifthackz.aisdv1.core.common.extensions.copyToClipboard
 import com.shifthackz.aisdv1.core.common.extensions.openMarket
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
@@ -226,6 +227,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                         state = uiState,
                                     )
                                 },
+                                copyToClipboard = { text -> copyToClipboard(text) }
                             ).Build()
                         }
 

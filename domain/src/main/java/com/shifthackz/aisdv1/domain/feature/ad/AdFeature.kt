@@ -18,4 +18,14 @@ interface AdFeature {
         val isEmpty: Boolean
             get() = id.isEmpty() || view == null
     }
+
+    companion object {
+        val empty = object : AdFeature {
+            override fun initialize(activity: Activity) = Unit
+            override fun getHomeScreenBannerAd(context: Context) = Ad()
+            override fun getGalleryDetailBannerAd(context: Context) = Ad()
+            override fun loadAd(ad: Ad) = Unit
+            override fun showRewardedCoinsAd(activity: Activity, rewardCallback: (Int) -> Unit) = Unit
+        }
+    }
 }
