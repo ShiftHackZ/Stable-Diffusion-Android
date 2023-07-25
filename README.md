@@ -2,7 +2,7 @@
 
 # Stable-Diffusion-Android
 
-![Google Play](https://img.shields.io/badge/Google Play-0.4.3-blue)
+![Google Play](https://img.shields.io/badge/GooglePlay-0.4.3-blue)
 ![Izzy On Droid](https://img.shields.io/endpoint?url=https://apt.izzysoft.de/fdroid/api/v1/shield/com.shifthackz.aisdv1.app.foss)
 
 
