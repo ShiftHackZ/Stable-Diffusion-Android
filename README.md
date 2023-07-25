@@ -2,16 +2,19 @@
 
 # Stable-Diffusion-Android
 
-[![Version](https://img.shields.io/badge/Version-0.4.10-blue)](https://github.com/ShiftHackZ/Stable-Diffusion-Android/releases)
+![Google Play](https://img.shields.io/badge/Google Play-0.4.3-blue)
+![Izzy On Droid](https://img.shields.io/endpoint?url=https://apt.izzysoft.de/fdroid/api/v1/shield/com.shifthackz.aisdv1.app.foss)
 
 
 [![Google Play](docs/assets/google_play.png)](https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app)
+[![Izzy On Droid](docs/assets/izzy_on_droid.png)](https://apt.izzysoft.de/fdroid/index/apk/com.shifthackz.aisdv1.app.foss)
 
 Stable Diffusion AI is an easy-to-use app that lets you quickly generate images from text or other images with just a few clicks. With this app, you can communicate with your own server and generate high-quality images in seconds.
 
 ## Features
 
-- Uses server environment powered by [Stable-Diffusion-WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) (AUTOMATIC1111)
+- Can use server environment powered by [AI Horde](https://stablehorde.net/) (a crowdsourced distributed cluster of Stable Diffusion workers)
+- Can use server environment powered by [Stable-Diffusion-WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) (AUTOMATIC1111)
 - Supports original Txt2Img, Img2Img modes
   - **Positive** and **negative** prompt support
   - Support dynamic **size** in range from 64 to 2048 px (for width and height)
