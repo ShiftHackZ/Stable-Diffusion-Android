@@ -58,6 +58,16 @@ If for some reason you have no ability to run your server instance, you can togg
 
 AI Horde requires to use API KEY, this mobile app alows to use either default API KEY (which is "0000000000"), or type your own. You can sign up and get your own AI Horde API KEY [here](https://stablehorde.net/register).
 
+### Option 3: Use SDAI Cloud
+
+**Disclaimer: This option is only available in [GooglePlay](https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app) app version.**
+
+**Google Play app version includes some proprietary libraries (like Firebase and Google AdMob) to monetize this option. This functionality is NOT a part of the FOSS build and will be never included in FOSS build**
+
+SDAI Cloud is the AUTOMATIC1111 hosted by author of this app as an option for users that for some reason are not able to run or host their own AUTOMATIC1111 instance. 
+
+Hosting this instance costs some money, and as this project is non-profitable the usage of SDAI Cloud is monetized by ads. Also the SDAI Cloud may not be available full-time, as this is running on the app author's own bare-metal machine which is hosted in Ukraine, as this area now is a warzone electricity and network downtimes can happen sometimes.
+
 ## Supported languages
 
 App uses the language provided by OS default settings.
