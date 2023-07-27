@@ -3,10 +3,12 @@
 # Stable-Diffusion-Android
 
 ![Google Play](https://img.shields.io/badge/GooglePlay-0.4.3-blue)
+![F-Droid](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Ff-droid.org%2Fapi%2Fv1%2Fpackages%2Fcom.shifthackz.aisdv1.app.foss&query=%24.packages%5B0%5D.versionName&label=F-Droid&link=https%3A%2F%2Ff-droid.org%2Fpackages%2Fcom.shifthackz.aisdv1.app.foss%2F)
 ![Izzy On Droid](https://img.shields.io/endpoint?url=https://apt.izzysoft.de/fdroid/api/v1/shield/com.shifthackz.aisdv1.app.foss)
 
 
 [![Google Play](docs/assets/google_play.png)](https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app)
+[![F-Droid](docs/assets/fdroid.png)](https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss)
 [![Izzy On Droid](docs/assets/izzy_on_droid.png)](https://apt.izzysoft.de/fdroid/index/apk/com.shifthackz.aisdv1.app.foss)
 
 Stable Diffusion AI is an easy-to-use app that lets you quickly generate images from text or other images with just a few clicks. With this app, you can communicate with your own server and generate high-quality images in seconds.
