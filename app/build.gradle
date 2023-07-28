@@ -1,3 +1,7 @@
+import com.android.tools.profgen.ArtProfileKt
+import com.android.tools.profgen.ArtProfileSerializer
+import com.android.tools.profgen.DexFile
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -17,8 +21,8 @@ android {
     namespace 'com.shifthackz.aisdv1.app'
     defaultConfig {
         applicationId "com.shifthackz.aisdv1.app"
-        versionName "0.4.8"
-        versionCode 155
+        versionName "0.4.10"
+        versionCode 157
 
         buildConfigField "String", "CLOUD_AI_URL", "\"https://sdai.moroz.cc\""
         buildConfigField "String", "HORDE_AI_URL", "\"https://stablehorde.net\""
@@ -30,9 +34,10 @@ android {
         buildConfigField "String", "SETUP_INSTRUCTIONS_URL", "\"https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki\""
     }
 
-    if (new File("keystore/signing.properties").exists()) {
+    def hasPropertiesFile = new File("app/keystore/signing.properties").exists()
+    if (hasPropertiesFile) {
         Properties props = new Properties()
-        props.load(new FileInputStream(file("signing.properties")))
+        props.load(new FileInputStream(file("keystore/signing.properties")))
 
         signingConfigs {
             release {
@@ -89,4 +94,34 @@ dependencies {
 
 kapt {
     correctErrorTypes true
+}
+
+// Workaround for "Bug: baseline.profm not deterministic"
+//
+// Reference     : https://f-droid.org/docs/Reproducible_Builds/#bug-baselineprofm-not-deterministic
+// Fix snippet   : https://gist.github.com/obfusk/61046e09cee352ae6dd109911534b12e
+// Issue tracker : https://issuetracker.google.com/issues/231837768
+project.afterEvaluate {
+    tasks.each { task ->
+        if (task.name.startsWith("compile") && task.name.endsWith("ReleaseArtProfile")) {
+            task.doLast {
+                outputs.files.each { file ->
+                    if (file.name.endsWith(".profm")) {
+                        println("Sorting ${file} ...")
+                        def version = ArtProfileSerializer.valueOf("METADATA_0_0_2")
+                        def profile = ArtProfileKt.ArtProfile(file)
+                        def keys = new ArrayList(profile.profileData.keySet())
+                        def sortedData = new LinkedHashMap()
+                        Collections.sort keys, new DexFile.Companion()
+                        keys.each { key -> sortedData[key] = profile.profileData[key] }
+                        new FileOutputStream(file).with {
+                            write(version.magicBytes$profgen)
+                            write(version.versionBytes$profgen)
+                            version.write$profgen(it, sortedData, "")
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

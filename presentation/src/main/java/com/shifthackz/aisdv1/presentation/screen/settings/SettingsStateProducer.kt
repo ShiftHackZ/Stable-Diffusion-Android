@@ -32,6 +32,7 @@ class SettingsStateProducer(
             saveToMediaStore = settings.saveToMediaStore,
             formAdvancedOptionsAlwaysShow = settings.formAdvancedOptionsAlwaysShow,
             appVersion = version,
+            showCheckForUpdates = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
             showRewardedSdAiAd = settings.useSdAiCloud,
             showSdModelSelector = settings.source == ServerSource.CUSTOM,
             showMonitorConnectionOption = settings.source == ServerSource.CUSTOM,
