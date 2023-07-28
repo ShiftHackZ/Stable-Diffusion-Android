@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.model.UiText
@@ -32,7 +34,6 @@ import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-
 import java.io.File
 
 class GalleryDetailScreen(
@@ -40,6 +41,7 @@ class GalleryDetailScreen(
     private val onNavigateBack: () -> Unit = {},
     private val shareGalleryFile: (File) -> Unit = {},
     private val shareGenerationParams: (GalleryDetailState) -> Unit = {},
+    private val copyToClipboard: (CharSequence) -> Unit = {},
 ) : MviScreen<GalleryDetailState, GalleryDetailEffect>(viewModel), KoinComponent {
 
     private val adFeature: AdFeature by inject()
@@ -52,6 +54,7 @@ class GalleryDetailScreen(
             adFeature = adFeature,
             onNavigateBack = onNavigateBack,
             onTabSelected = viewModel::selectTab,
+            onCopyTextClick = copyToClipboard,
             onSendToTxt2Img = viewModel::sendPromptToTxt2Img,
             onSendToImg2Img = viewModel::sendPromptToImg2Img,
             onExportImageToolbarClick = viewModel::share,
@@ -72,9 +75,10 @@ class GalleryDetailScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryDetailState,
-    adFeature: AdFeature,
+    adFeature: AdFeature = AdFeature.empty,
     onNavigateBack: () -> Unit = {},
     onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
+    onCopyTextClick: (CharSequence) -> Unit = {},
     onSendToTxt2Img: () -> Unit = {},
     onSendToImg2Img: () -> Unit = {},
     onExportImageToolbarClick: () -> Unit = {},
@@ -130,6 +134,7 @@ private fun ScreenContent(
                         onSendToImg2Img = onSendToImg2Img,
                         onDeleteButtonClick = onDeleteButtonClick,
                         onExportParamsClick = onExportParamsClick,
+                        onCopyTextClick = onCopyTextClick,
                     )
                     is GalleryDetailState.Loading -> Unit
                 }
@@ -197,6 +202,7 @@ private fun GalleryDetailContentState(
     onSendToImg2Img: () -> Unit = {},
     onDeleteButtonClick: () -> Unit = {},
     onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
+    onCopyTextClick: (CharSequence) -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -219,6 +225,7 @@ private fun GalleryDetailContentState(
                 onSendToImg2Img = onSendToImg2Img,
                 onDeleteButtonClick = onDeleteButtonClick,
                 onExportParamsClick = onExportParamsClick,
+                onCopyTextClick = onCopyTextClick,
             )
         }
     }
@@ -232,6 +239,7 @@ private fun GalleryDetailsTable(
     onSendToImg2Img: () -> Unit = {},
     onDeleteButtonClick: () -> Unit = {},
     onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
+    onCopyTextClick: (CharSequence) -> Unit = {},
 ) {
     Scaffold(
         content = { paddingValues ->
@@ -251,88 +259,101 @@ private fun GalleryDetailsTable(
                     name = R.string.gallery_info_field_date.asUiText(),
                     value = state.createdAt,
                     color = colorOddText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_type.asUiText(),
                     value = state.type,
                     color = colorEvenText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_prompt.asUiText(),
                     value = state.prompt,
                     color = colorOddText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_negative_prompt.asUiText(),
                     value = state.negativePrompt,
                     color = colorEvenText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_size.asUiText(),
                     value = state.size,
                     color = colorOddText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_sampling_steps.asUiText(),
                     value = state.samplingSteps,
                     color = colorEvenText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_cfg.asUiText(),
                     value = state.cfgScale,
                     color = colorOddText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_restore_faces.asUiText(),
                     value = state.restoreFaces,
                     color = colorEvenText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_sampler.asUiText(),
                     value = state.sampler,
                     color = colorOddText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_seed.asUiText(),
                     value = state.seed,
                     color = colorEvenText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_sub_seed.asUiText(),
                     value = state.subSeed,
                     color = colorOddText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_sub_seed_strength.asUiText(),
                     value = state.subSeedStrength,
                     color = colorEvenText,
+                    onCopyTextClick = onCopyTextClick,
                 )
                 if (state.generationType == AiGenerationResult.Type.IMAGE_TO_IMAGE) GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_denoising_strength.asUiText(),
                     value = state.denoisingStrength,
                     color = colorOddText,
+                    onCopyTextClick = onCopyTextClick,
                 )
             }
         },
         bottomBar = {
             Column(
                 modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 16.dp, top = 2.dp),
+                    .background(color = MaterialTheme.colorScheme.background)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp, top = 2.dp),
             ) {
                 Row {
                     OutlinedButton(
@@ -390,7 +411,9 @@ private fun GalleryDetailRow(
     name: UiText,
     value: UiText,
     color: Color,
+    onCopyTextClick: (CharSequence) -> Unit = {},
 ) {
+    val rawValue = value.asString()
     Row(modifier) {
         GalleryDetailCell(
             text = name,
@@ -402,6 +425,18 @@ private fun GalleryDetailRow(
             modifier = Modifier.weight(column2Weight),
             color = color,
         )
+        if (rawValue.isNotBlank()) {
+            IconButton(
+                onClick = { onCopyTextClick(rawValue) },
+            ) {
+                Icon(
+                    modifier = Modifier.size(20.dp),
+                    imageVector = Icons.Default.ContentCopy,
+                    contentDescription = "Copy",
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
+        }
     }
 }
 
@@ -416,4 +451,16 @@ private fun GalleryDetailCell(
         modifier = modifier.padding(8.dp),
         color = color,
     )
+}
+
+@Composable
+@Preview(showSystemUi = true, showBackground = true)
+private fun PreviewGalleryScreenTxt2ImgContentTabImage() {
+    ScreenContent(state = mockGalleryDetailTxt2Img)
+}
+
+@Composable
+@Preview(showSystemUi = true, showBackground = true)
+private fun PreviewGalleryScreenTxt2ImgContentTabInfo() {
+    ScreenContent(state = mockGalleryDetailTxt2Img.copy(selectedTab = GalleryDetailState.Tab.INFO))
 }
