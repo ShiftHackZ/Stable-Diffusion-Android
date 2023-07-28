@@ -21,8 +21,8 @@ android {
     namespace 'com.shifthackz.aisdv1.app'
     defaultConfig {
         applicationId "com.shifthackz.aisdv1.app"
-        versionName "0.4.10"
-        versionCode 157
+        versionName "0.4.11"
+        versionCode 158
 
         buildConfigField "String", "CLOUD_AI_URL", "\"https://sdai.moroz.cc\""
         buildConfigField "String", "HORDE_AI_URL", "\"https://stablehorde.net\""
