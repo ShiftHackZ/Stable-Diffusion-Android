@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.FeatureFlags
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
+import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.features.GetFeatureFlagsUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
@@ -22,6 +23,7 @@ class GalleryDetailViewModel(
     getFeatureFlagsUseCase: GetFeatureFlagsUseCase,
     private val itemId: Long,
     private val getGenerationResultUseCase: GetGenerationResultUseCase,
+    private val getLastResultFromCacheUseCase: GetLastResultFromCacheUseCase,
     private val deleteGalleryItemUseCase: DeleteGalleryItemUseCase,
     private val galleryDetailBitmapExporter: GalleryDetailBitmapExporter,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
@@ -35,7 +37,7 @@ class GalleryDetailViewModel(
     init {
         !Single.zip(
             getFeatureFlagsUseCase(),
-            getGenerationResultUseCase(itemId),
+            getGenerationResult(itemId),
             ::Pair,
         )
             .subscribeOnMainThread(schedulersProvider)
@@ -104,10 +106,15 @@ class GalleryDetailViewModel(
         }
 
     private fun sendPromptToGenerationScreen(screenType: AiGenerationResult.Type) =
-        !getGenerationResultUseCase(itemId)
+        !getGenerationResult(itemId)
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { ai ->
                 generationFormUpdateEvent.update(ai, screenType)
                 emitEffect(GalleryDetailEffect.NavigateBack)
             }
+
+    private fun getGenerationResult(id: Long): Single<AiGenerationResult> {
+        if (id <= 0) return getLastResultFromCacheUseCase.invoke()
+        return getGenerationResultUseCase(id)
+    }
 }

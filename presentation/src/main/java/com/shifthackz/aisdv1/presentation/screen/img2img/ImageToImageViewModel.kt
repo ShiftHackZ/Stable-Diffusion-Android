@@ -13,6 +13,7 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
@@ -35,6 +36,7 @@ class ImageToImageViewModel(
     buildInfoProvider: BuildInfoProvider,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val imageToImageUseCase: ImageToImageUseCase,
+    private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase,
     private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
@@ -124,6 +126,7 @@ class ImageToImageViewModel(
                     .map(currentState::preProcessed)
                     .map(ImageToImageState::mapToPayload)
                     .flatMap(imageToImageUseCase::invoke)
+                    .flatMap(saveLastResultToCacheUseCase::invoke)
                     .subscribeOnMainThread(schedulersProvider)
                     .subscribeBy(
                         onError = { t ->

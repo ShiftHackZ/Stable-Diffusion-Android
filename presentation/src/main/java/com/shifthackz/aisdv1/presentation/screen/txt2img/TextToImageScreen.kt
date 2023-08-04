@@ -32,6 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 class TextToImageScreen(
     private val viewModel: TextToImageViewModel,
     private val launchRewarded: () -> Unit,
+    private val launchGalleryDetail: (Long) -> Unit,
 ) : MviScreen<TextToImageState, EmptyEffect>(viewModel) {
 
     @Composable
@@ -54,6 +55,7 @@ class TextToImageScreen(
             onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
             onSaveGeneratedImage = viewModel::saveGeneratedResult,
+            onViewGeneratedImage = launchGalleryDetail,
             onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
             onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
@@ -83,6 +85,7 @@ private fun ScreenContent(
     onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
     onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
+    onViewGeneratedImage: (Long) -> Unit = {},
     onOpenPreviousGenerationInput: () -> Unit = {},
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
@@ -177,6 +180,7 @@ private fun ScreenContent(
                 showSaveButton = !state.screenModal.autoSaveEnabled,
                 onDismissRequest = onDismissScreenDialog,
                 onSaveRequest = { onSaveGeneratedImage(state.screenModal.result) },
+                onViewDetailRequest = { onViewGeneratedImage(state.screenModal.result.id) },
             )
             is TextToImageState.Modal.Error -> ErrorDialog(
                 text = state.screenModal.error,
