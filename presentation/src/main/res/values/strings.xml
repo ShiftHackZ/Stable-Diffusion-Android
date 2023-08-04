@@ -35,6 +35,9 @@
     <string name="action_skip">Skip</string>
     <string name="action_options_show">Show advanced options</string>
     <string name="action_options_hide">Hide advanced options</string>
+    <string name="action_image_picker_gallery">Choose photo</string>
+    <string name="action_image_picker_camera">Take new photo</string>
+    <string name="action_image_picker_random">Random image</string>
 
     <string name="srv_type_cloud">I want to use SDAI cloud</string>
     <string name="srv_type_own">I want to use own AUTOMATIC1111 instance</string>
@@ -133,6 +136,7 @@
 
     <string name="communicating_progress_title">Hang tight, communicating with server…</string>
     <string name="communicating_progress_sub_title">This could take some time</string>
+    <string name="communication_random_image_title">Fetching random image…</string>
     <string name="communicating_wait_time">Wait time: %1$s</string>
     <string name="communicating_status_queue">Position in queue: %1$s</string>
 

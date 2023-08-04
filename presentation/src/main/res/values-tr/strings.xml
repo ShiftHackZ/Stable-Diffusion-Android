@@ -31,6 +31,9 @@
     <string name="action_skip">Atla</string>
     <string name="action_options_show">Gelişmiş seçenekleri göster</string>
     <string name="action_options_hide">Gelişmiş seçenekleri gizle</string>
+    <string name="action_image_picker_gallery">Fotoğraf seç</string>
+    <string name="action_image_picker_camera">Yeni fotoğraf çek</string>
+    <string name="action_image_picker_random">Rastgele görüntü</string>
 
     <string name="srv_type_cloud">SDAI Bulut hizmetini kullanmak istiyorum</string>
     <string name="srv_type_own">Kendi AUTOMATIC1111 hizmetimi kullanmak istiyorum.</string>
@@ -129,6 +132,7 @@
 
     <string name="communicating_progress_title">Lütfen bekleyin, sunucu ile iletişime geçiliyor…</string>
     <string name="communicating_progress_sub_title">Bu biraz zaman alabilir.</string>
+    <string name="communication_random_image_title">Rastgele resim getiriliyor…</string>
     <string name="communicating_wait_time">Bekleme zamanı: %1$s</string>
     <string name="communicating_status_queue">Sıradaki konumu: %1$s</string>
 

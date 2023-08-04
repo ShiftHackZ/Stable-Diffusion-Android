@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.data.remote.FeatureFlagsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HordeGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HordeStatusSource
 import com.shifthackz.aisdv1.data.remote.MotdRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.RandomImageRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.ServerConfigurationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionModelsRemoteDataSource
@@ -19,6 +20,7 @@ import com.shifthackz.aisdv1.domain.datasource.CoinDataSource
 import com.shifthackz.aisdv1.domain.datasource.FeatureFlagsDataSource
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.MotdDataSource
+import com.shifthackz.aisdv1.domain.datasource.RandomImageDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
@@ -57,6 +59,7 @@ val remoteDataSourceModule = module {
     factoryOf(::CoinRemoteDateSource) bind CoinDataSource.Remote::class
     factoryOf(::MotdRemoteDataSource) bind MotdDataSource.Remote::class
     factoryOf(::FeatureFlagsRemoteDataSource) bind FeatureFlagsDataSource.Remote::class
+    factoryOf(::RandomImageRemoteDataSource) bind RandomImageDataSource.Remote::class
 
     factory<ServerConnectivityGateway> {
         val lambda: () -> Boolean = {

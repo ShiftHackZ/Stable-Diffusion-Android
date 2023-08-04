@@ -14,6 +14,7 @@ import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
@@ -36,6 +37,7 @@ class ImageToImageViewModel(
     generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val imageToImageUseCase: ImageToImageUseCase,
     private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
+    private val getRandomImageUseCase: GetRandomImageUseCase,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val dimensionValidator: DimensionValidator,
@@ -158,6 +160,28 @@ class ImageToImageViewModel(
             else -> Unit
         }
     }
+
+    fun fetchRandomImage() = !getRandomImageUseCase()
+        .doOnSubscribe { setActiveDialog(ImageToImageState.Modal.LoadingRandomImage) }
+        .subscribeOnMainThread(schedulersProvider)
+        .subscribeBy(
+            onError = { t ->
+                setActiveDialog(
+                    ImageToImageState.Modal.Error(
+                        UiText.Static(
+                            t.localizedMessage ?: "Error"
+                        )
+                    )
+                )
+                errorLog(t)
+            },
+            onSuccess = { bitmap ->
+                dismissScreenDialog()
+                currentState
+                    .copy(imageState = ImageToImageState.ImageState.Image(bitmap))
+                    .let(::setState)
+            },
+        )
 
     fun saveGeneratedResult(ai: AiGenerationResult) = !saveGenerationResultUseCase(ai)
         .subscribeOnMainThread(schedulersProvider)
