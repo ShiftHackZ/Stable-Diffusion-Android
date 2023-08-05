@@ -30,6 +30,8 @@ import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedU
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
@@ -85,6 +87,7 @@ internal val useCasesModule = module {
     factoryOf(::ObserveHordeProcessStatusUseCaseImpl) bind ObserveHordeProcessStatusUseCase::class
     factoryOf(::GetMediaStoreInfoUseCaseImpl) bind GetMediaStoreInfoUseCase::class
     factoryOf(::GetFeatureFlagsUseCaseImpl) bind GetFeatureFlagsUseCase::class
+    factoryOf(::GetRandomImageUseCaseImpl) bind GetRandomImageUseCase::class
 }
 
 internal val debugModule = module {

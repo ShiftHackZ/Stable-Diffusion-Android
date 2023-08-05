@@ -5,4 +5,5 @@ interface ApiUrlProvider {
     val stableDiffusionAppApiUrl: String
     val stableDiffusionCloudAiApiUrl: String
     val hordeApiUrl: String
+    val imageCdnApiUrl: String
 }

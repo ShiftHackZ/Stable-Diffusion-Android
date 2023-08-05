@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.domain.datasource.MotdDataSource
 import com.shifthackz.aisdv1.network.api.sdai.MotdRestApi
 import com.shifthackz.aisdv1.network.response.MotdResponse
 
-class MotdRemoteDataSource(
+internal class MotdRemoteDataSource(
     private val api: MotdRestApi,
 ) : MotdDataSource.Remote {
 

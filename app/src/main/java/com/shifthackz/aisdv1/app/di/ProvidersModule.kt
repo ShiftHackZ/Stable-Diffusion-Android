@@ -34,6 +34,7 @@ val providersModule = module {
             override val stableDiffusionAppApiUrl: String = BuildConfig.UPDATE_API_URL
             override val stableDiffusionCloudAiApiUrl: String = BuildConfig.CLOUD_AI_URL
             override val hordeApiUrl: String = BuildConfig.HORDE_AI_URL
+            override val imageCdnApiUrl: String = BuildConfig.IMAGE_CDN_URL
         }
     }
 

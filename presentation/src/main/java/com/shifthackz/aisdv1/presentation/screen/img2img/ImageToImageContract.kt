@@ -48,6 +48,7 @@ data class ImageToImageState(
 
     sealed interface Modal {
         object None : Modal
+        object LoadingRandomImage : Modal
         data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
         object NoSdAiCoins : Modal
         object PromptBottomSheet : Modal
