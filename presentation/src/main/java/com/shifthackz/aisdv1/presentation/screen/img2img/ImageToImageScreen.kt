@@ -6,11 +6,14 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArtTrack
 import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.BrowseGallery
 import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -54,6 +57,7 @@ class ImageToImageScreen(
             state = viewModel.state.collectAsStateWithLifecycle().value,
             onPickImage = { pickImage(viewModel::updateInputImage) },
             onTakePhoto = { takePhoto(viewModel::updateInputImage) },
+            onRandomPhoto = viewModel::fetchRandomImage,
             onClearPhoto = viewModel::clearInputImage,
             onDenoisingStrengthUpdated = viewModel::updateDenoisingStrength,
             onShowAdvancedOptionsToggle = viewModel::toggleAdvancedOptions,
@@ -88,6 +92,7 @@ private fun ScreenContent(
     state: ImageToImageState,
     onPickImage: () -> Unit = {},
     onTakePhoto: () -> Unit = {},
+    onRandomPhoto: () -> Unit = {},
     onClearPhoto: () -> Unit = {},
     onDenoisingStrengthUpdated: (Float) -> Unit,
     onShowAdvancedOptionsToggle: (Boolean) -> Unit = {},
@@ -143,6 +148,7 @@ private fun ScreenContent(
                         imageState = state.imageState,
                         onPickImage = onPickImage,
                         onTakePhoto = onTakePhoto,
+                        onRandomPhoto = onRandomPhoto,
                         onClearPhoto = onClearPhoto,
                     )
                     GenerationInputForm(
@@ -215,6 +221,10 @@ private fun ScreenContent(
                 waitTimeSeconds = state.screenModal.hordeProcessStatus?.waitTimeSeconds,
                 positionInQueue = state.screenModal.hordeProcessStatus?.queuePosition,
             )
+            ImageToImageState.Modal.LoadingRandomImage -> ProgressDialog(
+                titleResId = R.string.communication_random_image_title,
+                canDismiss = false,
+            )
             ImageToImageState.Modal.NoSdAiCoins -> NoSdAiCoinsDialog(
                 onDismissRequest = onDismissScreenDialog,
                 launchRewarded = onLaunchRewarded,
@@ -253,6 +263,7 @@ private fun InputImageState(
     imageState: ImageToImageState.ImageState,
     onPickImage: () -> Unit = {},
     onTakePhoto: () -> Unit = {},
+    onRandomPhoto: () -> Unit = {},
     onClearPhoto: () -> Unit = {},
 ) {
     when (imageState) {
@@ -282,24 +293,54 @@ private fun InputImageState(
                 )
             }
         }
-        ImageToImageState.ImageState.None -> Row(
+        ImageToImageState.ImageState.None -> Column(
             modifier = modifier,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            val pickButtonModifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .aspectRatio(1f)
-            ImagePickButtonBox(
-                modifier = pickButtonModifier,
-                buttonType = ImagePickButton.PHOTO,
-                onClick = onPickImage,
-            )
-            ImagePickButtonBox(
-                modifier = pickButtonModifier,
-                buttonType = ImagePickButton.CAMERA,
-                onClick = onTakePhoto,
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                val pickButtonModifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .aspectRatio(1.35f)
+                ImagePickButtonBox(
+                    modifier = pickButtonModifier,
+                    buttonType = ImagePickButton.PHOTO,
+                    onClick = onPickImage,
+                )
+                ImagePickButtonBox(
+                    modifier = pickButtonModifier,
+                    buttonType = ImagePickButton.CAMERA,
+                    onClick = onTakePhoto,
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .fillMaxWidth()
+                    .background(
+                        MaterialTheme.colorScheme.secondaryContainer,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .clickable { onRandomPhoto() },
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .padding(8.dp),
+                    imageVector = Icons.Default.ArtTrack,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                )
+                Text(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = stringResource(id = R.string.action_image_picker_random),
+                    fontSize = 17.sp,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                )
+            }
         }
     }
 }
@@ -325,7 +366,7 @@ private fun ImagePickButtonBox(
                 .size(48.dp)
                 .padding(top = 16.dp),
             imageVector = when (buttonType) {
-                ImagePickButton.PHOTO -> Icons.Default.BrowseGallery
+                ImagePickButton.PHOTO -> Icons.Default.Image
                 ImagePickButton.CAMERA -> Icons.Default.Camera
             },
             contentDescription = null,
@@ -333,10 +374,12 @@ private fun ImagePickButtonBox(
         )
         Text(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
-            text = when (buttonType) {
-                ImagePickButton.PHOTO -> "Choose photo"
-                ImagePickButton.CAMERA -> "Take new photo"
-            },
+            text = stringResource(
+                id = when (buttonType) {
+                    ImagePickButton.PHOTO -> R.string.action_image_picker_gallery
+                    ImagePickButton.CAMERA -> R.string.action_image_picker_camera
+                }
+            ),
             fontSize = 17.sp,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
         )

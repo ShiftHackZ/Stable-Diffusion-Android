@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.data.repository.FeatureFlagsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.GenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HordeGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.MotdRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.RandomImageRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.ServerConfigurationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionModelsRepositoryImpl
@@ -17,6 +18,7 @@ import com.shifthackz.aisdv1.domain.repository.FeatureFlagsRepository
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.MotdRepository
+import com.shifthackz.aisdv1.domain.repository.RandomImageRepository
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
@@ -39,4 +41,5 @@ val repositoryModule = module {
     factoryOf(::CoinRepositoryImpl) bind CoinRepository::class
     factoryOf(::MotdRepositoryImpl) bind MotdRepository::class
     factoryOf(::FeatureFlagsRepositoryImpl) bind FeatureFlagsRepository::class
+    factoryOf(::RandomImageRepositoryImpl) bind RandomImageRepository::class
 }

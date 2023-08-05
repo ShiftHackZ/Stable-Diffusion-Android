@@ -27,6 +27,7 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
   - **Restore faces** option
   - ( Img2Img ONLY ) : Image selection from device gallery _(requires user permission)_
   - ( Img2Img ONLY ) : Capture input image from camera _(requires user permission)_
+  - ( Img2Img ONLY ) : Fetching random image for the input 
 - In-app Gallery, stored locally, contains all AI generated images
   - Displays generated images grid
   - Image detail view: Zoom, Pinch, Generation Info. 

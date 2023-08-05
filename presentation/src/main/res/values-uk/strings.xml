@@ -31,6 +31,9 @@
     <string name="action_skip">Пропустити</string>
     <string name="action_options_show">Показати всі опції</string>
     <string name="action_options_hide">Сховати всі опції</string>
+    <string name="action_image_picker_gallery">Виберати фото</string>
+    <string name="action_image_picker_camera">Фото з камери</string>
+    <string name="action_image_picker_random">Випадкове зображення</string>
 
     <string name="srv_type_cloud">Використовувати сервер SDAI</string>
     <string name="srv_type_own">Використовувати власний сервер AUTOMATIC1111</string>
@@ -129,6 +132,7 @@
 
     <string name="communicating_progress_title">Зачекайте, йде коммунікація із сервером…</string>
     <string name="communicating_progress_sub_title">На це може знадобитися деякий час</string>
+    <string name="communication_random_image_title">Завантажуємо випадкове зображення…</string>
     <string name="communicating_wait_time">Час очікування: %1$s</string>
     <string name="communicating_status_queue">Поизиція в черзі: %1$s</string>
 

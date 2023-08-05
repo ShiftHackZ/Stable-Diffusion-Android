@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
 import com.shifthackz.aisdv1.network.api.horde.HordeRestApi
+import com.shifthackz.aisdv1.network.api.imagecdn.ImageCdnRestApi
+import com.shifthackz.aisdv1.network.api.imagecdn.ImageCdnRestApiImpl
 import com.shifthackz.aisdv1.network.api.sdai.AppUpdateRestApi
 import com.shifthackz.aisdv1.network.api.sdai.CoinsRestApi
 import com.shifthackz.aisdv1.network.api.sdai.FeatureFlagsRestApi
@@ -21,6 +23,8 @@ import com.shifthackz.aisdv1.network.qualifiers.NetworkInterceptors
 import com.shifthackz.aisdv1.network.qualifiers.RetrofitCallAdapters
 import com.shifthackz.aisdv1.network.qualifiers.RetrofitConverterFactories
 import okhttp3.OkHttpClient
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
@@ -31,7 +35,7 @@ private const val HTTP_TIMEOUT = 10L
 
 val networkModule = module {
 
-    single<Gson> { GsonBuilder().create() }
+    single<Gson> { GsonBuilder().setLenient().create() }
 
     single { RestAuthenticator(get()) }
 
@@ -125,6 +129,14 @@ val networkModule = module {
             .withBaseUrl(get<ApiUrlProvider>().hordeApiUrl)
             .create(HordeRestApi::class.java)
     }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().imageCdnApiUrl)
+            .create(ImageCdnRestApi.RawApi::class.java)
+    }
+
+    singleOf(::ImageCdnRestApiImpl) bind ImageCdnRestApi::class
 
     factory {params ->
         ConnectivityMonitor(params.get())
