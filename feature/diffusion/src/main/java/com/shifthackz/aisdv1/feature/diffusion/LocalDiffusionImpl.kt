@@ -47,26 +47,26 @@ internal class LocalDiffusionImpl(
 
             debugLog("processor start")
             tokenizer.initialize()
-            val batch_size = 1
+            val batchSize = 1
 
-            val num_inference_steps = 8
-            val guidance_scale = 5.0
+            val numInferenceSteps = 8
+            val guidanceScale = 5.0
 
             val textTokenized = tokenizer.encode(payload.prompt)
             val negTokenized = tokenizer.createUnconditionalInput(payload.negativePrompt)
 
             val textPromptEmbeddings = tokenizer.tensor(textTokenized)
-            val uncondEmbedding = tokenizer.tensor(negTokenized)
-            val textEmbeddingArray = Array<Array<FloatArray>>(2) {
-                Array<FloatArray>(tokenizer.maxLength) {
+            val unConditionalEmbedding = tokenizer.tensor(negTokenized)
+            val textEmbeddingArray = Array(2) {
+                Array(tokenizer.maxLength) {
                     FloatArray(768)
                 }
             }
 
             val textPromptEmbeddingArray = textPromptEmbeddings!!.floatBuffer.array()
-            val uncondEmbeddingArray = uncondEmbedding!!.floatBuffer.array()
+            val unConditionalEmbeddingArray = unConditionalEmbedding!!.floatBuffer.array()
             for (i in textPromptEmbeddingArray.indices) {
-                textEmbeddingArray[0][i / 768][i % 768] = uncondEmbeddingArray[i]
+                textEmbeddingArray[0][i / 768][i % 768] = unConditionalEmbeddingArray[i]
                 textEmbeddingArray[1][i / 768][i % 768] = textPromptEmbeddingArray[i]
             }
 
@@ -76,22 +76,17 @@ internal class LocalDiffusionImpl(
             uNet.initialize()
             uNet.inference(
                 payload.seed.toLongOrNull() ?: 0L,
-                num_inference_steps,
+                numInferenceSteps,
                 textEmbeddings,
-                guidance_scale,
-                batch_size,
+                guidanceScale,
+                batchSize,
                 payload.width,
                 payload.height,
             )
-            debugLog("processor complete")
-//            emitter.onComplete()
         } catch (e: Exception) {
-            debugLog("processor error")
             if (!emitter.isDisposed) emitter.onError(e)
         }
     }
 
-    override fun observeStatus(): Observable<LocalDiffusion.Status> {
-        return statusSubject//.toFlowable(BackpressureStrategy.LATEST)
-    }
+    override fun observeStatus() = statusSubject
 }
