@@ -112,7 +112,7 @@ fun GenerationInputForm(
                     label = R.string.height.asUiText(),
                     value = state.height,
                     items = Constants.sizes,
-                    onItemSelected = onWidthUpdated,
+                    onItemSelected = onHeightUpdated,
                 )
             } else {
                 TextField(
