@@ -35,6 +35,6 @@ dependencies {
     implementation project(":domain")
     implementation di.koinCore
     playstoreImplementation androidx.constraintLayout
-    playstoreImplementation proprietary.playServicesAds
+    playstoreImplementation proprietary.plA
     playstoreImplementation proprietary.ump
 }

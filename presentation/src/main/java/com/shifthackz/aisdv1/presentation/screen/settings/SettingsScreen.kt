@@ -323,7 +323,7 @@ private fun ContentSettingsState(
             text = R.string.settings_item_report_problem.asUiText(),
             onClick = onReportProblemItemClick,
         )
-        SettingsItem(
+        if (state.showCheckForUpdates) SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Filled.GetApp,
             text = R.string.settings_item_check_updates.asUiText(),
@@ -391,6 +391,7 @@ private fun PreviewStateContent() {
             autoSaveAiResults = true,
             saveToMediaStore = true,
             formAdvancedOptionsAlwaysShow = false,
+            showCheckForUpdates = true,
             showSdModelSelector = true,
             showMonitorConnectionOption = true,
             showRateGooglePlay = true,
