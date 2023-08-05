@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.data.repository.ServerConfigurationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionSamplersRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.TemporaryGenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.domain.repository.AppVersionRepository
 import com.shifthackz.aisdv1.domain.repository.CoinRepository
 import com.shifthackz.aisdv1.domain.repository.FeatureFlagsRepository
@@ -22,11 +23,14 @@ import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
+import com.shifthackz.aisdv1.domain.repository.TemporaryGenerationResultRepository
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val repositoryModule = module {
+    singleOf(::TemporaryGenerationResultRepositoryImpl) bind TemporaryGenerationResultRepository::class
     factoryOf(::HordeGenerationRepositoryImpl) bind HordeGenerationRepository::class
     factoryOf(::StableDiffusionGenerationRepositoryImpl) bind StableDiffusionGenerationRepository::class
     factoryOf(::StableDiffusionModelsRepositoryImpl) bind StableDiffusionModelsRepository::class

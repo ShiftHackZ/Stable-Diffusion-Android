@@ -44,11 +44,13 @@ fun NavGraphBuilder.homeScreenNavGraph(
                 navItems = listOf(
                     txt2ImgTab(
                         launchRewarded = launchRewarded,
+                        launchGalleryDetail = openGalleryItemDetails,
                     ),
                     img2imgTab(
                         pickImage = pickImage,
                         takePhoto = takePhoto,
-                        launchRewarded = launchRewarded
+                        launchRewarded = launchRewarded,
+                        launchGalleryDetail = openGalleryItemDetails,
                     ),
                     galleryTab(
                         shareGalleryFile = shareGalleryFile,
@@ -74,6 +76,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
 @Composable
 private fun txt2ImgTab(
     launchRewarded: () -> Unit,
+    launchGalleryDetail: (Long) -> Unit,
 ) = HomeNavigationItem(
     name = stringResource(R.string.home_tab_txt_to_img),
     route = Constants.ROUTE_TXT_TO_IMG,
@@ -85,6 +88,7 @@ private fun txt2ImgTab(
         TextToImageScreen(
             viewModel = koinViewModel(),
             launchRewarded = launchRewarded,
+            launchGalleryDetail = launchGalleryDetail,
         ).Build()
     },
 )
@@ -94,6 +98,7 @@ private fun img2imgTab(
     pickImage: (ImagePickerCallback) -> Unit = {},
     takePhoto: (ImagePickerCallback) -> Unit = {},
     launchRewarded: () -> Unit = {},
+    launchGalleryDetail: (Long) -> Unit,
 ) = HomeNavigationItem(
     name = stringResource(R.string.home_tab_img_to_img),
     route = Constants.ROUTE_IMG_TO_IMG,
@@ -107,6 +112,7 @@ private fun img2imgTab(
             pickImage = pickImage,
             takePhoto = takePhoto,
             launchRewarded = launchRewarded,
+            launchGalleryDetail = launchGalleryDetail,
         ).Build()
     },
 )

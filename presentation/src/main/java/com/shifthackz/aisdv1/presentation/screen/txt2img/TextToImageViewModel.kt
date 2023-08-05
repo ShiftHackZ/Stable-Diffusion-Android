@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
@@ -30,6 +31,7 @@ class TextToImageViewModel(
     observeCoinsUseCase: ObserveCoinsUseCase,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val textToImageUseCase: TextToImageUseCase,
+    private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase,
     private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val dimensionValidator: DimensionValidator,
@@ -81,6 +83,7 @@ class TextToImageViewModel(
         !currentState
             .mapToPayload()
             .let(textToImageUseCase::invoke)
+            .flatMap(saveLastResultToCacheUseCase::invoke)
             .doOnSubscribe { setActiveDialog(TextToImageState.Modal.Communicating()) }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(

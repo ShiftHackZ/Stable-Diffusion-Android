@@ -47,6 +47,7 @@ class ImageToImageScreen(
     private val pickImage: (ImagePickerCallback) -> Unit,
     private val takePhoto: (ImagePickerCallback) -> Unit,
     private val launchRewarded: () -> Unit,
+    private val launchGalleryDetail: (Long) -> Unit,
 ) : MviScreen<ImageToImageState, ImageToImageEffect>(viewModel) {
 
     @Composable
@@ -73,6 +74,7 @@ class ImageToImageScreen(
             onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
             onSaveGeneratedImage = viewModel::saveGeneratedResult,
+            onViewGeneratedImage = launchGalleryDetail,
             onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
             onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
@@ -107,6 +109,7 @@ private fun ScreenContent(
     onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
     onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
+    onViewGeneratedImage: (Long) -> Unit = {},
     onOpenPreviousGenerationInput: () -> Unit = {},
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
@@ -235,6 +238,7 @@ private fun ScreenContent(
                 showSaveButton = !state.screenModal.autoSaveEnabled,
                 onDismissRequest = onDismissScreenDialog,
                 onSaveRequest = { onSaveGeneratedImage(state.screenModal.result) },
+                onViewDetailRequest = { onViewGeneratedImage(state.screenModal.result.id) },
             )
             is ImageToImageState.Modal.PromptBottomSheet -> ModalBottomSheet(
                 onDismissRequest = onDismissScreenDialog,

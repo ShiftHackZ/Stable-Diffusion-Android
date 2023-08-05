@@ -4,6 +4,10 @@ import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.coin.EarnRewardedCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.coin.EarnRewardedCoinsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
@@ -88,6 +92,8 @@ internal val useCasesModule = module {
     factoryOf(::GetMediaStoreInfoUseCaseImpl) bind GetMediaStoreInfoUseCase::class
     factoryOf(::GetFeatureFlagsUseCaseImpl) bind GetFeatureFlagsUseCase::class
     factoryOf(::GetRandomImageUseCaseImpl) bind GetRandomImageUseCase::class
+    factoryOf(::SaveLastResultToCacheUseCaseImpl) bind SaveLastResultToCacheUseCase::class
+    factoryOf(::GetLastResultFromCacheUseCaseImpl) bind GetLastResultFromCacheUseCase::class
 }
 
 internal val debugModule = module {
