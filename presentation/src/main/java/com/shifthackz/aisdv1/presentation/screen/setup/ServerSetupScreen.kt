@@ -172,6 +172,9 @@ private fun ScreenContent(
                             onOpenHordeWebSite = onOpenHordeWebSite,
                             onOpenHordeSignUpWebSite = onOpenHordeSignUpWebSite,
                         )
+                        ServerSetupState.Mode.LOCAL -> {
+                            //ToDo draw setup local UI
+                        }
                     }
                 }
             },
@@ -454,6 +457,7 @@ private fun ConfigurationModeButton(
                 ServerSetupState.Mode.SD_AI_CLOUD -> Icons.Default.Cloud
                 ServerSetupState.Mode.OWN_SERVER -> Icons.Default.Computer
                 ServerSetupState.Mode.HORDE -> Icons.Default.Cloud
+                ServerSetupState.Mode.LOCAL -> Icons.Default.PhoneAndroid
             },
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -466,6 +470,7 @@ private fun ConfigurationModeButton(
                 ServerSetupState.Mode.SD_AI_CLOUD -> R.string.srv_type_cloud
                 ServerSetupState.Mode.OWN_SERVER -> R.string.srv_type_own
                 ServerSetupState.Mode.HORDE -> R.string.srv_type_horde
+                ServerSetupState.Mode.LOCAL -> R.string.srv_type_local
             }),
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSecondaryContainer,

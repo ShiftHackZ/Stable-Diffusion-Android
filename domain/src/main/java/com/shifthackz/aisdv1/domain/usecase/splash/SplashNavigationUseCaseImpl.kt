@@ -14,6 +14,9 @@ internal class SplashNavigationUseCaseImpl(
             preferenceManager.forceSetupAfterUpdate -> {
                 Action.LAUNCH_SERVER_SETUP
             }
+            preferenceManager.source == ServerSource.LOCAL -> {
+                Action.LAUNCH_HOME
+            }
             preferenceManager.source == ServerSource.HORDE -> {
                 Action.LAUNCH_HOME
             }

@@ -30,6 +30,7 @@ fun ProgressDialog(
     onDismissRequest: () -> Unit = {},
     waitTimeSeconds: Int? = null,
     positionInQueue: Int? = null,
+    step: Pair<Int, Int>? = null,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -58,6 +59,7 @@ fun ProgressDialog(
                 ProgressDialogStatus(
                     waitTimeSeconds = waitTimeSeconds,
                     positionInQueue = positionInQueue,
+                    step = step,
                 )
                 LinearProgressIndicator(
                     modifier = Modifier
@@ -75,6 +77,7 @@ fun ProgressDialogStatus(
     modifier: Modifier = Modifier,
     waitTimeSeconds: Int?,
     positionInQueue: Int?,
+    step: Pair<Int, Int>?,
 ) {
     Column(modifier.padding(vertical = 4.dp)) {
         Text(
@@ -87,10 +90,13 @@ fun ProgressDialogStatus(
         Text(
             text = positionInQueue?.let { position ->
                 stringResource(id = R.string.communicating_status_queue, position)
+            } ?: step?.let { (current, total) ->
+                stringResource(id = R.string.communicating_status_steps, current, total)
             } ?: "",
             style = TextStyle(fontSize = 12.sp),
             color = AlertDialogDefaults.textContentColor,
         )
+
     }
 }
 

@@ -84,12 +84,14 @@ data class ServerSetupState(
     enum class Mode {
         OWN_SERVER,
         SD_AI_CLOUD,
-        HORDE;
+        HORDE,
+        LOCAL;
 
         fun toSource() = when (this) {
             SD_AI_CLOUD -> ServerSource.SDAI
             OWN_SERVER -> ServerSource.CUSTOM
             HORDE -> ServerSource.HORDE
+            LOCAL -> ServerSource.LOCAL
         }
 
         companion object {
@@ -97,6 +99,7 @@ data class ServerSetupState(
                 ServerSource.CUSTOM -> OWN_SERVER
                 ServerSource.SDAI -> SD_AI_CLOUD
                 ServerSource.HORDE -> HORDE
+                ServerSource.LOCAL -> LOCAL
             }
         }
     }
@@ -119,7 +122,11 @@ enum class ServerSetupLaunchSource(val key: Int) {
 
 val BuildType.allowedModes: List<ServerSetupState.Mode>
     get() = when (this) {
-        BuildType.FOSS -> listOf(ServerSetupState.Mode.OWN_SERVER, ServerSetupState.Mode.HORDE)
+        BuildType.FOSS -> listOf(
+            ServerSetupState.Mode.OWN_SERVER,
+            ServerSetupState.Mode.HORDE,
+            ServerSetupState.Mode.LOCAL,
+        )
         BuildType.GOOGLE_PLAY -> ServerSetupState.Mode.values().toList()
     }
 

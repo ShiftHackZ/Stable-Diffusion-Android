@@ -58,7 +58,7 @@ class TextToImageScreen(
             onViewGeneratedImage = launchGalleryDetail,
             onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
             onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
-            onDismissScreenDialog = viewModel::dismissScreenDialog,
+            onDismissScreenDialog = viewModel::dismissScreenModal,
             onLaunchRewarded = launchRewarded,
         )
     }
@@ -170,6 +170,11 @@ private fun ScreenContent(
                 canDismiss = false,
                 waitTimeSeconds = state.screenModal.hordeProcessStatus?.waitTimeSeconds,
                 positionInQueue = state.screenModal.hordeProcessStatus?.queuePosition,
+            )
+            is TextToImageState.Modal.Generating -> ProgressDialog(
+                titleResId = R.string.communicating_local_title,
+                canDismiss = false,
+                step = state.screenModal.pair,
             )
             TextToImageState.Modal.NoSdAiCoins -> NoSdAiCoinsDialog(
                 onDismissRequest = onDismissScreenDialog,

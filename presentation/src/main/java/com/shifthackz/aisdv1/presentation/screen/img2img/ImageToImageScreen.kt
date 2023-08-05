@@ -8,10 +8,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArtTrack
 import androidx.compose.material.icons.filled.AutoFixNormal
-import androidx.compose.material.icons.filled.BrowseGallery
 import androidx.compose.material.icons.filled.Camera
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeviceUnknown
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.*
@@ -39,6 +38,7 @@ import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDia
 import com.shifthackz.aisdv1.presentation.widget.dialog.NoSdAiCoinsDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
 import org.koin.androidx.compose.koinViewModel
 
@@ -48,6 +48,7 @@ class ImageToImageScreen(
     private val takePhoto: (ImagePickerCallback) -> Unit,
     private val launchRewarded: () -> Unit,
     private val launchGalleryDetail: (Long) -> Unit,
+    private val launchServerSetup: () -> Unit,
 ) : MviScreen<ImageToImageState, ImageToImageEffect>(viewModel) {
 
     @Composable
@@ -73,6 +74,7 @@ class ImageToImageScreen(
             onSubSeedStrengthUpdated = viewModel::updateSubSeedStrength,
             onSamplerUpdated = viewModel::updateSampler,
             onGenerateClicked = viewModel::generate,
+            onChangeConfigurationClicked = launchServerSetup,
             onSaveGeneratedImage = viewModel::saveGeneratedResult,
             onViewGeneratedImage = launchGalleryDetail,
             onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
@@ -108,6 +110,7 @@ private fun ScreenContent(
     onSubSeedStrengthUpdated: (Float) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
+    onChangeConfigurationClicked: () -> Unit = {},
     onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
     onViewGeneratedImage: (Long) -> Unit = {},
     onOpenPreviousGenerationInput: () -> Unit = {},
@@ -126,90 +129,137 @@ private fun ScreenContent(
                         )
                     },
                     actions = {
-                        IconButton(onClick = onOpenPreviousGenerationInput) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = null,
-                            )
+                        if (state.mode != GenerationInputMode.LOCAL) {
+                            IconButton(onClick = onOpenPreviousGenerationInput) {
+                                Icon(
+                                    imageVector = Icons.Default.Edit,
+                                    contentDescription = null,
+                                )
+                            }
                         }
                     },
                 )
             },
             content = { paddingValues ->
-                val scrollState = rememberScrollState()
-                Column(
-                    modifier = Modifier
-                        .padding(paddingValues)
-                        .verticalScroll(scrollState)
-                        .padding(horizontal = 16.dp),
-                ) {
-                    InputImageState(
-                        modifier = Modifier.fillMaxWidth(),
-                        imageState = state.imageState,
-                        onPickImage = onPickImage,
-                        onTakePhoto = onTakePhoto,
-                        onRandomPhoto = onRandomPhoto,
-                        onClearPhoto = onClearPhoto,
-                    )
-                    GenerationInputForm(
-                        state = state,
-                        onShowAdvancedOptionsToggle = onShowAdvancedOptionsToggle,
-                        onPromptUpdated = onPromptUpdated,
-                        onNegativePromptUpdated = onNegativePromptUpdated,
-                        onWidthUpdated = onWidthUpdated,
-                        onHeightUpdated = onHeightUpdated,
-                        onSamplingStepsUpdated = onSamplingStepsUpdated,
-                        onCfgScaleUpdated = onCfgScaleUpdated,
-                        onRestoreFacesUpdated = onRestoreFacesUpdated,
-                        onSeedUpdated = onSeedUpdated,
-                        onSubSeedUpdated = onSubSeedUpdated,
-                        onSubSeedStrengthUpdated = onSubSeedStrengthUpdated,
-                        onSamplerUpdated = onSamplerUpdated,
-                        widthValidationError = state.widthValidationError,
-                        heightValidationError = state.heightValidationError,
-                        afterSlidersSection = {
-                            Text(
-                                modifier = Modifier.padding(top = 8.dp),
-                                text = stringResource(
-                                    id = R.string.hint_denoising_strength,
-                                    "${state.denoisingStrength.roundTo(2)}"
-                                ),
-                            )
-                            Slider(
-                                value = state.denoisingStrength,
-                                valueRange = Constants.DENOISING_STRENGTH_MIN..Constants.DENOISING_STRENGTH_MAX,
+                if (state.mode != GenerationInputMode.LOCAL) {
+                    val scrollState = rememberScrollState()
+                    Column(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .verticalScroll(scrollState)
+                            .padding(horizontal = 16.dp),
+                    ) {
+                        InputImageState(
+                            modifier = Modifier.fillMaxWidth(),
+                            imageState = state.imageState,
+                            onPickImage = onPickImage,
+                            onTakePhoto = onTakePhoto,
+                            onRandomPhoto = onRandomPhoto,
+                            onClearPhoto = onClearPhoto,
+                        )
+                        GenerationInputForm(
+                            state = state,
+                            onShowAdvancedOptionsToggle = onShowAdvancedOptionsToggle,
+                            onPromptUpdated = onPromptUpdated,
+                            onNegativePromptUpdated = onNegativePromptUpdated,
+                            onWidthUpdated = onWidthUpdated,
+                            onHeightUpdated = onHeightUpdated,
+                            onSamplingStepsUpdated = onSamplingStepsUpdated,
+                            onCfgScaleUpdated = onCfgScaleUpdated,
+                            onRestoreFacesUpdated = onRestoreFacesUpdated,
+                            onSeedUpdated = onSeedUpdated,
+                            onSubSeedUpdated = onSubSeedUpdated,
+                            onSubSeedStrengthUpdated = onSubSeedStrengthUpdated,
+                            onSamplerUpdated = onSamplerUpdated,
+                            widthValidationError = state.widthValidationError,
+                            heightValidationError = state.heightValidationError,
+                            afterSlidersSection = {
+                                Text(
+                                    modifier = Modifier.padding(top = 8.dp),
+                                    text = stringResource(
+                                        id = R.string.hint_denoising_strength,
+                                        "${state.denoisingStrength.roundTo(2)}"
+                                    ),
+                                )
+                                Slider(
+                                    value = state.denoisingStrength,
+                                    valueRange = Constants.DENOISING_STRENGTH_MIN..Constants.DENOISING_STRENGTH_MAX,
 //                                steps = abs(Constants.DENOISING_STRENGTH_MAX - Constants.DENOISING_STRENGTH_MIN) * 2 - 1,
-                                colors = sliderColors,
-                                onValueChange = {
-                                    onDenoisingStrengthUpdated(it.roundTo(2))
-                                },
-                            )
-                        }
-                    )
+                                    colors = sliderColors,
+                                    onValueChange = {
+                                        onDenoisingStrengthUpdated(it.roundTo(2))
+                                    },
+                                )
+                            }
+                        )
+                    }
+                } else {
+                    Column(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .padding(horizontal = 36.dp)
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(96.dp),
+                            imageVector = Icons.Default.DeviceUnknown,
+                            contentDescription = "Feature not supported",
+                        )
+                        Text(
+                            modifier = Modifier.padding(top = 20.dp),
+                            text = stringResource(id = R.string.local_no_img2img_support_title),
+                            style = MaterialTheme.typography.headlineSmall,
+                        )
+                        Text(
+                            modifier = Modifier.padding(top = 14.dp),
+                            text = stringResource(id = R.string.local_no_img2img_support_sub_title),
+                        )
+                        Text(
+                            modifier = Modifier.padding(top = 14.dp),
+                            text = stringResource(id = R.string.local_no_img2img_support_sub_title_2),
+                        )
+                    }
                 }
             },
             bottomBar = {
-                Column(Modifier.fillMaxWidth()) {
-                    AvailableCoinsComposable(
-                        modifier = Modifier.fillMaxWidth(),
-                        viewModel = koinViewModel()
-                    ).Build()
+                if (state.mode != GenerationInputMode.LOCAL) {
+                    Column(Modifier.fillMaxWidth()) {
+                        AvailableCoinsComposable(
+                            modifier = Modifier.fillMaxWidth(),
+                            viewModel = koinViewModel()
+                        ).Build()
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 32.dp)
+                                .padding(bottom = 16.dp),
+                            onClick = onGenerateClicked,
+                            enabled = !state.hasValidationErrors && !state.imageState.isEmpty,
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(18.dp),
+                                imageVector = Icons.Default.AutoFixNormal,
+                                contentDescription = "Imagine",
+                            )
+                            Text(
+                                modifier = Modifier.padding(start = 8.dp),
+                                text = stringResource(id = R.string.action_generate)
+                            )
+                        }
+                    }
+                } else {
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 32.dp)
                             .padding(bottom = 16.dp),
-                        onClick = onGenerateClicked,
-                        enabled = !state.hasValidationErrors && !state.imageState.isEmpty,
+                        onClick = onChangeConfigurationClicked,
                     ) {
-                        Icon(
-                            modifier = Modifier.size(18.dp),
-                            imageVector = Icons.Default.AutoFixNormal,
-                            contentDescription = "Imagine",
-                        )
                         Text(
                             modifier = Modifier.padding(start = 8.dp),
-                            text = stringResource(id = R.string.action_generate)
+                            text = stringResource(id = R.string.action_change_configuration)
                         )
                     }
                 }
@@ -222,7 +272,7 @@ private fun ScreenContent(
                 positionInQueue = state.screenModal.hordeProcessStatus?.queuePosition,
             )
             ImageToImageState.Modal.LoadingRandomImage -> ProgressDialog(
-                titleResId = R.string.communication_random_image_title,
+                titleResId = R.string.communicating_random_image_title,
                 canDismiss = false,
             )
             ImageToImageState.Modal.NoSdAiCoins -> NoSdAiCoinsDialog(

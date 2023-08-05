@@ -21,6 +21,10 @@
     <string name="splash_status_fetching">Fetching data…</string>
     <string name="splash_status_launching">Launching application!</string>
 
+    <string name="local_no_img2img_support_title">Not available</string>
+    <string name="local_no_img2img_support_sub_title">Image to Image mode is not available in case you are using your local phone resources to generate images.</string>
+    <string name="local_no_img2img_support_sub_title_2">You can switch to server based generation in Configuration settings to use Image to Image mode.</string>
+
     <string name="action_generate">Imagine</string>
     <string name="action_export">Export</string>
     <string name="action_delete_image">Delete image</string>
@@ -38,10 +42,12 @@
     <string name="action_image_picker_gallery">Choose photo</string>
     <string name="action_image_picker_camera">Take new photo</string>
     <string name="action_image_picker_random">Random image</string>
+    <string name="action_change_configuration">Change configuration</string>
 
     <string name="srv_type_cloud">I want to use SDAI cloud</string>
     <string name="srv_type_own">I want to use own AUTOMATIC1111 instance</string>
     <string name="srv_type_horde">I want to use Horde AI cloud</string>
+    <string name="srv_type_local">Local (Beta)</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -136,9 +142,11 @@
 
     <string name="communicating_progress_title">Hang tight, communicating with server…</string>
     <string name="communicating_progress_sub_title">This could take some time</string>
-    <string name="communication_random_image_title">Fetching random image…</string>
+    <string name="communicating_random_image_title">Fetching random image…</string>
+    <string name="communicating_local_title">Running Local Diffusion generation</string>
     <string name="communicating_wait_time">Wait time: %1$s</string>
     <string name="communicating_status_queue">Position in queue: %1$s</string>
+    <string name="communicating_status_steps">Processing step: %1$s/%2$s</string>
 
     <string name="exporting_progress_title">Exporting your gallery…</string>
     <string name="exporting_progress_sub_title">It can take some time, depending on photos amount</string>

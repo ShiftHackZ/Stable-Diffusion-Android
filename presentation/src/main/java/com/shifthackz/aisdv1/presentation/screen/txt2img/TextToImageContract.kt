@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
+import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
@@ -35,6 +36,10 @@ data class TextToImageState(
 
     sealed interface Modal {
         object None : Modal
+        data class Generating(val status: LocalDiffusion.Status? = null) : Modal {
+            val pair: Pair<Int, Int>?
+                get() = status?.let { (current, total) -> current to total }
+        }
         data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
         object NoSdAiCoins : Modal
         object PromptBottomSheet : Modal

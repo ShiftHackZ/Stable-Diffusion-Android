@@ -78,6 +78,7 @@ dependencies {
     implementation project(":feature:ads")
     implementation project(":feature:analytics")
     implementation project(":feature:auth")
+    implementation project(":feature:diffusion")
     implementation project(":data")
     implementation project(":demo")
     implementation di.koinCore

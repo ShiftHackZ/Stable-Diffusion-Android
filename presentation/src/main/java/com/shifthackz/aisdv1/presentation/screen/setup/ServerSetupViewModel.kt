@@ -105,10 +105,11 @@ class ServerSetupViewModel(
 
     fun connectToServer() {
         if (!validate()) return
-        if (currentState.mode != ServerSetupState.Mode.HORDE) {
-            return connectToAutomaticInstance()
+        return when (currentState.mode) {
+            ServerSetupState.Mode.HORDE -> connectToHorde()
+            ServerSetupState.Mode.LOCAL -> connectToLocalDiffusion()
+            else -> connectToAutomaticInstance()
         }
-        return connectToHorde();
     }
 
     fun dismissScreenDialog() = setScreenDialog(ServerSetupState.Dialog.None)
@@ -243,6 +244,31 @@ class ServerSetupViewModel(
                         analytics.logEvent(SetupConnectFailure(message))
                         setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
                     },
+                )
+            }
+    }
+
+    private fun connectToLocalDiffusion() {
+        !setServerConfigurationUseCase(
+            Configuration(
+                serverUrl = "",
+                demoMode = false,
+                source = ServerSource.LOCAL,
+                hordeApiKey = Constants.HORDE_DEFAULT_API_KEY,
+                authCredentials = AuthorizationCredentials.None,
+            ),
+        )
+            .andThen(Single.just(Result.success(Unit)))
+            .onErrorResumeNext { t -> Single.just(Result.failure(t)) }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog) { result ->
+                result.fold(
+                    onSuccess = { onSetupComplete() },
+                    onFailure = { t ->
+                        val message = t.localizedMessage ?: "Error"
+                        analytics.logEvent(SetupConnectFailure(message))
+                        setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
+                    }
                 )
             }
     }

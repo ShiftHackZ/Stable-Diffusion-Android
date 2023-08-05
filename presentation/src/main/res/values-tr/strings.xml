@@ -132,7 +132,7 @@
 
     <string name="communicating_progress_title">Lütfen bekleyin, sunucu ile iletişime geçiliyor…</string>
     <string name="communicating_progress_sub_title">Bu biraz zaman alabilir.</string>
-    <string name="communication_random_image_title">Rastgele resim getiriliyor…</string>
+    <string name="communicating_random_image_title">Rastgele resim getiriliyor…</string>
     <string name="communicating_wait_time">Bekleme zamanı: %1$s</string>
     <string name="communicating_status_queue">Sıradaki konumu: %1$s</string>
 

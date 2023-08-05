@@ -26,6 +26,7 @@ class ConnectivityMonitor(
             Observable.just(result)
         }
         .doAfterNext { state -> logConnection(serverUrl, state) }
+        .onErrorReturn { false }
 
     private fun logConnection(url: String, isConnected: Boolean) {
         if (shouldSkipConnectionCheck()) return

@@ -48,12 +48,12 @@ class ImageToImageViewModel(
     private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
 ) : GenerationMviViewModel<ImageToImageState, ImageToImageEffect>(
+    schedulersProvider,
     buildInfoProvider,
     preferenceManager,
     observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase,
-    schedulersProvider,
 ) {
 
     override val emptyState = ImageToImageState()

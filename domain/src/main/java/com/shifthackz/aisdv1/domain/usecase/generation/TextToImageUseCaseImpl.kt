@@ -6,12 +6,14 @@ import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.CoinRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import io.reactivex.rxjava3.core.Single
 
 internal class TextToImageUseCaseImpl(
     private val stableDiffusionGenerationRepository: StableDiffusionGenerationRepository,
     private val hordeGenerationRepository: HordeGenerationRepository,
+    private val localDiffusionGenerationRepository: LocalDiffusionGenerationRepository,
     private val preferenceManager: PreferenceManager,
     private val coinRepository: CoinRepository,
 ) : TextToImageUseCase {
@@ -23,9 +25,10 @@ internal class TextToImageUseCaseImpl(
         }
 
     private fun execute(payload: TextToImagePayload): Single<AiGenerationResult> {
-        if (preferenceManager.source == ServerSource.HORDE) {
-            return hordeGenerationRepository.generateFromText(payload)
+        return when (preferenceManager.source) {
+            ServerSource.HORDE -> hordeGenerationRepository.generateFromText(payload)
+            ServerSource.LOCAL -> localDiffusionGenerationRepository.generateFromText(payload)
+            else -> stableDiffusionGenerationRepository.generateFromText(payload)
         }
-        return stableDiffusionGenerationRepository.generateFromText(payload)
     }
 }

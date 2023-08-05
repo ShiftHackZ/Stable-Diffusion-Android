@@ -30,6 +30,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
+import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_MAX
@@ -41,11 +42,13 @@ import kotlin.math.roundToInt
 
 enum class GenerationInputMode {
     AUTOMATIC1111,
-    HORDE;
+    HORDE,
+    LOCAL;
 
     companion object {
         fun fromSource(source: ServerSource) = when (source) {
             ServerSource.HORDE -> HORDE
+            ServerSource.LOCAL -> LOCAL
             else -> AUTOMATIC1111
         }
     }
@@ -80,7 +83,7 @@ fun GenerationInputForm(
             onValueChange = onPromptUpdated,
             label = { Text(stringResource(id = R.string.hint_prompt)) },
         )
-        if (state.mode == GenerationInputMode.AUTOMATIC1111) TextField(
+        if (state.mode != GenerationInputMode.HORDE) TextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
@@ -93,149 +96,172 @@ fun GenerationInputForm(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
         ) {
-            TextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 4.dp),
-                value = state.width,
-                onValueChange = { value ->
-                    if (value.length <= 4) {
-                        value
-                            .filter { it.isDigit() }
-                            .let(onWidthUpdated)
-                    }
-                },
-                isError = widthValidationError != null,
-                supportingText = { widthValidationError?.let { Text(it.asString()) } },
-                label = { Text(stringResource(id = R.string.width)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            )
-            TextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 4.dp),
-                value = state.height,
-                onValueChange = { value ->
-                    if (value.length <= 4) {
-                        value
-                            .filter { it.isDigit() }
-                            .let(onHeightUpdated)
-                    }
-                },
-                isError = heightValidationError != null,
-                supportingText = { heightValidationError?.let { Text(it.asString()) } },
-                label = { Text(stringResource(id = R.string.height)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            )
-        }
-        if (state.advancedToggleButtonVisible) TextButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = { onShowAdvancedOptionsToggle(!state.advancedOptionsVisible) },
-        ) {
-            Icon(
-                imageVector = if (state.advancedOptionsVisible) Icons.Default.ArrowDropUp
-                else Icons.Default.ArrowDropDown,
-                contentDescription = null,
-            )
-            Text(
-                text = stringResource(
-                    id = if (state.advancedOptionsVisible) R.string.action_options_hide
-                    else R.string.action_options_show
+            val localModifier = Modifier.weight(1f)
+
+
+            if (state.mode == GenerationInputMode.HORDE || state.mode == GenerationInputMode.LOCAL) {
+                DropdownTextField(
+                    modifier = localModifier.padding(end = 4.dp),
+                    label = R.string.width.asUiText(),
+                    value = state.width,
+                    items = Constants.sizes,
+                    onItemSelected = onWidthUpdated,
                 )
-            )
-        }
-        AnimatedVisibility(visible = state.advancedOptionsVisible) {
-            Column {
-                if (state.mode == GenerationInputMode.AUTOMATIC1111) DropdownTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    label = R.string.hint_sampler.asUiText(),
-                    value = state.selectedSampler,
-                    items = state.availableSamplers,
-                    onItemSelected = onSamplerUpdated,
+                DropdownTextField(
+                    modifier = localModifier.padding(start = 4.dp),
+                    label = R.string.height.asUiText(),
+                    value = state.height,
+                    items = Constants.sizes,
+                    onItemSelected = onWidthUpdated,
+                )
+            } else {
+                TextField(
+                    modifier = localModifier.padding(end = 4.dp),
+                    value = state.width,
+                    onValueChange = { value ->
+                        if (value.length <= 4) {
+                            value
+                                .filter { it.isDigit() }
+                                .let(onWidthUpdated)
+                        }
+                    },
+                    isError = widthValidationError != null,
+                    supportingText = { widthValidationError?.let { Text(it.asString()) } },
+                    label = { Text(stringResource(id = R.string.width)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
                 TextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    value = state.seed,
+                    modifier = localModifier.padding(start = 4.dp),
+                    value = state.height,
                     onValueChange = { value ->
-                        value
-                            .filter { it.isDigit() }
-                            .let(onSeedUpdated)
+                        if (value.length <= 4) {
+                            value
+                                .filter { it.isDigit() }
+                                .let(onHeightUpdated)
+                        }
                     },
-                    label = { Text(stringResource(id = R.string.hint_seed)) },
+                    isError = heightValidationError != null,
+                    supportingText = { heightValidationError?.let { Text(it.asString()) } },
+                    label = { Text(stringResource(id = R.string.height)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
-                if (state.mode == GenerationInputMode.AUTOMATIC1111) TextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    value = state.subSeed,
-                    onValueChange = { value ->
-                        value
-                            .filter { it.isDigit() }
-                            .let(onSubSeedUpdated)
-                    },
-                    label = { Text(stringResource(id = R.string.hint_sub_seed)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            }
+        }
+        if (state.advancedToggleButtonVisible && state.mode != GenerationInputMode.LOCAL) {
+            TextButton(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = { onShowAdvancedOptionsToggle(!state.advancedOptionsVisible) },
+            ) {
+                Icon(
+                    imageVector = if (state.advancedOptionsVisible) Icons.Default.ArrowDropUp
+                    else Icons.Default.ArrowDropDown,
+                    contentDescription = null,
                 )
                 Text(
-                    modifier = Modifier.padding(top = 8.dp),
                     text = stringResource(
-                        id = R.string.hint_sub_seed_strength,
-                        "${state.subSeedStrength.roundTo(2)}",
-                    ),
+                        id = if (state.advancedOptionsVisible) R.string.action_options_hide
+                        else R.string.action_options_show
+                    )
                 )
-                Slider(
-                    value = state.subSeedStrength,
-                    valueRange = SUB_SEED_STRENGTH_MIN..SUB_SEED_STRENGTH_MAX,
-                    colors = sliderColors,
-                    onValueChange = {
-                        onSubSeedStrengthUpdated(it.roundTo(2))
-                    },
-                )
-                Text(
-                    modifier = Modifier.padding(top = 8.dp),
-                    text = stringResource(id = R.string.hint_sampling_steps, "${state.samplingSteps}"),
-                )
-                Slider(
-                    value = state.samplingSteps * 1f,
-                    valueRange = (SAMPLING_STEPS_RANGE_MIN * 1f)..(SAMPLING_STEPS_RANGE_MAX * 1f),
-                    steps = abs(SAMPLING_STEPS_RANGE_MAX - SAMPLING_STEPS_RANGE_MIN) - 1,
-                    colors = sliderColors,
-                    onValueChange = {
-                        onSamplingStepsUpdated(it.roundToInt())
-                    },
-                )
-                Text(
-                    modifier = Modifier.padding(top = 8.dp),
-                    text = stringResource(id = R.string.hint_cfg_scale, "${state.cfgScale}"),
-                )
-                Slider(
-                    value = state.cfgScale,
-                    valueRange = (CFG_SCALE_RANGE_MIN * 1f)..(CFG_SCALE_RANGE_MAX * 1f),
-                    steps = abs(CFG_SCALE_RANGE_MAX - CFG_SCALE_RANGE_MIN) * 2 - 1,
-                    colors = sliderColors,
-                    onValueChange = {
-                        onCfgScaleUpdated(it.roundTo(1))
-                    },
-                )
-                afterSlidersSection()
-                if (state.mode == GenerationInputMode.AUTOMATIC1111) Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(
-                        checked = state.restoreFaces,
-                        onCheckedChange = onRestoreFacesUpdated,
+            }
+        }
+        if (state.mode != GenerationInputMode.LOCAL) {
+            AnimatedVisibility(visible = state.advancedOptionsVisible) {
+                Column {
+                    if (state.mode == GenerationInputMode.AUTOMATIC1111) DropdownTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        label = R.string.hint_sampler.asUiText(),
+                        value = state.selectedSampler,
+                        items = state.availableSamplers,
+                        onItemSelected = onSamplerUpdated,
+                    )
+                    TextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        value = state.seed,
+                        onValueChange = { value ->
+                            value
+                                .filter { it.isDigit() }
+                                .let(onSeedUpdated)
+                        },
+                        label = { Text(stringResource(id = R.string.hint_seed)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    )
+                    if (state.mode == GenerationInputMode.AUTOMATIC1111) TextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        value = state.subSeed,
+                        onValueChange = { value ->
+                            value
+                                .filter { it.isDigit() }
+                                .let(onSubSeedUpdated)
+                        },
+                        label = { Text(stringResource(id = R.string.hint_sub_seed)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     )
                     Text(
-                        text = stringResource(id = R.string.hint_restore_faces),
+                        modifier = Modifier.padding(top = 8.dp),
+                        text = stringResource(
+                            id = R.string.hint_sub_seed_strength,
+                            "${state.subSeedStrength.roundTo(2)}",
+                        ),
                     )
+                    Slider(
+                        value = state.subSeedStrength,
+                        valueRange = SUB_SEED_STRENGTH_MIN..SUB_SEED_STRENGTH_MAX,
+                        colors = sliderColors,
+                        onValueChange = {
+                            onSubSeedStrengthUpdated(it.roundTo(2))
+                        },
+                    )
+                    Text(
+                        modifier = Modifier.padding(top = 8.dp),
+                        text = stringResource(
+                            id = R.string.hint_sampling_steps,
+                            "${state.samplingSteps}"
+                        ),
+                    )
+                    Slider(
+                        value = state.samplingSteps * 1f,
+                        valueRange = (SAMPLING_STEPS_RANGE_MIN * 1f)..(SAMPLING_STEPS_RANGE_MAX * 1f),
+                        steps = abs(SAMPLING_STEPS_RANGE_MAX - SAMPLING_STEPS_RANGE_MIN) - 1,
+                        colors = sliderColors,
+                        onValueChange = {
+                            onSamplingStepsUpdated(it.roundToInt())
+                        },
+                    )
+                    Text(
+                        modifier = Modifier.padding(top = 8.dp),
+                        text = stringResource(id = R.string.hint_cfg_scale, "${state.cfgScale}"),
+                    )
+                    Slider(
+                        value = state.cfgScale,
+                        valueRange = (CFG_SCALE_RANGE_MIN * 1f)..(CFG_SCALE_RANGE_MAX * 1f),
+                        steps = abs(CFG_SCALE_RANGE_MAX - CFG_SCALE_RANGE_MIN) * 2 - 1,
+                        colors = sliderColors,
+                        onValueChange = {
+                            onCfgScaleUpdated(it.roundTo(1))
+                        },
+                    )
+                    afterSlidersSection()
+                    if (state.mode == GenerationInputMode.AUTOMATIC1111) Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = state.restoreFaces,
+                            onCheckedChange = onRestoreFacesUpdated,
+                        )
+                        Text(
+                            text = stringResource(id = R.string.hint_restore_faces),
+                        )
+                    }
                 }
             }
         }

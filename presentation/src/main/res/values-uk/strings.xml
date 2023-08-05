@@ -132,7 +132,7 @@
 
     <string name="communicating_progress_title">Зачекайте, йде коммунікація із сервером…</string>
     <string name="communicating_progress_sub_title">На це може знадобитися деякий час</string>
-    <string name="communication_random_image_title">Завантажуємо випадкове зображення…</string>
+    <string name="communicating_random_image_title">Завантажуємо випадкове зображення…</string>
     <string name="communicating_wait_time">Час очікування: %1$s</string>
     <string name="communicating_status_queue">Поизиція в черзі: %1$s</string>
 
