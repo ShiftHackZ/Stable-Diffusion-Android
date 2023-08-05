@@ -114,6 +114,6 @@ class PreferenceManagerImpl(
         private const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
         private const val KEY_SERVER_SOURCE = "key_server_source"
         private const val KEY_HORDE_API_KEY = "key_horde_api_key"
-        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.4.1-v0.4.2"
+        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.4.13"
     }
 }
