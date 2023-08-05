@@ -9,10 +9,15 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Cancel
+import androidx.compose.material.icons.outlined.FileDownload
+import androidx.compose.material.icons.outlined.FileDownloadDone
+import androidx.compose.material.icons.outlined.FileDownloadOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,6 +32,7 @@ import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
@@ -64,6 +70,7 @@ class ServerSetupScreen(
             onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
             onOpenHordeWebSite = { launchUrl(linksProvider.hordeUrl) },
             onOpenHordeSignUpWebSite = { launchUrl(linksProvider.hordeSignUpUrl) },
+            onDownloadCardButtonClick = viewModel::downloadClickReducer,
             onSetupButtonClick = viewModel::connectToServer,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
         )
@@ -92,6 +99,7 @@ private fun ScreenContent(
     onServerInstructionsItemClick: () -> Unit = {},
     onOpenHordeWebSite: () -> Unit = {},
     onOpenHordeSignUpWebSite: () -> Unit = {},
+    onDownloadCardButtonClick: () -> Unit = {},
     onSetupButtonClick: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) {
@@ -126,9 +134,16 @@ private fun ScreenContent(
                         .padding(horizontal = 32.dp)
                         .padding(bottom = 16.dp),
                     onClick = onSetupButtonClick,
+                    enabled = when (state.mode) {
+                        ServerSetupState.Mode.LOCAL -> state.localModelDownloaded
+                        else -> true
+                    },
                 ) {
                     Text(
-                        text = stringResource(id = R.string.action_connect)
+                        text = stringResource(id = when (state.mode) {
+                            ServerSetupState.Mode.LOCAL -> R.string.action_setup
+                            else -> R.string.action_connect
+                        })
                     )
                 }
             },
@@ -172,9 +187,10 @@ private fun ScreenContent(
                             onOpenHordeWebSite = onOpenHordeWebSite,
                             onOpenHordeSignUpWebSite = onOpenHordeSignUpWebSite,
                         )
-                        ServerSetupState.Mode.LOCAL -> {
-                            //ToDo draw setup local UI
-                        }
+                        ServerSetupState.Mode.LOCAL -> LocalDiffusionSetupTab(
+                            state = state,
+                            onDownloadCardButtonClick = onDownloadCardButtonClick,
+                        )
                     }
                 }
             },
@@ -425,6 +441,107 @@ private fun HordeAiSetupTab(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.secondary,
         )
+    }
+}
+
+@Composable
+private fun LocalDiffusionSetupTab(
+    modifier: Modifier = Modifier,
+    state: ServerSetupState,
+    onDownloadCardButtonClick: () -> Unit = {},
+) {
+    Column(
+        modifier = modifier.padding(horizontal = 16.dp),
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.hint_local_diffusion_title),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = R.string.hint_local_diffusion_sub_title),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.secondary,
+        )
+        Column(
+            modifier = modifier
+                .padding(top = 24.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(color = MaterialTheme.colorScheme.primaryContainer)
+                .defaultMinSize(minHeight = 50.dp),
+        ) {
+            Row(
+                modifier = Modifier.padding(vertical = 4.dp),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                val icon = when (state.downloadState) {
+                    is DownloadState.Downloading -> Icons.Outlined.FileDownload
+                    else -> {
+                        if (state.localModelDownloaded) Icons.Outlined.FileDownloadDone
+                        else Icons.Outlined.FileDownloadOff
+                    }
+                }
+                Icon(
+                    modifier = modifier
+                        .padding(horizontal = 8.dp)
+                        .size(48.dp),
+                    imageVector = icon,
+                    contentDescription = "Download state",
+                )
+                Column(
+                    modifier = Modifier.padding(start = 4.dp)
+                ) {
+                    Text(
+                        text = "Local Diffusion",
+                    )
+                    Text(
+                        text = "823 Mb",
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Button(
+                    modifier = Modifier.padding(end = 8.dp),
+                    onClick = onDownloadCardButtonClick,
+                ) {
+                    Text(
+                        text = when (state.downloadState) {
+                            is DownloadState.Downloading -> "Cancel"
+                            is DownloadState.Error -> "Retry"
+                            else -> {
+                                if (state.localModelDownloaded) "Delete"
+                                else "Download"
+                            }
+                        }
+                    )
+                }
+            }
+            when (state.downloadState) {
+                is DownloadState.Downloading -> {
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        progress = state.downloadState.percent / 100f,
+                    )
+                }
+                is DownloadState.Error -> {
+                    Text(
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .padding(bottom = 8.dp),
+                        text = "Download failed!",
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+                else -> Unit
+            }
+        }
     }
 }
 

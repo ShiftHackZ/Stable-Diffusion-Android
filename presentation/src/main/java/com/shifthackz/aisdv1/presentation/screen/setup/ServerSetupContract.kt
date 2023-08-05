@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.domain.entity.Configuration
+import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.presentation.utils.Constants
@@ -32,6 +33,8 @@ data class ServerSetupState(
     val originalLogin: String = "",
     val password: String = "",
     val originalPassword: String = "",
+    val localModelDownloaded: Boolean = false,
+    val downloadState: DownloadState = DownloadState.Unknown,
     val passwordVisible: Boolean = false,
     val serverUrlValidationError: UiText? = null,
     val loginValidationError: UiText? = null,

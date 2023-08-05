@@ -99,6 +99,7 @@ val providersModule = module {
             override val providerPath: String = "${androidApplication().packageName}.fileprovider"
             override val imagesCacheDirPath: String = "${androidApplication().cacheDir}/images"
             override val logsCacheDirPath: String = "${androidApplication().cacheDir}/logs"
+            override val localModelDirPath: String = "${androidApplication().filesDir.absolutePath}/model"
         }
     }
 }

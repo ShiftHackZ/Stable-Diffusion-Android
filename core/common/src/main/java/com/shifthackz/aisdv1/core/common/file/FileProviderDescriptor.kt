@@ -4,4 +4,5 @@ interface FileProviderDescriptor {
     val providerPath: String
     val imagesCacheDirPath: String
     val logsCacheDirPath: String
+    val localModelDirPath: String
 }

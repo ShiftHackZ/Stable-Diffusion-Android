@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.core.validation.horde.CommonStringValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.Configuration
+import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
@@ -18,6 +19,8 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.CheckDownloadedModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.features.SetupConnectEvent
@@ -27,6 +30,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import java.util.concurrent.TimeUnit
 
@@ -40,6 +44,8 @@ class ServerSetupViewModel(
     private val testConnectivityUseCase: TestConnectivityUseCase,
     private val testHordeApiKeyUseCase: TestHordeApiKeyUseCase,
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
+    private val downloadModelUseCase: DownloadModelUseCase,
+    private val checkDownloadedModelUseCase: CheckDownloadedModelUseCase,
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val buildInfoProvider: BuildInfoProvider,
@@ -51,12 +57,16 @@ class ServerSetupViewModel(
         showBackNavArrow = launchSource == ServerSetupLaunchSource.SETTINGS
     )
 
+    private var downloadDisposable: Disposable? = null
+
     init {
         !getConfigurationUseCase()
+            .zipWith(checkDownloadedModelUseCase(), ::Pair)
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog) { configuration ->
+            .subscribeBy(::errorLog) { (configuration, isDownloaded) ->
                 currentState
                     .copy(allowedModes = buildInfoProvider.buildType.allowedModes)
+                    .copy(localModelDownloaded = isDownloaded)
                     .withSource(configuration.source)
                     .withDemoMode(configuration.demoMode)
                     .withServerUrl(configuration.serverUrl)
@@ -144,6 +154,7 @@ class ServerSetupViewModel(
                 validation.isValid
             }
         }
+        ServerSetupState.Mode.LOCAL -> currentState.localModelDownloaded
         else -> true
     }
 
@@ -271,6 +282,44 @@ class ServerSetupViewModel(
                     }
                 )
             }
+    }
+
+    fun downloadClickReducer() = when {
+        currentState.downloadState is DownloadState.Downloading -> {
+            downloadDisposable?.dispose()
+            downloadDisposable = null
+            setState(currentState.copy(downloadState = DownloadState.Unknown))
+        }
+        currentState.localModelDownloaded -> {
+            //ToDo delete download, and reset server setup state as non-ever-set-up
+        }
+        else -> {
+            setState(currentState.copy(downloadState = DownloadState.Downloading()))
+            downloadDisposable?.dispose()
+            downloadDisposable = null
+            downloadDisposable = downloadModelUseCase()
+                .distinctUntilChanged()
+                .subscribeOnMainThread(schedulersProvider)
+                .subscribeBy(
+                    onError = { t ->
+                        val message = t.localizedMessage ?: "Error"
+                        setState(currentState.copy(downloadState = DownloadState.Error(t)))
+                        setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
+                    },
+                    onNext = { downloadState ->
+                        debugLog("DOWNLOAD STATE : $downloadState")
+                        val newState = when (downloadState) {
+                            is DownloadState.Complete -> currentState.copy(
+                                downloadState = downloadState,
+                                localModelDownloaded = true,
+                            )
+                            else -> currentState.copy(downloadState = downloadState)
+                        }
+                        setState(newState)
+                    },
+                )
+                .apply { addToDisposable() }
+        }
     }
 
     private fun setScreenDialog(value: ServerSetupState.Dialog) = currentState

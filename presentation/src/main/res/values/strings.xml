@@ -30,6 +30,7 @@
     <string name="action_delete_image">Delete image</string>
     <string name="action_select">Select</string>
     <string name="action_connect">Connect</string>
+    <string name="action_setup">Setup</string>
     <string name="action_share_prompt">Share</string>
     <string name="action_send_to_txt2img">Use in txt2img</string>
     <string name="action_send_to_img2img">Use in img2img</string>
@@ -44,10 +45,10 @@
     <string name="action_image_picker_random">Random image</string>
     <string name="action_change_configuration">Change configuration</string>
 
-    <string name="srv_type_cloud">I want to use SDAI cloud</string>
-    <string name="srv_type_own">I want to use own AUTOMATIC1111 instance</string>
-    <string name="srv_type_horde">I want to use Horde AI cloud</string>
-    <string name="srv_type_local">Local (Beta)</string>
+    <string name="srv_type_cloud">SDAI cloud</string>
+    <string name="srv_type_own">AUTOMATIC1111 instance</string>
+    <string name="srv_type_horde">Horde AI cloud</string>
+    <string name="srv_type_local">Local Diffusion (Beta)</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -83,6 +84,9 @@
     <string name="hint_server_horde_about">About Horde AI</string>
     <string name="hint_server_horde_get_api_key">Get your API Key</string>
 
+    <string name="hint_local_diffusion_title">Local Diffusion</string>
+    <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>
+
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
     <string name="home_tab_gallery">Gallery</string>
@@ -97,7 +101,7 @@
     <string name="title_gallery">Gallery</string>
     <string name="title_gallery_details">Details</string>
     <string name="title_settings">Settings</string>
-    <string name="title_server_setup">Server setup</string>
+    <string name="title_server_setup">Configuration</string>
     <string name="title_select_sd_model">Select SD ML Model</string>
     <string name="title_clear_app_cache">Clear app cache</string>
     <string name="title_debug_menu">Debug Menu</string>

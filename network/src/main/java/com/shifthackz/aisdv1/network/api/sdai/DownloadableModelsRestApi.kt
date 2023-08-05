@@ -1,0 +1,29 @@
+package com.shifthackz.aisdv1.network.api.sdai
+
+import com.shifthackz.aisdv1.network.response.DownloadableModelResponse
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import okhttp3.ResponseBody
+import retrofit2.http.GET
+import retrofit2.http.Streaming
+import retrofit2.http.Url
+import java.io.File
+
+interface DownloadableModelsRestApi {
+
+    fun <T : Any> downloadModel(
+        path: String,
+        stateProgress: (Int) -> T,
+        stateComplete: (File) -> T,
+        stateFailed: (Throwable) -> T,
+    ): Observable<T>
+
+    interface RawApi {
+        @GET("/models.json")
+        fun fetchDownloadableModels(): Single<List<DownloadableModelResponse>>
+
+        @Streaming
+        @GET
+        fun downloadModel(@Url url: String): Single<ResponseBody>
+    }
+}

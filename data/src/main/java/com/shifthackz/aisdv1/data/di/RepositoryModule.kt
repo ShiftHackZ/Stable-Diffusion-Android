@@ -21,4 +21,5 @@ val repositoryModule = module {
     factoryOf(::MotdRepositoryImpl) bind MotdRepository::class
     factoryOf(::FeatureFlagsRepositoryImpl) bind FeatureFlagsRepository::class
     factoryOf(::RandomImageRepositoryImpl) bind RandomImageRepository::class
+    factoryOf(::DownloadableModelRepositoryImpl) bind DownloadableModelRepository::class
 }
