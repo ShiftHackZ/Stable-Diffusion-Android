@@ -120,7 +120,8 @@ enum class ServerSetupLaunchSource(val key: Int) {
 val BuildType.allowedModes: List<ServerSetupState.Mode>
     get() = when (this) {
         BuildType.FOSS -> listOf(ServerSetupState.Mode.OWN_SERVER, ServerSetupState.Mode.HORDE)
-        BuildType.GOOGLE_PLAY -> ServerSetupState.Mode.values().toList()
+        BuildType.GOOGLE_PLAY -> listOf(ServerSetupState.Mode.OWN_SERVER, ServerSetupState.Mode.HORDE)
+        //BuildType.GOOGLE_PLAY -> ServerSetupState.Mode.values().toList()
     }
 
 val Configuration.authType: ServerSetupState.AuthType
