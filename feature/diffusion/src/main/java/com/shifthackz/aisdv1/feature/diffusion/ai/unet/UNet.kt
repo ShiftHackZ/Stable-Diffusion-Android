@@ -140,7 +140,7 @@ internal class UNet(
         guidanceScale: Double,
         batchSize: Int,
         width: Int,
-        height: Int
+        height: Int,
     ) {
         this.width = width
         this.height = height
@@ -198,10 +198,8 @@ internal class UNet(
         }
         close()
         callback?.also { clb ->
-            clb.onBuildImage(-1, null)
             val bitmap = decode(latents)
             clb.onBuildImage(0, bitmap)
-            clb.onComplete()
         }
     }
 
@@ -234,7 +232,5 @@ internal class UNet(
     interface Callback {
         fun onStep(maxStep: Int, step: Int)
         fun onBuildImage(status: Int, bitmap: Bitmap?)
-        fun onComplete()
-        fun onStop()
     }
 }

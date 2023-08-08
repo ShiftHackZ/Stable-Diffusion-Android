@@ -30,18 +30,9 @@ internal class LocalDiffusionImpl(
 
                 override fun onBuildImage(status: Int, bitmap: Bitmap?) {
                     debugLog("[CLB] Image built with status: $status, bitmap: $bitmap")
-                    if (status < 0) return
                     if (!emitter.isDisposed) {
                         bitmap?.let(emitter::onSuccess) ?: emitter.onError(Throwable("Bitmap is null"))
                     }
-                }
-
-                override fun onComplete() {
-                    debugLog("[CLB] Completed.")
-                }
-
-                override fun onStop() {
-                    debugLog("[CLB] Stopped.")
                 }
             })
 

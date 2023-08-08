@@ -20,6 +20,7 @@ import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.CheckDownloadedModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
@@ -45,6 +46,7 @@ class ServerSetupViewModel(
     private val testHordeApiKeyUseCase: TestHordeApiKeyUseCase,
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
     private val downloadModelUseCase: DownloadModelUseCase,
+    private val deleteModelUseCase: DeleteModelUseCase,
     private val checkDownloadedModelUseCase: CheckDownloadedModelUseCase,
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
     private val schedulersProvider: SchedulersProvider,
@@ -291,7 +293,15 @@ class ServerSetupViewModel(
             setState(currentState.copy(downloadState = DownloadState.Unknown))
         }
         currentState.localModelDownloaded -> {
-            //ToDo delete download, and reset server setup state as non-ever-set-up
+            setState(
+                currentState.copy(
+                    downloadState = DownloadState.Unknown,
+                    localModelDownloaded = false,
+                )
+            )
+            !deleteModelUseCase()
+                .subscribeOnMainThread(schedulersProvider)
+                .subscribeBy(::errorLog)
         }
         else -> {
             setState(currentState.copy(downloadState = DownloadState.Downloading()))

@@ -498,10 +498,10 @@ private fun LocalDiffusionSetupTab(
                     modifier = Modifier.padding(start = 4.dp)
                 ) {
                     Text(
-                        text = "Local Diffusion",
+                        text = stringResource(id = R.string.model_local_diffusion),
                     )
                     Text(
-                        text = "823 Mb",
+                        text = stringResource(id = R.string.model_local_diffusion_size),
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
@@ -510,14 +510,14 @@ private fun LocalDiffusionSetupTab(
                     onClick = onDownloadCardButtonClick,
                 ) {
                     Text(
-                        text = when (state.downloadState) {
-                            is DownloadState.Downloading -> "Cancel"
-                            is DownloadState.Error -> "Retry"
+                        text = stringResource(id = when (state.downloadState) {
+                            is DownloadState.Downloading -> R.string.cancel
+                            is DownloadState.Error -> R.string.retry
                             else -> {
-                                if (state.localModelDownloaded) "Delete"
-                                else "Download"
+                                if (state.localModelDownloaded) R.string.delete
+                                else R.string.download
                             }
-                        }
+                        }),
                     )
                 }
             }
@@ -535,13 +535,19 @@ private fun LocalDiffusionSetupTab(
                         modifier = Modifier
                             .padding(horizontal = 8.dp)
                             .padding(bottom = 8.dp),
-                        text = "Download failed!",
+                        text = stringResource(id = R.string.error_download_fail),
                         color = MaterialTheme.colorScheme.error,
                     )
                 }
                 else -> Unit
             }
         }
+        Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = R.string.hint_local_diffusion_warning),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.secondary,
+        )
     }
 }
 

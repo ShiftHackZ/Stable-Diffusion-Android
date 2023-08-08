@@ -53,6 +53,7 @@ val viewModelModule = module {
             testHordeApiKeyUseCase = get(),
             setServerConfigurationUseCase = get(),
             downloadModelUseCase = get(),
+            deleteModelUseCase = get(),
             checkDownloadedModelUseCase = get(),
             dataPreLoaderUseCase = get(),
             schedulersProvider = get(),

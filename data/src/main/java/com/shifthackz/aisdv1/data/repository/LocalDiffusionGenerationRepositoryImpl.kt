@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
 import com.shifthackz.aisdv1.data.mappers.mapLocalDiffusionToAiGenResult
+import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
@@ -12,6 +13,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 internal class LocalDiffusionGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
@@ -19,6 +21,7 @@ internal class LocalDiffusionGenerationRepositoryImpl(
     localDataSource: GenerationResultDataSource.Local,
     preferenceManager: PreferenceManager,
     private val localDiffusion: LocalDiffusion,
+    private val downloadableLocalDataSource: DownloadableModelDataSource.Local,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
 ) : CoreGenerationRepository(
     mediaStoreGateway,
@@ -29,7 +32,14 @@ internal class LocalDiffusionGenerationRepositoryImpl(
 
     override fun observeStatus() = localDiffusion.observeStatus()
 
-    override fun generateFromText(payload: TextToImagePayload) = localDiffusion
+    override fun generateFromText(payload: TextToImagePayload) = downloadableLocalDataSource
+        .exists()
+        .flatMap { modelDownloaded ->
+            if (modelDownloaded) generate(payload)
+            else Single.error(Throwable("Model not downloaded"))
+        }
+
+    private fun generate(payload: TextToImagePayload) = localDiffusion
         .process(payload)
         .map(BitmapToBase64Converter::Input)
         .flatMap(bitmapToBase64Converter::invoke)

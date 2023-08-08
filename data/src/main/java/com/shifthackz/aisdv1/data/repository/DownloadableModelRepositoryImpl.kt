@@ -13,8 +13,5 @@ internal class DownloadableModelRepositoryImpl(
 
     override fun download() = remoteDataSource.download()
 
-    override fun delete(): Completable {
-        //ToDo implement
-        return Completable.complete()
-    }
+    override fun delete() = localDataSource.delete()
 }

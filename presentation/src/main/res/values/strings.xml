@@ -10,6 +10,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="cancel">Cancel</string>
+    <string name="retry">Retry</string>
+    <string name="delete">Delete</string>
+    <string name="download">Download</string>
     <string name="width">Width</string>
     <string name="height">Height</string>
     <string name="browse">Browse</string>
@@ -86,6 +89,7 @@
 
     <string name="hint_local_diffusion_title">Local Diffusion</string>
     <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>
+    <string name="hint_local_diffusion_warning">Warning! Local Diffusion functionality shipped to you as beta-test. \n\nThis implementation may not work well on non-powerful phones. Generation performance and speed depends on your phone resources (CPU, RAM) and the size of generated image (the smaller the image size, the faster the generation).</string>
 
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
@@ -191,12 +195,16 @@
     <string name="error_localhost_url">You can not use localhost (127.0.0.1) URL to connect to server.</string>
     <string name="error_min_size">Minimum size is %1$s</string>
     <string name="error_max_size">Maximum size is %1$s</string>
+    <string name="error_download_fail">Download failed</string>
 
     <string name="notification_finish_title">Generation complete 🤩</string>
     <string name="notification_finish_sub_title">Click here to see the result.</string>
 
     <string name="notification_fail_title">Generation failed 😞</string>
     <string name="notification_fail_sub_title">Click here to see the details.</string>
+
+    <string name="model_local_diffusion">Local Diffusion</string>
+    <string name="model_local_diffusion_size">≈ 1.2 Gb</string>
 
     <string name="debug_section_qa">QA actions</string>
     <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>
