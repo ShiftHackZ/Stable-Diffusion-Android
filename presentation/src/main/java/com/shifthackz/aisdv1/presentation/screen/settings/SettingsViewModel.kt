@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import com.shifthackz.aisdv1.presentation.features.AutoSaveAiResultsChanged
 import com.shifthackz.aisdv1.presentation.features.FormAdvancedOptionsAlwaysShowChanged
+import com.shifthackz.aisdv1.presentation.features.LocalUseNNAPIChanged
 import com.shifthackz.aisdv1.presentation.features.MonitorConnectionChanged
 import com.shifthackz.aisdv1.presentation.features.SdModelSelected
 import com.shifthackz.aisdv1.presentation.features.SettingsCacheCleared
@@ -68,6 +69,12 @@ class SettingsViewModel(
             analytics.logEvent(SettingsCacheCleared)
             setState(state)
         }
+
+    fun changeLocalUseNNAPISetting(value: Boolean) = (currentState as? SettingsState.Content)
+        ?.also { preferenceManager.localUseNNAPI = value }
+        ?.copy(localUseNNAPI = value)
+        ?.let(::setState)
+        ?.also { analytics.logEvent(LocalUseNNAPIChanged(value)) }
 
     fun changeMonitorConnectivitySetting(value: Boolean) = (currentState as? SettingsState.Content)
         ?.also { preferenceManager.monitorConnectivity = value }

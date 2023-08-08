@@ -10,4 +10,5 @@ data class Settings(
     val formAdvancedOptionsAlwaysShow: Boolean,
     val source: ServerSource,
     val hordeApiKey: String,
+    val localUseNNAPI: Boolean,
 )

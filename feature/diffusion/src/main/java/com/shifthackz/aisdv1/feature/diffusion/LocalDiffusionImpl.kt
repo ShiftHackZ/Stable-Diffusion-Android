@@ -2,13 +2,11 @@ package com.shifthackz.aisdv1.feature.diffusion
 
 import ai.onnxruntime.OnnxTensor
 import android.graphics.Bitmap
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.feature.diffusion.ai.tokenizer.LocalDiffusionTextTokenizer
 import com.shifthackz.aisdv1.feature.diffusion.ai.unet.UNet
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.PublishSubject
 
@@ -24,19 +22,16 @@ internal class LocalDiffusionImpl(
         try {
             uNet.setCallback(object : UNet.Callback {
                 override fun onStep(maxStep: Int, step: Int) {
-                    debugLog("[CLB] Step changed: $step/$maxStep")
                     statusSubject.onNext(LocalDiffusion.Status(step, maxStep))
                 }
 
                 override fun onBuildImage(status: Int, bitmap: Bitmap?) {
-                    debugLog("[CLB] Image built with status: $status, bitmap: $bitmap")
                     if (!emitter.isDisposed) {
                         bitmap?.let(emitter::onSuccess) ?: emitter.onError(Throwable("Bitmap is null"))
                     }
                 }
             })
 
-            debugLog("processor start")
             tokenizer.initialize()
             val batchSize = 1
 

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.shifthackz.aisdv1.feature.diffusion.entity
 
 enum class LocalDiffusionFlag(val value: Int) {

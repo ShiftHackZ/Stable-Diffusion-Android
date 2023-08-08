@@ -3,6 +3,11 @@
 package com.shifthackz.aisdv1.feature.diffusion.ai.scheduler
 
 import ai.onnxruntime.OnnxTensor
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.BETA_SCHEDULER_LINEAR
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.BETA_SCHEDULER_SCALED_LINEAR
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.BETA_SCHEDULER_SQUARED_v2
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.PREDICTION_EPSILON
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.PREDICTION_V
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.arrange
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.interpolate
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.lineSpace
@@ -38,7 +43,7 @@ internal class EulerAncestralDiscreteLocalDiffusionScheduler(
             config.trainedBetas.isNotEmpty() -> {
                 betas.addAll(config.trainedBetas)
             }
-            config.betaSchedule == "linear" -> {
+            config.betaSchedule == BETA_SCHEDULER_LINEAR -> {
                 val array: DoubleArray = lineSpace(
                     config.betaStart.toDouble(),
                     config.betaEnd.toDouble(),
@@ -48,7 +53,7 @@ internal class EulerAncestralDiscreteLocalDiffusionScheduler(
                     betas.add(value.toFloat())
                 }
             }
-            config.betaSchedule == "scaled_linear" -> {
+            config.betaSchedule == BETA_SCHEDULER_SCALED_LINEAR -> {
                 val array: DoubleArray = lineSpace(
                     config.betaStart.toDouble().pow(0.5),
                     config.betaEnd.toDouble().pow(0.5),
@@ -58,7 +63,7 @@ internal class EulerAncestralDiscreteLocalDiffusionScheduler(
                     betas.add(array[i].pow(2.0).toFloat())
                 }
             }
-            config.betaSchedule == "squaredcos_cap_v2" -> {
+            config.betaSchedule == BETA_SCHEDULER_SQUARED_v2 -> {
                 betas.addAll(betasForAlphaBar(numTrainTimeSteps))
             }
         }
@@ -153,11 +158,11 @@ internal class EulerAncestralDiscreteLocalDiffusionScheduler(
         val dim4 = modelOutput.shape!![3].toInt()
         var predictionOriginalSample: Array<Array<Array<FloatArray>>>? = null
         when (config.predictionType) {
-            "epsilon" -> {
-                predictionOriginalSample = Array(dim1.toInt()) {
-                    Array(dim2.toInt()) {
-                        Array(dim3.toInt()) {
-                            FloatArray(dim4.toInt())
+            PREDICTION_EPSILON -> {
+                predictionOriginalSample = Array(dim1) {
+                    Array(dim2) {
+                        Array(dim3) {
+                            FloatArray(dim4)
                         }
                     }
                 }
@@ -172,7 +177,7 @@ internal class EulerAncestralDiscreteLocalDiffusionScheduler(
                     }
                 }
             }
-            "v_prediction" -> {
+            PREDICTION_V -> {
                 predictionOriginalSample = Array(dim1) {
                     Array(dim2) {
                         Array(dim3) {
@@ -184,12 +189,9 @@ internal class EulerAncestralDiscreteLocalDiffusionScheduler(
                     for (j in 0 until dim2) {
                         for (k in 0 until dim3) {
                             for (l in 0 until dim4) {
-                                predictionOriginalSample[i][j][k][l] = (outputArray[i][j][k][l] * Math.pow(
-                                    -sigma / (Math.pow(
-                                        sigma,
-                                        2.0
-                                    ) + 1), 0.5
-                                ) + sampleArray[i][j][k][l] / (Math.pow(sigma, 2.0) + 1)).toFloat()
+                                predictionOriginalSample[i][j][k][l] = (outputArray[i][j][k][l] * (-sigma / (sigma.pow(
+                                    2.0
+                                ) + 1)).pow(0.5) + sampleArray[i][j][k][l] / (sigma.pow(2.0) + 1)).toFloat()
                             }
                         }
                     }
@@ -237,18 +239,6 @@ internal class EulerAncestralDiscreteLocalDiffusionScheduler(
                 }
             }
         }
-
-        /*float[][][][] noise = new float[dim1][dim2][dim3][dim4];
-        Random random = new Random();
-        for (int i = 0; i < dim1; i++){
-            for (int j = 0; j < dim2; j++){
-                for (int k = 0; k < dim3; k++){
-                    for (int l = 0; l < dim4; l++){
-                        noise[i][j][k][l] = (float) random.nextGaussian();
-                    }
-                }
-            }
-        }*/
         for (i in 0 until dim1) {
             for (j in 0 until dim2) {
                 for (k in 0 until dim3) {
@@ -282,7 +272,4 @@ internal class EulerAncestralDiscreteLocalDiffusionScheduler(
     private fun alphaBar(timeStep: Double): Double =
         cos((timeStep + 0.008) / 1.008 * Math.PI / 2).pow(2.0)
 
-    companion object {
-        const val TAG = "EulerAncestralDiscreteScheduler"
-    }
 }

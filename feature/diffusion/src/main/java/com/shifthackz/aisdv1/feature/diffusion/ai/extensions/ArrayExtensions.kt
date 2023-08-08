@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.feature.diffusion.ai.extensions
 import kotlin.math.ceil
 import java.util.function.Function
 
-fun arrange(start: Double, stop: Double, step: Double?): DoubleArray {
+internal fun arrange(start: Double, stop: Double, step: Double?): DoubleArray {
     val size = (step?.let { ceil((stop - start) / step) } ?: ceil(stop - start)).toInt()
     val result = DoubleArray(size)
     for (i in 0 until size) {
@@ -12,7 +12,7 @@ fun arrange(start: Double, stop: Double, step: Double?): DoubleArray {
     return result
 }
 
-fun lineSpace(start: Double, end: Double, steps: Int): DoubleArray {
+internal fun lineSpace(start: Double, end: Double, steps: Int): DoubleArray {
     val doubles = DoubleArray(steps)
     for (i in 0 until steps) {
         doubles[i] = start + (end - start) * i / (steps - 1)
@@ -20,33 +20,21 @@ fun lineSpace(start: Double, end: Double, steps: Int): DoubleArray {
     return doubles
 }
 
-fun interpolate(x: DoubleArray, xp: DoubleArray, fp: DoubleArray): DoubleArray {
+internal fun interpolate(x: DoubleArray, xp: DoubleArray, fp: DoubleArray): DoubleArray {
     val y = DoubleArray(x.size)
     val interpolation = createLinearInterpolationFunction(xp, fp)
     for (i in y.indices) y[i] = interpolation.apply(x[i])
     return y
 }
 
-fun getSizes(dataSet: Array<Array<Array<FloatArray>>>): LongArray = longArrayOf(
+internal fun getSizes(dataSet: Array<Array<Array<FloatArray>>>): LongArray = longArrayOf(
     dataSet.size.toLong(),
     dataSet[0].size.toLong(),
     dataSet[0][0].size.toLong(),
     dataSet[0][0][0].size.toLong()
 )
 
-fun getLength(dataSet: LongArray): Int {
-    var length: Long = 0
-    for (item in dataSet) {
-        if (length == 0L) {
-            length = item
-            continue
-        }
-        length *= item
-    }
-    return length.toInt()
-}
-
-private fun createLinearInterpolationFunction(
+internal fun createLinearInterpolationFunction(
     x: DoubleArray,
     y: DoubleArray,
 ): Function<Double, Double> {

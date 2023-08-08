@@ -4,22 +4,22 @@ import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtSession
 import ai.onnxruntime.OrtSession.SessionOptions
 import ai.onnxruntime.providers.NNAPIFlags
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT_KEY_MODEL_FORMAT
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
-import com.shifthackz.aisdv1.feature.diffusion.utils.PathManager
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import java.io.File
 import java.util.EnumSet
 import kotlin.math.roundToInt
 
-class VaeDecoder(private val context: Context, private val deviceId: Int) : KoinComponent {
-
-    private val ortEnvironmentProvider: OrtEnvironmentProvider by inject()
-    private val model = "vae_decoder/model.ort"
+internal class VaeDecoder(
+    private val ortEnvironmentProvider: OrtEnvironmentProvider,
+    private val fileProviderDescriptor: FileProviderDescriptor,
+    private val deviceId: Int,
+) {
 
     private var session: OrtSession? = null
 
@@ -58,13 +58,13 @@ class VaeDecoder(private val context: Context, private val deviceId: Int) : Koin
     private fun initialize() {
         if (session != null) return
         val options = SessionOptions()
-        options.addConfigEntry("session.load_model_format", "ORT")
-        if (deviceId == LocalDiffusionFlag.NN_API.value) options.addNnapi(EnumSet.of(NNAPIFlags.CPU_DISABLED))
-        val file = File(PathManager.getCustomPath(context) + "/" + model)
+        options.addConfigEntry(ORT_KEY_MODEL_FORMAT, ORT)
+        if (deviceId == LocalDiffusionFlag.NN_API.value) {
+            options.addNnapi(EnumSet.of(NNAPIFlags.CPU_DISABLED))
+        }
         session = ortEnvironmentProvider.get().createSession(
-            if (file.exists()) file.absolutePath else PathManager.getModelPath(
-                context
-            ) + "/" + model, options
+            "${fileProviderDescriptor.localModelDirPath}/${LocalDiffusionContract.VAE_MODEL}",
+            options
         )
     }
 

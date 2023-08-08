@@ -1,8 +1,8 @@
-package com.shifthackz.aisdv1.feature.diffusion.utils
+package com.shifthackz.aisdv1.feature.diffusion.ai.tokenizer
 
-object TokenByteSet {
-    val BYTE_ENCODER: MutableMap<Int, String> = HashMap()
-    val BYTE_DECODER: MutableMap<String, Int> = HashMap()
+object TokenizerByteSet {
+    val byteEncoder: MutableMap<Int, String> = HashMap()
+    val byteDecoder: MutableMap<String, Int> = HashMap()
 
     init {
         put(33, "!")
@@ -265,12 +265,12 @@ object TokenByteSet {
     }
 
     private fun put(key: Int, value: String) {
-        BYTE_ENCODER[key] = value
+        byteEncoder[key] = value
     }
 
     private fun reversal() {
-        for (entry in BYTE_ENCODER.entries) {
-            BYTE_DECODER[entry.value] = entry.key
+        for (entry in byteEncoder.entries) {
+            byteDecoder[entry.value] = entry.key
         }
     }
 }

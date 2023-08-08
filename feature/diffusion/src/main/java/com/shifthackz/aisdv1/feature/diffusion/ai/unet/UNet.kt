@@ -6,21 +6,26 @@ import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtSession
 import ai.onnxruntime.OrtSession.SessionOptions
 import ai.onnxruntime.providers.NNAPIFlags
-import android.content.Context
 import android.graphics.Bitmap
 import android.util.Pair
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_ENCODER_HIDDEN_STATES
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_LATENT_SAMPLE
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_SAMPLE
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_TIME_STEP
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT_KEY_MODEL_FORMAT
+import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.duplicate
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.getSizes
+import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.multipleTensorsByFloat
+import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.splitTensor
 import com.shifthackz.aisdv1.feature.diffusion.ai.scheduler.EulerAncestralDiscreteLocalDiffusionScheduler
-import com.shifthackz.aisdv1.feature.diffusion.ai.scheduler.LocalDiffusionScheduler
 import com.shifthackz.aisdv1.feature.diffusion.ai.vae.VaeDecoder
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionTensor
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
-import com.shifthackz.aisdv1.feature.diffusion.utils.PathManager
-import com.shifthackz.aisdv1.feature.diffusion.utils.TensorProcessor
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import java.io.File
+import com.shifthackz.aisdv1.feature.diffusion.environment.DeviceNNAPIFlagProvider
 import java.nio.IntBuffer
 import java.util.EnumSet
 import java.util.Random
@@ -29,13 +34,18 @@ import kotlin.math.ln
 import kotlin.math.sqrt
 
 internal class UNet(
-    private val context: Context,
-    private val deviceId: Int = LocalDiffusionFlag.CPU.value,
-) : KoinComponent {
+    private val deviceNNAPIFlagProvider: DeviceNNAPIFlagProvider,
+    private val ortEnvironmentProvider: OrtEnvironmentProvider,
+    private val fileProviderDescriptor: FileProviderDescriptor,
+) {
 
-    private val ortEnvironmentProvider: OrtEnvironmentProvider by inject()
-    private val decoder: VaeDecoder = VaeDecoder(context, deviceId)
-    private val model = "unet/model.ort"
+    private val decoder: VaeDecoder
+        get() = VaeDecoder(
+            ortEnvironmentProvider,
+            fileProviderDescriptor,
+            deviceNNAPIFlagProvider.get(),
+        )
+
     private val random = Random()
 
     private var callback: Callback? = null
@@ -47,27 +57,25 @@ internal class UNet(
     fun initialize() {
         if (session != null) return
         val options = SessionOptions()
-        options.addConfigEntry("session.load_model_format", "ORT")
-        if (deviceId == LocalDiffusionFlag.NN_API.value) {
+        options.addConfigEntry(ORT_KEY_MODEL_FORMAT, ORT)
+        if (deviceNNAPIFlagProvider.get() == LocalDiffusionFlag.NN_API.value) {
             options.addNnapi(EnumSet.of(NNAPIFlags.CPU_DISABLED))
         }
-        val file = File(PathManager.getCustomPath(context) + "/" + model)
         session = ortEnvironmentProvider.get().createSession(
-            if (file.exists()) file.absolutePath else PathManager.getModelPath(
-                context
-            ) + "/" + model, options
+            "${fileProviderDescriptor.localModelDirPath}/${LocalDiffusionContract.UNET_MODEL}",
+            options
         )
     }
 
-    private fun createUnetModelInput(
+    private fun createUNetModelInput(
         encoderHiddenStates: OnnxTensor,
         sample: OnnxTensor,
         timeStep: OnnxTensor
     ): Map<String, OnnxTensor> {
         val map: MutableMap<String, OnnxTensor> = HashMap()
-        map["encoder_hidden_states"] = encoderHiddenStates
-        map["sample"] = sample
-        map["timestep"] = timeStep
+        map[KEY_ENCODER_HIDDEN_STATES] = encoderHiddenStates
+        map[KEY_SAMPLE] = sample
+        map[KEY_TIME_STEP] = timeStep
         return map
     }
 
@@ -144,9 +152,8 @@ internal class UNet(
     ) {
         this.width = width
         this.height = height
-        val localDiffusionScheduler: LocalDiffusionScheduler =
-            EulerAncestralDiscreteLocalDiffusionScheduler()
-        val timesteps: IntArray = localDiffusionScheduler.setTimeSteps(numInferenceSteps)
+        val localDiffusionScheduler = EulerAncestralDiscreteLocalDiffusionScheduler()
+        val timeSteps: IntArray = localDiffusionScheduler.setTimeSteps(numInferenceSteps)
         val seed = if (seedNum <= 0) random.nextLong() else seedNum
         var latents: LocalDiffusionTensor<*> = generateLatentSample(
             batchSize,
@@ -156,19 +163,19 @@ internal class UNet(
             localDiffusionScheduler.initNoiseSigma.toFloat()
         )
         val shape = longArrayOf(2, 4, (height / 8).toLong(), (width / 8).toLong())
-        for (i in timesteps.indices) {
-            var latentModelInput: LocalDiffusionTensor<*> = TensorProcessor.duplicate(
+        for (i in timeSteps.indices) {
+            var latentModelInput: LocalDiffusionTensor<*> = duplicate(
                 latents.tensor.floatBuffer.array(),
                 shape,
             )
             latentModelInput = localDiffusionScheduler.scaleModelInput(latentModelInput, i)
-            callback?.onStep(timesteps.size, i)
-            val input = createUnetModelInput(
+            callback?.onStep(timeSteps.size, i)
+            val input = createUNetModelInput(
                 textEmbeddings,
                 latentModelInput.tensor,
                 OnnxTensor.createTensor(
                     ortEnvironmentProvider.get(),
-                    IntBuffer.wrap(intArrayOf(timesteps[i])),
+                    IntBuffer.wrap(intArrayOf(timeSteps[i])),
                     longArrayOf(1)
                 )
             )
@@ -176,7 +183,7 @@ internal class UNet(
             val dataSet = result[0].value as Array<Array<Array<FloatArray>>>
             result.close()
             val splitTensors: Pair<Array<Array<Array<FloatArray>>>, Array<Array<Array<FloatArray>>>> =
-                TensorProcessor.splitTensor(
+                splitTensor(
                     dataSet,
                     longArrayOf(1, 4, (height / 8).toLong(), (width / 8).toLong())
                 )
@@ -198,19 +205,20 @@ internal class UNet(
         }
         close()
         callback?.also { clb ->
+            callback?.onStep(timeSteps.size, timeSteps.size)
             val bitmap = decode(latents)
             clb.onBuildImage(0, bitmap)
         }
     }
 
     fun decode(latents: LocalDiffusionTensor<*>): Bitmap {
-        val tensor: LocalDiffusionTensor<*> = TensorProcessor.multipleTensorsByFloat(
+        val tensor: LocalDiffusionTensor<*> = multipleTensorsByFloat(
             latents.tensor.floatBuffer.array(),
             1.0f / 0.18215f,
             latents.shape
         )
         val decoderInput: MutableMap<String, OnnxTensor> = HashMap()
-        decoderInput["latent_sample"] = tensor.tensor
+        decoderInput[KEY_LATENT_SAMPLE] = tensor.tensor
         val value: Any = decoder.decode(decoderInput.toMap())
         return decoder.convertToImage(
             value as Array<Array<Array<FloatArray>>>,

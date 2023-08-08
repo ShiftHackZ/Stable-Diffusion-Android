@@ -89,7 +89,7 @@
 
     <string name="hint_local_diffusion_title">Local Diffusion</string>
     <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>
-    <string name="hint_local_diffusion_warning">Warning! Local Diffusion functionality shipped to you as beta-test. \n\nThis implementation may not work well on non-powerful phones. Generation performance and speed depends on your phone resources (CPU, RAM) and the size of generated image (the smaller the image size, the faster the generation).</string>
+    <string name="hint_local_diffusion_warning">Warning! Local Diffusion functionality shipped to you as beta-test. Don\'t expect for high quality images using local mode. \n\nThis implementation may not work well on non-powerful phones. Generation performance and speed depends on your phone resources (CPU, RAM) and the size of generated image (the smaller the image size, the faster the generation).</string>
 
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
@@ -132,6 +132,8 @@
     <string name="settings_item_config">Configuration</string>
     <string name="settings_item_sd_model">SD Model</string>
     <string name="settings_item_rewarded">FREE SDAI Coins</string>
+    <string name="settings_item_local_nnapi">Use NNAPI (Beta)*</string>
+    <string name="settings_item_local_nnapi_warning">*NNAPI may not work stable, if you experience errors, crashes or bad performance disable this.</string>
 
     <string name="settings_item_language">Language</string>
     <string name="settings_item_demo">Demo mode</string>

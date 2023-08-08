@@ -7,14 +7,13 @@ import com.shifthackz.aisdv1.feature.diffusion.ai.tokenizer.LocalDiffusionTextTo
 import com.shifthackz.aisdv1.feature.diffusion.ai.unet.UNet
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProviderImpl
-import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val diffusionModule = module {
-    single { UNet(androidApplication()) }
-    single<LocalDiffusionTextTokenizer> { EnglishTextTokenizer(androidApplication()) }
+    singleOf(::UNet)
+    singleOf(::EnglishTextTokenizer) bind LocalDiffusionTextTokenizer::class
     singleOf(::LocalDiffusionImpl) bind LocalDiffusion::class
     singleOf(::OrtEnvironmentProviderImpl) bind OrtEnvironmentProvider::class
 }

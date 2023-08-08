@@ -17,13 +17,9 @@ internal class DownloadableModelLocalDataSource(
     override fun exists(): Single<Boolean> = Single.create { emitter ->
         try {
             val files = (localModelDirectory.listFiles()?.filter { it.isDirectory }) ?: emptyList<File>()
-            debugLog("--------------------------------------------")
-            debugLog("DIR : ${localModelDirectory.path}")
-            debugLog("LS  : \n${files.map { "F(${it.path})\n" }}")
-            debugLog("--------------------------------------------")
-            emitter.onSuccess(localModelDirectory.exists() && files.size == 4)
+            if (!emitter.isDisposed) emitter.onSuccess(localModelDirectory.exists() && files.size == 4)
         } catch (e: Exception) {
-            emitter.onSuccess(false)
+            if (!emitter.isDisposed) emitter.onSuccess(false)
         }
     }
 

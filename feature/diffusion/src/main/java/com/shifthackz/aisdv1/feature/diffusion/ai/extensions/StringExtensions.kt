@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.feature.diffusion.ai.extensions
 
-fun String.halfCorner(): String {
+internal fun String.halfCorner(): String {
     var output = this
     val regs = arrayOf(
         "！", "，", "。", "；", "~", "《", "》", "（", "）", "？",
@@ -14,7 +14,7 @@ fun String.halfCorner(): String {
     return output
 }
 
-fun String.toArrays(): Array<String?> {
+internal fun String.toArrays(): Array<String?> {
     val codePoints = codePoints().toArray()
     val words = arrayOfNulls<String>(codePoints.size)
     for (i in codePoints.indices) {

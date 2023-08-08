@@ -1,21 +1,22 @@
+@file:Suppress("KotlinConstantConditions")
+
 package com.shifthackz.aisdv1.feature.diffusion.ai.tokenizer
 
 import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtSession
-import android.content.Context
 import android.text.TextUtils
 import android.util.JsonReader
 import android.util.Pair
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_INPUT_IDS
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT_KEY_MODEL_FORMAT
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.halfCorner
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.toArrays
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
-import com.shifthackz.aisdv1.feature.diffusion.utils.PathManager
-import com.shifthackz.aisdv1.feature.diffusion.utils.TokenByteSet
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.io.BufferedReader
-import java.io.File
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.nio.IntBuffer
@@ -23,19 +24,16 @@ import java.util.Arrays
 import java.util.Locale
 import java.util.regex.Pattern
 
-class EnglishTextTokenizer(private val context: Context) : LocalDiffusionTextTokenizer, KoinComponent {
-    
-    private val ortEnvironmentProvider: OrtEnvironmentProvider by inject()
-    
+internal class EnglishTextTokenizer(
+    private val ortEnvironmentProvider: OrtEnvironmentProvider,
+    private val fileProviderDescriptor: FileProviderDescriptor,
+) : LocalDiffusionTextTokenizer {
+
     private val pattern = Pattern.compile(TOKENIZER_REGEX)
 
     private val encoder: MutableMap<String, Int> = HashMap()
     private val decoder: MutableMap<Int, String> = HashMap()
     private val bpeRanks: MutableMap<Pair<String, String>, Int?> = HashMap()
-
-    private val merges = "tokenizer/merges.txt"
-    private val vocab = "tokenizer/vocab.json"
-    private val model = "text_encoder/model.ort"
 
     private var isInitMap = false
     private var session: OrtSession? = null
@@ -45,12 +43,10 @@ class EnglishTextTokenizer(private val context: Context) : LocalDiffusionTextTok
     override fun initialize() {
         if (session != null) return
         val options = OrtSession.SessionOptions()
-        options.addConfigEntry("session.load_model_format", "ORT")
-        val file = File(PathManager.getCustomPath(context) + "/" + model)
+        options.addConfigEntry(ORT_KEY_MODEL_FORMAT, ORT)
         session = ortEnvironmentProvider.get().createSession(
-            if (file.exists()) file.absolutePath else PathManager.getModelPath(
-                context
-            ) + "/" + model, options
+            "${fileProviderDescriptor.localModelDirPath}/${LocalDiffusionContract.TOKENIZER_MODEL}",
+            options
         )
         if (!isInitMap) {
             encoder.putAll(loadEncoder())
@@ -69,8 +65,8 @@ class EnglishTextTokenizer(private val context: Context) : LocalDiffusionTextTok
         val result: MutableList<Int> = ArrayList()
         for (element in stringBuilder) {
             val key = element.toString()
-            if (TokenByteSet.BYTE_DECODER.containsKey(key)) {
-                TokenByteSet.BYTE_DECODER.get(key)?.let { result.add(it) }
+            if (TokenizerByteSet.byteDecoder.containsKey(key)) {
+                TokenizerByteSet.byteDecoder[key]?.let { result.add(it) }
             }
         }
         val ints = IntArray(result.size)
@@ -91,8 +87,8 @@ class EnglishTextTokenizer(private val context: Context) : LocalDiffusionTextTok
             val array = IntArray(bytes.size)
             for (i in array.indices) array[i] = bytes[i].toInt() and 0xff
             for (o in array) {
-                if (TokenByteSet.BYTE_ENCODER.containsKey(o)) {
-                    sb.append(TokenByteSet.BYTE_ENCODER.get(o))
+                if (TokenizerByteSet.byteEncoder.containsKey(o)) {
+                    sb.append(TokenizerByteSet.byteEncoder[o])
                 }
             }
             stringList.add(sb.toString())
@@ -125,14 +121,14 @@ class EnglishTextTokenizer(private val context: Context) : LocalDiffusionTextTok
             longArrayOf(1, ids.size.toLong())
         )
         val input: MutableMap<String, OnnxTensor> = HashMap()
-        input["input_ids"] = inputIds
+        input[KEY_INPUT_IDS] = inputIds
         val result = session!!.run(input)
         val lastHiddenState = result[0].value
         result.close()
         return OnnxTensor.createTensor(ortEnvironmentProvider.get(), lastHiddenState)
     }
 
-    override fun createUnconditionalInput(text: String?): IntArray? = encode(text)
+    override fun createUnconditionalInput(text: String?): IntArray = encode(text)
 
     override fun close() {
         session?.close()
@@ -154,7 +150,7 @@ class EnglishTextTokenizer(private val context: Context) : LocalDiffusionTextTok
                 if (!bpeRanks.containsKey(pair)) {
                     continue
                 }
-                val value = bpeRanks.get(pair)!!
+                val value = bpeRanks[pair]!!
                 if (min == null || value < minValue) {
                     min = pair
                     minValue = value
@@ -207,10 +203,7 @@ class EnglishTextTokenizer(private val context: Context) : LocalDiffusionTextTok
     private fun loadEncoder(): Map<String, Int> {
         val map: MutableMap<String, Int> = HashMap()
         try {
-            val file = File(PathManager.getCustomPath(context) + "/" + vocab)
-            val path = if (file.exists()) file.absolutePath else PathManager.getModelPath(
-                context
-            ) + "/" + vocab
+            val path = "${fileProviderDescriptor.localModelDirPath}/${LocalDiffusionContract.TOKENIZER_VOCABULARY}"
             val jsonReader = JsonReader(InputStreamReader(FileInputStream(path)))
             jsonReader.beginObject()
             while (jsonReader.hasNext()) {
@@ -236,10 +229,7 @@ class EnglishTextTokenizer(private val context: Context) : LocalDiffusionTextTok
     private fun loadBpeRanks(): Map<Pair<String, String>, Int?> {
         val result: MutableMap<Pair<String, String>, Int?> = HashMap()
         try {
-            val file = File(PathManager.getCustomPath(context) + "/" + merges)
-            val path = if (file.exists()) file.absolutePath else PathManager.getModelPath(
-                context
-            ) + "/" + merges
+            val path = "${fileProviderDescriptor.localModelDirPath}/${LocalDiffusionContract.TOKENIZER_MERGES}"
             val reader = BufferedReader(InputStreamReader(FileInputStream(path)))
             var line: String
             var startLine = 1

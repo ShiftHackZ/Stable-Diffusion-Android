@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.data.repository
 
+import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
@@ -23,6 +24,7 @@ internal class LocalDiffusionGenerationRepositoryImpl(
     private val localDiffusion: LocalDiffusion,
     private val downloadableLocalDataSource: DownloadableModelDataSource.Local,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
+    private val schedulersProvider: SchedulersProvider,
 ) : CoreGenerationRepository(
     mediaStoreGateway,
     base64ToBitmapConverter,
@@ -41,6 +43,7 @@ internal class LocalDiffusionGenerationRepositoryImpl(
 
     private fun generate(payload: TextToImagePayload) = localDiffusion
         .process(payload)
+        .subscribeOn(schedulersProvider.computation)
         .map(BitmapToBase64Converter::Input)
         .flatMap(bitmapToBase64Converter::invoke)
         .map(BitmapToBase64Converter.Output::base64ImageString)
