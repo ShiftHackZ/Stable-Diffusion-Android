@@ -51,7 +51,7 @@
     <string name="srv_type_cloud">SDAI cloud</string>
     <string name="srv_type_own">AUTOMATIC1111 instance</string>
     <string name="srv_type_horde">Horde AI cloud</string>
-    <string name="srv_type_local">Local Diffusion (Beta)</string>
+    <string name="srv_type_local" translatable="false">Local Diffusion (Beta)</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -87,9 +87,9 @@
     <string name="hint_server_horde_about">About Horde AI</string>
     <string name="hint_server_horde_get_api_key">Get your API Key</string>
 
-    <string name="hint_local_diffusion_title">Local Diffusion</string>
+    <string name="hint_local_diffusion_title" translatable="false">Local Diffusion</string>
     <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>
-    <string name="hint_local_diffusion_warning">Warning! Local Diffusion functionality shipped to you as beta-test. Don\'t expect for high quality images using local mode. \n\nThis implementation may not work well on non-powerful phones. Generation performance and speed depends on your phone resources (CPU, RAM) and the size of generated image (the smaller the image size, the faster the generation).</string>
+    <string name="hint_local_diffusion_warning">Warning! Local Diffusion functionality is in beta-test. Don\'t expect for high quality images using local mode. \n\nThis implementation may not work well on non-powerful phones. Generation performance and speed depends on your phone resources (CPU, RAM) and the size of generated image (the smaller the image size, the faster the generation).</string>
 
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
@@ -125,7 +125,7 @@
     <string name="gallery_info_field_sub_seed_strength">Variation strength</string>
     <string name="gallery_info_field_denoising_strength">Denoising strength</string>
 
-    <string name="settings_header_server">Server settings</string>
+    <string name="settings_header_server">AI settings</string>
     <string name="settings_header_app">App settings</string>
     <string name="settings_header_info">Info</string>
 
@@ -205,7 +205,7 @@
     <string name="notification_fail_title">Generation failed 😞</string>
     <string name="notification_fail_sub_title">Click here to see the details.</string>
 
-    <string name="model_local_diffusion">Local Diffusion</string>
+    <string name="model_local_diffusion" translatable="false">Local Diffusion</string>
     <string name="model_local_diffusion_size">≈ 1.2 Gb</string>
 
     <string name="debug_section_qa">QA actions</string>

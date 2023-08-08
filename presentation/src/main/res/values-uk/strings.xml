@@ -6,6 +6,9 @@
     <string name="yes">Так</string>
     <string name="no">Ні</string>
     <string name="cancel">Скасувати</string>
+    <string name="retry">Повторити</string>
+    <string name="delete">Видалити</string>
+    <string name="download">Завантажити</string>
     <string name="width">Довжина</string>
     <string name="height">Висота</string>
     <string name="browse">Дивитися</string>
@@ -17,11 +20,16 @@
     <string name="splash_status_fetching">Завантаження даних…</string>
     <string name="splash_status_launching">Запускаємо додаток!</string>
 
+    <string name="local_no_img2img_support_title">Не доступно</string>
+    <string name="local_no_img2img_support_sub_title">Режим «Зображення в зображення» (img2img) недоступний, якщо ви використовуєте локальні ресурси телефону для створення зображень.</string>
+    <string name="local_no_img2img_support_sub_title_2">Ви можете перейти до генерації на основі сервера в налаштуваннях, щоб використовувати цей режим.</string>
+
     <string name="action_generate">Уявити</string>
     <string name="action_export">Експорт</string>
     <string name="action_delete_image">Видалити</string>
     <string name="action_select">Обрати</string>
     <string name="action_connect">Підключитися</string>
+    <string name="action_setup">Налаштувати</string>
     <string name="action_share_prompt">Поділитися запитом</string>
     <string name="action_send_to_txt2img">Відправити в txt2img</string>
     <string name="action_send_to_img2img">Відправити в img2img</string>
@@ -34,10 +42,11 @@
     <string name="action_image_picker_gallery">Виберати фото</string>
     <string name="action_image_picker_camera">Фото з камери</string>
     <string name="action_image_picker_random">Випадкове зображення</string>
+    <string name="action_change_configuration">Змінити конфігурацію</string>
 
-    <string name="srv_type_cloud">Використовувати сервер SDAI</string>
-    <string name="srv_type_own">Використовувати власний сервер AUTOMATIC1111</string>
-    <string name="srv_type_horde">Використовувати сервер Horde AI</string>
+    <string name="srv_type_cloud">Cервер SDAI</string>
+    <string name="srv_type_own">Власний сервер AUTOMATIC1111</string>
+    <string name="srv_type_horde">Сервер Horde AI</string>
 
     <string name="hint_prompt">Запит</string>
     <string name="hint_prompt_negative">Негативний запит</string>
@@ -73,6 +82,9 @@
     <string name="hint_server_horde_about">Про Horde AI</string>
     <string name="hint_server_horde_get_api_key">Отримати свій API Ключ</string>
 
+    <string name="hint_local_diffusion_sub_title">Ця конфігурація дозволяє запускати генерації Stable Diffusion на вашому телефоні без необхідності підключатися до віддаленого сервера/хмари.</string>
+    <string name="hint_local_diffusion_warning">УВАГА! Функціональність Local Diffusion у бета-тестуванні. Не очікуйте високоякісних зображень у локальному режимі. \n\nЦя реалізація може не працювати належним чином на телефонах із слабкою потужністю. Продуктивність і швидкість генерації залежать від ресурсів вашого телефону (ЦП, ОЗУ) і розміру згенерованого зображення (чим менший розмір зображення, тим швидше генерується).</string>
+
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
     <string name="home_tab_gallery">Галерея</string>
@@ -107,13 +119,15 @@
     <string name="gallery_info_field_sub_seed_strength">Коефіцієнт варіації</string>
     <string name="gallery_info_field_denoising_strength">Коефіцієнт шумозаглушення</string>
 
-    <string name="settings_header_server">Параметри сервера</string>
+    <string name="settings_header_server">Параметри AI</string>
     <string name="settings_header_app">Параметри додатку</string>
     <string name="settings_header_info">Інформація</string>
 
     <string name="settings_item_config">Конфігурація</string>
     <string name="settings_item_sd_model">SD Модель</string>
     <string name="settings_item_rewarded">Безкоштовні SDAI Монети</string>
+    <string name="settings_item_local_nnapi">NNAPI (Beta)*</string>
+    <string name="settings_item_local_nnapi_warning">*NNAPI може працювати нестабільно, якщо у вас виникають помилки, збої або погана продуктивність, вимкніть це.</string>
 
     <string name="settings_item_language">Мова</string>
     <string name="settings_item_demo">Демо режим</string>
@@ -133,8 +147,10 @@
     <string name="communicating_progress_title">Зачекайте, йде коммунікація із сервером…</string>
     <string name="communicating_progress_sub_title">На це може знадобитися деякий час</string>
     <string name="communicating_random_image_title">Завантажуємо випадкове зображення…</string>
+    <string name="communicating_local_title">Генерація Local Diffusion</string>
     <string name="communicating_wait_time">Час очікування: %1$s</string>
     <string name="communicating_status_queue">Поизиція в черзі: %1$s</string>
+    <string name="communicating_status_steps">Крок: %1$s/%2$s</string>
 
     <string name="exporting_progress_title">Експортування вашої галереї…</string>
     <string name="exporting_progress_sub_title">Це може зайняти деякий час, залежно від кількості фотографій</string>
@@ -175,12 +191,15 @@
     <string name="error_localhost_url">Ви не можете використовувати localhost (127.0.0.1) URL-адресу для підключення до сервера.</string>
     <string name="error_min_size">Мінімальний розмір %1$s</string>
     <string name="error_max_size">Максимальний розмір %1$s</string>
+    <string name="error_download_fail">Помилка під час завантаження</string>
 
     <string name="notification_finish_title">Генерування завершено 🤩</string>
     <string name="notification_finish_sub_title">Натисніть щоб побачити результат.</string>
 
     <string name="notification_fail_title">Генерування не вдалося 😞</string>
     <string name="notification_fail_sub_title">Натисніть щоб побачити подробиці.</string>
+
+    <string name="model_local_diffusion_size">≈ 1.2 Гб</string>
 
     <string name="debug_section_qa">QA тест-кейси</string>
     <string name="debug_action_bad_base64">Внести битий Base64 в БД</string>
