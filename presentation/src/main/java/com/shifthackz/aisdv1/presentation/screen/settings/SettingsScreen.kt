@@ -51,6 +51,7 @@ class SettingsScreen(
             onConfigurationItemClick = launchSetup,
             onSdModelItemClick = viewModel::launchSdModelSelectionDialog,
             onLaunchRewarded = launchRewarded,
+            onLocalUseNNAPIChanged = viewModel::changeLocalUseNNAPISetting,
             onMonitorConnectivityChanged = viewModel::changeMonitorConnectivitySetting,
             onAutoSaveAiResultChanged = viewModel::changeAutoSaveAiResultSetting,
             onSaveToMediaStoreChanged = viewModel::changeSaveToMediaStoreSetting,
@@ -85,6 +86,7 @@ private fun ScreenContent(
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
     onLaunchRewarded: () -> Unit = {},
+    onLocalUseNNAPIChanged: (Boolean) -> Unit = {},
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
     onSaveToMediaStoreChanged: (Boolean) -> Unit = {},
@@ -127,6 +129,7 @@ private fun ScreenContent(
                         onConfigurationItemClick = onConfigurationItemClick,
                         onSdModelItemClick = onSdModelItemClick,
                         onLaunchRewarded = onLaunchRewarded,
+                        onLocalUseNNAPIChanged = onLocalUseNNAPIChanged,
                         onMonitorConnectivityChanged = onMonitorConnectivityChanged,
                         onAutoSaveAiResultChanged = onAutoSaveAiResultChanged,
                         onSaveToMediaStoreChanged = onSaveToMediaStoreChanged,
@@ -198,6 +201,7 @@ private fun ContentSettingsState(
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
     onLaunchRewarded: () -> Unit = {},
+    onLocalUseNNAPIChanged: (Boolean) -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
     onSaveToMediaStoreChanged: (Boolean) -> Unit = {},
     onFormAdvancedOptionsAlwaysShowChanged: (Boolean) -> Unit = {},
@@ -245,6 +249,26 @@ private fun ContentSettingsState(
             animateBackground = true,
             onClick = onLaunchRewarded,
         )
+        if (state.showLocalUseNNAPI) {
+            SettingsItem(
+                modifier = itemModifier,
+                startIcon = Icons.Default.AccountTree,
+                text = R.string.settings_item_local_nnapi.asUiText(),
+                endValueText = state.sdModelSelected.asUiText(),
+                onClick = { onLocalUseNNAPIChanged(!state.localUseNNAPI) },
+                endValueContent = {
+                    Switch(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        checked = state.localUseNNAPI,
+                        onCheckedChange = onLocalUseNNAPIChanged,
+                    )
+                }
+            )
+            Text(
+                text = stringResource(id = R.string.settings_item_local_nnapi_warning),
+                style = MaterialTheme.typography.labelMedium,
+            )
+        }
 
         Text(
             modifier = headerModifier,
@@ -386,6 +410,7 @@ private fun PreviewStateContent() {
             sdModels = listOf("Stable diffusion v1.5"),
             sdModelSelected = "Stable diffusion v1.5",
             appVersion = "1.0.0 (10)",
+            localUseNNAPI = false,
             showRewardedSdAiAd = true,
             monitorConnectivity = true,
             autoSaveAiResults = true,
@@ -396,6 +421,7 @@ private fun PreviewStateContent() {
             showMonitorConnectionOption = true,
             showRateGooglePlay = true,
             showGitHubLink = true,
+            showLocalUseNNAPI = true,
         )
     )
 }

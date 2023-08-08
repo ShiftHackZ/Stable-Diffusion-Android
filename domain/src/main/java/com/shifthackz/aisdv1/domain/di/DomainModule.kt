@@ -22,6 +22,12 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.downloadable.CheckDownloadedModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.CheckDownloadedModelUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.features.GetFeatureFlagsUseCase
 import com.shifthackz.aisdv1.domain.usecase.features.GetFeatureFlagsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
@@ -40,6 +46,8 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
@@ -94,6 +102,10 @@ internal val useCasesModule = module {
     factoryOf(::GetRandomImageUseCaseImpl) bind GetRandomImageUseCase::class
     factoryOf(::SaveLastResultToCacheUseCaseImpl) bind SaveLastResultToCacheUseCase::class
     factoryOf(::GetLastResultFromCacheUseCaseImpl) bind GetLastResultFromCacheUseCase::class
+    factoryOf(::ObserveLocalDiffusionProcessStatusUseCaseImpl) bind ObserveLocalDiffusionProcessStatusUseCase::class
+    factoryOf(::DownloadModelUseCaseImpl) bind DownloadModelUseCase::class
+    factoryOf(::DeleteModelUseCaseImpl) bind DeleteModelUseCase::class
+    factoryOf(::CheckDownloadedModelUseCaseImpl) bind CheckDownloadedModelUseCase::class
 }
 
 internal val debugModule = module {

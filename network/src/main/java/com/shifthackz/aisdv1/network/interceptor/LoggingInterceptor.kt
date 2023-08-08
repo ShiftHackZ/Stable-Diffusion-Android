@@ -15,7 +15,8 @@ internal class LoggingInterceptor(
         )
         if (!badPredicate) debugLog(HTTP_TAG, message)
     }.apply {
-        level = HttpLoggingInterceptor.Level.BODY
+//        level = HttpLoggingInterceptor.Level.BODY
+        level = HttpLoggingInterceptor.Level.HEADERS
     }
 
     companion object {

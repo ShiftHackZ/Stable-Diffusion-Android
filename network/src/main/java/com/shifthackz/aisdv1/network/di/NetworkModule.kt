@@ -8,6 +8,8 @@ import com.shifthackz.aisdv1.network.api.imagecdn.ImageCdnRestApi
 import com.shifthackz.aisdv1.network.api.imagecdn.ImageCdnRestApiImpl
 import com.shifthackz.aisdv1.network.api.sdai.AppUpdateRestApi
 import com.shifthackz.aisdv1.network.api.sdai.CoinsRestApi
+import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsRestApi
+import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsRestApiImpl
 import com.shifthackz.aisdv1.network.api.sdai.FeatureFlagsRestApi
 import com.shifthackz.aisdv1.network.api.sdai.MotdRestApi
 import com.shifthackz.aisdv1.network.authenticator.RestAuthenticator
@@ -132,11 +134,18 @@ val networkModule = module {
 
     single {
         get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
+            .create(DownloadableModelsRestApi.RawApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().imageCdnApiUrl)
             .create(ImageCdnRestApi.RawApi::class.java)
     }
 
     singleOf(::ImageCdnRestApiImpl) bind ImageCdnRestApi::class
+    singleOf(::DownloadableModelsRestApiImpl) bind DownloadableModelsRestApi::class
 
     factory {params ->
         ConnectivityMonitor(params.get())

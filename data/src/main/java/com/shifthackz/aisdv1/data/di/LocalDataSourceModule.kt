@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.data.gateway.DatabaseClearGatewayImpl
 import com.shifthackz.aisdv1.data.gateway.mediastore.MediaStoreGatewayFactory
 import com.shifthackz.aisdv1.data.local.AppVersionLocalDataSource
 import com.shifthackz.aisdv1.data.local.CoinLocalDataSource
+import com.shifthackz.aisdv1.data.local.DownloadableModelLocalDataSource
 import com.shifthackz.aisdv1.data.local.FeatureFlagsLocalDataSource
 import com.shifthackz.aisdv1.data.local.GenerationResultLocalDataSource
 import com.shifthackz.aisdv1.data.local.ServerConfigurationLocalDataSource
@@ -11,6 +12,7 @@ import com.shifthackz.aisdv1.data.local.StableDiffusionModelsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionSamplersLocalDataSource
 import com.shifthackz.aisdv1.domain.datasource.AppVersionDataSource
 import com.shifthackz.aisdv1.domain.datasource.CoinDataSource
+import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.FeatureFlagsDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
@@ -32,5 +34,6 @@ val localDataSourceModule = module {
     factoryOf(::GenerationResultLocalDataSource) bind GenerationResultDataSource.Local::class
     factoryOf(::AppVersionLocalDataSource) bind AppVersionDataSource.Local::class
     factoryOf(::CoinLocalDataSource) bind CoinDataSource.Local::class
+    factoryOf(::DownloadableModelLocalDataSource) bind DownloadableModelDataSource.Local::class
     factory { MediaStoreGatewayFactory(androidContext(), get()).invoke() }
 }

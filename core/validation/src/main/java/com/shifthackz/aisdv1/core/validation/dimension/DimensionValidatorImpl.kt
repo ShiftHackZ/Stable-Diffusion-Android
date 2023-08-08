@@ -34,6 +34,6 @@ internal class DimensionValidatorImpl(
 
     companion object {
         private const val MINIMUM = 64
-        private const val MAXIMUM = 2048
+        private const val MAXIMUM = 1024
     }
 }

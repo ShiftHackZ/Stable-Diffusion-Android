@@ -84,6 +84,13 @@ class PreferenceManagerImpl(
             .putBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, value)
             .apply()
 
+    override var localUseNNAPI: Boolean
+        get() = preferences.getBoolean(KEY_LOCAL_NN_API, false)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_LOCAL_NN_API, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
     override val useSdAiCloud: Boolean
         get() = source == ServerSource.SDAI
 
@@ -100,6 +107,7 @@ class PreferenceManagerImpl(
                 formAdvancedOptionsAlwaysShow = formAdvancedOptionsAlwaysShow,
                 source = source,
                 hordeApiKey = hordeApiKey,
+                localUseNNAPI = localUseNNAPI,
             )
         }
 
@@ -114,6 +122,7 @@ class PreferenceManagerImpl(
         private const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
         private const val KEY_SERVER_SOURCE = "key_server_source"
         private const val KEY_HORDE_API_KEY = "key_horde_api_key"
+        private const val KEY_LOCAL_NN_API = "key_local_nn_api"
         private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.4.13"
     }
 }

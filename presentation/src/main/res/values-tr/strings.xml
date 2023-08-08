@@ -6,6 +6,9 @@
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
     <string name="cancel">İptal</string>
+    <string name="retry">yeniden dene</string>
+    <string name="delete">Silmek</string>
+    <string name="download">İndirmek</string>
     <string name="width">Genişlik</string>
     <string name="height">Yükseklik</string>
     <string name="browse">Araştır</string>
@@ -17,11 +20,16 @@
     <string name="splash_status_fetching">Veri Alınıyor…</string>
     <string name="splash_status_launching">Uygulama Başlatılıyor!</string>
 
+    <string name="local_no_img2img_support_title">Müsait değil</string>
+    <string name="local_no_img2img_support_sub_title">Görüntü oluşturmak için yerel telefon kaynaklarınızı kullanıyorsanız, Görüntüden Görüntüye modu kullanılamaz.</string>
+    <string name="local_no_img2img_support_sub_title_2">Image to Image modunu kullanmak için Yapılandırma ayarlarında sunucu tabanlı oluşturmaya geçebilirsiniz.</string>
+
     <string name="action_generate">Resim Oluştur</string>
     <string name="action_export">Dışa aktar</string>
     <string name="action_delete_image">Resmi Sil</string>
     <string name="action_select">Seç</string>
     <string name="action_connect">Bağlan</string>
+    <string name="action_setup">Kurmak</string>
     <string name="action_share_prompt">İstemi paylaş</string>
     <string name="action_send_to_txt2img">txt2img\'de kullanın</string>
     <string name="action_send_to_img2img">img2img\'de kullanın</string>
@@ -34,6 +42,7 @@
     <string name="action_image_picker_gallery">Fotoğraf seç</string>
     <string name="action_image_picker_camera">Yeni fotoğraf çek</string>
     <string name="action_image_picker_random">Rastgele görüntü</string>
+    <string name="action_change_configuration">Yapılandırmayı değiştir</string>
 
     <string name="srv_type_cloud">SDAI Bulut hizmetini kullanmak istiyorum</string>
     <string name="srv_type_own">Kendi AUTOMATIC1111 hizmetimi kullanmak istiyorum.</string>
@@ -73,6 +82,9 @@
     <string name="hint_server_horde_about">Hakkında Horde AI</string>
     <string name="hint_server_horde_get_api_key">API Anahtarınızı alın</string>
 
+    <string name="hint_local_diffusion_sub_title">Bu yapılandırma, telefonunuzda uzak sunucuya/buluta bağlanmaya gerek kalmadan Stable Diffusion AI nesillerini çalıştırmanıza izin verir.</string>
+    <string name="hint_local_diffusion_warning">Uyarı! Yerel Yayılma işlevi beta testindedir. Yerel modu kullanarak yüksek kaliteli görüntüler beklemeyin. \n\nBu uygulama, güçlü olmayan telefonlarda iyi çalışmayabilir. Oluşturma performansı ve hızı, telefonunuzun kaynaklarına (CPU, RAM) ve oluşturulan görüntünün boyutuna bağlıdır (görüntü boyutu ne kadar küçükse, oluşturma o kadar hızlı olur).</string>
+
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
     <string name="home_tab_gallery">Galeri</string>
@@ -107,13 +119,15 @@
     <string name="gallery_info_field_sub_seed_strength">Varyasyon oranı</string>
     <string name="gallery_info_field_denoising_strength">Gürültü Azaltma oranı</string>
 
-    <string name="settings_header_server">Sunucu ayarları</string>
+    <string name="settings_header_server">AI ayarları</string>
     <string name="settings_header_app">Uygulama ayarları</string>
     <string name="settings_header_info">Bilgi</string>
 
     <string name="settings_item_config">Ayarlar</string>
     <string name="settings_item_sd_model">SD Modeli</string>
     <string name="settings_item_rewarded">Ücretsiz SDAI jetonları</string>
+    <string name="settings_item_local_nnapi">NNAPI (Beta)*</string>
+    <string name="settings_item_local_nnapi_warning">*NNAPI kararlı çalışmayabilir, hata, çökme veya kötü performansla karşılaşırsanız bunu devre dışı bırakın.</string>
 
     <string name="settings_item_language">Dil</string>
     <string name="settings_item_demo">Demo modu</string>
@@ -132,9 +146,11 @@
 
     <string name="communicating_progress_title">Lütfen bekleyin, sunucu ile iletişime geçiliyor…</string>
     <string name="communicating_progress_sub_title">Bu biraz zaman alabilir.</string>
-    <string name="communication_random_image_title">Rastgele resim getiriliyor…</string>
+    <string name="communicating_random_image_title">Rastgele resim getiriliyor…</string>
+    <string name="communicating_local_title">Çalışan Local Diffusion</string>
     <string name="communicating_wait_time">Bekleme zamanı: %1$s</string>
     <string name="communicating_status_queue">Sıradaki konumu: %1$s</string>
+    <string name="communicating_status_steps">Adım: %1$s/%2$s</string>
 
     <string name="exporting_progress_title">Galeriniz dışarı aktarılıyor…</string>
     <string name="exporting_progress_sub_title">Resim sayısına göre bu biraz zaman alabilir…</string>
@@ -175,12 +191,15 @@
     <string name="error_localhost_url">Sunucuya bağlanmak için localhost (127.0.0.1) URL adresi kullanamazsınız.</string>
     <string name="error_min_size">Asgari boyut %1$s</string>
     <string name="error_max_size">Azami boyut %1$s</string>
+    <string name="error_download_fail">Yükleme başarısız</string>
 
     <string name="notification_finish_title">Nesil tamamlandı 🤩</string>
     <string name="notification_finish_sub_title">Sonucu görmek için buraya tıklayın.</string>
 
     <string name="notification_fail_title">Üretim başarısız oldu 😞</string>
     <string name="notification_fail_sub_title">Ayrıntıları görmek için buraya tıklayın.</string>
+
+    <string name="model_local_diffusion_size">≈ 1.2 Gb</string>
 
     <string name="debug_section_qa">QA işlemleri</string>
     <string name="debug_action_bad_base64">Kötü Base64\'ü DB\'ye yerleştirin</string>

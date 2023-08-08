@@ -10,10 +10,12 @@ import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
+import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
@@ -22,11 +24,13 @@ import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
+    observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
     buildInfoProvider: BuildInfoProvider,
     observeCoinsUseCase: ObserveCoinsUseCase,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
@@ -39,13 +43,22 @@ class TextToImageViewModel(
     private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
 ) : GenerationMviViewModel<TextToImageState, EmptyEffect>(
+    schedulersProvider,
     buildInfoProvider,
     preferenceManager,
     observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase,
-    schedulersProvider,
+    observeLocalDiffusionProcessStatusUseCase,
 ) {
+
+    private val progressModal: TextToImageState.Modal
+        get() {
+            if (currentState.mode == GenerationInputMode.LOCAL) {
+                return TextToImageState.Modal.Generating()
+            }
+            return TextToImageState.Modal.Communicating()
+        }
 
     override val emptyState = TextToImageState()
 
@@ -67,24 +80,30 @@ class TextToImageViewModel(
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {
         if (currentState.screenModal is TextToImageState.Modal.Communicating) {
-            setActiveDialog(TextToImageState.Modal.Communicating(status))
+            setActiveModal(TextToImageState.Modal.Communicating(status))
         }
     }
 
-    fun openPreviousGenerationInput() = setActiveDialog(TextToImageState.Modal.PromptBottomSheet)
+    override fun onReceivedLocalDiffusionStatus(status: LocalDiffusion.Status) {
+        if (currentState.screenModal is TextToImageState.Modal.Generating) {
+            setActiveModal(TextToImageState.Modal.Generating(status))
+        }
+    }
 
-    fun dismissScreenDialog() = setActiveDialog(TextToImageState.Modal.None)
+    fun openPreviousGenerationInput() = setActiveModal(TextToImageState.Modal.PromptBottomSheet)
+
+    fun dismissScreenModal() = setActiveModal(TextToImageState.Modal.None)
 
     fun generate() {
         if (!currentState.generateButtonEnabled) {
-            setActiveDialog(TextToImageState.Modal.NoSdAiCoins)
+            setActiveModal(TextToImageState.Modal.NoSdAiCoins)
             return
         }
         !currentState
             .mapToPayload()
             .let(textToImageUseCase::invoke)
             .flatMap(saveLastResultToCacheUseCase::invoke)
-            .doOnSubscribe { setActiveDialog(TextToImageState.Modal.Communicating()) }
+            .doOnSubscribe { setActiveModal(progressModal) }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = { t ->
@@ -92,7 +111,7 @@ class TextToImageViewModel(
                         R.string.notification_fail_title.asUiText(),
                         R.string.notification_fail_sub_title.asUiText(),
                     )
-                    setActiveDialog(
+                    setActiveModal(
                         TextToImageState.Modal.Error(
                             (t.localizedMessage ?: "Something went wrong").asUiText()
                         )
@@ -105,7 +124,7 @@ class TextToImageViewModel(
                         R.string.notification_finish_title.asUiText(),
                         R.string.notification_finish_sub_title.asUiText(),
                     )
-                    setActiveDialog(
+                    setActiveModal(
                         TextToImageState.Modal.Image(ai, preferenceManager.autoSaveAiResults)
                     )
                 },
@@ -114,9 +133,9 @@ class TextToImageViewModel(
 
     fun saveGeneratedResult(ai: AiGenerationResult) = !saveGenerationResultUseCase(ai)
         .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(::errorLog) { dismissScreenDialog() }
+        .subscribeBy(::errorLog) { dismissScreenModal() }
 
-    private fun setActiveDialog(modal: TextToImageState.Modal) = currentState
+    private fun setActiveModal(modal: TextToImageState.Modal) = currentState
         .copy(screenModal = modal)
         .let(::setState)
 }

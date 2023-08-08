@@ -65,7 +65,7 @@ class FileLoggingTree : Timber.Tree(), KoinComponent {
     }
 
     private fun writeLine(message: String) = schedulersProvider.singleThread.execute {
-        run {
+        runCatching {
             val cacheDirectory = File(fileProviderDescriptor.logsCacheDirPath)
             if (!cacheDirectory.exists()) cacheDirectory.mkdirs()
             val outFile = File(cacheDirectory, LOGGER_FILENAME)

@@ -51,6 +51,11 @@ data class SdModelSelected(val value: String) : AnalyticsEvent(
     parameters = mapOf("model" to value),
 )
 
+data class LocalUseNNAPIChanged(val value: Boolean) : AnalyticsEvent(
+    name = "settings_local_use_nnapi_change",
+    parameters = mapOf("enabled" to "$value"),
+)
+
 data class MonitorConnectionChanged(val value: Boolean) : AnalyticsEvent(
     name = "settings_monitor_connection_change",
     parameters = mapOf("enabled" to "$value"),

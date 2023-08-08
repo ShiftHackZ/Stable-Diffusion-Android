@@ -13,24 +13,29 @@ import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
+import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
+    schedulersProvider: SchedulersProvider,
     buildInfoProvider: BuildInfoProvider,
     preferenceManager: PreferenceManager,
     observeCoinsUseCase: ObserveCoinsUseCase,
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
-    schedulersProvider: SchedulersProvider,
+    observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase? = null,
 ) : MviRxViewModel<S, E>() {
 
     init {
-        !preferenceManager.observe()
+        !preferenceManager
+            .observe()
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = ::errorLog,
@@ -72,6 +77,16 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
                 onComplete = EmptyLambda,
             )
 
+        observeLocalDiffusionProcessStatusUseCase
+            ?.let { lambda -> lambda()}
+            ?.subscribeOnMainThread(schedulersProvider)
+            ?.subscribeBy(
+                onError = ::errorLog,
+                onNext = ::onReceivedLocalDiffusionStatus,
+                onComplete = EmptyLambda,
+            )
+            ?.apply { addToDisposable() }
+
         if (buildInfoProvider.buildType == BuildType.GOOGLE_PLAY) {
             !observeCoinsUseCase()
                 .subscribeOnMainThread(schedulersProvider)
@@ -108,6 +123,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
         .let(::setGenerationState)
 
     open fun onReceivedHordeStatus(status: HordeProcessStatus) {}
+
+    open fun onReceivedLocalDiffusionStatus(status: LocalDiffusion.Status) {}
 
     fun toggleAdvancedOptions(value: Boolean) = currentState
         .copyState(advancedOptionsVisible = value)

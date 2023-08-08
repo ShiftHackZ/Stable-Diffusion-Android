@@ -28,6 +28,7 @@ def libraries = [
         ':feature:ads',
         ':feature:analytics',
         ':feature:auth',
+        ':feature:diffusion',
         ':network',
         ':presentation',
         ':storage',

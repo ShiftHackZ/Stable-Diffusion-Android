@@ -10,6 +10,8 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
+import com.shifthackz.aisdv1.feature.diffusion.environment.DeviceNNAPIFlagProvider
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import com.shifthackz.aisdv1.network.qualifiers.CredentialsProvider
 import com.shifthackz.aisdv1.network.qualifiers.HordeApiKeyProvider
@@ -99,6 +101,15 @@ val providersModule = module {
             override val providerPath: String = "${androidApplication().packageName}.fileprovider"
             override val imagesCacheDirPath: String = "${androidApplication().cacheDir}/images"
             override val logsCacheDirPath: String = "${androidApplication().cacheDir}/logs"
+            override val localModelDirPath: String = "${androidApplication().filesDir.absolutePath}/model"
+        }
+    }
+
+    single {
+        DeviceNNAPIFlagProvider {
+            get<PreferenceManager>().localUseNNAPI
+                .let { nnApi -> if (nnApi) LocalDiffusionFlag.NN_API else LocalDiffusionFlag.CPU }
+                .let(LocalDiffusionFlag::value)
         }
     }
 }

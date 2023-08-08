@@ -21,8 +21,8 @@ android {
     namespace 'com.shifthackz.aisdv1.app'
     defaultConfig {
         applicationId "com.shifthackz.aisdv1.app"
-        versionName "0.4.13"
-        versionCode 160
+        versionName "0.5.0"
+        versionCode 161
 
         buildConfigField "String", "CLOUD_AI_URL", "\"https://sdai.moroz.cc\""
         buildConfigField "String", "IMAGE_CDN_URL", "\"https://random.imagecdn.app\""
@@ -78,6 +78,7 @@ dependencies {
     implementation project(":feature:ads")
     implementation project(":feature:analytics")
     implementation project(":feature:auth")
+    implementation project(":feature:diffusion")
     implementation project(":data")
     implementation project(":demo")
     implementation di.koinCore

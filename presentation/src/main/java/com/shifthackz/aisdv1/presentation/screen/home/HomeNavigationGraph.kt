@@ -51,6 +51,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                         takePhoto = takePhoto,
                         launchRewarded = launchRewarded,
                         launchGalleryDetail = openGalleryItemDetails,
+                        launchServerSetup = launchSetup,
                     ),
                     galleryTab(
                         shareGalleryFile = shareGalleryFile,
@@ -99,6 +100,7 @@ private fun img2imgTab(
     takePhoto: (ImagePickerCallback) -> Unit = {},
     launchRewarded: () -> Unit = {},
     launchGalleryDetail: (Long) -> Unit,
+    launchServerSetup: () -> Unit,
 ) = HomeNavigationItem(
     name = stringResource(R.string.home_tab_img_to_img),
     route = Constants.ROUTE_IMG_TO_IMG,
@@ -113,6 +115,7 @@ private fun img2imgTab(
             takePhoto = takePhoto,
             launchRewarded = launchRewarded,
             launchGalleryDetail = launchGalleryDetail,
+            launchServerSetup = launchServerSetup,
         ).Build()
     },
 )

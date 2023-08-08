@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.domain.entity.Configuration
+import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.presentation.utils.Constants
@@ -32,6 +33,8 @@ data class ServerSetupState(
     val originalLogin: String = "",
     val password: String = "",
     val originalPassword: String = "",
+    val localModelDownloaded: Boolean = false,
+    val downloadState: DownloadState = DownloadState.Unknown,
     val passwordVisible: Boolean = false,
     val serverUrlValidationError: UiText? = null,
     val loginValidationError: UiText? = null,
@@ -84,12 +87,14 @@ data class ServerSetupState(
     enum class Mode {
         OWN_SERVER,
         SD_AI_CLOUD,
-        HORDE;
+        HORDE,
+        LOCAL;
 
         fun toSource() = when (this) {
             SD_AI_CLOUD -> ServerSource.SDAI
             OWN_SERVER -> ServerSource.CUSTOM
             HORDE -> ServerSource.HORDE
+            LOCAL -> ServerSource.LOCAL
         }
 
         companion object {
@@ -97,6 +102,7 @@ data class ServerSetupState(
                 ServerSource.CUSTOM -> OWN_SERVER
                 ServerSource.SDAI -> SD_AI_CLOUD
                 ServerSource.HORDE -> HORDE
+                ServerSource.LOCAL -> LOCAL
             }
         }
     }
@@ -119,8 +125,15 @@ enum class ServerSetupLaunchSource(val key: Int) {
 
 val BuildType.allowedModes: List<ServerSetupState.Mode>
     get() = when (this) {
-        BuildType.FOSS -> listOf(ServerSetupState.Mode.OWN_SERVER, ServerSetupState.Mode.HORDE)
-        BuildType.GOOGLE_PLAY -> listOf(ServerSetupState.Mode.OWN_SERVER, ServerSetupState.Mode.HORDE)
+        BuildType.FOSS -> listOf(
+            ServerSetupState.Mode.OWN_SERVER,
+            ServerSetupState.Mode.HORDE,
+            ServerSetupState.Mode.LOCAL,
+        )
+        BuildType.GOOGLE_PLAY -> listOf(
+            ServerSetupState.Mode.OWN_SERVER,
+            ServerSetupState.Mode.HORDE,
+        )
         //BuildType.GOOGLE_PLAY -> ServerSetupState.Mode.values().toList()
     }
 

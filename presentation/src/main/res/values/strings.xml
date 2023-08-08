@@ -10,6 +10,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="cancel">Cancel</string>
+    <string name="retry">Retry</string>
+    <string name="delete">Delete</string>
+    <string name="download">Download</string>
     <string name="width">Width</string>
     <string name="height">Height</string>
     <string name="browse">Browse</string>
@@ -21,11 +24,16 @@
     <string name="splash_status_fetching">Fetching data…</string>
     <string name="splash_status_launching">Launching application!</string>
 
+    <string name="local_no_img2img_support_title">Not available</string>
+    <string name="local_no_img2img_support_sub_title">Image to Image mode is not available in case you are using your local phone resources to generate images.</string>
+    <string name="local_no_img2img_support_sub_title_2">You can switch to server based generation in Configuration settings to use Image to Image mode.</string>
+
     <string name="action_generate">Imagine</string>
     <string name="action_export">Export</string>
     <string name="action_delete_image">Delete image</string>
     <string name="action_select">Select</string>
     <string name="action_connect">Connect</string>
+    <string name="action_setup">Setup</string>
     <string name="action_share_prompt">Share</string>
     <string name="action_send_to_txt2img">Use in txt2img</string>
     <string name="action_send_to_img2img">Use in img2img</string>
@@ -38,10 +46,12 @@
     <string name="action_image_picker_gallery">Choose photo</string>
     <string name="action_image_picker_camera">Take new photo</string>
     <string name="action_image_picker_random">Random image</string>
+    <string name="action_change_configuration">Change configuration</string>
 
-    <string name="srv_type_cloud">I want to use SDAI cloud</string>
-    <string name="srv_type_own">I want to use own AUTOMATIC1111 instance</string>
-    <string name="srv_type_horde">I want to use Horde AI cloud</string>
+    <string name="srv_type_cloud">SDAI cloud</string>
+    <string name="srv_type_own">AUTOMATIC1111 instance</string>
+    <string name="srv_type_horde">Horde AI cloud</string>
+    <string name="srv_type_local" translatable="false">Local Diffusion (Beta)</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -77,6 +87,10 @@
     <string name="hint_server_horde_about">About Horde AI</string>
     <string name="hint_server_horde_get_api_key">Get your API Key</string>
 
+    <string name="hint_local_diffusion_title" translatable="false">Local Diffusion</string>
+    <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>
+    <string name="hint_local_diffusion_warning">Warning! Local Diffusion functionality is in beta-test. Don\'t expect for high quality images using local mode. \n\nThis implementation may not work well on non-powerful phones. Generation performance and speed depends on your phone resources (CPU, RAM) and the size of generated image (the smaller the image size, the faster the generation).</string>
+
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
     <string name="home_tab_gallery">Gallery</string>
@@ -91,7 +105,7 @@
     <string name="title_gallery">Gallery</string>
     <string name="title_gallery_details">Details</string>
     <string name="title_settings">Settings</string>
-    <string name="title_server_setup">Server setup</string>
+    <string name="title_server_setup">Configuration</string>
     <string name="title_select_sd_model">Select SD ML Model</string>
     <string name="title_clear_app_cache">Clear app cache</string>
     <string name="title_debug_menu">Debug Menu</string>
@@ -111,13 +125,15 @@
     <string name="gallery_info_field_sub_seed_strength">Variation strength</string>
     <string name="gallery_info_field_denoising_strength">Denoising strength</string>
 
-    <string name="settings_header_server">Server settings</string>
+    <string name="settings_header_server">AI settings</string>
     <string name="settings_header_app">App settings</string>
     <string name="settings_header_info">Info</string>
 
     <string name="settings_item_config">Configuration</string>
     <string name="settings_item_sd_model">SD Model</string>
     <string name="settings_item_rewarded">FREE SDAI Coins</string>
+    <string name="settings_item_local_nnapi">Use NNAPI (Beta)*</string>
+    <string name="settings_item_local_nnapi_warning">*NNAPI may not work stable, if you experience errors, crashes or bad performance disable this.</string>
 
     <string name="settings_item_language">Language</string>
     <string name="settings_item_demo">Demo mode</string>
@@ -136,9 +152,11 @@
 
     <string name="communicating_progress_title">Hang tight, communicating with server…</string>
     <string name="communicating_progress_sub_title">This could take some time</string>
-    <string name="communication_random_image_title">Fetching random image…</string>
+    <string name="communicating_random_image_title">Fetching random image…</string>
+    <string name="communicating_local_title">Running Local Diffusion generation</string>
     <string name="communicating_wait_time">Wait time: %1$s</string>
     <string name="communicating_status_queue">Position in queue: %1$s</string>
+    <string name="communicating_status_steps">Processing step: %1$s/%2$s</string>
 
     <string name="exporting_progress_title">Exporting your gallery…</string>
     <string name="exporting_progress_sub_title">It can take some time, depending on photos amount</string>
@@ -179,12 +197,16 @@
     <string name="error_localhost_url">You can not use localhost (127.0.0.1) URL to connect to server.</string>
     <string name="error_min_size">Minimum size is %1$s</string>
     <string name="error_max_size">Maximum size is %1$s</string>
+    <string name="error_download_fail">Download failed</string>
 
     <string name="notification_finish_title">Generation complete 🤩</string>
     <string name="notification_finish_sub_title">Click here to see the result.</string>
 
     <string name="notification_fail_title">Generation failed 😞</string>
     <string name="notification_fail_sub_title">Click here to see the details.</string>
+
+    <string name="model_local_diffusion" translatable="false">Local Diffusion</string>
+    <string name="model_local_diffusion_size">≈ 1.2 Gb</string>
 
     <string name="debug_section_qa">QA actions</string>
     <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>

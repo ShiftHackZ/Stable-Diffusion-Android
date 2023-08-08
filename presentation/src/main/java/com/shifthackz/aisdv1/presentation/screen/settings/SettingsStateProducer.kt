@@ -27,11 +27,13 @@ class SettingsStateProducer(
         SettingsState.Content(
             sdModels = modelData.map { (model, _) -> model.title },
             sdModelSelected = modelData.firstOrNull { it.second }?.first?.title ?: "",
+            localUseNNAPI = settings.localUseNNAPI,
             monitorConnectivity = settings.monitorConnectivity,
             autoSaveAiResults = settings.autoSaveAiResults,
             saveToMediaStore = settings.saveToMediaStore,
             formAdvancedOptionsAlwaysShow = settings.formAdvancedOptionsAlwaysShow,
             appVersion = version,
+            showLocalUseNNAPI = settings.source == ServerSource.LOCAL,
             showCheckForUpdates = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
             showRewardedSdAiAd = settings.useSdAiCloud,
             showSdModelSelector = settings.source == ServerSource.CUSTOM,
