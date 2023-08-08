@@ -22,7 +22,7 @@ android {
     defaultConfig {
         applicationId "com.shifthackz.aisdv1.app"
         versionName "0.5.0"
-        versionCode 161
+        versionCode 163
 
         buildConfigField "String", "CLOUD_AI_URL", "\"https://sdai.moroz.cc\""
         buildConfigField "String", "IMAGE_CDN_URL", "\"https://random.imagecdn.app\""

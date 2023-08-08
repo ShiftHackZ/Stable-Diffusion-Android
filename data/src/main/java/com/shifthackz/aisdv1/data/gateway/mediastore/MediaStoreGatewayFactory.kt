@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.shifthackz.aisdv1.data.gateway.mediastore
 
 import android.content.Context
