@@ -580,7 +580,7 @@ private fun ConfigurationModeButton(
                 ServerSetupState.Mode.SD_AI_CLOUD -> Icons.Default.Cloud
                 ServerSetupState.Mode.OWN_SERVER -> Icons.Default.Computer
                 ServerSetupState.Mode.HORDE -> Icons.Default.Cloud
-                ServerSetupState.Mode.LOCAL -> Icons.Default.PhoneAndroid
+                ServerSetupState.Mode.LOCAL -> Icons.Default.Android
             },
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSecondaryContainer,
