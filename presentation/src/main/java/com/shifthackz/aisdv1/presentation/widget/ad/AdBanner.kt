@@ -17,7 +17,7 @@ fun AdBanner(
     ad.view?.let { adView ->
         AndroidView(
             modifier = modifier,
-            factory = { adView }
+            factory = { adView },
         )
     }
 }
