@@ -1,4 +1,4 @@
 {
-  "ad_home_bottom_enable": false,
-  "ad_gallery_bottom_enable": false
+  "ad_home_bottom_enable": true,
+  "ad_gallery_bottom_enable": true
 }
