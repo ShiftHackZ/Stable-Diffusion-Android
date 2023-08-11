@@ -2,92 +2,77 @@ package com.shifthackz.aisdv1.feature.ads
 
 import android.app.Activity
 import android.content.Context
-import android.view.LayoutInflater
-import androidx.annotation.LayoutRes
-import com.google.android.gms.ads.*
-import com.google.android.gms.ads.nativead.NativeAdView
-import com.google.android.gms.ads.rewarded.RewardItem
-import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.shifthackz.aisdv1.core.common.log.errorLog
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import com.applovin.mediation.MaxAd
+import com.applovin.mediation.MaxError
+import com.applovin.mediation.MaxReward
+import com.applovin.mediation.ads.MaxAdView
+import com.applovin.mediation.ads.MaxRewardedAd
+import com.applovin.sdk.AppLovinSdk
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
-internal class AdFeatureImpl : AdFeature, KoinComponent {
+internal class AdFeatureImpl : AdFeature, LoggableMaxRewardedAdListener {
 
-    private val ump: Ump by inject()
-
-    private var rewardedAd: RewardedAd? = null
+    private var rewardedAd: MaxRewardedAd? = null
+    private var rewardCallback: (Int) -> Unit = {}
 
     override fun initialize(activity: Activity) {
-        ump.request(activity)
-        MobileAds.initialize(activity) {
-            if (BuildConfig.DEBUG) MobileAds.setRequestConfiguration(
-                RequestConfiguration.Builder()
-                    .setTestDeviceIds(activity.resources.getStringArray(R.array.test_device_ids).asList())
-                    .build()
-            )
+        AppLovinSdk.getInstance(activity).mediationProvider = "max"
+        AppLovinSdk.initializeSdk(activity) {
             loadRewardedCoinsAd(activity)
         }
     }
 
-    override fun getHomeScreenBannerAd(context: Context) = AdFeature.Ad(
-        view = inflateNativeAdView(context, R.layout.native_small_ad_view),
-        id = BuildConfig.BANNER_HOMESCREEN_AD_UNIT_ID,
-    )
+    override fun getHomeScreenBannerAd(context: Context): AdFeature.Ad {
+        return loadBannerAd(MaxAdView(BuildConfig.BANNER_HOME_ID, context))
+    }
 
-    override fun getGalleryDetailBannerAd(context: Context) = AdFeature.Ad(
-        view = inflateNativeAdView(context, R.layout.native_small_ad_view),
-        id = BuildConfig.BANNER_GALLERY_AD_UNIT_ID,
-    )
-
-    override fun loadAd(ad: AdFeature.Ad) {
-        inflateAdLoader(ad)?.loadAd(AdRequest.Builder().build())
+    override fun getGalleryDetailBannerAd(context: Context): AdFeature.Ad {
+        return loadBannerAd(MaxAdView(BuildConfig.BANNER_GALLERY_ID, context))
     }
 
     override fun showRewardedCoinsAd(activity: Activity, rewardCallback: (Int) -> Unit) {
-        val rewardReducer: (RewardItem) -> Unit = { item ->
-            rewardCallback(item.amount)
-            loadRewardedCoinsAd(activity)
-        }
-        val show: (RewardedAd) -> Unit = { ad ->
-            ad.show(activity, rewardReducer)
-        }
+        this.rewardCallback = rewardCallback
         rewardedAd
-            ?.let { ad -> show(ad) }
-            ?: run { loadRewardedCoinsAd(activity) { ad -> show(ad) } }
+            ?.takeIf { it.isReady }
+            ?.showAd()
     }
 
-    private fun inflateNativeAdView(context: Context, @LayoutRes layoutId: Int): NativeAdView {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        return inflater.inflate(layoutId, null) as NativeAdView
+    override fun onAdLoadFailed(p0: String?, p1: MaxError?) {
+        super.onAdLoadFailed(p0, p1)
+        rewardedAd?.loadAd()
     }
 
-    private fun inflateAdLoader(ad: AdFeature.Ad) = ad.view?.context?.let { ctx ->
-        AdLoader.Builder(ctx, ad.id)
-            .forNativeAd { nativeAd -> AdMobXmlRenderer().invoke(ad, nativeAd) }
-            .applyLoggableAdListener(ad.id)
-            .build()
+    override fun onAdDisplayFailed(p0: MaxAd?, p1: MaxError?) {
+        super.onAdDisplayFailed(p0, p1)
+        rewardedAd?.loadAd()
     }
 
-    private fun loadRewardedCoinsAd(context: Context, onAdReady: (RewardedAd) -> Unit = {}) {
-        RewardedAd.load(
-            context,
-            BuildConfig.COIN_REWARDED_AD_UNIT_ID,
-            AdRequest.Builder().build(),
-            object : RewardedAdLoadCallback() {
-                override fun onAdLoaded(p0: RewardedAd) {
-                    super.onAdLoaded(p0)
-                    rewardedAd = p0
-                    onAdReady(p0)
-                }
+    override fun onUserRewarded(p0: MaxAd?, p1: MaxReward?) {
+        super.onUserRewarded(p0, p1)
+        val amount = p1?.amount?.takeIf { it > 0 } ?: 1
+        rewardCallback(amount)
+        rewardCallback = {}
+    }
 
-                override fun onAdFailedToLoad(p0: LoadAdError) {
-                    super.onAdFailedToLoad(p0)
-                    errorLog(Exception(p0.message), "${p0.code} - ${p0.cause}")
-                }
-            },
+    private fun loadRewardedCoinsAd(activity: Activity) {
+        rewardedAd = MaxRewardedAd
+            .getInstance(BuildConfig.COIN_REWARDED_ID, activity)
+            .also { ad -> ad.setListener(this) }
+            .also { ad -> ad.loadAd() }
+    }
+
+    private fun loadBannerAd(adView: MaxAdView): AdFeature.Ad {
+        adView.loadAd()
+        adView.setListener(LoggableMaxAdViewListener.factory())
+        adView.layoutParams = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            adView.context.resources.getDimensionPixelSize(R.dimen.ad_banner_height),
+        )
+        return AdFeature.Ad(
+            id = adView.adUnitId,
+            view = adView,
         )
     }
 }

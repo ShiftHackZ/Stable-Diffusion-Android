@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="ad_banner_horizontal_margin">8dp</dimen>
-    <dimen name="ad_banner_vertical_margin">4dp</dimen>
+    <dimen name="ad_banner_height">50dp</dimen>
 </resources>

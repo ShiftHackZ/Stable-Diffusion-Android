@@ -8,9 +8,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 
 @Composable
-fun AdMobBanner(
+fun AdBanner(
     modifier: Modifier = Modifier,
-    adFeature: AdFeature,
     adFactory: (Context) -> AdFeature.Ad,
 ) {
     val ad = adFactory(LocalContext.current)
@@ -18,10 +17,7 @@ fun AdMobBanner(
     ad.view?.let { adView ->
         AndroidView(
             modifier = modifier,
-            factory = {
-                adFeature.loadAd(ad)
-                adView
-            }
+            factory = { adView },
         )
     }
 }

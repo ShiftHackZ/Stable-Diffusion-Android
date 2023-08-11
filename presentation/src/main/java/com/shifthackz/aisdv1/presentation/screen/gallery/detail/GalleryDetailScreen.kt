@@ -28,7 +28,7 @@ import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
+import com.shifthackz.aisdv1.presentation.widget.ad.AdBanner
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
@@ -163,11 +163,10 @@ private fun GalleryDetailNavigationBar(
 ) {
     Column {
         if (state.bottomAdBanner) {
-            AdMobBanner(
+            AdBanner(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                adFeature = adFeature,
                 adFactory = adFeature::getGalleryDetailBannerAd,
             )
         }

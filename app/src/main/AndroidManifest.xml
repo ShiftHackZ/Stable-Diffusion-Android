@@ -55,5 +55,9 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-5994265132349884~9645142847" />
 
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="HIShVpilJ0_bWZ4mFNgLTkzJBXDODBScGQa478ynIUQut8zdD8QkhpWnWi5cdvFWNIT8gwL_TzvXzCNCTuDGm8"/>
+
     </application>
 </manifest>
