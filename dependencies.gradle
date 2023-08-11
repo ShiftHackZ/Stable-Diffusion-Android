@@ -20,7 +20,6 @@ ext {
     pagingVersion = '3.1.1'
     pagingComposeVersion = '1.0.0-alpha18'
     imagePickerVersion = 'v2.0.3'
-    constraintVersion = '2.1.4'
     timberVersion = '5.0.1'
     gsonVersion = '2.10.1'
     googleMaterialVersion = '1.9.0'
@@ -29,8 +28,6 @@ ext {
     onnxruntimeVersion = 'latest.release'
 
     firebaseBomVersion = '32.2.0'
-    playServicesAdsVersion = '22.2.0'
-    umpVerson = '2.1.0'
 
     testJunitVersion = '4.13.2'
 
@@ -38,7 +35,6 @@ ext {
             core                        : "androidx.core:core-ktx:$coreKtxVersion",
             appcompat                   : "androidx.appcompat:appcompat:$appCompatVersion",
             activity                    : "androidx.activity:activity-ktx:$activityVersion",
-            constraintLayout            : "androidx.constraintlayout:constraintlayout:$constraintVersion",
             composeBom                  : "androidx.compose:compose-bom:$composeBomVersion",
             composeRuntime              : "androidx.compose.runtime:runtime",
             composeMaterial3            : "androidx.compose.material3:material3:$composeMaterialVersion",
@@ -99,8 +95,7 @@ ext {
             fbBom: "com.google.firebase:firebase-bom:$firebaseBomVersion",
             fbA  : "com.google.firebase:firebase-analytics-ktx",
             fbC  : "com.google.firebase:firebase-crashlytics-ktx",
-            plA  : "com.google.android.gms:play-services-ads:$playServicesAdsVersion",
-            ump  : "com.google.android.ump:user-messaging-platform:$umpVerson",
+            appL : "com.applovin:applovin-sdk:+"
     ]
     test = [
             junit: "junit:junit:$testJunitVersion",

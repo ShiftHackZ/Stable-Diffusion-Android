@@ -7,17 +7,10 @@ apply from: "$project.rootDir/gradle/common.gradle"
 
 android {
     namespace 'com.shifthackz.aisdv1.feature.ads'
-    buildTypes {
-        release {
-            buildConfigField "String", "BANNER_HOMESCREEN_AD_UNIT_ID", "\"ca-app-pub-5994265132349884/9338284416\""
-            buildConfigField "String", "BANNER_GALLERY_AD_UNIT_ID", "\"ca-app-pub-5994265132349884/8450925763\""
-            buildConfigField "String", "COIN_REWARDED_AD_UNIT_ID", "\"ca-app-pub-5994265132349884/2254182493\""
-        }
-        debug {
-            buildConfigField "String", "BANNER_HOMESCREEN_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\""
-            buildConfigField "String", "BANNER_GALLERY_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\""
-            buildConfigField "String", "COIN_REWARDED_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/5224354917\""
-        }
+    buildTypes.each {
+        it.buildConfigField("String", "BANNER_HOME_ID", "\"c66032471f8ba759\"")
+        it.buildConfigField("String", "BANNER_GALLERY_ID", "\"6522e4b9d477e41f\"")
+        it.buildConfigField("String", "COIN_REWARDED_ID", "\"d27e36a05fa45186\"")
     }
     flavorDimensions "type"
     productFlavors {
@@ -34,7 +27,5 @@ dependencies {
     implementation project(":core:common")
     implementation project(":domain")
     implementation di.koinCore
-    playstoreImplementation androidx.constraintLayout
-    playstoreImplementation proprietary.plA
-    playstoreImplementation proprietary.ump
+    playstoreImplementation proprietary.appL
 }

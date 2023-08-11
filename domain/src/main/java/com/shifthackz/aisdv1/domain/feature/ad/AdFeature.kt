@@ -8,7 +8,6 @@ interface AdFeature {
     fun initialize(activity: Activity)
     fun getHomeScreenBannerAd(context: Context): Ad
     fun getGalleryDetailBannerAd(context: Context): Ad
-    fun loadAd(ad: Ad)
     fun showRewardedCoinsAd(activity: Activity, rewardCallback: (Int) -> Unit)
 
     data class Ad(
@@ -22,9 +21,8 @@ interface AdFeature {
     companion object {
         val empty = object : AdFeature {
             override fun initialize(activity: Activity) = Unit
-            override fun getHomeScreenBannerAd(context: Context) = Ad()
-            override fun getGalleryDetailBannerAd(context: Context) = Ad()
-            override fun loadAd(ad: Ad) = Unit
+            override fun getHomeScreenBannerAd(context: Context): Ad = Ad()
+            override fun getGalleryDetailBannerAd(context: Context): Ad = Ad()
             override fun showRewardedCoinsAd(activity: Activity, rewardCallback: (Int) -> Unit) = Unit
         }
     }

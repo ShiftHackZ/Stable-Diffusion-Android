@@ -91,7 +91,6 @@ dependencies {
     playstoreImplementation platform(proprietary.fbBom)
     playstoreImplementation proprietary.fbA
     playstoreImplementation proprietary.fbC
-    playstoreImplementation proprietary.plA
 }
 
 kapt {

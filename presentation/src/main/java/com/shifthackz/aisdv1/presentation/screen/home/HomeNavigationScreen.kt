@@ -25,7 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
-import com.shifthackz.aisdv1.presentation.widget.ad.AdMobBanner
+import com.shifthackz.aisdv1.presentation.widget.ad.AdBanner
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
 import com.shifthackz.aisdv1.presentation.widget.motd.MotdComposable
 import org.koin.androidx.compose.koinViewModel
@@ -62,11 +62,10 @@ class HomeNavigationScreen(
             bottomBar = {
                 Column {
                     if (state.bottomAdBanner) {
-                        AdMobBanner(
+                        AdBanner(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .wrapContentHeight(),
-                            adFeature = adFeature,
                             adFactory = adFeature::getHomeScreenBannerAd,
                         )
                     }
