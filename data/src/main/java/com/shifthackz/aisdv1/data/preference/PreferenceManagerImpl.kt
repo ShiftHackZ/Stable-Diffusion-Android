@@ -123,6 +123,6 @@ class PreferenceManagerImpl(
         private const val KEY_SERVER_SOURCE = "key_server_source"
         private const val KEY_HORDE_API_KEY = "key_horde_api_key"
         private const val KEY_LOCAL_NN_API = "key_local_nn_api"
-        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.4.13"
+        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.1"
     }
 }
