@@ -12,7 +12,7 @@ import com.applovin.mediation.ads.MaxRewardedAd
 import com.applovin.sdk.AppLovinSdk
 import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 
-internal class AdFeatureImpl : AdFeature, OptionalMaxRewardedAdListener {
+internal class AdFeatureImpl : AdFeature, LoggableMaxRewardedAdListener {
 
     private var rewardedAd: MaxRewardedAd? = null
     private var rewardCallback: (Int) -> Unit = {}
@@ -65,6 +65,7 @@ internal class AdFeatureImpl : AdFeature, OptionalMaxRewardedAdListener {
 
     private fun loadBannerAd(adView: MaxAdView): AdFeature.Ad {
         adView.loadAd()
+        adView.setListener(LoggableMaxAdViewListener.factory())
         adView.layoutParams = FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             adView.context.resources.getDimensionPixelSize(R.dimen.ad_banner_height),

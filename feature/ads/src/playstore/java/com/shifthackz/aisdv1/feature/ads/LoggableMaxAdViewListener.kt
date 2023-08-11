@@ -1,12 +1,11 @@
 package com.shifthackz.aisdv1.feature.ads
 
 import com.applovin.mediation.MaxAd
+import com.applovin.mediation.MaxAdViewAdListener
 import com.applovin.mediation.MaxError
-import com.applovin.mediation.MaxReward
-import com.applovin.mediation.MaxRewardedAdListener
 import com.shifthackz.aisdv1.core.common.log.debugLog
 
-internal interface OptionalMaxRewardedAdListener : MaxRewardedAdListener {
+interface LoggableMaxAdViewListener : MaxAdViewAdListener {
     override fun onAdLoaded(p0: MaxAd?) {
         log("onAdLoaded($p0)")
     }
@@ -24,25 +23,19 @@ internal interface OptionalMaxRewardedAdListener : MaxRewardedAdListener {
     }
 
     override fun onAdLoadFailed(p0: String?, p1: MaxError?) {
-        log("onAdLoadFailed($p0, $p1)")
+        log("onAdLoadFailed($p0)")
     }
 
     override fun onAdDisplayFailed(p0: MaxAd?, p1: MaxError?) {
-        log("onAdDisplayFailed($p0, $p1)")
+        log("onAdDisplayFailed($p0)")
     }
 
-    override fun onUserRewarded(p0: MaxAd?, p1: MaxReward?) {
-        log("onUserRewarded($p0, $p1)")
+    override fun onAdExpanded(p0: MaxAd?) {
+        log("onAdExpanded($p0)")
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onRewardedVideoStarted(p0: MaxAd?) {
-        log("onRewardedVideoStarted($p0)")
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onRewardedVideoCompleted(p0: MaxAd?) {
-        log("onRewardedVideoCompleted($p0)")
+    override fun onAdCollapsed(p0: MaxAd?) {
+        log("onAdCollapsed($p0)")
     }
 
     private fun log(msg: String) {
@@ -50,6 +43,10 @@ internal interface OptionalMaxRewardedAdListener : MaxRewardedAdListener {
     }
 
     companion object {
-        private const val TAG = "AppLovinAds"
+        private const val TAG = "AppLovinAd"
+
+        fun factory(): LoggableMaxAdViewListener {
+            return object : LoggableMaxAdViewListener {}
+        }
     }
 }
