@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class HordeUserResponse(
     @SerializedName("id")
-    val id: Int?
+    val id: Int?,
 )

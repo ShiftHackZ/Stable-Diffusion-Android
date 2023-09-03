@@ -10,11 +10,11 @@ fun List<StableDiffusionModelRaw>.mapRawToDomain(): List<StableDiffusionModel> =
 
 fun StableDiffusionModelRaw.mapRawToDomain(): StableDiffusionModel = with(this) {
     StableDiffusionModel(
-        title = title,
-        modelName = modelName,
+        title = title ?: "",
+        modelName = modelName ?: "",
         hash = hash ?: "",
         sha256 = sha256 ?: "",
-        filename = filename,
+        filename = filename ?: "",
         config = config ?: "",
     )
 }

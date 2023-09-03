@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName
 
 data class StableDiffusionModelRaw(
     @SerializedName("title")
-    val title: String,
+    val title: String?,
     @SerializedName("model_name")
-    val modelName: String,
+    val modelName: String?,
     @SerializedName("hash")
     val hash: String?,
     @SerializedName("sha256")
     val sha256: String?,
     @SerializedName("filename")
-    val filename: String,
+    val filename: String?,
     @SerializedName("config")
     val config: String?,
 )

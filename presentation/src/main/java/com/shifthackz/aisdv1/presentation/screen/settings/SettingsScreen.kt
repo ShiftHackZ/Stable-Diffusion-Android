@@ -245,7 +245,6 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             startIcon = Icons.Default.Toll,
             text = R.string.settings_item_rewarded.asUiText(),
-            endValueText = state.sdModelSelected.asUiText(),
             animateBackground = true,
             onClick = onLaunchRewarded,
         )

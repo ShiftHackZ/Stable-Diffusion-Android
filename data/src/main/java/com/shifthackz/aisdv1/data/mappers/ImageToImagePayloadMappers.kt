@@ -46,7 +46,7 @@ fun Pair<ImageToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenera
     let { (payload, response) ->
         AiGenerationResult(
             id = 0L,
-            image = response.images.firstOrNull() ?: "",
+            image = response.images?.firstOrNull() ?: "",
             inputImage = payload.base64Image,
             createdAt = Date(),
             type = AiGenerationResult.Type.IMAGE_TO_IMAGE,

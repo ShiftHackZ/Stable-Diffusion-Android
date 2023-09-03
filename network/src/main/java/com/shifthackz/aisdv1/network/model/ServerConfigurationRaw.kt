@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class ServerConfigurationRaw(
     @SerializedName("sd_model_checkpoint")
-    val sdModelCheckpoint: String,
+    val sdModelCheckpoint: String?,
 )

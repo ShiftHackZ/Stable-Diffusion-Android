@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class AppVersionResponse(
     @SerializedName("googleplay")
-    val googlePlay: String,
+    val googlePlay: String?,
 )

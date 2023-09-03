@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class DownloadableModelResponse(
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("sources")
-    val sources: List<String>,
+    val sources: List<String>?,
 )

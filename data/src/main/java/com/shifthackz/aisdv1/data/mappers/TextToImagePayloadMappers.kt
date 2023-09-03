@@ -45,7 +45,7 @@ fun Pair<TextToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerat
     let { (payload, response) ->
         AiGenerationResult(
             id = 0L,
-            image = response.images.firstOrNull() ?: "",
+            image = response.images?.firstOrNull() ?: "",
             inputImage = "",
             createdAt = Date(),
             type = AiGenerationResult.Type.TEXT_TO_IMAGE,

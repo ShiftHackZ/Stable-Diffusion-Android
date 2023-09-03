@@ -7,7 +7,7 @@ import com.shifthackz.aisdv1.storage.db.cache.entity.ServerConfigurationEntity
 //region RAW --> DOMAIN
 fun ServerConfigurationRaw.mapToDomain(): ServerConfiguration = with(this) {
     ServerConfiguration(
-        sdModelCheckpoint = sdModelCheckpoint,
+        sdModelCheckpoint = sdModelCheckpoint ?: "Unknown",
     )
 }
 //endregion

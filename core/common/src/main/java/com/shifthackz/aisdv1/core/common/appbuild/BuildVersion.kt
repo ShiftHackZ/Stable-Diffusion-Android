@@ -18,7 +18,8 @@ class BuildVersion : Comparable<BuildVersion> {
         this.tag = tag
     }
 
-    constructor(versionString: String) {
+    constructor(versionString: String?) {
+        if (versionString.isNullOrBlank()) return
         val verWithTag = versionString.split(DELIMITER_TAG)
         verWithTag.getOrNull(1)?.let { this.tag = it }
         verWithTag.getOrNull(0)?.let { version ->
