@@ -32,6 +32,7 @@ val databaseModule = module {
             CoinDatabase::class.java,
             CoinDatabase.DB_NAME,
         )
+            .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .build()
     }

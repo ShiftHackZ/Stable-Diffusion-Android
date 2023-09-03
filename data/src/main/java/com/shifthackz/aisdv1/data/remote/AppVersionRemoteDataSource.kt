@@ -12,6 +12,5 @@ internal class AppVersionRemoteDataSource(
 
     override fun get(): Single<BuildVersion> = api
         .fetchAppVersion()
-        .map(AppVersionResponse::googlePlay)
-        .map(::BuildVersion)
+        .map { response -> BuildVersion(response.googlePlay) }
 }

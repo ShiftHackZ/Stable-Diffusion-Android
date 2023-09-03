@@ -15,7 +15,7 @@ internal class DownloadableModelsRestApiImpl(
         stateFailed: (Throwable) -> T
     ): Observable<T> = rawApi
         .fetchDownloadableModels()
-        .map { models -> models.first().sources.first() }
+        .map { models -> models.first().sources?.first() ?: "" }
         .flatMap(rawApi::downloadModel)
         .flatMapObservable { body ->
             body.saveFile(path, stateProgress, stateComplete, stateFailed)

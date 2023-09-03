@@ -10,9 +10,9 @@ fun List<StableDiffusionSamplerRaw>.mapRawToDomain(): List<StableDiffusionSample
 
 fun StableDiffusionSamplerRaw.mapRawToDomain(): StableDiffusionSampler = with(this) {
     StableDiffusionSampler(
-        name = name,
-        aliases = aliases,
-        options = options,
+        name = name ?: "",
+        aliases = aliases ?: emptyList(),
+        options = options ?: mapOf(),
     )
 }
 //endregion

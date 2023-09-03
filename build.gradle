@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        minSdk = 26
+        minSdk = 23
         targetSdk = 33
     }
     def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()

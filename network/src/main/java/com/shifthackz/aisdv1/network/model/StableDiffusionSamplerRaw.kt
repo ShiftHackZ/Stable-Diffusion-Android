@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class StableDiffusionSamplerRaw(
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("aliases")
-    val aliases: List<String>,
+    val aliases: List<String>?,
     @SerializedName("options")
-    val options: Map<String, String>,
+    val options: Map<String, String>?,
 )

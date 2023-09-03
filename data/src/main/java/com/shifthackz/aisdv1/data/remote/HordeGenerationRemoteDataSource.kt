@@ -51,28 +51,30 @@ internal class HordeGenerationRemoteDataSource(
                     val pingObs = Observable
                         .fromSingle(hordeApi.checkGeneration(id))
                         .flatMap { pingResponse ->
-                            if (!pingResponse.isPossible) {
+                            if (pingResponse.isPossible == false) {
                                 return@flatMap Observable.error(Throwable("Response is not possible"))
                             }
-                            if (pingResponse.done) {
-                                return@flatMap Observable
-                                    .fromSingle(hordeApi.checkStatus(id))
+                            if (pingResponse.done == true) {
+                                return@flatMap Observable.fromSingle(hordeApi.checkStatus(id))
                             }
                             statusSource.update(
-                                HordeProcessStatus(pingResponse.waitTime, pingResponse.queuePosition)
+                                HordeProcessStatus(
+                                    waitTimeSeconds = pingResponse.waitTime ?: 0,
+                                    queuePosition = pingResponse.queuePosition,
+                                )
                             )
                             return@flatMap Observable.error(RetryException(pingResponse))
                         }
                         .retryWhen { obs ->
-                            obs.flatMap {
-                                if (it is RetryException) {
+                            obs.flatMap { t ->
+                                if (t is RetryException) {
                                     return@flatMap Observable
                                         .timer(HORDE_SOCKET_PING_TIME_SECONDS, TimeUnit.SECONDS)
                                         .doOnNext {
                                             debugLog("Retrying HORDE status check...")
                                         }
                                 }
-                                return@flatMap Observable.error(it)
+                                return@flatMap Observable.error(t)
                             }
                         }
 
