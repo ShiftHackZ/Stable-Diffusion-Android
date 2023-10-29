@@ -1,5 +1,7 @@
 {
-  "display": false,
-  "title": "Cloud maintenance",
-  "subtitle": "SDAI cloud is now under maintenance. We are working hard to get online as soon as possible, come and check later."
+  "display": true,
+  "title_old": "Cloud maintenance",
+  "subtitle_old": "SDAI cloud is now under maintenance. We are working hard to get online as soon as possible, come and check later.",
+  "title": "SDAI Cloud unavailable",
+  "subtitle": "SDAI cloud temporary unavailable due to technical maintenance, it will be available in November 2023."
 }
