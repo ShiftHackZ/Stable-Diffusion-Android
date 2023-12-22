@@ -27,13 +27,13 @@ internal class DimensionValidatorImpl(
             )
             input.toInt() > maximum -> ValidationResult(
                 isValid = false,
-                validationError = DimensionValidator.Error.LessThanMinimum(maximum),
+                validationError = DimensionValidator.Error.BiggerThanMaximum(maximum),
             )
             else -> ValidationResult(isValid = true)
         }
 
     companion object {
         private const val MINIMUM = 64
-        private const val MAXIMUM = 1024
+        private const val MAXIMUM = 2048
     }
 }
