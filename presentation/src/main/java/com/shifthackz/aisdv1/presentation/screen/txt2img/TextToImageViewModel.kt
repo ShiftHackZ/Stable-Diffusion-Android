@@ -89,10 +89,6 @@ class TextToImageViewModel(
     fun dismissScreenModal() = setActiveModal(TextToImageState.Modal.None)
 
     fun generate() {
-//        if (!currentState.generateButtonEnabled) {
-//            setActiveModal(TextToImageState.Modal.NoSdAiCoins)
-//            return
-//        }
         !currentState
             .mapToPayload()
             .let(textToImageUseCase::invoke)
