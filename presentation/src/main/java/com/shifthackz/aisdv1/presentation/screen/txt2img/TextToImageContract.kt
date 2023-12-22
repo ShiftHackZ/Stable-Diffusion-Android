@@ -35,14 +35,13 @@ data class TextToImageState(
 ) : GenerationMviState() {
 
     sealed interface Modal {
-        object None : Modal
+        data object None : Modal
         data class Generating(val status: LocalDiffusion.Status? = null) : Modal {
             val pair: Pair<Int, Int>?
                 get() = status?.let { (current, total) -> current to total }
         }
         data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
-        object NoSdAiCoins : Modal
-        object PromptBottomSheet : Modal
+        data object PromptBottomSheet : Modal
         data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Modal
         data class Error(val error: UiText) : Modal
     }

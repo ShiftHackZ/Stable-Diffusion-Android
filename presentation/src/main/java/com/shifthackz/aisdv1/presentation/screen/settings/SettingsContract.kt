@@ -29,12 +29,8 @@ sealed interface SettingsState : MviState {
         val formAdvancedOptionsAlwaysShow: Boolean,
         val appVersion: String,
         val showLocalUseNNAPI: Boolean,
-        val showCheckForUpdates: Boolean,
-        val showRewardedSdAiAd: Boolean,
         val showSdModelSelector: Boolean,
         val showMonitorConnectionOption: Boolean,
-        val showRateGooglePlay: Boolean,
-        val showGitHubLink: Boolean,
     ) : SettingsState
 
     fun withDialog(value: Dialog): SettingsState = when (this) {

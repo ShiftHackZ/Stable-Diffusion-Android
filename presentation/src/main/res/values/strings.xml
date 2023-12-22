@@ -48,7 +48,6 @@
     <string name="action_image_picker_random">Random image</string>
     <string name="action_change_configuration">Change configuration</string>
 
-    <string name="srv_type_cloud">SDAI cloud</string>
     <string name="srv_type_own">AUTOMATIC1111 instance</string>
     <string name="srv_type_horde">Horde AI cloud</string>
     <string name="srv_type_local" translatable="false">Local Diffusion (Beta)</string>
@@ -75,9 +74,6 @@
     <string name="hint_valid_urls">Here are the examples of server URLs:\n• http://192.168.0.2:7860\n• http://yourdomain.com:7860\n• https://yourdomain.com</string>
     <string name="hint_demo_mode">This mode allows you to test the application behavior, even if you don\'t have Stable Diffusion WebUI server.\n\nIn demo mode app ignores user prompt, does not use AI server, and returns some mock images.</string>
     <string name="hint_args_warning" tools:ignore="TypographyDashes">Before connecting ensure that:\n• you are running AUTOMATIC1111 WebUI with flags --api --listen\n• your firewall is not blocking 7860 port\n• phone is on the same WiFi with your PC</string>
-
-    <string name="hint_server_sdai_title">Connect to SDAI cloud</string>
-    <string name="hint_server_sdai_sub_title">This mode allows to use public SDAI cloud instance.\n\nAs our project is non-profitable, we may include additional rate-limit for some users, or restrict it by certain computing hours.</string>
 
     <string name="hint_server_horde_title">Connect to Horde AI cloud</string>
     <string name="hint_server_horde_sub_title">Horde AI is a crowdsourced distributed cluster of Image generation workers and text generation workers.</string>
@@ -184,8 +180,6 @@
 
     <string name="sdai_coins_zero_title">Out of SDAI coins</string>
     <string name="sdai_coins_zero_sub_title">You spent all your SDAI coins for today.\nCome back tomorrow to receive more coins!\n\nNote: you don\'t need to have SDAI coins in case your are running own server.</string>
-
-    <string name="sdai_coins_free">Free coins</string>
 
     <string name="error_title">Error</string>
     <string name="error_empty">Field can\'t be empty</string>

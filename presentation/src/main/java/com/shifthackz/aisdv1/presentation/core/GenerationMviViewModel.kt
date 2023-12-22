@@ -2,8 +2,6 @@
 
 package com.shifthackz.aisdv1.presentation.core
 
-import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
@@ -15,19 +13,15 @@ import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
-import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
     schedulersProvider: SchedulersProvider,
-    buildInfoProvider: BuildInfoProvider,
     preferenceManager: PreferenceManager,
-    observeCoinsUseCase: ObserveCoinsUseCase,
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase? = null,
@@ -86,20 +80,6 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
                 onComplete = EmptyLambda,
             )
             ?.apply { addToDisposable() }
-
-        if (buildInfoProvider.buildType == BuildType.GOOGLE_PLAY) {
-            !observeCoinsUseCase()
-                .subscribeOnMainThread(schedulersProvider)
-                .map {result ->
-                    when (result) {
-                        is ObserveCoinsUseCase.Result.Coins -> {
-                            currentState.copyState(generateButtonEnabled = result.value > 0)
-                        }
-                        else -> currentState
-                    }
-                }
-                .subscribeBy(::errorLog, EmptyLambda, ::setGenerationState)
-        }
     }
 
     open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) = currentState

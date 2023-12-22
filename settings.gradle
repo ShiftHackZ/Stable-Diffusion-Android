@@ -25,7 +25,6 @@ def libraries = [
         ':data',
         ':demo',
         ':domain',
-        ':feature:ads',
         ':feature:analytics',
         ':feature:auth',
         ':feature:diffusion',

@@ -18,16 +18,14 @@ class PreferenceManagerImpl(
         BehaviorSubject.createDefault(Unit)
 
     override var serverUrl: String
-        get() = (if (useSdAiCloud) "" else preferences.getString(KEY_SERVER_URL, "")
-            ?: "").fixUrlSlashes()
+        get() = (preferences.getString(KEY_SERVER_URL, "") ?: "").fixUrlSlashes()
         set(value) = preferences.edit()
-            .putString(KEY_SERVER_URL, (if (useSdAiCloud) "" else value).fixUrlSlashes())
+            .putString(KEY_SERVER_URL, value.fixUrlSlashes())
             .apply()
             .also { onPreferencesChanged() }
 
     override var demoMode: Boolean
-        get() = if (useSdAiCloud) false
-        else preferences.getBoolean(KEY_DEMO_MODE, false)
+        get() = preferences.getBoolean(KEY_DEMO_MODE, false)
         set(value) = preferences.edit()
             .putBoolean(KEY_DEMO_MODE, value)
             .apply()
@@ -91,16 +89,12 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
-    override val useSdAiCloud: Boolean
-        get() = source == ServerSource.SDAI
-
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
         .map {
             Settings(
                 serverUrl = serverUrl,
                 demoMode = demoMode,
-                useSdAiCloud = useSdAiCloud,
                 monitorConnectivity = monitorConnectivity,
                 autoSaveAiResults = autoSaveAiResults,
                 saveToMediaStore = saveToMediaStore,
@@ -123,6 +117,6 @@ class PreferenceManagerImpl(
         private const val KEY_SERVER_SOURCE = "key_server_source"
         private const val KEY_HORDE_API_KEY = "key_horde_api_key"
         private const val KEY_LOCAL_NN_API = "key_local_nn_api"
-        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.1"
+        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.3"
     }
 }

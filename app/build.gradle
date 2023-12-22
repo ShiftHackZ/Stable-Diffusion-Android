@@ -8,13 +8,6 @@ plugins {
     id 'kotlin-kapt'
 }
 
-def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
-def isPlay = !(taskRequests.contains("Foss") || taskRequests.contains("foss"))
-
-if (isPlay) {
-    apply from: "$project.rootDir/gradle/plugins.gradle"
-}
-
 apply from: "$project.rootDir/gradle/common.gradle"
 
 android {
@@ -56,13 +49,8 @@ android {
         foss {
             dimension "type"
             applicationIdSuffix = ".foss"
-            resValue "string", "app_name", "SDAI FOSS"
-            buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"FOSS\""
-        }
-        playstore {
-            dimension "type"
             resValue "string", "app_name", "SDAI"
-            buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"GOOGLE_PLAY\""
+            buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"FOSS\""
         }
     }
 }
@@ -75,7 +63,6 @@ dependencies {
     implementation project(":network")
     implementation project(":storage")
     implementation project(":domain")
-    implementation project(":feature:ads")
     implementation project(":feature:analytics")
     implementation project(":feature:auth")
     implementation project(":feature:diffusion")
@@ -87,10 +74,6 @@ dependencies {
     implementation reactive.rxkotlin
     implementation reactive.rxandroid
     implementation log.timber
-
-    playstoreImplementation platform(proprietary.fbBom)
-    playstoreImplementation proprietary.fbA
-    playstoreImplementation proprietary.fbC
 }
 
 kapt {

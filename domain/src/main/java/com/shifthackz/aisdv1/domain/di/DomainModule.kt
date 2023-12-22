@@ -5,13 +5,9 @@ import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
-import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.coin.EarnRewardedCoinsUseCase
-import com.shifthackz.aisdv1.domain.usecase.coin.EarnRewardedCoinsUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
-import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.ObserveSeverConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.ObserveSeverConnectivityUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCase
@@ -28,8 +24,6 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.features.GetFeatureFlagsUseCase
-import com.shifthackz.aisdv1.domain.usecase.features.GetFeatureFlagsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
@@ -52,8 +46,6 @@ import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCa
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.motd.ObserveMotdUseCase
-import com.shifthackz.aisdv1.domain.usecase.motd.ObserveMotdUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
@@ -66,8 +58,6 @@ import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCa
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.version.CheckAppVersionUpdateUseCase
-import com.shifthackz.aisdv1.domain.usecase.version.CheckAppVersionUpdateUseCaseImpl
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -92,13 +82,8 @@ internal val useCasesModule = module {
     factoryOf(::TestHordeApiKeyUseCaseImpl) bind TestHordeApiKeyUseCase::class
     factoryOf(::SaveGenerationResultUseCaseImpl) bind SaveGenerationResultUseCase::class
     factoryOf(::ObserveSeverConnectivityUseCaseImpl) bind ObserveSeverConnectivityUseCase::class
-    factoryOf(::CheckAppVersionUpdateUseCaseImpl) bind CheckAppVersionUpdateUseCase::class
-    factoryOf(::ObserveCoinsUseCaseImpl) bind ObserveCoinsUseCase::class
-    factoryOf(::EarnRewardedCoinsUseCaseImpl) bind EarnRewardedCoinsUseCase::class
-    factoryOf(::ObserveMotdUseCaseImpl) bind ObserveMotdUseCase::class
     factoryOf(::ObserveHordeProcessStatusUseCaseImpl) bind ObserveHordeProcessStatusUseCase::class
     factoryOf(::GetMediaStoreInfoUseCaseImpl) bind GetMediaStoreInfoUseCase::class
-    factoryOf(::GetFeatureFlagsUseCaseImpl) bind GetFeatureFlagsUseCase::class
     factoryOf(::GetRandomImageUseCaseImpl) bind GetRandomImageUseCase::class
     factoryOf(::SaveLastResultToCacheUseCaseImpl) bind SaveLastResultToCacheUseCase::class
     factoryOf(::GetLastResultFromCacheUseCaseImpl) bind GetLastResultFromCacheUseCase::class

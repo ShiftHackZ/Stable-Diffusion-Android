@@ -2,7 +2,6 @@ package com.shifthackz.aisdv1.app.di
 
 import com.shifthackz.aisdv1.app.BuildConfig
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
@@ -76,13 +75,12 @@ val providersModule = module {
             override val isDebug: Boolean = BuildConfig.DEBUG
             override val buildNumber: Int = BuildConfig.VERSION_CODE
             override val version: BuildVersion = BuildVersion(BuildConfig.VERSION_NAME)
-            override val buildType: BuildType = BuildType.parse(BuildConfig.BUILD_FLAVOR_TYPE)
 
             override fun toString(): String = buildString {
                 append("$version")
                 if (BuildConfig.DEBUG) append("-dev")
                 append(" ($buildNumber)")
-                buildType.takeIf { it == BuildType.FOSS }?.let { append(" $it") }
+                append(" FOSS")
             }
         }
     }

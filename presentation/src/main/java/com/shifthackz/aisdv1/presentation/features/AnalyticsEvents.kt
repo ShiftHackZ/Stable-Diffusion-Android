@@ -42,10 +42,6 @@ object SettingsConfigurationClick : AnalyticsEvent(name = "settings_configuratio
 
 object SettingsCacheCleared : AnalyticsEvent(name = "settings_cache_cleared")
 
-object SettingsCheckUpdate : AnalyticsEvent(name = "settings_check_update")
-
-object SettingsOpenMarket : AnalyticsEvent(name = "settings_open_market")
-
 data class SdModelSelected(val value: String) : AnalyticsEvent(
     name = "settings_sd_model_selected",
     parameters = mapOf("model" to value),
@@ -63,11 +59,6 @@ data class MonitorConnectionChanged(val value: Boolean) : AnalyticsEvent(
 
 data class AutoSaveAiResultsChanged(val value: Boolean) : AnalyticsEvent(
     name = "settings_auto_save_change",
-    parameters = mapOf("enabled" to "$value"),
-)
-
-data class SaveToMediaStoreChanged(val value: Boolean) : AnalyticsEvent(
-    name = "settings_save_to_media_store_change",
     parameters = mapOf("enabled" to "$value"),
 )
 

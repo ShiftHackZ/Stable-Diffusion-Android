@@ -4,13 +4,38 @@ package com.shifthackz.aisdv1.presentation.screen.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.AccountTree
+import androidx.compose.material.icons.filled.AutoFixNormal
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.DynamicForm
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Gavel
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Report
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.SettingsEthernet
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,10 +57,7 @@ import org.koin.core.component.inject
 class SettingsScreen(
     private val viewModel: SettingsViewModel,
     private val launchSetup: () -> Unit = {},
-    private val onCheckUpdatesItemClick: () -> Unit = {},
-    private val launchInAppReview: () -> Unit = {},
     private val launchUrl: (String) -> Unit = {},
-    private val launchRewarded: () -> Unit = {},
     private val launchDebugMenu: () -> Unit = {},
     private val shareLogFile: () -> Unit = {},
     private val requestStoragePermissions: () -> Unit,
@@ -50,7 +72,6 @@ class SettingsScreen(
             state = viewModel.state.collectAsStateWithLifecycle().value,
             onConfigurationItemClick = launchSetup,
             onSdModelItemClick = viewModel::launchSdModelSelectionDialog,
-            onLaunchRewarded = launchRewarded,
             onLocalUseNNAPIChanged = viewModel::changeLocalUseNNAPISetting,
             onMonitorConnectivityChanged = viewModel::changeMonitorConnectivitySetting,
             onAutoSaveAiResultChanged = viewModel::changeAutoSaveAiResultSetting,
@@ -58,8 +79,6 @@ class SettingsScreen(
             onFormAdvancedOptionsAlwaysShowChanged = viewModel::changeFormAdvancedOptionsAlwaysShow,
             onClearAppCacheItemClick = viewModel::launchClearAppCacheDialog,
             onReportProblemItemClick = shareLogFile,
-            onCheckUpdatesItemClick = onCheckUpdatesItemClick,
-            onRateUsItemClick = launchInAppReview,
             onPolicyItemClick = { launchUrl(linksProvider.privacyPolicyUrl) },
             onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
             onGetSourceItemClick = { launchUrl(linksProvider.gitHubSourceUrl) },
@@ -85,7 +104,6 @@ private fun ScreenContent(
     state: SettingsState,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
-    onLaunchRewarded: () -> Unit = {},
     onLocalUseNNAPIChanged: (Boolean) -> Unit = {},
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
@@ -94,8 +112,6 @@ private fun ScreenContent(
 
     onClearAppCacheItemClick: () -> Unit = {},
     onReportProblemItemClick: () -> Unit = {},
-    onCheckUpdatesItemClick: () -> Unit = {},
-    onRateUsItemClick: () -> Unit = {},
     onPolicyItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
     onGetSourceItemClick: () -> Unit = {},
@@ -128,7 +144,6 @@ private fun ScreenContent(
                         state = state,
                         onConfigurationItemClick = onConfigurationItemClick,
                         onSdModelItemClick = onSdModelItemClick,
-                        onLaunchRewarded = onLaunchRewarded,
                         onLocalUseNNAPIChanged = onLocalUseNNAPIChanged,
                         onMonitorConnectivityChanged = onMonitorConnectivityChanged,
                         onAutoSaveAiResultChanged = onAutoSaveAiResultChanged,
@@ -136,8 +151,6 @@ private fun ScreenContent(
                         onFormAdvancedOptionsAlwaysShowChanged = onFormAdvancedOptionsAlwaysShowChanged,
                         onClearAppCacheItemClick = onClearAppCacheItemClick,
                         onReportProblemItemClick = onReportProblemItemClick,
-                        onCheckUpdatesItemClick = onCheckUpdatesItemClick,
-                        onRateUsItemClick = onRateUsItemClick,
                         onPolicyItemClick = onPolicyItemClick,
                         onServerInstructionsItemClick = onServerInstructionsItemClick,
                         onGetSourceItemClick = onGetSourceItemClick,
@@ -200,7 +213,6 @@ private fun ContentSettingsState(
     state: SettingsState.Content,
     onConfigurationItemClick: () -> Unit = {},
     onSdModelItemClick: () -> Unit = {},
-    onLaunchRewarded: () -> Unit = {},
     onLocalUseNNAPIChanged: (Boolean) -> Unit = {},
     onAutoSaveAiResultChanged: (Boolean) -> Unit = {},
     onSaveToMediaStoreChanged: (Boolean) -> Unit = {},
@@ -208,8 +220,6 @@ private fun ContentSettingsState(
     onMonitorConnectivityChanged: (Boolean) -> Unit = {},
     onClearAppCacheItemClick: () -> Unit = {},
     onReportProblemItemClick: () -> Unit = {},
-    onCheckUpdatesItemClick: () -> Unit = {},
-    onRateUsItemClick: () -> Unit = {},
     onPolicyItemClick: () -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
     onGetSourceItemClick: () -> Unit = {},
@@ -240,13 +250,6 @@ private fun ContentSettingsState(
             text = R.string.settings_item_sd_model.asUiText(),
             endValueText = state.sdModelSelected.asUiText(),
             onClick = onSdModelItemClick,
-        )
-        if (state.showRewardedSdAiAd) SettingsItem(
-            modifier = itemModifier,
-            startIcon = Icons.Default.Toll,
-            text = R.string.settings_item_rewarded.asUiText(),
-            animateBackground = true,
-            onClick = onLaunchRewarded,
         )
         if (state.showLocalUseNNAPI) {
             SettingsItem(
@@ -346,18 +349,6 @@ private fun ContentSettingsState(
             text = R.string.settings_item_report_problem.asUiText(),
             onClick = onReportProblemItemClick,
         )
-        if (state.showCheckForUpdates) SettingsItem(
-            modifier = itemModifier,
-            startIcon = Icons.Filled.GetApp,
-            text = R.string.settings_item_check_updates.asUiText(),
-            onClick = onCheckUpdatesItemClick,
-        )
-        if (state.showRateGooglePlay) SettingsItem(
-            modifier = itemModifier,
-            startIcon = Icons.Filled.Star,
-            text = R.string.settings_item_rate.asUiText(),
-            onClick = onRateUsItemClick,
-        )
         SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Default.Gavel,
@@ -370,7 +361,7 @@ private fun ContentSettingsState(
             text = R.string.settings_item_instructions.asUiText(),
             onClick = onServerInstructionsItemClick,
         )
-        if (state.showGitHubLink) SettingsItem(
+        SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Default.Code,
             text = R.string.settings_item_source.asUiText(),
@@ -410,16 +401,12 @@ private fun PreviewStateContent() {
             sdModelSelected = "Stable diffusion v1.5",
             appVersion = "1.0.0 (10)",
             localUseNNAPI = false,
-            showRewardedSdAiAd = true,
             monitorConnectivity = true,
             autoSaveAiResults = true,
             saveToMediaStore = true,
             formAdvancedOptionsAlwaysShow = false,
-            showCheckForUpdates = true,
             showSdModelSelector = true,
             showMonitorConnectionOption = true,
-            showRateGooglePlay = true,
-            showGitHubLink = true,
             showLocalUseNNAPI = true,
         )
     )

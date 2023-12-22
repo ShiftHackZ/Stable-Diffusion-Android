@@ -16,13 +16,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.shifthackz.aisdv1.core.common.extensions.copyToClipboard
-import com.shifthackz.aisdv1.core.common.extensions.openMarket
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.log.debugLog
-import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
-import com.shifthackz.aisdv1.presentation.features.*
+import com.shifthackz.aisdv1.presentation.features.FileSharingFeature
+import com.shifthackz.aisdv1.presentation.features.GalleryExportZip
+import com.shifthackz.aisdv1.presentation.features.GalleryGridItemClick
+import com.shifthackz.aisdv1.presentation.features.GalleryItemImageShare
+import com.shifthackz.aisdv1.presentation.features.GalleryItemInfoShare
+import com.shifthackz.aisdv1.presentation.features.ImagePickerFeature
+import com.shifthackz.aisdv1.presentation.features.ReportProblemEmailComposer
+import com.shifthackz.aisdv1.presentation.features.SettingsConfigurationClick
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
@@ -36,8 +41,6 @@ import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreen
 import com.shifthackz.aisdv1.presentation.theme.AiStableDiffusionAppTheme
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import com.shifthackz.aisdv1.presentation.widget.version.VersionCheckerComposable
-import com.shifthackz.aisdv1.presentation.widget.version.VersionCheckerViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.getViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -47,12 +50,10 @@ import org.koin.core.parameter.parametersOf
 class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileSharingFeature {
 
     private val galleryDetailSharing: GalleryDetailSharing by inject()
-    private val adFeature: AdFeature by inject()
     private val analytics: Analytics by inject()
     private val debugMenuAccessor: DebugMenuAccessor by inject()
 
     private val viewModel: AiStableDiffusionViewModel by viewModel()
-    private val versionCheckerViewModel: VersionCheckerViewModel by viewModel()
 
     private val notificationPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -72,7 +73,6 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adFeature.initialize(this)
         analytics.initialize()
         requestNotificationPermission()
         requestStoragePermission()
@@ -170,21 +170,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                     "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.key}"
                                 )
                             },
-                            launchUpdateCheck = {
-                                analytics.logEvent(SettingsCheckUpdate)
-                                versionCheckerViewModel.checkForUpdate(notifyIfSame = true)
-                            },
-                            launchInAppReview = {
-                                analytics.logEvent(SettingsOpenMarket)
-                                openMarket()
-                            },
                             launchUrl = ::openUrl,
-                            launchRewarded = {
-                                adFeature.showRewardedCoinsAd(
-                                    activity = this@AiStableDiffusionActivity,
-                                    rewardCallback = viewModel::earnRewardedCoins,
-                                )
-                            },
                             launchDebugMenu = {
                                 if (debugMenuAccessor.invoke()) {
                                     navController.navigate(Constants.ROUTE_DEBUG)
@@ -238,10 +224,6 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                             ).Build()
                         }
                     }
-                    VersionCheckerComposable(
-                        viewModel = versionCheckerViewModel,
-                        launchMarket = { openMarket() },
-                    ).Build()
                 }
             }
         }

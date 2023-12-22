@@ -44,7 +44,6 @@
     <string name="action_image_picker_random">Випадкове зображення</string>
     <string name="action_change_configuration">Змінити конфігурацію</string>
 
-    <string name="srv_type_cloud">Cервер SDAI</string>
     <string name="srv_type_own">Власний сервер AUTOMATIC1111</string>
     <string name="srv_type_horde">Сервер Horde AI</string>
 
@@ -70,9 +69,6 @@
     <string name="hint_valid_urls">Ось приклади URL-адрес сервера:\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
     <string name="hint_demo_mode">Цей режим дозволяє перевірити поведінку програми, навіть якщо у вас немає сервера Stable Diffusion WebUI.\n\nУ демонстраційному режимі програма ігнорує параметри генерації, не використовує сервер штучного інтелекту та повертає фіктивні зображення.</string>
     <string name="hint_args_warning" tools:ignore="TypographyDashes">Перед підключенням переконайтеся, що:\n• ви використовуєте AUTOMATIC1111 WebUI з аргументами --api --listen\n• ваш брандмауер не блокує порт 7860\n• телефон підключено до однієї мережі Wi-Fi з вашим ПК</string>
-
-    <string name="hint_server_sdai_title">Підключитися до сервера SDAI</string>
-    <string name="hint_server_sdai_sub_title">Цей режим дозволяє використовувати загальнодоступний хмарний екземпляр SDAI.\n\nОскільки наш проект є неприбутковим, ми можемо включити додатковий ліміт швидкості для деяких користувачів або обмежити його певними обчислювальними годинами.</string>
 
     <string name="hint_server_horde_title">Підключитися до Horde AI</string>
     <string name="hint_server_horde_sub_title">Horde AI — це краудсорсинговий розподілений кластер нод генерації зображень і тексту.</string>
@@ -178,8 +174,6 @@
 
     <string name="sdai_coins_zero_title">Закінчилися монети SDAI</string>
     <string name="sdai_coins_zero_sub_title">Ви витратили всі свої монети SDAI за сьогодні.\nПоверніться завтра, щоб отримати більше монет!\n\nПримітка: вам не потрібно мати монети SDAI, якщо ви використовуєте власний сервер.</string>
-
-    <string name="sdai_coins_free">Безкоштовні монети</string>
 
     <string name="error_title">Помилка</string>
     <string name="error_empty">Поле не може бути порожнім</string>

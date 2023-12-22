@@ -2,18 +2,48 @@
 
 package com.shifthackz.aisdv1.presentation.screen.setup
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Api
+import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.Computer
+import androidx.compose.material.icons.filled.DeveloperMode
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.FileDownloadDone
 import androidx.compose.material.icons.outlined.FileDownloadOff
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -168,7 +198,6 @@ private fun ScreenContent(
                         }
                     }
                     when (state.mode) {
-                        ServerSetupState.Mode.SD_AI_CLOUD -> SdaiCloudSetupTab()
                         ServerSetupState.Mode.OWN_SERVER -> OwnServerSetupTab(
                             state = state,
                             demoModeUrl =  demoModeUrl,
@@ -336,31 +365,6 @@ private fun OwnServerSetupTab(
                 if (state.demoMode) R.string.hint_demo_mode
                 else R.string.hint_valid_urls,
             ),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.secondary,
-        )
-    }
-}
-
-@Composable
-private fun SdaiCloudSetupTab(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier.padding(horizontal = 16.dp),
-    ) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.hint_server_sdai_title),
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-        )
-        Text(
-            modifier = Modifier.padding(vertical = 16.dp),
-            text = stringResource(id = R.string.hint_server_sdai_sub_title),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.secondary,
         )
@@ -577,7 +581,6 @@ private fun ConfigurationModeButton(
                 .size(42.dp)
                 .padding(top = 8.dp, bottom = 8.dp),
             imageVector = when (mode) {
-                ServerSetupState.Mode.SD_AI_CLOUD -> Icons.Default.Cloud
                 ServerSetupState.Mode.OWN_SERVER -> Icons.Default.Computer
                 ServerSetupState.Mode.HORDE -> Icons.Default.Cloud
                 ServerSetupState.Mode.LOCAL -> Icons.Default.Android
@@ -590,7 +593,6 @@ private fun ConfigurationModeButton(
                 .align(Alignment.CenterVertically)
                 .padding(top = 8.dp, bottom = 8.dp),
             text = stringResource(id = when (mode) {
-                ServerSetupState.Mode.SD_AI_CLOUD -> R.string.srv_type_cloud
                 ServerSetupState.Mode.OWN_SERVER -> R.string.srv_type_own
                 ServerSetupState.Mode.HORDE -> R.string.srv_type_horde
                 ServerSetupState.Mode.LOCAL -> R.string.srv_type_local

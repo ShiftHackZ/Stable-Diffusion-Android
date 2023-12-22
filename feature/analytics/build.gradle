@@ -7,21 +7,10 @@ apply from: "$project.rootDir/gradle/common.gradle"
 
 android {
     namespace 'com.shifthackz.aisdv1.feature.analytics'
-    flavorDimensions "type"
-    productFlavors {
-        foss {
-            dimension "type"
-        }
-        playstore {
-            dimension "type"
-        }
-    }
 }
 
 dependencies {
     implementation project(":core:common")
     implementation project(":domain")
     implementation di.koinCore
-    playstoreImplementation platform(proprietary.fbBom)
-    playstoreImplementation proprietary.fbA
 }

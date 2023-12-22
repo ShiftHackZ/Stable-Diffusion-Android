@@ -24,20 +24,17 @@ sealed interface GalleryDetailState : MviState {
     val tabs: List<Tab>
     val selectedTab: Tab
     val screenDialog: Dialog
-    val bottomAdBanner: Boolean
 
     data class Loading(
         override val tabs: List<Tab> = emptyList(),
         override val selectedTab: Tab = Tab.IMAGE,
         override val screenDialog: Dialog = Dialog.None,
-        override val bottomAdBanner: Boolean = false,
     ) : GalleryDetailState
 
     data class Content(
         override val tabs: List<Tab> = emptyList(),
         override val selectedTab: Tab = Tab.IMAGE,
         override val screenDialog: Dialog = Dialog.None,
-        override val bottomAdBanner: Boolean = false,
         val generationType: AiGenerationResult.Type,
         val id: Long,
         val bitmap: Bitmap,
@@ -67,11 +64,6 @@ sealed interface GalleryDetailState : MviState {
         is Loading -> copy(screenDialog = dialog)
     }
 
-    fun withBanner(enabled: Boolean) = when (this) {
-        is Content -> copy(bottomAdBanner = enabled)
-        is Loading -> copy(bottomAdBanner = enabled)
-    }
-
     enum class Tab(
         @StringRes val label: Int,
         @DrawableRes val iconRes: Int,
@@ -85,14 +77,14 @@ sealed interface GalleryDetailState : MviState {
                 AiGenerationResult.Type.TEXT_TO_IMAGE -> listOf(
                     IMAGE, INFO,
                 )
-                AiGenerationResult.Type.IMAGE_TO_IMAGE -> values().toList()
+                AiGenerationResult.Type.IMAGE_TO_IMAGE -> entries
             }
         }
     }
 
     sealed interface Dialog {
-        object None : Dialog
-        object DeleteConfirm : Dialog
+        data object None : Dialog
+        data object DeleteConfirm : Dialog
     }
 }
 
