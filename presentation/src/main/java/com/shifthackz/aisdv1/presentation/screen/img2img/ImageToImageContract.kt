@@ -47,11 +47,10 @@ data class ImageToImageState(
     }
 
     sealed interface Modal {
-        object None : Modal
-        object LoadingRandomImage : Modal
+        data object None : Modal
+        data object LoadingRandomImage : Modal
         data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
-        object NoSdAiCoins : Modal
-        object PromptBottomSheet : Modal
+        data object PromptBottomSheet : Modal
         data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Modal
         data class Error(val error: UiText) : Modal
     }

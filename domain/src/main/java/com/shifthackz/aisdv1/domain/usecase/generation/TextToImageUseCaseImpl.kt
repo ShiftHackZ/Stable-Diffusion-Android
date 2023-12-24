@@ -4,7 +4,6 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
-import com.shifthackz.aisdv1.domain.repository.CoinRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
@@ -15,14 +14,9 @@ internal class TextToImageUseCaseImpl(
     private val hordeGenerationRepository: HordeGenerationRepository,
     private val localDiffusionGenerationRepository: LocalDiffusionGenerationRepository,
     private val preferenceManager: PreferenceManager,
-    private val coinRepository: CoinRepository,
 ) : TextToImageUseCase {
 
     override operator fun invoke(payload: TextToImagePayload) = execute(payload)
-        .flatMap { result ->
-            coinRepository.spendCoin()
-                .andThen(Single.just(result))
-        }
 
     private fun execute(payload: TextToImagePayload): Single<AiGenerationResult> {
         return when (preferenceManager.source) {

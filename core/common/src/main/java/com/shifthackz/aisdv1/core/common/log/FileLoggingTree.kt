@@ -10,7 +10,8 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class FileLoggingTree : Timber.Tree(), KoinComponent {
 
@@ -42,7 +43,6 @@ class FileLoggingTree : Timber.Tree(), KoinComponent {
             appendLine("=== APP SESSION STARTED ===")
             appendLine()
             appendLine("Version : $buildInfoProvider")
-            appendLine("Type    : ${buildInfoProvider.buildType}")
             appendLine()
         })
     }

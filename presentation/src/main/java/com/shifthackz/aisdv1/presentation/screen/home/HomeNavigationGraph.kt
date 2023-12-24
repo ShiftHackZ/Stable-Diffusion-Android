@@ -29,10 +29,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     openGalleryItemDetails: (Long) -> Unit = {},
     launchIntent: (Intent) -> Unit = {},
     launchSetup: () -> Unit = {},
-    launchUpdateCheck: () -> Unit = {},
-    launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
-    launchRewarded: () -> Unit = {},
     launchDebugMenu: () -> Unit = {},
     shareLogFile: () -> Unit = {},
     requestStoragePermissions: () -> Unit = {},
@@ -43,13 +40,11 @@ fun NavGraphBuilder.homeScreenNavGraph(
                 viewModel = koinViewModel(),
                 navItems = listOf(
                     txt2ImgTab(
-                        launchRewarded = launchRewarded,
                         launchGalleryDetail = openGalleryItemDetails,
                     ),
                     img2imgTab(
                         pickImage = pickImage,
                         takePhoto = takePhoto,
-                        launchRewarded = launchRewarded,
                         launchGalleryDetail = openGalleryItemDetails,
                         launchServerSetup = launchSetup,
                     ),
@@ -60,10 +55,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                     ),
                     settingsTab(
                         launchSetup = launchSetup,
-                        launchUpdateCheck = launchUpdateCheck,
-                        launchInAppReview = launchInAppReview,
                         launchUrl = launchUrl,
-                        launchRewarded = launchRewarded,
                         launchDebugMenu = launchDebugMenu,
                         shareLogFile = shareLogFile,
                         requestStoragePermissions = requestStoragePermissions,
@@ -76,7 +68,6 @@ fun NavGraphBuilder.homeScreenNavGraph(
 
 @Composable
 private fun txt2ImgTab(
-    launchRewarded: () -> Unit,
     launchGalleryDetail: (Long) -> Unit,
 ) = HomeNavigationItem(
     name = stringResource(R.string.home_tab_txt_to_img),
@@ -88,7 +79,6 @@ private fun txt2ImgTab(
     content = {
         TextToImageScreen(
             viewModel = koinViewModel(),
-            launchRewarded = launchRewarded,
             launchGalleryDetail = launchGalleryDetail,
         ).Build()
     },
@@ -98,7 +88,6 @@ private fun txt2ImgTab(
 private fun img2imgTab(
     pickImage: (ImagePickerCallback) -> Unit = {},
     takePhoto: (ImagePickerCallback) -> Unit = {},
-    launchRewarded: () -> Unit = {},
     launchGalleryDetail: (Long) -> Unit,
     launchServerSetup: () -> Unit,
 ) = HomeNavigationItem(
@@ -113,7 +102,6 @@ private fun img2imgTab(
             viewModel = koinViewModel(),
             pickImage = pickImage,
             takePhoto = takePhoto,
-            launchRewarded = launchRewarded,
             launchGalleryDetail = launchGalleryDetail,
             launchServerSetup = launchServerSetup,
         ).Build()
@@ -145,10 +133,7 @@ private fun galleryTab(
 @Composable
 private fun settingsTab(
     launchSetup: () -> Unit = {},
-    launchUpdateCheck: () -> Unit = {},
-    launchInAppReview: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
-    launchRewarded: () -> Unit = {},
     launchDebugMenu: () -> Unit = {},
     shareLogFile: () -> Unit = {},
     requestStoragePermissions: () -> Unit = {},
@@ -162,10 +147,7 @@ private fun settingsTab(
         SettingsScreen(
             viewModel = koinViewModel(),
             launchSetup = launchSetup,
-            onCheckUpdatesItemClick = launchUpdateCheck,
-            launchInAppReview = launchInAppReview,
             launchUrl = launchUrl,
-            launchRewarded = launchRewarded,
             launchDebugMenu = launchDebugMenu,
             shareLogFile = shareLogFile,
             requestStoragePermissions = requestStoragePermissions,

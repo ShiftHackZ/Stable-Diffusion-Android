@@ -8,7 +8,6 @@
 
 [![Google Play](docs/assets/google_play.png)](https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app)
 [![F-Droid](docs/assets/fdroid.png)](https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss)
-[![Izzy On Droid](docs/assets/izzy_on_droid.png)](https://apt.izzysoft.de/fdroid/index/apk/com.shifthackz.aisdv1.app.foss?repo=main)
 
 Stable Diffusion AI is an easy-to-use app that lets you quickly generate images from text or other images with just a few clicks. With this app, you can communicate with your own server and generate high-quality images in seconds.
 
@@ -60,16 +59,6 @@ If for some reason you have no ability to run your server instance, you can togg
 
 AI Horde requires to use API KEY, this mobile app alows to use either default API KEY (which is "0000000000"), or type your own. You can sign up and get your own AI Horde API KEY [here](https://stablehorde.net/register).
 
-### Option 3: Use SDAI Cloud
-
-**Disclaimer: This option is only available in [GooglePlay](https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app) app version.**
-
-**Google Play app version includes some proprietary libraries (like Firebase and Google AdMob) to monetize this option. This functionality is NOT a part of the FOSS build and will be never included in FOSS build**
-
-SDAI Cloud is the AUTOMATIC1111 hosted by author of this app as an option for users that for some reason are not able to run or host their own AUTOMATIC1111 instance. 
-
-Hosting this instance costs some money, and as this project is non-profitable the usage of SDAI Cloud is monetized by ads. Also the SDAI Cloud may not be available full-time, as this is running on the app author's own bare-metal machine which is hosted in Ukraine, as this area now is a warzone electricity and network downtimes can happen sometimes.
-
 ## Supported languages
 
 App uses the language provided by OS default settings.
@@ -86,9 +75,8 @@ Any contributions to the translations are welcome.
 
 ## Donate
 
-Main **foss** flavor of the app is open source, and you are welcome to use it for free. 
-Only **play** flavor contains small ad-banner at the bottom navigation.
+This software is open source, provided with no warranty, and you are welcome to use it for free. 
 
-The donation is optional, if you'd like to say thanks and show a little support, here is the button:
+In case you find this software valuable, and you'd like to say thanks and show a little support, here is the button:
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/shifthackz)

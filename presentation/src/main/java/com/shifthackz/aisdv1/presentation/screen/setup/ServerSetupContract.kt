@@ -1,6 +1,5 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
-import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
@@ -11,13 +10,13 @@ import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.presentation.utils.Constants
 
 sealed interface ServerSetupEffect : MviEffect {
-    object CompleteSetup : ServerSetupEffect
+    data object CompleteSetup : ServerSetupEffect
 }
 
 data class ServerSetupState(
     val showBackNavArrow: Boolean = false,
     val mode: Mode = Mode.OWN_SERVER,
-    val allowedModes: List<Mode> = listOf(Mode.OWN_SERVER),
+    val allowedModes: List<Mode> = Mode.entries,
     val originalMode: Mode = Mode.OWN_SERVER,
     val screenDialog: Dialog = Dialog.None,
     val serverUrl: String = "",
@@ -79,19 +78,17 @@ data class ServerSetupState(
     }
 
     sealed interface Dialog {
-        object None : Dialog
-        object Communicating : Dialog
+        data object None : Dialog
+        data object Communicating : Dialog
         data class Error(val error: UiText) : Dialog
     }
 
     enum class Mode {
         OWN_SERVER,
-        SD_AI_CLOUD,
         HORDE,
         LOCAL;
 
         fun toSource() = when (this) {
-            SD_AI_CLOUD -> ServerSource.SDAI
             OWN_SERVER -> ServerSource.CUSTOM
             HORDE -> ServerSource.HORDE
             LOCAL -> ServerSource.LOCAL
@@ -100,7 +97,6 @@ data class ServerSetupState(
         companion object {
             fun fromSource(source: ServerSource) = when (source) {
                 ServerSource.CUSTOM -> OWN_SERVER
-                ServerSource.SDAI -> SD_AI_CLOUD
                 ServerSource.HORDE -> HORDE
                 ServerSource.LOCAL -> LOCAL
             }
@@ -118,20 +114,9 @@ enum class ServerSetupLaunchSource(val key: Int) {
     SETTINGS(1);
 
     companion object {
-        fun fromKey(key: Int) = values().firstOrNull { it.key == key } ?: SPLASH
+        fun fromKey(key: Int) = entries.firstOrNull { it.key == key } ?: SPLASH
     }
 }
-
-
-val BuildType.allowedModes: List<ServerSetupState.Mode>
-    get() = when (this) {
-        BuildType.FOSS -> listOf(
-            ServerSetupState.Mode.OWN_SERVER,
-            ServerSetupState.Mode.HORDE,
-            ServerSetupState.Mode.LOCAL,
-        )
-        BuildType.GOOGLE_PLAY -> ServerSetupState.Mode.values().toList()
-    }
 
 val Configuration.authType: ServerSetupState.AuthType
     get() {

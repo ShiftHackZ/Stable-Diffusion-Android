@@ -1,11 +1,9 @@
 ext {
-    composeBomVersion = '2023.06.01'
-    composeMaterialVersion = '1.1.1'
-    composeUiToolingVersion = '1.4.3'
-    composeNavVersion = '2.6.0'
+    composeBomVersion = '2023.10.01'
+    composeNavVersion = '2.7.6'
     lifecycleViewModelVersion = '2.6.1'
     lifecycleComposeVersion = '2.6.1'
-    coreKtxVersion = '1.10.1'
+    coreKtxVersion = '1.12.0'
     appCompatVersion = '1.6.1'
     activityVersion = '1.7.2'
     koinVersion = '3.4.3'
@@ -25,9 +23,8 @@ ext {
     googleMaterialVersion = '1.9.0'
     accompanistSystemUiControllerVersion = '0.30.1'
     cryptoVersion = '1.0.0'
-    onnxruntimeVersion = 'latest.release'
-
-    firebaseBomVersion = '32.2.0'
+    onnxruntimeVersion = '1.16.3'
+    catppuccinVersion = '0.1.1'
 
     testJunitVersion = '4.13.2'
 
@@ -37,11 +34,11 @@ ext {
             activity                    : "androidx.activity:activity-ktx:$activityVersion",
             composeBom                  : "androidx.compose:compose-bom:$composeBomVersion",
             composeRuntime              : "androidx.compose.runtime:runtime",
-            composeMaterial3            : "androidx.compose.material3:material3:$composeMaterialVersion",
+            composeMaterial3            : "androidx.compose.material3:material3",
             composeMaterialIconsExtended: "androidx.compose.material:material-icons-extended",
             composeUiGraphics           : "androidx.compose.ui:ui-graphics",
-            composeUiTooling            : "androidx.compose.ui:ui-tooling:$composeUiToolingVersion",
-            composeUiToolingPreview     : "androidx.compose.ui:ui-tooling-preview:$composeUiToolingVersion",
+            composeUiTooling            : "androidx.compose.ui:ui-tooling",
+            composeUiToolingPreview     : "androidx.compose.ui:ui-tooling-preview",
             composeActivity             : "androidx.activity:activity-compose:$activityVersion",
             composeViewModel            : "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleViewModelVersion",
             composeNavigation           : "androidx.navigation:navigation-compose:$composeNavVersion",
@@ -58,7 +55,7 @@ ext {
             accompanistSystemUiController: "com.google.accompanist:accompanist-systemuicontroller:$accompanistSystemUiControllerVersion",
     ]
     microsoft = [
-            onnxruntime : "com.microsoft.onnxruntime:onnxruntime-android:$onnxruntimeVersion"
+            onnxruntime: "com.microsoft.onnxruntime:onnxruntime-android:$onnxruntimeVersion"
     ]
     di = [
             koinCore   : "io.insert-koin:koin-core:$koinVersion",
@@ -86,16 +83,13 @@ ext {
             rxnetwork: "io.github.softartdev:reactivenetwork-rx3:$rxNetworkVersion",
     ]
     ui = [
-            imagePicker: "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion"
+            imagePicker: "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion",
+            catppuccinLegacy: "com.github.ShiftHackZ.Catppuccin-Android-Library:palette-legacy:$catppuccinVersion",
+            catppuccinCompose: "com.github.ShiftHackZ.Catppuccin-Android-Library:compose:$catppuccinVersion",
+            catppuccinSplashscreen: "com.github.ShiftHackZ.Catppuccin-Android-Library:splashscreen:$catppuccinVersion",
     ]
     log = [
             timber: "com.jakewharton.timber:timber:$timberVersion",
-    ]
-    proprietary = [
-            fbBom: "com.google.firebase:firebase-bom:$firebaseBomVersion",
-            fbA  : "com.google.firebase:firebase-analytics-ktx",
-            fbC  : "com.google.firebase:firebase-crashlytics-ktx",
-            appL : "com.applovin:applovin-sdk:+"
     ]
     test = [
             junit: "junit:junit:$testJunitVersion",

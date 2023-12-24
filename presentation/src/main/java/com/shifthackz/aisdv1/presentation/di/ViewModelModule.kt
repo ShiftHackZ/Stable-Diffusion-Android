@@ -14,10 +14,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashViewModel
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageViewModel
-import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsViewModel
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityViewModel
-import com.shifthackz.aisdv1.presentation.widget.motd.MotdViewModel
-import com.shifthackz.aisdv1.presentation.widget.version.VersionCheckerViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
@@ -32,21 +29,16 @@ val viewModelModule = module {
     viewModelOf(::SettingsViewModel)
     viewModelOf(::GalleryViewModel)
     viewModelOf(::ConnectivityViewModel)
-    viewModelOf(::VersionCheckerViewModel)
-    viewModelOf(::AvailableCoinsViewModel)
-    viewModelOf(::MotdViewModel)
     viewModelOf(::InputHistoryViewModel)
     viewModelOf(::DebugMenuViewModel)
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())
         val demoModeUrl = get<LinksProvider>().demoModeUrl
-        val cloudUrl = get<LinksProvider>().cloudUrl
         ServerSetupViewModel(
             launchSource = launchSource,
             getConfigurationUseCase = get(),
             demoModeUrl = demoModeUrl,
-            cloudUrl = cloudUrl,
             urlValidator = get(),
             stringValidator = get(),
             testConnectivityUseCase = get(),
@@ -57,13 +49,12 @@ val viewModelModule = module {
             checkDownloadedModelUseCase = get(),
             dataPreLoaderUseCase = get(),
             schedulersProvider = get(),
-            buildInfoProvider = get(),
             preferenceManager = get(),
             analytics = get(),
         )
     }
 
     viewModel { parameters ->
-        GalleryDetailViewModel(get(), parameters.get(), get(), get(), get(), get(), get(), get(), get(), get())
+        GalleryDetailViewModel(parameters.get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 }

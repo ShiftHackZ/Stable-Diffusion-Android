@@ -4,13 +4,32 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,14 +45,13 @@ import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.widget.ad.AdBanner
+import com.shifthackz.aisdv1.presentation.theme.colors
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
+import com.shifthackz.catppuccin.palette.Catppuccin
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.io.File
 
 class GalleryDetailScreen(
@@ -44,14 +62,11 @@ class GalleryDetailScreen(
     private val copyToClipboard: (CharSequence) -> Unit = {},
 ) : MviScreen<GalleryDetailState, GalleryDetailEffect>(viewModel), KoinComponent {
 
-    private val adFeature: AdFeature by inject()
-
     @Composable
     override fun Content() {
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = viewModel.state.collectAsStateWithLifecycle().value,
-            adFeature = adFeature,
             onNavigateBack = onNavigateBack,
             onTabSelected = viewModel::selectTab,
             onCopyTextClick = copyToClipboard,
@@ -75,7 +90,6 @@ class GalleryDetailScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryDetailState,
-    adFeature: AdFeature = AdFeature.empty,
     onNavigateBack: () -> Unit = {},
     onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
     onCopyTextClick: (CharSequence) -> Unit = {},
@@ -139,7 +153,7 @@ private fun ScreenContent(
                     is GalleryDetailState.Loading -> Unit
                 }
             },
-            bottomBar = { GalleryDetailNavigationBar(adFeature, state, onTabSelected) },
+            bottomBar = { GalleryDetailNavigationBar(state, onTabSelected) },
         )
         when (state.screenDialog) {
             GalleryDetailState.Dialog.DeleteConfirm -> DecisionInteractiveDialog(
@@ -157,25 +171,19 @@ private fun ScreenContent(
 
 @Composable
 private fun GalleryDetailNavigationBar(
-    adFeature: AdFeature,
     state: GalleryDetailState,
     onTabSelected: (GalleryDetailState.Tab) -> Unit,
 ) {
     Column {
-        if (state.bottomAdBanner) {
-            AdBanner(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                adFactory = adFeature::getGalleryDetailBannerAd,
-            )
-        }
         NavigationBar {
             state.tabs.forEach { tab ->
                 NavigationBarItem(
                     selected = state.selectedTab == tab,
                     label = {
-                        Text(stringResource(id = tab.label))
+                        Text(
+                            text = stringResource(id = tab.label),
+                            color = LocalContentColor.current,
+                        )
                     },
                     icon = {
                         Image(
@@ -249,10 +257,12 @@ private fun GalleryDetailsTable(
                     .padding(16.dp)
                     .padding(paddingValues),
             ) {
-                val colorOddBg = MaterialTheme.colorScheme.secondaryContainer
-                val colorOddText = MaterialTheme.colorScheme.onSecondaryContainer
-                val colorEvenBg = MaterialTheme.colorScheme.tertiaryContainer
-                val colorEvenText = MaterialTheme.colorScheme.onTertiaryContainer
+                val colorOddBg = MaterialTheme.colorScheme.surface
+                val colorOddText = colors(
+                    light = Catppuccin.Latte.Text,
+                    dark = Catppuccin.Frappe.Text
+                )
+                val colorEvenBg = MaterialTheme.colorScheme.surfaceTint
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_date.asUiText(),
@@ -264,7 +274,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_type.asUiText(),
                     value = state.type,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
@@ -278,7 +288,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_negative_prompt.asUiText(),
                     value = state.negativePrompt,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
@@ -292,7 +302,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_sampling_steps.asUiText(),
                     value = state.samplingSteps,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
@@ -306,7 +316,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_restore_faces.asUiText(),
                     value = state.restoreFaces,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
@@ -320,7 +330,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_seed.asUiText(),
                     value = state.seed,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
@@ -334,7 +344,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_sub_seed_strength.asUiText(),
                     value = state.subSeedStrength,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 if (state.generationType == AiGenerationResult.Type.IMAGE_TO_IMAGE) GalleryDetailRow(
@@ -362,6 +372,7 @@ private fun GalleryDetailsTable(
                         Text(
                             text = stringResource(id = R.string.action_send_to_txt2img),
                             textAlign = TextAlign.Center,
+                            color = LocalContentColor.current,
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
@@ -372,6 +383,7 @@ private fun GalleryDetailsTable(
                         Text(
                             text = stringResource(id = R.string.action_send_to_img2img),
                             textAlign = TextAlign.Center,
+                            color = LocalContentColor.current,
                         )
                     }
                 }
@@ -383,6 +395,7 @@ private fun GalleryDetailsTable(
                         Text(
                             text = stringResource(id = R.string.action_share_prompt),
                             textAlign = TextAlign.Center,
+                            color = LocalContentColor.current,
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
@@ -393,6 +406,7 @@ private fun GalleryDetailsTable(
                         Text(
                             text = stringResource(id = R.string.action_delete_image),
                             textAlign = TextAlign.Center,
+                            color = LocalContentColor.current,
                         )
                     }
                 }

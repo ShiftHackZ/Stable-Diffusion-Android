@@ -149,7 +149,7 @@ private fun ScreenContent(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.tertiaryContainer)
+                            .background(MaterialTheme.colorScheme.surfaceTint)
                     ) {
                         Text(
                             modifier = Modifier
@@ -159,7 +159,7 @@ private fun ScreenContent(
                                 id = R.string.gallery_media_store_banner,
                                 "${info.count}",
                             ),
-                            color = MaterialTheme.colorScheme.onTertiaryContainer,
+//                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         TextButton(
@@ -168,7 +168,10 @@ private fun ScreenContent(
                                 state.mediaStoreInfo.folderUri?.let(onOpenMediaStoreFolder::invoke)
                             },
                         ) {
-                            Text(text = stringResource(id = R.string.browse).toUpperCase(Locale.current))
+                            Text(
+                                text = stringResource(id = R.string.browse).toUpperCase(Locale.current),
+                                color = LocalContentColor.current,
+                            )
                         }
                     }
                 }

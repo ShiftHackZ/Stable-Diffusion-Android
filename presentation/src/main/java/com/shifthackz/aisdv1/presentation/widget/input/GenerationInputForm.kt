@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -126,7 +127,7 @@ fun GenerationInputForm(
                         }
                     },
                     isError = widthValidationError != null,
-                    supportingText = { widthValidationError?.let { Text(it.asString()) } },
+                    supportingText = { widthValidationError?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) } },
                     label = { Text(stringResource(id = R.string.width)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
@@ -141,7 +142,7 @@ fun GenerationInputForm(
                         }
                     },
                     isError = heightValidationError != null,
-                    supportingText = { heightValidationError?.let { Text(it.asString()) } },
+                    supportingText = { heightValidationError?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) } },
                     label = { Text(stringResource(id = R.string.height)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )

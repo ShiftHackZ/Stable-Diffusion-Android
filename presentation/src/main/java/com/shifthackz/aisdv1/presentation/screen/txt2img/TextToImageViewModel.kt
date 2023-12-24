@@ -1,6 +1,5 @@
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
-import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -13,7 +12,6 @@ import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
-import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
@@ -31,8 +29,6 @@ class TextToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
-    buildInfoProvider: BuildInfoProvider,
-    observeCoinsUseCase: ObserveCoinsUseCase,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val textToImageUseCase: TextToImageUseCase,
     private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase,
@@ -44,9 +40,7 @@ class TextToImageViewModel(
     private val analytics: Analytics,
 ) : GenerationMviViewModel<TextToImageState, EmptyEffect>(
     schedulersProvider,
-    buildInfoProvider,
     preferenceManager,
-    observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase,
@@ -95,10 +89,6 @@ class TextToImageViewModel(
     fun dismissScreenModal() = setActiveModal(TextToImageState.Modal.None)
 
     fun generate() {
-        if (!currentState.generateButtonEnabled) {
-            setActiveModal(TextToImageState.Modal.NoSdAiCoins)
-            return
-        }
         !currentState
             .mapToPayload()
             .let(textToImageUseCase::invoke)

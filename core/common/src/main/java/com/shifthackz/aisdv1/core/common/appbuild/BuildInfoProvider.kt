@@ -4,5 +4,4 @@ interface BuildInfoProvider {
     val isDebug: Boolean
     val buildNumber: Int
     val version: BuildVersion
-    val buildType: BuildType
 }

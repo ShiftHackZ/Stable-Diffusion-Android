@@ -3,9 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.NavigationBar
@@ -17,32 +15,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
-import com.shifthackz.aisdv1.core.ui.MviScreen
-import com.shifthackz.aisdv1.domain.feature.ad.AdFeature
-import com.shifthackz.aisdv1.presentation.widget.ad.AdBanner
+import com.shifthackz.aisdv1.core.ui.Screen
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
-import com.shifthackz.aisdv1.presentation.widget.motd.MotdComposable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 class HomeNavigationScreen(
     private val viewModel: HomeNavigationViewModel,
     private val navItems: List<HomeNavigationItem> = emptyList(),
-) : MviScreen<HomeNavigationState, EmptyEffect>(viewModel), KoinComponent {
-
-    private val adFeature: AdFeature by inject()
+) : Screen(), KoinComponent {
 
     @Composable
     override fun Content() {
         require(navItems.isNotEmpty()) { "navItems collection must not be empty." }
-        val state = viewModel.state.collectAsStateWithLifecycle().value
         val navController = rememberNavController()
         val backStackEntry = navController.currentBackStackEntryAsState()
 
@@ -61,14 +50,6 @@ class HomeNavigationScreen(
         Scaffold(
             bottomBar = {
                 Column {
-                    if (state.bottomAdBanner) {
-                        AdBanner(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(),
-                            adFactory = adFeature::getHomeScreenBannerAd,
-                        )
-                    }
                     NavigationBar {
                         val currentRoute = backStackEntry.value?.destination?.route
                         navItems.forEach { item ->
@@ -76,7 +57,10 @@ class HomeNavigationScreen(
                             NavigationBarItem(
                                 selected = selected,
                                 label = {
-                                    Text(text = item.name)
+                                    Text(
+                                        text = item.name,
+                                        color = LocalContentColor.current,
+                                    )
                                 },
                                 icon = {
                                     when (item.icon) {
@@ -90,6 +74,7 @@ class HomeNavigationScreen(
                                             modifier = item.icon.modifier,
                                             imageVector = item.icon.vector,
                                             contentDescription = item.name,
+                                            tint = LocalContentColor.current,
                                         )
                                     }
                                 },
@@ -105,7 +90,6 @@ class HomeNavigationScreen(
             content = { paddingValues ->
                 Column(Modifier.padding(paddingValues)) {
                     ConnectivityComposable(koinViewModel()).Build()
-                    MotdComposable(koinViewModel()).Build()
                     NavHost(
                         modifier = Modifier.fillMaxSize(),
                         navController = navController,

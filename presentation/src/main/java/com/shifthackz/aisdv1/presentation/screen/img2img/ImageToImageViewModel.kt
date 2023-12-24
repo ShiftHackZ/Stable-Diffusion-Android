@@ -1,6 +1,5 @@
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
-import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -14,7 +13,6 @@ import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
-import com.shifthackz.aisdv1.domain.usecase.coin.ObserveCoinsUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
@@ -33,8 +31,6 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 class ImageToImageViewModel(
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
-    observeCoinsUseCase: ObserveCoinsUseCase,
-    buildInfoProvider: BuildInfoProvider,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val imageToImageUseCase: ImageToImageUseCase,
     private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase,
@@ -49,9 +45,7 @@ class ImageToImageViewModel(
     private val analytics: Analytics,
 ) : GenerationMviViewModel<ImageToImageState, ImageToImageEffect>(
     schedulersProvider,
-    buildInfoProvider,
     preferenceManager,
-    observeCoinsUseCase,
     getStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase,
 ) {
@@ -116,10 +110,10 @@ class ImageToImageViewModel(
     fun generate() {
         when (currentState.imageState) {
             is ImageToImageState.ImageState.Image -> {
-                if (!currentState.generateButtonEnabled) {
-                    setActiveDialog(ImageToImageState.Modal.NoSdAiCoins)
-                    return
-                }
+//                if (!currentState.generateButtonEnabled) {
+//                    setActiveDialog(ImageToImageState.Modal.NoSdAiCoins)
+//                    return
+//                }
                 !Single
                     .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
                     .doOnSubscribe { setActiveDialog(ImageToImageState.Modal.Communicating()) }

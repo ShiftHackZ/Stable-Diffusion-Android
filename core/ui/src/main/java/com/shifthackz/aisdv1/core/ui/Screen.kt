@@ -34,7 +34,7 @@ abstract class Screen {
         val statusBarDarkIcons = statusBarDarkIcons()
         val navigationBarColor = navigationBarColor()
         SideEffect {
-            systemUiController.setStatusBarColor(statusBarColor, statusBarDarkIcons)
+//            systemUiController.setStatusBarColor(statusBarColor, statusBarDarkIcons)
             systemUiController.setNavigationBarColor(navigationBarColor)
         }
     }

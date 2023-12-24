@@ -2,14 +2,28 @@
 
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
@@ -21,17 +35,14 @@ import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
-import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
-import com.shifthackz.aisdv1.presentation.widget.dialog.NoSdAiCoinsDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import org.koin.androidx.compose.koinViewModel
 
 class TextToImageScreen(
     private val viewModel: TextToImageViewModel,
-    private val launchRewarded: () -> Unit,
     private val launchGalleryDetail: (Long) -> Unit,
 ) : MviScreen<TextToImageState, EmptyEffect>(viewModel) {
 
@@ -59,7 +70,6 @@ class TextToImageScreen(
             onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
             onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
             onDismissScreenDialog = viewModel::dismissScreenModal,
-            onLaunchRewarded = launchRewarded,
         )
     }
 
@@ -89,7 +99,6 @@ private fun ScreenContent(
     onOpenPreviousGenerationInput: () -> Unit = {},
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
-    onLaunchRewarded: () -> Unit = {},
 ) {
     Box(modifier) {
         Scaffold(
@@ -140,10 +149,6 @@ private fun ScreenContent(
             },
             bottomBar = {
                 Column(Modifier.fillMaxWidth()) {
-                    AvailableCoinsComposable(
-                        modifier = Modifier.fillMaxWidth(),
-                        viewModel = koinViewModel()
-                    ).Build()
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -159,7 +164,8 @@ private fun ScreenContent(
                         )
                         Text(
                             modifier = Modifier.padding(start = 8.dp),
-                            text = stringResource(id = R.string.action_generate)
+                            text = stringResource(id = R.string.action_generate),
+                            color = LocalContentColor.current,
                         )
                     }
                 }
@@ -175,10 +181,6 @@ private fun ScreenContent(
                 titleResId = R.string.communicating_local_title,
                 canDismiss = false,
                 step = state.screenModal.pair,
-            )
-            TextToImageState.Modal.NoSdAiCoins -> NoSdAiCoinsDialog(
-                onDismissRequest = onDismissScreenDialog,
-                launchRewarded = onLaunchRewarded,
             )
             is TextToImageState.Modal.Image -> GenerationImageResultDialog(
                 imageBase64 = state.screenModal.result.image,

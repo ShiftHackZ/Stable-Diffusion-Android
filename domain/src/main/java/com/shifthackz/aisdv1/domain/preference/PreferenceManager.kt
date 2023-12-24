@@ -16,7 +16,5 @@ interface PreferenceManager {
     var forceSetupAfterUpdate: Boolean
     var localUseNNAPI: Boolean
 
-    val useSdAiCloud: Boolean
-
     fun observe(): Flowable<Settings>
 }

@@ -8,8 +8,6 @@ import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.core.content.FileProvider
 import java.io.File
 
-private const val APP_MARKET_PACKAGE = "com.shifthackz.aisdv1.app"
-
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S_V2)
 fun shouldUseNewMediaStore(): Boolean {
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S_V2
@@ -29,6 +27,3 @@ fun Context.openUrl(url: String) {
     openUri(uri)
 }
 
-fun Context.openMarket() {
-    openUri(Uri.parse("market://details?id=$APP_MARKET_PACKAGE"))
-}

@@ -1,6 +1,5 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
-import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.reactive.retryWithDelay
@@ -39,7 +38,6 @@ class ServerSetupViewModel(
     launchSource: ServerSetupLaunchSource,
     getConfigurationUseCase: GetConfigurationUseCase,
     private val demoModeUrl: String,
-    private val cloudUrl: String,
     private val urlValidator: UrlValidator,
     private val stringValidator: CommonStringValidator,
     private val testConnectivityUseCase: TestConnectivityUseCase,
@@ -50,7 +48,6 @@ class ServerSetupViewModel(
     private val checkDownloadedModelUseCase: CheckDownloadedModelUseCase,
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
     private val schedulersProvider: SchedulersProvider,
-    private val buildInfoProvider: BuildInfoProvider,
     private val preferenceManager: PreferenceManager,
     private val analytics: Analytics,
 ) : MviRxViewModel<ServerSetupState, ServerSetupEffect>() {
@@ -67,7 +64,6 @@ class ServerSetupViewModel(
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { (configuration, isDownloaded) ->
                 currentState
-                    .copy(allowedModes = buildInfoProvider.buildType.allowedModes)
                     .copy(localModelDownloaded = isDownloaded)
                     .withSource(configuration.source)
                     .withDemoMode(configuration.demoMode)
@@ -157,15 +153,11 @@ class ServerSetupViewModel(
             }
         }
         ServerSetupState.Mode.LOCAL -> currentState.localModelDownloaded
-        else -> true
     }
 
     private fun connectToAutomaticInstance() {
         val demoMode = currentState.demoMode
-        val connectUrl = when (currentState.mode) {
-            ServerSetupState.Mode.SD_AI_CLOUD -> cloudUrl
-            else -> if (demoMode) demoModeUrl else currentState.serverUrl
-        }
+        val connectUrl = if (demoMode) demoModeUrl else currentState.serverUrl
         val credentials = when (currentState.mode) {
             ServerSetupState.Mode.OWN_SERVER -> {
                 if (!demoMode) currentState.credentialsDomain()

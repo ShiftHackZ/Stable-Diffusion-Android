@@ -2,7 +2,6 @@ package com.shifthackz.aisdv1.storage.di
 
 import androidx.room.Room
 import com.shifthackz.aisdv1.storage.db.cache.CacheDatabase
-import com.shifthackz.aisdv1.storage.db.coins.CoinDatabase
 import com.shifthackz.aisdv1.storage.db.persistent.PersistentDatabase
 import com.shifthackz.aisdv1.storage.gateway.GatewayClearCacheDb
 import com.shifthackz.aisdv1.storage.gateway.GatewayClearPersistentDb
@@ -25,17 +24,6 @@ val databaseModule = module {
         )
             .build()
     }
-
-    single {
-        Room.databaseBuilder(
-            androidApplication(),
-            CoinDatabase::class.java,
-            CoinDatabase.DB_NAME,
-        )
-            .allowMainThreadQueries()
-            .fallbackToDestructiveMigration()
-            .build()
-    }
     //endregion
 
     //region GATEWAYS
@@ -56,10 +44,5 @@ val databaseModule = module {
 
     //region PERSISTENT DB DAOs
     single { get<PersistentDatabase>().generationResultDao() }
-    //endregion
-
-    //region COIN DB DAOs
-    single { get<CoinDatabase>().coinDao() }
-    single { get<CoinDatabase>().earnedCoinDao() }
     //endregion
 }

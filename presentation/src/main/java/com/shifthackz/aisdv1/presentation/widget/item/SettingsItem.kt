@@ -63,7 +63,7 @@ fun SettingsItem(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
-            .background(color = if (animateBackground) colorState.value else MaterialTheme.colorScheme.primaryContainer)
+            .background(color = if (animateBackground) colorState.value else MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f))
             .defaultMinSize(minHeight = 50.dp)
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,

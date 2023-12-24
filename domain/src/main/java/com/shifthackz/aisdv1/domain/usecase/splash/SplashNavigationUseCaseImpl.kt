@@ -20,7 +20,7 @@ internal class SplashNavigationUseCaseImpl(
             preferenceManager.source == ServerSource.HORDE -> {
                 Action.LAUNCH_HOME
             }
-            preferenceManager.serverUrl.isEmpty() && !preferenceManager.useSdAiCloud -> {
+            preferenceManager.serverUrl.isEmpty() -> {
                 Action.LAUNCH_SERVER_SETUP
             }
             else -> Action.LAUNCH_HOME

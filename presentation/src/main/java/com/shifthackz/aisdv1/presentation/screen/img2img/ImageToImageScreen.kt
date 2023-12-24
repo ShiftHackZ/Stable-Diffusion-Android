@@ -2,9 +2,23 @@
 
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArtTrack
 import androidx.compose.material.icons.filled.AutoFixNormal
@@ -13,7 +27,17 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeviceUnknown
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,10 +56,8 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import com.shifthackz.aisdv1.presentation.widget.coins.AvailableCoinsComposable
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
-import com.shifthackz.aisdv1.presentation.widget.dialog.NoSdAiCoinsDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
@@ -46,7 +68,6 @@ class ImageToImageScreen(
     private val viewModel: ImageToImageViewModel,
     private val pickImage: (ImagePickerCallback) -> Unit,
     private val takePhoto: (ImagePickerCallback) -> Unit,
-    private val launchRewarded: () -> Unit,
     private val launchGalleryDetail: (Long) -> Unit,
     private val launchServerSetup: () -> Unit,
 ) : MviScreen<ImageToImageState, ImageToImageEffect>(viewModel) {
@@ -80,7 +101,6 @@ class ImageToImageScreen(
             onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
             onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
-            onLaunchRewarded = launchRewarded,
         )
     }
 
@@ -116,7 +136,6 @@ private fun ScreenContent(
     onOpenPreviousGenerationInput: () -> Unit = {},
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
-    onLaunchRewarded: () -> Unit = {},
 ) {
     Box(modifier) {
         Scaffold(
@@ -150,7 +169,7 @@ private fun ScreenContent(
                             .padding(horizontal = 16.dp),
                     ) {
                         InputImageState(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                             imageState = state.imageState,
                             onPickImage = onPickImage,
                             onTakePhoto = onTakePhoto,
@@ -226,10 +245,6 @@ private fun ScreenContent(
             bottomBar = {
                 if (state.mode != GenerationInputMode.LOCAL) {
                     Column(Modifier.fillMaxWidth()) {
-                        AvailableCoinsComposable(
-                            modifier = Modifier.fillMaxWidth(),
-                            viewModel = koinViewModel()
-                        ).Build()
                         Button(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -259,7 +274,8 @@ private fun ScreenContent(
                     ) {
                         Text(
                             modifier = Modifier.padding(start = 8.dp),
-                            text = stringResource(id = R.string.action_change_configuration)
+                            text = stringResource(id = R.string.action_change_configuration),
+                            color = LocalContentColor.current,
                         )
                     }
                 }
@@ -274,10 +290,6 @@ private fun ScreenContent(
             ImageToImageState.Modal.LoadingRandomImage -> ProgressDialog(
                 titleResId = R.string.communicating_random_image_title,
                 canDismiss = false,
-            )
-            ImageToImageState.Modal.NoSdAiCoins -> NoSdAiCoinsDialog(
-                onDismissRequest = onDismissScreenDialog,
-                launchRewarded = onLaunchRewarded,
             )
             is ImageToImageState.Modal.Error -> ErrorDialog(
                 text = state.screenModal.error,
@@ -369,7 +381,7 @@ private fun InputImageState(
                     .padding(top = 8.dp)
                     .fillMaxWidth()
                     .background(
-                        MaterialTheme.colorScheme.secondaryContainer,
+                        MaterialTheme.colorScheme.surfaceTint,
                         shape = RoundedCornerShape(16.dp)
                     )
                     .clickable { onRandomPhoto() },
@@ -382,13 +394,11 @@ private fun InputImageState(
                         .padding(8.dp),
                     imageVector = Icons.Default.ArtTrack,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
                     text = stringResource(id = R.string.action_image_picker_random),
                     fontSize = 17.sp,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
             }
         }
@@ -404,7 +414,7 @@ private fun ImagePickButtonBox(
     Column(
         modifier = modifier
             .background(
-                MaterialTheme.colorScheme.secondaryContainer,
+                MaterialTheme.colorScheme.surfaceTint,
                 shape = RoundedCornerShape(16.dp)
             )
             .clickable { onClick() },
@@ -420,7 +430,6 @@ private fun ImagePickButtonBox(
                 ImagePickButton.CAMERA -> Icons.Default.Camera
             },
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSecondaryContainer,
         )
         Text(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
@@ -431,7 +440,6 @@ private fun ImagePickButtonBox(
                 }
             ),
             fontSize = 17.sp,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
         )
     }
 }

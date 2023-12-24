@@ -1,7 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
@@ -34,12 +33,8 @@ class SettingsStateProducer(
             formAdvancedOptionsAlwaysShow = settings.formAdvancedOptionsAlwaysShow,
             appVersion = version,
             showLocalUseNNAPI = settings.source == ServerSource.LOCAL,
-            showCheckForUpdates = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
-            showRewardedSdAiAd = settings.useSdAiCloud,
             showSdModelSelector = settings.source == ServerSource.CUSTOM,
             showMonitorConnectionOption = settings.source == ServerSource.CUSTOM,
-            showRateGooglePlay = buildInfoProvider.buildType == BuildType.GOOGLE_PLAY,
-            showGitHubLink = buildInfoProvider.buildType == BuildType.FOSS,
         )
     }
 }
