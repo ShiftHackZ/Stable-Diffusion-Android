@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -186,6 +187,7 @@ private fun ScreenContent(
                         .verticalScroll(rememberScrollState())
                         .padding(paddingValues),
                 ) {
+                    Spacer(modifier = Modifier.height(12.dp))
                     if (state.allowedModes.size > 1) {
                         Column {
                             state.allowedModes.forEach { mode ->
@@ -562,7 +564,7 @@ private fun ConfigurationModeButton(
     Row(
         modifier = modifier
             .background(
-                color =  MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f),
+                color = MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f),
                 shape = RoundedCornerShape(16.dp),
             )
             .border(
