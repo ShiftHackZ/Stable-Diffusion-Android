@@ -18,7 +18,6 @@
     <string name="browse">Browse</string>
 
     <string name="version">Version %1$s</string>
-    <string name="version_postscriptum">Made for you with ❤️ from 🇺🇦</string>
 
     <string name="splash_status_initializing">Initializing…</string>
     <string name="splash_status_fetching">Fetching data…</string>

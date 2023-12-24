@@ -17,6 +17,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.theme.colors
+import com.shifthackz.catppuccin.palette.Catppuccin
 
 class ConnectivityComposable(
     private val viewModel: ConnectivityViewModel,
@@ -26,7 +28,7 @@ class ConnectivityComposable(
     override fun Content() {
         ConnectivityWidgetState(
             modifier = Modifier.fillMaxWidth(),
-            state = viewModel.state.collectAsStateWithLifecycle().value,
+            viewModel.state.collectAsStateWithLifecycle().value,
         )
     }
 
@@ -41,12 +43,14 @@ private fun ConnectivityWidgetState(
 ) {
     if (!state.enabled) return
     val uiColor = when (state) {
-        is ConnectivityState.Connected -> MaterialTheme.colorScheme.primaryContainer
-        is ConnectivityState.Disconnected -> MaterialTheme.colorScheme.errorContainer
-        is ConnectivityState.Uninitialized -> MaterialTheme.colorScheme.secondaryContainer
+        is ConnectivityState.Connected -> colors(light = Catppuccin.Latte.Green, dark = Catppuccin.Frappe.Green)
+        is ConnectivityState.Disconnected -> colors(light = Catppuccin.Latte.Red, dark = Catppuccin.Frappe.Red)
+        is ConnectivityState.Uninitialized -> colors(light = Catppuccin.Latte.Lavender, dark = Catppuccin.Frappe.Lavender)
     }
     Column(
-        modifier = modifier.padding(top = 4.dp),
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(top = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -60,11 +64,7 @@ private fun ConnectivityWidgetState(
                     is ConnectivityState.Uninitialized -> R.string.status_communicating
                 }
             ),
-            color = when (state) {
-                is ConnectivityState.Connected -> MaterialTheme.colorScheme.onPrimaryContainer
-                is ConnectivityState.Disconnected -> MaterialTheme.colorScheme.onErrorContainer
-                is ConnectivityState.Uninitialized -> MaterialTheme.colorScheme.onSurface
-            }
+            color = colors(light = Catppuccin.Latte.Base, dark = Catppuccin.Frappe.Base)
         )
     }
 }

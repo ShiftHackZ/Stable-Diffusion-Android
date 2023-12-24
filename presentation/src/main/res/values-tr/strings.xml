@@ -14,7 +14,6 @@
     <string name="browse">Araştır</string>
 
     <string name="version">Versiyon %1$s</string>
-    <string name="version_postscriptum">Senin için ❤️\'la 🇺🇦\'da hazırlardı</string>
 
     <string name="splash_status_initializing">Başlatılıyor…</string>
     <string name="splash_status_fetching">Veri Alınıyor…</string>
@@ -44,7 +43,6 @@
     <string name="action_image_picker_random">Rastgele görüntü</string>
     <string name="action_change_configuration">Yapılandırmayı değiştir</string>
 
-    <string name="srv_type_cloud">SDAI Bulut hizmetini kullanmak istiyorum</string>
     <string name="srv_type_own">Kendi AUTOMATIC1111 hizmetimi kullanmak istiyorum.</string>
     <string name="srv_type_horde">Horde AI bulutunu kullanmak istiyorum</string>
 

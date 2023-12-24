@@ -1,10 +1,13 @@
 package com.shifthackz.aisdv1.presentation.theme
 
-import android.os.Build
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
-val dynamicColorAvailable: () -> Boolean = { Build.VERSION.SDK_INT >= Build.VERSION_CODES.S }
-
-val LightColors = lightColorScheme()
-val DarkColors = darkColorScheme()
+@Composable
+fun colors(
+    light: Color,
+    dark: Color,
+): Color {
+    return if (isSystemInDarkTheme()) dark else light
+}

@@ -46,9 +46,11 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.theme.colors
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
+import com.shifthackz.catppuccin.palette.Catppuccin
 import org.koin.core.component.KoinComponent
 import java.io.File
 
@@ -178,7 +180,10 @@ private fun GalleryDetailNavigationBar(
                 NavigationBarItem(
                     selected = state.selectedTab == tab,
                     label = {
-                        Text(stringResource(id = tab.label))
+                        Text(
+                            text = stringResource(id = tab.label),
+                            color = LocalContentColor.current,
+                        )
                     },
                     icon = {
                         Image(
@@ -252,10 +257,12 @@ private fun GalleryDetailsTable(
                     .padding(16.dp)
                     .padding(paddingValues),
             ) {
-                val colorOddBg = MaterialTheme.colorScheme.secondaryContainer
-                val colorOddText = MaterialTheme.colorScheme.onSecondaryContainer
-                val colorEvenBg = MaterialTheme.colorScheme.tertiaryContainer
-                val colorEvenText = MaterialTheme.colorScheme.onTertiaryContainer
+                val colorOddBg = MaterialTheme.colorScheme.surface
+                val colorOddText = colors(
+                    light = Catppuccin.Latte.Text,
+                    dark = Catppuccin.Frappe.Text
+                )
+                val colorEvenBg = MaterialTheme.colorScheme.surfaceTint
                 GalleryDetailRow(
                     modifier = Modifier.background(color = colorOddBg),
                     name = R.string.gallery_info_field_date.asUiText(),
@@ -267,7 +274,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_type.asUiText(),
                     value = state.type,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
@@ -281,7 +288,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_negative_prompt.asUiText(),
                     value = state.negativePrompt,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
@@ -295,7 +302,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_sampling_steps.asUiText(),
                     value = state.samplingSteps,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
@@ -309,7 +316,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_restore_faces.asUiText(),
                     value = state.restoreFaces,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
@@ -323,7 +330,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_seed.asUiText(),
                     value = state.seed,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 GalleryDetailRow(
@@ -337,7 +344,7 @@ private fun GalleryDetailsTable(
                     modifier = Modifier.background(color = colorEvenBg),
                     name = R.string.gallery_info_field_sub_seed_strength.asUiText(),
                     value = state.subSeedStrength,
-                    color = colorEvenText,
+                    color = colorOddText,
                     onCopyTextClick = onCopyTextClick,
                 )
                 if (state.generationType == AiGenerationResult.Type.IMAGE_TO_IMAGE) GalleryDetailRow(
@@ -365,6 +372,7 @@ private fun GalleryDetailsTable(
                         Text(
                             text = stringResource(id = R.string.action_send_to_txt2img),
                             textAlign = TextAlign.Center,
+                            color = LocalContentColor.current,
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
@@ -375,6 +383,7 @@ private fun GalleryDetailsTable(
                         Text(
                             text = stringResource(id = R.string.action_send_to_img2img),
                             textAlign = TextAlign.Center,
+                            color = LocalContentColor.current,
                         )
                     }
                 }
@@ -386,6 +395,7 @@ private fun GalleryDetailsTable(
                         Text(
                             text = stringResource(id = R.string.action_share_prompt),
                             textAlign = TextAlign.Center,
+                            color = LocalContentColor.current,
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
@@ -396,6 +406,7 @@ private fun GalleryDetailsTable(
                         Text(
                             text = stringResource(id = R.string.action_delete_image),
                             textAlign = TextAlign.Center,
+                            color = LocalContentColor.current,
                         )
                     }
                 }

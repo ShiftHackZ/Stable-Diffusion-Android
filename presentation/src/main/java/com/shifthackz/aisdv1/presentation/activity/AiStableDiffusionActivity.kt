@@ -73,6 +73,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionBar?.hide()
         analytics.initialize()
         requestNotificationPermission()
         requestStoragePermission()

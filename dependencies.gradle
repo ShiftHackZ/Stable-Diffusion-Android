@@ -24,8 +24,7 @@ ext {
     accompanistSystemUiControllerVersion = '0.30.1'
     cryptoVersion = '1.0.0'
     onnxruntimeVersion = '1.16.3'
-
-    firebaseBomVersion = '32.2.0'
+    catppuccinVersion = '0.1.1'
 
     testJunitVersion = '4.13.2'
 
@@ -85,6 +84,9 @@ ext {
     ]
     ui = [
             imagePicker: "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion",
+            catppuccinLegacy: "com.github.ShiftHackZ.Catppuccin-Android-Library:palette-legacy:$catppuccinVersion",
+            catppuccinCompose: "com.github.ShiftHackZ.Catppuccin-Android-Library:compose:$catppuccinVersion",
+            catppuccinSplashscreen: "com.github.ShiftHackZ.Catppuccin-Android-Library:splashscreen:$catppuccinVersion",
     ]
     log = [
             timber: "com.jakewharton.timber:timber:$timberVersion",

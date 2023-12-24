@@ -66,7 +66,7 @@ val networkModule = module {
     single {
         NetworkInterceptors(
             listOf(
-                NetworkInterceptor(LoggingInterceptor(get()).get()),
+                NetworkInterceptor(LoggingInterceptor().get()),
             )
         )
     }

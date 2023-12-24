@@ -57,7 +57,10 @@ class HomeNavigationScreen(
                             NavigationBarItem(
                                 selected = selected,
                                 label = {
-                                    Text(text = item.name)
+                                    Text(
+                                        text = item.name,
+                                        color = LocalContentColor.current,
+                                    )
                                 },
                                 icon = {
                                     when (item.icon) {
@@ -71,6 +74,7 @@ class HomeNavigationScreen(
                                             modifier = item.icon.modifier,
                                             imageVector = item.icon.vector,
                                             contentDescription = item.name,
+                                            tint = LocalContentColor.current,
                                         )
                                     }
                                 },

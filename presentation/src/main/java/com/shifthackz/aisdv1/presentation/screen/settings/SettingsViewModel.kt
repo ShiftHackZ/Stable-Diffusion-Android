@@ -45,12 +45,6 @@ class SettingsViewModel(
     fun dismissScreenDialog() = setActiveDialog(SettingsState.Dialog.None)
     //endregion
 
-    //region BOTTOM SHEET LAUNCHER METHODS
-    fun launchLanguageBottomSheet() = setActiveSheet(SettingsState.Sheet.SelectLanguage)
-
-    fun dismissBottomSheet() = setActiveSheet(SettingsState.Sheet.None)
-    //endregion
-
     //region BUSINESS LOGIC METHODS
     fun selectStableDiffusionModel(value: String) = !selectStableDiffusionModelUseCase(value)
         .andThen(settingsStateProducer())
@@ -116,10 +110,6 @@ class SettingsViewModel(
     //region UI STATES METHODS
     private fun setActiveDialog(dialog: SettingsState.Dialog) = currentState
         .withDialog(value = dialog)
-        .let(::setState)
-
-    private fun setActiveSheet(sheet: SettingsState.Sheet) = currentState
-        .withSheet(value = sheet)
         .let(::setState)
     //endregion
 }

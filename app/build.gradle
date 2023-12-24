@@ -17,7 +17,6 @@ android {
         versionName "0.5.3"
         versionCode 166
 
-        buildConfigField "String", "CLOUD_AI_URL", "\"https://sdai.moroz.cc\""
         buildConfigField "String", "IMAGE_CDN_URL", "\"https://random.imagecdn.app\""
         buildConfigField "String", "HORDE_AI_URL", "\"https://stablehorde.net\""
         buildConfigField "String", "HORDE_AI_SIGN_UP_URL", "\"https://stablehorde.net/register\""
@@ -74,6 +73,8 @@ dependencies {
     implementation reactive.rxkotlin
     implementation reactive.rxandroid
     implementation log.timber
+    implementation ui.catppuccinSplashscreen
+    implementation ui.catppuccinLegacy
 }
 
 kapt {

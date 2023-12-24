@@ -32,6 +32,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -168,7 +169,7 @@ private fun ScreenContent(
                             .padding(horizontal = 16.dp),
                     ) {
                         InputImageState(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                             imageState = state.imageState,
                             onPickImage = onPickImage,
                             onTakePhoto = onTakePhoto,
@@ -273,7 +274,8 @@ private fun ScreenContent(
                     ) {
                         Text(
                             modifier = Modifier.padding(start = 8.dp),
-                            text = stringResource(id = R.string.action_change_configuration)
+                            text = stringResource(id = R.string.action_change_configuration),
+                            color = LocalContentColor.current,
                         )
                     }
                 }
@@ -379,7 +381,7 @@ private fun InputImageState(
                     .padding(top = 8.dp)
                     .fillMaxWidth()
                     .background(
-                        MaterialTheme.colorScheme.secondaryContainer,
+                        MaterialTheme.colorScheme.surfaceTint,
                         shape = RoundedCornerShape(16.dp)
                     )
                     .clickable { onRandomPhoto() },
@@ -392,13 +394,11 @@ private fun InputImageState(
                         .padding(8.dp),
                     imageVector = Icons.Default.ArtTrack,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
                     text = stringResource(id = R.string.action_image_picker_random),
                     fontSize = 17.sp,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
             }
         }
@@ -414,7 +414,7 @@ private fun ImagePickButtonBox(
     Column(
         modifier = modifier
             .background(
-                MaterialTheme.colorScheme.secondaryContainer,
+                MaterialTheme.colorScheme.surfaceTint,
                 shape = RoundedCornerShape(16.dp)
             )
             .clickable { onClick() },
@@ -430,7 +430,6 @@ private fun ImagePickButtonBox(
                 ImagePickButton.CAMERA -> Icons.Default.Camera
             },
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSecondaryContainer,
         )
         Text(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
@@ -441,7 +440,6 @@ private fun ImagePickButtonBox(
                 }
             ),
             fontSize = 17.sp,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
         )
     }
 }

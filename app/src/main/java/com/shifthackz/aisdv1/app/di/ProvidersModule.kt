@@ -33,7 +33,6 @@ val providersModule = module {
         object : ApiUrlProvider {
             override val stableDiffusionAutomaticApiUrl: String = DEFAULT_SERVER_URL
             override val stableDiffusionAppApiUrl: String = BuildConfig.UPDATE_API_URL
-            override val stableDiffusionCloudAiApiUrl: String = BuildConfig.CLOUD_AI_URL
             override val hordeApiUrl: String = BuildConfig.HORDE_AI_URL
             override val imageCdnApiUrl: String = BuildConfig.IMAGE_CDN_URL
         }
@@ -60,7 +59,6 @@ val providersModule = module {
 
     single<LinksProvider> {
         object : LinksProvider {
-            override val cloudUrl: String = BuildConfig.CLOUD_AI_URL
             override val hordeUrl: String = BuildConfig.HORDE_AI_URL
             override val hordeSignUpUrl: String = BuildConfig.HORDE_AI_SIGN_UP_URL
             override val privacyPolicyUrl: String = BuildConfig.POLICY_URL

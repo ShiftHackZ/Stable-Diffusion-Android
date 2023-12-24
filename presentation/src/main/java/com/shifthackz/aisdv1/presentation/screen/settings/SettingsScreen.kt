@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.SettingsEthernet
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -86,7 +85,6 @@ class SettingsScreen(
             onSdModelSelected = viewModel::selectStableDiffusionModel,
             onClearAppCacheConfirm = viewModel::clearAppCache,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
-            onDismissBottomSheet = viewModel::dismissBottomSheet,
         )
     }
 
@@ -195,14 +193,6 @@ private fun ScreenContent(
                 onDismissRequest = onDismissScreenDialog,
                 onConfirmAction = onClearAppCacheConfirm,
             )
-        }
-        when (state.bottomSheet) {
-            SettingsState.Sheet.None -> Unit
-            SettingsState.Sheet.SelectLanguage -> ModalBottomSheet(
-                onDismissRequest = onDismissBottomSheet,
-            ) {
-
-            }
         }
     }
 }
@@ -371,20 +361,13 @@ private fun ContentSettingsState(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
-            text = stringResource(id = R.string.version, state.appVersion),
-            style = MaterialTheme.typography.labelMedium,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
+                .padding(vertical = 16.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
-                ) { onAppVersionClick() },
-            text = stringResource(id = R.string.version_postscriptum),
+                    onClick = onAppVersionClick,
+                ),
+            text = stringResource(id = R.string.version, state.appVersion),
             style = MaterialTheme.typography.labelMedium,
             textAlign = TextAlign.Center,
         )

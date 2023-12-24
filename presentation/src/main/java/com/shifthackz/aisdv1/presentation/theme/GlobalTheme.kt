@@ -1,22 +1,25 @@
 package com.shifthackz.aisdv1.presentation.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import com.shifthackz.catppuccin.compose.CatppuccinMaterial
+import com.shifthackz.catppuccin.compose.CatppuccinTheme
+import com.shifthackz.catppuccin.palette.Catppuccin
 
 @Composable
 fun AiStableDiffusionAppTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
-) = MaterialTheme(
-    colorScheme = when {
-        dynamicColorAvailable() && useDarkTheme -> dynamicDarkColorScheme(LocalContext.current)
-        dynamicColorAvailable() && !useDarkTheme -> dynamicLightColorScheme(LocalContext.current)
-        useDarkTheme -> DarkColors
-        else -> LightColors
-    },
-    content = content
-)
+) {
+    return CatppuccinTheme.DarkLightPalette(
+        darkPalette = CatppuccinMaterial.Frappe(
+            primary = Catppuccin.Frappe.Mauve,
+            secondary = Catppuccin.Frappe.Mauve.copy(alpha = 0.5f),
+            tertiary = Catppuccin.Frappe.Mauve.copy(alpha = 0.5f),
+        ),
+        lightPalette = CatppuccinMaterial.Latte(
+            primary = Catppuccin.Latte.Mauve,
+            secondary = Catppuccin.Latte.Mauve.copy(alpha = 0.5f),
+            tertiary = Catppuccin.Latte.Mauve.copy(alpha = 0.5f),
+        ),
+        content = content,
+    )
+}

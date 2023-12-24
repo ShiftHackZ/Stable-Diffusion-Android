@@ -14,7 +14,6 @@
     <string name="browse">Дивитися</string>
 
     <string name="version">Версія %1$s</string>
-    <string name="version_postscriptum">Зроблено для вас з ❤️ в 🇺🇦</string>
 
     <string name="splash_status_initializing">Ініціалізація…</string>
     <string name="splash_status_fetching">Завантаження даних…</string>
