@@ -1,9 +1,27 @@
 [
   {
+    "id": "0290c206-f60b-47fe-b4f6-5ad8055fd3a3",
     "name": "chilloutmix",
+    "size": "1.2 Gb",
     "sources": [
       "https://share.moroz.cc/SDAI/chilloutmix.zip",
       "https://drive.google.com/uc?export=download&id=1Z8D3sHkvosKsfn9ufnB66TUuW46iYf-N&confirm=t&uuid=94ddf728-e146-4375-aeb3-d126b8da3f0b&at=AB6BwCATWdQj6xRTLZYu00DwfxAV:1692354151068"
+    ]
+  },
+  {
+    "id": "a1621c1c-0646-41bf-bc9f-6d0f23399799",
+    "name": "Absolute Reality",
+    "size": "1.01 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/majicmix.zip"
+    ]
+  },
+  {
+    "id": "dfd7304e-a1da-4bbb-8814-5342ac88814d",
+    "name": "Real Vision",
+    "size": "1.8 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/realvision.zip"
     ]
   }
 ]
