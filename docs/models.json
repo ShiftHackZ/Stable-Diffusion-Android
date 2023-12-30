@@ -15,5 +15,13 @@
     "sources": [
       "https://share.moroz.cc/SDAI/majicmix.zip"
     ]
-  }
+  },
+  {
+    "id": "dfd7304e-a1da-4bbb-8814-5342ac88814d",
+    "name": "Real Vision",
+    "size": "1.8 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/realvision.zip"
+    ]
+  },
 ]
