@@ -39,7 +39,6 @@ fun ErrorDialog(
                 fontSize = 14.sp,
                 color = AlertDialogDefaults.textContentColor,
             )
-
         }
     )
 }
