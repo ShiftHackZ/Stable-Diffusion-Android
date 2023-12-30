@@ -96,7 +96,6 @@ fun ProgressDialogStatus(
             style = TextStyle(fontSize = 12.sp),
             color = AlertDialogDefaults.textContentColor,
         )
-
     }
 }
 

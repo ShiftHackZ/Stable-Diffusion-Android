@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Button
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -68,7 +69,8 @@ fun GenerationImageResultDialog(
                         onClick = onSaveRequest,
                     ) {
                         Text(
-                            text = stringResource(id = R.string.action_save)
+                            text = stringResource(id = R.string.action_save),
+                            color = LocalContentColor.current,
                         )
                     }
                     OutlinedButton(
@@ -79,7 +81,8 @@ fun GenerationImageResultDialog(
                         onClick = onDismissRequest,
                     ) {
                         Text(
-                            text = stringResource(id = R.string.action_close)
+                            text = stringResource(id = R.string.action_close),
+                            color = LocalContentColor.current,
                         )
                     }
 
@@ -92,7 +95,8 @@ fun GenerationImageResultDialog(
                         onClick = onDismissRequest,
                     ) {
                         Text(
-                            text = stringResource(id = R.string.action_close)
+                            text = stringResource(id = R.string.action_close),
+                            color = LocalContentColor.current,
                         )
                     }
                 }
