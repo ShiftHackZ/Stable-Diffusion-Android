@@ -2,22 +2,25 @@ package com.shifthackz.aisdv1.network.api.sdai
 
 import com.shifthackz.aisdv1.network.extensions.saveFile
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import java.io.File
 
 internal class DownloadableModelsRestApiImpl(
     private val rawApi: DownloadableModelsRestApi.RawApi,
 ) : DownloadableModelsRestApi {
 
+    override fun fetchDownloadableModels() = rawApi.fetchDownloadableModels()
+
     override fun <T : Any> downloadModel(
-        path: String,
+        remoteUrl: String,
+        localPath: String,
         stateProgress: (Int) -> T,
         stateComplete: (File) -> T,
         stateFailed: (Throwable) -> T
-    ): Observable<T> = rawApi
-        .fetchDownloadableModels()
-        .map { models -> models.first().sources?.first() ?: "" }
+    ): Observable<T> = Single
+        .just(remoteUrl)
         .flatMap(rawApi::downloadModel)
         .flatMapObservable { body ->
-            body.saveFile(path, stateProgress, stateComplete, stateFailed)
+            body.saveFile(localPath, stateProgress, stateComplete, stateFailed)
         }
 }

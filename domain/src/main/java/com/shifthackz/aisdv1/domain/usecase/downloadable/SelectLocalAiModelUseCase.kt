@@ -2,6 +2,6 @@ package com.shifthackz.aisdv1.domain.usecase.downloadable
 
 import io.reactivex.rxjava3.core.Completable
 
-interface DeleteModelUseCase {
+interface SelectLocalAiModelUseCase {
     operator fun invoke(id: String): Completable
 }

@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.app.di.featureModule
 import com.shifthackz.aisdv1.app.di.preferenceModule
 import com.shifthackz.aisdv1.app.di.providersModule
 import com.shifthackz.aisdv1.core.common.log.FileLoggingTree
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.imageprocessing.di.imageProcessingModule
 import com.shifthackz.aisdv1.core.validation.di.validatorsModule
 import com.shifthackz.aisdv1.data.di.dataModule
@@ -25,6 +26,7 @@ class AiStableDiffusionClientApp : Application() {
     override fun onCreate() {
         super.onCreate()
         StrictMode.setVmPolicy(VmPolicy.Builder().build())
+        Thread.currentThread().setUncaughtExceptionHandler { _, t -> errorLog(t) }
         initializeKoin()
         initializeLogging()
     }

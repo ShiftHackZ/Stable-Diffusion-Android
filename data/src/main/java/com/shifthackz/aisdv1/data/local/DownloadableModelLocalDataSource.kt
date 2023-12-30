@@ -1,29 +1,70 @@
 package com.shifthackz.aisdv1.data.local
 
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
-import com.shifthackz.aisdv1.core.common.log.debugLog
+import com.shifthackz.aisdv1.data.mappers.mapDomainToEntity
+import com.shifthackz.aisdv1.data.mappers.mapEntityToDomain
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
+import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.io.File
 
 internal class DownloadableModelLocalDataSource(
     private val fileProviderDescriptor: FileProviderDescriptor,
+    private val dao: LocalModelDao,
+    private val preferenceManager: PreferenceManager,
 ) : DownloadableModelDataSource.Local {
+    override fun getAll(): Single<List<LocalAiModel>> = dao.query()
+        .map(List<LocalModelEntity>::mapEntityToDomain)
+        .flatMap { models -> models.withLocalData() }
 
-    private val localModelDirectory: File
-        get() = File(fileProviderDescriptor.localModelDirPath)
+    override fun getById(id: String) = dao.queryById(id)
+        .map(LocalModelEntity::mapEntityToDomain)
+        .flatMap { model -> model.withLocalData() }
 
-    override fun exists(): Single<Boolean> = Single.create { emitter ->
+    override fun getSelected(): Single<LocalAiModel> = Single
+        .just(preferenceManager.localModelId)
+        .flatMap(::getById)
+        .onErrorResumeNext { Single.error(Throwable("No selected model")) }
+
+    override fun select(id: String): Completable = Completable.fromAction {
+        preferenceManager.localModelId = id
+    }
+
+    override fun save(list: List<LocalAiModel>) = dao.insertList(list.mapDomainToEntity())
+
+    override fun isDownloaded(id: String): Single<Boolean> = Single.create { emitter ->
         try {
-            val files = (localModelDirectory.listFiles()?.filter { it.isDirectory }) ?: emptyList<File>()
-            if (!emitter.isDisposed) emitter.onSuccess(localModelDirectory.exists() && files.size == 4)
+            val localModelDir = getLocalModelDirectory(id)
+            val files = (localModelDir.listFiles()?.filter { it.isDirectory }) ?: emptyList<File>()
+            if (!emitter.isDisposed) emitter.onSuccess(localModelDir.exists() && files.size == 4)
         } catch (e: Exception) {
             if (!emitter.isDisposed) emitter.onSuccess(false)
         }
     }
 
-    override fun delete(): Completable = Completable.fromAction {
-        localModelDirectory.deleteRecursively()
+    override fun delete(id: String): Completable = Completable.fromAction {
+        getLocalModelDirectory(id).deleteRecursively()
     }
+
+    private fun getLocalModelDirectory(id: String): File {
+        return File("${fileProviderDescriptor.localModelDirPath}/${id}")
+    }
+
+    private fun List<LocalAiModel>.withLocalData(): Single<List<LocalAiModel>> = Observable
+        .fromIterable(this)
+        .flatMapSingle { model -> model.withLocalData() }
+        .toList()
+
+    private fun LocalAiModel.withLocalData(): Single<LocalAiModel> = isDownloaded(id)
+        .map { downloaded ->
+            copy(
+                downloaded = downloaded,
+                selected = preferenceManager.localModelId == id,
+            )
+        }
 }

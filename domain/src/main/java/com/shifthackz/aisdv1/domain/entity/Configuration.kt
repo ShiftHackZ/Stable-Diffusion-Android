@@ -8,4 +8,5 @@ data class Configuration(
     val source: ServerSource,
     val hordeApiKey: String,
     val authCredentials: AuthorizationCredentials,
+    val localModelId: String,
 )

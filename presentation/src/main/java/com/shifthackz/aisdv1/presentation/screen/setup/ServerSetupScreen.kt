@@ -5,12 +5,10 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,16 +28,12 @@ import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.FileDownloadDone
-import androidx.compose.material.icons.outlined.FileDownloadOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -49,7 +43,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -65,12 +58,12 @@ import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
-import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
+import com.shifthackz.aisdv1.presentation.widget.item.LocalModelItem
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -103,7 +96,8 @@ class ServerSetupScreen(
             onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
             onOpenHordeWebSite = { launchUrl(linksProvider.hordeUrl) },
             onOpenHordeSignUpWebSite = { launchUrl(linksProvider.hordeSignUpUrl) },
-            onDownloadCardButtonClick = viewModel::downloadClickReducer,
+            onDownloadCardButtonClick = viewModel::localModelDownloadClickReducer,
+            onSelectLocalModel = viewModel::localModelSelect,
             onSetupButtonClick = viewModel::connectToServer,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
         )
@@ -132,7 +126,8 @@ private fun ScreenContent(
     onServerInstructionsItemClick: () -> Unit = {},
     onOpenHordeWebSite: () -> Unit = {},
     onOpenHordeSignUpWebSite: () -> Unit = {},
-    onDownloadCardButtonClick: () -> Unit = {},
+    onDownloadCardButtonClick: (ServerSetupState.LocalModel) -> Unit = {},
+    onSelectLocalModel: (ServerSetupState.LocalModel) -> Unit = {},
     onSetupButtonClick: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) {
@@ -168,7 +163,9 @@ private fun ScreenContent(
                         .padding(bottom = 16.dp),
                     onClick = onSetupButtonClick,
                     enabled = when (state.mode) {
-                        ServerSetupState.Mode.LOCAL -> state.localModelDownloaded
+                        ServerSetupState.Mode.LOCAL -> state.localModels.any {
+                            it.downloaded && it.selected
+                        }
                         else -> true
                     },
                 ) {
@@ -224,6 +221,7 @@ private fun ScreenContent(
                         ServerSetupState.Mode.LOCAL -> LocalDiffusionSetupTab(
                             state = state,
                             onDownloadCardButtonClick = onDownloadCardButtonClick,
+                            onSelectLocalModel = onSelectLocalModel,
                         )
                     }
                 }
@@ -453,7 +451,8 @@ private fun HordeAiSetupTab(
 private fun LocalDiffusionSetupTab(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
-    onDownloadCardButtonClick: () -> Unit = {},
+    onDownloadCardButtonClick: (ServerSetupState.LocalModel) -> Unit = {},
+    onSelectLocalModel: (ServerSetupState.LocalModel) -> Unit = {},
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
@@ -468,83 +467,16 @@ private fun LocalDiffusionSetupTab(
             fontWeight = FontWeight.Bold,
         )
         Text(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
             text = stringResource(id = R.string.hint_local_diffusion_sub_title),
             style = MaterialTheme.typography.bodyMedium,
         )
-        Column(
-            modifier = modifier
-                .padding(top = 24.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
-                .background(color = MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f))
-                .defaultMinSize(minHeight = 50.dp),
-        ) {
-            Row(
-                modifier = Modifier.padding(vertical = 4.dp),
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                val icon = when (state.downloadState) {
-                    is DownloadState.Downloading -> Icons.Outlined.FileDownload
-                    else -> {
-                        if (state.localModelDownloaded) Icons.Outlined.FileDownloadDone
-                        else Icons.Outlined.FileDownloadOff
-                    }
-                }
-                Icon(
-                    modifier = modifier
-                        .padding(horizontal = 8.dp)
-                        .size(48.dp),
-                    imageVector = icon,
-                    contentDescription = "Download state",
-                )
-                Column(
-                    modifier = Modifier.padding(start = 4.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.model_local_diffusion),
-                    )
-                    Text(
-                        text = stringResource(id = R.string.model_local_diffusion_size),
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Button(
-                    modifier = Modifier.padding(end = 8.dp),
-                    onClick = onDownloadCardButtonClick,
-                ) {
-                    Text(
-                        text = stringResource(id = when (state.downloadState) {
-                            is DownloadState.Downloading -> R.string.cancel
-                            is DownloadState.Error -> R.string.retry
-                            else -> {
-                                if (state.localModelDownloaded) R.string.delete
-                                else R.string.download
-                            }
-                        }),
-                        color = LocalContentColor.current,
-                    )
-                }
-            }
-            when (state.downloadState) {
-                is DownloadState.Downloading -> {
-                    LinearProgressIndicator(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth(),
-                        progress = state.downloadState.percent / 100f,
-                    )
-                }
-                is DownloadState.Error -> {
-                    Text(
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .padding(bottom = 8.dp),
-                        text = stringResource(id = R.string.error_download_fail),
-                    )
-                }
-                else -> Unit
-            }
+        state.localModels.forEach { localModel ->
+            LocalModelItem(
+                model = localModel,
+                onDownloadCardButtonClick = onDownloadCardButtonClick,
+                onSelect = onSelectLocalModel,
+            )
         }
         Text(
             modifier = Modifier.padding(top = 16.dp),

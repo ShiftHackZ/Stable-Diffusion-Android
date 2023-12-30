@@ -4,5 +4,5 @@ import com.shifthackz.aisdv1.domain.entity.DownloadState
 import io.reactivex.rxjava3.core.Observable
 
 interface DownloadModelUseCase {
-    operator fun invoke(): Observable<DownloadState>
+    operator fun invoke(id: String): Observable<DownloadState>
 }

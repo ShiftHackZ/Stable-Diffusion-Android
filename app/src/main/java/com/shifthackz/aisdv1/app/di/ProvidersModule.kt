@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
 import com.shifthackz.aisdv1.feature.diffusion.environment.DeviceNNAPIFlagProvider
+import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import com.shifthackz.aisdv1.network.qualifiers.CredentialsProvider
 import com.shifthackz.aisdv1.network.qualifiers.HordeApiKeyProvider
@@ -107,5 +108,9 @@ val providersModule = module {
                 .let { nnApi -> if (nnApi) LocalDiffusionFlag.NN_API else LocalDiffusionFlag.CPU }
                 .let(LocalDiffusionFlag::value)
         }
+    }
+
+    single {
+        LocalModelIdProvider { get<PreferenceManager>().localModelId }
     }
 }

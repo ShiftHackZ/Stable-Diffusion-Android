@@ -26,6 +26,7 @@ import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionTensor
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
 import com.shifthackz.aisdv1.feature.diffusion.environment.DeviceNNAPIFlagProvider
+import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
 import java.nio.IntBuffer
 import java.util.EnumSet
 import java.util.Random
@@ -37,12 +38,14 @@ internal class UNet(
     private val deviceNNAPIFlagProvider: DeviceNNAPIFlagProvider,
     private val ortEnvironmentProvider: OrtEnvironmentProvider,
     private val fileProviderDescriptor: FileProviderDescriptor,
+    private val localModelIdProvider: LocalModelIdProvider,
 ) {
 
     private val decoder: VaeDecoder
         get() = VaeDecoder(
             ortEnvironmentProvider,
             fileProviderDescriptor,
+            localModelIdProvider,
             deviceNNAPIFlagProvider.get(),
         )
 
@@ -62,7 +65,7 @@ internal class UNet(
             options.addNnapi(EnumSet.of(NNAPIFlags.CPU_DISABLED))
         }
         session = ortEnvironmentProvider.get().createSession(
-            "${fileProviderDescriptor.localModelDirPath}/${LocalDiffusionContract.UNET_MODEL}",
+            "${fileProviderDescriptor.localModelDirPath}/${localModelIdProvider.get()}/${LocalDiffusionContract.UNET_MODEL}",
             options
         )
     }

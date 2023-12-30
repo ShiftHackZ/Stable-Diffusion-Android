@@ -6,5 +6,5 @@ internal class DeleteModelUseCaseImpl(
     private val downloadableModelRepository: DownloadableModelRepository,
 ) : DeleteModelUseCase {
 
-    override fun invoke() = downloadableModelRepository.delete()
+    override fun invoke(id: String) = downloadableModelRepository.delete(id)
 }
