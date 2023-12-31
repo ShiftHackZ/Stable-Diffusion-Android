@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.DownloadState
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
@@ -21,12 +22,12 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
-import com.shifthackz.aisdv1.domain.usecase.downloadable.SelectLocalAiModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.features.SetupConnectEvent
 import com.shifthackz.aisdv1.presentation.features.SetupConnectFailure
 import com.shifthackz.aisdv1.presentation.features.SetupConnectSuccess
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomModelSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
 import com.shifthackz.aisdv1.presentation.utils.Constants
@@ -45,10 +46,8 @@ class ServerSetupViewModel(
     private val testConnectivityUseCase: TestConnectivityUseCase,
     private val testHordeApiKeyUseCase: TestHordeApiKeyUseCase,
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
-    private val selectLocalAiModelUseCase: SelectLocalAiModelUseCase,
     private val downloadModelUseCase: DownloadModelUseCase,
     private val deleteModelUseCase: DeleteModelUseCase,
-//    private val checkDownloadedModelUseCase: CheckDownloadedModelUseCase,
     private val getLocalAiModelsUseCase: GetLocalAiModelsUseCase,
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
     private val schedulersProvider: SchedulersProvider,
@@ -69,6 +68,7 @@ class ServerSetupViewModel(
             .subscribeBy(::errorLog) { (configuration, localModels) ->
                 currentState
                     .copy(localModels = localModels.mapToUi())
+                    .copy(localCustomModel = localModels.mapLocalCustomModelSwitchState())
                     .withSource(configuration.source)
                     .withDemoMode(configuration.demoMode)
                     .withServerUrl(configuration.serverUrl)
@@ -113,6 +113,17 @@ class ServerSetupViewModel(
 
     fun updateHordeDefaultApiKeyUsage(value: Boolean) = currentState
         .copy(hordeDefaultApiKey = value)
+        .let(::setState)
+
+    fun updateAllowLocalCustomModel(value: Boolean) = currentState
+        .copy(
+            localCustomModel = value,
+            localModels = currentState.localModels.withNewState(
+                currentState.localModels.find { it.id == LocalAiModel.CUSTOM.id }!!.copy(
+                    selected = value,
+                ),
+            ),
+        )
         .let(::setState)
 
     fun connectToServer() {

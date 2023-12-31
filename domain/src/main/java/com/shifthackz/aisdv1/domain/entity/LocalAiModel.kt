@@ -7,4 +7,13 @@ data class LocalAiModel(
     val sources: List<String>,
     val downloaded: Boolean = false,
     val selected: Boolean = false,
-)
+) {
+    companion object {
+        val CUSTOM = LocalAiModel(
+            id = "CUSTOM",
+            name = "Custom",
+            size = "NaN",
+            sources = emptyList(),
+        )
+    }
+}

@@ -27,6 +27,7 @@ import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvide
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
 import com.shifthackz.aisdv1.feature.diffusion.environment.DeviceNNAPIFlagProvider
 import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
+import com.shifthackz.aisdv1.feature.diffusion.extensions.modelPathPrefix
 import java.nio.IntBuffer
 import java.util.EnumSet
 import java.util.Random
@@ -65,7 +66,7 @@ internal class UNet(
             options.addNnapi(EnumSet.of(NNAPIFlags.CPU_DISABLED))
         }
         session = ortEnvironmentProvider.get().createSession(
-            "${fileProviderDescriptor.localModelDirPath}/${localModelIdProvider.get()}/${LocalDiffusionContract.UNET_MODEL}",
+            "${modelPathPrefix(fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.UNET_MODEL}",
             options
         )
     }

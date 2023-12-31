@@ -48,8 +48,13 @@ android {
         foss {
             dimension "type"
             applicationIdSuffix = ".foss"
-            resValue "string", "app_name", "SDAI"
+            resValue "string", "app_name", "SDAI FOSS"
             buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"FOSS\""
+        }
+        playstore {
+            dimension "type"
+            resValue "string", "app_name", "SDAI"
+            buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"GOOGLE_PLAY\""
         }
     }
 }

@@ -1,9 +1,12 @@
 package com.shifthackz.aisdv1.presentation.activity
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -131,6 +134,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                     }
                                 },
                                 launchUrl = ::openUrl,
+                                launchManageStoragePermission = ::setupManageStoragePermission,
                             ).Build()
                         }
 
@@ -226,6 +230,18 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun setupManageStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val intent = Intent(ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+            startActivity(intent)
+        } else {
+            val hasPermission = requestStoragePermission()
+            if (hasPermission) {
+                Toast.makeText(this, "Already granted", Toast.LENGTH_LONG).show()
             }
         }
     }

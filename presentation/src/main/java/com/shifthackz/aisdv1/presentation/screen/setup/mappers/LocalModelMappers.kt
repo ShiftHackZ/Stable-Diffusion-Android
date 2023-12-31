@@ -5,6 +5,9 @@ import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 
 fun List<LocalAiModel>.mapToUi(): List<ServerSetupState.LocalModel> = map(LocalAiModel::mapToUi)
 
+fun List<LocalAiModel>.mapLocalCustomModelSwitchState(): Boolean =
+    find { it.selected && it.id == LocalAiModel.CUSTOM.id } != null
+
 fun LocalAiModel.mapToUi(): ServerSetupState.LocalModel = with(this) {
     ServerSetupState.LocalModel(
         id = id,

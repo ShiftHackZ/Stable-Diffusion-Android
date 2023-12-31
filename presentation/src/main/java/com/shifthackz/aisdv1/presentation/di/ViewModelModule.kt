@@ -44,7 +44,6 @@ val viewModelModule = module {
             testConnectivityUseCase = get(),
             testHordeApiKeyUseCase = get(),
             setServerConfigurationUseCase = get(),
-            selectLocalAiModelUseCase = get(),
             downloadModelUseCase = get(),
             deleteModelUseCase = get(),
             getLocalAiModelsUseCase = get(),

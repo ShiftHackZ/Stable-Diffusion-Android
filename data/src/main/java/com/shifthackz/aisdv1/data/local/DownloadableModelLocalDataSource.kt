@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.data.local
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.data.mappers.mapDomainToEntity
 import com.shifthackz.aisdv1.data.mappers.mapEntityToDomain
@@ -17,14 +19,26 @@ internal class DownloadableModelLocalDataSource(
     private val fileProviderDescriptor: FileProviderDescriptor,
     private val dao: LocalModelDao,
     private val preferenceManager: PreferenceManager,
+    private val buildInfoProvider: BuildInfoProvider,
 ) : DownloadableModelDataSource.Local {
     override fun getAll(): Single<List<LocalAiModel>> = dao.query()
         .map(List<LocalModelEntity>::mapEntityToDomain)
+        .map { models ->
+            buildList {
+                addAll(models)
+                if (buildInfoProvider.type == BuildType.FOSS) add(LocalAiModel.CUSTOM)
+            }
+        }
         .flatMap { models -> models.withLocalData() }
 
-    override fun getById(id: String) = dao.queryById(id)
-        .map(LocalModelEntity::mapEntityToDomain)
-        .flatMap { model -> model.withLocalData() }
+    override fun getById(id: String): Single<LocalAiModel> {
+        val chain = if (id == LocalAiModel.CUSTOM.id) Single.just(LocalAiModel.CUSTOM)
+        else dao
+            .queryById(id)
+            .map(LocalModelEntity::mapEntityToDomain)
+
+        return chain.flatMap { model -> model.withLocalData() }
+    }
 
     override fun getSelected(): Single<LocalAiModel> = Single
         .just(preferenceManager.localModelId)
@@ -35,13 +49,21 @@ internal class DownloadableModelLocalDataSource(
         preferenceManager.localModelId = id
     }
 
-    override fun save(list: List<LocalAiModel>) = dao.insertList(list.mapDomainToEntity())
+    override fun save(list: List<LocalAiModel>) = list
+        .filter { it.id != LocalAiModel.CUSTOM.id }
+        .mapDomainToEntity()
+        .let(dao::insertList)
 
     override fun isDownloaded(id: String): Single<Boolean> = Single.create { emitter ->
         try {
-            val localModelDir = getLocalModelDirectory(id)
-            val files = (localModelDir.listFiles()?.filter { it.isDirectory }) ?: emptyList<File>()
-            if (!emitter.isDisposed) emitter.onSuccess(localModelDir.exists() && files.size == 4)
+            if (id == LocalAiModel.CUSTOM.id) {
+                if (!emitter.isDisposed) emitter.onSuccess(true)
+            } else {
+                val localModelDir = getLocalModelDirectory(id)
+                val files =
+                    (localModelDir.listFiles()?.filter { it.isDirectory }) ?: emptyList<File>()
+                if (!emitter.isDisposed) emitter.onSuccess(localModelDir.exists() && files.size == 4)
+            }
         } catch (e: Exception) {
             if (!emitter.isDisposed) emitter.onSuccess(false)
         }

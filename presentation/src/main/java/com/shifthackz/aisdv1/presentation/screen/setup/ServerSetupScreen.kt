@@ -36,6 +36,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -54,10 +55,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
@@ -73,17 +77,21 @@ class ServerSetupScreen(
     private val onNavigateBack: () -> Unit = {},
     private val onServerSetupComplete: () -> Unit = {},
     private val launchUrl: (String) -> Unit = {},
+    private val launchManageStoragePermission: () -> Unit = {},
 ) : MviScreen<ServerSetupState, ServerSetupEffect>(viewModel), KoinComponent {
 
     private val linksProvider: LinksProvider by inject()
+    private val buildInfoProvider: BuildInfoProvider by inject()
 
     @Composable
     override fun Content() {
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = viewModel.state.collectAsStateWithLifecycle().value,
+            buildInfoProvider = buildInfoProvider,
             demoModeUrl = linksProvider.demoModeUrl,
             onNavigateBack = onNavigateBack,
+            launchManageStoragePermission = launchManageStoragePermission,
             onServerModeUpdated = viewModel::updateServerMode,
             onServerUrlUpdated = viewModel::updateServerUrl,
             onAuthTypeSelected = viewModel::updateAuthType,
@@ -98,6 +106,7 @@ class ServerSetupScreen(
             onOpenHordeSignUpWebSite = { launchUrl(linksProvider.hordeSignUpUrl) },
             onDownloadCardButtonClick = viewModel::localModelDownloadClickReducer,
             onSelectLocalModel = viewModel::localModelSelect,
+            onAllowLocalCustomModel = viewModel::updateAllowLocalCustomModel,
             onSetupButtonClick = viewModel::connectToServer,
             onDismissScreenDialog = viewModel::dismissScreenDialog,
         )
@@ -112,8 +121,10 @@ class ServerSetupScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
+    buildInfoProvider: BuildInfoProvider = BuildInfoProvider.stub,
     demoModeUrl: String,
     onNavigateBack: () -> Unit = {},
+    launchManageStoragePermission: () -> Unit = {},
     onServerModeUpdated: (ServerSetupState.Mode) -> Unit = {},
     onServerUrlUpdated: (String) -> Unit = {},
     onAuthTypeSelected: (ServerSetupState.AuthType) -> Unit = {},
@@ -128,6 +139,7 @@ private fun ScreenContent(
     onOpenHordeSignUpWebSite: () -> Unit = {},
     onDownloadCardButtonClick: (ServerSetupState.LocalModel) -> Unit = {},
     onSelectLocalModel: (ServerSetupState.LocalModel) -> Unit = {},
+    onAllowLocalCustomModel: (Boolean) -> Unit = {},
     onSetupButtonClick: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) {
@@ -220,10 +232,14 @@ private fun ScreenContent(
                         )
                         ServerSetupState.Mode.LOCAL -> LocalDiffusionSetupTab(
                             state = state,
+                            buildInfoProvider = buildInfoProvider,
+                            launchManageStoragePermission = launchManageStoragePermission,
                             onDownloadCardButtonClick = onDownloadCardButtonClick,
                             onSelectLocalModel = onSelectLocalModel,
+                            onAllowLocalCustomModel = onAllowLocalCustomModel,
                         )
                     }
+                    Spacer(modifier = Modifier.height(32.dp))
                 }
             },
         )
@@ -451,8 +467,11 @@ private fun HordeAiSetupTab(
 private fun LocalDiffusionSetupTab(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
+    buildInfoProvider: BuildInfoProvider = BuildInfoProvider.stub,
+    launchManageStoragePermission: () -> Unit = {},
     onDownloadCardButtonClick: (ServerSetupState.LocalModel) -> Unit = {},
     onSelectLocalModel: (ServerSetupState.LocalModel) -> Unit = {},
+    onAllowLocalCustomModel: (Boolean) -> Unit = {},
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
@@ -471,13 +490,48 @@ private fun LocalDiffusionSetupTab(
             text = stringResource(id = R.string.hint_local_diffusion_sub_title),
             style = MaterialTheme.typography.bodyMedium,
         )
-        state.localModels.forEach { localModel ->
-            LocalModelItem(
-                model = localModel,
-                onDownloadCardButtonClick = onDownloadCardButtonClick,
-                onSelect = onSelectLocalModel,
-            )
+        if (buildInfoProvider.type == BuildType.FOSS) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Switch(
+                    checked = state.localCustomModel,
+                    onCheckedChange = onAllowLocalCustomModel,
+                )
+                Text(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = stringResource(id = R.string.model_local_custom_switch),
+                )
+            }
         }
+        if (state.localCustomModel && buildInfoProvider.type == BuildType.FOSS) {
+            Text(
+                modifier = Modifier.padding(vertical = 8.dp),
+                text = stringResource(id = R.string.model_local_permission_title),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            OutlinedButton(
+                modifier = Modifier.fillMaxSize().padding(vertical = 8.dp),
+                onClick = launchManageStoragePermission,
+            ) {
+                Text(
+                    text = stringResource(id = R.string.model_local_permission_button),
+                    color = LocalContentColor.current,
+                )
+            }
+        }
+        state.localModels
+            .filter {
+                val customPredicate = it.id == LocalAiModel.CUSTOM.id
+                if (state.localCustomModel) customPredicate else !customPredicate
+            }
+            .forEach { localModel ->
+                LocalModelItem(
+                    model = localModel,
+                    onDownloadCardButtonClick = onDownloadCardButtonClick,
+                    onSelect = onSelectLocalModel,
+                )
+            }
         Text(
             modifier = Modifier.padding(top = 16.dp),
             text = stringResource(id = R.string.hint_local_diffusion_warning),
@@ -517,7 +571,6 @@ private fun ConfigurationModeButton(
                 ServerSetupState.Mode.LOCAL -> Icons.Default.Android
             },
             contentDescription = null,
-//            tint = MaterialTheme.colorScheme.onSecondaryContainer,
         )
         Text(
             modifier = Modifier
@@ -529,7 +582,6 @@ private fun ConfigurationModeButton(
                 ServerSetupState.Mode.LOCAL -> R.string.srv_type_local
             }),
             fontSize = 14.sp,
-//            color = MaterialTheme.colorScheme.onSecondaryContainer,
             textAlign = TextAlign.Center,
             lineHeight = 15.sp,
         )
