@@ -64,6 +64,7 @@ class TextToImageScreen(
             onSubSeedUpdated = viewModel::updateSubSeed,
             onSubSeedStrengthUpdated = viewModel::updateSubSeedStrength,
             onSamplerUpdated = viewModel::updateSampler,
+            onNsfwUpdated = viewModel::updateNsfw,
             onGenerateClicked = viewModel::generate,
             onSaveGeneratedImage = viewModel::saveGeneratedResult,
             onViewGeneratedImage = launchGalleryDetail,
@@ -93,6 +94,7 @@ private fun ScreenContent(
     onSubSeedUpdated: (String) -> Unit = {},
     onSubSeedStrengthUpdated: (Float) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
+    onNsfwUpdated: (Boolean) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
     onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
     onViewGeneratedImage: (Long) -> Unit = {},
@@ -142,6 +144,7 @@ private fun ScreenContent(
                         onSubSeedUpdated = onSubSeedUpdated,
                         onSubSeedStrengthUpdated = onSubSeedStrengthUpdated,
                         onSamplerUpdated = onSamplerUpdated,
+                        onNsfwUpdated = onNsfwUpdated,
                         widthValidationError = state.widthValidationError,
                         heightValidationError = state.heightValidationError,
                     )

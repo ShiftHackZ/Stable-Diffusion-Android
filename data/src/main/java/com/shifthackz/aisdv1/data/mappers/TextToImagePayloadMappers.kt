@@ -27,7 +27,7 @@ fun TextToImagePayload.mapToRequest(): TextToImageRequest = with(this) {
 fun TextToImagePayload.mapToHordeRequest(): HordeGenerationAsyncRequest = with(this) {
     HordeGenerationAsyncRequest(
         prompt = prompt,
-        nsfw = false,
+        nsfw = nsfw,
         sourceProcessing = null,
         sourceImage = null,
         params = HordeGenerationAsyncRequest.Params(

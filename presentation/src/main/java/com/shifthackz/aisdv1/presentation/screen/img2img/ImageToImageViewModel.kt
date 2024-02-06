@@ -110,10 +110,6 @@ class ImageToImageViewModel(
     fun generate() {
         when (currentState.imageState) {
             is ImageToImageState.ImageState.Image -> {
-//                if (!currentState.generateButtonEnabled) {
-//                    setActiveDialog(ImageToImageState.Modal.NoSdAiCoins)
-//                    return
-//                }
                 !Single
                     .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
                     .doOnSubscribe { setActiveDialog(ImageToImageState.Modal.Communicating()) }

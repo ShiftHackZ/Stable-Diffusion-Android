@@ -28,7 +28,7 @@ fun ImageToImagePayload.mapToRequest(): ImageToImageRequest = with(this) {
 fun ImageToImagePayload.mapToHordeRequest(): HordeGenerationAsyncRequest = with(this) {
     HordeGenerationAsyncRequest(
         prompt = prompt,
-        nsfw = false,
+        nsfw = nsfw,
         sourceProcessing = "img2img",
         sourceImage = base64Image,
         params = HordeGenerationAsyncRequest.Params(

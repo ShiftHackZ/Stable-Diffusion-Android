@@ -154,6 +154,10 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : MviEffect>(
         .copyState(selectedSampler = value)
         .let(::setGenerationState)
 
+    fun updateNsfw(value: Boolean) = currentState
+        .copyState(nsfw = value)
+        .let(::setGenerationState)
+
     private fun setGenerationState(state: GenerationMviState) = runCatching {
         setState(state as? S ?: currentState)
     }

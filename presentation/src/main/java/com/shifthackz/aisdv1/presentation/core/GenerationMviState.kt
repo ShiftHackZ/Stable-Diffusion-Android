@@ -22,6 +22,7 @@ abstract class GenerationMviState : MviState {
     abstract val availableSamplers: List<String>
     abstract val widthValidationError: UiText?
     abstract val heightValidationError: UiText?
+    abstract val nsfw: Boolean
     abstract val generateButtonEnabled: Boolean
 
     open val hasValidationErrors: Boolean
@@ -45,6 +46,7 @@ abstract class GenerationMviState : MviState {
         availableSamplers: List<String> = this.availableSamplers,
         widthValidationError: UiText? = this.widthValidationError,
         heightValidationError: UiText? = this.heightValidationError,
+        nsfw: Boolean = this.nsfw,
         generateButtonEnabled: Boolean = this.generateButtonEnabled,
     ): GenerationMviState = this
 }

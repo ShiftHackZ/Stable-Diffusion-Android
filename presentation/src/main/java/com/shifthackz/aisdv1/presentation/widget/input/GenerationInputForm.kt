@@ -13,6 +13,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -71,6 +72,7 @@ fun GenerationInputForm(
     onSubSeedUpdated: (String) -> Unit = {},
     onSubSeedStrengthUpdated: (Float) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
+    onNsfwUpdated: (Boolean) -> Unit = {},
     widthValidationError: UiText? = null,
     heightValidationError: UiText? = null,
     afterSlidersSection: @Composable () -> Unit = {},
@@ -191,6 +193,21 @@ fun GenerationInputForm(
                         label = { Text(stringResource(id = R.string.hint_seed)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     )
+                    if (state.mode == GenerationInputMode.HORDE) Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Switch(
+                            checked = state.nsfw,
+                            onCheckedChange = onNsfwUpdated,
+                        )
+                        Text(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            text = stringResource(id = R.string.hint_nsfw),
+                        )
+                    }
                     if (state.mode == GenerationInputMode.AUTOMATIC1111) TextField(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -291,6 +308,7 @@ private fun GenerationInputFormAutomaticPreview() {
             override val availableSamplers: List<String> = listOf("Euler a")
             override val widthValidationError: UiText? = null
             override val heightValidationError: UiText? = null
+            override val nsfw: Boolean = false
             override val generateButtonEnabled: Boolean = true
         },
     )
@@ -318,6 +336,7 @@ private fun GenerationInputFormAutomaticWithOptionsPreview() {
             override val availableSamplers: List<String> = listOf("Euler a")
             override val widthValidationError: UiText? = null
             override val heightValidationError: UiText? = null
+            override val nsfw: Boolean = false
             override val generateButtonEnabled: Boolean = true
         },
     )
@@ -345,6 +364,7 @@ private fun GenerationInputFormHordePreview() {
             override val availableSamplers: List<String> = listOf("Euler a")
             override val widthValidationError: UiText? = null
             override val heightValidationError: UiText? = null
+            override val nsfw: Boolean = false
             override val generateButtonEnabled: Boolean = true
         },
     )
@@ -372,6 +392,7 @@ private fun GenerationInputFormHordeWithOptionsPreview() {
             override val availableSamplers: List<String> = listOf("Euler a")
             override val widthValidationError: UiText? = null
             override val heightValidationError: UiText? = null
+            override val nsfw: Boolean = false
             override val generateButtonEnabled: Boolean = true
         },
     )

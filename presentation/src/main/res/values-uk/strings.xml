@@ -54,6 +54,7 @@
     <string name="hint_restore_faces">Відновлення обличч</string>
     <string name="hint_seed">Seed ідентифікатор</string>
     <string name="hint_sub_seed">Seed варіації</string>
+    <string name="hint_nsfw">Дозволити NSFW</string>
     <string name="hint_sub_seed_strength">Коефіцієнт варіації: %1$s</string>
     <string name="hint_denoising_strength">Коефіцієнт шумозаглушення: %1$s</string>
     <string name="hint_server_url">URL-адреса сервера</string>
