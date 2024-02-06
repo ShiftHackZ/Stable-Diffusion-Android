@@ -1,9 +1,10 @@
 package com.shifthackz.aisdv1.feature.analytics.provider
 
 import com.shifthackz.aisdv1.core.common.log.debugLog
-import com.shifthackz.aisdv1.domain.BuildConfig
+
 import com.shifthackz.aisdv1.domain.feature.analytics.AnalyticsEvent
 import com.shifthackz.aisdv1.feature.analytics.AnalyticsProvider
+import com.shifthackz.aisdv1.feature.analytics.BuildConfig
 
 internal class LoggableAnalyticsProvider : AnalyticsProvider {
 

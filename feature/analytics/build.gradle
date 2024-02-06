@@ -7,6 +7,9 @@ apply from: "$project.rootDir/gradle/common.gradle"
 
 android {
     namespace 'com.shifthackz.aisdv1.feature.analytics'
+    buildFeatures {
+        buildConfig true
+    }
 }
 
 dependencies {

@@ -43,7 +43,7 @@ android {
         buildTypes.release.signingConfig = signingConfigs.release
     }
 
-    flavorDimensions "type"
+    flavorDimensions = ["type"]
     productFlavors {
         foss {
             dimension "type"
@@ -56,6 +56,10 @@ android {
             resValue "string", "app_name", "SDAI"
             buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"GOOGLE_PLAY\""
         }
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 }
 
