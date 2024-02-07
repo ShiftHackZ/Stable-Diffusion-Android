@@ -17,5 +17,6 @@ internal class SetServerConfigurationUseCaseImpl(
             preferenceManager.serverUrl = configuration.serverUrl
             preferenceManager.demoMode = configuration.demoMode
             preferenceManager.hordeApiKey = configuration.hordeApiKey
+            preferenceManager.localModelId = configuration.localModelId
         }
 }

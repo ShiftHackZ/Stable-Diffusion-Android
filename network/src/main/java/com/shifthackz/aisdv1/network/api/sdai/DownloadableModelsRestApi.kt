@@ -11,8 +11,12 @@ import java.io.File
 
 interface DownloadableModelsRestApi {
 
+    @GET("/models.json")
+    fun fetchDownloadableModels(): Single<List<DownloadableModelResponse>>
+
     fun <T : Any> downloadModel(
-        path: String,
+        remoteUrl: String,
+        localPath: String,
         stateProgress: (Int) -> T,
         stateComplete: (File) -> T,
         stateFailed: (Throwable) -> T,

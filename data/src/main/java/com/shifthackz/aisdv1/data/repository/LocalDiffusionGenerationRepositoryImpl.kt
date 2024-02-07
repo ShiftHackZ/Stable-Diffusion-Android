@@ -12,8 +12,6 @@ import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 internal class LocalDiffusionGenerationRepositoryImpl(
@@ -35,9 +33,9 @@ internal class LocalDiffusionGenerationRepositoryImpl(
     override fun observeStatus() = localDiffusion.observeStatus()
 
     override fun generateFromText(payload: TextToImagePayload) = downloadableLocalDataSource
-        .exists()
-        .flatMap { modelDownloaded ->
-            if (modelDownloaded) generate(payload)
+        .getSelected()
+        .flatMap { model ->
+            if (model.downloaded) generate(payload)
             else Single.error(Throwable("Model not downloaded"))
         }
 

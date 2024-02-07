@@ -17,6 +17,7 @@ internal class GetConfigurationUseCaseImpl(
             source = preferenceManager.source,
             hordeApiKey = preferenceManager.hordeApiKey,
             authCredentials = authorizationStore.getAuthorizationCredentials(),
+            localModelId = preferenceManager.localModelId,
         )
     )
 }

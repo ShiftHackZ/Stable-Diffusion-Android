@@ -2,24 +2,6 @@
 <manifest xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="31"
-        tools:ignore="ScopedStorage" />
-
     <application
         android:name=".AiStableDiffusionClientApp"
         android:icon="@mipmap/ic_launcher"
@@ -34,7 +16,8 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:taskAffinity=""
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -50,14 +33,5 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
         </provider>
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5994265132349884~9645142847" />
-
-        <meta-data
-            android:name="applovin.sdk.key"
-            android:value="HIShVpilJ0_bWZ4mFNgLTkzJBXDODBScGQa478ynIUQut8zdD8QkhpWnWi5cdvFWNIT8gwL_TzvXzCNCTuDGm8"/>
-
     </application>
 </manifest>

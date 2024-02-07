@@ -18,12 +18,12 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.downloadable.CheckDownloadedModelUseCase
-import com.shifthackz.aisdv1.domain.usecase.downloadable.CheckDownloadedModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
@@ -88,9 +88,9 @@ internal val useCasesModule = module {
     factoryOf(::SaveLastResultToCacheUseCaseImpl) bind SaveLastResultToCacheUseCase::class
     factoryOf(::GetLastResultFromCacheUseCaseImpl) bind GetLastResultFromCacheUseCase::class
     factoryOf(::ObserveLocalDiffusionProcessStatusUseCaseImpl) bind ObserveLocalDiffusionProcessStatusUseCase::class
+    factoryOf(::GetLocalAiModelsUseCaseImpl) bind GetLocalAiModelsUseCase::class
     factoryOf(::DownloadModelUseCaseImpl) bind DownloadModelUseCase::class
     factoryOf(::DeleteModelUseCaseImpl) bind DeleteModelUseCase::class
-    factoryOf(::CheckDownloadedModelUseCaseImpl) bind CheckDownloadedModelUseCase::class
 }
 
 internal val debugModule = module {

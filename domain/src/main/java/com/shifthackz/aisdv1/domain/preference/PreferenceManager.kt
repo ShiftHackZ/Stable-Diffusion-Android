@@ -14,6 +14,7 @@ interface PreferenceManager {
     var source: ServerSource
     var hordeApiKey: String
     var forceSetupAfterUpdate: Boolean
+    var localModelId: String
     var localUseNNAPI: Boolean
 
     fun observe(): Flowable<Settings>

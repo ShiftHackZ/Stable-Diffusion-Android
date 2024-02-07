@@ -44,5 +44,6 @@ val databaseModule = module {
 
     //region PERSISTENT DB DAOs
     single { get<PersistentDatabase>().generationResultDao() }
+    single { get<PersistentDatabase>().localModelDao() }
     //endregion
 }

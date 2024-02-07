@@ -14,8 +14,8 @@ android {
     namespace 'com.shifthackz.aisdv1.app'
     defaultConfig {
         applicationId "com.shifthackz.aisdv1.app"
-        versionName "0.5.3"
-        versionCode 166
+        versionName "0.5.4"
+        versionCode 167
 
         buildConfigField "String", "IMAGE_CDN_URL", "\"https://random.imagecdn.app\""
         buildConfigField "String", "HORDE_AI_URL", "\"https://stablehorde.net\""
@@ -43,14 +43,23 @@ android {
         buildTypes.release.signingConfig = signingConfigs.release
     }
 
-    flavorDimensions "type"
+    flavorDimensions = ["type"]
     productFlavors {
         foss {
             dimension "type"
             applicationIdSuffix = ".foss"
-            resValue "string", "app_name", "SDAI"
+            resValue "string", "app_name", "SDAI FOSS"
             buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"FOSS\""
         }
+        playstore {
+            dimension "type"
+            resValue "string", "app_name", "SDAI"
+            buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"GOOGLE_PLAY\""
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 }
 

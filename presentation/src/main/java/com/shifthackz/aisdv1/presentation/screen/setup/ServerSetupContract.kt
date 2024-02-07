@@ -32,8 +32,8 @@ data class ServerSetupState(
     val originalLogin: String = "",
     val password: String = "",
     val originalPassword: String = "",
-    val localModelDownloaded: Boolean = false,
-    val downloadState: DownloadState = DownloadState.Unknown,
+    val localModels: List<LocalModel> = emptyList(),
+    val localCustomModel: Boolean = false,
     val passwordVisible: Boolean = false,
     val serverUrlValidationError: UiText? = null,
     val loginValidationError: UiText? = null,
@@ -107,6 +107,15 @@ data class ServerSetupState(
         ANONYMOUS,
         HTTP_BASIC;
     }
+
+    data class LocalModel(
+        val id: String,
+        val name: String,
+        val size: String,
+        val downloaded: Boolean = false,
+        val downloadState: DownloadState = DownloadState.Unknown,
+        val selected: Boolean = false,
+    )
 }
 
 enum class ServerSetupLaunchSource(val key: Int) {
