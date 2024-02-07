@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.DownloadState
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
@@ -18,15 +19,17 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
-import com.shifthackz.aisdv1.domain.usecase.downloadable.CheckDownloadedModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.features.SetupConnectEvent
 import com.shifthackz.aisdv1.presentation.features.SetupConnectFailure
 import com.shifthackz.aisdv1.presentation.features.SetupConnectSuccess
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomModelSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -45,7 +48,7 @@ class ServerSetupViewModel(
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
     private val downloadModelUseCase: DownloadModelUseCase,
     private val deleteModelUseCase: DeleteModelUseCase,
-    private val checkDownloadedModelUseCase: CheckDownloadedModelUseCase,
+    private val getLocalAiModelsUseCase: GetLocalAiModelsUseCase,
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
@@ -60,11 +63,12 @@ class ServerSetupViewModel(
 
     init {
         !getConfigurationUseCase()
-            .zipWith(checkDownloadedModelUseCase(), ::Pair)
+            .zipWith(getLocalAiModelsUseCase(), ::Pair)
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog) { (configuration, isDownloaded) ->
+            .subscribeBy(::errorLog) { (configuration, localModels) ->
                 currentState
-                    .copy(localModelDownloaded = isDownloaded)
+                    .copy(localModels = localModels.mapToUi())
+                    .copy(localCustomModel = localModels.mapLocalCustomModelSwitchState())
                     .withSource(configuration.source)
                     .withDemoMode(configuration.demoMode)
                     .withServerUrl(configuration.serverUrl)
@@ -111,6 +115,17 @@ class ServerSetupViewModel(
         .copy(hordeDefaultApiKey = value)
         .let(::setState)
 
+    fun updateAllowLocalCustomModel(value: Boolean) = currentState
+        .copy(
+            localCustomModel = value,
+            localModels = currentState.localModels.withNewState(
+                currentState.localModels.find { it.id == LocalAiModel.CUSTOM.id }!!.copy(
+                    selected = value,
+                ),
+            ),
+        )
+        .let(::setState)
+
     fun connectToServer() {
         if (!validate()) return
         return when (currentState.mode) {
@@ -152,7 +167,9 @@ class ServerSetupViewModel(
                 validation.isValid
             }
         }
-        ServerSetupState.Mode.LOCAL -> currentState.localModelDownloaded
+        ServerSetupState.Mode.LOCAL -> {
+            currentState.localModels.find { it.selected && it.downloaded } != null
+        }
     }
 
     private fun connectToAutomaticInstance() {
@@ -173,6 +190,7 @@ class ServerSetupViewModel(
                 source = currentState.mode.toSource(),
                 hordeApiKey = currentState.hordeApiKey,
                 authCredentials = credentials,
+                localModelId = currentState.localModels.find { it.selected }?.id ?: "",
             )
         )
             .doOnSubscribe { setScreenDialog(ServerSetupState.Dialog.Communicating) }
@@ -195,6 +213,7 @@ class ServerSetupViewModel(
                         source = currentState.originalMode.toSource(),
                         hordeApiKey = currentState.originalHordeApiKey,
                         authCredentials = currentState.credentialsDomain(true),
+                        localModelId = currentState.localModels.find { it.selected }?.id ?: "",
                     ),
                 ).andThen(Single.just(Result.failure(t)))
             }
@@ -221,6 +240,7 @@ class ServerSetupViewModel(
                 source = ServerSource.HORDE,
                 hordeApiKey = testApiKey,
                 authCredentials = AuthorizationCredentials.None,
+                localModelId = currentState.localModels.find { it.selected }?.id ?: "",
             ),
         )
             .andThen(testHordeApiKeyUseCase())
@@ -237,6 +257,7 @@ class ServerSetupViewModel(
                         source = currentState.originalMode.toSource(),
                         hordeApiKey = currentState.originalHordeApiKey,
                         authCredentials = AuthorizationCredentials.None,
+                        localModelId = currentState.localModels.find { it.selected }?.id ?: "",
                     )
                 ).andThen(Single.just(Result.failure(t)))
             }
@@ -261,6 +282,7 @@ class ServerSetupViewModel(
                 source = ServerSource.LOCAL,
                 hordeApiKey = Constants.HORDE_DEFAULT_API_KEY,
                 authCredentials = AuthorizationCredentials.None,
+                localModelId = currentState.localModels.find { it.selected }?.id ?: "",
             ),
         )
             .andThen(Single.just(Result.success(Unit)))
@@ -278,49 +300,98 @@ class ServerSetupViewModel(
             }
     }
 
-    fun downloadClickReducer() = when {
-        currentState.downloadState is DownloadState.Downloading -> {
-            downloadDisposable?.dispose()
-            downloadDisposable = null
-            setState(currentState.copy(downloadState = DownloadState.Unknown))
+    fun localModelSelect(localModel: ServerSetupState.LocalModel) {
+        if (currentState.localModels.any { it.downloadState is DownloadState.Downloading }) {
+            return
         }
-        currentState.localModelDownloaded -> {
-            setState(
-                currentState.copy(
-                    downloadState = DownloadState.Unknown,
-                    localModelDownloaded = false,
+        setState(
+            currentState.copy(
+                localModels = currentState.localModels.withNewState(
+                    localModel.copy(selected = true),
+                ),
+            ),
+        )
+    }
+
+    fun localModelDownloadClickReducer(localModel: ServerSetupState.LocalModel) {
+        when {
+            localModel.downloadState is DownloadState.Downloading -> {
+                downloadDisposable?.dispose()
+                downloadDisposable = null
+                setState(
+                    currentState.copy(
+                        localModels = currentState.localModels.withNewState(
+                            localModel.copy(downloadState = DownloadState.Unknown),
+                        ),
+                    ),
                 )
-            )
-            !deleteModelUseCase()
-                .subscribeOnMainThread(schedulersProvider)
-                .subscribeBy(::errorLog)
-        }
-        else -> {
-            setState(currentState.copy(downloadState = DownloadState.Downloading()))
-            downloadDisposable?.dispose()
-            downloadDisposable = null
-            downloadDisposable = downloadModelUseCase()
-                .distinctUntilChanged()
-                .subscribeOnMainThread(schedulersProvider)
-                .subscribeBy(
-                    onError = { t ->
-                        val message = t.localizedMessage ?: "Error"
-                        setState(currentState.copy(downloadState = DownloadState.Error(t)))
-                        setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
-                    },
-                    onNext = { downloadState ->
-                        debugLog("DOWNLOAD STATE : $downloadState")
-                        val newState = when (downloadState) {
-                            is DownloadState.Complete -> currentState.copy(
-                                downloadState = downloadState,
-                                localModelDownloaded = true,
+            }
+            localModel.downloaded -> {
+                setState(
+                    currentState.copy(
+                        localModels = currentState.localModels.withNewState(
+                            localModel.copy(
+                                downloadState = DownloadState.Unknown,
+                                downloaded = false,
+                            ),
+                        ),
+                    )
+                )
+                !deleteModelUseCase(localModel.id)
+                    .subscribeOnMainThread(schedulersProvider)
+                    .subscribeBy(::errorLog)
+            }
+            else -> {
+                setState(
+                    currentState.copy(
+                        localModels = currentState.localModels.withNewState(
+                            localModel.copy(
+                                downloadState = DownloadState.Downloading(),
+                            ),
+                        ),
+                    ),
+                )
+                downloadDisposable?.dispose()
+                downloadDisposable = null
+                downloadDisposable = downloadModelUseCase(localModel.id)
+                    .distinctUntilChanged()
+                    .subscribeOnMainThread(schedulersProvider)
+                    .subscribeBy(
+                        onError = { t ->
+                            val message = t.localizedMessage ?: "Error"
+                            setState(
+                                currentState.copy(
+                                    localModels = currentState.localModels.withNewState(
+                                        localModel.copy(
+                                            downloadState = DownloadState.Error(t),
+                                        ),
+                                    ),
+                                ),
                             )
-                            else -> currentState.copy(downloadState = downloadState)
-                        }
-                        setState(newState)
-                    },
-                )
-                .apply { addToDisposable() }
+                            setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
+                        },
+                        onNext = { downloadState ->
+                            debugLog("DOWNLOAD STATE : $downloadState")
+                            val newState = when (downloadState) {
+                                is DownloadState.Complete -> currentState.copy(
+                                    localModels = currentState.localModels.withNewState(
+                                        localModel.copy(
+                                            downloadState = downloadState,
+                                            downloaded = true,
+                                        ),
+                                    ),
+                                )
+                                else -> currentState.copy(
+                                    localModels = currentState.localModels.withNewState(
+                                        localModel.copy(downloadState = downloadState),
+                                    ),
+                                )
+                            }
+                            setState(newState)
+                        },
+                    )
+                    .apply { addToDisposable() }
+            }
         }
     }
 

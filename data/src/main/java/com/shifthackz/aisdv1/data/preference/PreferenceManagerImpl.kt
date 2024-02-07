@@ -82,6 +82,12 @@ class PreferenceManagerImpl(
             .putBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, value)
             .apply()
 
+    override var localModelId: String
+        get() = preferences.getString(KEY_LOCAL_MODEL_ID, "") ?: ""
+        set(value) = preferences.edit()
+            .putString(KEY_LOCAL_MODEL_ID, value)
+            .apply()
+
     override var localUseNNAPI: Boolean
         get() = preferences.getBoolean(KEY_LOCAL_NN_API, false)
         set(value) = preferences.edit()
@@ -117,6 +123,7 @@ class PreferenceManagerImpl(
         private const val KEY_SERVER_SOURCE = "key_server_source"
         private const val KEY_HORDE_API_KEY = "key_horde_api_key"
         private const val KEY_LOCAL_NN_API = "key_local_nn_api"
+        private const val KEY_LOCAL_MODEL_ID = "key_local_model_id"
         private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.3"
     }
 }

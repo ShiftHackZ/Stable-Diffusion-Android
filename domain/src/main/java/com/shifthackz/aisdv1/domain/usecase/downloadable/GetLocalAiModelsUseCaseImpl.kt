@@ -2,9 +2,9 @@ package com.shifthackz.aisdv1.domain.usecase.downloadable
 
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
 
-internal class CheckDownloadedModelUseCaseImpl(
+internal class GetLocalAiModelsUseCaseImpl(
     private val downloadableModelRepository: DownloadableModelRepository,
-) : CheckDownloadedModelUseCase {
+) : GetLocalAiModelsUseCase {
 
-    override fun invoke() = downloadableModelRepository.isModelDownloaded()
+    override fun invoke() = downloadableModelRepository.getAll()
 }

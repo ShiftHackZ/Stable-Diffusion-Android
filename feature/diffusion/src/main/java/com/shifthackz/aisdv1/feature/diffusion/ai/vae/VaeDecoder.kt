@@ -12,12 +12,15 @@ import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT_KEY_MODEL_FORMAT
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
+import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
+import com.shifthackz.aisdv1.feature.diffusion.extensions.modelPathPrefix
 import java.util.EnumSet
 import kotlin.math.roundToInt
 
 internal class VaeDecoder(
     private val ortEnvironmentProvider: OrtEnvironmentProvider,
     private val fileProviderDescriptor: FileProviderDescriptor,
+    private val localModelIdProvider: LocalModelIdProvider,
     private val deviceId: Int,
 ) {
 
@@ -63,7 +66,7 @@ internal class VaeDecoder(
             options.addNnapi(EnumSet.of(NNAPIFlags.CPU_DISABLED))
         }
         session = ortEnvironmentProvider.get().createSession(
-            "${fileProviderDescriptor.localModelDirPath}/${LocalDiffusionContract.VAE_MODEL}",
+            "${modelPathPrefix(fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.VAE_MODEL}",
             options
         )
     }

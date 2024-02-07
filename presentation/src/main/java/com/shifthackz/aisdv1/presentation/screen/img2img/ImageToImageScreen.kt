@@ -263,7 +263,8 @@ private fun ScreenContent(
                             )
                             Text(
                                 modifier = Modifier.padding(start = 8.dp),
-                                text = stringResource(id = R.string.action_generate)
+                                text = stringResource(id = R.string.action_generate),
+                                color = LocalContentColor.current,
                             )
                         }
                     }

@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.app.di
 
 import com.shifthackz.aisdv1.app.BuildConfig
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
@@ -11,6 +12,7 @@ import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
 import com.shifthackz.aisdv1.feature.diffusion.environment.DeviceNNAPIFlagProvider
+import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import com.shifthackz.aisdv1.network.qualifiers.CredentialsProvider
 import com.shifthackz.aisdv1.network.qualifiers.HordeApiKeyProvider
@@ -73,12 +75,13 @@ val providersModule = module {
             override val isDebug: Boolean = BuildConfig.DEBUG
             override val buildNumber: Int = BuildConfig.VERSION_CODE
             override val version: BuildVersion = BuildVersion(BuildConfig.VERSION_NAME)
+            override val type: BuildType = BuildType.fromBuildConfig(BuildConfig.BUILD_FLAVOR_TYPE)
 
             override fun toString(): String = buildString {
                 append("$version")
                 if (BuildConfig.DEBUG) append("-dev")
                 append(" ($buildNumber)")
-                append(" FOSS")
+                if (type == BuildType.FOSS) append(" FOSS")
             }
         }
     }
@@ -107,5 +110,9 @@ val providersModule = module {
                 .let { nnApi -> if (nnApi) LocalDiffusionFlag.NN_API else LocalDiffusionFlag.CPU }
                 .let(LocalDiffusionFlag::value)
         }
+    }
+
+    single {
+        LocalModelIdProvider { get<PreferenceManager>().localModelId }
     }
 }
