@@ -31,6 +31,7 @@ data class TextToImageState(
     override val availableSamplers: List<String> = emptyList(),
     override val widthValidationError: UiText? = null,
     override val heightValidationError: UiText? = null,
+    override val nsfw: Boolean = false,
     override val generateButtonEnabled: Boolean = true,
 ) : GenerationMviState() {
 
@@ -64,6 +65,7 @@ data class TextToImageState(
         availableSamplers: List<String>,
         widthValidationError: UiText?,
         heightValidationError: UiText?,
+        nsfw: Boolean,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
         mode = mode,
@@ -83,6 +85,7 @@ data class TextToImageState(
         availableSamplers = availableSamplers,
         widthValidationError = widthValidationError,
         heightValidationError = heightValidationError,
+        nsfw = nsfw,
         generateButtonEnabled = generateButtonEnabled,
     )
 }
@@ -100,6 +103,7 @@ fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
         subSeed = subSeed.trim(),
         subSeedStrength = subSeedStrength,
         sampler = selectedSampler,
+        nsfw = if (mode == GenerationInputMode.HORDE) nsfw else false,
     )
 }
 

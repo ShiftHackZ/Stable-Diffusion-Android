@@ -59,6 +59,7 @@
     <string name="hint_restore_faces">Restore faces</string>
     <string name="hint_seed">Seed</string>
     <string name="hint_sub_seed">Variation seed</string>
+    <string name="hint_nsfw">Allow NSFW</string>
     <string name="hint_sub_seed_strength">Variation strength: %1$s</string>
     <string name="hint_denoising_strength">Denoising Strength: %1$s</string>
     <string name="hint_server_url">Server URL</string>

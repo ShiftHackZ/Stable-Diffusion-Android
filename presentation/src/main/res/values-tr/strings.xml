@@ -54,6 +54,7 @@
     <string name="hint_restore_faces">Yüzleri Düzelt</string>
     <string name="hint_seed">Başlangıç Noktası (Seed)</string>
     <string name="hint_sub_seed">Varyasyon Noktası (Variation seed)</string>
+    <string name="hint_nsfw">İzin vermek NSFW</string>
     <string name="hint_sub_seed_strength">Varyasyon Yoğunluğu: %1$s</string>
     <string name="hint_denoising_strength">Gürültü Arındırma Yoğunluğu: %1$s</string>
     <string name="hint_server_url">Sunucu URL\'i</string>

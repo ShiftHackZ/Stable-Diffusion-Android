@@ -14,4 +14,5 @@ data class ImageToImagePayload(
     val subSeed: String,
     val subSeedStrength: Float,
     val sampler: String,
+    val nsfw: Boolean,
 )
