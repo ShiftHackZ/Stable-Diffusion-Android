@@ -38,7 +38,7 @@
     <string name="action_skip">Пропустити</string>
     <string name="action_options_show">Показати всі опції</string>
     <string name="action_options_hide">Сховати всі опції</string>
-    <string name="action_image_picker_gallery">Виберати фото</string>
+    <string name="action_image_picker_gallery">Вибрати фото</string>
     <string name="action_image_picker_camera">Фото з камери</string>
     <string name="action_image_picker_random">Випадкове зображення</string>
     <string name="action_change_configuration">Змінити конфігурацію</string>
@@ -121,7 +121,6 @@
 
     <string name="settings_item_config">Конфігурація</string>
     <string name="settings_item_sd_model">SD Модель</string>
-    <string name="settings_item_rewarded">Безкоштовні SDAI Монети</string>
     <string name="settings_item_local_nnapi">NNAPI (Beta)*</string>
     <string name="settings_item_local_nnapi_warning">*NNAPI може працювати нестабільно, якщо у вас виникають помилки, збої або погана продуктивність, вимкніть це.</string>
 
@@ -137,8 +136,6 @@
     <string name="settings_item_policy">Політика конфіденційності</string>
     <string name="settings_item_instructions">Як налаштувати сервер</string>
     <string name="settings_item_source">Вихідний код</string>
-    <string name="settings_item_check_updates">Перевірити оновлення</string>
-    <string name="settings_item_rate">Оцініть додаток в Google Play</string>
 
     <string name="communicating_progress_title">Зачекайте, йде коммунікація із сервером…</string>
     <string name="communicating_progress_sub_title">На це може знадобитися деякий час</string>
@@ -155,13 +152,6 @@
     <string name="interaction_export_sub_title">Ця функція експортує всі зображення галереї у архів *.zip. Цей процес може тривати довго, якщо у вас багато зображень. Бажаєте продовжити?</string>
     <string name="interaction_cache_sub_title">Це призведе до скидання налаштувань програми та видалення всіх створених зображень. Ви бажаєте продовжити?</string>
 
-    <string name="update_no_need_title">Немає оновлень</string>
-    <string name="update_no_need_sub_title">Ви використовуєте найновішу версію додатку</string>
-    <string name="update_title">Доступне оновлення</string>
-    <string name="update_sub_title">Ми випустили оновлену версію %1$s для вас. Бажаєте оновити додаток?</string>
-    <string name="update_required_title">Важливе оновлення</string>
-    <string name="update_required_sub_title">Будь ласка, оновіть додаток SDAI до останньої версії щоб продовжити користуватися ним.</string>
-
     <string name="interaction_delete_generation_title">Видалити зображення</string>
     <string name="interaction_delete_generation_sub_title">Ви впевнені, що хочете остаточно видалити це зображення?</string>
 
@@ -171,9 +161,6 @@
     <string name="status_connected">⚡️ З\'єднано</string>
     <string name="status_disconnected">️❌ Від\'єднано</string>
     <string name="status_communicating">Оновлення…</string>
-
-    <string name="sdai_coins_zero_title">Закінчилися монети SDAI</string>
-    <string name="sdai_coins_zero_sub_title">Ви витратили всі свої монети SDAI за сьогодні.\nПоверніться завтра, щоб отримати більше монет!\n\nПримітка: вам не потрібно мати монети SDAI, якщо ви використовуєте власний сервер.</string>
 
     <string name="error_title">Помилка</string>
     <string name="error_empty">Поле не може бути порожнім</string>
@@ -192,8 +179,6 @@
 
     <string name="notification_fail_title">Генерування не вдалося 😞</string>
     <string name="notification_fail_sub_title">Натисніть щоб побачити подробиці.</string>
-
-    <string name="model_local_diffusion_size">≈ 1.2 Гб</string>
 
     <string name="debug_section_qa">QA тест-кейси</string>
     <string name="debug_action_bad_base64">Внести битий Base64 в БД</string>

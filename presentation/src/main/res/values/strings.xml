@@ -127,7 +127,6 @@
 
     <string name="settings_item_config">Configuration</string>
     <string name="settings_item_sd_model">SD Model</string>
-    <string name="settings_item_rewarded">FREE SDAI Coins</string>
     <string name="settings_item_local_nnapi">Use NNAPI (Beta)*</string>
     <string name="settings_item_local_nnapi_warning">*NNAPI may not work stable, if you experience errors, crashes or bad performance disable this.</string>
 
@@ -143,8 +142,6 @@
     <string name="settings_item_policy">Privacy and legal policy</string>
     <string name="settings_item_instructions">Server setup instructions</string>
     <string name="settings_item_source">Get source code</string>
-    <string name="settings_item_check_updates">Check for updates</string>
-    <string name="settings_item_rate">Rate us on Google Play</string>
 
     <string name="communicating_progress_title">Hang tight, communicating with server…</string>
     <string name="communicating_progress_sub_title">This could take some time</string>
@@ -161,13 +158,6 @@
     <string name="interaction_export_sub_title">This will export all the gallery images as *.zip archive. This process may be long if you have many images, would you like to proceed?</string>
     <string name="interaction_cache_sub_title">This will reset app settings and delete all the generated images. Do you want to proceed?</string>
 
-    <string name="update_no_need_title">No update needed</string>
-    <string name="update_no_need_sub_title">Your app version is up to date</string>
-    <string name="update_title">Update available</string>
-    <string name="update_sub_title">We have a new version %1$s for you. Would you like to update your app?</string>
-    <string name="update_required_title">Update</string>
-    <string name="update_required_sub_title">Please update SDAI app to the latest version to continue using it.</string>
-
     <string name="interaction_delete_generation_title">Delete image</string>
     <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently remove this image?</string>
 
@@ -177,9 +167,6 @@
     <string name="status_connected">⚡️ Connected</string>
     <string name="status_disconnected">️❌ Disconnected</string>
     <string name="status_communicating">️Communicating…</string>
-
-    <string name="sdai_coins_zero_title">Out of SDAI coins</string>
-    <string name="sdai_coins_zero_sub_title">You spent all your SDAI coins for today.\nCome back tomorrow to receive more coins!\n\nNote: you don\'t need to have SDAI coins in case your are running own server.</string>
 
     <string name="error_title">Error</string>
     <string name="error_empty">Field can\'t be empty</string>
@@ -200,7 +187,6 @@
     <string name="notification_fail_sub_title">Click here to see the details.</string>
 
     <string name="model_local_diffusion" translatable="false">Local Diffusion</string>
-    <string name="model_local_diffusion_size">≈ 1.2 Gb</string>
 
     <string name="model_local_custom_switch">Load custom model</string>
     <string name="model_local_permission_title">To be able to load custom model, you need to allow SDAI app manage storage permissions, because starting from Android 11 it is needed to access non-scoped storage files.</string>
@@ -208,7 +194,6 @@
 
     <string name="model_local_custom_title">To use local custom model, place it to local folder in your phone storage: Download/SDAi/model</string>
     <string name="model_local_custom_sub_title">The final folder structure should be:</string>
-
 
     <string name="debug_section_qa">QA actions</string>
     <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>
