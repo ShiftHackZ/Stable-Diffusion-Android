@@ -30,8 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.shifthackz.aisdv1.domain.entity.DownloadState
@@ -40,7 +38,7 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 
 @Composable
-fun LocalModelItem(
+fun LocalModelItemComposable(
     modifier: Modifier = Modifier,
     model: ServerSetupState.LocalModel,
     onDownloadCardButtonClick: (ServerSetupState.LocalModel) -> Unit = {},

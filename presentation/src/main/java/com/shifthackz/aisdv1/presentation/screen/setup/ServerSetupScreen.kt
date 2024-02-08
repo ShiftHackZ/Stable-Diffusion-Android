@@ -67,7 +67,7 @@ import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
-import com.shifthackz.aisdv1.presentation.widget.item.LocalModelItem
+import com.shifthackz.aisdv1.presentation.widget.item.LocalModelItemComposable
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -526,7 +526,7 @@ private fun LocalDiffusionSetupTab(
                 if (state.localCustomModel) customPredicate else !customPredicate
             }
             .forEach { localModel ->
-                LocalModelItem(
+                LocalModelItemComposable(
                     model = localModel,
                     onDownloadCardButtonClick = onDownloadCardButtonClick,
                     onSelect = onSelectLocalModel,
