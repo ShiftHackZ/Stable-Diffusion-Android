@@ -5,5 +5,5 @@ import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import io.reactivex.rxjava3.core.Single
 
 interface ImageToImageUseCase {
-    operator fun invoke(payload: ImageToImagePayload): Single<AiGenerationResult>
+    operator fun invoke(payload: ImageToImagePayload): Single<List<AiGenerationResult>>
 }

@@ -23,6 +23,7 @@ abstract class GenerationMviState : MviState {
     abstract val widthValidationError: UiText?
     abstract val heightValidationError: UiText?
     abstract val nsfw: Boolean
+    abstract val batchCount: Int
     abstract val generateButtonEnabled: Boolean
 
     open val hasValidationErrors: Boolean
@@ -47,6 +48,7 @@ abstract class GenerationMviState : MviState {
         widthValidationError: UiText? = this.widthValidationError,
         heightValidationError: UiText? = this.heightValidationError,
         nsfw: Boolean = this.nsfw,
+        batchCount: Int = this.batchCount,
         generateButtonEnabled: Boolean = this.generateButtonEnabled,
     ): GenerationMviState = this
 }

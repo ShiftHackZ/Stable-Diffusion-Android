@@ -241,7 +241,7 @@ private fun ScreenContent(
 }
 
 @Composable
-private fun GalleryUiItem(
+fun GalleryUiItem(
     item: GalleryGridItemUi,
     onClick: (GalleryGridItemUi) -> Unit = {},
 ) {

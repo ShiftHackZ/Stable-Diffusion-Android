@@ -20,6 +20,7 @@ import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCa
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
+import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
@@ -43,8 +44,10 @@ class ImageToImageViewModel(
     private val schedulersProvider: SchedulersProvider,
     private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
-) : GenerationMviViewModel<ImageToImageState, ImageToImageEffect>(
+) : GenerationMviViewModel<ImageToImageState, GenerationMviEffect>(
     schedulersProvider,
+    saveLastResultToCacheUseCase,
+    saveGenerationResultUseCase,
     preferenceManager,
     getStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase,
@@ -88,9 +91,9 @@ class ImageToImageViewModel(
         return super.updateFormPreviousAiGeneration(ai)
     }
 
-    fun openPreviousGenerationInput() = setActiveDialog(ImageToImageState.Modal.PromptBottomSheet)
+    override fun dismissScreenModal() = setActiveDialog(ImageToImageState.Modal.None)
 
-    fun dismissScreenDialog() = setActiveDialog(ImageToImageState.Modal.None)
+    fun openPreviousGenerationInput() = setActiveDialog(ImageToImageState.Modal.PromptBottomSheet)
 
     fun updateDenoisingStrength(value: Float) = currentState
         .copy(denoisingStrength = value)
@@ -118,7 +121,6 @@ class ImageToImageViewModel(
                     .map(currentState::preProcessed)
                     .map(ImageToImageState::mapToPayload)
                     .flatMap(imageToImageUseCase::invoke)
-                    .flatMap(saveLastResultToCacheUseCase::invoke)
                     .subscribeOnMainThread(schedulersProvider)
                     .subscribeBy(
                         onError = { t ->
@@ -136,13 +138,13 @@ class ImageToImageViewModel(
                             errorLog(t)
                         },
                         onSuccess = { ai ->
-                            analytics.logEvent(AiImageGenerated(ai))
+                            ai.forEach { analytics.logEvent(AiImageGenerated(it)) }
                             notificationManager.show(
                                 R.string.notification_finish_title.asUiText(),
                                 R.string.notification_finish_sub_title.asUiText(),
                             )
                             setActiveDialog(
-                                ImageToImageState.Modal.Image(
+                                ImageToImageState.Modal.Image.create(
                                     ai,
                                     preferenceManager.autoSaveAiResults,
                                 )
@@ -169,16 +171,12 @@ class ImageToImageViewModel(
                 errorLog(t)
             },
             onSuccess = { bitmap ->
-                dismissScreenDialog()
+                dismissScreenModal()
                 currentState
                     .copy(imageState = ImageToImageState.ImageState.Image(bitmap))
                     .let(::setState)
             },
         )
-
-    fun saveGeneratedResult(ai: AiGenerationResult) = !saveGenerationResultUseCase(ai)
-        .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(::errorLog) { dismissScreenDialog() }
 
     private fun setActiveDialog(modal: ImageToImageState.Modal) = currentState
         .copy(screenModal = modal)

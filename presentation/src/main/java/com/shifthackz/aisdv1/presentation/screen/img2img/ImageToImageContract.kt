@@ -3,14 +3,11 @@ package com.shifthackz.aisdv1.presentation.screen.img2img
 import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
-
-sealed interface ImageToImageEffect : MviEffect
 
 data class ImageToImageState(
     val imageState: ImageState = ImageState.None,
@@ -35,6 +32,7 @@ data class ImageToImageState(
     override val widthValidationError: UiText? = null,
     override val heightValidationError: UiText? = null,
     override val nsfw: Boolean = false,
+    override val batchCount: Int = 1,
     override val generateButtonEnabled: Boolean = true,
 ) : GenerationMviState() {
 
@@ -52,7 +50,16 @@ data class ImageToImageState(
         data object LoadingRandomImage : Modal
         data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
         data object PromptBottomSheet : Modal
-        data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Modal
+        sealed interface Image : Modal {
+            data class Single(val result: AiGenerationResult, val autoSaveEnabled: Boolean): Image
+            data class Batch(val results: List<AiGenerationResult>, val autoSaveEnabled: Boolean): Image
+
+            companion object {
+                fun create(list: List<AiGenerationResult>, autoSaveEnabled: Boolean): Image =
+                    if (list.size > 1) Batch(list, autoSaveEnabled)
+                    else Single(list.first(), autoSaveEnabled)
+            }
+        }
         data class Error(val error: UiText) : Modal
     }
 
@@ -75,6 +82,7 @@ data class ImageToImageState(
         widthValidationError: UiText?,
         heightValidationError: UiText?,
         nsfw: Boolean,
+        batchCount: Int,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
         mode = mode,
@@ -95,6 +103,7 @@ data class ImageToImageState(
         widthValidationError = widthValidationError,
         heightValidationError = heightValidationError,
         nsfw = nsfw,
+        batchCount = batchCount,
         generateButtonEnabled = generateButtonEnabled,
     )
 
@@ -122,5 +131,6 @@ fun ImageToImageState.mapToPayload(): ImageToImagePayload = with(this) {
         subSeedStrength = subSeedStrength,
         sampler = selectedSampler,
         nsfw = if (mode == GenerationInputMode.HORDE) nsfw else false,
+        batchCount = batchCount,
     )
 }
