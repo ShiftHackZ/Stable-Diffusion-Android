@@ -30,11 +30,8 @@ abstract class Screen {
     @Composable
     protected open fun ApplySystemUiColors() {
         val systemUiController = rememberSystemUiController()
-        val statusBarColor = statusBarColor()
-        val statusBarDarkIcons = statusBarDarkIcons()
         val navigationBarColor = navigationBarColor()
         SideEffect {
-//            systemUiController.setStatusBarColor(statusBarColor, statusBarDarkIcons)
             systemUiController.setNavigationBarColor(navigationBarColor)
         }
     }

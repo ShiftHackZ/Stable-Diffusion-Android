@@ -1,8 +1,8 @@
 ext {
     composeBomVersion = '2023.10.01'
     composeNavVersion = '2.7.6'
-    lifecycleViewModelVersion = '2.6.1'
-    lifecycleComposeVersion = '2.6.1'
+    lifecycleViewModelVersion = '2.6.2'
+    lifecycleComposeVersion = '2.6.2'
     coreKtxVersion = '1.12.0'
     appCompatVersion = '1.6.1'
     activityVersion = '1.7.2'
