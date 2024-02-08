@@ -50,8 +50,8 @@ class AiStableDiffusionClientApp : Application() {
 
     private fun initializeLogging() {
         Timber.plant(FileLoggingTree())
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-        }
+//        }
     }
 }
