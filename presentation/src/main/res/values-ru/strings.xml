@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="empty">Пусто</string>
+    <string name="language">Русский</string>
+    <string name="ok">OK</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="cancel">Отмена</string>
+    <string name="retry">Повторить</string>
+    <string name="delete">Удалить</string>
+    <string name="download">Загрузить</string>
+    <string name="width">Длина</string>
+    <string name="height">Высота</string>
+    <string name="browse">Просмотр</string>
+
+    <string name="version">Версия %1$s</string>
+
+    <string name="splash_status_initializing">Инициализация…</string>
+    <string name="splash_status_fetching">Загрузка занных…</string>
+    <string name="splash_status_launching">Запуск приложения!</string>
+
+    <string name="local_no_img2img_support_title">Не доступно</string>
+    <string name="local_no_img2img_support_sub_title">Режим «Изображение в изображении» (img2img) недоступен при использовании локальных ресурсов телефона для создания изображений.</string>
+    <string name="local_no_img2img_support_sub_title_2">Вы можете перейти к генерации на основе сервера в настройках, чтобы использовать этот режим.</string>
+
+    <string name="action_generate">Генерировать</string>
+    <string name="action_export">Экспорт</string>
+    <string name="action_delete_image">Удалить</string>
+    <string name="action_select">Выбрать</string>
+    <string name="action_connect">Подключиться</string>
+    <string name="action_setup">Настроить</string>
+    <string name="action_share_prompt">Поделиться запросом</string>
+    <string name="action_send_to_txt2img">Использовать в txt2img</string>
+    <string name="action_send_to_img2img">Использовать в img2img</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_update">Обновить</string>
+    <string name="action_skip">Пропустить</string>
+    <string name="action_options_show">Показать все опции</string>
+    <string name="action_options_hide">Скрыть все опции</string>
+    <string name="action_image_picker_gallery">Выбрать фото</string>
+    <string name="action_image_picker_camera">Фото из камеры</string>
+    <string name="action_image_picker_random">Случайное изображение</string>
+    <string name="action_change_configuration">Изменить конфигурацию</string>
+
+    <string name="srv_type_own">Сервер AUTOMATIC1111</string>
+    <string name="srv_type_horde">Сервер Horde AI</string>
+
+    <string name="hint_prompt">Запрос</string>
+    <string name="hint_prompt_negative">Отрицательный запрос</string>
+    <string name="hint_sampling_steps">Этапы выборки: %1$s</string>
+    <string name="hint_cfg_scale">CFG Шкала: %1$s</string>
+    <string name="hint_sampler">Метод выборки</string>
+    <string name="hint_restore_faces">Восстановление лиц</string>
+    <string name="hint_seed">Seed идентификатор</string>
+    <string name="hint_sub_seed">Seed вариации</string>
+    <string name="hint_nsfw">Разрешить NSFW</string>
+    <string name="hint_sub_seed_strength">Коэффициент вариации: %1$s</string>
+    <string name="hint_denoising_strength">Коэффициент шумоподавления: %1$s</string>
+    <string name="hint_server_url">URL-адрес сервера</string>
+    <string name="hint_sd_model">SD Модель</string>
+    <string name="hint_login">Логин</string>
+    <string name="hint_password">Пароль</string>
+
+    <string name="auth_anonymous">Анонимно</string>
+    <string name="auth_http_basic">HTTP Базовая</string>
+
+    <string name="hint_server_setup_title">Укажите свой URL-адрес Stable Diffusion WebUI</string>
+    <string name="hint_valid_urls">Примеры URL-адресов сервера:\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
+    <string name="hint_demo_mode">Этот режим позволяет проверить поведение программы, даже если у вас нет сервера Stable Diffusion WebUI.\n\nВ демонстрационном режиме программа игнорирует параметры генерации, не использует сервер искусственного интеллекта и возвращает фиктивные изображения.</string>
+    <string name="hint_args_warning" tools:ignore="TypographyDashes">Перед подключением убедитесь, что:\n• вы используете AUTOMATIC1111 WebUI с аргументами --api --listen\n• ваш брандмауэр не блокирует порт 7860\n• телефон подключен к одной сети Wi-Fi с ПК</string>
+
+    <string name="hint_server_horde_title">Подключиться к Horde AI</string>
+    <string name="hint_server_horde_sub_title">Horde AI – это краудсорсинговый распределенный кластер нод генерации изображений и текста.</string>
+    <string name="hint_server_horde_usage">Вы можете использовать ключ API по умолчанию для анонимного подключения. Однако анонимные учетные записи имеют самый низкий приоритет, когда поступает много одновременных запросов.</string>
+    <string name="hint_server_horde_api_key">API Ключ</string>
+    <string name="hint_server_horde_use_default_api_key">Стандартный API Ключ</string>
+    <string name="hint_server_horde_about">О Horde AI</string>
+    <string name="hint_server_horde_get_api_key">Получить свой API Ключ</string>
+
+    <string name="hint_local_diffusion_sub_title">Эта конфигурация позволяет запускать генерации Stable Diffusion на вашем телефоне без необходимости подключаться к удаленному серверу/облаку.</string>
+    <string name="hint_local_diffusion_warning">ВНИМАНИЕ! Функциональность Local Diffusion в бета-тестировании. Не ожидайте высококачественных изображений в локальном режиме. \n\nЭта реализация может не работать должным образом на мобильных телефонах. Производительность и скорость генерации зависят от ресурсов вашего телефона (ЦП, ОЗУ) и размера сгенерированного изображения (чем меньше размер изображения, тем быстрее генерируется).</string>
+
+    <string name="home_tab_txt_to_img">Txt2Img</string>
+    <string name="home_tab_img_to_img">Img2Img</string>
+    <string name="home_tab_gallery">Галерея</string>
+    <string name="home_tab_settings">Параметры</string>
+
+    <string name="gallery_tab_image">Изображение</string>
+    <string name="gallery_tab_original">Оригинал</string>
+    <string name="gallery_tab_info">Подробности</string>
+
+    <string name="title_text_to_image">Текст в Картинку</string>
+    <string name="title_image_to_image">Картинка в Картинку</string>
+    <string name="title_gallery">Галерея</string>
+    <string name="title_gallery_details">Результат генерации</string>
+    <string name="title_settings">Параметры</string>
+    <string name="title_server_setup">Конфигурация</string>
+    <string name="title_select_sd_model">Выберите SD ML модель</string>
+    <string name="title_clear_app_cache">Очистить кэш приложения</string>
+    <string name="title_debug_menu">Дебаг Меню</string>
+
+    <string name="gallery_media_store_banner">%1$s генераций находится в Download/SDAI</string>
+    <string name="gallery_info_field_date">Создано</string>
+    <string name="gallery_info_field_type">Тип</string>
+    <string name="gallery_info_field_prompt">Запрос</string>
+    <string name="gallery_info_field_negative_prompt">Отрицательный запрос</string>
+    <string name="gallery_info_field_size">Размер</string>
+    <string name="gallery_info_field_sampling_steps">Этапы выборки</string>
+    <string name="gallery_info_field_cfg">CFG Шкала</string>
+    <string name="gallery_info_field_restore_faces">Восстановление лиц</string>
+    <string name="gallery_info_field_sampler">Метод выборки</string>
+    <string name="gallery_info_field_seed">Seed</string>
+    <string name="gallery_info_field_sub_seed">Seed вариации</string>
+    <string name="gallery_info_field_sub_seed_strength">Коэффициент вариации</string>
+    <string name="gallery_info_field_denoising_strength">Коэффициент шумоподавления</string>
+
+    <string name="settings_header_server">Параметры AI</string>
+    <string name="settings_header_app">Параметры приложения</string>
+    <string name="settings_header_info">Информация</string>
+
+    <string name="settings_item_config">Конфигурация</string>
+    <string name="settings_item_sd_model">SD Модель</string>
+    <string name="settings_item_local_nnapi">NNAPI (Beta)*</string>
+    <string name="settings_item_local_nnapi_warning">*NNAPI может работать нестабильно, если у вас возникают ошибки, сбои или плохая производительность, выключите это.</string>
+
+    <string name="settings_item_language">Язык</string>
+    <string name="settings_item_demo">Демо режим</string>
+    <string name="settings_item_monitor_connection">Мониторинг сервера</string>
+    <string name="settings_item_auto_save">Авто-сохранение фото</string>
+    <string name="settings_item_auto_save_media_store">Сохранять в Загрузках</string>
+    <string name="settings_item_advanced_form_default">Всегда показывать все опции</string>
+    <string name="settings_item_clear_cache">Очистить кэш</string>
+
+    <string name="settings_item_report_problem">Сообщить о проблеме</string>
+    <string name="settings_item_policy">Политика конфиденциальности</string>
+    <string name="settings_item_instructions">Как настроить сервер</string>
+    <string name="settings_item_source">Исходный код</string>
+
+    <string name="communicating_progress_title">Подождите, коммуницируем с сервером…</string>
+    <string name="communicating_progress_sub_title">На это может потребоваться время</string>
+    <string name="communicating_random_image_title">Загружаем случайное изображение…</string>
+    <string name="communicating_local_title">Генерация Local Diffusion</string>
+    <string name="communicating_wait_time">Время ожидания: %1$s</string>
+    <string name="communicating_status_queue">Позиция в очереди: %1$s</string>
+    <string name="communicating_status_steps">Шаг: %1$s/%2$s</string>
+
+    <string name="exporting_progress_title">Экспорт вашей галереи…</string>
+    <string name="exporting_progress_sub_title">Это может занять некоторое время в зависимости от количества фотографий</string>
+
+    <string name="interaction_export_title">Экспорт галереи</string>
+    <string name="interaction_export_sub_title">Эта функция экспортирует все изображения галереи в архив *.zip. Этот процесс может длиться долго, если у вас много изображений. Хотите продолжить?</string>
+    <string name="interaction_cache_sub_title">Это приведет к сбросу настроек программы и удалению всех созданных изображений. Вы хотите продолжить?</string>
+
+    <string name="interaction_delete_generation_title">Удалить изображение</string>
+    <string name="interaction_delete_generation_sub_title">Вы уверены, что хотите окончательно удалить это изображение?</string>
+
+    <string name="gallery_empty_title">Здесь еще ничего нет…</string>
+    <string name="gallery_empty_sub_title">Попытайтесь создать что-то, и вы увидите свое изображение здесь!</string>
+
+    <string name="status_connected">⚡️ Соединено</string>
+    <string name="status_disconnected">️❌ Отключено</string>
+    <string name="status_communicating">Загрузка…</string>
+
+    <string name="error_title">Ошибка</string>
+    <string name="error_empty">Поле не может быть пустым</string>
+    <string name="error_empty_url">URL-адрес не должен быть пустым</string>
+    <string name="error_empty_field">Поле не может быть пустым</string>
+    <string name="error_invalid">Неверные данные</string>
+    <string name="error_invalid_scheme">URL должно начинаться с <b>http://</b> или <b>https://</b></string>
+    <string name="error_invalid_url">Недействительный URL-адрес сервера</string>
+    <string name="error_localhost_url">Вы не можете использовать localhost (127.0.0.1) URL-адрес для подключения к серверу.</string>
+    <string name="error_min_size">Минимальный размер %1$s</string>
+    <string name="error_max_size">Максимальный размер %1$s</string>
+    <string name="error_download_fail">Ошибка при загрузке</string>
+
+    <string name="notification_finish_title">Генерирование завершено 🤩</string>
+    <string name="notification_finish_sub_title">Нажмите, чтобы увидеть результат.</string>
+
+    <string name="notification_fail_title">Генерирование не удалось 😞</string>
+    <string name="notification_fail_sub_title">Нажмите, чтобы увидеть подробности.</string>
+
+    <string name="debug_section_qa">QA тест-кейсы</string>
+    <string name="debug_action_bad_base64">Внести битый Base64 в БД</string>
+</resources>

@@ -121,7 +121,6 @@
 
     <string name="settings_item_config">Ayarlar</string>
     <string name="settings_item_sd_model">SD Modeli</string>
-    <string name="settings_item_rewarded">Ücretsiz SDAI jetonları</string>
     <string name="settings_item_local_nnapi">NNAPI (Beta)*</string>
     <string name="settings_item_local_nnapi_warning">*NNAPI kararlı çalışmayabilir, hata, çökme veya kötü performansla karşılaşırsanız bunu devre dışı bırakın.</string>
 
@@ -137,8 +136,6 @@
     <string name="settings_item_policy">Gizlilik ve Hukuksal Politikalar</string>
     <string name="settings_item_instructions">Sunucu kurulum talimatları</string>
     <string name="settings_item_source">Kaynak kodunu alın</string>
-    <string name="settings_item_check_updates">Güncellemeleri denetleyin</string>
-    <string name="settings_item_rate">Bizi Google Play üzerinden değerlendirin</string>
 
     <string name="communicating_progress_title">Lütfen bekleyin, sunucu ile iletişime geçiliyor…</string>
     <string name="communicating_progress_sub_title">Bu biraz zaman alabilir.</string>
@@ -155,13 +152,6 @@
     <string name="interaction_export_sub_title">Bu işlem bütün galerideki resimleri tek bir .zip arşivi dosyası olarak dışa aktaracaktır. Galerinizin boyutuna göre bu işlem uzun bir zaman alabailir. Devam etmek istiyor musunuz?</string>
     <string name="interaction_cache_sub_title">Bu işlem bütün uygulama ayarlarını ve oluşturulan resimleri silecektir. Devam etmek istiyor musunuz?</string>
 
-    <string name="update_no_need_title">Güncelleme yok</string>
-    <string name="update_no_need_sub_title">Uygulama sürümünüz güncel</string>
-    <string name="update_title">Güncelleme mevcut</string>
-    <string name="update_sub_title">%1$s sürümü çıktı. Uygulamayı şimdi güncellemek ister misiniz?</string>
-    <string name="update_required_title">Güncelle</string>
-    <string name="update_required_sub_title">Lütfen SDAI uygulamasını kullanmaya devam etmek için güncelleyin.</string>
-
     <string name="interaction_delete_generation_title">Resmi sil</string>
     <string name="interaction_delete_generation_sub_title">Kalıcı olarak bu resmi silmek istediğinize emin misiniz?</string>
 
@@ -171,9 +161,6 @@
     <string name="status_connected">⚡️ Bağlandı</string>
     <string name="status_disconnected">️❌ Bağlantı Kesildi</string>
     <string name="status_communicating">Bağlanıyor…</string>
-
-    <string name="sdai_coins_zero_title">SDAI Jetonlarınız Bitti</string>
-    <string name="sdai_coins_zero_sub_title">SDAI için bütün jetonlarınız bitti.\nDaha fazla jeton kazanmak için yarın tekrar gelin!\n\nNot: Kendi sunucunuzu çalıştırdığınızda SDAI jetonlarına ihtiyaç duymazsınız.</string>
 
     <string name="error_title">Hata</string>
     <string name="error_empty">Alan boş olamaz</string>
@@ -192,8 +179,6 @@
 
     <string name="notification_fail_title">Üretim başarısız oldu 😞</string>
     <string name="notification_fail_sub_title">Ayrıntıları görmek için buraya tıklayın.</string>
-
-    <string name="model_local_diffusion_size">≈ 1.2 Gb</string>
 
     <string name="debug_section_qa">QA işlemleri</string>
     <string name="debug_action_bad_base64">Kötü Base64\'ü DB\'ye yerleştirin</string>
