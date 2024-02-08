@@ -6,7 +6,6 @@ import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
-import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
@@ -18,7 +17,6 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatus
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
-import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageEffect
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
