@@ -615,7 +615,7 @@ private fun LocalDiffusionSetupTab(
                     )
                     Text(
                         modifier = folderModifier(5),
-                        text = "tokenizer_config.json",
+                        text = "vocab.json",
                         style = folderStyle,
                     )
 
