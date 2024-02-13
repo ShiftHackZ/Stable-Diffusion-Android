@@ -16,7 +16,7 @@ internal interface DemoFeature<T> {
         .create { emitter ->
             runCatching {
                 val images = demoDataSerializer.readDemoAssets()
-                val index = Random.nextInt(0, images.size)
+                val index = 3//Random.nextInt(0, images.size)
                 images[index]
             }.fold(
                 onSuccess = emitter::onSuccess,
