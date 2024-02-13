@@ -13,7 +13,5 @@ android {
 dependencies {
     implementation project(":domain")
     implementation di.koinCore
-    implementation di.koinAndroid
     implementation reactive.rxkotlin
-    implementation google.gson
 }
