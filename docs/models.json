@@ -4,8 +4,7 @@
     "name": "chilloutmix",
     "size": "1.2 Gb",
     "sources": [
-      "https://share.moroz.cc/SDAI/chilloutmix.zip",
-      "https://drive.google.com/uc?export=download&id=1Z8D3sHkvosKsfn9ufnB66TUuW46iYf-N&confirm=t&uuid=94ddf728-e146-4375-aeb3-d126b8da3f0b&at=AB6BwCATWdQj6xRTLZYu00DwfxAV:1692354151068"
+      "https://github.com/ShiftHackZ/Local-Diffusion-Models-SDAI-ONXX/releases/download/patch-14022024/chilloutmix.zip"
     ]
   },
   {
@@ -13,7 +12,7 @@
     "name": "Absolute Reality",
     "size": "1.01 Gb",
     "sources": [
-      "https://share.moroz.cc/SDAI/majicmix.zip"
+      "https://github.com/ShiftHackZ/Local-Diffusion-Models-SDAI-ONXX/releases/download/patch-14022024/majicmix.zip"
     ]
   },
   {
@@ -21,7 +20,7 @@
     "name": "Real Vision",
     "size": "1.8 Gb",
     "sources": [
-      "https://share.moroz.cc/SDAI/realvision.zip"
+      "https://github.com/ShiftHackZ/Local-Diffusion-Models-SDAI-ONXX/releases/download/patch-14022024/realvision.zip"
     ]
   }
 ]
