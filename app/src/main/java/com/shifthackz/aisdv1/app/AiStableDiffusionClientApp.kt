@@ -20,7 +20,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
-
 class AiStableDiffusionClientApp : Application() {
 
     override fun onCreate() {
@@ -50,8 +49,8 @@ class AiStableDiffusionClientApp : Application() {
 
     private fun initializeLogging() {
         Timber.plant(FileLoggingTree())
-//        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-//        }
+        }
     }
 }

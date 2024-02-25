@@ -16,6 +16,7 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
 
 - Can use server environment powered by [AI Horde](https://stablehorde.net/) (a crowdsourced distributed cluster of Stable Diffusion workers)
 - Can use server environment powered by [Stable-Diffusion-WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) (AUTOMATIC1111)
+- Can use local environment powered by LocalDiffusion (Beta)
 - Supports original Txt2Img, Img2Img modes
   - **Positive** and **negative** prompt support
   - Support dynamic **size** in range from 64 to 2048 px (for width and height)
@@ -26,7 +27,8 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
   - **Restore faces** option
   - ( Img2Img ONLY ) : Image selection from device gallery _(requires user permission)_
   - ( Img2Img ONLY ) : Capture input image from camera _(requires user permission)_
-  - ( Img2Img ONLY ) : Fetching random image for the input 
+  - ( Img2Img ONLY ) : Fetching random image for the input
+  - Batch generation with maximum of 20 images (for A1111 and Horde)
 - In-app Gallery, stored locally, contains all AI generated images
   - Displays generated images grid
   - Image detail view: Zoom, Pinch, Generation Info. 
@@ -37,6 +39,7 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
   - Active SD Model selection
   - Server availability monitoring (http-ping method)
   - Enable/Disable auto-saving of generated images
+  - Enable/Disable saving generated images to `Download/SDAI` android MediaStore folder
   - Clear gallery / app cache
 
 ## Setup instruction
@@ -59,6 +62,12 @@ If for some reason you have no ability to run your server instance, you can togg
 [AI Horde](https://stablehorde.net/) is a crowdsourced distributed cluster of Image generation workers and text generation workers. 
 
 AI Horde requires to use API KEY, this mobile app alows to use either default API KEY (which is "0000000000"), or type your own. You can sign up and get your own AI Horde API KEY [here](https://stablehorde.net/register).
+
+### Option 3: Local Diffusion (Beta)
+
+Only **txt2img** mode is supported.
+
+Allows to use phone resources to generate images.
 
 ## Supported languages
 

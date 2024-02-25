@@ -17,11 +17,11 @@ data class GalleryState(
 ) : MviState {
 
     sealed interface Dialog {
-        object None : Dialog
+        data object None : Dialog
 
-        object ConfirmExport : Dialog
+        data object ConfirmExport : Dialog
 
-        object ExportInProgress : Dialog
+        data object ExportInProgress : Dialog
 
         data class Error(val error: UiText) : Dialog
     }

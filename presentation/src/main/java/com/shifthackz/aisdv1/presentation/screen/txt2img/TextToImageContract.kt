@@ -32,6 +32,7 @@ data class TextToImageState(
     override val widthValidationError: UiText? = null,
     override val heightValidationError: UiText? = null,
     override val nsfw: Boolean = false,
+    override val batchCount: Int = 1,
     override val generateButtonEnabled: Boolean = true,
 ) : GenerationMviState() {
 
@@ -43,7 +44,16 @@ data class TextToImageState(
         }
         data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
         data object PromptBottomSheet : Modal
-        data class Image(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Modal
+        sealed interface Image : Modal {
+            data class Single(val result: AiGenerationResult, val autoSaveEnabled: Boolean): Image
+            data class Batch(val results: List<AiGenerationResult>, val autoSaveEnabled: Boolean): Image
+
+            companion object {
+                fun create(list: List<AiGenerationResult>, autoSaveEnabled: Boolean): Image =
+                    if (list.size > 1) Batch(list, autoSaveEnabled)
+                    else Single(list.first(), autoSaveEnabled)
+            }
+        }
         data class Error(val error: UiText) : Modal
     }
 
@@ -66,6 +76,7 @@ data class TextToImageState(
         widthValidationError: UiText?,
         heightValidationError: UiText?,
         nsfw: Boolean,
+        batchCount: Int,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
         mode = mode,
@@ -86,6 +97,7 @@ data class TextToImageState(
         widthValidationError = widthValidationError,
         heightValidationError = heightValidationError,
         nsfw = nsfw,
+        batchCount = batchCount,
         generateButtonEnabled = generateButtonEnabled,
     )
 }
@@ -104,6 +116,7 @@ fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
         subSeedStrength = subSeedStrength,
         sampler = selectedSampler,
         nsfw = if (mode == GenerationInputMode.HORDE) nsfw else false,
+        batchCount = if (mode == GenerationInputMode.LOCAL) 1 else batchCount,
     )
 }
 

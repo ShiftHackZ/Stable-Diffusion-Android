@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 internal class ImageToImageUseCaseImpl(
@@ -14,9 +15,12 @@ internal class ImageToImageUseCaseImpl(
     private val preferenceManager: PreferenceManager,
 ) : ImageToImageUseCase {
 
-    override fun invoke(payload: ImageToImagePayload) = execute(payload)
+    override fun invoke(payload: ImageToImagePayload) = Observable
+        .range(1, payload.batchCount)
+        .flatMapSingle { generate(payload) }
+        .toList()
 
-    private fun execute(payload: ImageToImagePayload): Single<AiGenerationResult> {
+    private fun generate(payload: ImageToImagePayload): Single<AiGenerationResult> {
         if (preferenceManager.source == ServerSource.HORDE) {
             return hordeGenerationRepository.generateFromImage(payload)
         }

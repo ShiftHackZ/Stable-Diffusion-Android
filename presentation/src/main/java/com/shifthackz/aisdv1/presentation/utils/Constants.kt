@@ -26,6 +26,9 @@ object Constants {
     const val SAMPLING_STEPS_RANGE_MIN = 1
     const val SAMPLING_STEPS_RANGE_MAX = 150
 
+    const val BATCH_RANGE_MIN = 1
+    const val BATCH_RANGE_MAX = 20
+
     const val CFG_SCALE_RANGE_MIN = 1
     const val CFG_SCALE_RANGE_MAX = 30
 

@@ -54,6 +54,7 @@
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
     <string name="hint_sampling_steps">Sampling steps: %1$s</string>
+    <string name="hint_batch">Batch: %1$s</string>
     <string name="hint_cfg_scale">CFG Scale: %1$s</string>
     <string name="hint_sampler">Sampling method</string>
     <string name="hint_restore_faces">Restore faces</string>

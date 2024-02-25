@@ -50,13 +50,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.common.math.roundTo
-import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
+import com.shifthackz.aisdv1.presentation.core.GenerationMviScreen
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageBatchResultModal
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
@@ -70,7 +72,10 @@ class ImageToImageScreen(
     private val takePhoto: (ImagePickerCallback) -> Unit,
     private val launchGalleryDetail: (Long) -> Unit,
     private val launchServerSetup: () -> Unit,
-) : MviScreen<ImageToImageState, ImageToImageEffect>(viewModel) {
+) : GenerationMviScreen<ImageToImageState, GenerationMviEffect>(
+    viewModel,
+    launchGalleryDetail,
+) {
 
     @Composable
     override fun Content() {
@@ -95,18 +100,16 @@ class ImageToImageScreen(
             onSubSeedStrengthUpdated = viewModel::updateSubSeedStrength,
             onSamplerUpdated = viewModel::updateSampler,
             onNsfwUpdated = viewModel::updateNsfw,
+            onBatchCountUpdated = viewModel::updateBatchCount,
             onGenerateClicked = viewModel::generate,
             onChangeConfigurationClicked = launchServerSetup,
-            onSaveGeneratedImage = viewModel::saveGeneratedResult,
-            onViewGeneratedImage = launchGalleryDetail,
+            onSaveGeneratedImages = viewModel::saveGeneratedResults,
+            onViewGeneratedImage = viewModel::viewGeneratedResult,
             onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
             onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
-            onDismissScreenDialog = viewModel::dismissScreenDialog,
+            onDismissScreenDialog = viewModel::dismissScreenModal,
         )
     }
-
-    @Composable
-    override fun ApplySystemUiColors() = Unit
 }
 
 @Composable
@@ -131,10 +134,11 @@ private fun ScreenContent(
     onSubSeedStrengthUpdated: (Float) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
     onNsfwUpdated: (Boolean) -> Unit = {},
+    onBatchCountUpdated: (Int) -> Unit = {},
     onGenerateClicked: () -> Unit = {},
     onChangeConfigurationClicked: () -> Unit = {},
-    onSaveGeneratedImage: (AiGenerationResult) -> Unit = {},
-    onViewGeneratedImage: (Long) -> Unit = {},
+    onSaveGeneratedImages: (List<AiGenerationResult>) -> Unit = {},
+    onViewGeneratedImage: (AiGenerationResult) -> Unit = {},
     onOpenPreviousGenerationInput: () -> Unit = {},
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
@@ -193,6 +197,7 @@ private fun ScreenContent(
                             onSubSeedStrengthUpdated = onSubSeedStrengthUpdated,
                             onSamplerUpdated = onSamplerUpdated,
                             onNsfwUpdated = onNsfwUpdated,
+                            onBatchCountUpdated = onBatchCountUpdated,
                             widthValidationError = state.widthValidationError,
                             heightValidationError = state.heightValidationError,
                             afterSlidersSection = {
@@ -299,13 +304,24 @@ private fun ScreenContent(
                 text = state.screenModal.error,
                 onDismissRequest = onDismissScreenDialog,
             )
-            is ImageToImageState.Modal.Image -> GenerationImageResultDialog(
+            is ImageToImageState.Modal.Image.Single -> GenerationImageResultDialog(
                 imageBase64 = state.screenModal.result.image,
                 showSaveButton = !state.screenModal.autoSaveEnabled,
                 onDismissRequest = onDismissScreenDialog,
-                onSaveRequest = { onSaveGeneratedImage(state.screenModal.result) },
-                onViewDetailRequest = { onViewGeneratedImage(state.screenModal.result.id) },
+                onSaveRequest = { onSaveGeneratedImages(listOf(state.screenModal.result)) },
+                onViewDetailRequest = { onViewGeneratedImage(state.screenModal.result) },
             )
+            is ImageToImageState.Modal.Image.Batch -> ModalBottomSheet(
+                onDismissRequest = onDismissScreenDialog,
+                shape = RectangleShape,
+            ) {
+                GenerationImageBatchResultModal(
+                    state.screenModal.results,
+                    showSaveButton = !state.screenModal.autoSaveEnabled,
+                    onSaveRequest = { onSaveGeneratedImages(state.screenModal.results) },
+                    onViewDetailRequest = onViewGeneratedImage,
+                )
+            }
             is ImageToImageState.Modal.PromptBottomSheet -> ModalBottomSheet(
                 onDismissRequest = onDismissScreenDialog,
                 shape = RectangleShape,

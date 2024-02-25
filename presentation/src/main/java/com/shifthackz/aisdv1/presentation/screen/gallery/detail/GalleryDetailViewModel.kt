@@ -33,7 +33,6 @@ class GalleryDetailViewModel(
 
     init {
         !getGenerationResult(itemId)
-
             .subscribeOnMainThread(schedulersProvider)
             .postProcess()
             .subscribeBy(::errorLog) { ai ->

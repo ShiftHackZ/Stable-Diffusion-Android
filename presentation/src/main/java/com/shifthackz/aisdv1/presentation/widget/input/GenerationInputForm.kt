@@ -33,6 +33,8 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
+import com.shifthackz.aisdv1.presentation.utils.Constants.BATCH_RANGE_MAX
+import com.shifthackz.aisdv1.presentation.utils.Constants.BATCH_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_MAX
@@ -73,6 +75,7 @@ fun GenerationInputForm(
     onSubSeedStrengthUpdated: (Float) -> Unit = {},
     onSamplerUpdated: (String) -> Unit = {},
     onNsfwUpdated: (Boolean) -> Unit = {},
+    onBatchCountUpdated: (Int) -> Unit = {},
     widthValidationError: UiText? = null,
     heightValidationError: UiText? = null,
     afterSlidersSection: @Composable () -> Unit = {},
@@ -168,6 +171,7 @@ fun GenerationInputForm(
                 )
             }
         }
+        
         if (state.mode != GenerationInputMode.LOCAL) {
             AnimatedVisibility(visible = state.advancedOptionsVisible) {
                 Column {
@@ -266,17 +270,34 @@ fun GenerationInputForm(
                         },
                     )
                     afterSlidersSection()
+                    Text(
+                        modifier = Modifier.padding(top = 8.dp),
+                        text = stringResource(
+                            id = R.string.hint_batch,
+                            "${state.batchCount}",
+                        ),
+                    )
+                    Slider(
+                        value = state.batchCount * 1f,
+                        valueRange = (BATCH_RANGE_MIN * 1f)..(BATCH_RANGE_MAX * 1f),
+                        steps = abs(BATCH_RANGE_MIN - BATCH_RANGE_MAX) - 1,
+                        colors = sliderColors,
+                        onValueChange = {
+                            onBatchCountUpdated(it.roundToInt())
+                        },
+                    )
                     if (state.mode == GenerationInputMode.AUTOMATIC1111) Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Checkbox(
+                        Switch(
                             checked = state.restoreFaces,
                             onCheckedChange = onRestoreFacesUpdated,
                         )
                         Text(
+                            modifier = Modifier.padding(horizontal = 8.dp),
                             text = stringResource(id = R.string.hint_restore_faces),
                         )
                     }
@@ -309,6 +330,7 @@ private fun GenerationInputFormAutomaticPreview() {
             override val widthValidationError: UiText? = null
             override val heightValidationError: UiText? = null
             override val nsfw: Boolean = false
+            override val batchCount: Int = 2
             override val generateButtonEnabled: Boolean = true
         },
     )
@@ -337,6 +359,7 @@ private fun GenerationInputFormAutomaticWithOptionsPreview() {
             override val widthValidationError: UiText? = null
             override val heightValidationError: UiText? = null
             override val nsfw: Boolean = false
+            override val batchCount: Int = 2
             override val generateButtonEnabled: Boolean = true
         },
     )
@@ -365,6 +388,7 @@ private fun GenerationInputFormHordePreview() {
             override val widthValidationError: UiText? = null
             override val heightValidationError: UiText? = null
             override val nsfw: Boolean = false
+            override val batchCount: Int = 2
             override val generateButtonEnabled: Boolean = true
         },
     )
@@ -393,6 +417,7 @@ private fun GenerationInputFormHordeWithOptionsPreview() {
             override val widthValidationError: UiText? = null
             override val heightValidationError: UiText? = null
             override val nsfw: Boolean = false
+            override val batchCount: Int = 2
             override val generateButtonEnabled: Boolean = true
         },
     )
