@@ -572,7 +572,7 @@ private fun LocalDiffusionSetupTab(
                         style = folderStyle,
                     )
                     Text(
-                        modifier = folderModifier(2),
+                        modifier = Modifier.padding(start = 12.dp),
                         text = "SDAI",
                         style = folderStyle,
                     )
