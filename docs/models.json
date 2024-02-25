@@ -22,5 +22,302 @@
     "sources": [
       "https://github.com/ShiftHackZ/Local-Diffusion-Models-SDAI-ONXX/releases/download/patch-14022024/realvision.zip"
     ]
+  },
+  {
+    "id": "efe6dfe2-b014-4952-b140-8eb6b10ac508",
+    "name": "analogMadness",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/analogMadness.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/miena%2Clyriel%2Ccetus%2Canalogmadness/analogMadness*"
+    }
+  },
+  {
+    "id": "1a3be66e-b460-4c06-83fa-9ad51b3dd8c0",
+    "name": "aniflatmix",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/aniflatmix.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/landscape_modelsfp32noslicing/aniflatmix*"
+    }
+  },
+  {
+    "id": "1d9a01b0-9379-441b-8d11-787e13a1db59",
+    "name": "beautifulReal_v60",
+    "size": "1.1 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/beautifulRealistic_v60.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/beautifulrealv6%2Cmajicmix%2Ccyberreal%2Cepicrealism%2C/beautifulRealistic_v60"
+    }
+  },
+  {
+    "id": "adb7ed24-bb74-4c53-9c7c-3a2f4a98acc5",
+    "name": "cetusMix",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/cetusMix.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/miena%2Clyriel%2Ccetus%2Canalogmadness/cetusMix*"
+    }
+  },
+  {
+    "id": "b8fff310-dc05-4bbf-a025-ce0da13da9dc",
+    "name": "counterfit-v3.0",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/counterfit-v3.0.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/Counterfeit-V3.0%2CA-ZovyaRPGArtistTools%2CBabes%2CDreamlikeDiffusion/counterfeit*"
+    }
+  },
+  {
+    "id": "455548cc-18b7-4851-bef1-93ecc0ae73c3",
+    "name": "counterfit-v3.0-babes",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/counterfit-v3.0-babes.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/Counterfeit-V3.0%2CA-ZovyaRPGArtistTools%2CBabes%2CDreamlikeDiffusion/babes*"
+    }
+  },
+  {
+    "id": "896f1676-7e11-4587-b3ba-cb713e9e934a",
+    "name": "counterfit-v3.0-zovyarpg",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/counterfit-v3.0-zovyarpg.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/Counterfeit-V3.0%2CA-ZovyaRPGArtistTools%2CBabes%2CDreamlikeDiffusion/zovyarpg*"
+    }
+  },
+  {
+    "id": "78e8e6cc-c9d4-4223-b682-f9d752c2a9c2",
+    "name": "cyberrealistic_v32",
+    "size": "1.1 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/cyberrealistic_v32.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/beautifulrealv6%2Cmajicmix%2Ccyberreal%2Cepicrealism%2C/cyberrealistic_v32"
+    }
+  },
+  {
+    "id": "390028da-b651-417d-9a51-838dc34a2eee",
+    "name": "darkjunglemix",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/darkjunglemix.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/Realisticfantasy%2CdarkjungleMix%2CRestlessExistence%2CJucy666/darkjunglemix*"
+    }
+  },
+  {
+    "id": "74cb5c98-562a-45e0-9cff-27324861b702",
+    "name": "deliberate",
+    "size": "1.1 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/deliberate.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/deliberate%2Cdreamshaper/deliberate*"
+    }
+  },
+  {
+    "id": "84f3ff80-e4e9-45ae-963f-ce315e80e9ad",
+    "name": "dreamshaper",
+    "size": "1.1 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/dreamshaper.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/deliberate%2Cdreamshaper/dreamshaper*"
+    }
+  },
+  {
+    "id": "09d0f30f-2526-4181-9c29-449e07664659",
+    "name": "dreamlikep_r_2",
+    "size": "1.1 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/dreamlikep_r_2.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/dreamlikep_r_2"
+    }
+  },
+  {
+    "id": "daa6ad58-c7d4-4a56-a739-0d16117d5fcf",
+    "name": "epicreal_pureV4",
+    "size": "1.1 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/epicrealism_pureEvolutionV4.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/beautifulrealv6%2Cmajicmix%2Ccyberreal%2Cepicrealism%2C/epicrealism_pureEvolutionV4"
+    }
+  },
+  {
+    "id": "936025d4-4241-4267-92a6-c713e48122fc",
+    "name": "fantasticmix",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/fantasticmix.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/othermodels1/fantasticmix*"
+    }
+  },
+  {
+    "id": "0a576df3-e530-49f4-a609-bffe26bc783e",
+    "name": "ICBINP",
+    "size": "1.1 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/ICBINP.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/ICBINP"
+    }
+  },
+  {
+    "id": "ec916a8c-56bd-4966-84a0-0dc3b0f38d21",
+    "name": "Jucy666",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/Jucy666.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/Realisticfantasy%2CdarkjungleMix%2CRestlessExistence%2CJucy666/Jucy666*"
+    }
+  },
+  {
+    "id": "d1720fa4-6b03-44bc-ba50-f3117da39ce3",
+    "name": "landscape",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/landscape.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/landscape_modelsfp32noslicing/landscape*"
+    }
+  },
+  {
+    "id": "fbbc8501-863e-49d7-97df-7b30b502c0f4",
+    "name": "lyriel",
+    "size": "1.1 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/lyriel.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/miena%2Clyriel%2Ccetus%2Canalogmadness/lyriel*"
+    }
+  },
+  {
+    "id": "3b3641ba-2433-46af-a831-f296b77a6923",
+    "name": "Real_betV2V25",
+    "size": "1.1 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/majicmixRealistic_betterV2V25.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/beautifulrealv6%2Cmajicmix%2Ccyberreal%2Cepicrealism%2C/majicmixRealistic_betterV2V25"
+    }
+  },
+  {
+    "id": "d7f34f77-d6d2-4885-b5e5-1abb3658a6fb",
+    "name": "meinamix",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/meinamix.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/miena%2Clyriel%2Ccetus%2Canalogmadness/meinamix*"
+    }
+  },
+  {
+    "id": "4d6bc4f3-0518-49f5-b6b8-0c0764e68496",
+    "name": "meinaunreal",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/meinaunreal.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/othermodels1/meinaunreal*"
+    }
+  },
+  {
+    "id": "29c1075d-f72b-41b6-9562-f1aff41ded27",
+    "name": "mixreal",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/mixreal.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/landscape_modelsfp32noslicing/mixreal*"
+    }
+  },
+  {
+    "id": "bf13ca62-e672-4aaf-b62f-8b4672f45e99",
+    "name": "NED",
+    "size": "1.1 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/NED.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/Never-ending-dream(NED(vae))"
+    }
+  },
+  {
+    "id": "bc2f6d28-16c4-4c39-a6d0-71fe233531e8",
+    "name": "realexistence",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/realexistence.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/Realisticfantasy%2CdarkjungleMix%2CRestlessExistence%2CJucy666/realexistence*"
+    }
+  },
+  {
+    "id": "b5ecafb2-ff3c-4e3f-b7ef-c7e5118b9275",
+    "name": "realisticfantasy",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/realisticfantasy.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/Realisticfantasy%2CdarkjungleMix%2CRestlessExistence%2CJucy666/realisticfantasy*"
+    }
+  },
+  {
+    "id": "58496559-33d7-48cc-9d4a-c93dc66d137c",
+    "name": "sunshinemix",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/sunshinemix.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/othermodels1/sunshinemix*"
+    }
+  },
+  {
+    "id": "912b514d-ac16-4f86-8ced-3ba24d4b6c2b",
+    "name": "universestable",
+    "size": "1.0 Gb",
+    "sources": [
+      "https://share.moroz.cc/SDAI/universestable.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/Androidonnxfork/test/tree/main/fp16fullonnxsdquantized_in_ort/othermodels1/universestable*"
+    }
   }
 ]
