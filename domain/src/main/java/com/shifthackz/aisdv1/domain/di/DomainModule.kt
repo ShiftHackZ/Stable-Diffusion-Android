@@ -1,63 +1,17 @@
 package com.shifthackz.aisdv1.domain.di
 
-import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
-import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
-import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
-import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
-import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.connectivity.ObserveSeverConnectivityUseCase
-import com.shifthackz.aisdv1.domain.usecase.connectivity.ObserveSeverConnectivityUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCase
-import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
-import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
-import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
-import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
-import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
-import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
-import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
-import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
-import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
-import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
-import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
-import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
-import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
-import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
-import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
-import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCaseImpl
+import com.shifthackz.aisdv1.domain.interactor.wakelock.*
+import com.shifthackz.aisdv1.domain.usecase.caching.*
+import com.shifthackz.aisdv1.domain.usecase.connectivity.*
+import com.shifthackz.aisdv1.domain.usecase.debug.*
+import com.shifthackz.aisdv1.domain.usecase.downloadable.*
+import com.shifthackz.aisdv1.domain.usecase.gallery.*
+import com.shifthackz.aisdv1.domain.usecase.generation.*
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.*
+import com.shifthackz.aisdv1.domain.usecase.sdsampler.*
+import com.shifthackz.aisdv1.domain.usecase.settings.*
+import com.shifthackz.aisdv1.domain.usecase.splash.*
+import com.shifthackz.aisdv1.domain.usecase.wakelock.*
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -91,10 +45,16 @@ internal val useCasesModule = module {
     factoryOf(::GetLocalAiModelsUseCaseImpl) bind GetLocalAiModelsUseCase::class
     factoryOf(::DownloadModelUseCaseImpl) bind DownloadModelUseCase::class
     factoryOf(::DeleteModelUseCaseImpl) bind DeleteModelUseCase::class
+    factoryOf(::AcquireWakelockUseCaseImpl) bind AcquireWakelockUseCase::class
+    factoryOf(::ReleaseWakeLockUseCaseImpl) bind ReleaseWakeLockUseCase::class
+}
+
+internal val interActorsModule = module {
+    factoryOf(::WakeLockInterActorImpl) bind WakeLockInterActor::class
 }
 
 internal val debugModule = module {
     factoryOf(::DebugInsertBadBase64UseCaseImpl) bind DebugInsertBadBase64UseCase::class
 }
 
-val domainModule = (useCasesModule + debugModule).toTypedArray()
+val domainModule = (useCasesModule + interActorsModule + debugModule).toTypedArray()

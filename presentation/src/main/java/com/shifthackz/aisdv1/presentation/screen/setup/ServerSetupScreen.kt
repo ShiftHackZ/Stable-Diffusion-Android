@@ -180,7 +180,7 @@ private fun ScreenContent(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)
                         .fillMaxWidth()
-                        .padding(horizontal = 32.dp)
+                        .padding(horizontal = 16.dp)
                         .padding(bottom = 16.dp),
                     onClick = onSetupButtonClick,
                     enabled = when (state.mode) {

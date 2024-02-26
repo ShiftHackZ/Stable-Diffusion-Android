@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -111,7 +112,7 @@ private fun InputHistoryItem(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f))
+            .background(color = MaterialTheme.colorScheme.background)
             .defaultMinSize(minHeight = 50.dp)
             .clickable { onClick(item) },
     ) {
@@ -136,6 +137,7 @@ private fun InputHistoryItem(
                 style = textStyle,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
+                color = LocalContentColor.current,
             )
             Text(
                 modifier = textModifier,
@@ -143,6 +145,7 @@ private fun InputHistoryItem(
                 style = textStyle,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
+                color = LocalContentColor.current,
             )
             val tags = buildList {
                 add(generation.type.key)
@@ -156,7 +159,7 @@ private fun InputHistoryItem(
                 add(generation.seed)
                 add(generation.subSeed)
                 add("${generation.subSeedStrength}")
-            }
+            }.filter(String::isNotEmpty)
             FlowRow(
                 modifier = Modifier.padding(horizontal = 2.dp),
             ) {
@@ -165,7 +168,7 @@ private fun InputHistoryItem(
                         modifier = Modifier
                             .padding(2.dp)
                             .background(
-                                color = MaterialTheme.colorScheme.tertiaryContainer,
+                                color = MaterialTheme.colorScheme.primary,
                                 shape = RoundedCornerShape(4.dp),
                             )
                             .padding(1.dp),
@@ -173,6 +176,7 @@ private fun InputHistoryItem(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
             }

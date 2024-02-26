@@ -159,7 +159,7 @@ private fun ScreenContent(
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 32.dp)
+                            .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
                         onClick = onGenerateClicked,
                         enabled = !state.hasValidationErrors

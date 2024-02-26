@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.feature.diffusion.ai.extensions
 
+import com.shifthackz.aisdv1.feature.diffusion.entity.Array3D
 import kotlin.math.ceil
 import java.util.function.Function
 
@@ -27,7 +28,7 @@ internal fun interpolate(x: DoubleArray, xp: DoubleArray, fp: DoubleArray): Doub
     return y
 }
 
-internal fun getSizes(dataSet: Array<Array<Array<FloatArray>>>): LongArray = longArrayOf(
+internal fun getSizes(dataSet: Array3D<FloatArray>): LongArray = longArrayOf(
     dataSet.size.toLong(),
     dataSet[0].size.toLong(),
     dataSet[0][0].size.toLong(),

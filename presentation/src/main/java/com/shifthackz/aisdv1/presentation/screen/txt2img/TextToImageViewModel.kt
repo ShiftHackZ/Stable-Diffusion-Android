@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
+import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
@@ -39,6 +40,7 @@ class TextToImageViewModel(
     private val preferenceManager: PreferenceManager,
     private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
+    private val wakeLockInterActor: WakeLockInterActor,
 ) : GenerationMviViewModel<TextToImageState, GenerationMviEffect>(
     schedulersProvider,
     saveLastResultToCacheUseCase,
@@ -95,7 +97,11 @@ class TextToImageViewModel(
         !currentState
             .mapToPayload()
             .let(textToImageUseCase::invoke)
-            .doOnSubscribe { setActiveModal(progressModal) }
+            .doOnSubscribe {
+                wakeLockInterActor.acquireWakelockUseCase()
+                setActiveModal(progressModal)
+            }
+            .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = { t ->

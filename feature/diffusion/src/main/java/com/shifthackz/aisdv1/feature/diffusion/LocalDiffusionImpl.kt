@@ -35,8 +35,8 @@ internal class LocalDiffusionImpl(
             tokenizer.initialize()
             val batchSize = 1
 
-            val numInferenceSteps = 8
-            val guidanceScale = 5.0
+            val numInferenceSteps = payload.samplingSteps
+            val guidanceScale = payload.cfgScale.toDouble()
 
             val textTokenized = tokenizer.encode(payload.prompt)
             val negTokenized = tokenizer.createUnconditionalInput(payload.negativePrompt)
@@ -61,13 +61,13 @@ internal class LocalDiffusionImpl(
 
             uNet.initialize()
             uNet.inference(
-                payload.seed.toLongOrNull() ?: 0L,
-                numInferenceSteps,
-                textEmbeddings,
-                guidanceScale,
-                batchSize,
-                payload.width,
-                payload.height,
+                seedNum = payload.seed.toLongOrNull() ?: 0L,
+                numInferenceSteps = numInferenceSteps,
+                textEmbeddings = textEmbeddings,
+                guidanceScale = guidanceScale,
+                batchSize = batchSize,
+                width = payload.width,
+                height = payload.height,
             )
         } catch (e: Exception) {
             if (!emitter.isDisposed) emitter.onError(e)

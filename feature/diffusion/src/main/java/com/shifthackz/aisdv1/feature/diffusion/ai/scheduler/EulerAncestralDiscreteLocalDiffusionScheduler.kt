@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.PREDICTION
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.arrange
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.interpolate
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.lineSpace
+import com.shifthackz.aisdv1.feature.diffusion.entity.Array3D
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionTensor
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionConfig
@@ -149,14 +150,14 @@ internal class EulerAncestralDiscreteLocalDiffusionScheduler(
     }
 
     override fun step(modelOutput: LocalDiffusionTensor<*>, stepIndex: Int, sample: LocalDiffusionTensor<*>): LocalDiffusionTensor<*> {
-        val sampleArray = sample.buffer as Array<Array<Array<FloatArray>>>
-        val outputArray = modelOutput.buffer as Array<Array<Array<FloatArray>>>
+        val sampleArray = sample.buffer as Array3D<FloatArray>
+        val outputArray = modelOutput.buffer as Array3D<FloatArray>
         val sigma = sigmas[stepIndex].toDouble()
         val dim1 = modelOutput.shape!![0].toInt()
         val dim2 = modelOutput.shape!![1].toInt()
         val dim3 = modelOutput.shape!![2].toInt()
         val dim4 = modelOutput.shape!![3].toInt()
-        var predictionOriginalSample: Array<Array<Array<FloatArray>>>? = null
+        var predictionOriginalSample: Array3D<FloatArray>? = null
         when (config.predictionType) {
             PREDICTION_EPSILON -> {
                 predictionOriginalSample = Array(dim1) {

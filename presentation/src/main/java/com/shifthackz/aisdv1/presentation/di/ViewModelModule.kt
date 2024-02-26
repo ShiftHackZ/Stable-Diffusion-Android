@@ -51,6 +51,7 @@ val viewModelModule = module {
             schedulersProvider = get(),
             preferenceManager = get(),
             analytics = get(),
+            wakeLockInterActor = get(),
         )
     }
 

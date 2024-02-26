@@ -22,6 +22,7 @@ import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.multipleTensorsByFl
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.splitTensor
 import com.shifthackz.aisdv1.feature.diffusion.ai.scheduler.EulerAncestralDiscreteLocalDiffusionScheduler
 import com.shifthackz.aisdv1.feature.diffusion.ai.vae.VaeDecoder
+import com.shifthackz.aisdv1.feature.diffusion.entity.Array3D
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionTensor
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
@@ -126,8 +127,8 @@ internal class UNet(
     }
 
     private fun performGuidance(
-        noisePrediction: Array<Array<Array<FloatArray>>>,
-        noisePredictionText: Array<Array<Array<FloatArray>>>,
+        noisePrediction: Array3D<FloatArray>,
+        noisePredictionText: Array3D<FloatArray>,
         guidanceScale: Double,
     ) {
         val indexes: LongArray = getSizes(noisePrediction)
@@ -184,9 +185,9 @@ internal class UNet(
                 )
             )
             val result = session!!.run(input)
-            val dataSet = result[0].value as Array<Array<Array<FloatArray>>>
+            val dataSet = result[0].value as Array3D<FloatArray>
             result.close()
-            val splitTensors: Pair<Array<Array<Array<FloatArray>>>, Array<Array<Array<FloatArray>>>> =
+            val splitTensors: Pair<Array3D<FloatArray>, Array3D<FloatArray>> =
                 splitTensor(
                     dataSet,
                     longArrayOf(1, 4, (height / 8).toLong(), (width / 8).toLong())
@@ -225,7 +226,7 @@ internal class UNet(
         decoderInput[KEY_LATENT_SAMPLE] = tensor.tensor
         val value: Any = decoder.decode(decoderInput.toMap())
         return decoder.convertToImage(
-            value as Array<Array<Array<FloatArray>>>,
+            value as Array3D<FloatArray>,
             width,
             height,
         )

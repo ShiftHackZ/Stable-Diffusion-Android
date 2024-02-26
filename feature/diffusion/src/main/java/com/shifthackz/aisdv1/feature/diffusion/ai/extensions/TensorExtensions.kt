@@ -4,6 +4,7 @@ package com.shifthackz.aisdv1.feature.diffusion.ai.extensions
 
 import ai.onnxruntime.OnnxTensor
 import android.util.Pair
+import com.shifthackz.aisdv1.feature.diffusion.entity.Array3D
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionTensor
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import org.koin.java.KoinJavaComponent.inject
@@ -25,7 +26,7 @@ internal fun duplicate(data: FloatArray, dimensions: LongArray?): LocalDiffusion
     )
 }
 
-internal  fun multipleTensorsByFloat(
+internal fun multipleTensorsByFloat(
     data: FloatArray,
     value: Float,
     dimensions: LongArray?,
@@ -47,9 +48,9 @@ internal  fun multipleTensorsByFloat(
 
 
 internal fun splitTensor(
-    tensorToSplit: Array<Array<Array<FloatArray>>>,
+    tensorToSplit: Array3D<FloatArray>,
     dimensions: LongArray,
-): Pair<Array<Array<Array<FloatArray>>>, Array<Array<Array<FloatArray>>>> {
+): Pair<Array3D<FloatArray>, Array3D<FloatArray>> {
     val firstTensor = Array(dimensions[0].toInt()) {
         Array(dimensions[1].toInt()) {
             Array(dimensions[2].toInt()) {
