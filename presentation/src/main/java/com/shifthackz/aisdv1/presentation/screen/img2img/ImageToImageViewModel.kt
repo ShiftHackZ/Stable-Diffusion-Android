@@ -24,6 +24,7 @@ import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
 import com.shz.imagepicker.imagepicker.model.PickedResult
@@ -58,7 +59,8 @@ class ImageToImageViewModel(
     override val emptyState = ImageToImageState()
 
     init {
-        !generationFormUpdateEvent.observeImg2ImgForm()
+        !generationFormUpdateEvent
+            .observeImg2ImgForm()
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = ::errorLog,
@@ -66,16 +68,19 @@ class ImageToImageViewModel(
             )
     }
 
-    override fun setState(state: ImageToImageState) = super.setState(
-        state.copy(
-            widthValidationError = dimensionValidator(state.width).mapToUi(),
-            heightValidationError = dimensionValidator(state.height).mapToUi(),
-        )
-    )
+    override fun updateState(mutation: (ImageToImageState) -> ImageToImageState) {
+        super.updateState { oldState ->
+            val mutatedState = mutation(oldState)
+            mutatedState.copy(
+                widthValidationError = dimensionValidator(mutatedState.width).mapToUi(),
+                heightValidationError = dimensionValidator(mutatedState.height).mapToUi(),
+            )
+        }
+    }
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {
-        if (currentState.screenModal is ImageToImageState.Modal.Communicating) {
-            setActiveDialog(ImageToImageState.Modal.Communicating(status))
+        if (currentState.screenModal is Modal.Communicating) {
+            setActiveModal(Modal.Communicating(status))
         }
     }
 
@@ -83,34 +88,31 @@ class ImageToImageViewModel(
         !base64ToBitmapConverter(Base64ToBitmapConverter.Input(ai.image))
             .map(Base64ToBitmapConverter.Output::bitmap)
             .map(ImageToImageState.ImageState::Image)
-            .map { imageState -> currentState.copy(imageState = imageState) }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = ::errorLog,
-                onSuccess = ::setState
+                onSuccess = { imageState ->
+                    updateState { it.copy(imageState = imageState) }
+                }
             )
 
         return super.updateFormPreviousAiGeneration(ai)
     }
 
-    override fun dismissScreenModal() = setActiveDialog(ImageToImageState.Modal.None)
-
-    fun openPreviousGenerationInput() = setActiveDialog(ImageToImageState.Modal.PromptBottomSheet)
-
-    fun updateDenoisingStrength(value: Float) = currentState
-        .copy(denoisingStrength = value)
-        .let(::setState)
+    fun updateDenoisingStrength(value: Float) = updateState {
+        it.copy(denoisingStrength = value)
+    }
 
     fun updateInputImage(value: PickedResult) = when (value) {
-        is PickedResult.Single -> currentState
-            .copy(imageState = ImageToImageState.ImageState.Image(value.image.bitmap))
-            .let(::setState)
+        is PickedResult.Single -> updateState {
+            it.copy(imageState = ImageToImageState.ImageState.Image(value.image.bitmap))
+        }
         else -> Unit
     }
 
-    fun clearInputImage() = currentState
-        .copy(imageState = ImageToImageState.ImageState.None)
-        .let(::setState)
+    fun clearInputImage() = updateState {
+        it.copy(imageState = ImageToImageState.ImageState.None)
+    }
 
     fun generate() {
         when (currentState.imageState) {
@@ -119,7 +121,7 @@ class ImageToImageViewModel(
                     .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
                     .doOnSubscribe {
                         wakeLockInterActor.acquireWakelockUseCase()
-                        setActiveDialog(ImageToImageState.Modal.Communicating())
+                        setActiveModal(Modal.Communicating())
                     }
                     .map(BitmapToBase64Converter::Input)
                     .flatMap(bitmapToBase64Converter::invoke)
@@ -134,8 +136,8 @@ class ImageToImageViewModel(
                                 R.string.notification_fail_title.asUiText(),
                                 R.string.notification_fail_sub_title.asUiText(),
                             )
-                            setActiveDialog(
-                                ImageToImageState.Modal.Error(
+                            setActiveModal(
+                                Modal.Error(
                                     UiText.Static(
                                         t.localizedMessage ?: "Error"
                                     )
@@ -149,8 +151,8 @@ class ImageToImageViewModel(
                                 R.string.notification_finish_title.asUiText(),
                                 R.string.notification_finish_sub_title.asUiText(),
                             )
-                            setActiveDialog(
-                                ImageToImageState.Modal.Image.create(
+                            setActiveModal(
+                                Modal.Image.create(
                                     ai,
                                     preferenceManager.autoSaveAiResults,
                                 )
@@ -163,12 +165,12 @@ class ImageToImageViewModel(
     }
 
     fun fetchRandomImage() = !getRandomImageUseCase()
-        .doOnSubscribe { setActiveDialog(ImageToImageState.Modal.LoadingRandomImage) }
+        .doOnSubscribe { setActiveModal(Modal.LoadingRandomImage) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
             onError = { t ->
-                setActiveDialog(
-                    ImageToImageState.Modal.Error(
+                setActiveModal(
+                    Modal.Error(
                         UiText.Static(
                             t.localizedMessage ?: "Error"
                         )
@@ -178,13 +180,9 @@ class ImageToImageViewModel(
             },
             onSuccess = { bitmap ->
                 dismissScreenModal()
-                currentState
-                    .copy(imageState = ImageToImageState.ImageState.Image(bitmap))
-                    .let(::setState)
+                updateState {
+                    it.copy(imageState = ImageToImageState.ImageState.Image(bitmap))
+                }
             },
         )
-
-    private fun setActiveDialog(modal: ImageToImageState.Modal) = currentState
-        .copy(screenModal = modal)
-        .let(::setState)
 }

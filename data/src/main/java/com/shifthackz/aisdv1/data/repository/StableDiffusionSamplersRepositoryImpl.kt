@@ -12,5 +12,5 @@ internal class StableDiffusionSamplersRepositoryImpl(
         .fetchSamplers()
         .flatMapCompletable(localDataSource::insertSamplers)
 
-    override fun getSamplers() = localDataSource.queryAll()
+    override fun getSamplers() = localDataSource.getSamplers()
 }

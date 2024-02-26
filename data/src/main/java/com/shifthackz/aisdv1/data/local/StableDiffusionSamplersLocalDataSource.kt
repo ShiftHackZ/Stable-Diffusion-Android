@@ -12,7 +12,7 @@ internal class StableDiffusionSamplersLocalDataSource(
     private val dao: StableDiffusionSamplerDao,
 ) : StableDiffusionSamplersDataSource.Local {
 
-    override fun queryAll() = dao
+    override fun getSamplers() = dao
         .queryAll()
         .map(List<StableDiffusionSamplerEntity>::mapEntityToDomain)
 

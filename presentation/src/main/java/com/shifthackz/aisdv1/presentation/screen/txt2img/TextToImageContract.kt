@@ -10,10 +10,11 @@ import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 
 data class TextToImageState(
-    val screenModal: Modal = Modal.None,
+    override val screenModal: Modal = Modal.None,
     override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,
     override val advancedOptionsVisible: Boolean = false,
@@ -36,28 +37,8 @@ data class TextToImageState(
     override val generateButtonEnabled: Boolean = true,
 ) : GenerationMviState() {
 
-    sealed interface Modal {
-        data object None : Modal
-        data class Generating(val status: LocalDiffusion.Status? = null) : Modal {
-            val pair: Pair<Int, Int>?
-                get() = status?.let { (current, total) -> current to total }
-        }
-        data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
-        data object PromptBottomSheet : Modal
-        sealed interface Image : Modal {
-            data class Single(val result: AiGenerationResult, val autoSaveEnabled: Boolean): Image
-            data class Batch(val results: List<AiGenerationResult>, val autoSaveEnabled: Boolean): Image
-
-            companion object {
-                fun create(list: List<AiGenerationResult>, autoSaveEnabled: Boolean): Image =
-                    if (list.size > 1) Batch(list, autoSaveEnabled)
-                    else Single(list.first(), autoSaveEnabled)
-            }
-        }
-        data class Error(val error: UiText) : Modal
-    }
-
     override fun copyState(
+        screenModal: Modal,
         mode: GenerationInputMode,
         advancedToggleButtonVisible: Boolean,
         advancedOptionsVisible: Boolean,
@@ -79,6 +60,7 @@ data class TextToImageState(
         batchCount: Int,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
+        screenModal = screenModal,
         mode = mode,
         advancedToggleButtonVisible = advancedToggleButtonVisible,
         advancedOptionsVisible = advancedOptionsVisible,

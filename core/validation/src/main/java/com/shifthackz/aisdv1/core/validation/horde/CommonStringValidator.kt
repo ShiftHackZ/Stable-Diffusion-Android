@@ -7,6 +7,6 @@ interface CommonStringValidator {
     operator fun invoke(input: String?) : ValidationResult<Error>
 
     sealed interface Error {
-        object Empty : Error
+        data object Empty : Error
     }
 }

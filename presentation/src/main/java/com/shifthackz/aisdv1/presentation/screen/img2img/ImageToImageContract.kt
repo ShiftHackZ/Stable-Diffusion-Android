@@ -7,13 +7,14 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 
 data class ImageToImageState(
     val imageState: ImageState = ImageState.None,
     val imageBase64: String = "",
-    val screenModal: Modal = Modal.None,
     val denoisingStrength: Float = 0.75f,
+    override val screenModal: Modal = Modal.None,
     override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,
     override val advancedOptionsVisible: Boolean = false,
@@ -41,29 +42,12 @@ data class ImageToImageState(
         val isEmpty: Boolean
             get() = this is None
 
-        object None : ImageState
+        data object None : ImageState
         data class Image(val bitmap: Bitmap) : ImageState
     }
 
-    sealed interface Modal {
-        data object None : Modal
-        data object LoadingRandomImage : Modal
-        data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
-        data object PromptBottomSheet : Modal
-        sealed interface Image : Modal {
-            data class Single(val result: AiGenerationResult, val autoSaveEnabled: Boolean): Image
-            data class Batch(val results: List<AiGenerationResult>, val autoSaveEnabled: Boolean): Image
-
-            companion object {
-                fun create(list: List<AiGenerationResult>, autoSaveEnabled: Boolean): Image =
-                    if (list.size > 1) Batch(list, autoSaveEnabled)
-                    else Single(list.first(), autoSaveEnabled)
-            }
-        }
-        data class Error(val error: UiText) : Modal
-    }
-
     override fun copyState(
+        screenModal: Modal,
         mode: GenerationInputMode,
         advancedToggleButtonVisible: Boolean,
         advancedOptionsVisible: Boolean,
@@ -85,6 +69,7 @@ data class ImageToImageState(
         batchCount: Int,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
+        screenModal = screenModal,
         mode = mode,
         advancedToggleButtonVisible = advancedToggleButtonVisible,
         advancedOptionsVisible = advancedOptionsVisible,

@@ -7,6 +7,9 @@ import com.shifthackz.aisdv1.domain.usecase.debug.*
 import com.shifthackz.aisdv1.domain.usecase.downloadable.*
 import com.shifthackz.aisdv1.domain.usecase.gallery.*
 import com.shifthackz.aisdv1.domain.usecase.generation.*
+import com.shifthackz.aisdv1.domain.usecase.sdhypernet.FetchAndGetHyperNetworksUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdhypernet.FetchAndGetHyperNetworksUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.sdlora.*
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.*
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.*
 import com.shifthackz.aisdv1.domain.usecase.settings.*
@@ -29,6 +32,8 @@ internal val useCasesModule = module {
     factoryOf(::GetGenerationResultUseCaseImpl) bind GetGenerationResultUseCase::class
     factoryOf(::DeleteGalleryItemUseCaseImpl) bind DeleteGalleryItemUseCase::class
     factoryOf(::GetStableDiffusionSamplersUseCaseImpl) bind GetStableDiffusionSamplersUseCase::class
+    factoryOf(::FetchAndGetLorasUseCaseImpl) bind FetchAndGetLorasUseCase::class
+    factoryOf(::FetchAndGetHyperNetworksUseCaseImpl) bind FetchAndGetHyperNetworksUseCase::class
     factoryOf(::SplashNavigationUseCaseImpl) bind SplashNavigationUseCase::class
     factoryOf(::GetConfigurationUseCaseImpl) bind GetConfigurationUseCase::class
     factoryOf(::SetServerConfigurationUseCaseImpl) bind SetServerConfigurationUseCase::class

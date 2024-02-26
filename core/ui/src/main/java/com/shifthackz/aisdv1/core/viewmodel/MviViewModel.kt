@@ -5,6 +5,7 @@ package com.shifthackz.aisdv1.core.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.ui.BuildConfig
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 abstract class MviViewModel<S : MviState, E : MviEffect> : ViewModel() {
@@ -35,11 +37,16 @@ abstract class MviViewModel<S : MviState, E : MviEffect> : ViewModel() {
 
     abstract val emptyState: S
 
-    open fun setState(state: S) {
+    fun setState(state: S) {
         if (BuildConfig.DEBUG) {
             Log.d(this::class.simpleName, "NEW STATE : $state")
         }
         mutableState.tryEmit(state)
+    }
+
+    open fun updateState(mutation: (S) -> S) = mutableState.update {
+        if (BuildConfig.DEBUG) debugLog("NEW STATE : $state")
+        mutation(it)
     }
 
     fun emitEffect(effect: E) {

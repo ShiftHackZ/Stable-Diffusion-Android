@@ -41,4 +41,6 @@ object Constants {
     const val HORDE_DEFAULT_API_KEY = "0000000000"
 
     val sizes = listOf("64", "128", "256", "320", "384", "448", "512")
+
+    fun lora(alias: String) = "<lora:$alias:1>"
 }

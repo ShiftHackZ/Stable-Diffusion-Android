@@ -25,16 +25,19 @@ class ConfigurationLoaderViewModel(
     init {
         dataPreLoaderUseCase()
             .doOnSubscribe {
-                setState(
+                updateState {
                     ConfigurationLoaderState.StatusNotification(
                         R.string.splash_status_fetching.asUiText()
                     )
-                )
+                }
             }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = { t ->
                     analytics.logEvent(ConfigurationLoadFailure(t.message ?: ""))
+                    updateState {
+                        ConfigurationLoaderState.StatusNotification("Failed loading data".asUiText())
+                    }
                     setState(ConfigurationLoaderState.StatusNotification("Failed loading data".asUiText()))
                     emitEffect(ConfigurationLoaderEffect.ProceedNavigation)
                     errorLog(t)
@@ -47,7 +50,7 @@ class ConfigurationLoaderViewModel(
                         )
                     )
                     emitEffect(ConfigurationLoaderEffect.ProceedNavigation)
-                }
+                },
             )
             .addToDisposable()
     }

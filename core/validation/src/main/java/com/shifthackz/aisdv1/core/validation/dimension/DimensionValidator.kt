@@ -7,8 +7,8 @@ fun interface DimensionValidator {
     operator fun invoke(input: String?): ValidationResult<Error>
 
     sealed interface Error {
-        object Empty : Error
-        object Unexpected : Error
+        data object Empty : Error
+        data object Unexpected : Error
         data class LessThanMinimum(val min: Int) : Error
         data class BiggerThanMaximum(val max: Int) : Error
     }

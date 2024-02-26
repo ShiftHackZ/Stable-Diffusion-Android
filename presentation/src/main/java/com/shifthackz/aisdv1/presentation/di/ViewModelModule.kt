@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.di
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.presentation.activity.AiStableDiffusionViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryViewModel
+import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasViewModel
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryViewModel
@@ -31,6 +32,7 @@ val viewModelModule = module {
     viewModelOf(::ConnectivityViewModel)
     viewModelOf(::InputHistoryViewModel)
     viewModelOf(::DebugMenuViewModel)
+    viewModelOf(::ExtrasViewModel)
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())
@@ -56,6 +58,16 @@ val viewModelModule = module {
     }
 
     viewModel { parameters ->
-        GalleryDetailViewModel(parameters.get(), get(), get(), get(), get(), get(), get(), get(), get())
+        GalleryDetailViewModel(
+            itemId = parameters.get(),
+            getGenerationResultUseCase = get(),
+            getLastResultFromCacheUseCase = get(),
+            deleteGalleryItemUseCase = get(),
+            galleryDetailBitmapExporter = get(),
+            base64ToBitmapConverter = get(),
+            schedulersProvider = get(),
+            generationFormUpdateEvent = get(),
+            analytics = get(),
+        )
     }
 }

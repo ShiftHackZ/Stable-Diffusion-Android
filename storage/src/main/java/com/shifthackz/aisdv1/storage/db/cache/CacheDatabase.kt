@@ -7,9 +7,13 @@ import com.shifthackz.aisdv1.storage.converters.ListConverters
 import com.shifthackz.aisdv1.storage.converters.MapConverters
 import com.shifthackz.aisdv1.storage.db.cache.CacheDatabase.Companion.DB_VERSION
 import com.shifthackz.aisdv1.storage.db.cache.dao.ServerConfigurationDao
+import com.shifthackz.aisdv1.storage.db.cache.dao.StableDiffusionHyperNetworkDao
+import com.shifthackz.aisdv1.storage.db.cache.dao.StableDiffusionLoraDao
 import com.shifthackz.aisdv1.storage.db.cache.dao.StableDiffusionModelDao
 import com.shifthackz.aisdv1.storage.db.cache.dao.StableDiffusionSamplerDao
 import com.shifthackz.aisdv1.storage.db.cache.entity.ServerConfigurationEntity
+import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionHyperNetworkEntity
+import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionLoraEntity
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionModelEntity
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionSamplerEntity
 
@@ -20,6 +24,8 @@ import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionSamplerEntit
         ServerConfigurationEntity::class,
         StableDiffusionModelEntity::class,
         StableDiffusionSamplerEntity::class,
+        StableDiffusionLoraEntity::class,
+        StableDiffusionHyperNetworkEntity::class,
     ],
 )
 @TypeConverters(
@@ -30,6 +36,8 @@ internal abstract class CacheDatabase : RoomDatabase() {
     abstract fun serverConfigurationDao(): ServerConfigurationDao
     abstract fun sdModelDao(): StableDiffusionModelDao
     abstract fun sdSamplerDao(): StableDiffusionSamplerDao
+    abstract fun sdLoraDao(): StableDiffusionLoraDao
+    abstract fun sdHyperNetworkDao(): StableDiffusionHyperNetworkDao
 
     companion object {
         const val DB_VERSION = 1

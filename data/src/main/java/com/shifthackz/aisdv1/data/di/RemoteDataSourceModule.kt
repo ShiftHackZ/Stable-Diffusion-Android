@@ -9,6 +9,8 @@ import com.shifthackz.aisdv1.data.remote.HordeStatusSource
 import com.shifthackz.aisdv1.data.remote.RandomImageRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.ServerConfigurationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionGenerationRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.StableDiffusionHyperNetworksRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.StableDiffusionLorasRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionSamplersRemoteDataSource
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
@@ -16,6 +18,8 @@ import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.RandomImageDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
+import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataSource
+import com.shifthackz.aisdv1.domain.datasource.StableDiffusionLorasDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
 import com.shifthackz.aisdv1.domain.entity.ServerSource
@@ -44,6 +48,8 @@ val remoteDataSourceModule = module {
     factoryOf(::StableDiffusionGenerationRemoteDataSource) bind StableDiffusionGenerationDataSource.Remote::class
     factoryOf(::StableDiffusionSamplersRemoteDataSource) bind StableDiffusionSamplersDataSource.Remote::class
     factoryOf(::StableDiffusionModelsRemoteDataSource) bind StableDiffusionModelsDataSource.Remote::class
+    factoryOf(::StableDiffusionLorasRemoteDataSource) bind StableDiffusionLorasDataSource.Remote::class
+    factoryOf(::StableDiffusionHyperNetworksRemoteDataSource) bind StableDiffusionHyperNetworksDataSource.Remote::class
     factoryOf(::ServerConfigurationRemoteDataSource) bind ServerConfigurationDataSource.Remote::class
     factoryOf(::RandomImageRemoteDataSource) bind RandomImageDataSource.Remote::class
     factoryOf(::DownloadableModelRemoteDataSource) bind DownloadableModelDataSource.Remote::class

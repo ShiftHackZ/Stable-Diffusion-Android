@@ -4,9 +4,7 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
@@ -23,6 +21,7 @@ import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -51,12 +50,12 @@ class TextToImageViewModel(
     observeLocalDiffusionProcessStatusUseCase,
 ) {
 
-    private val progressModal: TextToImageState.Modal
+    private val progressModal: Modal
         get() {
             if (currentState.mode == GenerationInputMode.LOCAL) {
-                return TextToImageState.Modal.Generating()
+                return Modal.Generating()
             }
-            return TextToImageState.Modal.Communicating()
+            return Modal.Communicating()
         }
 
     override val emptyState = TextToImageState()
@@ -70,28 +69,27 @@ class TextToImageViewModel(
             )
     }
 
-    override fun setState(state: TextToImageState) = super.setState(
-        state.copy(
-            widthValidationError = dimensionValidator(state.width).mapToUi(),
-            heightValidationError = dimensionValidator(state.height).mapToUi(),
-        )
-    )
+    override fun updateState(mutation: (TextToImageState) -> TextToImageState) {
+        super.updateState { oldState ->
+            val mutatedState = mutation(oldState)
+            mutatedState.copy(
+                widthValidationError = dimensionValidator(mutatedState.width).mapToUi(),
+                heightValidationError = dimensionValidator(mutatedState.height).mapToUi(),
+            )
+        }
+    }
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {
-        if (currentState.screenModal is TextToImageState.Modal.Communicating) {
-            setActiveModal(TextToImageState.Modal.Communicating(status))
+        if (currentState.screenModal is Modal.Communicating) {
+            setActiveModal(Modal.Communicating(status))
         }
     }
 
     override fun onReceivedLocalDiffusionStatus(status: LocalDiffusion.Status) {
-        if (currentState.screenModal is TextToImageState.Modal.Generating) {
-            setActiveModal(TextToImageState.Modal.Generating(status))
+        if (currentState.screenModal is Modal.Generating) {
+            setActiveModal(Modal.Generating(status))
         }
     }
-
-    override fun dismissScreenModal() = setActiveModal(TextToImageState.Modal.None)
-
-    fun openPreviousGenerationInput() = setActiveModal(TextToImageState.Modal.PromptBottomSheet)
 
     fun generate() {
         !currentState
@@ -110,7 +108,7 @@ class TextToImageViewModel(
                         R.string.notification_fail_sub_title.asUiText(),
                     )
                     setActiveModal(
-                        TextToImageState.Modal.Error(
+                        Modal.Error(
                             (t.localizedMessage ?: "Something went wrong").asUiText()
                         )
                     )
@@ -123,13 +121,9 @@ class TextToImageViewModel(
                         R.string.notification_finish_sub_title.asUiText(),
                     )
                     setActiveModal(
-                        TextToImageState.Modal.Image.create(ai, preferenceManager.autoSaveAiResults)
+                        Modal.Image.create(ai, preferenceManager.autoSaveAiResults)
                     )
                 },
             )
     }
-
-    private fun setActiveModal(modal: TextToImageState.Modal) = currentState
-        .copy(screenModal = modal)
-        .let(::setState)
 }

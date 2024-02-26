@@ -68,65 +68,66 @@ class ServerSetupViewModel(
             .zipWith(getLocalAiModelsUseCase(), ::Pair)
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { (configuration, localModels) ->
-                currentState
-                    .copy(localModels = localModels.mapToUi())
-                    .copy(localCustomModel = localModels.mapLocalCustomModelSwitchState())
-                    .withSource(configuration.source)
-                    .withDemoMode(configuration.demoMode)
-                    .withServerUrl(configuration.serverUrl)
-                    .withAuthType(configuration.authType)
-                    .withCredentials(configuration.authCredentials)
-                    .withHordeApiKey(configuration.hordeApiKey)
-                    .let(::setState)
+                updateState {
+                    it
+                        .copy(localModels = localModels.mapToUi())
+                        .copy(localCustomModel = localModels.mapLocalCustomModelSwitchState())
+                        .withSource(configuration.source)
+                        .withDemoMode(configuration.demoMode)
+                        .withServerUrl(configuration.serverUrl)
+                        .withAuthType(configuration.authType)
+                        .withCredentials(configuration.authCredentials)
+                        .withHordeApiKey(configuration.hordeApiKey)
+                }
             }
     }
 
-    fun updateServerMode(value: ServerSetupState.Mode) = currentState
-        .copy(mode = value)
-        .let(::setState)
+    fun updateServerMode(value: ServerSetupState.Mode) = updateState {
+        it.copy(mode = value)
+    }
 
-    fun updateServerUrl(value: String) = currentState
-        .copy(serverUrl = value, serverUrlValidationError = null)
-        .let(::setState)
+    fun updateServerUrl(value: String) = updateState {
+        it.copy(serverUrl = value, serverUrlValidationError = null)
+    }
 
-    fun updateAuthType(value: ServerSetupState.AuthType) = currentState
-        .copy(authType = value)
-        .let(::setState)
+    fun updateAuthType(value: ServerSetupState.AuthType) = updateState {
+        it.copy(authType = value)
+    }
 
-    fun updateLogin(value: String) = currentState
-        .copy(login = value, loginValidationError = null)
-        .let(::setState)
+    fun updateLogin(value: String) = updateState {
+        it.copy(login = value, loginValidationError = null)
+    }
 
-    fun updatePassword(value: String) = currentState
-        .copy(password = value, passwordValidationError = null)
-        .let(::setState)
+    fun updatePassword(value: String) = updateState {
+        it.copy(password = value, passwordValidationError = null)
+    }
 
-    fun updatePasswordVisibility(value: Boolean) = currentState
-        .copy(passwordVisible = !value)
-        .let(::setState)
+    fun updatePasswordVisibility(value: Boolean) = updateState {
+        it.copy(passwordVisible = !value)
+    }
 
-    fun updateHordeApiKey(value: String) = currentState
-        .copy(hordeApiKey = value, hordeApiKeyValidationError = null)
-        .let(::setState)
+    fun updateHordeApiKey(value: String) = updateState {
+        it.copy(hordeApiKey = value, hordeApiKeyValidationError = null)
+    }
 
-    fun updateDemoMode(value: Boolean) = currentState
-        .copy(demoMode = value)
-        .let(::setState)
+    fun updateDemoMode(value: Boolean) = updateState {
+        it.copy(demoMode = value)
+    }
 
-    fun updateHordeDefaultApiKeyUsage(value: Boolean) = currentState
-        .copy(hordeDefaultApiKey = value)
-        .let(::setState)
+    fun updateHordeDefaultApiKeyUsage(value: Boolean) = updateState {
+        it.copy(hordeDefaultApiKey = value)
+    }
 
-    fun updateAllowLocalCustomModel(value: Boolean) = currentState
-        .copy(
+    fun updateAllowLocalCustomModel(value: Boolean) = updateState {
+        it.copy(
             localCustomModel = value,
             localModels = currentState.localModels.withNewState(
-                currentState.localModels.find { it.id == LocalAiModel.CUSTOM.id }!!.copy(
+                currentState.localModels.find { m -> m.id == LocalAiModel.CUSTOM.id }!!.copy(
                     selected = value,
                 ),
             ),
         )
-        .let(::setState)
+    }
 
     fun connectToServer() {
         if (!validate()) return
@@ -144,31 +145,37 @@ class ServerSetupViewModel(
             if (currentState.demoMode) true
             else {
                 val serverUrlValidation = urlValidator(currentState.serverUrl)
-                var newState = currentState.copy(
-                    serverUrlValidationError = serverUrlValidation.mapToUi()
-                )
                 var isValid = serverUrlValidation.isValid
-                if (currentState.authType == ServerSetupState.AuthType.HTTP_BASIC) {
-                    val loginValidation = stringValidator(currentState.login)
-                    val passwordValidation = stringValidator(currentState.password)
-                    newState = newState.copy(
-                        loginValidationError = loginValidation.mapToUi(),
-                        passwordValidationError = passwordValidation.mapToUi()
+                updateState {
+                    var newState = it.copy(
+                        serverUrlValidationError = serverUrlValidation.mapToUi()
                     )
-                    isValid = isValid && loginValidation.isValid && passwordValidation.isValid
+                    if (currentState.authType == ServerSetupState.AuthType.HTTP_BASIC) {
+                        val loginValidation = stringValidator(currentState.login)
+                        val passwordValidation = stringValidator(currentState.password)
+                        newState = newState.copy(
+                            loginValidationError = loginValidation.mapToUi(),
+                            passwordValidationError = passwordValidation.mapToUi()
+                        )
+                        isValid = isValid && loginValidation.isValid && passwordValidation.isValid
+                    }
+                    newState
                 }
-                setState(newState)
                 isValid
             }
         }
+
         ServerSetupState.Mode.HORDE -> {
             if (currentState.hordeDefaultApiKey) true
             else {
                 val validation = stringValidator(currentState.hordeApiKey)
-                currentState.copy(hordeApiKeyValidationError = validation.mapToUi()).let(::setState)
+                updateState {
+                    it.copy(hordeApiKeyValidationError = validation.mapToUi())
+                }
                 validation.isValid
             }
         }
+
         ServerSetupState.Mode.LOCAL -> {
             currentState.localModels.find { it.selected && it.downloaded } != null
         }
@@ -182,6 +189,7 @@ class ServerSetupViewModel(
                 if (!demoMode) currentState.credentialsDomain()
                 else AuthorizationCredentials.None
             }
+
             else -> AuthorizationCredentials.None
         }
         analytics.logEvent(SetupConnectEvent(connectUrl, demoMode))
@@ -211,7 +219,7 @@ class ServerSetupViewModel(
                 setServerConfigurationUseCase(
                     Configuration(
                         serverUrl = currentState.originalSeverUrl,
-                        demoMode =  currentState.originalDemoMode,
+                        demoMode = currentState.originalDemoMode,
                         source = currentState.originalMode.toSource(),
                         hordeApiKey = currentState.originalHordeApiKey,
                         authCredentials = currentState.credentialsDomain(true),
@@ -255,7 +263,7 @@ class ServerSetupViewModel(
                 setServerConfigurationUseCase(
                     Configuration(
                         serverUrl = currentState.originalSeverUrl,
-                        demoMode =  currentState.originalDemoMode,
+                        demoMode = currentState.originalDemoMode,
                         source = currentState.originalMode.toSource(),
                         hordeApiKey = currentState.originalHordeApiKey,
                         authCredentials = AuthorizationCredentials.None,
@@ -306,13 +314,13 @@ class ServerSetupViewModel(
         if (currentState.localModels.any { it.downloadState is DownloadState.Downloading }) {
             return
         }
-        setState(
-            currentState.copy(
+        updateState {
+            it.copy(
                 localModels = currentState.localModels.withNewState(
                     localModel.copy(selected = true),
                 ),
-            ),
-        )
+            )
+        }
     }
 
     fun localModelDownloadClickReducer(localModel: ServerSetupState.LocalModel) {
@@ -321,18 +329,18 @@ class ServerSetupViewModel(
             localModel.downloadState is DownloadState.Downloading -> {
                 downloadDisposable?.dispose()
                 downloadDisposable = null
-                setState(
-                    currentState.copy(
+                updateState {
+                    it.copy(
                         localModels = currentState.localModels.withNewState(
                             localModel.copy(downloadState = DownloadState.Unknown),
                         ),
-                    ),
-                )
+                    )
+                }
             }
             // User deletes local model
             localModel.downloaded -> {
-                setState(
-                    currentState.copy(
+                updateState {
+                    it.copy(
                         localModels = currentState.localModels.withNewState(
                             localModel.copy(
                                 downloadState = DownloadState.Unknown,
@@ -340,22 +348,22 @@ class ServerSetupViewModel(
                             ),
                         ),
                     )
-                )
+                }
                 !deleteModelUseCase(localModel.id)
                     .subscribeOnMainThread(schedulersProvider)
                     .subscribeBy(::errorLog)
             }
             // User requested new download operation
             else -> {
-                setState(
-                    currentState.copy(
+                updateState {
+                    it.copy(
                         localModels = currentState.localModels.withNewState(
                             localModel.copy(
                                 downloadState = DownloadState.Downloading(),
                             ),
                         ),
-                    ),
-                )
+                    )
+                }
                 downloadDisposable?.dispose()
                 downloadDisposable = null
                 downloadDisposable = downloadModelUseCase(localModel.id)
@@ -366,35 +374,37 @@ class ServerSetupViewModel(
                     .subscribeBy(
                         onError = { t ->
                             val message = t.localizedMessage ?: "Error"
-                            setState(
-                                currentState.copy(
+                            updateState {
+                                it.copy(
                                     localModels = currentState.localModels.withNewState(
                                         localModel.copy(
                                             downloadState = DownloadState.Error(t),
                                         ),
                                     ),
-                                ),
-                            )
+                                )
+                            }
                             setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
                         },
                         onNext = { downloadState ->
                             debugLog("DOWNLOAD STATE : $downloadState")
-                            val newState = when (downloadState) {
-                                is DownloadState.Complete -> currentState.copy(
-                                    localModels = currentState.localModels.withNewState(
-                                        localModel.copy(
-                                            downloadState = downloadState,
-                                            downloaded = true,
+                            updateState {
+                                when (downloadState) {
+                                    is DownloadState.Complete -> it.copy(
+                                        localModels = it.localModels.withNewState(
+                                            localModel.copy(
+                                                downloadState = downloadState,
+                                                downloaded = true,
+                                            ),
                                         ),
-                                    ),
-                                )
-                                else -> currentState.copy(
-                                    localModels = currentState.localModels.withNewState(
-                                        localModel.copy(downloadState = downloadState),
-                                    ),
-                                )
+                                    )
+
+                                    else -> it.copy(
+                                        localModels = it.localModels.withNewState(
+                                            localModel.copy(downloadState = downloadState),
+                                        ),
+                                    )
+                                }
                             }
-                            setState(newState)
                         },
                     )
                     .apply { addToDisposable() }
@@ -402,9 +412,9 @@ class ServerSetupViewModel(
         }
     }
 
-    private fun setScreenDialog(value: ServerSetupState.Dialog) = currentState
-        .copy(screenDialog = value)
-        .let(::setState)
+    private fun setScreenDialog(value: ServerSetupState.Dialog) =  updateState {
+        it.copy(screenDialog = value)
+    }
 
     private fun onSetupComplete() {
         preferenceManager.forceSetupAfterUpdate = false
