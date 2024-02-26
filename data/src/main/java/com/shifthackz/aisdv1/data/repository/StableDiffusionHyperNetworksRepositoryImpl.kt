@@ -13,6 +13,7 @@ internal class StableDiffusionHyperNetworksRepositoryImpl(
         .flatMapCompletable(localDataSource::insertHyperNetworks)
 
     override fun fetchAndGetHyperNetworks() = fetchHyperNetworks()
+        .onErrorComplete()
         .andThen(getHyperNetworks())
 
     override fun getHyperNetworks() = localDataSource.getHyperNetworks()

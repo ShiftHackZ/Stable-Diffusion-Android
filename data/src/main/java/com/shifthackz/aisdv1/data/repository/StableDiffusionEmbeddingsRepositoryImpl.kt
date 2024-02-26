@@ -13,6 +13,7 @@ internal class StableDiffusionEmbeddingsRepositoryImpl(
         .flatMapCompletable(localDataSource::insertEmbeddings)
 
     override fun fetchAndGetEmbeddings() = fetchEmbeddings()
+        .onErrorComplete()
         .andThen(localDataSource.getEmbeddings())
 
     override fun getEmbeddings() = localDataSource.getEmbeddings()
