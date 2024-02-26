@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT_KEY_MODEL_FORMAT
+import com.shifthackz.aisdv1.feature.diffusion.entity.Array3D
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
 import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
@@ -36,7 +37,7 @@ internal class VaeDecoder(
     }
 
     fun convertToImage(
-        output: Array<Array<Array<FloatArray>>>,
+        output: Array3D<FloatArray>,
         width: Int,
         height: Int,
     ): Bitmap {

@@ -9,8 +9,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material.icons.filled.Casino
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
@@ -43,6 +45,7 @@ import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MIN
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import kotlin.random.Random
 
 enum class GenerationInputMode {
     AUTOMATIC1111,
@@ -89,21 +92,23 @@ fun GenerationInputForm(
             onValueChange = onPromptUpdated,
             label = { Text(stringResource(id = R.string.hint_prompt)) },
         )
-        if (state.mode != GenerationInputMode.HORDE) TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            value = state.negativePrompt,
-            onValueChange = onNegativePromptUpdated,
-            label = { Text(stringResource(id = R.string.hint_prompt_negative)) },
-        )
+        // Horde does not support "negative prompt"
+        if (state.mode != GenerationInputMode.HORDE) {
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                value = state.negativePrompt,
+                onValueChange = onNegativePromptUpdated,
+                label = { Text(stringResource(id = R.string.hint_prompt_negative)) },
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
         ) {
             val localModifier = Modifier.weight(1f)
-
 
             if (state.mode == GenerationInputMode.HORDE || state.mode == GenerationInputMode.LOCAL) {
                 DropdownTextField(
@@ -132,7 +137,14 @@ fun GenerationInputForm(
                         }
                     },
                     isError = widthValidationError != null,
-                    supportingText = { widthValidationError?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) } },
+                    supportingText = {
+                        widthValidationError?.let {
+                            Text(
+                                it.asString(),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    },
                     label = { Text(stringResource(id = R.string.width)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
@@ -147,13 +159,20 @@ fun GenerationInputForm(
                         }
                     },
                     isError = heightValidationError != null,
-                    supportingText = { heightValidationError?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) } },
+                    supportingText = {
+                        heightValidationError?.let {
+                            Text(
+                                it.asString(),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    },
                     label = { Text(stringResource(id = R.string.height)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
             }
         }
-        if (state.advancedToggleButtonVisible && state.mode != GenerationInputMode.LOCAL) {
+        if (state.advancedToggleButtonVisible) {
             TextButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = { onShowAdvancedOptionsToggle(!state.advancedOptionsVisible) },
@@ -171,11 +190,12 @@ fun GenerationInputForm(
                 )
             }
         }
-        
-        if (state.mode != GenerationInputMode.LOCAL) {
-            AnimatedVisibility(visible = state.advancedOptionsVisible) {
-                Column {
-                    if (state.mode == GenerationInputMode.AUTOMATIC1111) DropdownTextField(
+
+        AnimatedVisibility(visible = state.advancedOptionsVisible) {
+            Column {
+                // Sampler selection only supported for A1111
+                if (state.mode == GenerationInputMode.AUTOMATIC1111) {
+                    DropdownTextField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
@@ -184,20 +204,31 @@ fun GenerationInputForm(
                         items = state.availableSamplers,
                         onItemSelected = onSamplerUpdated,
                     )
-                    TextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp),
-                        value = state.seed,
-                        onValueChange = { value ->
-                            value
-                                .filter { it.isDigit() }
-                                .let(onSeedUpdated)
-                        },
-                        label = { Text(stringResource(id = R.string.hint_seed)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    )
-                    if (state.mode == GenerationInputMode.HORDE) Row(
+                }
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    value = state.seed,
+                    onValueChange = { value ->
+                        value
+                            .filter { it.isDigit() }
+                            .let(onSeedUpdated)
+                    },
+                    label = { Text(stringResource(id = R.string.hint_seed)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    trailingIcon = {
+                        IconButton(onClick = { onSeedUpdated("${Random.nextLong()}") }) {
+                            Icon(
+                                imageVector = Icons.Default.Casino,
+                                contentDescription = "Random",
+                            )
+                        }
+                    },
+                )
+                // NSFW flag specifically for Horde API
+                if (state.mode == GenerationInputMode.HORDE) {
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
@@ -212,7 +243,10 @@ fun GenerationInputForm(
                             text = stringResource(id = R.string.hint_nsfw),
                         )
                     }
-                    if (state.mode == GenerationInputMode.AUTOMATIC1111) TextField(
+                }
+                // Variation seed only supported for A1111
+                if (state.mode == GenerationInputMode.AUTOMATIC1111) {
+                    TextField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
@@ -224,7 +258,18 @@ fun GenerationInputForm(
                         },
                         label = { Text(stringResource(id = R.string.hint_sub_seed)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        trailingIcon = {
+                            IconButton(onClick = { onSubSeedUpdated("${Random.nextLong()}") }) {
+                                Icon(
+                                    imageVector = Icons.Default.Casino,
+                                    contentDescription = "Random",
+                                )
+                            }
+                        },
                     )
+                }
+                // Sub-seed strength is not available for Local Diffusion
+                if (state.mode != GenerationInputMode.LOCAL) {
                     Text(
                         modifier = Modifier.padding(top = 8.dp),
                         text = stringResource(
@@ -240,36 +285,43 @@ fun GenerationInputForm(
                             onSubSeedStrengthUpdated(it.roundTo(2))
                         },
                     )
-                    Text(
-                        modifier = Modifier.padding(top = 8.dp),
-                        text = stringResource(
-                            id = R.string.hint_sampling_steps,
-                            "${state.samplingSteps}"
-                        ),
-                    )
-                    Slider(
-                        value = state.samplingSteps * 1f,
-                        valueRange = (SAMPLING_STEPS_RANGE_MIN * 1f)..(SAMPLING_STEPS_RANGE_MAX * 1f),
-                        steps = abs(SAMPLING_STEPS_RANGE_MAX - SAMPLING_STEPS_RANGE_MIN) - 1,
-                        colors = sliderColors,
-                        onValueChange = {
-                            onSamplingStepsUpdated(it.roundToInt())
-                        },
-                    )
-                    Text(
-                        modifier = Modifier.padding(top = 8.dp),
-                        text = stringResource(id = R.string.hint_cfg_scale, "${state.cfgScale}"),
-                    )
-                    Slider(
-                        value = state.cfgScale,
-                        valueRange = (CFG_SCALE_RANGE_MIN * 1f)..(CFG_SCALE_RANGE_MAX * 1f),
-                        steps = abs(CFG_SCALE_RANGE_MAX - CFG_SCALE_RANGE_MIN) * 2 - 1,
-                        colors = sliderColors,
-                        onValueChange = {
-                            onCfgScaleUpdated(it.roundTo(1))
-                        },
-                    )
-                    afterSlidersSection()
+                }
+
+                Text(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = stringResource(
+                        id = R.string.hint_sampling_steps,
+                        "${state.samplingSteps}"
+                    ),
+                )
+                Slider(
+                    value = state.samplingSteps * 1f,
+                    valueRange = (SAMPLING_STEPS_RANGE_MIN * 1f)..(SAMPLING_STEPS_RANGE_MAX * 1f),
+                    steps = abs(SAMPLING_STEPS_RANGE_MAX - SAMPLING_STEPS_RANGE_MIN) - 1,
+                    colors = sliderColors,
+                    onValueChange = {
+                        onSamplingStepsUpdated(it.roundToInt())
+                    },
+                )
+
+                Text(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = stringResource(id = R.string.hint_cfg_scale, "${state.cfgScale}"),
+                )
+                Slider(
+                    value = state.cfgScale,
+                    valueRange = (CFG_SCALE_RANGE_MIN * 1f)..(CFG_SCALE_RANGE_MAX * 1f),
+                    steps = abs(CFG_SCALE_RANGE_MAX - CFG_SCALE_RANGE_MIN) * 2 - 1,
+                    colors = sliderColors,
+                    onValueChange = {
+                        onCfgScaleUpdated(it.roundTo(1))
+                    },
+                )
+
+                afterSlidersSection()
+
+                // Batch is not available for Local Diffusion
+                if (state.mode != GenerationInputMode.LOCAL) {
                     Text(
                         modifier = Modifier.padding(top = 8.dp),
                         text = stringResource(
@@ -286,7 +338,10 @@ fun GenerationInputForm(
                             onBatchCountUpdated(it.roundToInt())
                         },
                     )
-                    if (state.mode == GenerationInputMode.AUTOMATIC1111) Row(
+                }
+                //Restore faces available only for A1111
+                if (state.mode == GenerationInputMode.AUTOMATIC1111) {
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),

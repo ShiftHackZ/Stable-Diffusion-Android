@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
+import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
@@ -44,6 +45,7 @@ class ImageToImageViewModel(
     private val schedulersProvider: SchedulersProvider,
     private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
+    private val wakeLockInterActor: WakeLockInterActor,
 ) : GenerationMviViewModel<ImageToImageState, GenerationMviEffect>(
     schedulersProvider,
     saveLastResultToCacheUseCase,
@@ -115,12 +117,16 @@ class ImageToImageViewModel(
             is ImageToImageState.ImageState.Image -> {
                 !Single
                     .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
-                    .doOnSubscribe { setActiveDialog(ImageToImageState.Modal.Communicating()) }
+                    .doOnSubscribe {
+                        wakeLockInterActor.acquireWakelockUseCase()
+                        setActiveDialog(ImageToImageState.Modal.Communicating())
+                    }
                     .map(BitmapToBase64Converter::Input)
                     .flatMap(bitmapToBase64Converter::invoke)
                     .map(currentState::preProcessed)
                     .map(ImageToImageState::mapToPayload)
                     .flatMap(imageToImageUseCase::invoke)
+                    .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
                     .subscribeOnMainThread(schedulersProvider)
                     .subscribeBy(
                         onError = { t ->

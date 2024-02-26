@@ -15,6 +15,7 @@ import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
+import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
@@ -53,6 +54,7 @@ class ServerSetupViewModel(
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
     private val analytics: Analytics,
+    private val wakeLockInterActor: WakeLockInterActor,
 ) : MviRxViewModel<ServerSetupState, ServerSetupEffect>() {
 
     override val emptyState = ServerSetupState(
@@ -315,6 +317,7 @@ class ServerSetupViewModel(
 
     fun localModelDownloadClickReducer(localModel: ServerSetupState.LocalModel) {
         when {
+            // User cancels download
             localModel.downloadState is DownloadState.Downloading -> {
                 downloadDisposable?.dispose()
                 downloadDisposable = null
@@ -326,6 +329,7 @@ class ServerSetupViewModel(
                     ),
                 )
             }
+            // User deletes local model
             localModel.downloaded -> {
                 setState(
                     currentState.copy(
@@ -341,6 +345,7 @@ class ServerSetupViewModel(
                     .subscribeOnMainThread(schedulersProvider)
                     .subscribeBy(::errorLog)
             }
+            // User requested new download operation
             else -> {
                 setState(
                     currentState.copy(
@@ -355,6 +360,8 @@ class ServerSetupViewModel(
                 downloadDisposable = null
                 downloadDisposable = downloadModelUseCase(localModel.id)
                     .distinctUntilChanged()
+                    .doOnSubscribe { wakeLockInterActor.acquireWakelockUseCase() }
+                    .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
                     .subscribeOnMainThread(schedulersProvider)
                     .subscribeBy(
                         onError = { t ->
