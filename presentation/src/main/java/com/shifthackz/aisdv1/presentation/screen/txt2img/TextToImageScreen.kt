@@ -76,6 +76,8 @@ class TextToImageScreen(
             onProcessLoraAlias = viewModel::processLoraAlias,
             onOpenHyperNetInput = viewModel::openHyperNetInput,
             onProcessHyperNet = viewModel::processHyperNet,
+            onOpenEmbedding = viewModel::openEmbeddingInput,
+            onProcessNewPrompts = viewModel::processNewPrompts,
             onDismissScreenDialog = viewModel::dismissScreenModal,
         )
     }
@@ -108,6 +110,8 @@ private fun ScreenContent(
     onProcessLoraAlias: (String) -> Unit = {},
     onOpenHyperNetInput: () -> Unit = {},
     onProcessHyperNet: (String) -> Unit = {},
+    onOpenEmbedding: () -> Unit = {},
+    onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
     onDismissScreenDialog: () -> Unit = {},
 ) {
     Box(modifier) {
@@ -177,6 +181,11 @@ private fun ScreenContent(
                                 text = "Lora"
                             )
                         }
+                        OutlinedButton(onClick = onOpenEmbedding) {
+                            Text(
+                                text = "Text inversion"
+                            )
+                        }
                         OutlinedButton(onClick = onOpenHyperNetInput) {
                             Text(
                                 text = "Hypernetworks"
@@ -214,6 +223,7 @@ private fun ScreenContent(
             onUpdateFromPreviousAiGeneration = onUpdateFromPreviousAiGeneration,
             onProcessLoraAlias = onProcessLoraAlias,
             onProcessHyperNet = onProcessHyperNet,
+            onProcessNewPrompts = onProcessNewPrompts,
             onDismissScreenDialog = onDismissScreenDialog,
         )
     }

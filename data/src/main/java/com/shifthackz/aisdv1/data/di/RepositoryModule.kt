@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.data.repository.HordeGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.LocalDiffusionGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.RandomImageRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.ServerConfigurationRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.StableDiffusionEmbeddingsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionHyperNetworksRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionLorasRepositoryImpl
@@ -21,6 +22,7 @@ import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.RandomImageRepository
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
+import com.shifthackz.aisdv1.domain.repository.StableDiffusionEmbeddingsRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionHyperNetworksRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionLorasRepository
@@ -49,6 +51,7 @@ val repositoryModule = module {
     factoryOf(::StableDiffusionSamplersRepositoryImpl) bind StableDiffusionSamplersRepository::class
     factoryOf(::StableDiffusionLorasRepositoryImpl) bind StableDiffusionLorasRepository::class
     factoryOf(::StableDiffusionHyperNetworksRepositoryImpl) bind StableDiffusionHyperNetworksRepository::class
+    factoryOf(::StableDiffusionEmbeddingsRepositoryImpl) bind StableDiffusionEmbeddingsRepository::class
     factoryOf(::ServerConfigurationRepositoryImpl) bind ServerConfigurationRepository::class
     factoryOf(::GenerationResultRepositoryImpl) bind GenerationResultRepository::class
     factoryOf(::RandomImageRepositoryImpl) bind RandomImageRepository::class

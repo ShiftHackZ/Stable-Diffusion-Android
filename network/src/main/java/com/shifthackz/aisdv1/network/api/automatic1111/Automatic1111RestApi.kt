@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.network.model.StableDiffusionModelRaw
 import com.shifthackz.aisdv1.network.model.StableDiffusionSamplerRaw
 import com.shifthackz.aisdv1.network.request.ImageToImageRequest
 import com.shifthackz.aisdv1.network.request.TextToImageRequest
+import com.shifthackz.aisdv1.network.response.SdEmbeddingsResponse
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -46,6 +47,9 @@ interface Automatic1111RestApi {
     @GET
     fun fetchHyperNetworks(@Url url: String): Single<List<StableDiffusionHyperNetworkRaw>>
 
+    @GET
+    fun fetchEmbeddings(@Url url: String): Single<SdEmbeddingsResponse>
+
     @POST
     fun textToImage(
         @Url url: String,
@@ -66,5 +70,6 @@ interface Automatic1111RestApi {
         const val PATH_IMG_TO_IMG = "sdapi/v1/img2img"
         const val PATH_LORAS = "sdapi/v1/loras"
         const val PATH_HYPER_NETWORKS = "sdapi/v1/hypernetworks"
+        const val PATH_EMBEDDINGS = "sdapi/v1/embeddings"
     }
 }

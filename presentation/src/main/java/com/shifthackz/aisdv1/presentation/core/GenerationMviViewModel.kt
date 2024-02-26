@@ -123,6 +123,13 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
         it.copyState(prompt = ExtrasFormatter.toggleExtraPromptAlias(it.prompt, value, ExtraType.HyperNet))
     }
 
+    fun processNewPrompts(positive: String, negative: String) = updateGenerationState {
+        it.copyState(
+            prompt = positive,
+            negativePrompt = negative,
+        )
+    }
+
     fun toggleAdvancedOptions(value: Boolean) = updateGenerationState {
         it.copyState(advancedOptionsVisible = value)
     }
@@ -196,6 +203,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
     fun openLoraInput() = setActiveModal(Modal.ExtraBottomSheet(currentState.prompt, ExtraType.Lora))
 
     fun openHyperNetInput() = setActiveModal(Modal.ExtraBottomSheet(currentState.prompt, ExtraType.HyperNet))
+
+    fun openEmbeddingInput() = setActiveModal(Modal.Embeddings(currentState.prompt, currentState.negativePrompt))
 
     protected fun setActiveModal(modal: Modal) = updateGenerationState {
         it.copyState(screenModal = modal)

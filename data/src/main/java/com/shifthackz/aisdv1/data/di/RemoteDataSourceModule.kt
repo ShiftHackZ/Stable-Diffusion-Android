@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.data.remote.HordeGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HordeStatusSource
 import com.shifthackz.aisdv1.data.remote.RandomImageRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.ServerConfigurationRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.StableDiffusionEmbeddingsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionHyperNetworksRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionLorasRemoteDataSource
@@ -17,6 +18,7 @@ import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.RandomImageDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
+import com.shifthackz.aisdv1.domain.datasource.StableDiffusionEmbeddingsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionLorasDataSource
@@ -50,6 +52,7 @@ val remoteDataSourceModule = module {
     factoryOf(::StableDiffusionModelsRemoteDataSource) bind StableDiffusionModelsDataSource.Remote::class
     factoryOf(::StableDiffusionLorasRemoteDataSource) bind StableDiffusionLorasDataSource.Remote::class
     factoryOf(::StableDiffusionHyperNetworksRemoteDataSource) bind StableDiffusionHyperNetworksDataSource.Remote::class
+    factoryOf(::StableDiffusionEmbeddingsRemoteDataSource) bind StableDiffusionEmbeddingsDataSource.Remote::class
     factoryOf(::ServerConfigurationRemoteDataSource) bind ServerConfigurationDataSource.Remote::class
     factoryOf(::RandomImageRemoteDataSource) bind RandomImageDataSource.Remote::class
     factoryOf(::DownloadableModelRemoteDataSource) bind DownloadableModelDataSource.Remote::class

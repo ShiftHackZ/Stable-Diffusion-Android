@@ -41,6 +41,7 @@ val databaseModule = module {
     single { get<CacheDatabase>().sdSamplerDao() }
     single { get<CacheDatabase>().sdLoraDao() }
     single { get<CacheDatabase>().sdHyperNetworkDao() }
+    single { get<CacheDatabase>().sdEmbeddingDao() }
     single { get<CacheDatabase>().serverConfigurationDao() }
     //endregion
 

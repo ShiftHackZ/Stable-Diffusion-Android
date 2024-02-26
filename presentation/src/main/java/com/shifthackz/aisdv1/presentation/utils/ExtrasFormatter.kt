@@ -4,6 +4,16 @@ import com.shifthackz.aisdv1.presentation.model.ExtraType
 
 object ExtrasFormatter {
 
+    fun isEmbeddingPresentInPrompt(
+        prompt: String,
+        embedding: String,
+    ): Boolean {
+        val keywords = prompt.split(",", " ")
+            .map(String::trim)
+            .filterNot(String::isBlank)
+        return keywords.contains(embedding)
+    }
+
     fun isExtraPresentInPrompt(
         prompt: String,
         loraAlias: String,
@@ -40,10 +50,23 @@ object ExtrasFormatter {
         val keywords = prompt.split(",", " ")
             .map(String::trim)
             .filterNot(String::isBlank)
-        println(keywords)
         val index = keywords.indexOfFirst { it.startsWith("<${type.raw}:$loraAlias:") }
         if (index == -1) {
             return "${prompt.trim()} <${type.raw}:$loraAlias:1>".trim()
+        }
+        return prompt.replaceFirst(keywords[index], "").trim()
+    }
+
+    fun toggleEmbedding(
+        prompt: String,
+        embedding: String,
+    ): String {
+        val keywords = prompt.split(",", " ")
+            .map(String::trim)
+            .filterNot(String::isBlank)
+        val index = keywords.indexOfFirst { it == embedding }
+        if (index == -1) {
+            return "${prompt.trim()} $embedding".trim()
         }
         return prompt.replaceFirst(keywords[index], "").trim()
     }

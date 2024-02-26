@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 
 class ExtrasScreen(
     private val viewModel: ExtrasViewModel,
@@ -80,31 +81,16 @@ private fun ScreenContent(
             Column(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Spacer(modifier = Modifier.width(40.dp))
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = when (state) {
-                            is ExtrasState.Content -> when (state.type) {
-                                ExtraType.Lora -> "Lora"
-                                ExtraType.HyperNet -> "HyperNetwork"
-                            }
-                            else -> ""
-                        },
-                        style = MaterialTheme.typography.headlineSmall,
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = onClose) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "Close",
-                        )
-                    }
-                }
+                ModalDialogToolbar(
+                    text = when (state) {
+                        is ExtrasState.Content -> when (state.type) {
+                            ExtraType.Lora -> "Lora"
+                            ExtraType.HyperNet -> "HyperNetwork"
+                        }
+                        else -> ""
+                    },
+                    onClose = onClose,
+                )
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(1),
                     contentPadding = PaddingValues(16.dp),
@@ -126,7 +112,6 @@ private fun ScreenContent(
                     }
                 }
             }
-
         }
     }
 }
@@ -161,12 +146,14 @@ private fun ExtrasItemComposable(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(
-                text = "Alias: ${item.alias}",
-                fontSize = 11.5.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            item.alias?.let {
+                Text(
+                    text = "Alias: $it",
+                    fontSize = 11.5.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         }
         item.value?.let {
             Spacer(modifier = Modifier.weight(1f))

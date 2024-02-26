@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.RectangleShape
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingScreen
+import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasViewModel
@@ -27,8 +29,11 @@ fun ModalRenderer(
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onProcessLoraAlias: (String) -> Unit = {},
     onProcessHyperNet: (String) -> Unit = {},
+    onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
     onDismissScreenDialog: () -> Unit = {},
 ) = when (screenModal) {
+    Modal.None -> Unit
+
     is Modal.Communicating -> ProgressDialog(
         canDismiss = false,
         waitTimeSeconds = screenModal.hordeProcessStatus?.waitTimeSeconds,
@@ -98,6 +103,11 @@ fun ModalRenderer(
         onClose = onDismissScreenDialog,
     ).Build()
 
-
-    Modal.None -> Unit
+    is Modal.Embeddings -> EmbeddingScreen(
+        viewModel = koinViewModel<EmbeddingViewModel>().apply {
+            updateData(screenModal.prompt, screenModal.negativePrompt)
+        },
+        onNewPrompts = onProcessNewPrompts,
+        onClose = onDismissScreenDialog,
+    ).Build()
 }
