@@ -175,7 +175,9 @@ private fun ScreenContent(
                             .padding(horizontal = 16.dp),
                     ) {
                         InputImageState(
-                            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 16.dp),
                             imageState = state.imageState,
                             onPickImage = onPickImage,
                             onTakePhoto = onTakePhoto,
@@ -251,42 +253,37 @@ private fun ScreenContent(
                 }
             },
             bottomBar = {
-                if (state.mode != GenerationInputMode.LOCAL) {
-                    Column(Modifier.fillMaxWidth()) {
-                        Button(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
-                                .padding(bottom = 16.dp),
-                            onClick = onGenerateClicked,
-                            enabled = !state.hasValidationErrors && !state.imageState.isEmpty,
-                        ) {
-                            Icon(
-                                modifier = Modifier.size(18.dp),
-                                imageVector = Icons.Default.AutoFixNormal,
-                                contentDescription = "Imagine",
-                            )
-                            Text(
-                                modifier = Modifier.padding(start = 8.dp),
-                                text = stringResource(id = R.string.action_generate),
-                                color = LocalContentColor.current,
-                            )
-                        }
-                    }
-                } else {
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 32.dp)
-                            .padding(bottom = 16.dp),
-                        onClick = onChangeConfigurationClicked,
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(start = 8.dp),
-                            text = stringResource(id = R.string.action_change_configuration),
-                            color = LocalContentColor.current,
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp),
+                    onClick = when (state.mode) {
+                        GenerationInputMode.LOCAL -> onChangeConfigurationClicked
+                        else -> onGenerateClicked
+                    },
+                    enabled = when (state.mode) {
+                        GenerationInputMode.LOCAL -> true
+                        else -> !state.hasValidationErrors && !state.imageState.isEmpty
+                    },
+                ) {
+                    if (state.mode != GenerationInputMode.LOCAL) {
+                        Icon(
+                            modifier = Modifier.size(18.dp),
+                            imageVector = Icons.Default.AutoFixNormal,
+                            contentDescription = "Imagine",
                         )
                     }
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = stringResource(
+                            id = when (state.mode) {
+                                GenerationInputMode.LOCAL -> R.string.action_change_configuration
+                                else -> R.string.action_generate
+                            }
+                        ),
+                        color = LocalContentColor.current,
+                    )
                 }
             }
         )

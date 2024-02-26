@@ -195,12 +195,6 @@ private fun GalleryDetailNavigationBar(
                     .padding(horizontal = 16.dp, vertical = 2.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                IconButton(onClick = { onExportParamsClick(state) }) {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = "Share prompt",
-                    )
-                }
                 IconButton(onClick = onSendToTxt2Img) {
                     Icon(
                         modifier = Modifier.size(24.dp),
@@ -215,6 +209,12 @@ private fun GalleryDetailNavigationBar(
                         painter = painterResource(id = R.drawable.ic_image),
                         contentDescription = "img2img",
                         tint = LocalContentColor.current,
+                    )
+                }
+                IconButton(onClick = { onExportParamsClick(state) }) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Share prompt",
                     )
                 }
                 IconButton(onClick = onDeleteButtonClick) {
