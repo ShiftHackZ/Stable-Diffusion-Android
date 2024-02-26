@@ -6,8 +6,6 @@ import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
 import com.shifthackz.aisdv1.network.api.horde.HordeRestApi
 import com.shifthackz.aisdv1.network.api.imagecdn.ImageCdnRestApi
 import com.shifthackz.aisdv1.network.api.imagecdn.ImageCdnRestApiImpl
-import com.shifthackz.aisdv1.network.api.sdai.AppUpdateRestApi
-import com.shifthackz.aisdv1.network.api.sdai.CoinsRestApi
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsRestApi
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsRestApiImpl
 import com.shifthackz.aisdv1.network.authenticator.RestAuthenticator
@@ -98,18 +96,6 @@ val networkModule = module {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAutomaticApiUrl)
             .create(Automatic1111RestApi::class.java)
-    }
-
-    single {
-        get<Retrofit.Builder>()
-            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
-            .create(AppUpdateRestApi::class.java)
-    }
-
-    single {
-        get<Retrofit.Builder>()
-            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
-            .create(CoinsRestApi::class.java)
     }
 
     single {

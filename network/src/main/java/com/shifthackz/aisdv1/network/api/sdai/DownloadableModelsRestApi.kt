@@ -11,7 +11,6 @@ import java.io.File
 
 interface DownloadableModelsRestApi {
 
-    @GET("/models.json")
     fun fetchDownloadableModels(): Single<List<DownloadableModelResponse>>
 
     fun <T : Any> downloadModel(
