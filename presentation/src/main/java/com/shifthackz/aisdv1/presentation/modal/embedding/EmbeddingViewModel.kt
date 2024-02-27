@@ -4,16 +4,17 @@ import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.sdembedding.FetchAndGetEmbeddingsUseCase
+import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
 import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import java.util.concurrent.TimeUnit
 
 class EmbeddingViewModel(
     private val fetchAndGetEmbeddingsUseCase: FetchAndGetEmbeddingsUseCase,
     private val schedulersProvider: SchedulersProvider,
-) : MviRxViewModel<EmbeddingState, EmbeddingEffect>() {
+) : MviRxViewModel<EmbeddingState, ExtrasEffect>() {
 
     override val emptyState = EmbeddingState()
 
@@ -73,6 +74,6 @@ class EmbeddingViewModel(
     }
 
     fun applyNewPrompts() = emitEffect(
-        EmbeddingEffect.ApplyPrompts(currentState.prompt, currentState.negativePrompt)
+        ExtrasEffect.ApplyPrompts(currentState.prompt, currentState.negativePrompt)
     )
 }

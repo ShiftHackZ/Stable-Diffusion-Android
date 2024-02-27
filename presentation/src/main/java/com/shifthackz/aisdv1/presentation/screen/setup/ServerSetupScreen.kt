@@ -178,6 +178,7 @@ private fun ScreenContent(
             bottomBar = {
                 Button(
                     modifier = Modifier
+                        .height(height = 60.dp)
                         .background(MaterialTheme.colorScheme.background)
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)

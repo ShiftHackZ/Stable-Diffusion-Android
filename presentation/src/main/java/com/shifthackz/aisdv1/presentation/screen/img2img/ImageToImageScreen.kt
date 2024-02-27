@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -58,6 +59,7 @@ import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MIN
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
+import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
 
 class ImageToImageScreen(
@@ -102,7 +104,9 @@ class ImageToImageScreen(
             onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
             onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
             onOpenLoraInput = viewModel::openLoraInput,
-            onProcessLoraAlias = viewModel::processLoraAlias,
+            onOpenHyperNetInput = viewModel::openHyperNetInput,
+            onOpenEmbedding = viewModel::openEmbeddingInput,
+            onProcessNewPrompts = viewModel::processNewPrompts,
             onDismissScreenDialog = viewModel::dismissScreenModal,
         )
     }
@@ -138,7 +142,9 @@ private fun ScreenContent(
     onOpenPreviousGenerationInput: () -> Unit = {},
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onOpenLoraInput: () -> Unit = {},
-    onProcessLoraAlias: (String) -> Unit = {},
+    onOpenHyperNetInput: () -> Unit = {},
+    onOpenEmbedding: () -> Unit = {},
+    onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
     onDismissScreenDialog: () -> Unit = {},
 ) {
     Box(modifier) {
@@ -250,37 +256,47 @@ private fun ScreenContent(
                 }
             },
             bottomBar = {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(bottom = 16.dp),
-                    onClick = when (state.mode) {
-                        GenerationInputMode.LOCAL -> onChangeConfigurationClicked
-                        else -> onGenerateClicked
-                    },
-                    enabled = when (state.mode) {
-                        GenerationInputMode.LOCAL -> true
-                        else -> !state.hasValidationErrors && !state.imageState.isEmpty
-                    },
+                val isEnabled = when (state.mode) {
+                    GenerationInputMode.LOCAL -> true
+                    else -> !state.hasValidationErrors && !state.imageState.isEmpty
+                }
+                GenerationBottomToolbar(
+                    showToolbar = state.mode == GenerationInputMode.AUTOMATIC1111,
+                    strokeAccentState = isEnabled,
+                    onOpenLoraInput = onOpenLoraInput,
+                    onOpenHyperNetInput = onOpenHyperNetInput,
+                    onOpenEmbedding = onOpenEmbedding,
                 ) {
-                    if (state.mode != GenerationInputMode.LOCAL) {
-                        Icon(
-                            modifier = Modifier.size(18.dp),
-                            imageVector = Icons.Default.AutoFixNormal,
-                            contentDescription = "Imagine",
+                    Button(
+                        modifier = Modifier
+                            .height(height = 60.dp)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(bottom = 16.dp),
+                        onClick = when (state.mode) {
+                            GenerationInputMode.LOCAL -> onChangeConfigurationClicked
+                            else -> onGenerateClicked
+                        },
+                        enabled = isEnabled,
+                    ) {
+                        if (state.mode != GenerationInputMode.LOCAL) {
+                            Icon(
+                                modifier = Modifier.size(18.dp),
+                                imageVector = Icons.Default.AutoFixNormal,
+                                contentDescription = "Imagine",
+                            )
+                        }
+                        Text(
+                            modifier = Modifier.padding(start = 8.dp),
+                            text = stringResource(
+                                id = when (state.mode) {
+                                    GenerationInputMode.LOCAL -> R.string.action_change_configuration
+                                    else -> R.string.action_generate
+                                }
+                            ),
+                            color = LocalContentColor.current,
                         )
                     }
-                    Text(
-                        modifier = Modifier.padding(start = 8.dp),
-                        text = stringResource(
-                            id = when (state.mode) {
-                                GenerationInputMode.LOCAL -> R.string.action_change_configuration
-                                else -> R.string.action_generate
-                            }
-                        ),
-                        color = LocalContentColor.current,
-                    )
                 }
             }
         )
@@ -289,7 +305,7 @@ private fun ScreenContent(
             onSaveGeneratedImages = onSaveGeneratedImages,
             onViewGeneratedImage = onViewGeneratedImage,
             onUpdateFromPreviousAiGeneration = onUpdateFromPreviousAiGeneration,
-            onProcessLoraAlias = onProcessLoraAlias,
+            onProcessNewPrompts = onProcessNewPrompts,
             onDismissScreenDialog = onDismissScreenDialog,
         )
     }

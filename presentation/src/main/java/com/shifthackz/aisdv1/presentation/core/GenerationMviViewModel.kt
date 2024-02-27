@@ -115,14 +115,6 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
 
     open fun onReceivedLocalDiffusionStatus(status: LocalDiffusion.Status) {}
 
-    fun processLoraAlias(alias: String) = updateGenerationState {
-        it.copyState(prompt = ExtrasFormatter.toggleExtraPromptAlias(it.prompt, alias))
-    }
-
-    fun processHyperNet(value: String) = updateGenerationState {
-        it.copyState(prompt = ExtrasFormatter.toggleExtraPromptAlias(it.prompt, value, ExtraType.HyperNet))
-    }
-
     fun processNewPrompts(positive: String, negative: String) = updateGenerationState {
         it.copyState(
             prompt = positive,
@@ -200,9 +192,9 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
 
     fun openPreviousGenerationInput() = setActiveModal(Modal.PromptBottomSheet)
 
-    fun openLoraInput() = setActiveModal(Modal.ExtraBottomSheet(currentState.prompt, ExtraType.Lora))
+    fun openLoraInput() = setActiveModal(Modal.ExtraBottomSheet(currentState.prompt, currentState.negativePrompt, ExtraType.Lora))
 
-    fun openHyperNetInput() = setActiveModal(Modal.ExtraBottomSheet(currentState.prompt, ExtraType.HyperNet))
+    fun openHyperNetInput() = setActiveModal(Modal.ExtraBottomSheet(currentState.prompt, currentState.negativePrompt, ExtraType.HyperNet))
 
     fun openEmbeddingInput() = setActiveModal(Modal.Embeddings(currentState.prompt, currentState.negativePrompt))
 

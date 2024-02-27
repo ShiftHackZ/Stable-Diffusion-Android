@@ -27,8 +27,6 @@ fun ModalRenderer(
     onSaveGeneratedImages: (List<AiGenerationResult>) -> Unit = {},
     onViewGeneratedImage: (AiGenerationResult) -> Unit = {},
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
-    onProcessLoraAlias: (String) -> Unit = {},
-    onProcessHyperNet: (String) -> Unit = {},
     onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
     onDismissScreenDialog: () -> Unit = {},
 ) = when (screenModal) {
@@ -91,15 +89,9 @@ fun ModalRenderer(
 
     is Modal.ExtraBottomSheet -> ExtrasScreen(
         viewModel = koinViewModel<ExtrasViewModel>().apply {
-            updateData(screenModal.prompt, screenModal.type)
+            updateData(screenModal.prompt, screenModal.negativePrompt, screenModal.type)
         },
-        onLoraSelected = {
-            when (it.type) {
-                ExtraType.Lora -> it.alias?.let(onProcessLoraAlias::invoke)
-                ExtraType.HyperNet -> onProcessHyperNet(it.name)
-            }
-            onDismissScreenDialog()
-        },
+        onNewPrompts = onProcessNewPrompts,
         onClose = onDismissScreenDialog,
     ).Build()
 

@@ -11,12 +11,6 @@ data class EmbeddingState(
     val selector: Boolean = false,
 ) : MviState
 
-sealed interface EmbeddingEffect : MviEffect {
-    data class ApplyPrompts(
-        val prompt: String,
-        val negativePrompt: String,
-    ) : EmbeddingEffect
-}
 
 data class EmbeddingItemUi(
     val keyword: String,

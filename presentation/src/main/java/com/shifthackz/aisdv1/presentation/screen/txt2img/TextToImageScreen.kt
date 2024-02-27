@@ -6,12 +6,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoFixNormal
@@ -27,7 +30,10 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,6 +44,8 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
 import com.shifthackz.aisdv1.presentation.core.GenerationMviScreen
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
+import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 
 class TextToImageScreen(
     private val viewModel: TextToImageViewModel,
@@ -73,9 +81,7 @@ class TextToImageScreen(
             onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
             onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
             onOpenLoraInput = viewModel::openLoraInput,
-            onProcessLoraAlias = viewModel::processLoraAlias,
             onOpenHyperNetInput = viewModel::openHyperNetInput,
-            onProcessHyperNet = viewModel::processHyperNet,
             onOpenEmbedding = viewModel::openEmbeddingInput,
             onProcessNewPrompts = viewModel::processNewPrompts,
             onDismissScreenDialog = viewModel::dismissScreenModal,
@@ -107,9 +113,7 @@ private fun ScreenContent(
     onOpenPreviousGenerationInput: () -> Unit = {},
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onOpenLoraInput: () -> Unit = {},
-    onProcessLoraAlias: (String) -> Unit = {},
     onOpenHyperNetInput: () -> Unit = {},
-    onProcessHyperNet: (String) -> Unit = {},
     onOpenEmbedding: () -> Unit = {},
     onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
     onDismissScreenDialog: () -> Unit = {},
@@ -164,38 +168,16 @@ private fun ScreenContent(
                 }
             },
             bottomBar = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.surface)
+                GenerationBottomToolbar(
+                    showToolbar = state.mode == GenerationInputMode.AUTOMATIC1111,
+                    strokeAccentState = !state.hasValidationErrors,
+                    onOpenLoraInput = onOpenLoraInput,
+                    onOpenHyperNetInput = onOpenHyperNetInput,
+                    onOpenEmbedding = onOpenEmbedding,
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.surface)
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 2.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        OutlinedButton(onClick = onOpenLoraInput) {
-                            Text(
-                                text = "Lora"
-                            )
-                        }
-                        OutlinedButton(onClick = onOpenEmbedding) {
-                            Text(
-                                text = "Text inversion"
-                            )
-                        }
-                        OutlinedButton(onClick = onOpenHyperNetInput) {
-                            Text(
-                                text = "Hypernetworks"
-                            )
-                        }
-                    }
-
-
                     Button(
                         modifier = Modifier
+                            .height(height = 60.dp)
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
@@ -221,8 +203,6 @@ private fun ScreenContent(
             onSaveGeneratedImages = onSaveGeneratedImages,
             onViewGeneratedImage = onViewGeneratedImage,
             onUpdateFromPreviousAiGeneration = onUpdateFromPreviousAiGeneration,
-            onProcessLoraAlias = onProcessLoraAlias,
-            onProcessHyperNet = onProcessHyperNet,
             onProcessNewPrompts = onProcessNewPrompts,
             onDismissScreenDialog = onDismissScreenDialog,
         )

@@ -1,17 +1,22 @@
 package com.shifthackz.aisdv1.presentation.modal.extras
 
+import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 
-sealed interface ExtrasState : MviState {
+data class ExtrasState(
+    val loading: Boolean = true,
+    val prompt: String = "",
+    val negativePrompt: String = "",
+    val type: ExtraType = ExtraType.Lora,
+    val loras: List<ExtraItemUi> = emptyList(),
+) : MviState
 
-    data object Loading : ExtrasState
-
-    data class Content(
+sealed interface ExtrasEffect : MviEffect {
+    data class ApplyPrompts(
         val prompt: String,
-        val type: ExtraType,
-        val loras: List<ExtraItemUi> = emptyList(),
-    ) : ExtrasState
+        val negativePrompt: String,
+    ) : ExtrasEffect
 }
 
 data class ExtraItemUi(

@@ -21,6 +21,7 @@ sealed interface Modal {
 
     data class ExtraBottomSheet(
         val prompt: String,
+        val negativePrompt: String,
         val type: ExtraType,
     ) : Modal
 

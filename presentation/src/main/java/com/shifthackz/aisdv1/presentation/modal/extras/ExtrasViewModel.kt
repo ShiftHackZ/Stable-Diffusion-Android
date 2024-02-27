@@ -9,33 +9,37 @@ import com.shifthackz.aisdv1.domain.entity.StableDiffusionHyperNetwork
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionLora
 import com.shifthackz.aisdv1.domain.usecase.sdhypernet.FetchAndGetHyperNetworksUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdlora.FetchAndGetLorasUseCase
+import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingItemUi
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import java.lang.IllegalStateException
+import java.util.concurrent.TimeUnit
 
 class ExtrasViewModel(
     private val fetchAndGetLorasUseCase: FetchAndGetLorasUseCase,
     private val fetchAndGetHyperNetworksUseCase: FetchAndGetHyperNetworksUseCase,
     private val schedulersProvider: SchedulersProvider,
-) : MviRxViewModel<ExtrasState, EmptyEffect>() {
+) : MviRxViewModel<ExtrasState, ExtrasEffect>() {
 
-    override val emptyState = ExtrasState.Loading
+    override val emptyState = ExtrasState()
 
-    fun updateData(prompt: String, type: ExtraType) = when (type) {
+    fun updateData(prompt: String, negativePrompt: String, type: ExtraType) = when (type) {
         ExtraType.Lora -> fetchAndGetLorasUseCase()
         ExtraType.HyperNet -> fetchAndGetHyperNetworksUseCase()
     }
-        .doOnSubscribe { updateState { ExtrasState.Loading } }
+        .doOnSubscribe { updateState { it.copy(loading = true, type = type) } }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
             onError = { t ->
                 errorLog(t)
             },
             onSuccess = { output ->
-                updateState {
-                    ExtrasState.Content(
+                updateState { state ->
+                    state.copy(
+                        loading = false,
                         prompt = prompt,
+                        negativePrompt = negativePrompt,
                         type = type,
                         loras = output.map {
                             val (isApplied, value) = ExtrasFormatter.isExtraWithValuePresentInPrompt(
@@ -45,7 +49,6 @@ class ExtrasViewModel(
                                     is StableDiffusionHyperNetwork -> it.name
                                     else -> ""
                                 },
-                                type = type,
                             )
                             when (it) {
                                 is StableDiffusionLora -> ExtraItemUi(
@@ -56,7 +59,8 @@ class ExtrasViewModel(
                                     isApplied = isApplied,
                                     value = value,
                                 )
-                                is StableDiffusionHyperNetwork ->  ExtraItemUi(
+
+                                is StableDiffusionHyperNetwork -> ExtraItemUi(
                                     type = type,
                                     key = "${it.name}_${System.nanoTime()}",
                                     name = it.name,
@@ -64,6 +68,7 @@ class ExtrasViewModel(
                                     isApplied = isApplied,
                                     value = value,
                                 )
+
                                 else -> throw IllegalStateException()
                             }
                         },
@@ -71,4 +76,22 @@ class ExtrasViewModel(
                 }
             },
         )
+
+    fun toggleItem(value: ExtraItemUi) = updateState { state ->
+        state.copy(
+            loras = state.loras.map {
+                if (it.key != value.key) it
+                else it.copy(isApplied = !it.isApplied)
+            },
+            prompt = ExtrasFormatter.toggleExtraPromptAlias(
+                prompt = state.prompt,
+                loraAlias = value.alias ?: value.name,
+                type = value.type,
+            ),
+        )
+    }
+
+    fun applyNewPrompts() = emitEffect(
+        ExtrasEffect.ApplyPrompts(currentState.prompt, currentState.negativePrompt)
+    )
 }

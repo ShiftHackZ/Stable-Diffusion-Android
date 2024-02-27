@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,19 +13,20 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DataExploration
 import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,24 +40,32 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
+import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 
 class ExtrasScreen(
     private val viewModel: ExtrasViewModel,
-    private val onLoraSelected: (ExtraItemUi) -> Unit,
+    private val onNewPrompts: (String, String) -> Unit,
     private val onClose: () -> Unit,
-) : MviScreen<ExtrasState, EmptyEffect>(viewModel) {
+) : MviScreen<ExtrasState, ExtrasEffect>(viewModel) {
 
     @Composable
     override fun Content() {
         ScreenContent(
             state = viewModel.state.collectAsStateWithLifecycle().value,
-            onLoraSelected = onLoraSelected,
+            onItemToggle = viewModel::toggleItem,
+            onApplyNewPrompts = viewModel::applyNewPrompts,
             onClose = onClose,
         )
+    }
+
+    override fun processEffect(effect: ExtrasEffect) = when (effect) {
+        is ExtrasEffect.ApplyPrompts -> {
+            onNewPrompts(effect.prompt, effect.negativePrompt)
+            onClose()
+        }
     }
 }
 
@@ -63,7 +73,8 @@ class ExtrasScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ExtrasState,
-    onLoraSelected: (ExtraItemUi) -> Unit,
+    onItemToggle: (ExtraItemUi) -> Unit,
+    onApplyNewPrompts: () -> Unit,
     onClose: () -> Unit,
 ) {
     Dialog(
@@ -78,37 +89,65 @@ private fun ScreenContent(
             shape = RoundedCornerShape(16.dp),
             color = AlertDialogDefaults.containerColor,
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                ModalDialogToolbar(
-                    text = when (state) {
-                        is ExtrasState.Content -> when (state.type) {
-                            ExtraType.Lora -> "Lora"
-                            ExtraType.HyperNet -> "HyperNetwork"
-                        }
-                        else -> ""
-                    },
-                    onClose = onClose,
-                )
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(1),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    when (state) {
-                        is ExtrasState.Content -> items(
-                            count = state.loras.size,
-                            key = { index -> state.loras[index].key },
-                        ) { index ->
-                            ExtrasItemComposable(
-                                item = state.loras[index],
-                                onLoraSelected = onLoraSelected,
+            Scaffold(
+                bottomBar = {
+                    if (!state.loading) {
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 8.dp),
+                            onClick = onApplyNewPrompts
+                        ) {
+                            Text(
+                                text = "Apply",
+                                color = LocalContentColor.current,
                             )
                         }
-
-                        ExtrasState.Loading -> {}
+                    }
+                }
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(it)
+                        .fillMaxSize(),
+                ) {
+                    ModalDialogToolbar(
+                        text = when (state.type) {
+                            ExtraType.Lora -> "Lora"
+                            ExtraType.HyperNet -> "HyperNetwork"
+                        },
+                        onClose = onClose,
+                    )
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(1),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        if (state.loading) {
+                            items(
+                                count = 3,
+                                key = { index -> "shimmer_$index" },
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(60.dp)
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .shimmer(),
+                                )
+                            }
+                        } else {
+                            items(
+                                count = state.loras.size,
+                                key = { index -> state.loras[index].key },
+                            ) { index ->
+                                ExtrasItemComposable(
+                                    item = state.loras[index],
+                                    onLoraSelected = onItemToggle,
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -126,7 +165,7 @@ private fun ExtrasItemComposable(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(color = MaterialTheme.colorScheme.background)
+            .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
             .border(
                 width = 2.dp,
                 color = if (item.isApplied) MaterialTheme.colorScheme.primary else Color.Transparent,
