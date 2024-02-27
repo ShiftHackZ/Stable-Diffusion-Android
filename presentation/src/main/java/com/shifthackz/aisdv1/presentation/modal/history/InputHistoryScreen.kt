@@ -72,8 +72,7 @@ private fun ScreenContent(
     val listState = rememberLazyListState()
     val lazyInputItems = pagingFlow.collectAsLazyPagingItems()
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         state = listState,

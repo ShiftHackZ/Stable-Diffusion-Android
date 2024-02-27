@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -34,7 +35,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -42,7 +42,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -54,17 +53,14 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
 import com.shifthackz.aisdv1.presentation.core.GenerationMviScreen
-import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
+import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
-import com.shifthackz.aisdv1.presentation.utils.Constants
-import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
-import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageBatchResultModal
-import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
-import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
+import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MAX
+import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MIN
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
+import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
-import org.koin.androidx.compose.koinViewModel
 
 class ImageToImageScreen(
     private val viewModel: ImageToImageViewModel,
@@ -107,6 +103,10 @@ class ImageToImageScreen(
             onViewGeneratedImage = viewModel::viewGeneratedResult,
             onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
             onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
+            onOpenLoraInput = viewModel::openLoraInput,
+            onOpenHyperNetInput = viewModel::openHyperNetInput,
+            onOpenEmbedding = viewModel::openEmbeddingInput,
+            onProcessNewPrompts = viewModel::processNewPrompts,
             onDismissScreenDialog = viewModel::dismissScreenModal,
         )
     }
@@ -141,6 +141,10 @@ private fun ScreenContent(
     onViewGeneratedImage: (AiGenerationResult) -> Unit = {},
     onOpenPreviousGenerationInput: () -> Unit = {},
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
+    onOpenLoraInput: () -> Unit = {},
+    onOpenHyperNetInput: () -> Unit = {},
+    onOpenEmbedding: () -> Unit = {},
+    onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
     onDismissScreenDialog: () -> Unit = {},
 ) {
     Box(modifier) {
@@ -212,8 +216,7 @@ private fun ScreenContent(
                                 )
                                 Slider(
                                     value = state.denoisingStrength,
-                                    valueRange = Constants.DENOISING_STRENGTH_MIN..Constants.DENOISING_STRENGTH_MAX,
-//                                steps = abs(Constants.DENOISING_STRENGTH_MAX - Constants.DENOISING_STRENGTH_MIN) * 2 - 1,
+                                    valueRange = DENOISING_STRENGTH_MIN..DENOISING_STRENGTH_MAX,
                                     colors = sliderColors,
                                     onValueChange = {
                                         onDenoisingStrengthUpdated(it.roundTo(2))
@@ -253,86 +256,58 @@ private fun ScreenContent(
                 }
             },
             bottomBar = {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(bottom = 16.dp),
-                    onClick = when (state.mode) {
-                        GenerationInputMode.LOCAL -> onChangeConfigurationClicked
-                        else -> onGenerateClicked
-                    },
-                    enabled = when (state.mode) {
-                        GenerationInputMode.LOCAL -> true
-                        else -> !state.hasValidationErrors && !state.imageState.isEmpty
-                    },
+                val isEnabled = when (state.mode) {
+                    GenerationInputMode.LOCAL -> true
+                    else -> !state.hasValidationErrors && !state.imageState.isEmpty
+                }
+                GenerationBottomToolbar(
+                    showToolbar = state.mode == GenerationInputMode.AUTOMATIC1111,
+                    strokeAccentState = isEnabled,
+                    onOpenLoraInput = onOpenLoraInput,
+                    onOpenHyperNetInput = onOpenHyperNetInput,
+                    onOpenEmbedding = onOpenEmbedding,
                 ) {
-                    if (state.mode != GenerationInputMode.LOCAL) {
-                        Icon(
-                            modifier = Modifier.size(18.dp),
-                            imageVector = Icons.Default.AutoFixNormal,
-                            contentDescription = "Imagine",
+                    Button(
+                        modifier = Modifier
+                            .height(height = 60.dp)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(bottom = 16.dp),
+                        onClick = when (state.mode) {
+                            GenerationInputMode.LOCAL -> onChangeConfigurationClicked
+                            else -> onGenerateClicked
+                        },
+                        enabled = isEnabled,
+                    ) {
+                        if (state.mode != GenerationInputMode.LOCAL) {
+                            Icon(
+                                modifier = Modifier.size(18.dp),
+                                imageVector = Icons.Default.AutoFixNormal,
+                                contentDescription = "Imagine",
+                            )
+                        }
+                        Text(
+                            modifier = Modifier.padding(start = 8.dp),
+                            text = stringResource(
+                                id = when (state.mode) {
+                                    GenerationInputMode.LOCAL -> R.string.action_change_configuration
+                                    else -> R.string.action_generate
+                                }
+                            ),
+                            color = LocalContentColor.current,
                         )
                     }
-                    Text(
-                        modifier = Modifier.padding(start = 8.dp),
-                        text = stringResource(
-                            id = when (state.mode) {
-                                GenerationInputMode.LOCAL -> R.string.action_change_configuration
-                                else -> R.string.action_generate
-                            }
-                        ),
-                        color = LocalContentColor.current,
-                    )
                 }
             }
         )
-        when (state.screenModal) {
-            is ImageToImageState.Modal.Communicating -> ProgressDialog(
-                canDismiss = false,
-                waitTimeSeconds = state.screenModal.hordeProcessStatus?.waitTimeSeconds,
-                positionInQueue = state.screenModal.hordeProcessStatus?.queuePosition,
-            )
-            ImageToImageState.Modal.LoadingRandomImage -> ProgressDialog(
-                titleResId = R.string.communicating_random_image_title,
-                canDismiss = false,
-            )
-            is ImageToImageState.Modal.Error -> ErrorDialog(
-                text = state.screenModal.error,
-                onDismissRequest = onDismissScreenDialog,
-            )
-            is ImageToImageState.Modal.Image.Single -> GenerationImageResultDialog(
-                imageBase64 = state.screenModal.result.image,
-                showSaveButton = !state.screenModal.autoSaveEnabled,
-                onDismissRequest = onDismissScreenDialog,
-                onSaveRequest = { onSaveGeneratedImages(listOf(state.screenModal.result)) },
-                onViewDetailRequest = { onViewGeneratedImage(state.screenModal.result) },
-            )
-            is ImageToImageState.Modal.Image.Batch -> ModalBottomSheet(
-                onDismissRequest = onDismissScreenDialog,
-                shape = RectangleShape,
-            ) {
-                GenerationImageBatchResultModal(
-                    state.screenModal.results,
-                    showSaveButton = !state.screenModal.autoSaveEnabled,
-                    onSaveRequest = { onSaveGeneratedImages(state.screenModal.results) },
-                    onViewDetailRequest = onViewGeneratedImage,
-                )
-            }
-            is ImageToImageState.Modal.PromptBottomSheet -> ModalBottomSheet(
-                onDismissRequest = onDismissScreenDialog,
-                shape = RectangleShape,
-            ) {
-                InputHistoryScreen(
-                    viewModel = koinViewModel(),
-                    onGenerationSelected = { ai ->
-                        onUpdateFromPreviousAiGeneration(ai)
-                        onDismissScreenDialog()
-                    },
-                ).Build()
-            }
-            else -> Unit
-        }
+        ModalRenderer(
+            screenModal = state.screenModal,
+            onSaveGeneratedImages = onSaveGeneratedImages,
+            onViewGeneratedImage = onViewGeneratedImage,
+            onUpdateFromPreviousAiGeneration = onUpdateFromPreviousAiGeneration,
+            onProcessNewPrompts = onProcessNewPrompts,
+            onDismissScreenDialog = onDismissScreenDialog,
+        )
     }
 }
 

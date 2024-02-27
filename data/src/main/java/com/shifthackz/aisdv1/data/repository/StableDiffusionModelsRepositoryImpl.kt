@@ -16,6 +16,7 @@ internal class StableDiffusionModelsRepositoryImpl(
         .flatMapCompletable(localDataSource::insertModels)
 
     override fun fetchAndGetModels(): Single<List<StableDiffusionModel>> = fetchModels()
+        .onErrorComplete()
         .andThen(getModels())
 
     override fun getModels(): Single<List<StableDiffusionModel>> =

@@ -11,7 +11,7 @@ sealed interface StableDiffusionSamplersDataSource {
     }
 
     interface Local : StableDiffusionSamplersDataSource {
-        fun queryAll(): Single<List<StableDiffusionSampler>>
+        fun getSamplers(): Single<List<StableDiffusionSampler>>
         fun insertSamplers(samplers: List<StableDiffusionSampler>): Completable
     }
 }

@@ -178,6 +178,7 @@ private fun ScreenContent(
             bottomBar = {
                 Button(
                     modifier = Modifier
+                        .height(height = 60.dp)
                         .background(MaterialTheme.colorScheme.background)
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -738,6 +739,7 @@ private fun ConfigurationModeButton(
 ) {
     Row(
         modifier = modifier
+            .clip(RoundedCornerShape(16.dp))
             .background(
                 color = MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f),
                 shape = RoundedCornerShape(16.dp),

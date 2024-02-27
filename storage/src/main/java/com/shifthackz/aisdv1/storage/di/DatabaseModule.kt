@@ -39,6 +39,9 @@ val databaseModule = module {
     //region CACHE DB DAOs
     single { get<CacheDatabase>().sdModelDao() }
     single { get<CacheDatabase>().sdSamplerDao() }
+    single { get<CacheDatabase>().sdLoraDao() }
+    single { get<CacheDatabase>().sdHyperNetworkDao() }
+    single { get<CacheDatabase>().sdEmbeddingDao() }
     single { get<CacheDatabase>().serverConfigurationDao() }
     //endregion
 

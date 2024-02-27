@@ -17,6 +17,9 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatus
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -39,16 +42,17 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
                 onError = ::errorLog,
                 onComplete = EmptyLambda,
                 onNext = { settings ->
-                    currentState
-                        .copyState(
-                            mode = GenerationInputMode.fromSource(settings.source),
-                            advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow,
-                        )
-                        .let { state ->
-                            if (!settings.formAdvancedOptionsAlwaysShow) state
-                            else state.copyState(advancedOptionsVisible = true)
-                        }
-                        .let(::setGenerationState)
+                    updateGenerationState {
+                        it
+                            .copyState(
+                                mode = GenerationInputMode.fromSource(settings.source),
+                                advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow,
+                            )
+                            .let { state ->
+                                if (!settings.formAdvancedOptionsAlwaysShow) state
+                                else state.copyState(advancedOptionsVisible = true)
+                            }
+                    }
                 }
             )
 
@@ -58,12 +62,12 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
             .subscribeBy(
                 onError = ::errorLog,
                 onSuccess = { samplers ->
-                    currentState
-                        .copyState(
+                    updateGenerationState {
+                        it.copyState(
                             availableSamplers = samplers,
                             selectedSampler = samplers.firstOrNull() ?: "",
                         )
-                        .let(::setGenerationState)
+                    }
                 }
             )
 
@@ -86,87 +90,93 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
             ?.apply { addToDisposable() }
     }
 
-    open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) = currentState
-        .copyState(
-            advancedOptionsVisible = true,
-            prompt = ai.prompt,
-            negativePrompt = ai.negativePrompt,
-            width = "${ai.width}",
-            height = "${ai.height}",
-            seed = ai.seed,
-            subSeed = ai.subSeed,
-            subSeedStrength = ai.subSeedStrength,
-            samplingSteps = ai.samplingSteps,
-            cfgScale = ai.cfgScale,
-            restoreFaces = ai.restoreFaces,
-        )
-        .let { state ->
-            if (!state.availableSamplers.contains(ai.sampler)) state
-            else state.copyState(selectedSampler = ai.sampler)
-        }
-        .let(::setGenerationState)
+    open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) = updateGenerationState {
+        it
+            .copyState(
+                advancedOptionsVisible = true,
+                prompt = ai.prompt,
+                negativePrompt = ai.negativePrompt,
+                width = "${ai.width}",
+                height = "${ai.height}",
+                seed = ai.seed,
+                subSeed = ai.subSeed,
+                subSeedStrength = ai.subSeedStrength,
+                samplingSteps = ai.samplingSteps,
+                cfgScale = ai.cfgScale,
+                restoreFaces = ai.restoreFaces,
+            )
+            .let { state ->
+                if (!state.availableSamplers.contains(ai.sampler)) state
+                else state.copyState(selectedSampler = ai.sampler)
+            }
+    }
 
     open fun onReceivedHordeStatus(status: HordeProcessStatus) {}
 
     open fun onReceivedLocalDiffusionStatus(status: LocalDiffusion.Status) {}
 
-    open fun dismissScreenModal() {}
+    fun processNewPrompts(positive: String, negative: String) = updateGenerationState {
+        it.copyState(
+            prompt = positive,
+            negativePrompt = negative,
+        )
+    }
 
-    fun toggleAdvancedOptions(value: Boolean) = currentState
-        .copyState(advancedOptionsVisible = value)
-        .let(::setGenerationState)
+    fun toggleAdvancedOptions(value: Boolean) = updateGenerationState {
+        it.copyState(advancedOptionsVisible = value)
+    }
 
-    fun updatePrompt(value: String) = currentState
-        .copyState(prompt = value)
-        .let(::setGenerationState)
+    fun updatePrompt(value: String) = updateGenerationState {
+        it.copyState(prompt = value)
+    }
 
-    fun updateNegativePrompt(value: String) = currentState
-        .copyState(negativePrompt = value)
-        .let(::setGenerationState)
+    fun updateNegativePrompt(value: String) = updateGenerationState {
+        it.copyState(negativePrompt = value)
+    }
 
-    fun updateWidth(value: String) = currentState
-        .copyState(width = value)
-        .let(::setGenerationState)
+    fun updateWidth(value: String) = updateGenerationState {
+        it.copyState(width = value)
+    }
 
-    fun updateHeight(value: String) = currentState
-        .copyState(height = value)
-        .let(::setGenerationState)
+    fun updateHeight(value: String) = updateGenerationState {
+        it.copyState(height = value)
+    }
 
-    fun updateSamplingSteps(value: Int) = currentState
-        .copyState(samplingSteps = value)
-        .let(::setGenerationState)
+    fun updateSamplingSteps(value: Int) = updateGenerationState {
+        it.copyState(samplingSteps = value)
+    }
 
-    fun updateCfgScale(value: Float) = currentState
-        .copyState(cfgScale = value)
-        .let(::setGenerationState)
+    fun updateCfgScale(value: Float) = updateGenerationState {
+        it.copyState(cfgScale = value)
+    }
 
-    fun updateRestoreFaces(value: Boolean) = currentState
-        .copyState(restoreFaces = value)
-        .let(::setGenerationState)
+    fun updateRestoreFaces(value: Boolean) = updateGenerationState {
+        it.copyState(restoreFaces = value)
+    }
 
-    fun updateSeed(value: String) = currentState
-        .copyState(seed = value)
-        .let(::setGenerationState)
+    fun updateSeed(value: String) = updateGenerationState {
+        it.copyState(seed = value)
+    }
 
-    fun updateSubSeed(value: String) = currentState
-        .copyState(subSeed = value)
-        .let(::setGenerationState)
+    fun updateSubSeed(value: String) = updateGenerationState {
+        it.copyState(subSeed = value)
+    }
 
-    fun updateSubSeedStrength(value: Float) = currentState
-        .copyState(subSeedStrength = value)
-        .let(::setGenerationState)
+    fun updateSubSeedStrength(value: Float) = updateGenerationState {
+        it.copyState(subSeedStrength = value)
+    }
 
-    fun updateSampler(value: String) = currentState
-        .copyState(selectedSampler = value)
-        .let(::setGenerationState)
+    fun updateSampler(value: String) = updateGenerationState {
+        it.copyState(selectedSampler = value)
+    }
 
-    fun updateNsfw(value: Boolean) = currentState
-        .copyState(nsfw = value)
-        .let(::setGenerationState)
+    fun updateNsfw(value: Boolean) = updateGenerationState {
+        it.copyState(nsfw = value)
+    }
 
-    fun updateBatchCount(value: Int) = currentState
-        .copyState(batchCount = value)
-        .let(::setGenerationState)
+    fun updateBatchCount(value: Int) = updateGenerationState {
+        it.copyState(batchCount = value)
+    }
 
     fun saveGeneratedResults(ai: List<AiGenerationResult>) = !Observable
         .fromIterable(ai)
@@ -178,7 +188,21 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(::errorLog) { emitEffect(GenerationMviEffect.LaunchGalleryDetail(it.id) as E) }
 
-    private fun setGenerationState(state: GenerationMviState) = runCatching {
-        setState(state as? S ?: currentState)
+    fun dismissScreenModal() = setActiveModal(Modal.None)
+
+    fun openPreviousGenerationInput() = setActiveModal(Modal.PromptBottomSheet)
+
+    fun openLoraInput() = setActiveModal(Modal.ExtraBottomSheet(currentState.prompt, currentState.negativePrompt, ExtraType.Lora))
+
+    fun openHyperNetInput() = setActiveModal(Modal.ExtraBottomSheet(currentState.prompt, currentState.negativePrompt, ExtraType.HyperNet))
+
+    fun openEmbeddingInput() = setActiveModal(Modal.Embeddings(currentState.prompt, currentState.negativePrompt))
+
+    protected fun setActiveModal(modal: Modal) = updateGenerationState {
+        it.copyState(screenModal = modal)
+    }
+
+    private fun updateGenerationState(mutation: (GenerationMviState) -> GenerationMviState) = runCatching {
+        updateState(mutation as (S) -> S)
     }
 }

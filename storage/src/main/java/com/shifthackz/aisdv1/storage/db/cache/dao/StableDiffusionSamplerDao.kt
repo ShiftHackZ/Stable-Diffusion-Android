@@ -17,4 +17,7 @@ interface StableDiffusionSamplerDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(items: List<StableDiffusionSamplerEntity>): Completable
+
+    @Query("DELETE FROM ${StableDiffusionSamplerContract.TABLE}")
+    fun deleteAll(): Completable
 }

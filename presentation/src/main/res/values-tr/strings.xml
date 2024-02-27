@@ -12,6 +12,8 @@
     <string name="width">Genişlik</string>
     <string name="height">Yükseklik</string>
     <string name="browse">Araştır</string>
+    <string name="apply">Uygula</string>
+    <string name="close">Kapalı</string>
 
     <string name="version">Versiyon %1$s</string>
 
@@ -49,6 +51,7 @@
     <string name="hint_prompt">İstem (prompt)</string>
     <string name="hint_prompt_negative">Negatif istem</string>
     <string name="hint_sampling_steps">Örnekleme Adım Sayısı: %1$s</string>
+    <string name="hint_batch">Grup: %1$s</string>
     <string name="hint_cfg_scale">CFG Scale: %1$s</string>
     <string name="hint_sampler">Örneklerme Yöntemi</string>
     <string name="hint_restore_faces">Yüzleri Düzelt</string>
@@ -99,6 +102,9 @@
     <string name="title_select_sd_model">SD Modeli seçin</string>
     <string name="title_clear_app_cache">Uygulama önbelleğini temizle</string>
     <string name="title_debug_menu">Hata Ayıklama Menüsü</string>
+    <string name="title_lora">Lora</string>
+    <string name="title_txt_inversion">Metin İnversiyon</string>
+    <string name="title_txt_inversion_short">İnversiyon</string>
 
     <string name="gallery_media_store_banner">Kayıtlı %1$s fotoğrafınız var Download/SDAI</string>
     <string name="gallery_info_field_date">Oluşturulma</string>
@@ -173,6 +179,7 @@
     <string name="error_min_size">Asgari boyut %1$s</string>
     <string name="error_max_size">Azami boyut %1$s</string>
     <string name="error_download_fail">Yükleme başarısız</string>
+    <string name="error_generic">İsteğiniz işlenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.</string>
 
     <string name="notification_finish_title">Nesil tamamlandı 🤩</string>
     <string name="notification_finish_sub_title">Sonucu görmek için buraya tıklayın.</string>
@@ -180,6 +187,18 @@
     <string name="notification_fail_title">Üretim başarısız oldu 😞</string>
     <string name="notification_fail_sub_title">Ayrıntıları görmek için buraya tıklayın.</string>
 
+    <string name="model_local_custom_switch">Özel modeli yükle</string>
+    <string name="model_local_permission_title">Özel modeli yükleyebilmek için SDAI uygulamasının depolama izinlerini yönetmesine izin vermeniz gerekir; çünkü Android 11\'den itibaren kapsamlı olmayan depolama dosyalarına erişmek gerekir.</string>
+    <string name="model_local_permission_button">Kurulum izni</string>
+
+    <string name="model_local_custom_title">Yerel özel modeli kullanmak için telefonunuzun depolama alanındaki yerel klasöre yerleştirin: Download/SDAi/model</string>
+    <string name="model_local_custom_sub_title">Son klasör yapısı şu şekilde olmalıdır::</string>
+
     <string name="debug_section_qa">QA işlemleri</string>
     <string name="debug_action_bad_base64">Kötü Base64\'ü DB\'ye yerleştirin</string>
+
+    <string name="extras_empty_title">Burada hiçbir şey…</string>
+    <string name="extras_empty_sub_title_lora">AUTOMATIC1111 sunucusuna biraz içerik ekleyin: \n\n../models/Lora</string>
+    <string name="extras_empty_sub_title_hypernet">AUTOMATIC1111 sunucusuna biraz içerik ekleyin: \n\n../models/hypernetworks</string>
+    <string name="extras_empty_sub_title_embedding">AUTOMATIC1111 sunucusuna biraz içerik ekleyin: \n\n../embeddings</string>
 </resources>

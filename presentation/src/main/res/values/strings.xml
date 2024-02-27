@@ -16,6 +16,8 @@
     <string name="width">Width</string>
     <string name="height">Height</string>
     <string name="browse">Browse</string>
+    <string name="apply">Apply</string>
+    <string name="close">Close</string>
 
     <string name="version">Version %1$s</string>
 
@@ -106,6 +108,11 @@
     <string name="title_select_sd_model">Select SD ML Model</string>
     <string name="title_clear_app_cache">Clear app cache</string>
     <string name="title_debug_menu">Debug Menu</string>
+    <string name="title_lora">Lora</string>
+    <string name="title_hyper_net" translatable="false">Hypernetworks</string>
+    <string name="title_hyper_net_short" translatable="false">H-Net</string>
+    <string name="title_txt_inversion">Textual Inversion</string>
+    <string name="title_txt_inversion_short">Inversion</string>
 
     <string name="gallery_media_store_banner">You have %1$s photos saved in Download/SDAI</string>
     <string name="gallery_info_field_date">Created</string>
@@ -180,6 +187,7 @@
     <string name="error_min_size">Minimum size is %1$s</string>
     <string name="error_max_size">Maximum size is %1$s</string>
     <string name="error_download_fail">Download failed</string>
+    <string name="error_generic">Something wrong happened while processing your request, please try again later.</string>
 
     <string name="notification_finish_title">Generation complete 🤩</string>
     <string name="notification_finish_sub_title">Click here to see the result.</string>
@@ -198,4 +206,9 @@
 
     <string name="debug_section_qa">QA actions</string>
     <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>
+
+    <string name="extras_empty_title">Nothing here…</string>
+    <string name="extras_empty_sub_title_lora">Add some content on AUTOMATIC1111 server to: \n\n../models/Lora</string>
+    <string name="extras_empty_sub_title_hypernet">Add some content on AUTOMATIC1111 server to: \n\n../models/hypernetworks</string>
+    <string name="extras_empty_sub_title_embedding">Add some content on AUTOMATIC1111 server to: \n\n../embeddings</string>
 </resources>

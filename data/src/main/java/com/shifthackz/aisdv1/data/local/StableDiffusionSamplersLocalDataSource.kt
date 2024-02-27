@@ -12,10 +12,11 @@ internal class StableDiffusionSamplersLocalDataSource(
     private val dao: StableDiffusionSamplerDao,
 ) : StableDiffusionSamplersDataSource.Local {
 
-    override fun queryAll() = dao
+    override fun getSamplers() = dao
         .queryAll()
         .map(List<StableDiffusionSamplerEntity>::mapEntityToDomain)
 
     override fun insertSamplers(samplers: List<StableDiffusionSampler>): Completable = dao
-        .insertList(samplers.mapDomainToEntity())
+        .deleteAll()
+        .andThen(dao.insertList(samplers.mapDomainToEntity()))
 }

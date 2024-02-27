@@ -11,7 +11,7 @@ sealed interface StableDiffusionModelsDataSource {
     }
 
     interface Local : StableDiffusionModelsDataSource {
-        fun insertModels(models: List<StableDiffusionModel>): Completable
         fun getModels(): Single<List<StableDiffusionModel>>
+        fun insertModels(models: List<StableDiffusionModel>): Completable
     }
 }

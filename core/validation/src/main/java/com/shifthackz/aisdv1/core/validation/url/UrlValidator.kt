@@ -7,9 +7,9 @@ interface UrlValidator {
     operator fun invoke(input: String?): ValidationResult<Error>
 
     sealed interface Error {
-        object Empty : Error
-        object BadScheme : Error
-        object Invalid : Error
-        object Localhost : Error
+        data object Empty : Error
+        data object BadScheme : Error
+        data object Invalid : Error
+        data object Localhost : Error
     }
 }

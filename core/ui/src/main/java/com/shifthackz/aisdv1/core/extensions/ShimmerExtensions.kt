@@ -21,16 +21,17 @@ import androidx.compose.ui.unit.IntSize
 
 fun Modifier.shimmer() = composed {
     var size by remember { mutableStateOf(IntSize.Zero) }
-    val transition = rememberInfiniteTransition()
+    val transition = rememberInfiniteTransition(label = "shimmer")
     val startOffsetX by transition.animateFloat(
         initialValue = -2 * size.width.toFloat(),
         targetValue = 2 * size.width.toFloat(),
-        animationSpec = infiniteRepeatable(animation = tween(durationMillis = 1000))
+        animationSpec = infiniteRepeatable(animation = tween(durationMillis = 1000)),
+        label = "shimmer"
     )
-    val colorBg = MaterialTheme.colorScheme.secondaryContainer
-        .copy(alpha = 0.5f)
-        .compositeOver(Color(0xFFCACACA))
-    val colorEffect = MaterialTheme.colorScheme.secondary
+    val colorBg = MaterialTheme.colorScheme.surfaceVariant
+        .copy(alpha = 0.75f)
+        .compositeOver(MaterialTheme.colorScheme.background)
+    val colorEffect = MaterialTheme.colorScheme.surfaceTint
     background(
         brush = Brush.linearGradient(
             colors = listOf(
