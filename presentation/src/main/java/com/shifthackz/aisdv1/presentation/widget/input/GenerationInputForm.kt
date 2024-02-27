@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Casino
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +32,7 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.utils.Constants.BATCH_RANGE_MAX
@@ -367,6 +367,7 @@ fun GenerationInputForm(
 private fun GenerationInputFormAutomaticPreview() {
     GenerationInputForm(
         state = object : GenerationMviState() {
+            override val screenModal: Modal = Modal.None
             override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111
             override val advancedToggleButtonVisible: Boolean = true
             override val advancedOptionsVisible: Boolean = false
@@ -396,6 +397,7 @@ private fun GenerationInputFormAutomaticPreview() {
 private fun GenerationInputFormAutomaticWithOptionsPreview() {
     GenerationInputForm(
         state = object : GenerationMviState() {
+            override val screenModal: Modal = Modal.None
             override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111
             override val advancedToggleButtonVisible: Boolean = false
             override val advancedOptionsVisible: Boolean = true
@@ -425,6 +427,7 @@ private fun GenerationInputFormAutomaticWithOptionsPreview() {
 private fun GenerationInputFormHordePreview() {
     GenerationInputForm(
         state = object : GenerationMviState() {
+            override val screenModal: Modal = Modal.None
             override val mode: GenerationInputMode = GenerationInputMode.HORDE
             override val advancedToggleButtonVisible: Boolean = true
             override val advancedOptionsVisible: Boolean = false
@@ -454,6 +457,7 @@ private fun GenerationInputFormHordePreview() {
 private fun GenerationInputFormHordeWithOptionsPreview() {
     GenerationInputForm(
         state = object : GenerationMviState() {
+            override val screenModal: Modal = Modal.None
             override val mode: GenerationInputMode = GenerationInputMode.HORDE
             override val advancedToggleButtonVisible: Boolean = false
             override val advancedOptionsVisible: Boolean = true
