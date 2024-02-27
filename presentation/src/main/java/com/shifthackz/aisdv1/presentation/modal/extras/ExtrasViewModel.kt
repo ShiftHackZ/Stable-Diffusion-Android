@@ -48,11 +48,12 @@ class ExtrasViewModel(
                                     is StableDiffusionHyperNetwork -> it.name
                                     else -> ""
                                 },
+                                type = type,
                             )
                             when (it) {
                                 is StableDiffusionLora -> ExtraItemUi(
                                     type = type,
-                                    key = "${it.name}_${System.nanoTime()}",
+                                    key = "${it.name}_${type}_${System.nanoTime()}",
                                     name = it.name,
                                     alias = it.alias,
                                     isApplied = isApplied,
@@ -61,7 +62,7 @@ class ExtrasViewModel(
 
                                 is StableDiffusionHyperNetwork -> ExtraItemUi(
                                     type = type,
-                                    key = "${it.name}_${System.nanoTime()}",
+                                    key = "${it.name}_${type}_${System.nanoTime()}",
                                     name = it.name,
                                     alias = null,
                                     isApplied = isApplied,
