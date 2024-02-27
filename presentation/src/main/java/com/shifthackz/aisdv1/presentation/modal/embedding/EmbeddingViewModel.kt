@@ -7,9 +7,9 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.sdembedding.FetchAndGetEmbeddingsUseCase
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
+import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 import io.reactivex.rxjava3.kotlin.subscribeBy
-import java.util.concurrent.TimeUnit
 
 class EmbeddingViewModel(
     private val fetchAndGetEmbeddingsUseCase: FetchAndGetEmbeddingsUseCase,
@@ -22,12 +22,16 @@ class EmbeddingViewModel(
         .doOnSubscribe { updateState { it.copy(loading = true) } }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
-            onError = { t -> errorLog(t) },
+            onError = { t ->
+                errorLog(t)
+                updateState { it.copy(loading = false, error = ErrorState.Generic) }
+            },
             onSuccess = { embeddings ->
                 debugLog(embeddings)
                 updateState { state ->
                     state.copy(
                         loading = false,
+                        error = ErrorState.None,
                         prompt = prompt,
                         negativePrompt = negativePrompt,
                         embeddings = embeddings.map {

@@ -739,6 +739,7 @@ private fun ConfigurationModeButton(
 ) {
     Row(
         modifier = modifier
+            .clip(RoundedCornerShape(16.dp))
             .background(
                 color = MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f),
                 shape = RoundedCornerShape(16.dp),

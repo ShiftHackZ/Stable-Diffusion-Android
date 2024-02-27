@@ -34,6 +34,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,7 +44,10 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.widget.error.ErrorComposable
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 
 class ExtrasScreen(
@@ -99,7 +104,10 @@ private fun ScreenContent(
                             onClick = onApplyNewPrompts
                         ) {
                             Text(
-                                text = "Apply",
+                                text = stringResource(
+                                    id = if (state.error != ErrorState.None) R.string.close
+                                    else R.string.apply
+                                ),
                                 color = LocalContentColor.current,
                             )
                         }
@@ -112,10 +120,10 @@ private fun ScreenContent(
                         .fillMaxSize(),
                 ) {
                     ModalDialogToolbar(
-                        text = when (state.type) {
-                            ExtraType.Lora -> "Lora"
-                            ExtraType.HyperNet -> "HyperNetwork"
-                        },
+                        text = stringResource(id = when (state.type) {
+                            ExtraType.Lora -> R.string.title_lora
+                            ExtraType.HyperNet -> R.string.title_hyper_net
+                        }),
                         onClose = onClose,
                     )
                     LazyVerticalGrid(
@@ -124,7 +132,11 @@ private fun ScreenContent(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        if (state.loading) {
+                        if (state.error != ErrorState.None) {
+                            item(key = "error_state") {
+                                ErrorComposable(state = state.error)
+                            }
+                        } else if (state.loading) {
                             items(
                                 count = 3,
                                 key = { index -> "shimmer_$index" },
@@ -138,20 +150,50 @@ private fun ScreenContent(
                                 )
                             }
                         } else {
-                            items(
-                                count = state.loras.size,
-                                key = { index -> state.loras[index].key },
-                            ) { index ->
-                                ExtrasItemComposable(
-                                    item = state.loras[index],
-                                    onLoraSelected = onItemToggle,
-                                )
+                            if (state.loras.isEmpty()) {
+                                item(key = "empty_state") {
+                                    ExtrasEmptyState(type = state.type)
+                                }
+                            } else {
+                                items(
+                                    count = state.loras.size,
+                                    key = { index -> state.loras[index].key },
+                                ) { index ->
+                                    ExtrasItemComposable(
+                                        item = state.loras[index],
+                                        onLoraSelected = onItemToggle,
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ExtrasEmptyState(type: ExtraType) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            text = stringResource(id = R.string.extras_empty_title),
+            fontSize = 20.sp,
+        )
+        Text(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .padding(horizontal = 16.dp)
+                .align(Alignment.CenterHorizontally),
+            text = stringResource(id = when (type) {
+                ExtraType.Lora -> R.string.extras_empty_sub_title_lora
+                ExtraType.HyperNet -> R.string.extras_empty_sub_title_hypernet
+            }),
+            textAlign = TextAlign.Center,
+        )
     }
 }
 

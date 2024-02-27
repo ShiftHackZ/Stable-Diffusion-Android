@@ -5,21 +5,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,12 +22,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.presentation.R
 
 @Composable
 fun GenerationBottomToolbar(
@@ -74,8 +68,8 @@ fun GenerationBottomToolbar(
                     )
                     .background(color = MaterialTheme.colorScheme.surface)
             )
-            content()
         }
+        content()
     }
 }
 
@@ -129,7 +123,7 @@ private fun GenerationBottomToolbarBottomLayer(
 
         Text(
             modifier = localModifier { onOpenLoraInput() },
-            text = "Lora",
+            text = stringResource(id = R.string.title_lora),
             textAlign = TextAlign.Center,
             color = localColor,
             style = localStyle,
@@ -142,7 +136,7 @@ private fun GenerationBottomToolbarBottomLayer(
         )
         Text(
             modifier = localModifier { onOpenEmbedding() },
-            text = "Inversion",
+            text = stringResource(id = R.string.title_txt_inversion_short),
             textAlign = TextAlign.Center,
             color = localColor,
             style = localStyle,
@@ -155,7 +149,7 @@ private fun GenerationBottomToolbarBottomLayer(
         )
         Text(
             modifier = localModifier { onOpenHyperNetInput() },
-            text = "H-Net",
+            text = stringResource(id = R.string.title_hyper_net_short),
             textAlign = TextAlign.Center,
             color = localColor,
             style = localStyle,

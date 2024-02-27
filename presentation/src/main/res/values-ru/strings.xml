@@ -12,6 +12,8 @@
     <string name="width">Длина</string>
     <string name="height">Высота</string>
     <string name="browse">Просмотр</string>
+    <string name="apply">Применить</string>
+    <string name="close">Закрыть</string>
 
     <string name="version">Версия %1$s</string>
 
@@ -49,6 +51,7 @@
     <string name="hint_prompt">Запрос</string>
     <string name="hint_prompt_negative">Отрицательный запрос</string>
     <string name="hint_sampling_steps">Этапы выборки: %1$s</string>
+    <string name="hint_batch">Кол-во генераций: %1$s</string>
     <string name="hint_cfg_scale">CFG Шкала: %1$s</string>
     <string name="hint_sampler">Метод выборки</string>
     <string name="hint_restore_faces">Восстановление лиц</string>
@@ -99,6 +102,9 @@
     <string name="title_select_sd_model">Выберите SD ML модель</string>
     <string name="title_clear_app_cache">Очистить кэш приложения</string>
     <string name="title_debug_menu">Дебаг Меню</string>
+    <string name="title_lora">Лора</string>
+    <string name="title_txt_inversion">Инверсия текста</string>
+    <string name="title_txt_inversion_short">Инверсия</string>
 
     <string name="gallery_media_store_banner">%1$s генераций находится в Download/SDAI</string>
     <string name="gallery_info_field_date">Создано</string>
@@ -173,6 +179,7 @@
     <string name="error_min_size">Минимальный размер %1$s</string>
     <string name="error_max_size">Максимальный размер %1$s</string>
     <string name="error_download_fail">Ошибка при загрузке</string>
+    <string name="error_generic">При обработке вашего запроса произошла ошибка. Повторите попытку позже.</string>
 
     <string name="notification_finish_title">Генерирование завершено 🤩</string>
     <string name="notification_finish_sub_title">Нажмите, чтобы увидеть результат.</string>
@@ -180,6 +187,18 @@
     <string name="notification_fail_title">Генерирование не удалось 😞</string>
     <string name="notification_fail_sub_title">Нажмите, чтобы увидеть подробности.</string>
 
+    <string name="model_local_custom_switch">Загрузка кастом модели</string>
+    <string name="model_local_permission_title">Чтобы иметь возможность загружать пользовательскую модель, вам необходимо разрешить приложению SDAI управлять разрешениями на хранилище, поскольку, начиная с Android 11, оно необходимо для доступа к файлам хранилища без области действия.</string>
+    <string name="model_local_permission_button">Настроить доступ</string>
+
+    <string name="model_local_custom_title">Чтобы использовать локальную пользовательскую модель, поместите ее в локальную папку в памяти телефона: Download/SDAi/model</string>
+    <string name="model_local_custom_sub_title">Окончательная структура папок должна быть такой:</string>
+
     <string name="debug_section_qa">QA тест-кейсы</string>
     <string name="debug_action_bad_base64">Внести битый Base64 в БД</string>
+
+    <string name="extras_empty_title">Здесь пусто…</string>
+    <string name="extras_empty_sub_title_lora">Добавьте что-нибуть на AUTOMATIC1111 сервере в: \n\n../models/Lora</string>
+    <string name="extras_empty_sub_title_hypernet">Добавьте что-нибуть на AUTOMATIC1111 сервере в: \n\n../models/hypernetworks</string>
+    <string name="extras_empty_sub_title_embedding">Добавьте что-нибуть на AUTOMATIC1111 сервере в: \n\n../embeddings</string>
 </resources>

@@ -2,10 +2,12 @@ package com.shifthackz.aisdv1.presentation.modal.extras
 
 import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
+import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 
 data class ExtrasState(
     val loading: Boolean = true,
+    val error: ErrorState = ErrorState.None,
     val prompt: String = "",
     val negativePrompt: String = "",
     val type: ExtraType = ExtraType.Lora,

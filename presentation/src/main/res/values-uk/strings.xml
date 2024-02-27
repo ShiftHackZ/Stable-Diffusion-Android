@@ -12,6 +12,8 @@
     <string name="width">Довжина</string>
     <string name="height">Висота</string>
     <string name="browse">Дивитися</string>
+    <string name="apply">Застосувати</string>
+    <string name="close">Закрити</string>
 
     <string name="version">Версія %1$s</string>
 
@@ -49,6 +51,7 @@
     <string name="hint_prompt">Запит</string>
     <string name="hint_prompt_negative">Негативний запит</string>
     <string name="hint_sampling_steps">Етапи вибірки: %1$s</string>
+    <string name="hint_batch">Кількість генерацій: %1$s</string>
     <string name="hint_cfg_scale">CFG Шкала: %1$s</string>
     <string name="hint_sampler">Метод вибірки</string>
     <string name="hint_restore_faces">Відновлення обличч</string>
@@ -99,6 +102,9 @@
     <string name="title_select_sd_model">Оберіть SD ML модель</string>
     <string name="title_clear_app_cache">Очистити кеш додатку</string>
     <string name="title_debug_menu">Дебаг Меню</string>
+    <string name="title_lora">Лора</string>
+    <string name="title_txt_inversion">Інверсія тексту</string>
+    <string name="title_txt_inversion_short">Інверсія</string>
 
     <string name="gallery_media_store_banner">%1$s файли збережено в Download/SDAI</string>
     <string name="gallery_info_field_date">Створене</string>
@@ -173,6 +179,7 @@
     <string name="error_min_size">Мінімальний розмір %1$s</string>
     <string name="error_max_size">Максимальний розмір %1$s</string>
     <string name="error_download_fail">Помилка під час завантаження</string>
+    <string name="error_generic">Під час обробки вашого запиту сталася помилка. Повторіть спробу пізніше.</string>
 
     <string name="notification_finish_title">Генерування завершено 🤩</string>
     <string name="notification_finish_sub_title">Натисніть щоб побачити результат.</string>
@@ -180,6 +187,18 @@
     <string name="notification_fail_title">Генерування не вдалося 😞</string>
     <string name="notification_fail_sub_title">Натисніть щоб побачити подробиці.</string>
 
+    <string name="model_local_custom_switch">Завантажити кастом модель</string>
+    <string name="model_local_permission_title">Щоб мати можливість завантажити спеціальну модель, вам потрібно дозволити додатку SDAI керувати дозволами на зберігання, оскільки, починаючи з Android 11, це потрібно для доступу до файлів зберігання без обмежень.</string>
+    <string name="model_local_permission_button">Налаштувати доступ</string>
+
+    <string name="model_local_custom_title">Щоб використовувати локальну спеціальну модель, помістіть її в локальну папку в пам’яті телефону: Download/SDAi/model</string>
+    <string name="model_local_custom_sub_title">Остаточна структура папок має бути такою:</string>
+
     <string name="debug_section_qa">QA тест-кейси</string>
     <string name="debug_action_bad_base64">Внести битий Base64 в БД</string>
+
+    <string name="extras_empty_title">Тут порожньо…</string>
+    <string name="extras_empty_sub_title_lora">Додайте щось на AUTOMATIC1111 сервері до: \n\n../models/Lora</string>
+    <string name="extras_empty_sub_title_hypernet">Додайте щось на AUTOMATIC1111 сервері до: \n\n../models/hypernetworks</string>
+    <string name="extras_empty_sub_title_embedding">Додайте щось на AUTOMATIC1111 сервері до: \n\n../embeddings</string>
 </resources>

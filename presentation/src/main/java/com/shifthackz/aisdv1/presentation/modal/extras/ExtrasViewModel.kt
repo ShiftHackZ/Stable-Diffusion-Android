@@ -3,18 +3,15 @@ package com.shifthackz.aisdv1.presentation.modal.extras
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionHyperNetwork
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionLora
 import com.shifthackz.aisdv1.domain.usecase.sdhypernet.FetchAndGetHyperNetworksUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdlora.FetchAndGetLorasUseCase
-import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingItemUi
+import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 import io.reactivex.rxjava3.kotlin.subscribeBy
-import java.lang.IllegalStateException
-import java.util.concurrent.TimeUnit
 
 class ExtrasViewModel(
     private val fetchAndGetLorasUseCase: FetchAndGetLorasUseCase,
@@ -33,11 +30,13 @@ class ExtrasViewModel(
         .subscribeBy(
             onError = { t ->
                 errorLog(t)
+                updateState { it.copy(loading = false, error = ErrorState.Generic) }
             },
             onSuccess = { output ->
                 updateState { state ->
                     state.copy(
                         loading = false,
+                        error = ErrorState.None,
                         prompt = prompt,
                         negativePrompt = negativePrompt,
                         type = type,
