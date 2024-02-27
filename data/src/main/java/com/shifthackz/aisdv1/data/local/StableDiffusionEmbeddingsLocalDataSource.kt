@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.domain.datasource.StableDiffusionEmbeddingsDataSour
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionEmbedding
 import com.shifthackz.aisdv1.storage.db.cache.dao.StableDiffusionEmbeddingDao
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionEmbeddingEntity
+
 internal class StableDiffusionEmbeddingsLocalDataSource(
     private val dao: StableDiffusionEmbeddingDao,
 ) : StableDiffusionEmbeddingsDataSource.Local {
