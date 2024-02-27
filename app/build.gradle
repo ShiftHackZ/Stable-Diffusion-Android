@@ -14,8 +14,8 @@ android {
     namespace 'com.shifthackz.aisdv1.app'
     defaultConfig {
         applicationId "com.shifthackz.aisdv1.app"
-        versionName "0.5.5"
-        versionCode 169
+        versionName "0.5.6"
+        versionCode 170
 
         buildConfigField "String", "IMAGE_CDN_URL", "\"https://random.imagecdn.app\""
         buildConfigField "String", "HORDE_AI_URL", "\"https://stablehorde.net\""
