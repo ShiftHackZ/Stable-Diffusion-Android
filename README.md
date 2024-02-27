@@ -32,6 +32,7 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
   - Lora picker (for A1111)
   - Textual inversion picker (for A1111)
   - Hypernetworks picker (for A1111)
+  - SD Model picker (for A1111)
 - In-app Gallery, stored locally, contains all AI generated images
   - Displays generated images grid
   - Image detail view: Zoom, Pinch, Generation Info. 
