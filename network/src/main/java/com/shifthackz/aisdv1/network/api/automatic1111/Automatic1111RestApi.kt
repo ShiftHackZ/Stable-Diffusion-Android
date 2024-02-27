@@ -62,6 +62,9 @@ interface Automatic1111RestApi {
         @Body request: ImageToImageRequest
     ): Single<SdGenerationResponse>
 
+    @POST
+    fun interrupt(@Url url: String): Completable
+
     companion object {
         const val PATH_SD_OPTIONS = "sdapi/v1/options"
         const val PATH_SD_MODELS = "sdapi/v1/sd-models"
@@ -71,5 +74,6 @@ interface Automatic1111RestApi {
         const val PATH_LORAS = "sdapi/v1/loras"
         const val PATH_HYPER_NETWORKS = "sdapi/v1/hypernetworks"
         const val PATH_EMBEDDINGS = "sdapi/v1/embeddings"
+        const val PATH_INTERRUPT = "sdapi/v1/interrupt"
     }
 }

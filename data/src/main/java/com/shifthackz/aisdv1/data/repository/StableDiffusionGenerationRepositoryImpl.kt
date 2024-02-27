@@ -48,4 +48,6 @@ internal class StableDiffusionGenerationRepositoryImpl(
 
         return chain.flatMap(::insertGenerationResult)
     }
+
+    override fun interruptGeneration() = remoteDataSource.interruptGeneration()
 }

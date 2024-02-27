@@ -11,8 +11,8 @@ import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.api.horde.HordeRestApi
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
-import com.shifthackz.aisdv1.network.response.HordeGenerationCheckResponse
 import io.reactivex.rxjava3.core.BackpressureStrategy
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -43,10 +43,15 @@ internal class HordeGenerationRemoteDataSource(
         .map { base64 -> payload to base64 }
         .map(Pair<ImageToImagePayload, String>::mapHordeToAiGenResult)
 
+    override fun interruptGeneration() = statusSource.id
+        ?.let(hordeApi::cancelRequest)
+        ?: Completable.error(Throwable("No cached request id"))
+
     private fun executeRequestChain(request: HordeGenerationAsyncRequest): Single<String> {
         val observableChain = hordeApi
             .generateAsync(request)
             .flatMapObservable { asyncStartResponse ->
+                statusSource.id = asyncStartResponse.id
                 asyncStartResponse.id?.let { id ->
                     val pingObs = Observable
                         .fromSingle(hordeApi.checkGeneration(id))
@@ -63,7 +68,7 @@ internal class HordeGenerationRemoteDataSource(
                                     queuePosition = pingResponse.queuePosition,
                                 )
                             )
-                            return@flatMap Observable.error(RetryException(pingResponse))
+                            return@flatMap Observable.error(RetryException())
                         }
                         .retryWhen { obs ->
                             obs.flatMap { t ->
@@ -94,7 +99,7 @@ internal class HordeGenerationRemoteDataSource(
         return Single.fromObservable(observableChain)
     }
 
-    private class RetryException(val response: HordeGenerationCheckResponse): Throwable()
+    private class RetryException : Throwable()
 
     companion object {
         private const val HORDE_SOCKET_PING_TIME_SECONDS = 10L
@@ -103,6 +108,11 @@ internal class HordeGenerationRemoteDataSource(
 
 internal class HordeStatusSource : HordeGenerationDataSource.StatusSource {
     private val processStatusSubject: PublishSubject<HordeProcessStatus> = PublishSubject.create()
+    private var _id: String? = null
+
+    override var id: String?
+        get() = _id
+        set(value) { _id = value }
 
     override fun observe(): Flowable<HordeProcessStatus> = processStatusSubject
         .toFlowable(BackpressureStrategy.LATEST)

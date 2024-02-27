@@ -13,12 +13,8 @@ import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
-import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
-import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
-import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
@@ -29,15 +25,12 @@ import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManag
 import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
 import com.shz.imagepicker.imagepicker.model.PickedResult
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ImageToImageViewModel(
-    getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
-    observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val imageToImageUseCase: ImageToImageUseCase,
-    private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase,
-    private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
     private val getRandomImageUseCase: GetRandomImageUseCase,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
@@ -47,14 +40,7 @@ class ImageToImageViewModel(
     private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
     private val wakeLockInterActor: WakeLockInterActor,
-) : GenerationMviViewModel<ImageToImageState, GenerationMviEffect>(
-    schedulersProvider,
-    saveLastResultToCacheUseCase,
-    saveGenerationResultUseCase,
-    preferenceManager,
-    getStableDiffusionSamplersUseCase,
-    observeHordeProcessStatusUseCase,
-) {
+) : GenerationMviViewModel<ImageToImageState, GenerationMviEffect>() {
 
     override val emptyState = ImageToImageState()
 
@@ -114,10 +100,10 @@ class ImageToImageViewModel(
         it.copy(imageState = ImageToImageState.ImageState.None)
     }
 
-    fun generate() {
+    fun generate() = generate {
         when (currentState.imageState) {
             is ImageToImageState.ImageState.Image -> {
-                !Single
+                Single
                     .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
                     .doOnSubscribe {
                         wakeLockInterActor.acquireWakelockUseCase()
@@ -160,7 +146,7 @@ class ImageToImageViewModel(
                         }
                     )
             }
-            else -> Unit
+            else -> Disposable.empty()
         }
     }
 

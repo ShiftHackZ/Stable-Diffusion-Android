@@ -107,6 +107,7 @@ class ImageToImageScreen(
             onOpenHyperNetInput = viewModel::openHyperNetInput,
             onOpenEmbedding = viewModel::openEmbeddingInput,
             onProcessNewPrompts = viewModel::processNewPrompts,
+            onCancelGeneration = viewModel::cancelGeneration,
             onDismissScreenDialog = viewModel::dismissScreenModal,
         )
     }
@@ -145,6 +146,7 @@ private fun ScreenContent(
     onOpenHyperNetInput: () -> Unit = {},
     onOpenEmbedding: () -> Unit = {},
     onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
+    onCancelGeneration: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) {
     Box(modifier) {
@@ -306,6 +308,7 @@ private fun ScreenContent(
             onViewGeneratedImage = onViewGeneratedImage,
             onUpdateFromPreviousAiGeneration = onUpdateFromPreviousAiGeneration,
             onProcessNewPrompts = onProcessNewPrompts,
+            onCancelGeneration = onCancelGeneration,
             onDismissScreenDialog = onDismissScreenDialog,
         )
     }

@@ -10,15 +10,15 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingScreen
 import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingViewModel
-import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasViewModel
-import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageBatchResultModal
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialogCancelButton
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -28,6 +28,7 @@ fun ModalRenderer(
     onViewGeneratedImage: (AiGenerationResult) -> Unit = {},
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
+    onCancelGeneration: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) = when (screenModal) {
     Modal.None -> Unit
@@ -36,7 +37,9 @@ fun ModalRenderer(
         canDismiss = false,
         waitTimeSeconds = screenModal.hordeProcessStatus?.waitTimeSeconds,
         positionInQueue = screenModal.hordeProcessStatus?.queuePosition,
-    )
+    ) {
+        ProgressDialogCancelButton(onCancelGeneration)
+    }
 
     Modal.LoadingRandomImage -> ProgressDialog(
         titleResId = R.string.communicating_random_image_title,
