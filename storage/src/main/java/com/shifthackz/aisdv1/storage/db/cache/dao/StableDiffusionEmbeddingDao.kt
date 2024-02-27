@@ -17,4 +17,7 @@ interface StableDiffusionEmbeddingDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(items: List<StableDiffusionEmbeddingEntity>): Completable
+
+    @Query("DELETE FROM ${StableDiffusionEmbeddingContract.TABLE}")
+    fun deleteAll(): Completable
 }

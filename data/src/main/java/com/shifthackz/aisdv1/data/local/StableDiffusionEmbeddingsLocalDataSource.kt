@@ -14,7 +14,7 @@ internal class StableDiffusionEmbeddingsLocalDataSource(
         .queryAll()
         .map(List<StableDiffusionEmbeddingEntity>::mapEntityToDomain)
 
-    override fun insertEmbeddings(list: List<StableDiffusionEmbedding>) = list
-        .mapDomainToEntity()
-        .let(dao::insertList)
+    override fun insertEmbeddings(list: List<StableDiffusionEmbedding>) = dao
+        .deleteAll()
+        .andThen(dao.insertList(list.mapDomainToEntity()))
 }

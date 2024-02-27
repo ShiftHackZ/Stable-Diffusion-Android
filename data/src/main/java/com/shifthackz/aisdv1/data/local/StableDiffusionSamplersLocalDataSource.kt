@@ -17,5 +17,6 @@ internal class StableDiffusionSamplersLocalDataSource(
         .map(List<StableDiffusionSamplerEntity>::mapEntityToDomain)
 
     override fun insertSamplers(samplers: List<StableDiffusionSampler>): Completable = dao
-        .insertList(samplers.mapDomainToEntity())
+        .deleteAll()
+        .andThen(dao.insertList(samplers.mapDomainToEntity()))
 }

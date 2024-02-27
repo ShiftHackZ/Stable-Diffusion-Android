@@ -14,7 +14,8 @@ internal class StableDiffusionModelsLocalDataSource(
 ) : StableDiffusionModelsDataSource.Local {
 
     override fun insertModels(models: List<StableDiffusionModel>): Completable = dao
-        .insertList(models.mapDomainToEntity())
+        .deleteAll()
+        .andThen(dao.insertList(models.mapDomainToEntity()))
 
     override fun getModels(): Single<List<StableDiffusionModel>> = dao
         .queryAll()

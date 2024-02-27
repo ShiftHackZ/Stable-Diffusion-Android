@@ -15,7 +15,7 @@ internal class StableDiffusionHyperNetworksLocalDataSource(
         .queryAll()
         .map(List<StableDiffusionHyperNetworkEntity>::mapEntityToDomain)
 
-    override fun insertHyperNetworks(list: List<StableDiffusionHyperNetwork>) = list
-        .mapDomainToEntity()
-        .let(dao::insertList)
+    override fun insertHyperNetworks(list: List<StableDiffusionHyperNetwork>) = dao
+        .deleteAll()
+        .andThen(dao.insertList(list.mapDomainToEntity()))
 }

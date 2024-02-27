@@ -17,4 +17,7 @@ interface StableDiffusionHyperNetworkDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(items: List<StableDiffusionHyperNetworkEntity>): Completable
+
+    @Query("DELETE FROM ${StableDiffusionHyperNetworkContract.TABLE}")
+    fun deleteAll(): Completable
 }

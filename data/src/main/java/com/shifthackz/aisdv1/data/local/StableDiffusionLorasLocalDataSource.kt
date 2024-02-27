@@ -14,7 +14,7 @@ internal class StableDiffusionLorasLocalDataSource(
         .queryAll()
         .map(List<StableDiffusionLoraEntity>::mapEntityToDomain)
 
-    override fun insertLoras(loras: List<StableDiffusionLora>) = loras
-        .mapDomainToEntity()
-        .let(dao::insertList)
+    override fun insertLoras(loras: List<StableDiffusionLora>) = dao
+        .deleteAll()
+        .andThen(dao.insertList(loras.mapDomainToEntity()))
 }

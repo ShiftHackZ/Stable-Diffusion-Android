@@ -17,4 +17,7 @@ interface StableDiffusionModelDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(items: List<StableDiffusionModelEntity>): Completable
+
+    @Query("DELETE FROM ${StableDiffusionModelContract.TABLE}")
+    fun deleteAll(): Completable
 }

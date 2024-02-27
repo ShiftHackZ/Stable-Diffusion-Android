@@ -17,4 +17,7 @@ interface StableDiffusionLoraDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(items: List<StableDiffusionLoraEntity>): Completable
+
+    @Query("DELETE FROM ${StableDiffusionLoraContract.TABLE}")
+    fun deleteAll(): Completable
 }
