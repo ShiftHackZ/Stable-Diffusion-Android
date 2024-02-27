@@ -29,6 +29,9 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
   - ( Img2Img ONLY ) : Capture input image from camera _(requires user permission)_
   - ( Img2Img ONLY ) : Fetching random image for the input
   - Batch generation with maximum of 20 images (for A1111 and Horde)
+  - Lora picker (for A1111)
+  - Textual inversion picker (for A1111)
+  - Hypernetworks picker (for A1111)
 - In-app Gallery, stored locally, contains all AI generated images
   - Displays generated images grid
   - Image detail view: Zoom, Pinch, Generation Info. 
