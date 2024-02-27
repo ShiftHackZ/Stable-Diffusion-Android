@@ -188,7 +188,7 @@
     <string name="notification_fail_sub_title">Ayrıntıları görmek için buraya tıklayın.</string>
 
     <string name="model_local_custom_switch">Özel modeli yükle</string>
-    <string name="model_local_permission_title">Özel modeli yükleyebilmek için SDAI uygulamasının depolama izinlerini yönetmesine izin vermeniz gerekir; çünkü Android 11'den itibaren kapsamlı olmayan depolama dosyalarına erişmek gerekir.</string>
+    <string name="model_local_permission_title">Özel modeli yükleyebilmek için SDAI uygulamasının depolama izinlerini yönetmesine izin vermeniz gerekir; çünkü Android 11\'den itibaren kapsamlı olmayan depolama dosyalarına erişmek gerekir.</string>
     <string name="model_local_permission_button">Kurulum izni</string>
 
     <string name="model_local_custom_title">Yerel özel modeli kullanmak için telefonunuzun depolama alanındaki yerel klasöre yerleştirin: Download/SDAi/model</string>
