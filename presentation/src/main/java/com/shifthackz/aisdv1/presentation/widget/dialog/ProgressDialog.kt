@@ -107,9 +107,10 @@ fun ProgressDialogStatus(
 
 @Composable
 fun ProgressDialogCancelButton(onClick: () -> Unit) {
-    Box(modifier = Modifier.fillMaxWidth(),
+    Box(
+        modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center,
-        ) {
+    ) {
         OutlinedButton(
             modifier = Modifier
                 .padding(top = 16.dp)
