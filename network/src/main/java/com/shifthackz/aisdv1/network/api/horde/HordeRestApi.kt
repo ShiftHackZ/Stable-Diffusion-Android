@@ -5,8 +5,10 @@ import com.shifthackz.aisdv1.network.response.HordeGenerationAsyncResponse
 import com.shifthackz.aisdv1.network.response.HordeGenerationCheckFullResponse
 import com.shifthackz.aisdv1.network.response.HordeGenerationCheckResponse
 import com.shifthackz.aisdv1.network.response.HordeUserResponse
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -24,4 +26,7 @@ interface HordeRestApi {
 
     @GET("/api/v2/find_user")
     fun checkHordeApiKey(): Single<HordeUserResponse>
+
+    @DELETE("/api/v2/generate/status/{id}")
+    fun cancelRequest(@Path("id") requestId: String): Completable
 }

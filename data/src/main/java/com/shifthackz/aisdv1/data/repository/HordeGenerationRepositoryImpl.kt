@@ -35,4 +35,6 @@ internal class HordeGenerationRepositoryImpl(
     override fun generateFromImage(payload: ImageToImagePayload) = remoteDataSource
         .imageToImage(payload)
         .flatMap(::insertGenerationResult)
+
+    override fun interruptGeneration() = remoteDataSource.interruptGeneration()
 }

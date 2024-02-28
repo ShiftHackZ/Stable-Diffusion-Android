@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.feature.diffusion.ai.tokenizer.LocalDiffusionTextTokenizer
 import com.shifthackz.aisdv1.feature.diffusion.ai.unet.UNet
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.PublishSubject
 
@@ -72,6 +73,12 @@ internal class LocalDiffusionImpl(
         } catch (e: Exception) {
             if (!emitter.isDisposed) emitter.onError(e)
         }
+    }
+
+    // ToDo review method of LocalDiffusion cancellation, now next generation crashes using this approach
+    override fun interrupt() = Completable.fromAction {
+        tokenizer.close()
+        uNet.close()
     }
 
     override fun observeStatus() = statusSubject

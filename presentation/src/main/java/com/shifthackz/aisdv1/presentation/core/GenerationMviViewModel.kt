@@ -13,26 +13,34 @@ import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.model.ExtraType
-import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviEffect>(
-    private val schedulersProvider: SchedulersProvider,
-    private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase,
-    private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
-    preferenceManager: PreferenceManager,
-    getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
-    observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
-    observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase? = null,
-) : MviRxViewModel<S, E>() {
+abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviEffect> :
+    MviRxViewModel<S, E>(), KoinComponent {
+
+    private val preferenceManager: PreferenceManager by inject()
+    private val schedulersProvider: SchedulersProvider by inject()
+    private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase by inject()
+    private val saveGenerationResultUseCase: SaveGenerationResultUseCase by inject()
+    private val getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase by inject()
+    private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase by inject()
+    private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase by inject()
+    private val interruptGenerationUseCase: InterruptGenerationUseCase by inject()
+
+    private var generationDisposable: Disposable? = null
+    private var randomImageDisposable: Disposable? = null
 
     init {
         !preferenceManager
@@ -79,15 +87,13 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
                 onComplete = EmptyLambda,
             )
 
-        observeLocalDiffusionProcessStatusUseCase
-            ?.let { lambda -> lambda()}
-            ?.subscribeOnMainThread(schedulersProvider)
-            ?.subscribeBy(
+        !observeLocalDiffusionProcessStatusUseCase()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
                 onError = ::errorLog,
                 onNext = ::onReceivedLocalDiffusionStatus,
                 onComplete = EmptyLambda,
             )
-            ?.apply { addToDisposable() }
     }
 
     open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) = updateGenerationState {
@@ -192,17 +198,62 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
 
     fun openPreviousGenerationInput() = setActiveModal(Modal.PromptBottomSheet)
 
-    fun openLoraInput() = setActiveModal(Modal.ExtraBottomSheet(currentState.prompt, currentState.negativePrompt, ExtraType.Lora))
+    fun openLoraInput() = setActiveModal(
+        Modal.ExtraBottomSheet(
+            currentState.prompt,
+            currentState.negativePrompt,
+            ExtraType.Lora,
+        )
+    )
 
-    fun openHyperNetInput() = setActiveModal(Modal.ExtraBottomSheet(currentState.prompt, currentState.negativePrompt, ExtraType.HyperNet))
+    fun openHyperNetInput() = setActiveModal(
+        Modal.ExtraBottomSheet(
+            currentState.prompt,
+            currentState.negativePrompt,
+            ExtraType.HyperNet,
+        )
+    )
 
-    fun openEmbeddingInput() = setActiveModal(Modal.Embeddings(currentState.prompt, currentState.negativePrompt))
+    fun openEmbeddingInput() =
+        setActiveModal(Modal.Embeddings(currentState.prompt, currentState.negativePrompt))
+
+    fun cancelGeneration() {
+        generationDisposable?.dispose()
+        generationDisposable = null
+        !interruptGenerationUseCase()
+            .doOnSubscribe { dismissScreenModal() }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog)
+    }
+
+    fun cancelFetchRandomImage() {
+        randomImageDisposable?.dispose()
+        randomImageDisposable = null
+        dismissScreenModal()
+    }
 
     protected fun setActiveModal(modal: Modal) = updateGenerationState {
         it.copyState(screenModal = modal)
     }
 
-    private fun updateGenerationState(mutation: (GenerationMviState) -> GenerationMviState) = runCatching {
-        updateState(mutation as (S) -> S)
+    protected fun generate(fn: () -> Disposable) {
+        generationDisposable?.dispose()
+        generationDisposable = null
+        val newDisposable = fn()
+        generationDisposable = newDisposable
+        generationDisposable?.addToDisposable()
     }
+
+    protected fun fetchRandomImage(fn: () -> Disposable) {
+        randomImageDisposable?.dispose()
+        randomImageDisposable = null
+        val newDisposable = fn()
+        randomImageDisposable = newDisposable
+        randomImageDisposable?.addToDisposable()
+    }
+
+    private fun updateGenerationState(mutation: (GenerationMviState) -> GenerationMviState) =
+        runCatching {
+            updateState(mutation as (S) -> S)
+        }
 }

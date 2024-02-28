@@ -39,6 +39,8 @@ internal class LocalDiffusionGenerationRepositoryImpl(
             else Single.error(Throwable("Model not downloaded"))
         }
 
+    override fun interruptGeneration() = localDiffusion.interrupt()
+
     private fun generate(payload: TextToImagePayload) = localDiffusion
         .process(payload)
         .subscribeOn(schedulersProvider.computation)

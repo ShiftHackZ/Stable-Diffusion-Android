@@ -11,4 +11,5 @@ interface StableDiffusionGenerationRepository {
     fun checkApiAvailability(url: String): Completable
     fun generateFromText(payload: TextToImagePayload): Single<AiGenerationResult>
     fun generateFromImage(payload: ImageToImagePayload): Single<AiGenerationResult>
+    fun interruptGeneration(): Completable
 }

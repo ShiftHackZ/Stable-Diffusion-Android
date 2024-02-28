@@ -12,5 +12,6 @@ sealed interface StableDiffusionGenerationDataSource {
         fun checkAvailability(url: String): Completable
         fun textToImage(payload: TextToImagePayload): Single<AiGenerationResult>
         fun imageToImage(payload: ImageToImagePayload): Single<AiGenerationResult>
+        fun interruptGeneration(): Completable
     }
 }

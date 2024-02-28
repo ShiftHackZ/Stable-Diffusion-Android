@@ -1,15 +1,19 @@
 package com.shifthackz.aisdv1.presentation.widget.dialog
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -31,6 +35,7 @@ fun ProgressDialog(
     waitTimeSeconds: Int? = null,
     positionInQueue: Int? = null,
     step: Pair<Int, Int>? = null,
+    content: (@Composable () -> Unit)? = null,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -67,6 +72,7 @@ fun ProgressDialog(
                         .padding(top = 8.dp),
                     color = AlertDialogDefaults.iconContentColor,
                 )
+                content?.invoke()
             }
         }
     }
@@ -96,6 +102,26 @@ fun ProgressDialogStatus(
             style = TextStyle(fontSize = 12.sp),
             color = AlertDialogDefaults.textContentColor,
         )
+    }
+}
+
+@Composable
+fun ProgressDialogCancelButton(onClick: () -> Unit) {
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center,
+    ) {
+        OutlinedButton(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth(0.7f),
+            onClick = onClick,
+        ) {
+            Text(
+                text = stringResource(id = R.string.cancel),
+                color = LocalContentColor.current,
+            )
+        }
     }
 }
 
