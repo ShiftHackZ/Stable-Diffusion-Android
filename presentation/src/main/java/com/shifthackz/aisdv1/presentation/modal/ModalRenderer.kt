@@ -29,6 +29,7 @@ fun ModalRenderer(
     onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
     onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
     onCancelGeneration: () -> Unit = {},
+    onCancelFetchRandomImage: () -> Unit = {},
     onDismissScreenDialog: () -> Unit = {},
 ) = when (screenModal) {
     Modal.None -> Unit
@@ -44,7 +45,9 @@ fun ModalRenderer(
     Modal.LoadingRandomImage -> ProgressDialog(
         titleResId = R.string.communicating_random_image_title,
         canDismiss = false,
-    )
+    ) {
+        ProgressDialogCancelButton(onCancelFetchRandomImage)
+    }
 
     is Modal.Error -> ErrorDialog(
         text = screenModal.error,

@@ -150,25 +150,27 @@ class ImageToImageViewModel(
         }
     }
 
-    fun fetchRandomImage() = !getRandomImageUseCase()
-        .doOnSubscribe { setActiveModal(Modal.LoadingRandomImage) }
-        .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(
-            onError = { t ->
-                setActiveModal(
-                    Modal.Error(
-                        UiText.Static(
-                            t.localizedMessage ?: "Error"
+    fun fetchRandomImage() = fetchRandomImage {
+        getRandomImageUseCase()
+            .doOnSubscribe { setActiveModal(Modal.LoadingRandomImage) }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = { t ->
+                    setActiveModal(
+                        Modal.Error(
+                            UiText.Static(
+                                t.localizedMessage ?: "Error"
+                            )
                         )
                     )
-                )
-                errorLog(t)
-            },
-            onSuccess = { bitmap ->
-                dismissScreenModal()
-                updateState {
-                    it.copy(imageState = ImageToImageState.ImageState.Image(bitmap))
-                }
-            },
-        )
+                    errorLog(t)
+                },
+                onSuccess = { bitmap ->
+                    dismissScreenModal()
+                    updateState {
+                        it.copy(imageState = ImageToImageState.ImageState.Image(bitmap))
+                    }
+                },
+            )
+    }
 }

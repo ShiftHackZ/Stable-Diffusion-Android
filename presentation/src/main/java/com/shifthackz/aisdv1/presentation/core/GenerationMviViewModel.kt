@@ -40,6 +40,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
     private val interruptGenerationUseCase: InterruptGenerationUseCase by inject()
 
     private var generationDisposable: Disposable? = null
+    private var randomImageDisposable: Disposable? = null
 
     init {
         !preferenceManager
@@ -93,14 +94,6 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
                 onNext = ::onReceivedLocalDiffusionStatus,
                 onComplete = EmptyLambda,
             )
-    }
-
-    open fun generate(fn: () -> Disposable) {
-        generationDisposable?.dispose()
-        generationDisposable = null
-        val newDisposable = fn()
-        generationDisposable = newDisposable
-        generationDisposable?.addToDisposable()
     }
 
     open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) = updateGenerationState {
@@ -233,8 +226,30 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
             .subscribeBy(::errorLog)
     }
 
+    fun cancelFetchRandomImage() {
+        randomImageDisposable?.dispose()
+        randomImageDisposable = null
+        dismissScreenModal()
+    }
+
     protected fun setActiveModal(modal: Modal) = updateGenerationState {
         it.copyState(screenModal = modal)
+    }
+
+    protected fun generate(fn: () -> Disposable) {
+        generationDisposable?.dispose()
+        generationDisposable = null
+        val newDisposable = fn()
+        generationDisposable = newDisposable
+        generationDisposable?.addToDisposable()
+    }
+
+    protected fun fetchRandomImage(fn: () -> Disposable) {
+        randomImageDisposable?.dispose()
+        randomImageDisposable = null
+        val newDisposable = fn()
+        randomImageDisposable = newDisposable
+        randomImageDisposable?.addToDisposable()
     }
 
     private fun updateGenerationState(mutation: (GenerationMviState) -> GenerationMviState) =
