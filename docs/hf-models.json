@@ -1,0 +1,38 @@
+[
+  {
+    "id": "abed08ad-e1d3-440b-b433-476aad528006",
+    "name": "Open Journey",
+    "alias": "prompthero/openjourney-v4",
+    "source": "https://huggingface.co/prompthero/openjourney-v4"
+  },
+  {
+    "id": "80974f2d-7ee0-48e5-97bc-448de3c1d634",
+    "name": "Analog Diffusion",
+    "alias": "wavymulder/Analog-Diffusion",
+    "source": "https://huggingface.co/wavymulder/Analog-Diffusion"
+  },
+  {
+    "id": "7c1b4367-6956-4b1e-b8de-7d5f51617b14",
+    "name": "Nitro Diffusion",
+    "alias": "nitrosocke/nitro-diffusion",
+    "source": "https://huggingface.co/nitrosocke/Nitro-Diffusion"
+  },
+  {
+    "id": "61c03678-599a-4bcb-b127-84f90023a5ee",
+    "name": "Portrait Plus",
+    "alias": "wavymulder/portraitplus",
+    "source": "https://huggingface.co/wavymulder/portraitplus"
+  },
+  {
+    "id": "64909ca1-5525-423c-b844-cde355f002c4",
+    "name": "Stable Diffusion v2-1",
+    "alias": "stabilityai/stable-diffusion-2-1",
+    "source": "https://huggingface.co/stabilityai/stable-diffusion-2-1"
+  },
+  {
+    "id": "fbedd074-1ebe-425c-a69c-ea37be56477f",
+    "name": "Waifu Diffusion v1.4",
+    "alias": "hakurei/waifu-diffusion",
+    "source": "https://huggingface.co/hakurei/waifu-diffusion"
+  }
+]
