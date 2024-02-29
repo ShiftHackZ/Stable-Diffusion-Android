@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.data.gateway.DatabaseClearGatewayImpl
 import com.shifthackz.aisdv1.data.gateway.mediastore.MediaStoreGatewayFactory
 import com.shifthackz.aisdv1.data.local.DownloadableModelLocalDataSource
 import com.shifthackz.aisdv1.data.local.GenerationResultLocalDataSource
+import com.shifthackz.aisdv1.data.local.HuggingFaceModelsLocalDataSource
 import com.shifthackz.aisdv1.data.local.ServerConfigurationLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionEmbeddingsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionHyperNetworksLocalDataSource
@@ -12,6 +13,7 @@ import com.shifthackz.aisdv1.data.local.StableDiffusionModelsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionSamplersLocalDataSource
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
+import com.shifthackz.aisdv1.domain.datasource.HuggingFaceModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionEmbeddingsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataSource
@@ -35,5 +37,6 @@ val localDataSourceModule = module {
     factoryOf(::ServerConfigurationLocalDataSource) bind ServerConfigurationDataSource.Local::class
     factoryOf(::GenerationResultLocalDataSource) bind GenerationResultDataSource.Local::class
     factoryOf(::DownloadableModelLocalDataSource) bind DownloadableModelDataSource.Local::class
+    factoryOf(::HuggingFaceModelsLocalDataSource) bind HuggingFaceModelsDataSource.Local::class
     factory { MediaStoreGatewayFactory(androidContext(), get()).invoke() }
 }

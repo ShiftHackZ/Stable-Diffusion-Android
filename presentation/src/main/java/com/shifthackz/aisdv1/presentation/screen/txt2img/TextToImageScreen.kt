@@ -30,12 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
 import com.shifthackz.aisdv1.presentation.core.GenerationMviScreen
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
-import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 
 class TextToImageScreen(
@@ -162,7 +162,7 @@ private fun ScreenContent(
             },
             bottomBar = {
                 GenerationBottomToolbar(
-                    showToolbar = state.mode == GenerationInputMode.AUTOMATIC1111,
+                    showToolbar = state.mode == ServerSource.AUTOMATIC1111,
                     strokeAccentState = !state.hasValidationErrors,
                     onOpenLoraInput = onOpenLoraInput,
                     onOpenHyperNetInput = onOpenHyperNetInput,

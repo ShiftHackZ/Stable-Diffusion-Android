@@ -9,11 +9,13 @@ interface RxDisposableContract {
 
     infix operator fun CompositeDisposable.plus(d: Disposable) = this.add(compositeDisposable)
 
-    operator fun Disposable.not() {
+    operator fun Disposable.not(): Disposable {
         compositeDisposable.add(this)
+        return this
     }
 
-    fun Disposable.addToDisposable() {
+    fun Disposable.addToDisposable(): Disposable {
         compositeDisposable.add(this)
+        return this
     }
 }

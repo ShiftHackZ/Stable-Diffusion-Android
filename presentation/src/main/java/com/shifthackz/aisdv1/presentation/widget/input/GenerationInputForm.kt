@@ -47,20 +47,6 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
-enum class GenerationInputMode {
-    AUTOMATIC1111,
-    HORDE,
-    LOCAL;
-
-    companion object {
-        fun fromSource(source: ServerSource) = when (source) {
-            ServerSource.HORDE -> HORDE
-            ServerSource.LOCAL -> LOCAL
-            else -> AUTOMATIC1111
-        }
-    }
-}
-
 @Composable
 fun GenerationInputForm(
     modifier: Modifier = Modifier,
@@ -92,8 +78,9 @@ fun GenerationInputForm(
             onValueChange = onPromptUpdated,
             label = { Text(stringResource(id = R.string.hint_prompt)) },
         )
+
         // Horde does not support "negative prompt"
-        if (state.mode != GenerationInputMode.HORDE) {
+        if (state.mode != ServerSource.HORDE) {
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -103,6 +90,8 @@ fun GenerationInputForm(
                 label = { Text(stringResource(id = R.string.hint_prompt_negative)) },
             )
         }
+
+        // Size input fields
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -110,7 +99,7 @@ fun GenerationInputForm(
         ) {
             val localModifier = Modifier.weight(1f)
 
-            if (state.mode == GenerationInputMode.HORDE || state.mode == GenerationInputMode.LOCAL) {
+            if (state.mode == ServerSource.HORDE || state.mode == ServerSource.LOCAL) {
                 DropdownTextField(
                     modifier = localModifier.padding(end = 4.dp),
                     label = R.string.width.asUiText(),
@@ -172,6 +161,7 @@ fun GenerationInputForm(
                 )
             }
         }
+
         if (state.advancedToggleButtonVisible) {
             TextButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -194,7 +184,7 @@ fun GenerationInputForm(
         AnimatedVisibility(visible = state.advancedOptionsVisible) {
             Column {
                 // Sampler selection only supported for A1111
-                if (state.mode == GenerationInputMode.AUTOMATIC1111) {
+                if (state.mode == ServerSource.AUTOMATIC1111) {
                     DropdownTextField(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -205,29 +195,32 @@ fun GenerationInputForm(
                         onItemSelected = onSamplerUpdated,
                     )
                 }
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    value = state.seed,
-                    onValueChange = { value ->
-                        value
-                            .filter { it.isDigit() }
-                            .let(onSeedUpdated)
-                    },
-                    label = { Text(stringResource(id = R.string.hint_seed)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    trailingIcon = {
-                        IconButton(onClick = { onSeedUpdated("${Random.nextLong()}") }) {
-                            Icon(
-                                imageVector = Icons.Default.Casino,
-                                contentDescription = "Random",
-                            )
-                        }
-                    },
-                )
+                // Seed is not available for Hugging Face
+//                if (state.mode != ServerSource.HUGGING_FACE) {
+                    TextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        value = state.seed,
+                        onValueChange = { value ->
+                            value
+                                .filter { it.isDigit() }
+                                .let(onSeedUpdated)
+                        },
+                        label = { Text(stringResource(id = R.string.hint_seed)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        trailingIcon = {
+                            IconButton(onClick = { onSeedUpdated("${Random.nextLong()}") }) {
+                                Icon(
+                                    imageVector = Icons.Default.Casino,
+                                    contentDescription = "Random",
+                                )
+                            }
+                        },
+                    )
+//                }
                 // NSFW flag specifically for Horde API
-                if (state.mode == GenerationInputMode.HORDE) {
+                if (state.mode == ServerSource.HORDE) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -245,7 +238,7 @@ fun GenerationInputForm(
                     }
                 }
                 // Variation seed only supported for A1111
-                if (state.mode == GenerationInputMode.AUTOMATIC1111) {
+                if (state.mode == ServerSource.AUTOMATIC1111) {
                     TextField(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -269,22 +262,26 @@ fun GenerationInputForm(
                     )
                 }
                 // Sub-seed strength is not available for Local Diffusion
-                if (state.mode != GenerationInputMode.LOCAL) {
-                    Text(
-                        modifier = Modifier.padding(top = 8.dp),
-                        text = stringResource(
-                            id = R.string.hint_sub_seed_strength,
-                            "${state.subSeedStrength.roundTo(2)}",
-                        ),
-                    )
-                    Slider(
-                        value = state.subSeedStrength,
-                        valueRange = SUB_SEED_STRENGTH_MIN..SUB_SEED_STRENGTH_MAX,
-                        colors = sliderColors,
-                        onValueChange = {
-                            onSubSeedStrengthUpdated(it.roundTo(2))
-                        },
-                    )
+                when (state.mode) {
+                    ServerSource.AUTOMATIC1111,
+                    ServerSource.HORDE -> {
+                        Text(
+                            modifier = Modifier.padding(top = 8.dp),
+                            text = stringResource(
+                                id = R.string.hint_sub_seed_strength,
+                                "${state.subSeedStrength.roundTo(2)}",
+                            ),
+                        )
+                        Slider(
+                            value = state.subSeedStrength,
+                            valueRange = SUB_SEED_STRENGTH_MIN..SUB_SEED_STRENGTH_MAX,
+                            colors = sliderColors,
+                            onValueChange = {
+                                onSubSeedStrengthUpdated(it.roundTo(2))
+                            },
+                        )
+                    }
+                    else -> Unit
                 }
 
                 Text(
@@ -318,10 +315,14 @@ fun GenerationInputForm(
                     },
                 )
 
-                afterSlidersSection()
+                when (state.mode) {
+                    ServerSource.AUTOMATIC1111,
+                    ServerSource.HORDE -> afterSlidersSection()
+                    else -> Unit
+                }
 
                 // Batch is not available for Local Diffusion
-                if (state.mode != GenerationInputMode.LOCAL) {
+                if (state.mode != ServerSource.LOCAL) {
                     Text(
                         modifier = Modifier.padding(top = 8.dp),
                         text = stringResource(
@@ -340,7 +341,7 @@ fun GenerationInputForm(
                     )
                 }
                 //Restore faces available only for A1111
-                if (state.mode == GenerationInputMode.AUTOMATIC1111) {
+                if (state.mode == ServerSource.AUTOMATIC1111) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -368,7 +369,7 @@ private fun GenerationInputFormAutomaticPreview() {
     GenerationInputForm(
         state = object : GenerationMviState() {
             override val screenModal: Modal = Modal.None
-            override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111
+            override val mode: ServerSource = ServerSource.AUTOMATIC1111
             override val advancedToggleButtonVisible: Boolean = true
             override val advancedOptionsVisible: Boolean = false
             override val prompt: String = "Opel Astra H OPC"
@@ -398,7 +399,7 @@ private fun GenerationInputFormAutomaticWithOptionsPreview() {
     GenerationInputForm(
         state = object : GenerationMviState() {
             override val screenModal: Modal = Modal.None
-            override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111
+            override val mode: ServerSource = ServerSource.AUTOMATIC1111
             override val advancedToggleButtonVisible: Boolean = false
             override val advancedOptionsVisible: Boolean = true
             override val prompt: String = "Opel Astra H OPC"
@@ -428,7 +429,7 @@ private fun GenerationInputFormHordePreview() {
     GenerationInputForm(
         state = object : GenerationMviState() {
             override val screenModal: Modal = Modal.None
-            override val mode: GenerationInputMode = GenerationInputMode.HORDE
+            override val mode: ServerSource = ServerSource.HORDE
             override val advancedToggleButtonVisible: Boolean = true
             override val advancedOptionsVisible: Boolean = false
             override val prompt: String = "Opel Astra H OPC"
@@ -458,7 +459,7 @@ private fun GenerationInputFormHordeWithOptionsPreview() {
     GenerationInputForm(
         state = object : GenerationMviState() {
             override val screenModal: Modal = Modal.None
-            override val mode: GenerationInputMode = GenerationInputMode.HORDE
+            override val mode: ServerSource = ServerSource.HORDE
             override val advancedToggleButtonVisible: Boolean = false
             override val advancedOptionsVisible: Boolean = true
             override val prompt: String = "Opel Astra H OPC"

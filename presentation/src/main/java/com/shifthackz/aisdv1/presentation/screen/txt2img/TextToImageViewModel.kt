@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
@@ -18,7 +19,6 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
-import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
@@ -34,7 +34,7 @@ class TextToImageViewModel(
 
     private val progressModal: Modal
         get() {
-            if (currentState.mode == GenerationInputMode.LOCAL) {
+            if (currentState.mode == ServerSource.LOCAL) {
                 return Modal.Generating()
             }
             return Modal.Communicating()
@@ -43,7 +43,8 @@ class TextToImageViewModel(
     override val emptyState = TextToImageState()
 
     init {
-        !generationFormUpdateEvent.observeTxt2ImgForm()
+        !generationFormUpdateEvent
+            .observeTxt2ImgForm()
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = ::errorLog,

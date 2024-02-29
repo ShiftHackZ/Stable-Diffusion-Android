@@ -5,9 +5,9 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.io.File
 
-internal class DownloadableModelsRestApiImpl(
-    private val rawApi: DownloadableModelsRestApi.RawApi,
-) : DownloadableModelsRestApi {
+internal class DownloadableModelsApiImpl(
+    private val rawApi: DownloadableModelsApi.RawApi,
+) : DownloadableModelsApi {
 
     override fun fetchDownloadableModels() = rawApi.fetchDownloadableModels()
 

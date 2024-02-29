@@ -4,7 +4,7 @@ sealed interface AuthorizationCredentials {
 
     val key: Key
 
-    object None : AuthorizationCredentials {
+    data object None : AuthorizationCredentials {
         override val key: Key = Key.NONE
     }
 
@@ -17,7 +17,7 @@ sealed interface AuthorizationCredentials {
         HTTP_BASIC("http");
 
         companion object {
-            fun from(value: String) = values().find { it.key == value } ?: NONE
+            fun from(value: String) = entries.find { it.key == value } ?: NONE
         }
     }
 }

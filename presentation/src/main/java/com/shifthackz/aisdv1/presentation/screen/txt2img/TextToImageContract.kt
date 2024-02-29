@@ -4,18 +4,15 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
-import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.model.Modal
-import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 
 data class TextToImageState(
     override val screenModal: Modal = Modal.None,
-    override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111,
+    override val mode: ServerSource = ServerSource.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,
     override val advancedOptionsVisible: Boolean = false,
     override val prompt: String = "",
@@ -39,7 +36,7 @@ data class TextToImageState(
 
     override fun copyState(
         screenModal: Modal,
-        mode: GenerationInputMode,
+        mode: ServerSource,
         advancedToggleButtonVisible: Boolean,
         advancedOptionsVisible: Boolean,
         prompt: String,
@@ -97,8 +94,8 @@ fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
         subSeed = subSeed.trim(),
         subSeedStrength = subSeedStrength,
         sampler = selectedSampler,
-        nsfw = if (mode == GenerationInputMode.HORDE) nsfw else false,
-        batchCount = if (mode == GenerationInputMode.LOCAL) 1 else batchCount,
+        nsfw = if (mode == ServerSource.HORDE) nsfw else false,
+        batchCount = if (mode == ServerSource.LOCAL) 1 else batchCount,
     )
 }
 

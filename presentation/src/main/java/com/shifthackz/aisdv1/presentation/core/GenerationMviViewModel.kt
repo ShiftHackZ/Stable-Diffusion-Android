@@ -20,7 +20,6 @@ import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCa
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.model.Modal
-import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -53,7 +52,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
                     updateGenerationState {
                         it
                             .copyState(
-                                mode = GenerationInputMode.fromSource(settings.source),
+                                mode = settings.source,
                                 advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow,
                             )
                             .let { state ->

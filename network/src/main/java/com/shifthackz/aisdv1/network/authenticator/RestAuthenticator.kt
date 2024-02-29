@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.network.authenticator
 
 import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.network.qualifiers.CredentialsProvider
-import com.shifthackz.aisdv1.network.qualifiers.Headers
+import com.shifthackz.aisdv1.network.qualifiers.NetworkHeaders
 import okhttp3.Authenticator
 import okhttp3.Credentials
 import okhttp3.Request
@@ -22,16 +22,13 @@ internal class RestAuthenticator(
 
     private fun httpAuthentication(response: Response, credentials: CredentialsProvider.Data.HttpBasic): Request? {
         val request = response.request
-        if (request.header(Headers.AUTHORIZATION) != null) {
-            debugLog("[HTTP BASIC] Seems like credentials are not valid")
-            return null
-        }
-        debugLog("[HTTP BASIC] Executing with HTTP BASIC authorization")
-        debugLog("[HTTP BASIC] LOGIN    : ${credentials.login}")
-        debugLog("[HTTP BASIC] PASSWORD : ${credentials.password}")
+        if (request.header(NetworkHeaders.AUTHORIZATION) != null) return null
         return request
             .newBuilder()
-            .header(Headers.AUTHORIZATION, Credentials.basic(credentials.login, credentials.password))
+            .header(
+                name = NetworkHeaders.AUTHORIZATION,
+                value = Credentials.basic(credentials.login, credentials.password),
+            )
             .build()
     }
 }

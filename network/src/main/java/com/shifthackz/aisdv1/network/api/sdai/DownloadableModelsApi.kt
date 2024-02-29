@@ -9,7 +9,7 @@ import retrofit2.http.Streaming
 import retrofit2.http.Url
 import java.io.File
 
-interface DownloadableModelsRestApi {
+interface DownloadableModelsApi {
 
     fun fetchDownloadableModels(): Single<List<DownloadableModelResponse>>
 
