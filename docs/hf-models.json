@@ -16,5 +16,11 @@
     "name": "Nitro Diffusion",
     "alias": "nitrosocke/nitro-diffusion",
     "source": "https://huggingface.co/nitrosocke/Nitro-Diffusion"
+  },
+  {
+    "id": "61c03678-599a-4bcb-b127-84f90023a5ee",
+    "name": "Portrait Plus",
+    "alias": "wavymulder/portraitplus",
+    "source": "https://huggingface.co/wavymulder/portraitplus"
   }
 ]
