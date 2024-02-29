@@ -28,5 +28,11 @@
     "name": "Stable Diffusion v2-1",
     "alias": "stabilityai/stable-diffusion-2-1",
     "source": "https://huggingface.co/stabilityai/stable-diffusion-2-1"
+  },
+  {
+    "id": "fbedd074-1ebe-425c-a69c-ea37be56477f",
+    "name": "Waifu Diffusion v1.4",
+    "alias": "hakurei/waifu-diffusion",
+    "source": "https://huggingface.co/hakurei/waifu-diffusion"
   }
 ]
