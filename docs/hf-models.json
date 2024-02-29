@@ -22,5 +22,11 @@
     "name": "Portrait Plus",
     "alias": "wavymulder/portraitplus",
     "source": "https://huggingface.co/wavymulder/portraitplus"
+  },
+  {
+    "id": "64909ca1-5525-423c-b844-cde355f002c4",
+    "name": "Stable Diffusion v2-1",
+    "alias": "stabilityai/stable-diffusion-2-1",
+    "source": "https://huggingface.co/stabilityai/stable-diffusion-2-1"
   }
 ]
