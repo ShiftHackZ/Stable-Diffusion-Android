@@ -4,5 +4,11 @@
     "name": "Open Journey",
     "alias": "prompthero/openjourney-v4",
     "source": "https://huggingface.co/prompthero/openjourney-v4"
+  },
+  {
+    "id": "80974f2d-7ee0-48e5-97bc-448de3c1d634",
+    "name": "Analog Diffusion",
+    "alias": "wavymulder/Analog-Diffusion",
+    "source": "https://huggingface.co/wavymulder/Analog-Diffusion"
   }
 ]
