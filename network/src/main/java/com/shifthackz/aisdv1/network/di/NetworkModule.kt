@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.network.api.huggingface.HuggingFaceInferenceApi
 import com.shifthackz.aisdv1.network.api.huggingface.HuggingFaceInferenceApiImpl
 import com.shifthackz.aisdv1.network.api.imagecdn.ImageCdnRestApi
 import com.shifthackz.aisdv1.network.api.imagecdn.ImageCdnRestApiImpl
+import com.shifthackz.aisdv1.network.api.openai.OpenAiApi
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApi
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApiImpl
 import com.shifthackz.aisdv1.network.api.sdai.HuggingFaceModelsApi
@@ -136,6 +137,12 @@ val networkModule = module {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().huggingFaceApiUrl)
             .create(HuggingFaceApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().openAiApiUrl)
+            .create(OpenAiApi::class.java)
     }
 
     singleOf(::ImageCdnRestApiImpl) bind ImageCdnRestApi::class

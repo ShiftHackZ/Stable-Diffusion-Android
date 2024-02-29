@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Api
 import androidx.compose.material.icons.filled.Cloud
@@ -121,6 +122,7 @@ class ServerSetupScreen(
             onPasswordUpdated = viewModel::updatePassword,
             onTogglePasswordVisibility = viewModel::updatePasswordVisibility,
             onHordeApiKeyUpdated = viewModel::updateHordeApiKey,
+            onOpenAiApiKeyUpdated = viewModel::updateOpenAiApiKey,
             onHuggingFaceApiKeyUpdated = viewModel::updateHuggingFaceApiKey,
             onHuggingFaceModelSelected = viewModel::updateHuggingFaceModel,
             onDemoModeUpdated = viewModel::updateDemoMode,
@@ -157,6 +159,7 @@ private fun ScreenContent(
     onPasswordUpdated: (String) -> Unit = {},
     onTogglePasswordVisibility: (Boolean) -> Unit = {},
     onHordeApiKeyUpdated: (String) -> Unit = {},
+    onOpenAiApiKeyUpdated: (String) -> Unit = {},
     onHuggingFaceApiKeyUpdated: (String) -> Unit = {},
     onHuggingFaceModelSelected: (String) -> Unit = {},
     onDemoModeUpdated: (Boolean) -> Unit = {},
@@ -281,6 +284,11 @@ private fun ScreenContent(
                             onHuggingFaceApiKeyUpdated = onHuggingFaceApiKeyUpdated,
                             onHuggingFaceModelSelected = onHuggingFaceModelSelected,
                             onOpenHuggingFaceWebSite = onOpenHuggingFaceWebSite,
+                        )
+
+                        ServerSource.OPEN_AI -> OpenAiSetupTab(
+                            state = state,
+                            onOpenAiApiKeyUpdated = onOpenAiApiKeyUpdated,
                         )
                     }
                     Spacer(modifier = Modifier.height(32.dp))
@@ -567,7 +575,6 @@ private fun HuggingFaceSetupTab(
             },
         )
         DropdownTextField(
-//            modifier = Modifier.padding(top = 4.dp),
             label = R.string.hint_hugging_face_model.asUiText(),
             items = state.huggingFaceModels,
             value = state.huggingFaceModel,
@@ -577,9 +584,80 @@ private fun HuggingFaceSetupTab(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
-            startIcon = Icons.Default.Help,
+            startIcon = Icons.AutoMirrored.Filled.Help,
             text = R.string.hint_hugging_face_about.asUiText(),
             onClick = onOpenHuggingFaceWebSite,
+        )
+    }
+}
+
+@Composable
+private fun OpenAiSetupTab(
+    modifier: Modifier = Modifier,
+    state: ServerSetupState,
+    onOpenAiApiKeyUpdated: (String) -> Unit = {},
+//    onHuggingFaceModelSelected: (String) -> Unit = {},
+//    onOpenHuggingFaceWebSite: () -> Unit = {},
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    Column(
+        modifier = modifier.padding(horizontal = 16.dp),
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.hint_open_ai_title),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = R.string.hint_open_ai_sub_title),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        TextField(
+            modifier = Modifier
+                .bringIntoViewRequester(bringIntoViewRequester)
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .onFocusChanged {
+                    if (it.isFocused) {
+                        coroutineScope.launch {
+                            delay(400L)
+                            bringIntoViewRequester.bringIntoView()
+                        }
+                    }
+                },
+            value = state.openAiApiKey,
+            onValueChange = {
+                onOpenAiApiKeyUpdated(it)
+                coroutineScope.launch {
+                    bringIntoViewRequester.bringIntoView()
+                }
+            },
+            label = { Text(stringResource(id = R.string.hint_server_horde_api_key)) },
+            isError = state.openAiApiKeyValidationError != null,
+            supportingText = {
+                state.openAiApiKeyValidationError
+                    ?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
+            },
+        )
+//        DropdownTextField(
+//            label = R.string.hint_hugging_face_model.asUiText(),
+//            items = state.huggingFaceModels,
+//            value = state.huggingFaceModel,
+//            onItemSelected = onHuggingFaceModelSelected,
+//        )
+        SettingsItem(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth(),
+            startIcon = Icons.AutoMirrored.Filled.Help,
+            text = R.string.hint_open_ai_about.asUiText(),
+            onClick = {},
         )
     }
 }
@@ -870,6 +948,7 @@ private fun ConfigurationModeButton(
             imageVector = when (mode) {
                 ServerSource.AUTOMATIC1111 -> Icons.Default.Computer
                 ServerSource.HORDE,
+                ServerSource.OPEN_AI,
                 ServerSource.HUGGING_FACE -> Icons.Default.Cloud
                 ServerSource.LOCAL -> Icons.Default.Android
                 else -> Icons.Default.QuestionMark
@@ -885,6 +964,7 @@ private fun ConfigurationModeButton(
                 ServerSource.HORDE -> R.string.srv_type_horde
                 ServerSource.LOCAL -> R.string.srv_type_local
                 ServerSource.HUGGING_FACE -> R.string.srv_type_hugging_face
+                ServerSource.OPEN_AI -> R.string.srv_type_open_ai
             }),
             fontSize = 14.sp,
             textAlign = TextAlign.Center,

@@ -21,6 +21,7 @@ data class ServerSetupState(
     val serverUrl: String = "",
     val hordeApiKey: String = "",
     val huggingFaceApiKey: String = "",
+    val openAiApiKey: String = "",
     val hordeDefaultApiKey: Boolean = false,
     val demoMode: Boolean = false,
     val authType: AuthType = AuthType.ANONYMOUS,
@@ -36,6 +37,7 @@ data class ServerSetupState(
     val passwordValidationError: UiText? = null,
     val hordeApiKeyValidationError: UiText? = null,
     val huggingFaceApiKeyValidationError: UiText? = null,
+    val openAiApiKeyValidationError: UiText? = null,
 ) : MviState {
 
     fun withHordeApiKey(value: String) = this.copy(

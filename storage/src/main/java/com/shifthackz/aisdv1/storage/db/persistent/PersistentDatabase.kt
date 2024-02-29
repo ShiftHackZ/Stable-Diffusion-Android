@@ -37,7 +37,7 @@ import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
          */
         AutoMigration(from = 2, to = 3),
         /**
-         * Added
+         * Added [HuggingFaceModelEntity].
          */
         AutoMigration(from = 3, to = 4),
     ],

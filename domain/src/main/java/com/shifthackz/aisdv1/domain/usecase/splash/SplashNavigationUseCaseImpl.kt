@@ -17,6 +17,7 @@ internal class SplashNavigationUseCaseImpl(
 
             preferenceManager.source == ServerSource.LOCAL
                     || preferenceManager.source == ServerSource.HORDE
+                    || preferenceManager.source == ServerSource.OPEN_AI
                     || preferenceManager.source == ServerSource.HUGGING_FACE -> {
                 Action.LAUNCH_HOME
             }

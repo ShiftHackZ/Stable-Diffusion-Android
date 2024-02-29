@@ -27,6 +27,6 @@ internal class ImageToImageUseCaseImpl(
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.generateFromImage(payload)
         ServerSource.HORDE -> hordeGenerationRepository.generateFromImage(payload)
         ServerSource.HUGGING_FACE -> huggingFaceGenerationRepository.generateFromImage(payload)
-        ServerSource.LOCAL -> Single.error(IllegalStateException("Img2Img not yet supported on Local Diffusion!"))
+        else -> Single.error(IllegalStateException("Img2Img not yet supported on ${preferenceManager.source}!"))
     }
 }

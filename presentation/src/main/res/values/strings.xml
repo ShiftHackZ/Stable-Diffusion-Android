@@ -53,6 +53,7 @@
     <string name="srv_type_horde" translatable="false">Horde AI</string>
     <string name="srv_type_local" translatable="false">Local Diffusion (Beta)</string>
     <string name="srv_type_hugging_face" translatable="false">Hugging Face</string>
+    <string name="srv_type_open_ai" translatable="false">Open AI</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -91,6 +92,10 @@
     <string name="hint_hugging_face_sub_title">Hugging Face inference cloud provides a service that allows to test and evaluate publicly accessible machine learning models, or your own private models, for free.</string>
     <string name="hint_hugging_face_about">About Hugging Face</string>
     <string name="hint_hugging_face_model">Hugging Face model</string>
+
+    <string name="hint_open_ai_title">Connect to Open AI</string>
+    <string name="hint_open_ai_sub_title">Open AI service allows to generate images with DALL·E models.</string>
+    <string name="hint_open_ai_about">About Open AI</string>
 
     <string name="hint_local_diffusion_title" translatable="false">Local Diffusion</string>
     <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>

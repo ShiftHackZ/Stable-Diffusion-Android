@@ -43,6 +43,7 @@ val providersModule = module {
             override val imageCdnApiUrl: String = BuildConfig.IMAGE_CDN_URL
             override val huggingFaceApiUrl: String = BuildConfig.HUGGING_FACE_URL
             override val huggingFaceInferenceApiUrl = BuildConfig.HUGGING_FACE_INFERENCE_URL
+            override val openAiApiUrl: String = BuildConfig.OPEN_AI_URL
         }
     }
 
@@ -51,13 +52,21 @@ val providersModule = module {
             val preference = get<PreferenceManager>()
             when (preference.source) {
                 ServerSource.HORDE -> {
-                    val key = preference.hordeApiKey.takeIf(String::isNotEmpty) ?: DEFAULT_HORDE_API_KEY
+                    val key =
+                        preference.hordeApiKey.takeIf(String::isNotEmpty) ?: DEFAULT_HORDE_API_KEY
                     NetworkHeaders.API_KEY to key
                 }
+
                 ServerSource.HUGGING_FACE -> {
                     val key = "${NetworkPrefixes.BEARER} ${preference.huggingFaceApiKey}"
                     NetworkHeaders.AUTHORIZATION to key
                 }
+
+                ServerSource.OPEN_AI -> {
+                    val key = "${NetworkPrefixes.BEARER} ${preference.openAiApiKey}"
+                    NetworkHeaders.AUTHORIZATION to key
+                }
+
                 else -> null
             }
         }
@@ -72,6 +81,7 @@ val providersModule = module {
                         login = credentials.login,
                         password = credentials.password,
                     )
+
                     else -> CredentialsProvider.Data.None
                 }
             }
@@ -120,7 +130,8 @@ val providersModule = module {
             override val providerPath: String = "${androidApplication().packageName}.fileprovider"
             override val imagesCacheDirPath: String = "${androidApplication().cacheDir}/images"
             override val logsCacheDirPath: String = "${androidApplication().cacheDir}/logs"
-            override val localModelDirPath: String = "${androidApplication().filesDir.absolutePath}/model"
+            override val localModelDirPath: String =
+                "${androidApplication().filesDir.absolutePath}/model"
         }
     }
 

@@ -77,6 +77,13 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
+    override var openAiApiKey: String
+        get() = preferences.getString(KEY_OPEN_AI_API_KEY, "") ?: ""
+        set(value) = preferences.edit()
+            .putString(KEY_OPEN_AI_API_KEY, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
     override var huggingFaceApiKey: String
         get() = preferences.getString(KEY_HUGGING_FACE_API_KEY, "") ?: ""
         set(value) = preferences.edit()
@@ -142,6 +149,7 @@ class PreferenceManagerImpl(
         private const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
         private const val KEY_SERVER_SOURCE = "key_server_source"
         private const val KEY_HORDE_API_KEY = "key_horde_api_key"
+        private const val KEY_OPEN_AI_API_KEY = "key_open_ai_api_key"
         private const val KEY_HUGGING_FACE_API_KEY = "key_hugging_face_api_key"
         private const val KEY_HUGGING_FACE_MODEL_KEY = "key_hugging_face_model_key"
         private const val KEY_LOCAL_NN_API = "key_local_nn_api"
