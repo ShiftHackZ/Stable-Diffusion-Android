@@ -1,7 +1,8 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,8 +15,13 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -27,6 +33,7 @@ import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.ArrowBack
@@ -36,7 +43,6 @@ import androidx.compose.material.icons.outlined.FileDownloadOff
 import androidx.compose.material.icons.outlined.Landslide
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,9 +55,12 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -59,6 +68,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,12 +82,15 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviScreen
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -108,11 +121,14 @@ class ServerSetupScreen(
             onPasswordUpdated = viewModel::updatePassword,
             onTogglePasswordVisibility = viewModel::updatePasswordVisibility,
             onHordeApiKeyUpdated = viewModel::updateHordeApiKey,
+            onHuggingFaceApiKeyUpdated = viewModel::updateHuggingFaceApiKey,
+            onHuggingFaceModelSelected = viewModel::updateHuggingFaceModel,
             onDemoModeUpdated = viewModel::updateDemoMode,
             onHordeDefaultApiKeyUsageUpdated = viewModel::updateHordeDefaultApiKeyUsage,
             onServerInstructionsItemClick = { launchUrl(linksProvider.setupInstructionsUrl) },
             onOpenHordeWebSite = { launchUrl(linksProvider.hordeUrl) },
             onOpenHordeSignUpWebSite = { launchUrl(linksProvider.hordeSignUpUrl) },
+            onOpenHuggingFaceWebSite = { launchUrl(linksProvider.huggingFaceUrl) },
             onDownloadCardButtonClick = viewModel::localModelDownloadClickReducer,
             onSelectLocalModel = viewModel::localModelSelect,
             onAllowLocalCustomModel = viewModel::updateAllowLocalCustomModel,
@@ -134,18 +150,21 @@ private fun ScreenContent(
     demoModeUrl: String,
     onNavigateBack: () -> Unit = {},
     launchManageStoragePermission: () -> Unit = {},
-    onServerModeUpdated: (ServerSetupState.Mode) -> Unit = {},
+    onServerModeUpdated: (ServerSource) -> Unit = {},
     onServerUrlUpdated: (String) -> Unit = {},
     onAuthTypeSelected: (ServerSetupState.AuthType) -> Unit = {},
     onLoginUpdated: (String) -> Unit = {},
     onPasswordUpdated: (String) -> Unit = {},
     onTogglePasswordVisibility: (Boolean) -> Unit = {},
     onHordeApiKeyUpdated: (String) -> Unit = {},
+    onHuggingFaceApiKeyUpdated: (String) -> Unit = {},
+    onHuggingFaceModelSelected: (String) -> Unit = {},
     onDemoModeUpdated: (Boolean) -> Unit = {},
     onHordeDefaultApiKeyUsageUpdated: (Boolean) -> Unit = {},
     onServerInstructionsItemClick: () -> Unit = {},
     onOpenHordeWebSite: () -> Unit = {},
     onOpenHordeSignUpWebSite: () -> Unit = {},
+    onOpenHuggingFaceWebSite: () -> Unit = {},
     onDownloadCardButtonClick: (ServerSetupState.LocalModel) -> Unit = {},
     onSelectLocalModel: (ServerSetupState.LocalModel) -> Unit = {},
     onAllowLocalCustomModel: (Boolean) -> Unit = {},
@@ -154,26 +173,32 @@ private fun ScreenContent(
 ) {
     Box(modifier) {
         Scaffold(
+            modifier = Modifier
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .imePadding(),
             topBar = {
-                CenterAlignedTopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(id = R.string.title_server_setup),
-                            style = MaterialTheme.typography.headlineMedium,
-                        )
-                    },
-                    navigationIcon = {
-                        if (state.showBackNavArrow) IconButton(
-                            onClick = onNavigateBack,
-                            content = {
-                                Icon(
-                                    Icons.Outlined.ArrowBack,
-                                    contentDescription = "Back button",
-                                )
-                            },
-                        )
-                    },
-                )
+                Column {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            Text(
+                                text = stringResource(id = R.string.title_server_setup),
+                                style = MaterialTheme.typography.headlineMedium,
+                            )
+                        },
+                        navigationIcon = {
+                            if (state.showBackNavArrow) IconButton(
+                                onClick = onNavigateBack,
+                                content = {
+                                    Icon(
+                                        Icons.Outlined.ArrowBack,
+                                        contentDescription = "Back button",
+                                    )
+                                },
+                            )
+                        },
+                    )
+                }
             },
             bottomBar = {
                 Button(
@@ -185,7 +210,7 @@ private fun ScreenContent(
                         .padding(bottom = 16.dp),
                     onClick = onSetupButtonClick,
                     enabled = when (state.mode) {
-                        ServerSetupState.Mode.LOCAL -> state.localModels.any {
+                        ServerSource.LOCAL -> state.localModels.any {
                             it.downloaded && it.selected
                         }
                         else -> true
@@ -193,7 +218,7 @@ private fun ScreenContent(
                 ) {
                     Text(
                         text = stringResource(id = when (state.mode) {
-                            ServerSetupState.Mode.LOCAL -> R.string.action_setup
+                            ServerSource.LOCAL -> R.string.action_setup
                             else -> R.string.action_connect
                         }),
                         color = LocalContentColor.current,
@@ -222,9 +247,9 @@ private fun ScreenContent(
                         }
                     }
                     when (state.mode) {
-                        ServerSetupState.Mode.OWN_SERVER -> OwnServerSetupTab(
+                        ServerSource.AUTOMATIC1111 -> OwnServerSetupTab(
                             state = state,
-                            demoModeUrl =  demoModeUrl,
+                            demoModeUrl = demoModeUrl,
                             onServerUrlUpdated = onServerUrlUpdated,
                             onAuthTypeSelected = onAuthTypeSelected,
                             onLoginUpdated = onLoginUpdated,
@@ -233,20 +258,29 @@ private fun ScreenContent(
                             onDemoModeUpdated = onDemoModeUpdated,
                             onServerInstructionsItemClick = onServerInstructionsItemClick,
                         )
-                        ServerSetupState.Mode.HORDE -> HordeAiSetupTab(
+
+                        ServerSource.HORDE -> HordeAiSetupTab(
                             state = state,
                             onHordeApiKeyUpdated = onHordeApiKeyUpdated,
                             onHordeDefaultApiKeyUsageUpdated = onHordeDefaultApiKeyUsageUpdated,
                             onOpenHordeWebSite = onOpenHordeWebSite,
                             onOpenHordeSignUpWebSite = onOpenHordeSignUpWebSite,
                         )
-                        ServerSetupState.Mode.LOCAL -> LocalDiffusionSetupTab(
+
+                        ServerSource.LOCAL -> LocalDiffusionSetupTab(
                             state = state,
                             buildInfoProvider = buildInfoProvider,
                             launchManageStoragePermission = launchManageStoragePermission,
                             onDownloadCardButtonClick = onDownloadCardButtonClick,
                             onSelectLocalModel = onSelectLocalModel,
                             onAllowLocalCustomModel = onAllowLocalCustomModel,
+                        )
+
+                        ServerSource.HUGGING_FACE -> HuggingFaceSetupTab(
+                            state = state,
+                            onHuggingFaceApiKeyUpdated = onHuggingFaceApiKeyUpdated,
+                            onHuggingFaceModelSelected = onHuggingFaceModelSelected,
+                            onOpenHuggingFaceWebSite = onOpenHuggingFaceWebSite,
                         )
                     }
                     Spacer(modifier = Modifier.height(32.dp))
@@ -310,7 +344,7 @@ private fun OwnServerSetupTab(
             DropdownTextField(
                 modifier = fieldModifier,
                 label = "Authorization".asUiText(),
-                items = ServerSetupState.AuthType.values().toList(),
+                items = ServerSetupState.AuthType.entries,
                 value = state.authType,
                 onItemSelected = onAuthTypeSelected,
                 displayDelegate = { type ->
@@ -443,11 +477,16 @@ private fun HordeAiSetupTab(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(
+            Switch(
                 checked = state.hordeDefaultApiKey,
                 onCheckedChange = onHordeDefaultApiKeyUsageUpdated,
             )
-            Text(text = stringResource(id = R.string.hint_server_horde_use_default_api_key))
+            Text(
+                modifier = Modifier.padding(start = 8.dp),
+                text = stringResource(id = R.string.hint_server_horde_use_default_api_key),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
         SettingsItem(
             modifier = Modifier
@@ -469,6 +508,78 @@ private fun HordeAiSetupTab(
             modifier = Modifier.padding(bottom = 16.dp, top = 8.dp),
             text = stringResource(id = R.string.hint_server_horde_usage),
             style = MaterialTheme.typography.bodyMedium,
+        )
+    }
+}
+
+@Composable
+private fun HuggingFaceSetupTab(
+    modifier: Modifier = Modifier,
+    state: ServerSetupState,
+    onHuggingFaceApiKeyUpdated: (String) -> Unit = {},
+    onHuggingFaceModelSelected: (String) -> Unit = {},
+    onOpenHuggingFaceWebSite: () -> Unit = {},
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    Column(
+        modifier = modifier.padding(horizontal = 16.dp),
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp, bottom = 8.dp),
+            text = stringResource(id = R.string.hint_hugging_face_title),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = R.string.hint_hugging_face_sub_title),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        TextField(
+            modifier = Modifier
+                .bringIntoViewRequester(bringIntoViewRequester)
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .onFocusChanged {
+                    if (it.isFocused) {
+                        coroutineScope.launch {
+                            delay(400L)
+                            bringIntoViewRequester.bringIntoView()
+                        }
+                    }
+                },
+            value = state.huggingFaceApiKey,
+            onValueChange = {
+                onHuggingFaceApiKeyUpdated(it)
+                coroutineScope.launch {
+                    bringIntoViewRequester.bringIntoView()
+                }
+            },
+            label = { Text(stringResource(id = R.string.hint_server_horde_api_key)) },
+            isError = state.huggingFaceApiKeyValidationError != null,
+            supportingText = {
+                state.huggingFaceApiKeyValidationError
+                    ?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
+            },
+        )
+        DropdownTextField(
+//            modifier = Modifier.padding(top = 4.dp),
+            label = R.string.hint_hugging_face_model.asUiText(),
+            items = state.huggingFaceModels,
+            value = state.huggingFaceModel,
+            onItemSelected = onHuggingFaceModelSelected,
+        )
+        SettingsItem(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth(),
+            startIcon = Icons.Default.Help,
+            text = R.string.hint_hugging_face_about.asUiText(),
+            onClick = onOpenHuggingFaceWebSite,
         )
     }
 }
@@ -734,8 +845,8 @@ private fun LocalDiffusionSetupTab(
 private fun ConfigurationModeButton(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
-    mode: ServerSetupState.Mode,
-    onClick: (ServerSetupState.Mode) -> Unit = {},
+    mode: ServerSource,
+    onClick: (ServerSource) -> Unit = {},
 ) {
     Row(
         modifier = modifier
@@ -757,9 +868,11 @@ private fun ConfigurationModeButton(
                 .size(42.dp)
                 .padding(top = 8.dp, bottom = 8.dp),
             imageVector = when (mode) {
-                ServerSetupState.Mode.OWN_SERVER -> Icons.Default.Computer
-                ServerSetupState.Mode.HORDE -> Icons.Default.Cloud
-                ServerSetupState.Mode.LOCAL -> Icons.Default.Android
+                ServerSource.AUTOMATIC1111 -> Icons.Default.Computer
+                ServerSource.HORDE,
+                ServerSource.HUGGING_FACE -> Icons.Default.Cloud
+                ServerSource.LOCAL -> Icons.Default.Android
+                else -> Icons.Default.QuestionMark
             },
             contentDescription = null,
         )
@@ -768,9 +881,10 @@ private fun ConfigurationModeButton(
                 .align(Alignment.CenterVertically)
                 .padding(top = 8.dp, bottom = 8.dp),
             text = stringResource(id = when (mode) {
-                ServerSetupState.Mode.OWN_SERVER -> R.string.srv_type_own
-                ServerSetupState.Mode.HORDE -> R.string.srv_type_horde
-                ServerSetupState.Mode.LOCAL -> R.string.srv_type_local
+                ServerSource.AUTOMATIC1111 -> R.string.srv_type_own
+                ServerSource.HORDE -> R.string.srv_type_horde
+                ServerSource.LOCAL -> R.string.srv_type_local
+                ServerSource.HUGGING_FACE -> R.string.srv_type_hugging_face
             }),
             fontSize = 14.sp,
             textAlign = TextAlign.Center,
@@ -792,7 +906,7 @@ private fun PreviewServerSetupSDAI() {
 @Preview(showSystemUi = true, showBackground = true)
 private fun PreviewServerSetupOwn() {
     ScreenContent(
-        state = ServerSetupState(mode = ServerSetupState.Mode.OWN_SERVER),
+        state = ServerSetupState(mode = ServerSource.AUTOMATIC1111),
         demoModeUrl = "https://sdai.moroz.cc",
     )
 }

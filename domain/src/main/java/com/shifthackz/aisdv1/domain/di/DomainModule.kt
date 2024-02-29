@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.domain.di
 
+import com.shifthackz.aisdv1.domain.interactor.settings.SetupConnectionInterActor
+import com.shifthackz.aisdv1.domain.interactor.settings.SetupConnectionInterActorImpl
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActorImpl
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
@@ -18,6 +20,8 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHuggingFaceApiKeyUseCase
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHuggingFaceApiKeyUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
@@ -50,6 +54,8 @@ import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCa
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdembedding.FetchAndGetEmbeddingsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdembedding.FetchAndGetEmbeddingsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdhypernet.FetchAndGetHyperNetworksUseCase
@@ -62,6 +68,14 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUs
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
@@ -97,6 +111,7 @@ internal val useCasesModule = module {
     factoryOf(::SetServerConfigurationUseCaseImpl) bind SetServerConfigurationUseCase::class
     factoryOf(::TestConnectivityUseCaseImpl) bind TestConnectivityUseCase::class
     factoryOf(::TestHordeApiKeyUseCaseImpl) bind TestHordeApiKeyUseCase::class
+    factoryOf(::TestHuggingFaceApiKeyUseCaseImpl) bind TestHuggingFaceApiKeyUseCase::class
     factoryOf(::SaveGenerationResultUseCaseImpl) bind SaveGenerationResultUseCase::class
     factoryOf(::ObserveSeverConnectivityUseCaseImpl) bind ObserveSeverConnectivityUseCase::class
     factoryOf(::ObserveHordeProcessStatusUseCaseImpl) bind ObserveHordeProcessStatusUseCase::class
@@ -111,10 +126,16 @@ internal val useCasesModule = module {
     factoryOf(::AcquireWakelockUseCaseImpl) bind AcquireWakelockUseCase::class
     factoryOf(::ReleaseWakeLockUseCaseImpl) bind ReleaseWakeLockUseCase::class
     factoryOf(::InterruptGenerationUseCaseImpl) bind InterruptGenerationUseCase::class
+    factoryOf(::ConnectToHordeUseCaseImpl) bind ConnectToHordeUseCase::class
+    factoryOf(::ConnectToLocalDiffusionUseCaseImpl) bind ConnectToLocalDiffusionUseCase::class
+    factoryOf(::ConnectToA1111UseCaseImpl) bind ConnectToA1111UseCase::class
+    factoryOf(::ConnectToHuggingFaceUseCaseImpl) bind ConnectToHuggingFaceUseCase::class
+    factoryOf(::FetchAndGetHuggingFaceModelsUseCaseImpl) bind FetchAndGetHuggingFaceModelsUseCase::class
 }
 
 internal val interActorsModule = module {
     factoryOf(::WakeLockInterActorImpl) bind WakeLockInterActor::class
+    factoryOf(::SetupConnectionInterActorImpl) bind SetupConnectionInterActor::class
 }
 
 internal val debugModule = module {

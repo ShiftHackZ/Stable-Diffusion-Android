@@ -1,9 +1,9 @@
 package com.shifthackz.aisdv1.data.mappers
 
-import android.graphics.Bitmap
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
+import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
 import com.shifthackz.aisdv1.network.request.TextToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import java.util.Date
@@ -41,6 +41,24 @@ fun TextToImagePayload.mapToHordeRequest(): HordeGenerationAsyncRequest = with(t
     )
 }
 
+fun TextToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest = with(this) {
+    HuggingFaceGenerationRequest(
+        inputs = prompt,
+        parameters = buildMap {
+            this["width"] = width
+            this["height"] = height
+            negativePrompt.trim().takeIf(String::isNotBlank)?.let {
+                this["negative_prompt"] = it
+            }
+            seed.trim().takeIf(String::isNotBlank)?.let {
+                this["seed"] = it
+            }
+            this["num_inference_steps"] = samplingSteps
+            this["guidance_scale"] = cfgScale
+        },
+    )
+}
+
 fun Pair<TextToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerationResult =
     let { (payload, response) ->
         AiGenerationResult(
@@ -66,7 +84,7 @@ fun Pair<TextToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerat
         )
     }
 
-fun Pair<TextToImagePayload, String>.mapHordeToAiGenResult(): AiGenerationResult =
+fun Pair<TextToImagePayload, String>.mapCloudToAiGenResult(): AiGenerationResult =
     let { (payload, base64) ->
         AiGenerationResult(
             id = 0L,

@@ -33,8 +33,8 @@ class SettingsStateProducer(
             formAdvancedOptionsAlwaysShow = settings.formAdvancedOptionsAlwaysShow,
             appVersion = version,
             showLocalUseNNAPI = settings.source == ServerSource.LOCAL,
-            showSdModelSelector = settings.source == ServerSource.CUSTOM,
-            showMonitorConnectionOption = settings.source == ServerSource.CUSTOM,
+            showSdModelSelector = settings.source == ServerSource.AUTOMATIC1111,
+            showMonitorConnectionOption = settings.source == ServerSource.AUTOMATIC1111,
         )
     }
 }

@@ -4,10 +4,14 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
 import com.shifthackz.aisdv1.network.api.horde.HordeRestApi
+import com.shifthackz.aisdv1.network.api.huggingface.HuggingFaceApi
+import com.shifthackz.aisdv1.network.api.huggingface.HuggingFaceInferenceApi
+import com.shifthackz.aisdv1.network.api.huggingface.HuggingFaceInferenceApiImpl
 import com.shifthackz.aisdv1.network.api.imagecdn.ImageCdnRestApi
 import com.shifthackz.aisdv1.network.api.imagecdn.ImageCdnRestApiImpl
-import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsRestApi
-import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsRestApiImpl
+import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApi
+import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApiImpl
+import com.shifthackz.aisdv1.network.api.sdai.HuggingFaceModelsApi
 import com.shifthackz.aisdv1.network.authenticator.RestAuthenticator
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
@@ -107,7 +111,13 @@ val networkModule = module {
     single {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
-            .create(DownloadableModelsRestApi.RawApi::class.java)
+            .create(DownloadableModelsApi.RawApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
+            .create(HuggingFaceModelsApi::class.java)
     }
 
     single {
@@ -116,8 +126,21 @@ val networkModule = module {
             .create(ImageCdnRestApi.RawApi::class.java)
     }
 
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().huggingFaceInferenceApiUrl)
+            .create(HuggingFaceInferenceApi.RawApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().huggingFaceApiUrl)
+            .create(HuggingFaceApi::class.java)
+    }
+
     singleOf(::ImageCdnRestApiImpl) bind ImageCdnRestApi::class
-    singleOf(::DownloadableModelsRestApiImpl) bind DownloadableModelsRestApi::class
+    singleOf(::DownloadableModelsApiImpl) bind DownloadableModelsApi::class
+    singleOf(::HuggingFaceInferenceApiImpl) bind HuggingFaceInferenceApi::class
 
     factory {params ->
         ConnectivityMonitor(params.get())

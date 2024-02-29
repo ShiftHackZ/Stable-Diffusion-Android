@@ -5,6 +5,8 @@ import android.os.PowerManager
 import com.shifthackz.aisdv1.data.repository.DownloadableModelRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.GenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HordeGenerationRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.HuggingFaceGenerationRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.HuggingFaceModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.LocalDiffusionGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.RandomImageRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.ServerConfigurationRepositoryImpl
@@ -19,6 +21,8 @@ import com.shifthackz.aisdv1.data.repository.WakeLockRepositoryImpl
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.HuggingFaceModelsRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.RandomImageRepository
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
@@ -46,6 +50,7 @@ val repositoryModule = module {
     singleOf(::TemporaryGenerationResultRepositoryImpl) bind TemporaryGenerationResultRepository::class
     factoryOf(::LocalDiffusionGenerationRepositoryImpl) bind LocalDiffusionGenerationRepository::class
     factoryOf(::HordeGenerationRepositoryImpl) bind HordeGenerationRepository::class
+    factoryOf(::HuggingFaceGenerationRepositoryImpl) bind HuggingFaceGenerationRepository::class
     factoryOf(::StableDiffusionGenerationRepositoryImpl) bind StableDiffusionGenerationRepository::class
     factoryOf(::StableDiffusionModelsRepositoryImpl) bind StableDiffusionModelsRepository::class
     factoryOf(::StableDiffusionSamplersRepositoryImpl) bind StableDiffusionSamplersRepository::class
@@ -56,4 +61,5 @@ val repositoryModule = module {
     factoryOf(::GenerationResultRepositoryImpl) bind GenerationResultRepository::class
     factoryOf(::RandomImageRepositoryImpl) bind RandomImageRepository::class
     factoryOf(::DownloadableModelRepositoryImpl) bind DownloadableModelRepository::class
+    factoryOf(::HuggingFaceModelsRepositoryImpl) bind HuggingFaceModelsRepository::class
 }

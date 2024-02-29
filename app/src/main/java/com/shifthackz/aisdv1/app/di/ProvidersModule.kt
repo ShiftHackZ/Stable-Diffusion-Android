@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -15,7 +16,9 @@ import com.shifthackz.aisdv1.feature.diffusion.environment.DeviceNNAPIFlagProvid
 import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import com.shifthackz.aisdv1.network.qualifiers.CredentialsProvider
-import com.shifthackz.aisdv1.network.qualifiers.HordeApiKeyProvider
+import com.shifthackz.aisdv1.network.qualifiers.ApiKeyProvider
+import com.shifthackz.aisdv1.network.qualifiers.NetworkHeaders
+import com.shifthackz.aisdv1.network.qualifiers.NetworkPrefixes
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -28,6 +31,7 @@ import java.util.concurrent.Executors
  * Needed for retrofit builder, because it will crash at runtime if baseUrl is not set
  */
 private const val DEFAULT_SERVER_URL = "http://127.0.0.1"
+private const val DEFAULT_HORDE_API_KEY = "0000000000"
 
 val providersModule = module {
 
@@ -37,11 +41,26 @@ val providersModule = module {
             override val stableDiffusionAppApiUrl: String = BuildConfig.UPDATE_API_URL
             override val hordeApiUrl: String = BuildConfig.HORDE_AI_URL
             override val imageCdnApiUrl: String = BuildConfig.IMAGE_CDN_URL
+            override val huggingFaceApiUrl: String = BuildConfig.HUGGING_FACE_URL
+            override val huggingFaceInferenceApiUrl = BuildConfig.HUGGING_FACE_INFERENCE_URL
         }
     }
 
     single {
-        HordeApiKeyProvider { get<PreferenceManager>().hordeApiKey }
+        ApiKeyProvider {
+            val preference = get<PreferenceManager>()
+            when (preference.source) {
+                ServerSource.HORDE -> {
+                    val key = preference.hordeApiKey.takeIf(String::isNotEmpty) ?: DEFAULT_HORDE_API_KEY
+                    NetworkHeaders.API_KEY to key
+                }
+                ServerSource.HUGGING_FACE -> {
+                    val key = "${NetworkPrefixes.BEARER} ${preference.huggingFaceApiKey}"
+                    NetworkHeaders.AUTHORIZATION to key
+                }
+                else -> null
+            }
+        }
     }
 
     single<CredentialsProvider> {
@@ -63,6 +82,7 @@ val providersModule = module {
         object : LinksProvider {
             override val hordeUrl: String = BuildConfig.HORDE_AI_URL
             override val hordeSignUpUrl: String = BuildConfig.HORDE_AI_SIGN_UP_URL
+            override val huggingFaceUrl: String = BuildConfig.HUGGING_FACE_INFO_URL
             override val privacyPolicyUrl: String = BuildConfig.POLICY_URL
             override val gitHubSourceUrl: String = BuildConfig.GITHUB_SOURCE_URL
             override val setupInstructionsUrl: String = BuildConfig.SETUP_INSTRUCTIONS_URL

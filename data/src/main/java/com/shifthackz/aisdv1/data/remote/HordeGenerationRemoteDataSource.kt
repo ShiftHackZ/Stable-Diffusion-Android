@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.data.remote
 import android.graphics.BitmapFactory
 import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
-import com.shifthackz.aisdv1.data.mappers.mapHordeToAiGenResult
+import com.shifthackz.aisdv1.data.mappers.mapCloudToAiGenResult
 import com.shifthackz.aisdv1.data.mappers.mapToHordeRequest
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
@@ -35,13 +35,13 @@ internal class HordeGenerationRemoteDataSource(
         .just(payload.mapToHordeRequest())
         .flatMap(::executeRequestChain)
         .map { base64 -> payload to base64 }
-        .map(Pair<TextToImagePayload, String>::mapHordeToAiGenResult)
+        .map(Pair<TextToImagePayload, String>::mapCloudToAiGenResult)
 
     override fun imageToImage(payload: ImageToImagePayload) = Single
         .just(payload.mapToHordeRequest())
         .flatMap(::executeRequestChain)
         .map { base64 -> payload to base64 }
-        .map(Pair<ImageToImagePayload, String>::mapHordeToAiGenResult)
+        .map(Pair<ImageToImagePayload, String>::mapCloudToAiGenResult)
 
     override fun interruptGeneration() = statusSource.id
         ?.let(hordeApi::cancelRequest)

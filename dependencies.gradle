@@ -1,11 +1,11 @@
 ext {
-    composeBomVersion = '2023.10.01'
+    composeBomVersion = '2024.02.01'
     composeNavVersion = '2.7.6'
     lifecycleViewModelVersion = '2.6.2'
     lifecycleComposeVersion = '2.6.2'
     coreKtxVersion = '1.12.0'
     appCompatVersion = '1.6.1'
-    activityVersion = '1.7.2'
+    activityVersion = '1.8.2'
     koinVersion = '3.4.3'
     koinComposeVersion = '3.4.6'
     retrofitVersion = '2.9.0'

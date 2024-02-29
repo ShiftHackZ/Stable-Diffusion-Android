@@ -49,9 +49,10 @@
     <string name="action_image_picker_random">Random image</string>
     <string name="action_change_configuration">Change configuration</string>
 
-    <string name="srv_type_own">AUTOMATIC1111 instance</string>
-    <string name="srv_type_horde">Horde AI cloud</string>
+    <string name="srv_type_own" translatable="false">A1111</string>
+    <string name="srv_type_horde" translatable="false">Horde AI</string>
     <string name="srv_type_local" translatable="false">Local Diffusion (Beta)</string>
+    <string name="srv_type_hugging_face" translatable="false">Hugging Face</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -85,6 +86,11 @@
     <string name="hint_server_horde_use_default_api_key">Use default API key</string>
     <string name="hint_server_horde_about">About Horde AI</string>
     <string name="hint_server_horde_get_api_key">Get your API Key</string>
+
+    <string name="hint_hugging_face_title">Connect to Hugging Face</string>
+    <string name="hint_hugging_face_sub_title">Hugging Face inference cloud provides a service that allows to test and evaluate publicly accessible machine learning models, or your own private models, for free.</string>
+    <string name="hint_hugging_face_about">About Hugging Face</string>
+    <string name="hint_hugging_face_model">Hugging Face model</string>
 
     <string name="hint_local_diffusion_title" translatable="false">Local Diffusion</string>
     <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>

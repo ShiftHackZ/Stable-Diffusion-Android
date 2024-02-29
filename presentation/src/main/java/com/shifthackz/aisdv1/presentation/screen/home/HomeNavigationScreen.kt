@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -62,6 +65,9 @@ class HomeNavigationScreen(
                                         color = LocalContentColor.current,
                                     )
                                 },
+                                colors = NavigationBarItemDefaults.colors().copy(
+                                    selectedIndicatorColor = MaterialTheme.colorScheme.primary,
+                                ),
                                 icon = {
                                     when (item.icon) {
                                         is HomeNavigationItem.Icon.Resource -> Image(
@@ -102,7 +108,6 @@ class HomeNavigationScreen(
                         }
                     }
                 }
-
             }
         )
         LaunchedEffect(KEY_HOME_NAV_ROUTE_EFFECT_PROCESSOR) {

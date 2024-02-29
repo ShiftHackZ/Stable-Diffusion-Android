@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory
 import io.reactivex.rxjava3.core.Single
 import kotlin.random.Random
 
-class ImageCdnRestApiImpl(private val rawApi: ImageCdnRestApi.RawApi) : ImageCdnRestApi {
+internal class ImageCdnRestApiImpl(private val rawApi: ImageCdnRestApi.RawApi) : ImageCdnRestApi {
 
     override fun fetchRandomImage(): Single<Bitmap> = Random
         .nextInt(MIN, MAX + 1)

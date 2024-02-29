@@ -6,6 +6,8 @@ import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
 import com.shifthackz.aisdv1.data.remote.DownloadableModelRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HordeGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HordeStatusSource
+import com.shifthackz.aisdv1.data.remote.HuggingFaceGenerationRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.HuggingFaceModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.RandomImageRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.ServerConfigurationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionEmbeddingsRemoteDataSource
@@ -16,6 +18,8 @@ import com.shifthackz.aisdv1.data.remote.StableDiffusionModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionSamplersRemoteDataSource
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
+import com.shifthackz.aisdv1.domain.datasource.HuggingFaceGenerationDataSource
+import com.shifthackz.aisdv1.domain.datasource.HuggingFaceModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.RandomImageDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionEmbeddingsDataSource
@@ -47,6 +51,7 @@ val remoteDataSourceModule = module {
     }
     singleOf(::HordeStatusSource) bind HordeGenerationDataSource.StatusSource::class
     factoryOf(::HordeGenerationRemoteDataSource) bind HordeGenerationDataSource.Remote::class
+    factoryOf(::HuggingFaceGenerationRemoteDataSource) bind HuggingFaceGenerationDataSource.Remote::class
     factoryOf(::StableDiffusionGenerationRemoteDataSource) bind StableDiffusionGenerationDataSource.Remote::class
     factoryOf(::StableDiffusionSamplersRemoteDataSource) bind StableDiffusionSamplersDataSource.Remote::class
     factoryOf(::StableDiffusionModelsRemoteDataSource) bind StableDiffusionModelsDataSource.Remote::class
@@ -56,11 +61,12 @@ val remoteDataSourceModule = module {
     factoryOf(::ServerConfigurationRemoteDataSource) bind ServerConfigurationDataSource.Remote::class
     factoryOf(::RandomImageRemoteDataSource) bind RandomImageDataSource.Remote::class
     factoryOf(::DownloadableModelRemoteDataSource) bind DownloadableModelDataSource.Remote::class
+    factoryOf(::HuggingFaceModelsRemoteDataSource) bind HuggingFaceModelsDataSource.Remote::class
 
     factory<ServerConnectivityGateway> {
         val lambda: () -> Boolean = {
             val prefs = get<PreferenceManager>()
-            prefs.source == ServerSource.CUSTOM
+            prefs.source == ServerSource.AUTOMATIC1111
         }
         val monitor = get<ConnectivityMonitor> { parametersOf(lambda) }
         ServerConnectivityGatewayImpl(monitor, get())

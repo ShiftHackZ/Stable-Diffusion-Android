@@ -45,9 +45,6 @@
     <string name="action_image_picker_random">Случайное изображение</string>
     <string name="action_change_configuration">Изменить конфигурацию</string>
 
-    <string name="srv_type_own">Сервер AUTOMATIC1111</string>
-    <string name="srv_type_horde">Сервер Horde AI</string>
-
     <string name="hint_prompt">Запрос</string>
     <string name="hint_prompt_negative">Отрицательный запрос</string>
     <string name="hint_sampling_steps">Этапы выборки: %1$s</string>

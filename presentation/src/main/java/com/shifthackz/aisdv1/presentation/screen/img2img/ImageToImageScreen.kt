@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
 import com.shifthackz.aisdv1.presentation.core.GenerationMviScreen
@@ -58,7 +59,6 @@ import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MIN
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
-import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
 
@@ -162,7 +162,7 @@ private fun ScreenContent(
                         )
                     },
                     actions = {
-                        if (state.mode != GenerationInputMode.LOCAL) {
+                        if (state.mode != ServerSource.LOCAL) {
                             IconButton(onClick = onOpenPreviousGenerationInput) {
                                 Icon(
                                     imageVector = Icons.Default.Edit,
@@ -174,7 +174,7 @@ private fun ScreenContent(
                 )
             },
             content = { paddingValues ->
-                if (state.mode != GenerationInputMode.LOCAL) {
+                if (state.mode != ServerSource.LOCAL) {
                     val scrollState = rememberScrollState()
                     Column(
                         modifier = Modifier
@@ -261,11 +261,11 @@ private fun ScreenContent(
             },
             bottomBar = {
                 val isEnabled = when (state.mode) {
-                    GenerationInputMode.LOCAL -> true
+                    ServerSource.LOCAL -> true
                     else -> !state.hasValidationErrors && !state.imageState.isEmpty
                 }
                 GenerationBottomToolbar(
-                    showToolbar = state.mode == GenerationInputMode.AUTOMATIC1111,
+                    showToolbar = state.mode == ServerSource.AUTOMATIC1111,
                     strokeAccentState = isEnabled,
                     onOpenLoraInput = onOpenLoraInput,
                     onOpenHyperNetInput = onOpenHyperNetInput,
@@ -278,12 +278,12 @@ private fun ScreenContent(
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
                         onClick = when (state.mode) {
-                            GenerationInputMode.LOCAL -> onChangeConfigurationClicked
+                            ServerSource.LOCAL -> onChangeConfigurationClicked
                             else -> onGenerateClicked
                         },
                         enabled = isEnabled,
                     ) {
-                        if (state.mode != GenerationInputMode.LOCAL) {
+                        if (state.mode != ServerSource.LOCAL) {
                             Icon(
                                 modifier = Modifier.size(18.dp),
                                 imageVector = Icons.Default.AutoFixNormal,
@@ -294,7 +294,7 @@ private fun ScreenContent(
                             modifier = Modifier.padding(start = 8.dp),
                             text = stringResource(
                                 id = when (state.mode) {
-                                    GenerationInputMode.LOCAL -> R.string.action_change_configuration
+                                    ServerSource.LOCAL -> R.string.action_change_configuration
                                     else -> R.string.action_generate
                                 }
                             ),

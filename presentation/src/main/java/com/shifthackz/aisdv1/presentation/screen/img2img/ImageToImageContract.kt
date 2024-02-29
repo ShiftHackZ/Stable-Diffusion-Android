@@ -3,19 +3,17 @@ package com.shifthackz.aisdv1.presentation.screen.img2img
 import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.model.Modal
-import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputMode
 
 data class ImageToImageState(
     val imageState: ImageState = ImageState.None,
     val imageBase64: String = "",
     val denoisingStrength: Float = 0.75f,
     override val screenModal: Modal = Modal.None,
-    override val mode: GenerationInputMode = GenerationInputMode.AUTOMATIC1111,
+    override val mode: ServerSource = ServerSource.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,
     override val advancedOptionsVisible: Boolean = false,
     override val prompt: String = "",
@@ -48,7 +46,7 @@ data class ImageToImageState(
 
     override fun copyState(
         screenModal: Modal,
-        mode: GenerationInputMode,
+        mode: ServerSource,
         advancedToggleButtonVisible: Boolean,
         advancedOptionsVisible: Boolean,
         prompt: String,
@@ -115,7 +113,7 @@ fun ImageToImageState.mapToPayload(): ImageToImagePayload = with(this) {
         subSeed = subSeed.trim(),
         subSeedStrength = subSeedStrength,
         sampler = selectedSampler,
-        nsfw = if (mode == GenerationInputMode.HORDE) nsfw else false,
+        nsfw = if (mode == ServerSource.HORDE) nsfw else false,
         batchCount = batchCount,
     )
 }

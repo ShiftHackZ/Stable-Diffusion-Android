@@ -5,4 +5,6 @@ interface ApiUrlProvider {
     val stableDiffusionAppApiUrl: String
     val hordeApiUrl: String
     val imageCdnApiUrl: String
+    val huggingFaceApiUrl: String
+    val huggingFaceInferenceApiUrl: String
 }

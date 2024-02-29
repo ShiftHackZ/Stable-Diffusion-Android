@@ -13,6 +13,8 @@ interface PreferenceManager {
     var formAdvancedOptionsAlwaysShow: Boolean
     var source: ServerSource
     var hordeApiKey: String
+    var huggingFaceApiKey: String
+    var huggingFaceModel: String
     var forceSetupAfterUpdate: Boolean
     var localModelId: String
     var localUseNNAPI: Boolean

@@ -45,9 +45,6 @@
     <string name="action_image_picker_random">Rastgele görüntü</string>
     <string name="action_change_configuration">Yapılandırmayı değiştir</string>
 
-    <string name="srv_type_own">Kendi AUTOMATIC1111 hizmetimi kullanmak istiyorum.</string>
-    <string name="srv_type_horde">Horde AI bulutunu kullanmak istiyorum</string>
-
     <string name="hint_prompt">İstem (prompt)</string>
     <string name="hint_prompt_negative">Negatif istem</string>
     <string name="hint_sampling_steps">Örnekleme Adım Sayısı: %1$s</string>
