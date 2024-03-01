@@ -38,16 +38,17 @@ abstract class MviViewModel<S : MviState, I : MviIntent, E : MviEffect> : ViewMo
     abstract val emptyState: S
 
     open fun handleIntent(intent: I) {
-        if (BuildConfig.DEBUG) debugLog("NEW INTENT : $intent")
+        if (BuildConfig.DEBUG) debugLog("MVI [Intent] : $intent")
     }
 
     open fun updateState(mutation: (S) -> S) = mutableState.update {
         val newState = mutation(it)
-        if (BuildConfig.DEBUG) debugLog("NEW STATE : $newState")
+        if (BuildConfig.DEBUG) debugLog("MVI [State]  : $newState")
         newState
     }
 
     fun emitEffect(effect: E) {
+        if (BuildConfig.DEBUG) debugLog("MVI [Effect] : $effect")
         viewModelScope.launch(Dispatchers.Main.immediate + exceptionHandler) {
             effectChannel.send(effect)
         }

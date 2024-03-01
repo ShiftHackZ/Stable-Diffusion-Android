@@ -111,7 +111,6 @@ fun ConfigurationStepBar(
                             id = when (step) {
                                 ServerSetupState.Step.SOURCE -> R.string.srv_step_1
                                 ServerSetupState.Step.CONFIGURE -> R.string.srv_step_2
-                                else -> R.string.srv_step_2
                             }
                         ),
                         style = MaterialTheme.typography.labelSmall,

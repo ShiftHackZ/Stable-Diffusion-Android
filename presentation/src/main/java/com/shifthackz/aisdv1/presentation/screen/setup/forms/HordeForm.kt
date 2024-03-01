@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.Api
-import androidx.compose.material.icons.filled.Help
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -88,7 +88,7 @@ fun HordeForm(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
-            startIcon = Icons.Default.Help,
+            startIcon = Icons.AutoMirrored.Filled.Help,
             text = R.string.hint_server_horde_about.asUiText(),
             onClick = { handleIntent(ServerSetupIntent.LaunchUrl.HordeInfo) },
         )

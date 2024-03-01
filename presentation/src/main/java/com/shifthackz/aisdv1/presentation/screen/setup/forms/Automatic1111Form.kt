@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.DeveloperMode
-import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
@@ -136,7 +136,7 @@ fun Automatic1111Form(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
-            startIcon = Icons.Default.Help,
+            startIcon = Icons.AutoMirrored.Filled.Help,
             text = R.string.settings_item_instructions.asUiText(),
             onClick = { handleIntent(ServerSetupIntent.LaunchUrl.A1111Instructions) },
         )
