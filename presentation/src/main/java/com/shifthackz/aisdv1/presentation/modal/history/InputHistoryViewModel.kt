@@ -5,12 +5,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
-import com.shifthackz.aisdv1.core.ui.EmptyIntent
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryPagingSource
 import com.shifthackz.aisdv1.presentation.utils.Constants
+import com.shifthackz.android.core.mvi.EmptyEffect
+import com.shifthackz.android.core.mvi.EmptyIntent
 import kotlinx.coroutines.flow.Flow
 
 class InputHistoryViewModel(
@@ -19,7 +19,7 @@ class InputHistoryViewModel(
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<InputHistoryState, EmptyIntent, EmptyEffect>() {
 
-    override val emptyState = InputHistoryState
+    override val initialState = InputHistoryState
 
     private val config = PagingConfig(
         pageSize = Constants.PAGINATION_PAYLOAD_SIZE,

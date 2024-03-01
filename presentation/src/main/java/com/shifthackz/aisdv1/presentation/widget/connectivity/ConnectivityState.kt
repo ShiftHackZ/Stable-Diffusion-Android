@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.presentation.widget.connectivity
 
-import com.shifthackz.aisdv1.core.ui.MviState
+import com.shifthackz.android.core.mvi.MviState
 
 sealed interface ConnectivityState : MviState {
 

@@ -16,9 +16,9 @@ class EmbeddingViewModel(
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<EmbeddingState, EmbeddingIntent, ExtrasEffect>() {
 
-    override val emptyState = EmbeddingState()
+    override val initialState = EmbeddingState()
 
-    override fun handleIntent(intent: EmbeddingIntent) {
+    override fun processIntent(intent: EmbeddingIntent) {
         when (intent) {
             EmbeddingIntent.ApplyNewPrompts -> emitEffect(
                 ExtrasEffect.ApplyPrompts(currentState.prompt, currentState.negativePrompt)

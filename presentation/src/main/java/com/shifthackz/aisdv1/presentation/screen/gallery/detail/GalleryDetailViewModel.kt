@@ -31,7 +31,7 @@ class GalleryDetailViewModel(
     private val router: Router,
 ) : MviRxViewModel<GalleryDetailState, GalleryDetailIntent, GalleryDetailEffect>() {
 
-    override val emptyState = GalleryDetailState.Loading()
+    override val initialState = GalleryDetailState.Loading()
 
     init {
         !getGenerationResult(itemId)
@@ -44,7 +44,7 @@ class GalleryDetailViewModel(
             }
     }
 
-    override fun handleIntent(intent: GalleryDetailIntent) {
+    override fun processIntent(intent: GalleryDetailIntent) {
         when (intent) {
             is GalleryDetailIntent.CopyToClipboard -> {
                 emitEffect(GalleryDetailEffect.ShareClipBoard(intent.content.toString()))

@@ -18,7 +18,6 @@ import com.shifthackz.aisdv1.presentation.screen.settings.SettingsScreen
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreen
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
-import org.koin.androidx.compose.koinViewModel
 import java.io.File
 
 fun NavGraphBuilder.homeScreenNavGraph(
@@ -34,7 +33,6 @@ fun NavGraphBuilder.homeScreenNavGraph(
     addDestination(
         ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
             HomeNavigationScreen(
-                viewModel = koinViewModel(),
                 navItems = listOf(
                     txt2ImgTab(),
                     img2imgTab(
@@ -51,7 +49,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                         requestStoragePermissions = requestStoragePermissions,
                     ),
                 ),
-            ).Build()
+            )
         }.apply { this.route = route }
     )
 }

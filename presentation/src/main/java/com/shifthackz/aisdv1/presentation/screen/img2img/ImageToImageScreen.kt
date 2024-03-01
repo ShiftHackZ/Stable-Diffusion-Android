@@ -48,7 +48,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.common.math.roundTo
-import com.shifthackz.aisdv1.core.ui.MviComposable
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
@@ -69,13 +69,13 @@ fun ImageToImageScreen(
     takePhoto: (ImagePickerCallback) -> Unit,
 ) {
     val viewModel = koinViewModel<ImageToImageViewModel>()
-    MviComposable(viewModel) { state, intentHandler ->
+    MviComponent(viewModel) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
             onPickImage = { pickImage(viewModel::updateInputImage) },
             onTakePhoto = { takePhoto(viewModel::updateInputImage) },
-            handleIntent = intentHandler,
+            processIntent = intentHandler,
         )
     }
 }
@@ -86,7 +86,7 @@ private fun ScreenContent(
     state: ImageToImageState,
     onPickImage: () -> Unit = {},
     onTakePhoto: () -> Unit = {},
-    handleIntent: (GenerationMviIntent) -> Unit = {}
+    processIntent: (GenerationMviIntent) -> Unit = {}
 ) {
     Box(modifier) {
         Scaffold(
@@ -102,7 +102,7 @@ private fun ScreenContent(
                         if (state.mode != ServerSource.LOCAL) {
                             IconButton(
                                 onClick = {
-                                    handleIntent(GenerationMviIntent.SetModal(Modal.PromptBottomSheet))
+                                    processIntent(GenerationMviIntent.SetModal(Modal.PromptBottomSheet))
                                 },
                             ) {
                                 Icon(
@@ -133,11 +133,11 @@ private fun ScreenContent(
                                 imageState = state.imageState,
                                 onPickImage = onPickImage,
                                 onTakePhoto = onTakePhoto,
-                                handleIntent = handleIntent
+                                processIntent = processIntent
                             )
                             GenerationInputForm(
                                 state = state,
-                                handleIntent = handleIntent,
+                                processIntent = processIntent,
                                 afterSlidersSection = {
                                     Text(
                                         modifier = Modifier.padding(top = 8.dp),
@@ -151,7 +151,7 @@ private fun ScreenContent(
                                         valueRange = DENOISING_STRENGTH_MIN..DENOISING_STRENGTH_MAX,
                                         colors = sliderColors,
                                         onValueChange = {
-                                            handleIntent(ImageToImageIntent.UpdateDenoisingStrength(it.roundTo(2)))
+                                            processIntent(ImageToImageIntent.UpdateDenoisingStrength(it.roundTo(2)))
                                         },
                                     )
                                 }
@@ -207,7 +207,7 @@ private fun ScreenContent(
                 GenerationBottomToolbar(
                     state = state,
                     strokeAccentState = isEnabled,
-                    handleIntent = handleIntent,
+                    processIntent = processIntent,
                 ) {
                     Button(
                         modifier = Modifier
@@ -216,7 +216,7 @@ private fun ScreenContent(
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
                         onClick = {
-                            handleIntent(
+                            processIntent(
                                 when (state.mode) {
                                     ServerSource.LOCAL,
                                     ServerSource.OPEN_AI -> GenerationMviIntent.Configuration
@@ -252,7 +252,7 @@ private fun ScreenContent(
         )
         ModalRenderer(
             screenModal = state.screenModal,
-            handleIntent = handleIntent,
+            processIntent = processIntent,
         )
     }
 }
@@ -263,7 +263,7 @@ private fun InputImageState(
     imageState: ImageToImageState.ImageState,
     onPickImage: () -> Unit = {},
     onTakePhoto: () -> Unit = {},
-    handleIntent: (GenerationMviIntent) -> Unit = {},
+    processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
     when (imageState) {
         is ImageToImageState.ImageState.Image -> Box(
@@ -283,7 +283,7 @@ private fun InputImageState(
                 modifier = Modifier
                     .padding(4.dp)
                     .background(color = Color.LightGray, shape = RoundedCornerShape(16.dp)),
-                onClick = { handleIntent(ImageToImageIntent.ClearImageInput) },
+                onClick = { processIntent(ImageToImageIntent.ClearImageInput) },
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
@@ -322,7 +322,7 @@ private fun InputImageState(
                         MaterialTheme.colorScheme.surfaceTint,
                         shape = RoundedCornerShape(16.dp)
                     )
-                    .clickable { handleIntent(ImageToImageIntent.FetchRandomPhoto) },
+                    .clickable { processIntent(ImageToImageIntent.FetchRandomPhoto) },
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer(modifier = Modifier.width(8.dp))

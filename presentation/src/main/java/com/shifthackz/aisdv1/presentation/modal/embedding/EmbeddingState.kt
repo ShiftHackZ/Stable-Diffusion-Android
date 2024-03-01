@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.presentation.modal.embedding
 
-import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.presentation.model.ErrorState
+import com.shifthackz.android.core.mvi.MviState
 
 data class EmbeddingState(
     val loading: Boolean = true,

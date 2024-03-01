@@ -6,7 +6,7 @@ import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
+import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
@@ -23,6 +23,8 @@ import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplers
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.Router
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
+import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
+import com.shifthackz.android.core.mvi.EmptyEffect
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -42,6 +44,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
     private val interruptGenerationUseCase: InterruptGenerationUseCase by inject()
 
     private val router: Router by inject()
+    private val dimensionValidator: DimensionValidator by inject()
 
     private var generationDisposable: Disposable? = null
     private var randomImageDisposable: Disposable? = null
@@ -106,7 +109,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
 
     open fun onReceivedLocalDiffusionStatus(status: LocalDiffusion.Status) {}
 
-    override fun handleIntent(intent: I) {
+    override fun processIntent(intent: I) {
         when (intent) {
             is GenerationMviIntent.NewPrompts -> updateGenerationState {
                 it.copyState(
@@ -128,11 +131,17 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
             }
 
             is GenerationMviIntent.Update.Size.Width -> updateGenerationState {
-                it.copyState(width = intent.value)
+                it.copyState(
+                    width = intent.value,
+                    widthValidationError = dimensionValidator(intent.value).mapToUi(),
+                )
             }
 
             is GenerationMviIntent.Update.Size.Height -> updateGenerationState {
-                it.copyState(height = intent.value)
+                it.copyState(
+                    height = intent.value,
+                    heightValidationError = dimensionValidator(intent.value).mapToUi(),
+                )
             }
 
             is GenerationMviIntent.Update.SamplingSteps -> updateGenerationState {
@@ -231,26 +240,27 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
         }
     }
 
-    protected open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) = updateGenerationState {
-        it
-            .copyState(
-                advancedOptionsVisible = true,
-                prompt = ai.prompt,
-                negativePrompt = ai.negativePrompt,
-                width = "${ai.width}",
-                height = "${ai.height}",
-                seed = ai.seed,
-                subSeed = ai.subSeed,
-                subSeedStrength = ai.subSeedStrength,
-                samplingSteps = ai.samplingSteps,
-                cfgScale = ai.cfgScale,
-                restoreFaces = ai.restoreFaces,
-            )
-            .let { state ->
-                if (!state.availableSamplers.contains(ai.sampler)) state
-                else state.copyState(selectedSampler = ai.sampler)
-            }
-    }
+    protected open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) =
+        updateGenerationState {
+            it
+                .copyState(
+                    advancedOptionsVisible = true,
+                    prompt = ai.prompt,
+                    negativePrompt = ai.negativePrompt,
+                    width = "${ai.width}",
+                    height = "${ai.height}",
+                    seed = ai.seed,
+                    subSeed = ai.subSeed,
+                    subSeedStrength = ai.subSeedStrength,
+                    samplingSteps = ai.samplingSteps,
+                    cfgScale = ai.cfgScale,
+                    restoreFaces = ai.restoreFaces,
+                )
+                .let { state ->
+                    if (!state.availableSamplers.contains(ai.sampler)) state
+                    else state.copyState(selectedSampler = ai.sampler)
+                }
+        }
 
     protected fun setActiveModal(modal: Modal) = updateGenerationState {
         it.copyState(screenModal = modal)

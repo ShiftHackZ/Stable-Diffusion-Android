@@ -6,13 +6,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.RectangleShape
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingScreen
-import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingViewModel
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
-import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
@@ -20,12 +17,11 @@ import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageBatchResu
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialogCancelButton
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ModalRenderer(
     screenModal: Modal,
-    handleIntent: (GenerationMviIntent) -> Unit,
+    processIntent: (GenerationMviIntent) -> Unit,
 ) = when (screenModal) {
     Modal.None -> Unit
 
@@ -35,7 +31,7 @@ fun ModalRenderer(
         positionInQueue = screenModal.hordeProcessStatus?.queuePosition,
     ) {
         ProgressDialogCancelButton {
-            handleIntent(GenerationMviIntent.Cancel.Generation)
+            processIntent(GenerationMviIntent.Cancel.Generation)
         }
     }
 
@@ -44,14 +40,14 @@ fun ModalRenderer(
         canDismiss = false,
     ) {
         ProgressDialogCancelButton {
-            handleIntent(GenerationMviIntent.Cancel.FetchRandomImage)
+            processIntent(GenerationMviIntent.Cancel.FetchRandomImage)
         }
     }
 
     is Modal.Error -> ErrorDialog(
         text = screenModal.error,
         onDismissRequest = {
-            handleIntent(GenerationMviIntent.SetModal(Modal.None))
+            processIntent(GenerationMviIntent.SetModal(Modal.None))
         },
     )
 
@@ -65,19 +61,19 @@ fun ModalRenderer(
         imageBase64 = screenModal.result.image,
         showSaveButton = !screenModal.autoSaveEnabled,
         onDismissRequest = {
-            handleIntent(GenerationMviIntent.SetModal(Modal.None))
+            processIntent(GenerationMviIntent.SetModal(Modal.None))
         },
         onSaveRequest = {
-            handleIntent(GenerationMviIntent.Result.Save(listOf(screenModal.result)))
+            processIntent(GenerationMviIntent.Result.Save(listOf(screenModal.result)))
         },
         onViewDetailRequest = {
-            handleIntent(GenerationMviIntent.Result.View(screenModal.result))
+            processIntent(GenerationMviIntent.Result.View(screenModal.result))
         },
     )
 
     is Modal.Image.Batch -> ModalBottomSheet(
         onDismissRequest = {
-            handleIntent(GenerationMviIntent.SetModal(Modal.None))
+            processIntent(GenerationMviIntent.SetModal(Modal.None))
         },
         shape = RectangleShape,
     ) {
@@ -85,24 +81,24 @@ fun ModalRenderer(
             screenModal.results,
             showSaveButton = !screenModal.autoSaveEnabled,
             onSaveRequest = {
-                handleIntent(GenerationMviIntent.Result.Save(screenModal.results))
+                processIntent(GenerationMviIntent.Result.Save(screenModal.results))
             },
             onViewDetailRequest = {
-                handleIntent(GenerationMviIntent.Result.View(it))
+                processIntent(GenerationMviIntent.Result.View(it))
             },
         )
     }
 
     is Modal.PromptBottomSheet -> ModalBottomSheet(
         onDismissRequest = {
-            handleIntent(GenerationMviIntent.SetModal(Modal.None))
+            processIntent(GenerationMviIntent.SetModal(Modal.None))
         },
         shape = RectangleShape,
     ) {
         InputHistoryScreen(
             onGenerationSelected = { ai ->
-                handleIntent(GenerationMviIntent.UpdateFromGeneration(ai))
-                handleIntent(GenerationMviIntent.SetModal(Modal.None))
+                processIntent(GenerationMviIntent.UpdateFromGeneration(ai))
+                processIntent(GenerationMviIntent.SetModal(Modal.None))
             },
         )
     }
@@ -112,10 +108,10 @@ fun ModalRenderer(
         negativePrompt = screenModal.negativePrompt,
         type = screenModal.type,
         onNewPrompts = { p, n ->
-            handleIntent(GenerationMviIntent.NewPrompts(p, n))
+            processIntent(GenerationMviIntent.NewPrompts(p, n))
         },
         onClose = {
-            handleIntent(GenerationMviIntent.SetModal(Modal.None))
+            processIntent(GenerationMviIntent.SetModal(Modal.None))
         },
     )
 
@@ -123,10 +119,10 @@ fun ModalRenderer(
         prompt = screenModal.prompt,
         negativePrompt = screenModal.negativePrompt,
         onNewPrompts = { p, n ->
-            handleIntent(GenerationMviIntent.NewPrompts(p, n))
+            processIntent(GenerationMviIntent.NewPrompts(p, n))
         },
         onClose = {
-            handleIntent(GenerationMviIntent.SetModal(Modal.None))
+            processIntent(GenerationMviIntent.SetModal(Modal.None))
         },
     )
 }

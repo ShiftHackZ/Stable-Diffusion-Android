@@ -40,7 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviComposable
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
@@ -54,7 +54,7 @@ fun SettingsScreen(
     shareLogFile: () -> Unit = {},
     requestStoragePermissions: () -> Unit,
 ) {
-    MviComposable(
+    MviComponent(
         viewModel = koinViewModel<SettingsViewModel>(),
         effectHandler = { effect ->
             when (effect) {
@@ -67,7 +67,7 @@ fun SettingsScreen(
     ) { state, intentHandler ->
         ScreenContent(
             state = state,
-            handleIntent = intentHandler,
+            processIntent = intentHandler,
         )
     }
 }
@@ -77,7 +77,7 @@ fun SettingsScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: SettingsState,
-    handleIntent: (SettingsIntent) -> Unit,
+    processIntent: (SettingsIntent) -> Unit,
 ) {
     Box(modifier) {
         Scaffold(
@@ -97,7 +97,7 @@ private fun ScreenContent(
                     ContentSettingsState(
                         modifier = contentModifier.padding(horizontal = 16.dp),
                         state = state,
-                        handleIntent = handleIntent,
+                        processIntent = processIntent,
                     )
                 }
             }
@@ -116,8 +116,8 @@ private fun ScreenContent(
                     title = R.string.title_select_sd_model.asUiText(),
                     text = UiText.empty,
                     confirmActionResId = R.string.action_select,
-                    onConfirmAction = { handleIntent(SettingsIntent.SdModel.Select(selectedItem)) },
-                    onDismissRequest = { handleIntent(SettingsIntent.DismissDialog) },
+                    onConfirmAction = { processIntent(SettingsIntent.SdModel.Select(selectedItem)) },
+                    onDismissRequest = { processIntent(SettingsIntent.DismissDialog) },
                     content = {
                         DropdownTextField(
                             modifier = Modifier.fillMaxWidth(),
@@ -135,8 +135,8 @@ private fun ScreenContent(
                 text = R.string.interaction_cache_sub_title.asUiText(),
                 confirmActionResId = R.string.yes,
                 dismissActionResId = R.string.no,
-                onDismissRequest = { handleIntent(SettingsIntent.DismissDialog) },
-                onConfirmAction = { handleIntent(SettingsIntent.Action.ClearAppCache.Confirm) },
+                onDismissRequest = { processIntent(SettingsIntent.DismissDialog) },
+                onConfirmAction = { processIntent(SettingsIntent.Action.ClearAppCache.Confirm) },
             )
         }
     }
@@ -146,7 +146,7 @@ private fun ScreenContent(
 private fun ContentSettingsState(
     modifier: Modifier = Modifier,
     state: SettingsState,
-    handleIntent: (SettingsIntent) -> Unit = {},
+    processIntent: (SettingsIntent) -> Unit = {},
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
@@ -165,14 +165,14 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             startIcon = Icons.Default.SettingsEthernet,
             text = R.string.settings_item_config.asUiText(),
-            onClick = { handleIntent(SettingsIntent.NavigateConfiguration) },
+            onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
         )
         if (state.showSdModelSelector) SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Default.AutoFixNormal,
             text = R.string.settings_item_sd_model.asUiText(),
             endValueText = state.sdModelSelected.asUiText(),
-            onClick = { handleIntent(SettingsIntent.SdModel.OpenChooser) },
+            onClick = { processIntent(SettingsIntent.SdModel.OpenChooser) },
         )
         if (state.showLocalUseNNAPI) {
             SettingsItem(
@@ -180,12 +180,12 @@ private fun ContentSettingsState(
                 startIcon = Icons.Default.AccountTree,
                 text = R.string.settings_item_local_nnapi.asUiText(),
                 endValueText = state.sdModelSelected.asUiText(),
-                onClick = { handleIntent(SettingsIntent.UpdateFlag.NNAPI(!state.localUseNNAPI)) },
+                onClick = { processIntent(SettingsIntent.UpdateFlag.NNAPI(!state.localUseNNAPI)) },
                 endValueContent = {
                     Switch(
                         modifier = Modifier.padding(horizontal = 8.dp),
                         checked = state.localUseNNAPI,
-                        onCheckedChange = { handleIntent(SettingsIntent.UpdateFlag.NNAPI(it)) },
+                        onCheckedChange = { processIntent(SettingsIntent.UpdateFlag.NNAPI(it)) },
                     )
                 }
             )
@@ -205,13 +205,13 @@ private fun ContentSettingsState(
             startIcon = Icons.Default.Refresh,
             text = R.string.settings_item_monitor_connection.asUiText(),
             onClick = {
-                handleIntent(SettingsIntent.UpdateFlag.MonitorConnection(!state.monitorConnectivity))
+                processIntent(SettingsIntent.UpdateFlag.MonitorConnection(!state.monitorConnectivity))
             },
             endValueContent = {
                 Switch(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     checked = state.monitorConnectivity,
-                    onCheckedChange = { handleIntent(SettingsIntent.UpdateFlag.MonitorConnection(it)) },
+                    onCheckedChange = { processIntent(SettingsIntent.UpdateFlag.MonitorConnection(it)) },
                 )
             }
         )
@@ -220,14 +220,14 @@ private fun ContentSettingsState(
             startIcon = Icons.Default.Save,
             text = R.string.settings_item_auto_save.asUiText(),
             onClick = {
-                handleIntent(SettingsIntent.UpdateFlag.AutoSaveResult(!state.autoSaveAiResults))
+                processIntent(SettingsIntent.UpdateFlag.AutoSaveResult(!state.autoSaveAiResults))
             },
             endValueContent = {
                 Switch(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     checked = state.autoSaveAiResults,
                     onCheckedChange = {
-                        handleIntent(SettingsIntent.UpdateFlag.AutoSaveResult(it))
+                        processIntent(SettingsIntent.UpdateFlag.AutoSaveResult(it))
                     },
                 )
             }
@@ -237,14 +237,14 @@ private fun ContentSettingsState(
             startIcon = Icons.Default.Folder,
             text = R.string.settings_item_auto_save_media_store.asUiText(),
             onClick = {
-                handleIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(!state.saveToMediaStore))
+                processIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(!state.saveToMediaStore))
             },
             endValueContent = {
                 Switch(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     checked = state.saveToMediaStore,
                     onCheckedChange = {
-                        handleIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(it))
+                        processIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(it))
                     },
                 )
             }
@@ -255,14 +255,14 @@ private fun ContentSettingsState(
                 startIcon = Icons.Default.DynamicForm,
                 text = R.string.settings_item_advanced_form_default.asUiText(),
                 onClick = {
-                    handleIntent(SettingsIntent.UpdateFlag.AdvancedFormVisibility(!state.formAdvancedOptionsAlwaysShow))
+                    processIntent(SettingsIntent.UpdateFlag.AdvancedFormVisibility(!state.formAdvancedOptionsAlwaysShow))
                 },
                 endValueContent = {
                     Switch(
                         modifier = Modifier.padding(horizontal = 8.dp),
                         checked = state.formAdvancedOptionsAlwaysShow,
                         onCheckedChange = {
-                            handleIntent(SettingsIntent.UpdateFlag.AdvancedFormVisibility(it))
+                            processIntent(SettingsIntent.UpdateFlag.AdvancedFormVisibility(it))
                         },
                     )
                 }
@@ -272,7 +272,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             startIcon = Icons.Default.DeleteForever,
             text = R.string.settings_item_clear_cache.asUiText(),
-            onClick = { handleIntent(SettingsIntent.Action.ClearAppCache.Request)},
+            onClick = { processIntent(SettingsIntent.Action.ClearAppCache.Request)},
         )
 
         Text(
@@ -284,25 +284,25 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             startIcon = Icons.Default.Report,
             text = R.string.settings_item_report_problem.asUiText(),
-            onClick = { handleIntent(SettingsIntent.Action.ReportProblem) },
+            onClick = { processIntent(SettingsIntent.Action.ReportProblem) },
         )
         SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Default.Gavel,
             text = R.string.settings_item_policy.asUiText(),
-            onClick = { handleIntent(SettingsIntent.LaunchUrl.OpenPolicy) },
+            onClick = { processIntent(SettingsIntent.LaunchUrl.OpenPolicy) },
         )
         SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.AutoMirrored.Filled.Help,
             text = R.string.settings_item_instructions.asUiText(),
-            onClick = { handleIntent(SettingsIntent.LaunchUrl.OpenServerInstructions) },
+            onClick = { processIntent(SettingsIntent.LaunchUrl.OpenServerInstructions) },
         )
         SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Default.Code,
             text = R.string.settings_item_source.asUiText(),
-            onClick = { handleIntent(SettingsIntent.LaunchUrl.OpenSourceCode) },
+            onClick = { processIntent(SettingsIntent.LaunchUrl.OpenSourceCode) },
         )
 
         Text(
@@ -312,7 +312,7 @@ private fun ContentSettingsState(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
-                    onClick = { handleIntent(SettingsIntent.Action.AppVersion) },
+                    onClick = { processIntent(SettingsIntent.Action.AppVersion) },
                 ),
             text = stringResource(id = R.string.version, state.appVersion),
             style = MaterialTheme.typography.labelMedium,

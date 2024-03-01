@@ -51,7 +51,7 @@ class ServerSetupViewModel(
     private val router: Router,
 ) : MviRxViewModel<ServerSetupState, ServerSetupIntent, ServerSetupEffect>() {
 
-    override val emptyState = ServerSetupState(
+    override val initialState = ServerSetupState(
         showBackNavArrow = launchSource == ServerSetupLaunchSource.SETTINGS,
     )
 
@@ -84,7 +84,7 @@ class ServerSetupViewModel(
             }
     }
 
-    override fun handleIntent(intent: ServerSetupIntent) = when (intent) {
+    override fun processIntent(intent: ServerSetupIntent) = when (intent) {
         is ServerSetupIntent.AllowLocalCustomModel -> updateState {
             it.copy(
                 localCustomModel = intent.allow,
@@ -402,7 +402,7 @@ class ServerSetupViewModel(
     private fun onSetupComplete() {
         preferenceManager.forceSetupAfterUpdate = false
         analytics.logEvent(SetupConnectSuccess)
-        handleIntent(ServerSetupIntent.DismissDialog)
+        processIntent(ServerSetupIntent.DismissDialog)
         router.navigateToHomeScreen()
     }
 }

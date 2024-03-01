@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
-import com.shifthackz.aisdv1.core.ui.MviState
+import com.shifthackz.android.core.mvi.MviState
 
 data class SettingsState(
     val loading: Boolean = true,

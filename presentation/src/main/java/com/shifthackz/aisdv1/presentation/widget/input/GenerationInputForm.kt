@@ -25,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.math.roundTo
-import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
@@ -54,7 +53,7 @@ import kotlin.random.Random
 fun GenerationInputForm(
     modifier: Modifier = Modifier,
     state: GenerationMviState,
-    handleIntent: (GenerationMviIntent) -> Unit = {},
+    processIntent: (GenerationMviIntent) -> Unit = {},
     afterSlidersSection: @Composable () -> Unit = {},
 ) {
     @Composable
@@ -71,7 +70,7 @@ fun GenerationInputForm(
             valueRange = (BATCH_RANGE_MIN * 1f)..(BATCH_RANGE_MAX * 1f),
             steps = abs(BATCH_RANGE_MIN - BATCH_RANGE_MAX) - 1,
             colors = sliderColors,
-            onValueChange = { handleIntent(GenerationMviIntent.Update.Batch(it.roundToInt())) },
+            onValueChange = { processIntent(GenerationMviIntent.Update.Batch(it.roundToInt())) },
         )
     }
     Column(modifier = modifier) {
@@ -80,7 +79,7 @@ fun GenerationInputForm(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
             value = state.prompt,
-            onValueChange = { handleIntent(GenerationMviIntent.Update.Prompt(it)) },
+            onValueChange = { processIntent(GenerationMviIntent.Update.Prompt(it)) },
             label = { Text(stringResource(id = R.string.hint_prompt)) },
         )
 
@@ -93,7 +92,7 @@ fun GenerationInputForm(
                     .fillMaxWidth()
                     .padding(top = 8.dp),
                 value = state.negativePrompt,
-                onValueChange = { handleIntent(GenerationMviIntent.Update.NegativePrompt(it))  },
+                onValueChange = { processIntent(GenerationMviIntent.Update.NegativePrompt(it))  },
                 label = { Text(stringResource(id = R.string.hint_prompt_negative)) },
             )
 
@@ -106,7 +105,7 @@ fun GenerationInputForm(
                 label = R.string.hint_model_open_ai.asUiText(),
                 value = state.openAiModel,
                 items = OpenAiModel.entries,
-                onItemSelected = { handleIntent(GenerationMviIntent.Update.OpenAi.Model(it)) },
+                onItemSelected = { processIntent(GenerationMviIntent.Update.OpenAi.Model(it)) },
             )
         }
 
@@ -126,14 +125,14 @@ fun GenerationInputForm(
                         label = R.string.width.asUiText(),
                         value = state.width,
                         items = Constants.sizes,
-                        onItemSelected = { handleIntent(GenerationMviIntent.Update.Size.Width(it)) },
+                        onItemSelected = { processIntent(GenerationMviIntent.Update.Size.Width(it)) },
                     )
                     DropdownTextField(
                         modifier = localModifier.padding(start = 4.dp),
                         label = R.string.height.asUiText(),
                         value = state.height,
                         items = Constants.sizes,
-                        onItemSelected = { handleIntent(GenerationMviIntent.Update.Size.Height(it)) },
+                        onItemSelected = { processIntent(GenerationMviIntent.Update.Size.Height(it)) },
                     )
                 }
 
@@ -147,7 +146,7 @@ fun GenerationInputForm(
                                 value
                                     .filter { it.isDigit() }
                                     .let(GenerationMviIntent.Update.Size::Width)
-                                    .let(handleIntent::invoke)
+                                    .let(processIntent::invoke)
                             }
                         },
                         isError = state.widthValidationError != null,
@@ -170,7 +169,7 @@ fun GenerationInputForm(
                                 value
                                     .filter { it.isDigit() }
                                     .let(GenerationMviIntent.Update.Size::Height)
-                                    .let(handleIntent::invoke)
+                                    .let(processIntent::invoke)
                             }
                         },
                         isError = state.heightValidationError != null,
@@ -194,7 +193,7 @@ fun GenerationInputForm(
                         items = OpenAiSize.entries.filter {
                             it.supportedModels.contains(state.openAiModel)
                         },
-                        onItemSelected = { handleIntent(GenerationMviIntent.Update.OpenAi.Size(it)) },
+                        onItemSelected = { processIntent(GenerationMviIntent.Update.OpenAi.Size(it)) },
                         displayDelegate = { it.key.asUiText() },
                     )
                 }
@@ -208,14 +207,14 @@ fun GenerationInputForm(
                     label = R.string.hint_quality.asUiText(),
                     value = state.openAiQuality,
                     items = OpenAiQuality.entries,
-                    onItemSelected = { handleIntent(GenerationMviIntent.Update.OpenAi.Quality(it)) },
+                    onItemSelected = { processIntent(GenerationMviIntent.Update.OpenAi.Quality(it)) },
                 )
                 DropdownTextField(
                     modifier = Modifier.padding(top = 8.dp),
                     label = R.string.hint_style.asUiText(),
                     value = state.openAiStyle,
                     items = OpenAiStyle.entries,
-                    onItemSelected = { handleIntent(GenerationMviIntent.Update.OpenAi.Style(it)) },
+                    onItemSelected = { processIntent(GenerationMviIntent.Update.OpenAi.Style(it)) },
                 )
             }
             batchComponent()
@@ -225,7 +224,7 @@ fun GenerationInputForm(
             TextButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {
-                    handleIntent(
+                    processIntent(
                         GenerationMviIntent.SetAdvancedOptionsVisibility(!state.advancedOptionsVisible)
                     )
                 },
@@ -257,7 +256,7 @@ fun GenerationInputForm(
                         label = R.string.hint_sampler.asUiText(),
                         value = state.selectedSampler,
                         items = state.availableSamplers,
-                        onItemSelected = { handleIntent(GenerationMviIntent.Update.Sampler(it)) },
+                        onItemSelected = { processIntent(GenerationMviIntent.Update.Sampler(it)) },
                     )
                 }
                 // Seed is not available for Hugging Face
@@ -271,13 +270,13 @@ fun GenerationInputForm(
                             value
                                 .filter { it.isDigit() }
                                 .let(GenerationMviIntent.Update::Seed)
-                                .let(handleIntent::invoke)
+                                .let(processIntent::invoke)
                         },
                         label = { Text(stringResource(id = R.string.hint_seed)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         trailingIcon = {
                             IconButton(onClick = {
-                                handleIntent(GenerationMviIntent.Update.Seed("${Random.nextLong()}"))
+                                processIntent(GenerationMviIntent.Update.Seed("${Random.nextLong()}"))
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Casino,
@@ -297,7 +296,7 @@ fun GenerationInputForm(
                     ) {
                         Switch(
                             checked = state.nsfw,
-                            onCheckedChange = { handleIntent(GenerationMviIntent.Update.Nsfw(it)) },
+                            onCheckedChange = { processIntent(GenerationMviIntent.Update.Nsfw(it)) },
                         )
                         Text(
                             modifier = Modifier.padding(horizontal = 8.dp),
@@ -316,13 +315,13 @@ fun GenerationInputForm(
                             value
                                 .filter { it.isDigit() }
                                 .let(GenerationMviIntent.Update::SubSeed)
-                                .let(handleIntent::invoke)
+                                .let(processIntent::invoke)
                         },
                         label = { Text(stringResource(id = R.string.hint_sub_seed)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         trailingIcon = {
                             IconButton(onClick = {
-                                handleIntent(GenerationMviIntent.Update.SubSeed("${Random.nextLong()}"))
+                                processIntent(GenerationMviIntent.Update.SubSeed("${Random.nextLong()}"))
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Casino,
@@ -348,7 +347,7 @@ fun GenerationInputForm(
                             valueRange = SUB_SEED_STRENGTH_MIN..SUB_SEED_STRENGTH_MAX,
                             colors = sliderColors,
                             onValueChange = {
-                                handleIntent(GenerationMviIntent.Update.SubSeedStrength(it))
+                                processIntent(GenerationMviIntent.Update.SubSeedStrength(it))
                             },
                         )
                     }
@@ -370,7 +369,7 @@ fun GenerationInputForm(
                         steps = abs(SAMPLING_STEPS_RANGE_MAX - SAMPLING_STEPS_RANGE_MIN) - 1,
                         colors = sliderColors,
                         onValueChange = {
-                            handleIntent(GenerationMviIntent.Update.SamplingSteps(it.roundToInt()))
+                            processIntent(GenerationMviIntent.Update.SamplingSteps(it.roundToInt()))
                         },
                     )
 
@@ -384,7 +383,7 @@ fun GenerationInputForm(
                         steps = abs(CFG_SCALE_RANGE_MAX - CFG_SCALE_RANGE_MIN) * 2 - 1,
                         colors = sliderColors,
                         onValueChange = {
-                            handleIntent(GenerationMviIntent.Update.CfgScale(it))
+                            processIntent(GenerationMviIntent.Update.CfgScale(it))
                         },
                     )
                 }
@@ -409,7 +408,7 @@ fun GenerationInputForm(
                         Switch(
                             checked = state.restoreFaces,
                             onCheckedChange = {
-                                handleIntent(GenerationMviIntent.Update.RestoreFaces(it))
+                                processIntent(GenerationMviIntent.Update.RestoreFaces(it))
                             },
                         )
                         Text(

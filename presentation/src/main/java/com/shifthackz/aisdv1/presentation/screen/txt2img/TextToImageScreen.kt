@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shifthackz.aisdv1.core.ui.MviComposable
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
@@ -39,11 +39,11 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TextToImageScreen() {
-    MviComposable(viewModel = koinViewModel<TextToImageViewModel>()) { state, intentHandler ->
+    MviComponent(viewModel = koinViewModel<TextToImageViewModel>()) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
-            handleIntent = intentHandler,
+            processIntent = intentHandler,
         )
     }
 }
@@ -52,7 +52,7 @@ fun TextToImageScreen() {
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: TextToImageState,
-    handleIntent: (GenerationMviIntent) -> Unit = {},
+    processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
     Box(modifier) {
         Scaffold(
@@ -66,7 +66,7 @@ private fun ScreenContent(
                     },
                     actions = {
                         IconButton(onClick = {
-                            handleIntent(GenerationMviIntent.SetModal(Modal.PromptBottomSheet))
+                            processIntent(GenerationMviIntent.SetModal(Modal.PromptBottomSheet))
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
@@ -86,7 +86,7 @@ private fun ScreenContent(
                 ) {
                     GenerationInputForm(
                         state = state,
-                        handleIntent = handleIntent,
+                        processIntent = processIntent,
                     )
                 }
             },
@@ -94,7 +94,7 @@ private fun ScreenContent(
                 GenerationBottomToolbar(
                     strokeAccentState = !state.hasValidationErrors,
                     state = state,
-                    handleIntent = handleIntent,
+                    processIntent = processIntent,
                 ) {
                     Button(
                         modifier = Modifier
@@ -102,7 +102,7 @@ private fun ScreenContent(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
-                        onClick = { handleIntent(GenerationMviIntent.Generate) },
+                        onClick = { processIntent(GenerationMviIntent.Generate) },
                         enabled = !state.hasValidationErrors
                     ) {
                         Icon(
@@ -121,7 +121,7 @@ private fun ScreenContent(
         )
         ModalRenderer(
             screenModal = state.screenModal,
-            handleIntent = handleIntent,
+            processIntent = processIntent,
         )
     }
 }

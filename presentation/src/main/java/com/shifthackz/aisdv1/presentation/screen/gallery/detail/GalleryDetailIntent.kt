@@ -1,20 +1,9 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
-import com.shifthackz.aisdv1.core.ui.MviIntent
+import com.shifthackz.android.core.mvi.MviIntent
 
 sealed interface GalleryDetailIntent : MviIntent {
-    /*
-    onNavigateBack: () -> Unit = {},
-    onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
-    onCopyTextClick: (CharSequence) -> Unit = {},
-    onSendToTxt2Img: () -> Unit = {},
-    onSendToImg2Img: () -> Unit = {},
-    onExportImageToolbarClick: () -> Unit = {},
-    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
-    onDeleteButtonClick: () -> Unit = {},
-    onDeleteConfirmClick: () -> Unit = {},
-    onDismissScreenDialog: () -> Unit = {},
-     */
+
     data object NavigateBack : GalleryDetailIntent
 
     data class SelectTab(val tab: GalleryDetailState.Tab) : GalleryDetailIntent

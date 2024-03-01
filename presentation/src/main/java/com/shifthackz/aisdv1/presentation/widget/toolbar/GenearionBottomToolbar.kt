@@ -26,7 +26,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
@@ -40,7 +39,7 @@ fun GenerationBottomToolbar(
     modifier: Modifier = Modifier,
     state: GenerationMviState,
     strokeAccentState: Boolean = false,
-    handleIntent: (GenerationMviIntent) -> Unit = {},
+    processIntent: (GenerationMviIntent) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     Box(
@@ -55,7 +54,7 @@ fun GenerationBottomToolbar(
                 modifier = Modifier.padding(bottom = 36.dp),
                 strokeAccentState = strokeAccentState,
                 state = state,
-                handleIntent = handleIntent,
+                processIntent = processIntent,
             )
             Box(
                 modifier = Modifier
@@ -80,7 +79,7 @@ private fun GenerationBottomToolbarBottomLayer(
     modifier: Modifier = Modifier,
     state: GenerationMviState,
     strokeAccentState: Boolean = false,
-    handleIntent: (GenerationMviIntent) -> Unit = {},
+    processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
     val shape = RoundedCornerShape(
         topStart = 16.dp,
@@ -123,7 +122,7 @@ private fun GenerationBottomToolbarBottomLayer(
 
         Text(
             modifier = localModifier {
-                handleIntent(
+                processIntent(
                     GenerationMviIntent.SetModal(
                         Modal.ExtraBottomSheet(
                             state.prompt,
@@ -146,7 +145,7 @@ private fun GenerationBottomToolbarBottomLayer(
         )
         Text(
             modifier = localModifier {
-                handleIntent(
+                processIntent(
                     GenerationMviIntent.SetModal(
                         Modal.Embeddings(
                             state.prompt,
@@ -168,7 +167,7 @@ private fun GenerationBottomToolbarBottomLayer(
         )
         Text(
             modifier = localModifier {
-                handleIntent(
+                processIntent(
                     GenerationMviIntent.SetModal(
                         Modal.ExtraBottomSheet(
                             state.prompt,

@@ -6,10 +6,10 @@ import androidx.annotation.StringRes
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.extensions.mapToUi
+import com.shifthackz.android.core.mvi.MviState
 
 sealed interface GalleryDetailState : MviState {
     val tabs: List<Tab>

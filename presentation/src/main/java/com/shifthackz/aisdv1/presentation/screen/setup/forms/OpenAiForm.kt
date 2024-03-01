@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 fun OpenAiForm(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
-    handleIntent: (ServerSetupIntent) -> Unit = {},
+    processIntent: (ServerSetupIntent) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
@@ -72,7 +72,7 @@ fun OpenAiForm(
                 },
             value = state.openAiApiKey,
             onValueChange = {
-                handleIntent(ServerSetupIntent.UpdateOpenAiApiKey(it))
+                processIntent(ServerSetupIntent.UpdateOpenAiApiKey(it))
                 coroutineScope.launch {
                     bringIntoViewRequester.bringIntoView()
                 }
@@ -90,7 +90,7 @@ fun OpenAiForm(
                 .fillMaxWidth(),
             startIcon = Icons.AutoMirrored.Filled.Help,
             text = R.string.hint_open_ai_about.asUiText(),
-            onClick = { handleIntent(ServerSetupIntent.LaunchUrl.OpenAiInfo) },
+            onClick = { processIntent(ServerSetupIntent.LaunchUrl.OpenAiInfo) },
         )
     }
 }

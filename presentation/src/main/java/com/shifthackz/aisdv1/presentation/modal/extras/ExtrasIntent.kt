@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.presentation.modal.extras
 
-import com.shifthackz.aisdv1.core.ui.MviIntent
+import com.shifthackz.android.core.mvi.MviIntent
 
 sealed interface ExtrasIntent : MviIntent {
 

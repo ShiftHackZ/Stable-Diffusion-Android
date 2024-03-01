@@ -19,7 +19,6 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
@@ -41,7 +40,7 @@ class TextToImageViewModel(
             return Modal.Communicating()
         }
 
-    override val emptyState = TextToImageState()
+    override val initialState = TextToImageState()
 
     init {
         !generationFormUpdateEvent
@@ -53,15 +52,15 @@ class TextToImageViewModel(
             )
     }
 
-    override fun updateState(mutation: (TextToImageState) -> TextToImageState) {
-        super.updateState { oldState ->
-            val mutatedState = mutation(oldState)
-            mutatedState.copy(
-                widthValidationError = dimensionValidator(mutatedState.width).mapToUi(),
-                heightValidationError = dimensionValidator(mutatedState.height).mapToUi(),
-            )
-        }
-    }
+//    override fun updateState(mutation: (TextToImageState) -> TextToImageState) {
+//        super.updateState { oldState ->
+//            val mutatedState = mutation(oldState)
+//            mutatedState.copy(
+//                widthValidationError = dimensionValidator(mutatedState.width).mapToUi(),
+//                heightValidationError = dimensionValidator(mutatedState.height).mapToUi(),
+//            )
+//        }
+//    }
 
     override fun generate() = currentState
         .mapToPayload()

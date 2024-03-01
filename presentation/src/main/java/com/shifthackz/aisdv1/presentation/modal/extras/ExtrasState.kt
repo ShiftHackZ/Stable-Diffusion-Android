@@ -1,8 +1,8 @@
 package com.shifthackz.aisdv1.presentation.modal.extras
 
-import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.android.core.mvi.MviState
 
 data class ExtrasState(
     val loading: Boolean = true,

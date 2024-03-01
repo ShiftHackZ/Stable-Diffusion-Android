@@ -2,12 +2,12 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.presentation.utils.Constants
+import com.shifthackz.android.core.mvi.MviState
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

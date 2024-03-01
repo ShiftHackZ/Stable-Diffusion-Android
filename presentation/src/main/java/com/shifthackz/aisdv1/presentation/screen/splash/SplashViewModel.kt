@@ -3,13 +3,13 @@ package com.shifthackz.aisdv1.presentation.screen.splash
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
-import com.shifthackz.aisdv1.core.ui.EmptyIntent
-import com.shifthackz.aisdv1.core.ui.EmptyState
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
 import com.shifthackz.aisdv1.presentation.navigation.Router
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
+import com.shifthackz.android.core.mvi.EmptyEffect
+import com.shifthackz.android.core.mvi.EmptyIntent
+import com.shifthackz.android.core.mvi.EmptyState
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class SplashViewModel(
@@ -18,7 +18,7 @@ class SplashViewModel(
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<EmptyState, EmptyIntent, EmptyEffect>() {
 
-    override val emptyState = EmptyState
+    override val initialState = EmptyState
 
     init {
         !splashNavigationUseCase()

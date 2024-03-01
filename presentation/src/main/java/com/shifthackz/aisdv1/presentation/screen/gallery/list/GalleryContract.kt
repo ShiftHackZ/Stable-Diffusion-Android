@@ -2,11 +2,8 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.core.ui.MviEffect
-import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
-import java.io.File
-
+import com.shifthackz.android.core.mvi.MviState
 
 
 data class GalleryState(

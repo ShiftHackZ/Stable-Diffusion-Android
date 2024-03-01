@@ -50,7 +50,7 @@ fun LocalDiffusionForm(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
     buildInfoProvider: BuildInfoProvider = BuildInfoProvider.stub,
-    handleIntent: (ServerSetupIntent) -> Unit = {},
+    processIntent: (ServerSetupIntent) -> Unit = {},
 ) {
     val modelItemUi: @Composable (ServerSetupState.LocalModel) -> Unit = { model ->
         Column(
@@ -65,7 +65,7 @@ fun LocalDiffusionForm(
                     shape = RoundedCornerShape(16.dp),
                     color = if (model.selected) MaterialTheme.colorScheme.primary else Color.Transparent,
                 )
-                .clickable { handleIntent(ServerSetupIntent.SelectLocalModel(model)) },
+                .clickable { processIntent(ServerSetupIntent.SelectLocalModel(model)) },
         ) {
             Row(
                 modifier = Modifier.padding(vertical = 4.dp),
@@ -99,7 +99,7 @@ fun LocalDiffusionForm(
                 if (model.id != LocalAiModel.CUSTOM.id) {
                     Button(
                         modifier = Modifier.padding(end = 8.dp),
-                        onClick = { handleIntent(ServerSetupIntent.DownloadCardButtonClick(model)) },
+                        onClick = { processIntent(ServerSetupIntent.DownloadCardButtonClick(model)) },
                     ) {
                         Text(
                             text = stringResource(
@@ -260,7 +260,7 @@ fun LocalDiffusionForm(
                 Switch(
                     checked = state.localCustomModel,
                     onCheckedChange = {
-                        handleIntent(ServerSetupIntent.AllowLocalCustomModel(it))
+                        processIntent(ServerSetupIntent.AllowLocalCustomModel(it))
                     },
                 )
                 Text(
@@ -279,7 +279,7 @@ fun LocalDiffusionForm(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(vertical = 8.dp),
-                onClick = { handleIntent(ServerSetupIntent.LaunchManageStoragePermission) },
+                onClick = { processIntent(ServerSetupIntent.LaunchManageStoragePermission) },
             ) {
                 Text(
                     text = stringResource(id = R.string.model_local_permission_button),

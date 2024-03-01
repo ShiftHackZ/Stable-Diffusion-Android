@@ -31,7 +31,7 @@ import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 fun HordeForm(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
-    handleIntent: (ServerSetupIntent) -> Unit = {},
+    processIntent: (ServerSetupIntent) -> Unit = {},
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
@@ -56,7 +56,7 @@ fun HordeForm(
                 .padding(top = 8.dp),
             value = if (state.hordeDefaultApiKey) Constants.HORDE_DEFAULT_API_KEY else state.hordeApiKey,
             onValueChange = {
-                handleIntent(ServerSetupIntent.UpdateHordeApiKey(it))
+                processIntent(ServerSetupIntent.UpdateHordeApiKey(it))
             },
             label = { Text(stringResource(id = R.string.hint_server_horde_api_key)) },
             enabled = !state.hordeDefaultApiKey,
@@ -74,7 +74,7 @@ fun HordeForm(
             Switch(
                 checked = state.hordeDefaultApiKey,
                 onCheckedChange = {
-                    handleIntent(ServerSetupIntent.UpdateHordeDefaultApiKey(it))
+                    processIntent(ServerSetupIntent.UpdateHordeDefaultApiKey(it))
                 },
             )
             Text(
@@ -90,7 +90,7 @@ fun HordeForm(
                 .fillMaxWidth(),
             startIcon = Icons.AutoMirrored.Filled.Help,
             text = R.string.hint_server_horde_about.asUiText(),
-            onClick = { handleIntent(ServerSetupIntent.LaunchUrl.HordeInfo) },
+            onClick = { processIntent(ServerSetupIntent.LaunchUrl.HordeInfo) },
         )
         SettingsItem(
             modifier = Modifier
@@ -98,7 +98,7 @@ fun HordeForm(
                 .fillMaxWidth(),
             startIcon = Icons.Default.Api,
             text = R.string.hint_server_horde_get_api_key.asUiText(),
-            onClick = { handleIntent(ServerSetupIntent.LaunchUrl.HordeSignUp) },
+            onClick = { processIntent(ServerSetupIntent.LaunchUrl.HordeSignUp) },
         )
         Text(
             modifier = Modifier.padding(bottom = 16.dp, top = 8.dp),

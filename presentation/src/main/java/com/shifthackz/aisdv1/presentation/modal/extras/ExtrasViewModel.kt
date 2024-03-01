@@ -19,9 +19,9 @@ class ExtrasViewModel(
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<ExtrasState, ExtrasIntent, ExtrasEffect>() {
 
-    override val emptyState = ExtrasState()
+    override val initialState = ExtrasState()
 
-    override fun handleIntent(intent: ExtrasIntent) {
+    override fun processIntent(intent: ExtrasIntent) {
         when (intent) {
             ExtrasIntent.ApplyPrompts -> emitEffect(
                 ExtrasEffect.ApplyPrompts(currentState.prompt, currentState.negativePrompt)

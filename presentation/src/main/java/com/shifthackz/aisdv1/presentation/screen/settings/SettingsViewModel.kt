@@ -26,7 +26,7 @@ class SettingsViewModel(
     private val router: Router,
 ) : MviRxViewModel<SettingsState, SettingsIntent, SettingsEffect>() {
 
-    override val emptyState = SettingsState()
+    override val initialState = SettingsState()
 
     init {
         !settingsStateProducer()
@@ -36,7 +36,7 @@ class SettingsViewModel(
             }
     }
 
-    override fun handleIntent(intent: SettingsIntent) {
+    override fun processIntent(intent: SettingsIntent) {
         when (intent) {
             SettingsIntent.Action.AppVersion -> router.navigateToDebugMenu()
 
@@ -108,7 +108,7 @@ class SettingsViewModel(
 
     private fun clearAppCache() = !clearAppCacheUseCase()
         .andThen(settingsStateProducer())
-        .doOnSubscribe { handleIntent(SettingsIntent.DismissDialog) }
+        .doOnSubscribe { processIntent(SettingsIntent.DismissDialog) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(::errorLog) { state ->
             analytics.logEvent(SettingsCacheCleared)

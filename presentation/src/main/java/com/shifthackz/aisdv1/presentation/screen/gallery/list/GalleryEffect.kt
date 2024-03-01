@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import android.net.Uri
-import com.shifthackz.aisdv1.core.ui.MviEffect
+import com.shifthackz.android.core.mvi.MviEffect
 import java.io.File
 
 sealed interface GalleryEffect : MviEffect {

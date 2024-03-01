@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.shifthackz.aisdv1.core.ui.MviComposable
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import kotlinx.coroutines.flow.Flow
@@ -50,7 +50,7 @@ fun InputHistoryScreen(
     onGenerationSelected: (AiGenerationResult) -> Unit = {},
 ) {
     val viewModel = koinViewModel<InputHistoryViewModel>()
-    MviComposable(viewModel = viewModel, applySystemUiColors = false) { _, _ ->
+    MviComponent(viewModel = viewModel, applySystemUiColors = false) { _, _ ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             pagingFlow = viewModel.pagingFlow,

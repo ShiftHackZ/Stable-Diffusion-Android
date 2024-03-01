@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.core.extensions.shimmer
-import com.shifthackz.aisdv1.core.ui.MviComposable
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
 import com.shifthackz.aisdv1.presentation.model.ErrorState
@@ -59,7 +59,7 @@ fun EmbeddingScreen(
     onNewPrompts: (String, String) -> Unit,
     onClose: () -> Unit,
 ) {
-    MviComposable(
+    MviComponent(
         viewModel = koinViewModel<EmbeddingViewModel>().apply {
             updateData(prompt, negativePrompt)
         },
@@ -76,7 +76,7 @@ fun EmbeddingScreen(
     ) { state, intentHandler ->
         ScreenContent(
             state = state,
-            handleIntent = intentHandler,
+            processIntent = intentHandler,
         )
     }
 }
@@ -85,7 +85,7 @@ fun EmbeddingScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: EmbeddingState,
-    handleIntent: (EmbeddingIntent) -> Unit,
+    processIntent: (EmbeddingIntent) -> Unit,
 ) {
     Dialog(
         onDismissRequest = {},
@@ -106,7 +106,7 @@ private fun ScreenContent(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 12.dp, vertical = 8.dp),
-                            onClick = { handleIntent(EmbeddingIntent.ApplyNewPrompts) }
+                            onClick = { processIntent(EmbeddingIntent.ApplyNewPrompts) }
                         ) {
                             Text(
                                 text = stringResource(
@@ -126,7 +126,7 @@ private fun ScreenContent(
                 ) {
                     ModalDialogToolbar(
                         text = stringResource(id = R.string.title_txt_inversion),
-                        onClose = { handleIntent(EmbeddingIntent.Close) },
+                        onClose = { processIntent(EmbeddingIntent.Close) },
                     )
                     val bgColor = MaterialTheme.colorScheme.surface
                     var dividerHeight by remember {
@@ -151,7 +151,7 @@ private fun ScreenContent(
                                     .weight(1f)
                                     .clip(RoundedCornerShape(16.dp))
                                     .background(color = if (state.selector) MaterialTheme.colorScheme.primary else Color.Transparent)
-                                    .clickable { handleIntent(EmbeddingIntent.ChangeSelector(true)) },
+                                    .clickable { processIntent(EmbeddingIntent.ChangeSelector(true)) },
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(
@@ -167,7 +167,7 @@ private fun ScreenContent(
                                     .weight(1f)
                                     .clip(RoundedCornerShape(16.dp))
                                     .background(color = if (!state.selector) MaterialTheme.colorScheme.primary else Color.Transparent)
-                                    .clickable { handleIntent(EmbeddingIntent.ChangeSelector(false)) },
+                                    .clickable { processIntent(EmbeddingIntent.ChangeSelector(false)) },
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(
@@ -213,7 +213,7 @@ private fun ScreenContent(
                                         item = state.embeddings[index],
                                         selector = state.selector,
                                         onItemToggle = {
-                                            handleIntent(EmbeddingIntent.ToggleItem(it))
+                                            processIntent(EmbeddingIntent.ToggleItem(it))
                                         },
                                     )
                                 }

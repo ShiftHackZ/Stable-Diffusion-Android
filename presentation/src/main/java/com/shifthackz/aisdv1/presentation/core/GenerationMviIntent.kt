@@ -1,12 +1,12 @@
 package com.shifthackz.aisdv1.presentation.core
 
-import com.shifthackz.aisdv1.core.ui.MviIntent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.android.core.mvi.MviIntent
 
 sealed interface GenerationMviIntent : MviIntent {
 

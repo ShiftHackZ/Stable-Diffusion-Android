@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.presentation.modal.embedding
 
-import com.shifthackz.aisdv1.core.ui.MviIntent
+import com.shifthackz.android.core.mvi.MviIntent
 
 sealed interface EmbeddingIntent : MviIntent {
 

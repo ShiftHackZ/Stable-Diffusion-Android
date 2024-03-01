@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
-import com.shifthackz.aisdv1.core.ui.MviEffect
+import com.shifthackz.android.core.mvi.MviEffect
 
 sealed interface SettingsEffect : MviEffect {
 

@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.presentation.model
 
 import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.core.ui.MviState
+import com.shifthackz.android.core.mvi.MviState
 
 sealed interface ErrorState : MviState {
 

@@ -51,7 +51,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifthackz.aisdv1.core.extensions.items
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviComposable
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
@@ -67,7 +67,7 @@ fun GalleryScreen(
     launchIntent: (Intent) -> Unit = {},
 ) {
     val viewModel = koinViewModel<GalleryViewModel>()
-    MviComposable(
+    MviComponent(
         viewModel = viewModel,
         effectHandler = { effect ->
             when (effect) {
@@ -86,7 +86,7 @@ fun GalleryScreen(
         ScreenContent(
             state = state,
             pagingFlow = viewModel.pagingFlow,
-            handleIntent = intentHandler,
+            processIntent = intentHandler,
         )
     }
 }
@@ -96,7 +96,7 @@ private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryState,
     pagingFlow: Flow<PagingData<GalleryGridItemUi>>,
-    handleIntent: (GalleryIntent) -> Unit = {},
+    processIntent: (GalleryIntent) -> Unit = {},
 ) {
     val listState = rememberLazyGridState()
     val lazyGalleryItems = pagingFlow.collectAsLazyPagingItems()
@@ -118,7 +118,7 @@ private fun ScreenContent(
                 },
                 actions = {
                     if (lazyGalleryItems.itemCount > 0) IconButton(
-                        onClick = { handleIntent(GalleryIntent.Export.Request) },
+                        onClick = { processIntent(GalleryIntent.Export.Request) },
                         content = {
                             Image(
                                 modifier = Modifier.size(24.dp),
@@ -151,7 +151,7 @@ private fun ScreenContent(
                         modifier = Modifier.padding(bottom = 4.dp, end = 16.dp),
                         onClick = {
                             state.mediaStoreInfo.folderUri?.let {
-                                handleIntent(GalleryIntent.OpenMediaStoreFolder(it))
+                                processIntent(GalleryIntent.OpenMediaStoreFolder(it))
                             }
                         },
                     ) {
@@ -195,7 +195,7 @@ private fun ScreenContent(
                         if (galleryItemUi != null) {
                             GalleryUiItem(
                                 item = galleryItemUi,
-                                onClick = { handleIntent(GalleryIntent.OpenItem(it)) },
+                                onClick = { processIntent(GalleryIntent.OpenItem(it)) },
                             )
                         } else {
                             GalleryUiItemShimmer()
@@ -210,8 +210,8 @@ private fun ScreenContent(
                 title = R.string.interaction_export_title.asUiText(),
                 text = R.string.interaction_export_sub_title.asUiText(),
                 confirmActionResId = R.string.action_export,
-                onConfirmAction = { handleIntent(GalleryIntent.Export.Confirm) },
-                onDismissRequest = { handleIntent(GalleryIntent.DismissDialog) },
+                onConfirmAction = { processIntent(GalleryIntent.Export.Confirm) },
+                onDismissRequest = { processIntent(GalleryIntent.DismissDialog) },
             )
 
             GalleryState.Dialog.ExportInProgress -> ProgressDialog(
@@ -223,7 +223,7 @@ private fun ScreenContent(
             is GalleryState.Dialog.Error -> ErrorDialog(
                 text = state.screenDialog.error,
             ) {
-                handleIntent(GalleryIntent.DismissDialog)
+                processIntent(GalleryIntent.DismissDialog)
             }
         }
     }

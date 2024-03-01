@@ -7,7 +7,6 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
@@ -24,7 +23,6 @@ import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
-import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
 import com.shz.imagepicker.imagepicker.model.PickedResult
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
@@ -44,7 +42,7 @@ class ImageToImageViewModel(
     private val wakeLockInterActor: WakeLockInterActor,
 ) : GenerationMviViewModel<ImageToImageState, GenerationMviIntent>() {
 
-    override val emptyState = ImageToImageState()
+    override val initialState = ImageToImageState()
 
     init {
         !generationFormUpdateEvent
@@ -56,7 +54,7 @@ class ImageToImageViewModel(
             )
     }
 
-    override fun handleIntent(intent: GenerationMviIntent) {
+    override fun processIntent(intent: GenerationMviIntent) {
         when (intent) {
             ImageToImageIntent.ClearImageInput -> updateState {
                 it.copy(imageState = ImageToImageState.ImageState.None)
@@ -90,7 +88,7 @@ class ImageToImageViewModel(
                 it.copy(denoisingStrength = intent.value)
             }
 
-            else -> super.handleIntent(intent)
+            else -> super.processIntent(intent)
         }
     }
 
@@ -141,16 +139,6 @@ class ImageToImageViewModel(
         }
 
         else -> Disposable.empty()
-    }
-
-    override fun updateState(mutation: (ImageToImageState) -> ImageToImageState) {
-        super.updateState { oldState ->
-            val mutatedState = mutation(oldState)
-            mutatedState.copy(
-                widthValidationError = dimensionValidator(mutatedState.width).mapToUi(),
-                heightValidationError = dimensionValidator(mutatedState.height).mapToUi(),
-            )
-        }
     }
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {

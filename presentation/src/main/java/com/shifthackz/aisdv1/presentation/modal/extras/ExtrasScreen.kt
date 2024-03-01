@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.core.extensions.shimmer
-import com.shifthackz.aisdv1.core.ui.MviComposable
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
@@ -58,7 +58,7 @@ fun ExtrasScreen(
     onNewPrompts: (String, String) -> Unit,
     onClose: () -> Unit,
 ) {
-    MviComposable(
+    MviComponent(
         viewModel = koinViewModel<ExtrasViewModel>().apply {
             updateData(prompt, negativePrompt, type)
         },

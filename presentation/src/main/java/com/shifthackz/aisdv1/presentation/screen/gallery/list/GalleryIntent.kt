@@ -1,16 +1,10 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import android.net.Uri
-import com.shifthackz.aisdv1.core.ui.MviIntent
+import com.shifthackz.android.core.mvi.MviIntent
 
 sealed interface GalleryIntent : MviIntent {
-    /*
-     onExportToolbarClick: () -> Unit = {},
-    onExportConfirmClick: () -> Unit = {},
-    onDismissScreenDialog: () -> Unit = {},
-    onGalleryItemClick: (GalleryGridItemUi) -> Unit = {},
-    onOpenMediaStoreFolder: (Uri) -> Unit = {},
-     */
+
     enum class Export : GalleryIntent {
         Request, Confirm;
     }

@@ -25,7 +25,7 @@ class GalleryViewModel(
     private val router: Router,
 ) : MviRxViewModel<GalleryState, GalleryIntent, GalleryEffect>() {
 
-    override val emptyState = GalleryState()
+    override val initialState = GalleryState()
 
     private val config = PagingConfig(
         pageSize = Constants.PAGINATION_PAYLOAD_SIZE,
@@ -54,7 +54,7 @@ class GalleryViewModel(
             }
     }
 
-    override fun handleIntent(intent: GalleryIntent) {
+    override fun processIntent(intent: GalleryIntent) {
         when (intent) {
             GalleryIntent.DismissDialog -> setActiveDialog(GalleryState.Dialog.None)
             GalleryIntent.Export.Request -> setActiveDialog(GalleryState.Dialog.ConfirmExport)

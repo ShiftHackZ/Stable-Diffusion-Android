@@ -19,12 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviComposable
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ConfigurationLoaderScreen() {
-    MviComposable(
+    MviComponent(
         viewModel = koinViewModel<ConfigurationLoaderViewModel>(),
     ) { state, _ ->
         ScreenContent(

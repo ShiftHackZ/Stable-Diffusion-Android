@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.presentation.modal.extras
 
-import com.shifthackz.aisdv1.core.ui.MviEffect
+import com.shifthackz.android.core.mvi.MviEffect
 
 sealed interface ExtrasEffect : MviEffect {
 

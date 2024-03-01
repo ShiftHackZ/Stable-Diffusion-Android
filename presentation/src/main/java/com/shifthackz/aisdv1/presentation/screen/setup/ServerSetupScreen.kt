@@ -34,7 +34,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.ui.MviComposable
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationStepBar
@@ -54,7 +54,7 @@ fun ServerSetupScreen(
     launchManageStoragePermission: () -> Unit = {},
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    MviComposable(
+    MviComponent(
         viewModel = getViewModel<ServerSetupViewModel>(
             parameters = { parametersOf(launchSourceKey) }
         ),
@@ -70,7 +70,7 @@ fun ServerSetupScreen(
             modifier = modifier.fillMaxSize(),
             state = state,
             buildInfoProvider = koinInject(),
-            handleIntent = intentHandler,
+            processIntent = intentHandler,
         )
     }
 }
@@ -80,12 +80,12 @@ private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
     buildInfoProvider: BuildInfoProvider = BuildInfoProvider.stub,
-    handleIntent: (ServerSetupIntent) -> Unit = {},
+    processIntent: (ServerSetupIntent) -> Unit = {},
 ) {
     BackHandler(
         enabled = state.step != ServerSetupState.Step.SOURCE,
     ) {
-        handleIntent(ServerSetupIntent.NavigateBack)
+        processIntent(ServerSetupIntent.NavigateBack)
     }
     Box(modifier) {
         Scaffold(
@@ -106,7 +106,7 @@ private fun ScreenContent(
                             if (state.showBackNavArrow || state.step.ordinal > 0) {
                                 IconButton(
                                     onClick = {
-                                        handleIntent(ServerSetupIntent.NavigateBack)
+                                        processIntent(ServerSetupIntent.NavigateBack)
                                     },
                                     content = {
                                         Icon(
@@ -129,7 +129,7 @@ private fun ScreenContent(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                         .padding(bottom = 16.dp, top = 8.dp),
-                    onClick = { handleIntent(ServerSetupIntent.MainButtonClick) },
+                    onClick = { processIntent(ServerSetupIntent.MainButtonClick) },
                     enabled = when (state.step) {
                         ServerSetupState.Step.CONFIGURE -> when (state.mode) {
                             ServerSource.LOCAL -> state.localModels.any {
@@ -170,13 +170,13 @@ private fun ScreenContent(
                     when (ServerSetupState.Step.entries[index]) {
                         ServerSetupState.Step.SOURCE -> SourceSelectionStep(
                             state = state,
-                            handleIntent = handleIntent,
+                            processIntent = processIntent,
                         )
 
                         ServerSetupState.Step.CONFIGURE -> ConfigurationStep(
                             state = state,
                             buildInfoProvider = buildInfoProvider,
-                            handleIntent = handleIntent,
+                            processIntent = processIntent,
                         )
                     }
                 }
@@ -193,7 +193,7 @@ private fun ScreenContent(
 
             is ServerSetupState.Dialog.Error -> ErrorDialog(
                 text = state.screenDialog.error,
-                onDismissRequest = { handleIntent(ServerSetupIntent.DismissDialog) },
+                onDismissRequest = { processIntent(ServerSetupIntent.DismissDialog) },
             )
 
             ServerSetupState.Dialog.None -> Unit
