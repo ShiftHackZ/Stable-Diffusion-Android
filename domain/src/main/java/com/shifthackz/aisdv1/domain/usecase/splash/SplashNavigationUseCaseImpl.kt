@@ -11,6 +11,7 @@ internal class SplashNavigationUseCaseImpl(
 
     override fun invoke(): Single<Action> = Single.create { emitter ->
         val action = when {
+            true -> Action.LAUNCH_SERVER_SETUP//ToDo remove
             preferenceManager.forceSetupAfterUpdate -> {
                 Action.LAUNCH_SERVER_SETUP
             }
