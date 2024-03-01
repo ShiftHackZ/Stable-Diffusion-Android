@@ -14,9 +14,43 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 class EmbeddingViewModel(
     private val fetchAndGetEmbeddingsUseCase: FetchAndGetEmbeddingsUseCase,
     private val schedulersProvider: SchedulersProvider,
-) : MviRxViewModel<EmbeddingState, ExtrasEffect>() {
+) : MviRxViewModel<EmbeddingState, EmbeddingIntent, ExtrasEffect>() {
 
     override val emptyState = EmbeddingState()
+
+    override fun handleIntent(intent: EmbeddingIntent) {
+        when (intent) {
+            EmbeddingIntent.ApplyNewPrompts -> emitEffect(
+                ExtrasEffect.ApplyPrompts(currentState.prompt, currentState.negativePrompt)
+            )
+
+            is EmbeddingIntent.ChangeSelector -> updateState {
+                it.copy(selector = intent.flag)
+            }
+
+            EmbeddingIntent.Close -> emitEffect(ExtrasEffect.Close)
+
+            is EmbeddingIntent.ToggleItem -> updateState { state ->
+                state.copy(
+                    embeddings = state.embeddings.map {
+                        if (it.keyword != intent.item.keyword) it
+                        else {
+                            if (state.selector) it.copy(isInPrompt = !it.isInPrompt)
+                            else it.copy(isInNegativePrompt = !it.isInNegativePrompt)
+                        }
+                    },
+                    prompt = if (!state.selector) state.prompt else ExtrasFormatter.toggleEmbedding(
+                        state.prompt,
+                        intent.item.keyword,
+                    ),
+                    negativePrompt = if (state.selector) state.negativePrompt else ExtrasFormatter.toggleEmbedding(
+                        state.negativePrompt,
+                        intent.item.keyword,
+                    )
+                )
+            }
+        }
+    }
 
     fun updateData(prompt: String, negativePrompt: String) = !fetchAndGetEmbeddingsUseCase()
         .doOnSubscribe { updateState { it.copy(loading = true) } }
@@ -51,33 +85,4 @@ class EmbeddingViewModel(
                 }
             }
         )
-
-
-    fun changeSelector(value: Boolean) = updateState {
-        it.copy(selector = value)
-    }
-
-    fun toggleItem(value: EmbeddingItemUi) = updateState { state ->
-        state.copy(
-            embeddings = state.embeddings.map {
-                if (it.keyword != value.keyword) it
-                else {
-                    if (state.selector) it.copy(isInPrompt = !it.isInPrompt)
-                    else it.copy(isInNegativePrompt = !it.isInNegativePrompt)
-                }
-            },
-            prompt = if (!state.selector) state.prompt else ExtrasFormatter.toggleEmbedding(
-                state.prompt,
-                value.keyword,
-            ),
-            negativePrompt = if (state.selector) state.negativePrompt else ExtrasFormatter.toggleEmbedding(
-                state.negativePrompt,
-                value.keyword,
-            )
-        )
-    }
-
-    fun applyNewPrompts() = emitEffect(
-        ExtrasEffect.ApplyPrompts(currentState.prompt, currentState.negativePrompt)
-    )
 }

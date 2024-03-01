@@ -48,7 +48,7 @@ sealed interface ServerSetupIntent : MviIntent {
 
     sealed class LaunchUrl : ServerSetupIntent, KoinComponent {
 
-        val linksProvider: LinksProvider by inject()
+        protected val linksProvider: LinksProvider by inject()
         abstract val url: String
 
         data object A1111Instructions : LaunchUrl() {

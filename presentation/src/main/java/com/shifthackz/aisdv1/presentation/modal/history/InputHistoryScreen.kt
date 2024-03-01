@@ -39,28 +39,24 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
-import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.core.ui.MviComposable
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import kotlinx.coroutines.flow.Flow
+import org.koin.androidx.compose.koinViewModel
 
-class InputHistoryScreen(
-    private val viewModel: InputHistoryViewModel,
-    private val onGenerationSelected: (AiGenerationResult) -> Unit = {},
-) : MviScreen<InputHistoryState, EmptyEffect>(viewModel) {
-
-    @Composable
-    override fun Content() {
+@Composable
+fun InputHistoryScreen(
+    onGenerationSelected: (AiGenerationResult) -> Unit = {},
+) {
+    val viewModel = koinViewModel<InputHistoryViewModel>()
+    MviComposable(viewModel = viewModel, applySystemUiColors = false) { _, _ ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             pagingFlow = viewModel.pagingFlow,
             onGenerationSelected = onGenerationSelected,
         )
     }
-
-    @Composable
-    override fun ApplySystemUiColors() = Unit
 }
 
 @Composable

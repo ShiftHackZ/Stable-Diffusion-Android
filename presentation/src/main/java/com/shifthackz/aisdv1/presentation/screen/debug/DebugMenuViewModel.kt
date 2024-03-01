@@ -7,16 +7,23 @@ import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.ui.EmptyState
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
+import com.shifthackz.aisdv1.presentation.navigation.Router
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class DebugMenuViewModel(
     private val debugInsertBadBase64UseCase: DebugInsertBadBase64UseCase,
     private val schedulersProvider: SchedulersProvider,
-) : MviRxViewModel<EmptyState, EmptyEffect>() {
+    private val router: Router,
+) : MviRxViewModel<EmptyState, DebugMenuIntent, EmptyEffect>() {
 
     override val emptyState = EmptyState
 
-    fun insertBadBase64() = !debugInsertBadBase64UseCase()
-        .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(::errorLog)
+    override fun handleIntent(intent: DebugMenuIntent) {
+        when (intent) {
+            DebugMenuIntent.NavigateBack -> router.navigateBack()
+            DebugMenuIntent.InsertBadBase64 -> !debugInsertBadBase64UseCase()
+                .subscribeOnMainThread(schedulersProvider)
+                .subscribeBy(::errorLog)
+        }
+    }
 }

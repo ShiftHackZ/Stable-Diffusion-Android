@@ -7,9 +7,7 @@ import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
 import java.io.File
 
-sealed interface GalleryEffect : MviEffect {
-    data class Share(val zipFile: File) : GalleryEffect
-}
+
 
 data class GalleryState(
     val screenDialog: Dialog = Dialog.None,

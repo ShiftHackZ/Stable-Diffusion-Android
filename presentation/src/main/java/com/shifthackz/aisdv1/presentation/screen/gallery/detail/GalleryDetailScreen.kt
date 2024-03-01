@@ -8,12 +8,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -21,7 +19,6 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,7 +28,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,14 +36,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.core.ui.MviComposable
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.theme.colors
@@ -55,38 +49,34 @@ import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialo
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
 import com.shifthackz.catppuccin.palette.Catppuccin
-import org.koin.core.component.KoinComponent
+import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 import java.io.File
 
-class GalleryDetailScreen(
-    private val viewModel: GalleryDetailViewModel,
-    private val onNavigateBack: () -> Unit = {},
-    private val shareGalleryFile: (File) -> Unit = {},
-    private val shareGenerationParams: (GalleryDetailState) -> Unit = {},
-    private val copyToClipboard: (CharSequence) -> Unit = {},
-) : MviScreen<GalleryDetailState, GalleryDetailEffect>(viewModel), KoinComponent {
-
-    @Composable
-    override fun Content() {
+@Composable
+fun GalleryDetailScreen(
+    itemId: Long,
+    shareGalleryFile: (File) -> Unit = {},
+    shareGenerationParams: (GalleryDetailState) -> Unit = {},
+    copyToClipboard: (CharSequence) -> Unit = {},
+) {
+    MviComposable(
+        viewModel = getViewModel<GalleryDetailViewModel>(
+            parameters = { parametersOf(itemId) },
+        ),
+        effectHandler = { effect ->
+            when (effect) {
+                is GalleryDetailEffect.ShareImageFile -> shareGalleryFile(effect.file)
+                is GalleryDetailEffect.ShareGenerationParams -> shareGenerationParams(effect.state)
+                is GalleryDetailEffect.ShareClipBoard -> copyToClipboard(effect.text)
+            }
+        }
+    ) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
-            state = viewModel.state.collectAsStateWithLifecycle().value,
-            onNavigateBack = onNavigateBack,
-            onTabSelected = viewModel::selectTab,
-            onCopyTextClick = copyToClipboard,
-            onSendToTxt2Img = viewModel::sendPromptToTxt2Img,
-            onSendToImg2Img = viewModel::sendPromptToImg2Img,
-            onExportImageToolbarClick = viewModel::share,
-            onExportParamsClick = shareGenerationParams,
-            onDeleteButtonClick = viewModel::showDeleteConfirmDialog,
-            onDeleteConfirmClick = viewModel::delete,
-            onDismissScreenDialog = viewModel::dismissScreenDialog,
+            state = state,
+            handleIntent = intentHandler,
         )
-    }
-
-    override fun processEffect(effect: GalleryDetailEffect) = when (effect) {
-        is GalleryDetailEffect.ShareImageFile -> shareGalleryFile(effect.file)
-        GalleryDetailEffect.NavigateBack -> onNavigateBack()
     }
 }
 
@@ -94,16 +84,7 @@ class GalleryDetailScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryDetailState,
-    onNavigateBack: () -> Unit = {},
-    onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
-    onCopyTextClick: (CharSequence) -> Unit = {},
-    onSendToTxt2Img: () -> Unit = {},
-    onSendToImg2Img: () -> Unit = {},
-    onExportImageToolbarClick: () -> Unit = {},
-    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
-    onDeleteButtonClick: () -> Unit = {},
-    onDeleteConfirmClick: () -> Unit = {},
-    onDismissScreenDialog: () -> Unit = {},
+    handleIntent: (GalleryDetailIntent) -> Unit = {},
 ) {
     Box(modifier = modifier) {
         Scaffold(
@@ -115,7 +96,9 @@ private fun ScreenContent(
                     },
                     navigationIcon = {
                         IconButton(
-                            onClick = onNavigateBack,
+                            onClick = {
+                                handleIntent(GalleryDetailIntent.NavigateBack)
+                            },
                             content = {
                                 Icon(
                                     Icons.Outlined.ArrowBack,
@@ -126,7 +109,7 @@ private fun ScreenContent(
                     },
                     actions = {
                         IconButton(
-                            onClick = onExportImageToolbarClick,
+                            onClick = { handleIntent(GalleryDetailIntent.Export.Image) },
                             content = {
                                 Image(
                                     modifier = Modifier.size(24.dp),
@@ -148,19 +131,18 @@ private fun ScreenContent(
                     is GalleryDetailState.Content -> GalleryDetailContentState(
                         modifier = contentModifier,
                         state = state,
-                        onCopyTextClick = onCopyTextClick,
+                        onCopyTextClick = {
+                            handleIntent(GalleryDetailIntent.CopyToClipboard(it))
+                        },
                     )
+
                     is GalleryDetailState.Loading -> Unit
                 }
             },
             bottomBar = {
                 GalleryDetailNavigationBar(
                     state = state,
-                    onTabSelected = onTabSelected,
-                    onSendToTxt2Img = onSendToTxt2Img,
-                    onSendToImg2Img = onSendToImg2Img,
-                    onDeleteButtonClick = onDeleteButtonClick,
-                    onExportParamsClick = onExportParamsClick,
+                    handleIntent = handleIntent,
                 )
             },
         )
@@ -170,9 +152,10 @@ private fun ScreenContent(
                 text = R.string.interaction_delete_generation_sub_title.asUiText(),
                 confirmActionResId = R.string.yes,
                 dismissActionResId = R.string.no,
-                onConfirmAction = onDeleteConfirmClick,
-                onDismissRequest = onDismissScreenDialog,
+                onConfirmAction = { handleIntent(GalleryDetailIntent.Delete.Confirm) },
+                onDismissRequest = { handleIntent(GalleryDetailIntent.DismissDialog) },
             )
+
             GalleryDetailState.Dialog.None -> Unit
         }
     }
@@ -181,11 +164,12 @@ private fun ScreenContent(
 @Composable
 private fun GalleryDetailNavigationBar(
     state: GalleryDetailState,
-    onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
-    onSendToTxt2Img: () -> Unit = {},
-    onSendToImg2Img: () -> Unit = {},
-    onDeleteButtonClick: () -> Unit = {},
-    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
+    handleIntent: (GalleryDetailIntent) -> Unit = {},
+//    onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
+//    onSendToTxt2Img: () -> Unit = {},
+//    onSendToImg2Img: () -> Unit = {},
+//    onDeleteButtonClick: () -> Unit = {},
+//    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
 ) {
     Column {
         if (state is GalleryDetailState.Content) {
@@ -196,7 +180,9 @@ private fun GalleryDetailNavigationBar(
                     .padding(horizontal = 16.dp, vertical = 2.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                IconButton(onClick = onSendToTxt2Img) {
+                IconButton(
+                    onClick = { handleIntent(GalleryDetailIntent.SendTo.Txt2Img) },
+                ) {
                     Icon(
                         modifier = Modifier.size(24.dp),
                         painter = painterResource(id = R.drawable.ic_text),
@@ -204,7 +190,9 @@ private fun GalleryDetailNavigationBar(
                         tint = LocalContentColor.current,
                     )
                 }
-                IconButton(onClick = onSendToImg2Img) {
+                IconButton(
+                    onClick = { handleIntent(GalleryDetailIntent.SendTo.Img2Img) },
+                ) {
                     Icon(
                         modifier = Modifier.size(24.dp),
                         painter = painterResource(id = R.drawable.ic_image),
@@ -212,13 +200,17 @@ private fun GalleryDetailNavigationBar(
                         tint = LocalContentColor.current,
                     )
                 }
-                IconButton(onClick = { onExportParamsClick(state) }) {
+                IconButton(
+                    onClick = { handleIntent(GalleryDetailIntent.Export.Params) },
+                ) {
                     Icon(
                         imageVector = Icons.Default.Share,
                         contentDescription = "Share prompt",
                     )
                 }
-                IconButton(onClick = onDeleteButtonClick) {
+                IconButton(
+                    onClick = { handleIntent(GalleryDetailIntent.Delete.Request) },
+                ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete",
@@ -247,7 +239,7 @@ private fun GalleryDetailNavigationBar(
                             colorFilter = ColorFilter.tint(LocalContentColor.current),
                         )
                     },
-                    onClick = { onTabSelected(tab) },
+                    onClick = { handleIntent(GalleryDetailIntent.SelectTab(tab)) },
                 )
             }
         }
@@ -269,12 +261,14 @@ private fun GalleryDetailContentState(
                 modifier = Modifier.fillMaxSize(),
                 source = ZoomableImageSource.Bmp(state.bitmap),
             )
+
             GalleryDetailState.Tab.ORIGINAL -> state.inputBitmap?.let { bmp ->
                 ZoomableImage(
                     modifier = Modifier.fillMaxSize(),
                     source = ZoomableImageSource.Bmp(bmp),
                 )
             }
+
             GalleryDetailState.Tab.INFO -> GalleryDetailsTable(
                 modifier = Modifier.fillMaxSize(),
                 state = state,

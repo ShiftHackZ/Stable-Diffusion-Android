@@ -52,6 +52,7 @@ val viewModelModule = module {
             preferenceManager = get(),
             analytics = get(),
             wakeLockInterActor = get(),
+            router = get(),
         )
     }
 
@@ -66,6 +67,7 @@ val viewModelModule = module {
             schedulersProvider = get(),
             generationFormUpdateEvent = get(),
             analytics = get(),
+            router = get(),
         )
     }
 }

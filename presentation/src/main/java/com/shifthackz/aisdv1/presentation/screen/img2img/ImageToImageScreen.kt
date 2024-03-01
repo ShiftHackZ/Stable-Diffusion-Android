@@ -47,69 +47,35 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.common.math.roundTo
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.core.ui.MviComposable
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
-import com.shifthackz.aisdv1.presentation.core.GenerationMviScreen
+import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
+import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MIN
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 import com.shz.imagepicker.imagepicker.ImagePickerCallback
+import org.koin.androidx.compose.koinViewModel
 
-class ImageToImageScreen(
-    private val viewModel: ImageToImageViewModel,
-    private val pickImage: (ImagePickerCallback) -> Unit,
-    private val takePhoto: (ImagePickerCallback) -> Unit,
-    private val launchGalleryDetail: (Long) -> Unit,
-    private val launchServerSetup: () -> Unit,
-) : GenerationMviScreen<ImageToImageState, GenerationMviEffect>(
-    viewModel,
-    launchGalleryDetail,
+@Composable
+fun ImageToImageScreen(
+    pickImage: (ImagePickerCallback) -> Unit,
+    takePhoto: (ImagePickerCallback) -> Unit,
 ) {
-
-    @Composable
-    override fun Content() {
+    val viewModel = koinViewModel<ImageToImageViewModel>()
+    MviComposable(viewModel) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
-            state = viewModel.state.collectAsStateWithLifecycle().value,
+            state = state,
             onPickImage = { pickImage(viewModel::updateInputImage) },
             onTakePhoto = { takePhoto(viewModel::updateInputImage) },
-            onRandomPhoto = viewModel::fetchRandomImage,
-            onClearPhoto = viewModel::clearInputImage,
-            onDenoisingStrengthUpdated = viewModel::updateDenoisingStrength,
-            onShowAdvancedOptionsToggle = viewModel::toggleAdvancedOptions,
-            onPromptUpdated = viewModel::updatePrompt,
-            onNegativePromptUpdated = viewModel::updateNegativePrompt,
-            onWidthUpdated = viewModel::updateWidth,
-            onHeightUpdated = viewModel::updateHeight,
-            onSamplingStepsUpdated = viewModel::updateSamplingSteps,
-            onCfgScaleUpdated = viewModel::updateCfgScale,
-            onRestoreFacesUpdated = viewModel::updateRestoreFaces,
-            onSeedUpdated = viewModel::updateSeed,
-            onSubSeedUpdated = viewModel::updateSubSeed,
-            onSubSeedStrengthUpdated = viewModel::updateSubSeedStrength,
-            onSamplerUpdated = viewModel::updateSampler,
-            onNsfwUpdated = viewModel::updateNsfw,
-            onBatchCountUpdated = viewModel::updateBatchCount,
-            onGenerateClicked = viewModel::generate,
-            onChangeConfigurationClicked = launchServerSetup,
-            onSaveGeneratedImages = viewModel::saveGeneratedResults,
-            onViewGeneratedImage = viewModel::viewGeneratedResult,
-            onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
-            onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
-            onOpenLoraInput = viewModel::openLoraInput,
-            onOpenHyperNetInput = viewModel::openHyperNetInput,
-            onOpenEmbedding = viewModel::openEmbeddingInput,
-            onProcessNewPrompts = viewModel::processNewPrompts,
-            onCancelGeneration = viewModel::cancelGeneration,
-            onCancelFetchRandomImage = viewModel::cancelFetchRandomImage,
-            onDismissScreenDialog = viewModel::dismissScreenModal,
+            handleIntent = intentHandler,
         )
     }
 }
@@ -120,36 +86,7 @@ private fun ScreenContent(
     state: ImageToImageState,
     onPickImage: () -> Unit = {},
     onTakePhoto: () -> Unit = {},
-    onRandomPhoto: () -> Unit = {},
-    onClearPhoto: () -> Unit = {},
-    onDenoisingStrengthUpdated: (Float) -> Unit,
-    onShowAdvancedOptionsToggle: (Boolean) -> Unit = {},
-    onPromptUpdated: (String) -> Unit = {},
-    onNegativePromptUpdated: (String) -> Unit = {},
-    onWidthUpdated: (String) -> Unit = {},
-    onHeightUpdated: (String) -> Unit = {},
-    onSamplingStepsUpdated: (Int) -> Unit = {},
-    onCfgScaleUpdated: (Float) -> Unit = {},
-    onRestoreFacesUpdated: (Boolean) -> Unit = {},
-    onSeedUpdated: (String) -> Unit = {},
-    onSubSeedUpdated: (String) -> Unit = {},
-    onSubSeedStrengthUpdated: (Float) -> Unit = {},
-    onSamplerUpdated: (String) -> Unit = {},
-    onNsfwUpdated: (Boolean) -> Unit = {},
-    onBatchCountUpdated: (Int) -> Unit = {},
-    onGenerateClicked: () -> Unit = {},
-    onChangeConfigurationClicked: () -> Unit = {},
-    onSaveGeneratedImages: (List<AiGenerationResult>) -> Unit = {},
-    onViewGeneratedImage: (AiGenerationResult) -> Unit = {},
-    onOpenPreviousGenerationInput: () -> Unit = {},
-    onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
-    onOpenLoraInput: () -> Unit = {},
-    onOpenHyperNetInput: () -> Unit = {},
-    onOpenEmbedding: () -> Unit = {},
-    onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
-    onCancelGeneration: () -> Unit = {},
-    onCancelFetchRandomImage: () -> Unit = {},
-    onDismissScreenDialog: () -> Unit = {},
+    handleIntent: (GenerationMviIntent) -> Unit = {}
 ) {
     Box(modifier) {
         Scaffold(
@@ -163,7 +100,11 @@ private fun ScreenContent(
                     },
                     actions = {
                         if (state.mode != ServerSource.LOCAL) {
-                            IconButton(onClick = onOpenPreviousGenerationInput) {
+                            IconButton(
+                                onClick = {
+                                    handleIntent(GenerationMviIntent.SetModal(Modal.PromptBottomSheet))
+                                },
+                            ) {
                                 Icon(
                                     imageVector = Icons.Default.Edit,
                                     contentDescription = null,
@@ -175,8 +116,8 @@ private fun ScreenContent(
             },
             content = { paddingValues ->
                 when (state.mode) {
-                    ServerSource.AUTOMATIC1111 ,
-                    ServerSource.HORDE ,
+                    ServerSource.AUTOMATIC1111,
+                    ServerSource.HORDE,
                     ServerSource.HUGGING_FACE -> {
                         val scrollState = rememberScrollState()
                         Column(
@@ -192,27 +133,11 @@ private fun ScreenContent(
                                 imageState = state.imageState,
                                 onPickImage = onPickImage,
                                 onTakePhoto = onTakePhoto,
-                                onRandomPhoto = onRandomPhoto,
-                                onClearPhoto = onClearPhoto,
+                                handleIntent = handleIntent
                             )
                             GenerationInputForm(
                                 state = state,
-                                onShowAdvancedOptionsToggle = onShowAdvancedOptionsToggle,
-                                onPromptUpdated = onPromptUpdated,
-                                onNegativePromptUpdated = onNegativePromptUpdated,
-                                onWidthUpdated = onWidthUpdated,
-                                onHeightUpdated = onHeightUpdated,
-                                onSamplingStepsUpdated = onSamplingStepsUpdated,
-                                onCfgScaleUpdated = onCfgScaleUpdated,
-                                onRestoreFacesUpdated = onRestoreFacesUpdated,
-                                onSeedUpdated = onSeedUpdated,
-                                onSubSeedUpdated = onSubSeedUpdated,
-                                onSubSeedStrengthUpdated = onSubSeedStrengthUpdated,
-                                onSamplerUpdated = onSamplerUpdated,
-                                onNsfwUpdated = onNsfwUpdated,
-                                onBatchCountUpdated = onBatchCountUpdated,
-                                widthValidationError = state.widthValidationError,
-                                heightValidationError = state.heightValidationError,
+                                handleIntent = handleIntent,
                                 afterSlidersSection = {
                                     Text(
                                         modifier = Modifier.padding(top = 8.dp),
@@ -226,13 +151,14 @@ private fun ScreenContent(
                                         valueRange = DENOISING_STRENGTH_MIN..DENOISING_STRENGTH_MAX,
                                         colors = sliderColors,
                                         onValueChange = {
-                                            onDenoisingStrengthUpdated(it.roundTo(2))
+                                            handleIntent(ImageToImageIntent.UpdateDenoisingStrength(it.roundTo(2)))
                                         },
                                     )
                                 }
                             )
                         }
                     }
+
                     ServerSource.OPEN_AI,
                     ServerSource.LOCAL -> {
                         Column(
@@ -275,14 +201,13 @@ private fun ScreenContent(
                 val isEnabled = when (state.mode) {
                     ServerSource.LOCAL,
                     ServerSource.OPEN_AI -> true
+
                     else -> !state.hasValidationErrors && !state.imageState.isEmpty
                 }
                 GenerationBottomToolbar(
-                    showToolbar = state.mode == ServerSource.AUTOMATIC1111,
+                    state = state,
                     strokeAccentState = isEnabled,
-                    onOpenLoraInput = onOpenLoraInput,
-                    onOpenHyperNetInput = onOpenHyperNetInput,
-                    onOpenEmbedding = onOpenEmbedding,
+                    handleIntent = handleIntent,
                 ) {
                     Button(
                         modifier = Modifier
@@ -290,10 +215,15 @@ private fun ScreenContent(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
-                        onClick = when (state.mode) {
-                            ServerSource.LOCAL,
-                            ServerSource.OPEN_AI -> onChangeConfigurationClicked
-                            else -> onGenerateClicked
+                        onClick = {
+                            handleIntent(
+                                when (state.mode) {
+                                    ServerSource.LOCAL,
+                                    ServerSource.OPEN_AI -> GenerationMviIntent.Configuration
+
+                                    else -> GenerationMviIntent.Generate
+                                }
+                            )
                         },
                         enabled = isEnabled,
                     ) {
@@ -310,6 +240,7 @@ private fun ScreenContent(
                                 id = when (state.mode) {
                                     ServerSource.LOCAL,
                                     ServerSource.OPEN_AI -> R.string.action_change_configuration
+
                                     else -> R.string.action_generate
                                 }
                             ),
@@ -321,13 +252,7 @@ private fun ScreenContent(
         )
         ModalRenderer(
             screenModal = state.screenModal,
-            onSaveGeneratedImages = onSaveGeneratedImages,
-            onViewGeneratedImage = onViewGeneratedImage,
-            onUpdateFromPreviousAiGeneration = onUpdateFromPreviousAiGeneration,
-            onProcessNewPrompts = onProcessNewPrompts,
-            onCancelGeneration = onCancelGeneration,
-            onCancelFetchRandomImage = onCancelFetchRandomImage,
-            onDismissScreenDialog = onDismissScreenDialog,
+            handleIntent = handleIntent,
         )
     }
 }
@@ -338,8 +263,7 @@ private fun InputImageState(
     imageState: ImageToImageState.ImageState,
     onPickImage: () -> Unit = {},
     onTakePhoto: () -> Unit = {},
-    onRandomPhoto: () -> Unit = {},
-    onClearPhoto: () -> Unit = {},
+    handleIntent: (GenerationMviIntent) -> Unit = {},
 ) {
     when (imageState) {
         is ImageToImageState.ImageState.Image -> Box(
@@ -359,7 +283,7 @@ private fun InputImageState(
                 modifier = Modifier
                     .padding(4.dp)
                     .background(color = Color.LightGray, shape = RoundedCornerShape(16.dp)),
-                onClick = onClearPhoto,
+                onClick = { handleIntent(ImageToImageIntent.ClearImageInput) },
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
@@ -368,6 +292,7 @@ private fun InputImageState(
                 )
             }
         }
+
         ImageToImageState.ImageState.None -> Column(
             modifier = modifier,
         ) {
@@ -397,7 +322,7 @@ private fun InputImageState(
                         MaterialTheme.colorScheme.surfaceTint,
                         shape = RoundedCornerShape(16.dp)
                     )
-                    .clickable { onRandomPhoto() },
+                    .clickable { handleIntent(ImageToImageIntent.FetchRandomPhoto) },
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer(modifier = Modifier.width(8.dp))

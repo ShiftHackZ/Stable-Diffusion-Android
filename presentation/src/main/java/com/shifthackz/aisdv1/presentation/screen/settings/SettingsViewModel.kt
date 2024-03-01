@@ -10,12 +10,10 @@ import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
-import com.shifthackz.aisdv1.presentation.features.AutoSaveAiResultsChanged
-import com.shifthackz.aisdv1.presentation.features.FormAdvancedOptionsAlwaysShowChanged
-import com.shifthackz.aisdv1.presentation.features.LocalUseNNAPIChanged
-import com.shifthackz.aisdv1.presentation.features.MonitorConnectionChanged
 import com.shifthackz.aisdv1.presentation.features.SdModelSelected
 import com.shifthackz.aisdv1.presentation.features.SettingsCacheCleared
+import com.shifthackz.aisdv1.presentation.navigation.Router
+import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class SettingsViewModel(
@@ -25,91 +23,122 @@ class SettingsViewModel(
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
     private val analytics: Analytics,
-) : MviRxViewModel<SettingsState, SettingsEffect>() {
+    private val router: Router,
+) : MviRxViewModel<SettingsState, SettingsIntent, SettingsEffect>() {
 
-    override val emptyState = SettingsState.Uninitialized
+    override val emptyState = SettingsState()
 
     init {
         !settingsStateProducer()
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog, EmptyLambda, ::setState)
+            .subscribeBy(::errorLog, EmptyLambda) { state ->
+                updateState { state }
+            }
     }
 
-    //region DIALOG LAUNCHER METHODS
-    fun launchSdModelSelectionDialog() = (currentState as? SettingsState.Content)?.let { state ->
-        setActiveDialog(SettingsState.Dialog.SelectSdModel(state.sdModels, state.sdModelSelected))
+    override fun handleIntent(intent: SettingsIntent) {
+        when (intent) {
+            SettingsIntent.Action.AppVersion -> router.navigateToDebugMenu()
+
+            SettingsIntent.Action.ClearAppCache.Request -> updateState {
+                it.copy(screenDialog = SettingsState.Dialog.ClearAppCache)
+            }
+
+            SettingsIntent.Action.ClearAppCache.Confirm -> clearAppCache()
+
+            SettingsIntent.Action.ReportProblem -> emitEffect(SettingsEffect.ShareLogFile)
+
+            SettingsIntent.DismissDialog -> updateState {
+                it.copy(screenDialog = SettingsState.Dialog.None)
+            }
+
+            SettingsIntent.NavigateConfiguration -> router.navigateToServerSetup(
+                ServerSetupLaunchSource.SETTINGS
+            )
+
+            SettingsIntent.SdModel.OpenChooser -> updateState {
+                it.copy(
+                    screenDialog = SettingsState.Dialog.SelectSdModel(
+                        it.sdModels,
+                        it.sdModelSelected
+                    )
+                )
+            }
+
+            is SettingsIntent.SdModel.Select -> selectStableDiffusionModel(intent.model)
+
+            is SettingsIntent.UpdateFlag.AdvancedFormVisibility -> updateState {
+                it.copy(formAdvancedOptionsAlwaysShow = intent.flag)
+            }
+
+            is SettingsIntent.UpdateFlag.AutoSaveResult -> updateState {
+                it.copy(autoSaveAiResults = intent.flag)
+            }
+
+            is SettingsIntent.UpdateFlag.MonitorConnection -> updateState {
+                it.copy(monitorConnectivity = intent.flag)
+            }
+
+            is SettingsIntent.UpdateFlag.NNAPI -> updateState {
+                it.copy(localUseNNAPI = intent.flag)
+            }
+
+            is SettingsIntent.UpdateFlag.SaveToMediaStore -> changeSaveToMediaStoreSetting(
+                intent.flag
+            )
+
+            is SettingsIntent.LaunchUrl -> emitEffect(SettingsEffect.OpenUrl(intent.url))
+        }
     }
-
-    fun launchClearAppCacheDialog() = setActiveDialog(SettingsState.Dialog.ClearAppCache)
-
-    fun dismissScreenDialog() = setActiveDialog(SettingsState.Dialog.None)
-    //endregion
 
     //region BUSINESS LOGIC METHODS
-    fun selectStableDiffusionModel(value: String) = !selectStableDiffusionModelUseCase(value)
-        .andThen(settingsStateProducer())
-        .doOnSubscribe { setActiveDialog(SettingsState.Dialog.Communicating) }
-        .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(::errorLog) { state ->
-            analytics.logEvent(SdModelSelected(value))
-            setState(state)
-        }
+    private fun selectStableDiffusionModel(value: String) =
+        !selectStableDiffusionModelUseCase(value)
+            .andThen(settingsStateProducer())
+            .doOnSubscribe {
+                updateState {
+                    it.copy(screenDialog = SettingsState.Dialog.Communicating)
+                }
+            }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog) { state ->
+                analytics.logEvent(SdModelSelected(value))
+                updateState { state }
+            }
 
-    fun clearAppCache() = !clearAppCacheUseCase()
+    private fun clearAppCache() = !clearAppCacheUseCase()
         .andThen(settingsStateProducer())
-        .doOnSubscribe { dismissScreenDialog() }
+        .doOnSubscribe { handleIntent(SettingsIntent.DismissDialog) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(::errorLog) { state ->
             analytics.logEvent(SettingsCacheCleared)
-            setState(state)
+            updateState { state }
         }
 
-    fun changeLocalUseNNAPISetting(value: Boolean) = (currentState as? SettingsState.Content)
-        ?.also { preferenceManager.localUseNNAPI = value }
-        ?.copy(localUseNNAPI = value)
-        ?.let(::setState)
-        ?.also { analytics.logEvent(LocalUseNNAPIChanged(value)) }
-
-    fun changeMonitorConnectivitySetting(value: Boolean) = (currentState as? SettingsState.Content)
-        ?.also { preferenceManager.monitorConnectivity = value }
-        ?.copy(monitorConnectivity = value)
-        ?.let(::setState)
-        ?.also { analytics.logEvent(MonitorConnectionChanged(value)) }
-
-    fun changeAutoSaveAiResultSetting(value: Boolean) = (currentState as? SettingsState.Content)
-        ?.also { preferenceManager.autoSaveAiResults = value }
-        ?.copy(autoSaveAiResults = value)
-        ?.let(::setState)
-        ?.also { analytics.logEvent(AutoSaveAiResultsChanged(value)) }
-
-    fun changeSaveToMediaStoreSetting(value: Boolean) {
+    private fun changeSaveToMediaStoreSetting(value: Boolean) {
         val oldImpl: () -> Unit = {
-            (currentState as? SettingsState.Content)
-                ?.also { if (value) emitEffect(SettingsEffect.RequestStoragePermission) }
-                ?.takeIf { !value }
-                ?.also { preferenceManager.saveToMediaStore = false }
-                ?.copy(saveToMediaStore = false)
-                ?.let(::setState)
+            if (value) {
+                emitEffect(SettingsEffect.RequestStoragePermission)
+            } else {
+                preferenceManager.saveToMediaStore = false
+                updateState { it.copy(saveToMediaStore = false) }
+            }
+//            (currentState as? SettingsState)
+//                ?.also { if (value) emitEffect(SettingsEffect.RequestStoragePermission) }
+//                ?.takeIf { !value }
+//                ?.also { preferenceManager.saveToMediaStore = false }
+//                ?.copy(saveToMediaStore = false)
+//                ?.let(::setState)
         }
         val newImpl: () -> Unit = {
-            (currentState as? SettingsState.Content)
-                ?.also { preferenceManager.saveToMediaStore = value }
-                ?.copy(saveToMediaStore = false)
-                ?.let(::setState)
+            preferenceManager.saveToMediaStore = value
+            updateState { it.copy(saveToMediaStore = false) }
+//            (currentState as? SettingsState.Content)
+//                ?.also { preferenceManager.saveToMediaStore = value }
+//                ?.copy(saveToMediaStore = false)
+//                ?.let(::setState)
         }
         if (shouldUseNewMediaStore()) newImpl() else oldImpl()
     }
 
-    fun changeFormAdvancedOptionsAlwaysShow(value: Boolean) = (currentState as? SettingsState.Content)
-        ?.also { preferenceManager.formAdvancedOptionsAlwaysShow = value }
-        ?.copy(formAdvancedOptionsAlwaysShow = value)
-        ?.let(::setState)
-        ?.also { analytics.logEvent(FormAdvancedOptionsAlwaysShowChanged(value)) }
-    //endregion
-
-    //region UI STATES METHODS
-    private fun setActiveDialog(dialog: SettingsState.Dialog) = currentState
-        .withDialog(value = dialog)
-        .let(::setState)
-    //endregion
 }

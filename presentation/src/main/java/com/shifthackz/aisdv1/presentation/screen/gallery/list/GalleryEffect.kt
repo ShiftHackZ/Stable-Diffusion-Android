@@ -1,0 +1,11 @@
+package com.shifthackz.aisdv1.presentation.screen.gallery.list
+
+import android.net.Uri
+import com.shifthackz.aisdv1.core.ui.MviEffect
+import java.io.File
+
+sealed interface GalleryEffect : MviEffect {
+    data class Share(val zipFile: File) : GalleryEffect
+
+    data class OpenUri(val uri: Uri) : GalleryEffect
+}

@@ -14,11 +14,12 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
-import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
+import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
@@ -30,7 +31,7 @@ class TextToImageViewModel(
     private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
     private val wakeLockInterActor: WakeLockInterActor,
-) : GenerationMviViewModel<TextToImageState, GenerationMviEffect>() {
+) : GenerationMviViewModel<TextToImageState, GenerationMviIntent>() {
 
     private val progressModal: Modal
         get() {
@@ -62,6 +63,40 @@ class TextToImageViewModel(
         }
     }
 
+    override fun generate() = currentState
+        .mapToPayload()
+        .let(textToImageUseCase::invoke)
+        .doOnSubscribe {
+            wakeLockInterActor.acquireWakelockUseCase()
+            setActiveModal(progressModal)
+        }
+        .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
+        .subscribeOnMainThread(schedulersProvider)
+        .subscribeBy(
+            onError = { t ->
+                notificationManager.show(
+                    R.string.notification_fail_title.asUiText(),
+                    R.string.notification_fail_sub_title.asUiText(),
+                )
+                setActiveModal(
+                    Modal.Error(
+                        (t.localizedMessage ?: "Something went wrong").asUiText()
+                    )
+                )
+                errorLog(t)
+            },
+            onSuccess = { ai ->
+                ai.forEach { analytics.logEvent(AiImageGenerated(it)) }
+                notificationManager.show(
+                    R.string.notification_finish_title.asUiText(),
+                    R.string.notification_finish_sub_title.asUiText(),
+                )
+                setActiveModal(
+                    Modal.Image.create(ai, preferenceManager.autoSaveAiResults)
+                )
+            },
+        )
+
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {
         if (currentState.screenModal is Modal.Communicating) {
             setActiveModal(Modal.Communicating(status))
@@ -72,41 +107,5 @@ class TextToImageViewModel(
         if (currentState.screenModal is Modal.Generating) {
             setActiveModal(Modal.Generating(status))
         }
-    }
-
-    fun generate() = generate {
-        currentState
-            .mapToPayload()
-            .let(textToImageUseCase::invoke)
-            .doOnSubscribe {
-                wakeLockInterActor.acquireWakelockUseCase()
-                setActiveModal(progressModal)
-            }
-            .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
-            .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(
-                onError = { t ->
-                    notificationManager.show(
-                        R.string.notification_fail_title.asUiText(),
-                        R.string.notification_fail_sub_title.asUiText(),
-                    )
-                    setActiveModal(
-                        Modal.Error(
-                            (t.localizedMessage ?: "Something went wrong").asUiText()
-                        )
-                    )
-                    errorLog(t)
-                },
-                onSuccess = { ai ->
-                    ai.forEach { analytics.logEvent(AiImageGenerated(it)) }
-                    notificationManager.show(
-                        R.string.notification_finish_title.asUiText(),
-                        R.string.notification_finish_sub_title.asUiText(),
-                    )
-                    setActiveModal(
-                        Modal.Image.create(ai, preferenceManager.autoSaveAiResults)
-                    )
-                },
-            )
     }
 }

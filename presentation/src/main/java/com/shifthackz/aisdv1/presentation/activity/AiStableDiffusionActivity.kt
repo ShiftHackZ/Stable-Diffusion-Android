@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavType
@@ -25,36 +24,31 @@ import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.presentation.features.FileSharingFeature
 import com.shifthackz.aisdv1.presentation.features.GalleryExportZip
-import com.shifthackz.aisdv1.presentation.features.GalleryGridItemClick
 import com.shifthackz.aisdv1.presentation.features.GalleryItemImageShare
 import com.shifthackz.aisdv1.presentation.features.GalleryItemInfoShare
 import com.shifthackz.aisdv1.presentation.features.ImagePickerFeature
 import com.shifthackz.aisdv1.presentation.features.ReportProblemEmailComposer
-import com.shifthackz.aisdv1.presentation.features.SettingsConfigurationClick
-import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
+import com.shifthackz.aisdv1.presentation.navigation.MainRouter
+import com.shifthackz.aisdv1.presentation.navigation.Router
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
-import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
 import com.shifthackz.aisdv1.presentation.screen.home.homeScreenNavGraph
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreen
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreen
 import com.shifthackz.aisdv1.presentation.theme.AiStableDiffusionAppTheme
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import org.koin.android.ext.android.inject
-import org.koin.androidx.compose.getViewModel
-import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 
 class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileSharingFeature {
 
     private val galleryDetailSharing: GalleryDetailSharing by inject()
     private val analytics: Analytics by inject()
-    private val debugMenuAccessor: DebugMenuAccessor by inject()
 
     private val viewModel: AiStableDiffusionViewModel by viewModel()
 
@@ -73,7 +67,6 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
 
     override val fileProviderDescriptor: FileProviderDescriptor by inject()
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
@@ -82,6 +75,15 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
         requestStoragePermission()
         setContent {
             val navController = rememberNavController()
+
+            loadKoinModules(
+                module = module {
+                    single<Router>{
+                        MainRouter(navController, get())
+                    }
+                }
+            )
+
             AiStableDiffusionAppTheme {
                 Box {
                     NavHost(
@@ -89,66 +91,27 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                         startDestination = Constants.ROUTE_SPLASH,
                     ) {
                         composable(Constants.ROUTE_SPLASH) {
-                            SplashScreen(
-                                viewModel = koinViewModel(),
-                                navigateOnBoarding = {},
-                                navigateServerSetup = {
-                                    navController.navigate(
-                                        "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SPLASH.key}"
-                                    ) {
-                                        popUpTo(Constants.ROUTE_SPLASH) {
-                                            inclusive = true
-                                        }
-                                    }
-                                },
-                                navigateHome = {
-                                    navController.navigate(Constants.ROUTE_CONFIG_LOADER) {
-                                        popUpTo(Constants.ROUTE_SPLASH) {
-                                            inclusive = true
-                                        }
-                                    }
-                                },
-                            ).Build()
+                            SplashScreen()
                         }
 
                         composable(
                             route = Constants.ROUTE_SERVER_SETUP_FULL,
                             arguments = listOf(
-                                navArgument(Constants.PARAM_SOURCE) { type = NavType.IntType }
+                                navArgument(Constants.PARAM_SOURCE) { type = NavType.IntType },
                             )
                         ) { entry ->
                             val sourceKey = entry.arguments
                                 ?.getInt(Constants.PARAM_SOURCE)
                                 ?: ServerSetupLaunchSource.SPLASH.key
-                            val viewModel = getViewModel<ServerSetupViewModel>(
-                                parameters = { parametersOf(sourceKey) }
-                            )
                             ServerSetupScreen(
-                                viewModel = viewModel,
-                                onNavigateBack = { navController.navigateUp() },
-                                onServerSetupComplete = {
-                                    navController.navigate(Constants.ROUTE_HOME) {
-                                        popUpTo(Constants.ROUTE_SERVER_SETUP) {
-                                            inclusive = true
-                                        }
-                                    }
-                                },
+                                launchSourceKey = sourceKey,
                                 launchUrl = ::openUrl,
                                 launchManageStoragePermission = ::setupManageStoragePermission,
                             )
                         }
 
                         composable(Constants.ROUTE_CONFIG_LOADER) {
-                            ConfigurationLoaderScreen(
-                                viewModel = koinViewModel(),
-                                onNavigateNextScreen = {
-                                    navController.navigate(Constants.ROUTE_HOME) {
-                                        popUpTo(Constants.ROUTE_CONFIG_LOADER) {
-                                            inclusive = true
-                                        }
-                                    }
-                                },
-                            ).Build()
+                            ConfigurationLoaderScreen()
                         }
 
                         homeScreenNavGraph(
@@ -163,24 +126,8 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                     mimeType = Constants.MIME_TYPE_ZIP,
                                 )
                             },
-                            openGalleryItemDetails = { galleryItemId ->
-                                analytics.logEvent(GalleryGridItemClick)
-                                navController
-                                    .navigate("${Constants.ROUTE_GALLERY_DETAIL}/$galleryItemId")
-                            },
                             launchIntent = ::startActivity,
-                            launchSetup = {
-                                analytics.logEvent(SettingsConfigurationClick)
-                                navController.navigate(
-                                    "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.key}"
-                                )
-                            },
                             launchUrl = ::openUrl,
-                            launchDebugMenu = {
-                                if (debugMenuAccessor.invoke()) {
-                                    navController.navigate(Constants.ROUTE_DEBUG)
-                                }
-                            },
                             shareLogFile = {
                                 ReportProblemEmailComposer().invoke(this@AiStableDiffusionActivity)
                             },
@@ -197,12 +144,8 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                             ),
                         ) { entry ->
                             val itemId = entry.arguments?.getLong(Constants.PARAM_ITEM_ID) ?: -1L
-                            val viewModel = getViewModel<GalleryDetailViewModel>(
-                                parameters = { parametersOf(itemId) }
-                            )
                             GalleryDetailScreen(
-                                viewModel = viewModel,
-                                onNavigateBack = { navController.navigateUp() },
+                                itemId = itemId,
                                 shareGalleryFile = { jpgFile ->
                                     analytics.logEvent(GalleryItemImageShare)
                                     shareFile(
@@ -218,15 +161,12 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                         state = uiState,
                                     )
                                 },
-                                copyToClipboard = { text -> copyToClipboard(text) }
-                            ).Build()
+                                copyToClipboard = { text -> copyToClipboard(text) },
+                            )
                         }
 
                         composable(Constants.ROUTE_DEBUG) {
-                            DebugMenuScreen(
-                                viewModel = koinViewModel(),
-                                onNavigateBack = { navController.navigateUp() },
-                            ).Build()
+                            DebugMenuScreen()
                         }
                     }
                 }

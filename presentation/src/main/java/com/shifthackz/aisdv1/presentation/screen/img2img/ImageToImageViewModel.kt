@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.core.ui.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
@@ -17,8 +18,9 @@ import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
-import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
+import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
+import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
@@ -40,7 +42,7 @@ class ImageToImageViewModel(
     private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
     private val wakeLockInterActor: WakeLockInterActor,
-) : GenerationMviViewModel<ImageToImageState, GenerationMviEffect>() {
+) : GenerationMviViewModel<ImageToImageState, GenerationMviIntent>() {
 
     override val emptyState = ImageToImageState()
 
@@ -52,6 +54,93 @@ class ImageToImageViewModel(
                 onError = ::errorLog,
                 onNext = ::updateFormPreviousAiGeneration,
             )
+    }
+
+    override fun handleIntent(intent: GenerationMviIntent) {
+        when (intent) {
+            ImageToImageIntent.ClearImageInput -> updateState {
+                it.copy(imageState = ImageToImageState.ImageState.None)
+            }
+
+            ImageToImageIntent.FetchRandomPhoto -> fetchRandomImage {
+                getRandomImageUseCase()
+                    .doOnSubscribe { setActiveModal(Modal.LoadingRandomImage) }
+                    .subscribeOnMainThread(schedulersProvider)
+                    .subscribeBy(
+                        onError = { t ->
+                            setActiveModal(
+                                Modal.Error(
+                                    UiText.Static(
+                                        t.localizedMessage ?: "Error"
+                                    )
+                                )
+                            )
+                            errorLog(t)
+                        },
+                        onSuccess = { bitmap ->
+                            setActiveModal(Modal.None)
+                            updateState {
+                                it.copy(imageState = ImageToImageState.ImageState.Image(bitmap))
+                            }
+                        },
+                    )
+            }
+
+            is ImageToImageIntent.UpdateDenoisingStrength -> updateState {
+                it.copy(denoisingStrength = intent.value)
+            }
+
+            else -> super.handleIntent(intent)
+        }
+    }
+
+    override fun generate() = when (currentState.imageState) {
+        is ImageToImageState.ImageState.Image -> {
+            Single
+                .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
+                .doOnSubscribe {
+                    wakeLockInterActor.acquireWakelockUseCase()
+                    setActiveModal(Modal.Communicating())
+                }
+                .map(BitmapToBase64Converter::Input)
+                .flatMap(bitmapToBase64Converter::invoke)
+                .map(currentState::preProcessed)
+                .map(ImageToImageState::mapToPayload)
+                .flatMap(imageToImageUseCase::invoke)
+                .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
+                .subscribeOnMainThread(schedulersProvider)
+                .subscribeBy(
+                    onError = { t ->
+                        notificationManager.show(
+                            R.string.notification_fail_title.asUiText(),
+                            R.string.notification_fail_sub_title.asUiText(),
+                        )
+                        setActiveModal(
+                            Modal.Error(
+                                UiText.Static(
+                                    t.localizedMessage ?: "Error"
+                                )
+                            )
+                        )
+                        errorLog(t)
+                    },
+                    onSuccess = { ai ->
+                        ai.forEach { analytics.logEvent(AiImageGenerated(it)) }
+                        notificationManager.show(
+                            R.string.notification_finish_title.asUiText(),
+                            R.string.notification_finish_sub_title.asUiText(),
+                        )
+                        setActiveModal(
+                            Modal.Image.create(
+                                ai,
+                                preferenceManager.autoSaveAiResults,
+                            )
+                        )
+                    }
+                )
+        }
+
+        else -> Disposable.empty()
     }
 
     override fun updateState(mutation: (ImageToImageState) -> ImageToImageState) {
@@ -85,92 +174,11 @@ class ImageToImageViewModel(
         return super.updateFormPreviousAiGeneration(ai)
     }
 
-    fun updateDenoisingStrength(value: Float) = updateState {
-        it.copy(denoisingStrength = value)
-    }
-
     fun updateInputImage(value: PickedResult) = when (value) {
         is PickedResult.Single -> updateState {
             it.copy(imageState = ImageToImageState.ImageState.Image(value.image.bitmap))
         }
+
         else -> Unit
-    }
-
-    fun clearInputImage() = updateState {
-        it.copy(imageState = ImageToImageState.ImageState.None)
-    }
-
-    fun generate() = generate {
-        when (currentState.imageState) {
-            is ImageToImageState.ImageState.Image -> {
-                Single
-                    .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
-                    .doOnSubscribe {
-                        wakeLockInterActor.acquireWakelockUseCase()
-                        setActiveModal(Modal.Communicating())
-                    }
-                    .map(BitmapToBase64Converter::Input)
-                    .flatMap(bitmapToBase64Converter::invoke)
-                    .map(currentState::preProcessed)
-                    .map(ImageToImageState::mapToPayload)
-                    .flatMap(imageToImageUseCase::invoke)
-                    .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
-                    .subscribeOnMainThread(schedulersProvider)
-                    .subscribeBy(
-                        onError = { t ->
-                            notificationManager.show(
-                                R.string.notification_fail_title.asUiText(),
-                                R.string.notification_fail_sub_title.asUiText(),
-                            )
-                            setActiveModal(
-                                Modal.Error(
-                                    UiText.Static(
-                                        t.localizedMessage ?: "Error"
-                                    )
-                                )
-                            )
-                            errorLog(t)
-                        },
-                        onSuccess = { ai ->
-                            ai.forEach { analytics.logEvent(AiImageGenerated(it)) }
-                            notificationManager.show(
-                                R.string.notification_finish_title.asUiText(),
-                                R.string.notification_finish_sub_title.asUiText(),
-                            )
-                            setActiveModal(
-                                Modal.Image.create(
-                                    ai,
-                                    preferenceManager.autoSaveAiResults,
-                                )
-                            )
-                        }
-                    )
-            }
-            else -> Disposable.empty()
-        }
-    }
-
-    fun fetchRandomImage() = fetchRandomImage {
-        getRandomImageUseCase()
-            .doOnSubscribe { setActiveModal(Modal.LoadingRandomImage) }
-            .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(
-                onError = { t ->
-                    setActiveModal(
-                        Modal.Error(
-                            UiText.Static(
-                                t.localizedMessage ?: "Error"
-                            )
-                        )
-                    )
-                    errorLog(t)
-                },
-                onSuccess = { bitmap ->
-                    dismissScreenModal()
-                    updateState {
-                        it.copy(imageState = ImageToImageState.ImageState.Image(bitmap))
-                    }
-                },
-            )
     }
 }

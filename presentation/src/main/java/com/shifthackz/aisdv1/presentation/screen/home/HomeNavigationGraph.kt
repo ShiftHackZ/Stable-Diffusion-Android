@@ -26,11 +26,8 @@ fun NavGraphBuilder.homeScreenNavGraph(
     pickImage: (ImagePickerCallback) -> Unit = {},
     takePhoto: (ImagePickerCallback) -> Unit = {},
     shareGalleryFile: (File) -> Unit = {},
-    openGalleryItemDetails: (Long) -> Unit = {},
     launchIntent: (Intent) -> Unit = {},
-    launchSetup: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
-    launchDebugMenu: () -> Unit = {},
     shareLogFile: () -> Unit = {},
     requestStoragePermissions: () -> Unit = {},
 ) {
@@ -39,24 +36,17 @@ fun NavGraphBuilder.homeScreenNavGraph(
             HomeNavigationScreen(
                 viewModel = koinViewModel(),
                 navItems = listOf(
-                    txt2ImgTab(
-                        launchGalleryDetail = openGalleryItemDetails,
-                    ),
+                    txt2ImgTab(),
                     img2imgTab(
                         pickImage = pickImage,
                         takePhoto = takePhoto,
-                        launchGalleryDetail = openGalleryItemDetails,
-                        launchServerSetup = launchSetup,
                     ),
                     galleryTab(
                         shareGalleryFile = shareGalleryFile,
-                        openGalleryItemDetails = openGalleryItemDetails,
                         launchIntent = launchIntent,
                     ),
                     settingsTab(
-                        launchSetup = launchSetup,
                         launchUrl = launchUrl,
-                        launchDebugMenu = launchDebugMenu,
                         shareLogFile = shareLogFile,
                         requestStoragePermissions = requestStoragePermissions,
                     ),
@@ -67,29 +57,20 @@ fun NavGraphBuilder.homeScreenNavGraph(
 }
 
 @Composable
-private fun txt2ImgTab(
-    launchGalleryDetail: (Long) -> Unit,
-) = HomeNavigationItem(
+private fun txt2ImgTab() = HomeNavigationItem(
     name = stringResource(R.string.home_tab_txt_to_img),
     route = Constants.ROUTE_TXT_TO_IMG,
     icon = HomeNavigationItem.Icon.Resource(
         resId = R.drawable.ic_text,
         modifier = Modifier.size(24.dp),
     ),
-    content = {
-        TextToImageScreen(
-            viewModel = koinViewModel(),
-            launchGalleryDetail = launchGalleryDetail,
-        ).Build()
-    },
+    content = { TextToImageScreen() },
 )
 
 @Composable
 private fun img2imgTab(
     pickImage: (ImagePickerCallback) -> Unit = {},
     takePhoto: (ImagePickerCallback) -> Unit = {},
-    launchGalleryDetail: (Long) -> Unit,
-    launchServerSetup: () -> Unit,
 ) = HomeNavigationItem(
     name = stringResource(R.string.home_tab_img_to_img),
     route = Constants.ROUTE_IMG_TO_IMG,
@@ -99,19 +80,15 @@ private fun img2imgTab(
     ),
     content = {
         ImageToImageScreen(
-            viewModel = koinViewModel(),
             pickImage = pickImage,
             takePhoto = takePhoto,
-            launchGalleryDetail = launchGalleryDetail,
-            launchServerSetup = launchServerSetup,
-        ).Build()
+        )
     },
 )
 
 @Composable
 private fun galleryTab(
     shareGalleryFile: (File) -> Unit = {},
-    openGalleryItemDetails: (Long) -> Unit = {},
     launchIntent: (Intent) -> Unit = {},
 ) = HomeNavigationItem(
     name = stringResource(R.string.home_tab_gallery),
@@ -122,35 +99,28 @@ private fun galleryTab(
     ),
     content = {
         GalleryScreen(
-            viewModel = koinViewModel(),
             shareGalleryFile = shareGalleryFile,
-            openGalleryItemDetails = openGalleryItemDetails,
             launchIntent = launchIntent,
-        ).Build()
+        )
     },
 )
 
 @Composable
 private fun settingsTab(
-    launchSetup: () -> Unit = {},
     launchUrl: (String) -> Unit = {},
-    launchDebugMenu: () -> Unit = {},
     shareLogFile: () -> Unit = {},
     requestStoragePermissions: () -> Unit = {},
 ) = HomeNavigationItem(
-    stringResource(id = R.string.home_tab_settings),
-    Constants.ROUTE_SETTINGS,
-    HomeNavigationItem.Icon.Vector(
+    name = stringResource(id = R.string.home_tab_settings),
+    route = Constants.ROUTE_SETTINGS,
+    icon = HomeNavigationItem.Icon.Vector(
         vector = Icons.Default.Settings,
     ),
     content = {
         SettingsScreen(
-            viewModel = koinViewModel(),
-            launchSetup = launchSetup,
             launchUrl = launchUrl,
-            launchDebugMenu = launchDebugMenu,
             shareLogFile = shareLogFile,
             requestStoragePermissions = requestStoragePermissions,
-        ).Build()
+        )
     }
 )

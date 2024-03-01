@@ -17,9 +17,35 @@ class ExtrasViewModel(
     private val fetchAndGetLorasUseCase: FetchAndGetLorasUseCase,
     private val fetchAndGetHyperNetworksUseCase: FetchAndGetHyperNetworksUseCase,
     private val schedulersProvider: SchedulersProvider,
-) : MviRxViewModel<ExtrasState, ExtrasEffect>() {
+) : MviRxViewModel<ExtrasState, ExtrasIntent, ExtrasEffect>() {
 
     override val emptyState = ExtrasState()
+
+    override fun handleIntent(intent: ExtrasIntent) {
+        when (intent) {
+            ExtrasIntent.ApplyPrompts -> emitEffect(
+                ExtrasEffect.ApplyPrompts(currentState.prompt, currentState.negativePrompt)
+            )
+
+            ExtrasIntent.Close -> emitEffect(
+                ExtrasEffect.Close
+            )
+
+            is ExtrasIntent.ToggleItem -> updateState { state ->
+                state.copy(
+                    loras = state.loras.map {
+                        if (it.key != intent.item.key) it
+                        else it.copy(isApplied = !it.isApplied)
+                    },
+                    prompt = ExtrasFormatter.toggleExtraPromptAlias(
+                        prompt = state.prompt,
+                        loraAlias = intent.item.alias ?: intent.item.name,
+                        type = intent.item.type,
+                    ),
+                )
+            }
+        }
+    }
 
     fun updateData(prompt: String, negativePrompt: String, type: ExtraType) = when (type) {
         ExtraType.Lora -> fetchAndGetLorasUseCase()
@@ -76,22 +102,4 @@ class ExtrasViewModel(
                 }
             },
         )
-
-    fun toggleItem(value: ExtraItemUi) = updateState { state ->
-        state.copy(
-            loras = state.loras.map {
-                if (it.key != value.key) it
-                else it.copy(isApplied = !it.isApplied)
-            },
-            prompt = ExtrasFormatter.toggleExtraPromptAlias(
-                prompt = state.prompt,
-                loraAlias = value.alias ?: value.name,
-                type = value.type,
-            ),
-        )
-    }
-
-    fun applyNewPrompts() = emitEffect(
-        ExtrasEffect.ApplyPrompts(currentState.prompt, currentState.negativePrompt)
-    )
 }

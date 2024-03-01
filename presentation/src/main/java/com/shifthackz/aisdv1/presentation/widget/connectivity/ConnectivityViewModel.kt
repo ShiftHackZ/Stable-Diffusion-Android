@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.ui.EmptyEffect
+import com.shifthackz.aisdv1.core.ui.EmptyIntent
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.connectivity.ObserveSeverConnectivityUseCase
@@ -14,7 +15,7 @@ class ConnectivityViewModel(
     preferenceManager: PreferenceManager,
     observeServerConnectivityUseCase: ObserveSeverConnectivityUseCase,
     schedulersProvider: SchedulersProvider,
-) : MviRxViewModel<ConnectivityState, EmptyEffect>() {
+) : MviRxViewModel<ConnectivityState, EmptyIntent, EmptyEffect>() {
 
     override val emptyState = ConnectivityState.Uninitialized(preferenceManager.monitorConnectivity)
 
@@ -23,6 +24,8 @@ class ConnectivityViewModel(
             .map { connection -> connection to preferenceManager.monitorConnectivity }
             .map(ConnectivityState::consume)
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog, EmptyLambda, ::setState)
+            .subscribeBy(::errorLog, EmptyLambda) { state ->
+                updateState { state }
+            }
     }
 }

@@ -33,10 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.ui.MviComposable2
-import com.shifthackz.aisdv1.core.ui.MviScreen2
+import com.shifthackz.aisdv1.core.ui.MviComposable
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationStepBar
@@ -44,38 +42,35 @@ import com.shifthackz.aisdv1.presentation.screen.setup.steps.ConfigurationStep
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.SourceSelectionStep
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
-import org.koin.androidx.compose.get
+import org.koin.androidx.compose.getViewModel
 import org.koin.compose.koinInject
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ServerSetupScreen(
     modifier: Modifier = Modifier,
-    viewModel: ServerSetupViewModel,
-    onNavigateBack: () -> Unit = {},
-    onServerSetupComplete: () -> Unit = {},
+    launchSourceKey: Int,
     launchUrl: (String) -> Unit = {},
     launchManageStoragePermission: () -> Unit = {},
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    MviComposable2(
-        viewModel = viewModel,
+    MviComposable(
+        viewModel = getViewModel<ServerSetupViewModel>(
+            parameters = { parametersOf(launchSourceKey) }
+        ),
         effectHandler = { effect ->
             when (effect) {
-                ServerSetupEffect.CompleteSetup -> onServerSetupComplete()
                 ServerSetupEffect.LaunchManageStoragePermission -> launchManageStoragePermission()
                 is ServerSetupEffect.LaunchUrl -> launchUrl(effect.url)
-                ServerSetupEffect.NavigateBack -> onNavigateBack()
                 ServerSetupEffect.HideKeyboard -> keyboardController?.hide()
             }
         },
-    ) { state ->
+    ) { state, intentHandler ->
         ScreenContent(
             modifier = modifier.fillMaxSize(),
             state = state,
             buildInfoProvider = koinInject(),
-            handleIntent = viewModel::handleIntent,
+            handleIntent = intentHandler,
         )
     }
 }

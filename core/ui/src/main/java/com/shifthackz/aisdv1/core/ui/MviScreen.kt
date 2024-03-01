@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.shifthackz.aisdv1.core.viewmodel.MviViewModel
 
-abstract class MviScreen<S: MviState, E: MviEffect>(
-    private val viewModel: MviViewModel<S, E>,
+abstract class MviScreen<S : MviState, I : MviIntent, E : MviEffect>(
+    private val viewModel: MviViewModel<S, I, E>,
 ) : Screen() {
 
     @Composable
@@ -15,12 +15,13 @@ abstract class MviScreen<S: MviState, E: MviEffect>(
         LaunchedEffect(KEY_EFFECTS_PROCESSOR) {
             viewModel.effectStream.collect(::processEffect)
         }
-        super.Build()
+        ApplySystemUiColors()
+        Content()
     }
 
     protected open fun processEffect(effect: E) = Unit
 
     companion object {
-        private const val KEY_EFFECTS_PROCESSOR = "key_effects_processor"
+        const val KEY_EFFECTS_PROCESSOR = "key_effects_processor"
     }
 }

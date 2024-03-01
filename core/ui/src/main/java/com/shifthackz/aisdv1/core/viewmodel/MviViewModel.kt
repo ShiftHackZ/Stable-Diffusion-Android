@@ -2,12 +2,12 @@
 
 package com.shifthackz.aisdv1.core.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.ui.BuildConfig
 import com.shifthackz.aisdv1.core.ui.MviEffect
+import com.shifthackz.aisdv1.core.ui.MviIntent
 import com.shifthackz.aisdv1.core.ui.MviState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class MviViewModel<S : MviState, E : MviEffect> : ViewModel() {
+abstract class MviViewModel<S : MviState, I : MviIntent, E : MviEffect> : ViewModel() {
 
     private val mutableState: MutableStateFlow<S> by lazy { MutableStateFlow(emptyState) }
     private val effectChannel: Channel<E> = Channel()
@@ -37,16 +37,14 @@ abstract class MviViewModel<S : MviState, E : MviEffect> : ViewModel() {
 
     abstract val emptyState: S
 
-    fun setState(state: S) {
-        if (BuildConfig.DEBUG) {
-            Log.d(this::class.simpleName, "NEW STATE : $state")
-        }
-        mutableState.tryEmit(state)
+    open fun handleIntent(intent: I) {
+        if (BuildConfig.DEBUG) debugLog("NEW INTENT : $intent")
     }
 
     open fun updateState(mutation: (S) -> S) = mutableState.update {
-        if (BuildConfig.DEBUG) debugLog("NEW STATE : $state")
-        mutation(it)
+        val newState = mutation(it)
+        if (BuildConfig.DEBUG) debugLog("NEW STATE : $newState")
+        newState
     }
 
     fun emitEffect(effect: E) {

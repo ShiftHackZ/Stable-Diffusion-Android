@@ -7,7 +7,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.horde.CommonStringValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
-import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel2
+import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
@@ -25,6 +25,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.features.SetupConnectEvent
 import com.shifthackz.aisdv1.presentation.features.SetupConnectFailure
 import com.shifthackz.aisdv1.presentation.features.SetupConnectSuccess
+import com.shifthackz.aisdv1.presentation.navigation.Router
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomModelSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
@@ -47,7 +48,8 @@ class ServerSetupViewModel(
     private val preferenceManager: PreferenceManager,
     private val analytics: Analytics,
     private val wakeLockInterActor: WakeLockInterActor,
-) : MviRxViewModel2<ServerSetupState, ServerSetupIntent, ServerSetupEffect>() {
+    private val router: Router,
+) : MviRxViewModel<ServerSetupState, ServerSetupIntent, ServerSetupEffect>() {
 
     override val emptyState = ServerSetupState(
         showBackNavArrow = launchSource == ServerSetupLaunchSource.SETTINGS,
@@ -176,7 +178,7 @@ class ServerSetupViewModel(
         }
 
         ServerSetupIntent.NavigateBack -> if (currentState.step == ServerSetupState.Step.entries.first()) {
-            emitEffect(ServerSetupEffect.NavigateBack)
+            router.navigateBack()
         } else {
             emitEffect(ServerSetupEffect.HideKeyboard)
             updateState {
@@ -401,6 +403,6 @@ class ServerSetupViewModel(
         preferenceManager.forceSetupAfterUpdate = false
         analytics.logEvent(SetupConnectSuccess)
         handleIntent(ServerSetupIntent.DismissDialog)
-        emitEffect(ServerSetupEffect.CompleteSetup)
+        router.navigateToHomeScreen()
     }
 }

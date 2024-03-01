@@ -17,28 +17,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.core.ui.MviComposable
+import org.koin.androidx.compose.koinViewModel
 
-class ConfigurationLoaderScreen(
-    private val viewModel: ConfigurationLoaderViewModel,
-    private val onNavigateNextScreen: () -> Unit = {},
-) : MviScreen<ConfigurationLoaderState, ConfigurationLoaderEffect>(viewModel) {
-
-    @Composable
-    override fun Content() {
-        val state = viewModel.state.collectAsStateWithLifecycle().value
+@Composable
+fun ConfigurationLoaderScreen() {
+    MviComposable(
+        viewModel = koinViewModel<ConfigurationLoaderViewModel>(),
+    ) { state, _ ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
         )
-    }
-
-    override fun processEffect(effect: ConfigurationLoaderEffect) = when (effect) {
-        ConfigurationLoaderEffect.ProceedNavigation -> onNavigateNextScreen()
-        else -> Unit
     }
 }
 

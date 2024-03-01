@@ -41,36 +41,42 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.extensions.shimmer
-import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.core.ui.MviComposable
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.widget.error.ErrorComposable
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
+import org.koin.androidx.compose.koinViewModel
 
-class ExtrasScreen(
-    private val viewModel: ExtrasViewModel,
-    private val onNewPrompts: (String, String) -> Unit,
-    private val onClose: () -> Unit,
-) : MviScreen<ExtrasState, ExtrasEffect>(viewModel) {
+@Composable
+fun ExtrasScreen(
+    prompt: String,
+    negativePrompt: String,
+    type: ExtraType,
+    onNewPrompts: (String, String) -> Unit,
+    onClose: () -> Unit,
+) {
+    MviComposable(
+        viewModel = koinViewModel<ExtrasViewModel>().apply {
+            updateData(prompt, negativePrompt, type)
+        },
+        effectHandler = { effect ->
+            when (effect) {
+                is ExtrasEffect.ApplyPrompts -> {
+                    onNewPrompts(effect.prompt, effect.negativePrompt)
+                    onClose()
+                }
 
-    @Composable
-    override fun Content() {
+                ExtrasEffect.Close -> onClose()
+            }
+        },
+    ) { state, intentHandler ->
         ScreenContent(
-            state = viewModel.state.collectAsStateWithLifecycle().value,
-            onItemToggle = viewModel::toggleItem,
-            onApplyNewPrompts = viewModel::applyNewPrompts,
-            onClose = onClose,
+            state = state,
+            hanleIntent = intentHandler,
         )
-    }
-
-    override fun processEffect(effect: ExtrasEffect) = when (effect) {
-        is ExtrasEffect.ApplyPrompts -> {
-            onNewPrompts(effect.prompt, effect.negativePrompt)
-            onClose()
-        }
     }
 }
 
@@ -78,9 +84,7 @@ class ExtrasScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ExtrasState,
-    onItemToggle: (ExtraItemUi) -> Unit,
-    onApplyNewPrompts: () -> Unit,
-    onClose: () -> Unit,
+    hanleIntent: (ExtrasIntent) -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = {},
@@ -101,7 +105,7 @@ private fun ScreenContent(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 12.dp, vertical = 8.dp),
-                            onClick = onApplyNewPrompts
+                            onClick = { hanleIntent(ExtrasIntent.ApplyPrompts) }
                         ) {
                             Text(
                                 text = stringResource(
@@ -120,11 +124,13 @@ private fun ScreenContent(
                         .fillMaxSize(),
                 ) {
                     ModalDialogToolbar(
-                        text = stringResource(id = when (state.type) {
-                            ExtraType.Lora -> R.string.title_lora
-                            ExtraType.HyperNet -> R.string.title_hyper_net
-                        }),
-                        onClose = onClose,
+                        text = stringResource(
+                            id = when (state.type) {
+                                ExtraType.Lora -> R.string.title_lora
+                                ExtraType.HyperNet -> R.string.title_hyper_net
+                            }
+                        ),
+                        onClose = { hanleIntent(ExtrasIntent.Close) },
                     )
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(1),
@@ -161,7 +167,9 @@ private fun ScreenContent(
                                 ) { index ->
                                     ExtrasItemComposable(
                                         item = state.loras[index],
-                                        onLoraSelected = onItemToggle,
+                                        onLoraSelected = {
+                                            hanleIntent(ExtrasIntent.ToggleItem(it))
+                                        },
                                     )
                                 }
                             }
@@ -188,10 +196,12 @@ private fun ExtrasEmptyState(type: ExtraType) {
                 .padding(top = 16.dp)
                 .padding(horizontal = 16.dp)
                 .align(Alignment.CenterHorizontally),
-            text = stringResource(id = when (type) {
-                ExtraType.Lora -> R.string.extras_empty_sub_title_lora
-                ExtraType.HyperNet -> R.string.extras_empty_sub_title_hypernet
-            }),
+            text = stringResource(
+                id = when (type) {
+                    ExtraType.Lora -> R.string.extras_empty_sub_title_lora
+                    ExtraType.HyperNet -> R.string.extras_empty_sub_title_hypernet
+                }
+            ),
             textAlign = TextAlign.Center,
         )
     }

@@ -95,7 +95,7 @@ class HomeNavigationScreen(
             },
             content = { paddingValues ->
                 Column(Modifier.padding(paddingValues)) {
-                    ConnectivityComposable(koinViewModel()).Build()
+                    ConnectivityComposable()
                     NavHost(
                         modifier = Modifier.fillMaxSize(),
                         navController = navController,
