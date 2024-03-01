@@ -21,6 +21,7 @@ android {
         buildConfigField "String", "HUGGING_FACE_URL", "\"https://huggingface.co/\""
         buildConfigField "String", "HUGGING_FACE_INFERENCE_URL", "\"https://api-inference.huggingface.co/\""
         buildConfigField "String", "HORDE_AI_URL", "\"https://stablehorde.net/\""
+        buildConfigField "String", "OPEN_AI_URL", "\"https://api.openai.com/\""
 
         buildConfigField "String", "HORDE_AI_SIGN_UP_URL", "\"https://stablehorde.net/register\""
         buildConfigField "String", "HUGGING_FACE_INFO_URL", "\"https://huggingface.co/docs/api-inference/index\""

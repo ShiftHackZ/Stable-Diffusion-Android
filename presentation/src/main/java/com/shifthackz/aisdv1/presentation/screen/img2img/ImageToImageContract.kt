@@ -4,6 +4,10 @@ import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
+import com.shifthackz.aisdv1.domain.entity.OpenAiModel
+import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
+import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.model.Modal
@@ -28,6 +32,10 @@ data class ImageToImageState(
     override val subSeedStrength: Float = 0f,
     override val selectedSampler: String = "",
     override val availableSamplers: List<String> = emptyList(),
+    override val openAiModel: OpenAiModel = OpenAiModel.DALL_E_2,
+    override val openAiSize: OpenAiSize = OpenAiSize.W1024_H1024,
+    override val openAiQuality: OpenAiQuality = OpenAiQuality.STANDARD,
+    override val openAiStyle: OpenAiStyle = OpenAiStyle.VIVID,
     override val widthValidationError: UiText? = null,
     override val heightValidationError: UiText? = null,
     override val nsfw: Boolean = false,
@@ -61,6 +69,10 @@ data class ImageToImageState(
         subSeedStrength: Float,
         selectedSampler: String,
         availableSamplers: List<String>,
+        openAiModel: OpenAiModel,
+        openAiSize: OpenAiSize,
+        openAiQuality: OpenAiQuality,
+        openAiStyle: OpenAiStyle,
         widthValidationError: UiText?,
         heightValidationError: UiText?,
         nsfw: Boolean,
@@ -83,6 +95,10 @@ data class ImageToImageState(
         subSeedStrength = subSeedStrength,
         selectedSampler = selectedSampler,
         availableSamplers = availableSamplers,
+        openAiModel = openAiModel,
+        openAiSize = openAiSize,
+        openAiQuality = openAiQuality,
+        openAiStyle = openAiStyle,
         widthValidationError = widthValidationError,
         heightValidationError = heightValidationError,
         nsfw = nsfw,

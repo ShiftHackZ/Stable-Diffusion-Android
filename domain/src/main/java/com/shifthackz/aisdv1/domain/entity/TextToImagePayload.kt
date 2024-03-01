@@ -14,4 +14,7 @@ data class TextToImagePayload(
     val sampler: String,
     val nsfw: Boolean,
     val batchCount: Int,
+    val style: String?,
+    val quality: String?,
+    val openAiModel: OpenAiModel?,
 )

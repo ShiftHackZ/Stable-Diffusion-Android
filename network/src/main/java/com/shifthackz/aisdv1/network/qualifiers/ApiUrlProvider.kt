@@ -7,4 +7,5 @@ interface ApiUrlProvider {
     val imageCdnApiUrl: String
     val huggingFaceApiUrl: String
     val huggingFaceInferenceApiUrl: String
+    val openAiApiUrl: String
 }

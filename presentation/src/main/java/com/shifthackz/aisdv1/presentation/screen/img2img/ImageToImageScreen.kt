@@ -174,94 +174,107 @@ private fun ScreenContent(
                 )
             },
             content = { paddingValues ->
-                if (state.mode != ServerSource.LOCAL) {
-                    val scrollState = rememberScrollState()
-                    Column(
-                        modifier = Modifier
-                            .padding(paddingValues)
-                            .verticalScroll(scrollState)
-                            .padding(horizontal = 16.dp),
-                    ) {
-                        InputImageState(
+                when (state.mode) {
+                    ServerSource.AUTOMATIC1111 ,
+                    ServerSource.HORDE ,
+                    ServerSource.HUGGING_FACE -> {
+                        val scrollState = rememberScrollState()
+                        Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 16.dp),
-                            imageState = state.imageState,
-                            onPickImage = onPickImage,
-                            onTakePhoto = onTakePhoto,
-                            onRandomPhoto = onRandomPhoto,
-                            onClearPhoto = onClearPhoto,
-                        )
-                        GenerationInputForm(
-                            state = state,
-                            onShowAdvancedOptionsToggle = onShowAdvancedOptionsToggle,
-                            onPromptUpdated = onPromptUpdated,
-                            onNegativePromptUpdated = onNegativePromptUpdated,
-                            onWidthUpdated = onWidthUpdated,
-                            onHeightUpdated = onHeightUpdated,
-                            onSamplingStepsUpdated = onSamplingStepsUpdated,
-                            onCfgScaleUpdated = onCfgScaleUpdated,
-                            onRestoreFacesUpdated = onRestoreFacesUpdated,
-                            onSeedUpdated = onSeedUpdated,
-                            onSubSeedUpdated = onSubSeedUpdated,
-                            onSubSeedStrengthUpdated = onSubSeedStrengthUpdated,
-                            onSamplerUpdated = onSamplerUpdated,
-                            onNsfwUpdated = onNsfwUpdated,
-                            onBatchCountUpdated = onBatchCountUpdated,
-                            widthValidationError = state.widthValidationError,
-                            heightValidationError = state.heightValidationError,
-                            afterSlidersSection = {
-                                Text(
-                                    modifier = Modifier.padding(top = 8.dp),
-                                    text = stringResource(
-                                        id = R.string.hint_denoising_strength,
-                                        "${state.denoisingStrength.roundTo(2)}"
-                                    ),
-                                )
-                                Slider(
-                                    value = state.denoisingStrength,
-                                    valueRange = DENOISING_STRENGTH_MIN..DENOISING_STRENGTH_MAX,
-                                    colors = sliderColors,
-                                    onValueChange = {
-                                        onDenoisingStrengthUpdated(it.roundTo(2))
-                                    },
-                                )
-                            }
-                        )
+                                .padding(paddingValues)
+                                .verticalScroll(scrollState)
+                                .padding(horizontal = 16.dp),
+                        ) {
+                            InputImageState(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 16.dp),
+                                imageState = state.imageState,
+                                onPickImage = onPickImage,
+                                onTakePhoto = onTakePhoto,
+                                onRandomPhoto = onRandomPhoto,
+                                onClearPhoto = onClearPhoto,
+                            )
+                            GenerationInputForm(
+                                state = state,
+                                onShowAdvancedOptionsToggle = onShowAdvancedOptionsToggle,
+                                onPromptUpdated = onPromptUpdated,
+                                onNegativePromptUpdated = onNegativePromptUpdated,
+                                onWidthUpdated = onWidthUpdated,
+                                onHeightUpdated = onHeightUpdated,
+                                onSamplingStepsUpdated = onSamplingStepsUpdated,
+                                onCfgScaleUpdated = onCfgScaleUpdated,
+                                onRestoreFacesUpdated = onRestoreFacesUpdated,
+                                onSeedUpdated = onSeedUpdated,
+                                onSubSeedUpdated = onSubSeedUpdated,
+                                onSubSeedStrengthUpdated = onSubSeedStrengthUpdated,
+                                onSamplerUpdated = onSamplerUpdated,
+                                onNsfwUpdated = onNsfwUpdated,
+                                onBatchCountUpdated = onBatchCountUpdated,
+                                widthValidationError = state.widthValidationError,
+                                heightValidationError = state.heightValidationError,
+                                afterSlidersSection = {
+                                    Text(
+                                        modifier = Modifier.padding(top = 8.dp),
+                                        text = stringResource(
+                                            id = R.string.hint_denoising_strength,
+                                            "${state.denoisingStrength.roundTo(2)}"
+                                        ),
+                                    )
+                                    Slider(
+                                        value = state.denoisingStrength,
+                                        valueRange = DENOISING_STRENGTH_MIN..DENOISING_STRENGTH_MAX,
+                                        colors = sliderColors,
+                                        onValueChange = {
+                                            onDenoisingStrengthUpdated(it.roundTo(2))
+                                        },
+                                    )
+                                }
+                            )
+                        }
                     }
-                } else {
-                    Column(
-                        modifier = Modifier
-                            .padding(paddingValues)
-                            .padding(horizontal = 36.dp)
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(96.dp),
-                            imageVector = Icons.Default.DeviceUnknown,
-                            contentDescription = "Feature not supported",
-                        )
-                        Text(
-                            modifier = Modifier.padding(top = 20.dp),
-                            text = stringResource(id = R.string.local_no_img2img_support_title),
-                            style = MaterialTheme.typography.headlineSmall,
-                        )
-                        Text(
-                            modifier = Modifier.padding(top = 14.dp),
-                            text = stringResource(id = R.string.local_no_img2img_support_sub_title),
-                        )
-                        Text(
-                            modifier = Modifier.padding(top = 14.dp),
-                            text = stringResource(id = R.string.local_no_img2img_support_sub_title_2),
-                        )
+                    ServerSource.OPEN_AI,
+                    ServerSource.LOCAL -> {
+                        Column(
+                            modifier = Modifier
+                                .padding(paddingValues)
+                                .padding(horizontal = 36.dp)
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(96.dp),
+                                imageVector = Icons.Default.DeviceUnknown,
+                                contentDescription = "Feature not supported",
+                            )
+                            Text(
+                                modifier = Modifier.padding(top = 20.dp),
+                                text = stringResource(id = R.string.local_no_img2img_support_title),
+                                style = MaterialTheme.typography.headlineSmall,
+                            )
+                            Text(
+                                modifier = Modifier.padding(top = 14.dp),
+                                text = stringResource(
+                                    if (state.mode == ServerSource.LOCAL) R.string.local_no_img2img_support_sub_title
+                                    else R.string.dalle_no_img2img_support_sub_title
+                                ),
+                            )
+                            Text(
+                                modifier = Modifier.padding(top = 14.dp),
+                                text = stringResource(
+                                    if (state.mode == ServerSource.LOCAL) R.string.local_no_img2img_support_sub_title_2
+                                    else R.string.dalle_no_img2img_support_sub_title_2
+                                ),
+                            )
+                        }
                     }
                 }
             },
             bottomBar = {
                 val isEnabled = when (state.mode) {
-                    ServerSource.LOCAL -> true
+                    ServerSource.LOCAL,
+                    ServerSource.OPEN_AI -> true
                     else -> !state.hasValidationErrors && !state.imageState.isEmpty
                 }
                 GenerationBottomToolbar(
@@ -278,7 +291,8 @@ private fun ScreenContent(
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
                         onClick = when (state.mode) {
-                            ServerSource.LOCAL -> onChangeConfigurationClicked
+                            ServerSource.LOCAL,
+                            ServerSource.OPEN_AI -> onChangeConfigurationClicked
                             else -> onGenerateClicked
                         },
                         enabled = isEnabled,
@@ -294,7 +308,8 @@ private fun ScreenContent(
                             modifier = Modifier.padding(start = 8.dp),
                             text = stringResource(
                                 id = when (state.mode) {
-                                    ServerSource.LOCAL -> R.string.action_change_configuration
+                                    ServerSource.LOCAL,
+                                    ServerSource.OPEN_AI -> R.string.action_change_configuration
                                     else -> R.string.action_generate
                                 }
                             ),

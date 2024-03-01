@@ -28,7 +28,7 @@ internal class HuggingFaceGenerationRemoteDataSource(
 
     override fun textToImage(
         modelName: String,
-        payload: TextToImagePayload
+        payload: TextToImagePayload,
     ): Single<AiGenerationResult> = huggingFaceInferenceApi
         .generate(modelName, payload.mapToHuggingFaceRequest())
         .map(BitmapToBase64Converter::Input)
@@ -39,7 +39,7 @@ internal class HuggingFaceGenerationRemoteDataSource(
 
     override fun imageToImage(
         modelName: String,
-        payload: ImageToImagePayload
+        payload: ImageToImagePayload,
     ): Single<AiGenerationResult> = huggingFaceInferenceApi
         .generate(modelName, payload.mapToHuggingFaceRequest())
         .map(BitmapToBase64Converter::Input)

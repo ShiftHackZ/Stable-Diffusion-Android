@@ -4,6 +4,7 @@ enum class ServerSource(val key: String) {
     AUTOMATIC1111("custom"),
     HORDE("horde"),
     HUGGING_FACE("hugging_face"),
+    OPEN_AI("open_ai"),
     LOCAL("local");
 
     companion object {

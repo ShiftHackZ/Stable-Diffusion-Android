@@ -70,13 +70,14 @@ class ServerSetupViewModel(
                         .copy(
                             huggingFaceModels = hfModels.map(HuggingFaceModel::alias),
                             huggingFaceModel = configuration.huggingFaceModel,
+                            huggingFaceApiKey = configuration.huggingFaceApiKey,
+                            openAiApiKey = configuration.openAiApiKey,
                             localModels = localModels.mapToUi(),
                             localCustomModel = localModels.mapLocalCustomModelSwitchState(),
                             mode = configuration.source,
                             demoMode = configuration.demoMode,
                             serverUrl = configuration.serverUrl,
                             authType = configuration.authType,
-                            huggingFaceApiKey = configuration.huggingFaceApiKey,
                         )
                         .withCredentials(configuration.authCredentials)
                         .withHordeApiKey(configuration.hordeApiKey)
@@ -120,6 +121,10 @@ class ServerSetupViewModel(
         it.copy(huggingFaceModel = value)
     }
 
+    fun updateOpenAiApiKey(value: String) = updateState {
+        it.copy(openAiApiKey = value)
+    }
+
     fun updateDemoMode(value: Boolean) = updateState {
         it.copy(demoMode = value)
     }
@@ -146,6 +151,7 @@ class ServerSetupViewModel(
             ServerSource.LOCAL -> connectToLocalDiffusion()
             ServerSource.AUTOMATIC1111 -> connectToAutomaticInstance()
             ServerSource.HUGGING_FACE -> connectToHuggingFace()
+            ServerSource.OPEN_AI -> connectToOpenAi()
         }
             .doOnSubscribe { setScreenDialog(ServerSetupState.Dialog.Communicating) }
             .subscribeOnMainThread(schedulersProvider)
@@ -210,6 +216,14 @@ class ServerSetupViewModel(
             }
             validation.isValid
         }
+
+        ServerSource.OPEN_AI -> {
+            val validation = stringValidator(currentState.openAiApiKey)
+            updateState {
+                it.copy(openAiApiKeyValidationError = validation.mapToUi())
+            }
+            validation.isValid
+        }
     }
 
     private fun connectToAutomaticInstance(): Single<Result<Unit>> {
@@ -231,12 +245,16 @@ class ServerSetupViewModel(
         )
     }
 
-    private fun connectToHuggingFace(): Single<Result<Unit>> = with(currentState) {
+    private fun connectToHuggingFace() = with(currentState) {
         setupConnectionInterActor.connectToHuggingFace(
             huggingFaceApiKey,
             huggingFaceModel,
         )
     }
+
+    private fun connectToOpenAi() = setupConnectionInterActor.connectToOpenAi(
+        currentState.openAiApiKey,
+    )
 
     private fun connectToHorde(): Single<Result<Unit>> {
         val testApiKey = if (currentState.hordeDefaultApiKey) {

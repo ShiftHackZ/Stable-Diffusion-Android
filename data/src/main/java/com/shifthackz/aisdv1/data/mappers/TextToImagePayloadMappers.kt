@@ -1,9 +1,11 @@
 package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
+import com.shifthackz.aisdv1.network.request.OpenAiRequest
 import com.shifthackz.aisdv1.network.request.TextToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import java.util.Date
@@ -56,6 +58,17 @@ fun TextToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest =
             this["num_inference_steps"] = samplingSteps
             this["guidance_scale"] = cfgScale
         },
+    )
+}
+
+fun TextToImagePayload.mapToOpenAiRequest(): OpenAiRequest = with(this) {
+    OpenAiRequest(
+        prompt = prompt,
+        model = openAiModel?.alias ?: OpenAiModel.DALL_E_2.alias,
+        size = "${width}x${height}",
+        responseFormat = "b64_json",
+        quality = quality,
+        style = style,
     )
 }
 

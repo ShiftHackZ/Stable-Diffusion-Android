@@ -16,6 +16,7 @@ internal class GetConfigurationUseCaseImpl(
             demoMode = preferenceManager.demoMode,
             source = preferenceManager.source,
             hordeApiKey = preferenceManager.hordeApiKey,
+            openAiApiKey = preferenceManager.openAiApiKey,
             huggingFaceApiKey = preferenceManager.huggingFaceApiKey,
             huggingFaceModel = preferenceManager.huggingFaceModel,
             authCredentials = authorizationStore.getAuthorizationCredentials(),

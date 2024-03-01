@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import io.reactivex.rxjava3.core.Observable
 
@@ -13,6 +14,7 @@ internal class TextToImageUseCaseImpl(
     private val stableDiffusionGenerationRepository: StableDiffusionGenerationRepository,
     private val hordeGenerationRepository: HordeGenerationRepository,
     private val huggingFaceGenerationRepository: HuggingFaceGenerationRepository,
+    private val openAiGenerationRepository: OpenAiGenerationRepository,
     private val localDiffusionGenerationRepository: LocalDiffusionGenerationRepository,
     private val preferenceManager: PreferenceManager,
 ) : TextToImageUseCase {
@@ -27,5 +29,6 @@ internal class TextToImageUseCaseImpl(
         ServerSource.LOCAL -> localDiffusionGenerationRepository.generateFromText(payload)
         ServerSource.HUGGING_FACE -> huggingFaceGenerationRepository.generateFromText(payload)
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.generateFromText(payload)
+        ServerSource.OPEN_AI -> openAiGenerationRepository.generateFromText(payload)
     }
 }

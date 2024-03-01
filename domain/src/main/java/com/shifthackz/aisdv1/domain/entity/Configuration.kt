@@ -7,6 +7,7 @@ data class Configuration(
     val demoMode: Boolean,
     val source: ServerSource,
     val hordeApiKey: String,
+    val openAiApiKey: String,
     val huggingFaceApiKey: String,
     val huggingFaceModel: String,
     val authCredentials: AuthorizationCredentials,
