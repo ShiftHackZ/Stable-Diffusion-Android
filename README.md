@@ -16,6 +16,8 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
 
 - Can use server environment powered by [AI Horde](https://stablehorde.net/) (a crowdsourced distributed cluster of Stable Diffusion workers)
 - Can use server environment powered by [Stable-Diffusion-WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) (AUTOMATIC1111)
+- Can use server envitonment powered by [Hugging Face Inference API](https://huggingface.co/docs/api-inference/quicktour).
+- Can use server environment powered by [OpenAI](https://platform.openai.com/docs/api-reference/images) (DALL-E-2, DALL-E-3).
 - Can use local environment powered by LocalDiffusion (Beta)
 - Supports original Txt2Img, Img2Img modes
   - **Positive** and **negative** prompt support
