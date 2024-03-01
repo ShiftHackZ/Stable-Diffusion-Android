@@ -135,7 +135,7 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
                                 },
                                 launchUrl = ::openUrl,
                                 launchManageStoragePermission = ::setupManageStoragePermission,
-                            ).Build()
+                            )
                         }
 
                         composable(Constants.ROUTE_CONFIG_LOADER) {

@@ -16,7 +16,8 @@ abstract class MviScreen2<S : MviState, I : MviIntent, E : MviEffect>(
         LaunchedEffect(KEY_EFFECTS_PROCESSOR) {
             viewModel.effectStream.collect(::processEffect)
         }
-        super.Build()
+        ApplySystemUiColors()
+        Content()
     }
 
     protected open fun processEffect(effect: E) = Unit

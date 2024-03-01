@@ -14,6 +14,7 @@
     <string name="browse">Просмотр</string>
     <string name="apply">Применить</string>
     <string name="close">Закрыть</string>
+    <string name="next">Далее</string>
 
     <string name="version">Версия %1$s</string>
 
@@ -24,6 +25,9 @@
     <string name="local_no_img2img_support_title">Не доступно</string>
     <string name="local_no_img2img_support_sub_title">Режим «Изображение в изображении» (img2img) недоступен при использовании локальных ресурсов телефона для создания изображений.</string>
     <string name="local_no_img2img_support_sub_title_2">Вы можете перейти к генерации на основе сервера в настройках, чтобы использовать этот режим.</string>
+
+    <string name="dalle_no_img2img_support_sub_title">Режим «Изображение в изображении» (img2img) пока не поддерживается DALL·E.</string>
+    <string name="dalle_no_img2img_support_sub_title_2">Вы можете перейти к генерации на основе другого сервера в настройках, чтобы использовать этот режим.</string>
 
     <string name="action_generate">Генерировать</string>
     <string name="action_export">Экспорт</string>
@@ -45,10 +49,16 @@
     <string name="action_image_picker_random">Случайное изображение</string>
     <string name="action_change_configuration">Изменить конфигурацию</string>
 
+    <string name="srv_step_1">Выбор провайдера</string>
+    <string name="srv_step_2">Настройка</string>
+
     <string name="hint_prompt">Запрос</string>
     <string name="hint_prompt_negative">Отрицательный запрос</string>
     <string name="hint_sampling_steps">Этапы выборки: %1$s</string>
     <string name="hint_batch">Кол-во генераций: %1$s</string>
+    <string name="hint_batch_tag">Пакетная генерация</string>
+    <string name="hint_multiple_models">Поддержка моделей</string>
+    <string name="hint_offline_generation">Генерация без интернета</string>
     <string name="hint_cfg_scale">CFG Шкала: %1$s</string>
     <string name="hint_sampler">Метод выборки</string>
     <string name="hint_restore_faces">Восстановление лиц</string>
@@ -61,6 +71,10 @@
     <string name="hint_sd_model">SD Модель</string>
     <string name="hint_login">Логин</string>
     <string name="hint_password">Пароль</string>
+    <string name="hint_model_open_ai">Open AI модель</string>
+    <string name="hint_image_size">Размер изображения</string>
+    <string name="hint_quality">Качество</string>
+    <string name="hint_style">Стиль</string>
 
     <string name="auth_anonymous">Анонимно</string>
     <string name="auth_http_basic">HTTP Базовая</string>
@@ -77,6 +91,15 @@
     <string name="hint_server_horde_use_default_api_key">Стандартный API Ключ</string>
     <string name="hint_server_horde_about">О Horde AI</string>
     <string name="hint_server_horde_get_api_key">Получить свой API Ключ</string>
+
+    <string name="hint_hugging_face_title">Подключиться к Hugging Face</string>
+    <string name="hint_hugging_face_sub_title">Облако вывода Hugging Face позволяет тестировать и оценивать общедоступные модели машинного обучения или ваши собственные частные модели.</string>
+    <string name="hint_hugging_face_about">О Hugging Face</string>
+    <string name="hint_hugging_face_model">Hugging Face модель</string>
+
+    <string name="hint_open_ai_title">Подключиться к Open AI</string>
+    <string name="hint_open_ai_sub_title">Открытый сервис AI позволяет генерировать изображения с моделями DALL·E.</string>
+    <string name="hint_open_ai_about">Об Open AI</string>
 
     <string name="hint_local_diffusion_sub_title">Эта конфигурация позволяет запускать генерации Stable Diffusion на вашем телефоне без необходимости подключаться к удаленному серверу/облаку.</string>
     <string name="hint_local_diffusion_warning">ВНИМАНИЕ! Функциональность Local Diffusion в бета-тестировании. Не ожидайте высококачественных изображений в локальном режиме. \n\nЭта реализация может не работать должным образом на мобильных телефонах. Производительность и скорость генерации зависят от ресурсов вашего телефона (ЦП, ОЗУ) и размера сгенерированного изображения (чем меньше размер изображения, тем быстрее генерируется).</string>
