@@ -154,6 +154,6 @@ class PreferenceManagerImpl(
         private const val KEY_HUGGING_FACE_MODEL_KEY = "key_hugging_face_model_key"
         private const val KEY_LOCAL_NN_API = "key_local_nn_api"
         private const val KEY_LOCAL_MODEL_ID = "key_local_model_id"
-        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.3"
+        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.8"
     }
 }

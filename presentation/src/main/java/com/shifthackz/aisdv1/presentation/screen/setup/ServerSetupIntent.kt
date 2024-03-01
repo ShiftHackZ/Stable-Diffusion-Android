@@ -74,7 +74,7 @@ sealed interface ServerSetupIntent : MviIntent {
 
         data object OpenAiInfo : LaunchUrl() {
             override val url: String
-                get() = linksProvider.huggingFaceUrl //ToDo
+                get() = linksProvider.openAiInfoUrl
         }
     }
 }

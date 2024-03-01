@@ -84,19 +84,13 @@ fun OpenAiForm(
                     ?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
             },
         )
-//        DropdownTextField(
-//            label = R.string.hint_hugging_face_model.asUiText(),
-//            items = state.huggingFaceModels,
-//            value = state.huggingFaceModel,
-//            onItemSelected = onHuggingFaceModelSelected,
-//        )
         SettingsItem(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
             startIcon = Icons.AutoMirrored.Filled.Help,
             text = R.string.hint_open_ai_about.asUiText(),
-            onClick = {},
+            onClick = { handleIntent(ServerSetupIntent.LaunchUrl.OpenAiInfo) },
         )
     }
 }
