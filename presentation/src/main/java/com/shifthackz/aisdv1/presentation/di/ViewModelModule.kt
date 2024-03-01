@@ -38,10 +38,8 @@ val viewModelModule = module {
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())
-        val demoModeUrl = get<LinksProvider>().demoModeUrl
         ServerSetupViewModel(
             launchSource = launchSource,
-            demoModeUrl = demoModeUrl,
             getConfigurationUseCase = get(),
             getLocalAiModelsUseCase = get(),
             fetchAndGetHuggingFaceModelsUseCase = get(),

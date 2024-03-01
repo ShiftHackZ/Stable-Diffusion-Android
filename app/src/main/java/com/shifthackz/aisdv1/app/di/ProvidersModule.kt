@@ -93,6 +93,7 @@ val providersModule = module {
             override val hordeUrl: String = BuildConfig.HORDE_AI_URL
             override val hordeSignUpUrl: String = BuildConfig.HORDE_AI_SIGN_UP_URL
             override val huggingFaceUrl: String = BuildConfig.HUGGING_FACE_INFO_URL
+            override val openAiInfoUrl: String = BuildConfig.OPEN_AI_INFO_URL
             override val privacyPolicyUrl: String = BuildConfig.POLICY_URL
             override val gitHubSourceUrl: String = BuildConfig.GITHUB_SOURCE_URL
             override val setupInstructionsUrl: String = BuildConfig.SETUP_INSTRUCTIONS_URL

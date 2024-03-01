@@ -1,20 +1,19 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.core.ui.MviEffect
 import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.presentation.utils.Constants
-
-sealed interface ServerSetupEffect : MviEffect {
-    data object CompleteSetup : ServerSetupEffect
-}
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 data class ServerSetupState(
     val showBackNavArrow: Boolean = false,
+    val step: Step = Step.SOURCE,
     val mode: ServerSource = ServerSource.AUTOMATIC1111,
     val allowedModes: List<ServerSource> = ServerSource.entries,
     val screenDialog: Dialog = Dialog.None,
@@ -38,7 +37,13 @@ data class ServerSetupState(
     val hordeApiKeyValidationError: UiText? = null,
     val huggingFaceApiKeyValidationError: UiText? = null,
     val openAiApiKeyValidationError: UiText? = null,
-) : MviState {
+) : MviState, KoinComponent {
+
+    val demoModeUrl: String
+        get() {
+            val linksProvider: LinksProvider by inject()
+            return linksProvider.demoModeUrl
+        }
 
     fun withHordeApiKey(value: String) = this.copy(
         hordeApiKey = value,
@@ -51,6 +56,11 @@ data class ServerSetupState(
             password = value.password,
         )
         AuthorizationCredentials.None -> this
+    }
+
+    enum class Step {
+        SOURCE,
+        CONFIGURE;
     }
 
     sealed interface Dialog {

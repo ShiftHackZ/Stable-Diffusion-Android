@@ -14,6 +14,7 @@
     <string name="browse">Araştır</string>
     <string name="apply">Uygula</string>
     <string name="close">Kapalı</string>
+    <string name="next">Sonraki</string>
 
     <string name="version">Versiyon %1$s</string>
 
@@ -24,6 +25,9 @@
     <string name="local_no_img2img_support_title">Müsait değil</string>
     <string name="local_no_img2img_support_sub_title">Görüntü oluşturmak için yerel telefon kaynaklarınızı kullanıyorsanız, Görüntüden Görüntüye modu kullanılamaz.</string>
     <string name="local_no_img2img_support_sub_title_2">Image to Image modunu kullanmak için Yapılandırma ayarlarında sunucu tabanlı oluşturmaya geçebilirsiniz.</string>
+
+    <string name="dalle_no_img2img_support_sub_title">Görüntüden Görüntüye modu henüz DALL·E tarafından desteklenmiyor.</string>
+    <string name="dalle_no_img2img_support_sub_title_2">Görüntüden Görüntüye modunu kullanmak için Yapılandırma ayarlarında herhangi bir başka sunucu tabanlı nesle geçebilirsiniz.</string>
 
     <string name="action_generate">Resim Oluştur</string>
     <string name="action_export">Dışa aktar</string>
@@ -45,10 +49,16 @@
     <string name="action_image_picker_random">Rastgele görüntü</string>
     <string name="action_change_configuration">Yapılandırmayı değiştir</string>
 
+    <string name="srv_step_1">Sağlayıcıyı ayarla</string>
+    <string name="srv_step_2">Yapılandır</string>
+
     <string name="hint_prompt">İstem (prompt)</string>
     <string name="hint_prompt_negative">Negatif istem</string>
     <string name="hint_sampling_steps">Örnekleme Adım Sayısı: %1$s</string>
     <string name="hint_batch">Grup: %1$s</string>
+    <string name="hint_batch_tag">Toplu üretim</string>
+    <string name="hint_multiple_models">Çoklu Modeller</string>
+    <string name="hint_offline_generation">Çevrimdışı nesil</string>
     <string name="hint_cfg_scale">CFG Scale: %1$s</string>
     <string name="hint_sampler">Örneklerme Yöntemi</string>
     <string name="hint_restore_faces">Yüzleri Düzelt</string>
@@ -61,6 +71,10 @@
     <string name="hint_sd_model">SD Modeli</string>
     <string name="hint_login">Giriş yapmak</string>
     <string name="hint_password">Şifre</string>
+    <string name="hint_model_open_ai">Open AI model</string>
+    <string name="hint_image_size">Görüntü boyutu</string>
+    <string name="hint_quality">Kalite</string>
+    <string name="hint_style">Stil</string>
 
     <string name="auth_anonymous">Anonim</string>
     <string name="auth_http_basic">HTTP Temel</string>
@@ -77,6 +91,15 @@
     <string name="hint_server_horde_use_default_api_key">Varsayılan API anahtarını kullan</string>
     <string name="hint_server_horde_about">Hakkında Horde AI</string>
     <string name="hint_server_horde_get_api_key">API Anahtarınızı alın</string>
+
+    <string name="hint_hugging_face_title">Hugging Face bulutuna bağlanın</string>
+    <string name="hint_hugging_face_sub_title">Hugging Face çıkarım bulutu, herkese açık makine öğrenimi modellerini veya kendi özel modellerinizi ücretsiz olarak test etmenize ve değerlendirmenize olanak tanıyan bir hizmet sağlar.</string>
+    <string name="hint_hugging_face_about">Hakkında Hugging Face</string>
+    <string name="hint_hugging_face_model">Hugging Face model</string>
+
+    <string name="hint_open_ai_title">Open AI bulutuna bağlanın</string>
+    <string name="hint_open_ai_sub_title">Açık AI hizmeti, DALL·E modelleriyle görüntüler oluşturmaya olanak tanır.</string>
+    <string name="hint_open_ai_about">Hakkında Open AI</string>
 
     <string name="hint_local_diffusion_sub_title">Bu yapılandırma, telefonunuzda uzak sunucuya/buluta bağlanmaya gerek kalmadan Stable Diffusion AI nesillerini çalıştırmanıza izin verir.</string>
     <string name="hint_local_diffusion_warning">Uyarı! Yerel Yayılma işlevi beta testindedir. Yerel modu kullanarak yüksek kaliteli görüntüler beklemeyin. \n\nBu uygulama, güçlü olmayan telefonlarda iyi çalışmayabilir. Oluşturma performansı ve hızı, telefonunuzun kaynaklarına (CPU, RAM) ve oluşturulan görüntünün boyutuna bağlıdır (görüntü boyutu ne kadar küçükse, oluşturma o kadar hızlı olur).</string>
