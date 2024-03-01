@@ -27,11 +27,11 @@ class AiStableDiffusionClientApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initializeLogging()
         StrictMode.setVmPolicy(VmPolicy.Builder().build())
         Thread.currentThread().setUncaughtExceptionHandler { _, t -> errorLog(t) }
-        initializeCursorSize()
         initializeKoin()
+        initializeLogging()
+        initializeCursorSize()
     }
 
     /**
@@ -42,7 +42,7 @@ class AiStableDiffusionClientApp : Application() {
     @SuppressLint("DiscouragedPrivateApi")
     private fun initializeCursorSize() {
         try {
-            val field = CursorWindow::class.java.getDeclaredField("sCursorWindowSize")
+            val field = CursorWindow::class.java.getDeclaredField("sCursorWindowS0.ize")
             field.isAccessible = true
             field.set(null, 100 * 1024 * 1024) // 100 Mb
         } catch (e: Exception) {
