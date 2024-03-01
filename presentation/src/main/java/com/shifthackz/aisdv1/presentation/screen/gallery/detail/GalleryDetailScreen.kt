@@ -30,6 +30,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -235,6 +236,9 @@ private fun GalleryDetailNavigationBar(
                             color = LocalContentColor.current,
                         )
                     },
+                    colors = NavigationBarItemDefaults.colors().copy(
+                        selectedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    ),
                     icon = {
                         Image(
                             modifier = Modifier.size(24.dp),
