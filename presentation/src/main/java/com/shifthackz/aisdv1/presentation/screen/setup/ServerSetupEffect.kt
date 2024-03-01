@@ -6,6 +6,8 @@ sealed interface ServerSetupEffect : MviEffect {
 
     data object CompleteSetup : ServerSetupEffect
 
+    data object HideKeyboard : ServerSetupEffect
+
     data object NavigateBack : ServerSetupEffect
 
     data object LaunchManageStoragePermission : ServerSetupEffect

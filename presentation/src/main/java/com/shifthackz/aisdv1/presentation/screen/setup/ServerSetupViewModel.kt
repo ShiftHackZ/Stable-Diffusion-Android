@@ -65,17 +65,18 @@ class ServerSetupViewModel(
             .subscribeBy(::errorLog) { (configuration, localModels, hfModels) ->
                 updateState { state ->
                     state.copy(
-                            huggingFaceModels = hfModels.map(HuggingFaceModel::alias),
-                            huggingFaceModel = configuration.huggingFaceModel,
-                            huggingFaceApiKey = configuration.huggingFaceApiKey,
-                            openAiApiKey = configuration.openAiApiKey,
-                            localModels = localModels.mapToUi(),
-                            localCustomModel = localModels.mapLocalCustomModelSwitchState(),
-                            mode = configuration.source,
-                            demoMode = configuration.demoMode,
-                            serverUrl = configuration.serverUrl,
-                            authType = configuration.authType,
-                        ).withCredentials(configuration.authCredentials)
+                        huggingFaceModels = hfModels.map(HuggingFaceModel::alias),
+                        huggingFaceModel = configuration.huggingFaceModel,
+                        huggingFaceApiKey = configuration.huggingFaceApiKey,
+                        openAiApiKey = configuration.openAiApiKey,
+                        localModels = localModels.mapToUi(),
+                        localCustomModel = localModels.mapLocalCustomModelSwitchState(),
+                        mode = configuration.source,
+                        demoMode = configuration.demoMode,
+                        serverUrl = configuration.serverUrl,
+                        authType = configuration.authType,
+                    )
+                        .withCredentials(configuration.authCredentials)
                         .withHordeApiKey(configuration.hordeApiKey)
                 }
             }
@@ -176,13 +177,17 @@ class ServerSetupViewModel(
 
         ServerSetupIntent.NavigateBack -> if (currentState.step == ServerSetupState.Step.entries.first()) {
             emitEffect(ServerSetupEffect.NavigateBack)
-        } else updateState {
-            it.copy(step = ServerSetupState.Step.entries[it.step.ordinal - 1])
+        } else {
+            emitEffect(ServerSetupEffect.HideKeyboard)
+            updateState {
+                it.copy(step = ServerSetupState.Step.entries[it.step.ordinal - 1])
+            }
         }
     }
 
     private fun connectToServer() {
         if (!validate()) return
+        emitEffect(ServerSetupEffect.HideKeyboard)
         !when (currentState.mode) {
             ServerSource.HORDE -> connectToHorde()
             ServerSource.LOCAL -> connectToLocalDiffusion()

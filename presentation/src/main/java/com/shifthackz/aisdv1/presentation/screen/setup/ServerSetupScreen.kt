@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -57,6 +58,7 @@ fun ServerSetupScreen(
     launchUrl: (String) -> Unit = {},
     launchManageStoragePermission: () -> Unit = {},
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     MviComposable2(
         viewModel = viewModel,
         effectHandler = { effect ->
@@ -65,6 +67,7 @@ fun ServerSetupScreen(
                 ServerSetupEffect.LaunchManageStoragePermission -> launchManageStoragePermission()
                 is ServerSetupEffect.LaunchUrl -> launchUrl(effect.url)
                 ServerSetupEffect.NavigateBack -> onNavigateBack()
+                ServerSetupEffect.HideKeyboard -> keyboardController?.hide()
             }
         },
     ) { state ->
