@@ -306,21 +306,23 @@ private fun ContentSettingsState(
                 )
             }
         )
-        SettingsItem(
-            modifier = itemModifier,
-            startIcon = Icons.Default.DynamicForm,
-            text = R.string.settings_item_advanced_form_default.asUiText(),
-            onClick = {
-                onFormAdvancedOptionsAlwaysShowChanged(!state.formAdvancedOptionsAlwaysShow)
-            },
-            endValueContent = {
-                Switch(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    checked = state.formAdvancedOptionsAlwaysShow,
-                    onCheckedChange = onFormAdvancedOptionsAlwaysShowChanged,
-                )
-            }
-        )
+        if (state.showFormAdvancedOption) {
+            SettingsItem(
+                modifier = itemModifier,
+                startIcon = Icons.Default.DynamicForm,
+                text = R.string.settings_item_advanced_form_default.asUiText(),
+                onClick = {
+                    onFormAdvancedOptionsAlwaysShowChanged(!state.formAdvancedOptionsAlwaysShow)
+                },
+                endValueContent = {
+                    Switch(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        checked = state.formAdvancedOptionsAlwaysShow,
+                        onCheckedChange = onFormAdvancedOptionsAlwaysShowChanged,
+                    )
+                }
+            )
+        }
         SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Default.DeleteForever,
@@ -391,6 +393,7 @@ private fun PreviewStateContent() {
             showSdModelSelector = true,
             showMonitorConnectionOption = true,
             showLocalUseNNAPI = true,
+            showFormAdvancedOption = true,
         )
     )
 }

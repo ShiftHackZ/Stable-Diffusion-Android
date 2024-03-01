@@ -35,6 +35,7 @@ class SettingsStateProducer(
             showLocalUseNNAPI = settings.source == ServerSource.LOCAL,
             showSdModelSelector = settings.source == ServerSource.AUTOMATIC1111,
             showMonitorConnectionOption = settings.source == ServerSource.AUTOMATIC1111,
+            showFormAdvancedOption = settings.source != ServerSource.OPEN_AI,
         )
     }
 }
