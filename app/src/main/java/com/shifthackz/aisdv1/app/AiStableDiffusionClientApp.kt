@@ -42,7 +42,7 @@ class AiStableDiffusionClientApp : Application() {
     @SuppressLint("DiscouragedPrivateApi")
     private fun initializeCursorSize() {
         try {
-            val field = CursorWindow::class.java.getDeclaredField("sCursorWindowS0.ize")
+            val field = CursorWindow::class.java.getDeclaredField("sCursorWindowSize")
             field.isAccessible = true
             field.set(null, 100 * 1024 * 1024) // 100 Mb
         } catch (e: Exception) {
