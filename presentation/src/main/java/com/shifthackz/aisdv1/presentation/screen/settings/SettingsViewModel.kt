@@ -123,22 +123,11 @@ class SettingsViewModel(
                 preferenceManager.saveToMediaStore = false
                 updateState { it.copy(saveToMediaStore = false) }
             }
-//            (currentState as? SettingsState)
-//                ?.also { if (value) emitEffect(SettingsEffect.RequestStoragePermission) }
-//                ?.takeIf { !value }
-//                ?.also { preferenceManager.saveToMediaStore = false }
-//                ?.copy(saveToMediaStore = false)
-//                ?.let(::setState)
         }
         val newImpl: () -> Unit = {
             preferenceManager.saveToMediaStore = value
             updateState { it.copy(saveToMediaStore = false) }
-//            (currentState as? SettingsState.Content)
-//                ?.also { preferenceManager.saveToMediaStore = value }
-//                ?.copy(saveToMediaStore = false)
-//                ?.let(::setState)
         }
         if (shouldUseNewMediaStore()) newImpl() else oldImpl()
     }
-
 }
