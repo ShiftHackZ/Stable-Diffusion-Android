@@ -165,11 +165,6 @@ private fun ScreenContent(
 private fun GalleryDetailNavigationBar(
     state: GalleryDetailState,
     processIntent: (GalleryDetailIntent) -> Unit = {},
-//    onTabSelected: (GalleryDetailState.Tab) -> Unit = {},
-//    onSendToTxt2Img: () -> Unit = {},
-//    onSendToImg2Img: () -> Unit = {},
-//    onDeleteButtonClick: () -> Unit = {},
-//    onExportParamsClick: (GalleryDetailState.Content) -> Unit = {},
 ) {
     Column {
         if (state is GalleryDetailState.Content) {
