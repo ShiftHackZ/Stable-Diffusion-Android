@@ -2,6 +2,10 @@ package com.shifthackz.aisdv1.presentation.core
 
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.ui.MviState
+import com.shifthackz.aisdv1.domain.entity.OpenAiModel
+import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
+import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 
@@ -22,6 +26,10 @@ abstract class GenerationMviState : MviState {
     abstract val subSeedStrength: Float
     abstract val selectedSampler: String
     abstract val availableSamplers: List<String>
+    abstract val openAiModel: OpenAiModel
+    abstract val openAiSize: OpenAiSize
+    abstract val openAiQuality: OpenAiQuality
+    abstract val openAiStyle: OpenAiStyle
     abstract val widthValidationError: UiText?
     abstract val heightValidationError: UiText?
     abstract val nsfw: Boolean
@@ -48,6 +56,10 @@ abstract class GenerationMviState : MviState {
         subSeedStrength: Float = this.subSeedStrength,
         selectedSampler: String = this.selectedSampler,
         availableSamplers: List<String> = this.availableSamplers,
+        openAiModel: OpenAiModel = this.openAiModel,
+        openAiSize: OpenAiSize = this.openAiSize,
+        openAiQuality: OpenAiQuality = this.openAiQuality,
+        openAiStyle: OpenAiStyle = this.openAiStyle,
         widthValidationError: UiText? = this.widthValidationError,
         heightValidationError: UiText? = this.heightValidationError,
         nsfw: Boolean = this.nsfw,

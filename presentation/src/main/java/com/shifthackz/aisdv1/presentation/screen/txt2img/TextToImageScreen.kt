@@ -30,6 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.OpenAiModel
+import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
+import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
@@ -66,6 +70,12 @@ class TextToImageScreen(
             onSamplerUpdated = viewModel::updateSampler,
             onNsfwUpdated = viewModel::updateNsfw,
             onBatchCountUpdated = viewModel::updateBatchCount,
+
+            onOpenAiModelSelected = viewModel::updateOpenAiModel,
+            onOpenAiSizeSelected = viewModel::updateOpenAiSize,
+            onOpenAiQualitySelected = viewModel::updateOpenAiQuality,
+            onOpenAiStyleSelected = viewModel::updateOpenAiStyle,
+
             onGenerateClicked = viewModel::generate,
             onSaveGeneratedImages = viewModel::saveGeneratedResults,
             onViewGeneratedImage = viewModel::viewGeneratedResult,
@@ -99,6 +109,12 @@ private fun ScreenContent(
     onSamplerUpdated: (String) -> Unit = {},
     onNsfwUpdated: (Boolean) -> Unit = {},
     onBatchCountUpdated: (Int) -> Unit = {},
+
+    onOpenAiModelSelected: (OpenAiModel) -> Unit = {},
+    onOpenAiSizeSelected: (OpenAiSize) -> Unit = {},
+    onOpenAiQualitySelected: (OpenAiQuality) -> Unit = {},
+    onOpenAiStyleSelected: (OpenAiStyle) -> Unit = {},
+
     onGenerateClicked: () -> Unit = {},
     onSaveGeneratedImages: (List<AiGenerationResult>) -> Unit = {},
     onViewGeneratedImage: (AiGenerationResult) -> Unit = {},
@@ -155,6 +171,12 @@ private fun ScreenContent(
                         onSamplerUpdated = onSamplerUpdated,
                         onNsfwUpdated = onNsfwUpdated,
                         onBatchCountUpdated = onBatchCountUpdated,
+
+                        onOpenAiModelSelected = onOpenAiModelSelected,
+                        onOpenAiSizeSelected = onOpenAiSizeSelected,
+                        onOpenAiQualitySelected = onOpenAiQualitySelected,
+                        onOpenAiStyleSelected = onOpenAiStyleSelected,
+
                         widthValidationError = state.widthValidationError,
                         heightValidationError = state.heightValidationError,
                     )

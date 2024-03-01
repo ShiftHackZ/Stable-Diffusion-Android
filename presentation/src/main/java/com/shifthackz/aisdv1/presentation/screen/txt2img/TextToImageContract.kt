@@ -4,6 +4,10 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
+import com.shifthackz.aisdv1.domain.entity.OpenAiModel
+import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
+import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.presentation.R
@@ -26,6 +30,10 @@ data class TextToImageState(
     override val subSeed: String = "",
     override val subSeedStrength: Float = 0f,
     override val selectedSampler: String = "",
+    override val openAiModel: OpenAiModel = OpenAiModel.DALL_E_2,
+    override val openAiSize: OpenAiSize = OpenAiSize.W1024_H1024,
+    override val openAiQuality: OpenAiQuality = OpenAiQuality.STANDARD,
+    override val openAiStyle: OpenAiStyle = OpenAiStyle.VIVID,
     override val availableSamplers: List<String> = emptyList(),
     override val widthValidationError: UiText? = null,
     override val heightValidationError: UiText? = null,
@@ -51,6 +59,10 @@ data class TextToImageState(
         subSeedStrength: Float,
         selectedSampler: String,
         availableSamplers: List<String>,
+        openAiModel: OpenAiModel,
+        openAiSize: OpenAiSize,
+        openAiQuality: OpenAiQuality,
+        openAiStyle: OpenAiStyle,
         widthValidationError: UiText?,
         heightValidationError: UiText?,
         nsfw: Boolean,
@@ -73,6 +85,10 @@ data class TextToImageState(
         subSeedStrength = subSeedStrength,
         selectedSampler = selectedSampler,
         availableSamplers = availableSamplers,
+        openAiModel = openAiModel,
+        openAiSize = openAiSize,
+        openAiQuality = openAiQuality,
+        openAiStyle = openAiStyle,
         widthValidationError = widthValidationError,
         heightValidationError = heightValidationError,
         nsfw = nsfw,
@@ -87,8 +103,14 @@ fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
         negativePrompt = negativePrompt.trim(),
         samplingSteps = samplingSteps,
         cfgScale = cfgScale,
-        width = width.toIntOrNull() ?: 64,
-        height = height.toIntOrNull() ?: 64,
+        width = when (mode) {
+            ServerSource.OPEN_AI -> openAiSize.width
+            else -> width.toIntOrNull() ?: 64
+        },
+        height = when (mode) {
+            ServerSource.OPEN_AI -> openAiSize.height
+            else -> height.toIntOrNull() ?: 64
+        },
         restoreFaces = restoreFaces,
         seed = seed.trim(),
         subSeed = subSeed.trim(),
@@ -96,6 +118,13 @@ fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
         sampler = selectedSampler,
         nsfw = if (mode == ServerSource.HORDE) nsfw else false,
         batchCount = if (mode == ServerSource.LOCAL) 1 else batchCount,
+        style = openAiStyle.key.takeIf {
+            mode == ServerSource.OPEN_AI && openAiModel == OpenAiModel.DALL_E_3
+        },
+        quality = openAiQuality.key.takeIf {
+            mode == ServerSource.OPEN_AI && openAiModel == OpenAiModel.DALL_E_3
+        },
+        openAiModel = openAiModel.takeIf { mode == ServerSource.OPEN_AI },
     )
 }
 

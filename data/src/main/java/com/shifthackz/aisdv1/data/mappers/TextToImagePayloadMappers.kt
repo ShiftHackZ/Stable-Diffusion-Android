@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
@@ -63,7 +64,11 @@ fun TextToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest =
 fun TextToImagePayload.mapToOpenAiRequest(): OpenAiRequest = with(this) {
     OpenAiRequest(
         prompt = prompt,
-        //ToDo
+        model = openAiModel?.alias ?: OpenAiModel.DALL_E_2.alias,
+        size = "${width}x${height}",
+        responseFormat = "b64_json",
+        quality = quality,
+        style = style,
     )
 }
 

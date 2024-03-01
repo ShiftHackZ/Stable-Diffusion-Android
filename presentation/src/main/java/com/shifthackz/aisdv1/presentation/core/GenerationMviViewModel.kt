@@ -9,6 +9,10 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
+import com.shifthackz.aisdv1.domain.entity.OpenAiModel
+import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
+import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -181,6 +185,27 @@ abstract class GenerationMviViewModel<S : GenerationMviState, E : GenerationMviE
 
     fun updateBatchCount(value: Int) = updateGenerationState {
         it.copyState(batchCount = value)
+    }
+
+    fun updateOpenAiModel(value: OpenAiModel) = updateGenerationState { state ->
+        val size = if (state.openAiSize.supportedModels.contains(value)) {
+            state.openAiSize
+        } else {
+            OpenAiSize.entries.first { it.supportedModels.contains(value) }
+        }
+        state.copyState(openAiModel = value, openAiSize = size)
+    }
+
+    fun updateOpenAiSize(value: OpenAiSize) = updateGenerationState {
+        it.copyState(openAiSize = value)
+    }
+
+    fun updateOpenAiQuality(value: OpenAiQuality) = updateGenerationState {
+        it.copyState(openAiQuality = value)
+    }
+
+    fun updateOpenAiStyle(value: OpenAiStyle) = updateGenerationState {
+        it.copyState(openAiStyle = value)
     }
 
     fun saveGeneratedResults(ai: List<AiGenerationResult>) = !Observable
