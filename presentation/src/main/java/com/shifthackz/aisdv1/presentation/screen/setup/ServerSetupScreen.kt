@@ -2,7 +2,12 @@
 
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -30,52 +35,66 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
-import com.shifthackz.aisdv1.core.ui.MviComposable2
-import com.shifthackz.aisdv1.core.ui.MviScreen2
+import com.shifthackz.aisdv1.core.common.extensions.openUrl
+import com.shifthackz.aisdv1.core.extensions.showToast
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationStepBar
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.ConfigurationStep
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.SourceSelectionStep
+import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
-import org.koin.androidx.compose.get
+import org.koin.androidx.compose.getViewModel
 import org.koin.compose.koinInject
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ServerSetupScreen(
     modifier: Modifier = Modifier,
-    viewModel: ServerSetupViewModel,
-    onNavigateBack: () -> Unit = {},
-    onServerSetupComplete: () -> Unit = {},
-    launchUrl: (String) -> Unit = {},
-    launchManageStoragePermission: () -> Unit = {},
+    launchSourceKey: Int,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    MviComposable2(
-        viewModel = viewModel,
-        effectHandler = { effect ->
+    val context = LocalContext.current
+
+    val storagePermission = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { result ->
+        if (!result.values.any { !it }) context.showToast("Granted successfully")
+    }
+
+    MviComponent(
+        viewModel = getViewModel<ServerSetupViewModel>(
+            parameters = { parametersOf(launchSourceKey) }
+        ),
+        processEffect = { effect ->
             when (effect) {
-                ServerSetupEffect.CompleteSetup -> onServerSetupComplete()
-                ServerSetupEffect.LaunchManageStoragePermission -> launchManageStoragePermission()
-                is ServerSetupEffect.LaunchUrl -> launchUrl(effect.url)
-                ServerSetupEffect.NavigateBack -> onNavigateBack()
+                ServerSetupEffect.LaunchManageStoragePermission -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                        context.startActivity(intent)
+                    } else {
+                        if (PermissionUtil.checkStoragePermission(context, storagePermission::launch)) {
+                            context.showToast("Already Granted")
+                        }
+                    }
+                }
+                is ServerSetupEffect.LaunchUrl -> context.openUrl(effect.url)
                 ServerSetupEffect.HideKeyboard -> keyboardController?.hide()
             }
         },
-    ) { state ->
+    ) { state, intentHandler ->
         ScreenContent(
             modifier = modifier.fillMaxSize(),
             state = state,
             buildInfoProvider = koinInject(),
-            handleIntent = viewModel::handleIntent,
+            processIntent = intentHandler,
         )
     }
 }
@@ -85,12 +104,12 @@ private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
     buildInfoProvider: BuildInfoProvider = BuildInfoProvider.stub,
-    handleIntent: (ServerSetupIntent) -> Unit = {},
+    processIntent: (ServerSetupIntent) -> Unit = {},
 ) {
     BackHandler(
         enabled = state.step != ServerSetupState.Step.SOURCE,
     ) {
-        handleIntent(ServerSetupIntent.NavigateBack)
+        processIntent(ServerSetupIntent.NavigateBack)
     }
     Box(modifier) {
         Scaffold(
@@ -111,7 +130,7 @@ private fun ScreenContent(
                             if (state.showBackNavArrow || state.step.ordinal > 0) {
                                 IconButton(
                                     onClick = {
-                                        handleIntent(ServerSetupIntent.NavigateBack)
+                                        processIntent(ServerSetupIntent.NavigateBack)
                                     },
                                     content = {
                                         Icon(
@@ -134,7 +153,7 @@ private fun ScreenContent(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                         .padding(bottom = 16.dp, top = 8.dp),
-                    onClick = { handleIntent(ServerSetupIntent.MainButtonClick) },
+                    onClick = { processIntent(ServerSetupIntent.MainButtonClick) },
                     enabled = when (state.step) {
                         ServerSetupState.Step.CONFIGURE -> when (state.mode) {
                             ServerSource.LOCAL -> state.localModels.any {
@@ -175,13 +194,13 @@ private fun ScreenContent(
                     when (ServerSetupState.Step.entries[index]) {
                         ServerSetupState.Step.SOURCE -> SourceSelectionStep(
                             state = state,
-                            handleIntent = handleIntent,
+                            processIntent = processIntent,
                         )
 
                         ServerSetupState.Step.CONFIGURE -> ConfigurationStep(
                             state = state,
                             buildInfoProvider = buildInfoProvider,
-                            handleIntent = handleIntent,
+                            processIntent = processIntent,
                         )
                     }
                 }
@@ -198,7 +217,7 @@ private fun ScreenContent(
 
             is ServerSetupState.Dialog.Error -> ErrorDialog(
                 text = state.screenDialog.error,
-                onDismissRequest = { handleIntent(ServerSetupIntent.DismissDialog) },
+                onDismissRequest = { processIntent(ServerSetupIntent.DismissDialog) },
             )
 
             ServerSetupState.Dialog.None -> Unit

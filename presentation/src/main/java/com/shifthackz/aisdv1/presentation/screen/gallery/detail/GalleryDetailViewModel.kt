@@ -7,13 +7,11 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
-import com.shifthackz.aisdv1.presentation.features.GalleryDetailTabClick
-import com.shifthackz.aisdv1.presentation.features.GalleryItemDelete
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
@@ -26,41 +24,63 @@ class GalleryDetailViewModel(
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val schedulersProvider: SchedulersProvider,
     private val generationFormUpdateEvent: GenerationFormUpdateEvent,
-    private val analytics: Analytics,
-) : MviRxViewModel<GalleryDetailState, GalleryDetailEffect>() {
+    private val mainRouter: MainRouter,
+) : MviRxViewModel<GalleryDetailState, GalleryDetailIntent, GalleryDetailEffect>() {
 
-    override val emptyState = GalleryDetailState.Loading()
+    override val initialState = GalleryDetailState.Loading()
 
     init {
         !getGenerationResult(itemId)
             .subscribeOnMainThread(schedulersProvider)
             .postProcess()
             .subscribeBy(::errorLog) { ai ->
-                ai
-                    .mapToUi()
-                    .withTab(currentState.selectedTab)
-                    .let(::setState)
+                updateState {
+                    ai.mapToUi().withTab(currentState.selectedTab)
+                }
             }
     }
 
-    fun sendPromptToTxt2Img() = sendPromptToGenerationScreen(
-        AiGenerationResult.Type.TEXT_TO_IMAGE,
-    )
+    override fun processIntent(intent: GalleryDetailIntent) {
+        when (intent) {
+            is GalleryDetailIntent.CopyToClipboard -> {
+                emitEffect(GalleryDetailEffect.ShareClipBoard(intent.content.toString()))
+            }
 
-    fun sendPromptToImg2Img() = sendPromptToGenerationScreen(
-        AiGenerationResult.Type.IMAGE_TO_IMAGE,
-    )
+            GalleryDetailIntent.Delete.Request -> {
+                setActiveDialog(GalleryDetailState.Dialog.DeleteConfirm)
+            }
 
-    fun selectTab(tab: GalleryDetailState.Tab) = currentState
-        .withTab(tab)
-        .let(::setState)
-        .also { analytics.logEvent(GalleryDetailTabClick(tab)) }
+            GalleryDetailIntent.Delete.Confirm -> {
+                setActiveDialog(GalleryDetailState.Dialog.DeleteConfirm)
+                delete()
+            }
 
-    fun showDeleteConfirmDialog() = setActiveDialog(GalleryDetailState.Dialog.DeleteConfirm)
+            GalleryDetailIntent.Export.Image -> share()
 
-    fun dismissScreenDialog() = setActiveDialog(GalleryDetailState.Dialog.None)
+            GalleryDetailIntent.Export.Params -> {
+                emitEffect(GalleryDetailEffect.ShareGenerationParams(currentState))
+            }
 
-    fun share() {
+            GalleryDetailIntent.NavigateBack -> mainRouter.navigateBack()
+
+            is GalleryDetailIntent.SelectTab -> updateState {
+                it.withTab(intent.tab)
+            }
+
+            GalleryDetailIntent.SendTo.Img2Img -> sendPromptToGenerationScreen(
+                AiGenerationResult.Type.TEXT_TO_IMAGE,
+            )
+
+            GalleryDetailIntent.SendTo.Txt2Img -> sendPromptToGenerationScreen(
+                AiGenerationResult.Type.IMAGE_TO_IMAGE,
+            )
+
+            GalleryDetailIntent.DismissDialog -> setActiveDialog(GalleryDetailState.Dialog.None)
+        }
+
+    }
+
+    private fun share() {
         if (currentState !is GalleryDetailState.Content) return
         !galleryDetailBitmapExporter((currentState as GalleryDetailState.Content).bitmap)
             .subscribeOnMainThread(schedulersProvider)
@@ -69,18 +89,16 @@ class GalleryDetailViewModel(
             }
     }
 
-    fun delete() {
-        dismissScreenDialog()
+    private fun delete() {
         if (currentState !is GalleryDetailState.Content) return
-        analytics.logEvent(GalleryItemDelete)
         !deleteGalleryItemUseCase((currentState as GalleryDetailState.Content).id)
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog) { emitEffect(GalleryDetailEffect.NavigateBack) }
+            .subscribeBy(::errorLog) { mainRouter.navigateBack() }
     }
 
-    private fun setActiveDialog(dialog: GalleryDetailState.Dialog) = currentState
-        .withDialog(dialog)
-        .let(::setState)
+    private fun setActiveDialog(dialog: GalleryDetailState.Dialog) = updateState {
+        it.withDialog(dialog)
+    }
 
     private fun Single<AiGenerationResult>.postProcess() = this
         .flatMap { ai ->
@@ -101,7 +119,7 @@ class GalleryDetailViewModel(
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { ai ->
                 generationFormUpdateEvent.update(ai, screenType)
-                emitEffect(GalleryDetailEffect.NavigateBack)
+                mainRouter.navigateBack()
             }
 
     private fun getGenerationResult(id: Long): Single<AiGenerationResult> {

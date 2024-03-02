@@ -11,19 +11,21 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import kotlinx.coroutines.flow.Flow
 
 class GalleryViewModel(
-    private val getMediaStoreInfoUseCase: GetMediaStoreInfoUseCase,
+    getMediaStoreInfoUseCase: GetMediaStoreInfoUseCase,
     private val getGenerationResultPagedUseCase: GetGenerationResultPagedUseCase,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val galleryExporter: GalleryExporter,
     private val schedulersProvider: SchedulersProvider,
-) : MviRxViewModel<GalleryState, GalleryEffect>() {
+    private val mainRouter: MainRouter,
+) : MviRxViewModel<GalleryState, GalleryIntent, GalleryEffect>() {
 
-    override val emptyState = GalleryState()
+    override val initialState = GalleryState()
 
     private val config = PagingConfig(
         pageSize = Constants.PAGINATION_PAYLOAD_SIZE,
@@ -46,16 +48,24 @@ class GalleryViewModel(
 
     init {
         !getMediaStoreInfoUseCase()
-            .map { info -> currentState.copy(mediaStoreInfo = info) }
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog, ::setState)
+            .subscribeBy(::errorLog) { info ->
+                updateState { it.copy(mediaStoreInfo = info) }
+            }
     }
 
-    fun dismissScreenDialog() = setActiveDialog(GalleryState.Dialog.None)
+    override fun processIntent(intent: GalleryIntent) {
+        when (intent) {
+            GalleryIntent.DismissDialog -> setActiveDialog(GalleryState.Dialog.None)
+            GalleryIntent.Export.Request -> setActiveDialog(GalleryState.Dialog.ConfirmExport)
+            GalleryIntent.Export.Confirm -> launchGalleryExport()
+            is GalleryIntent.OpenItem -> mainRouter.navigateToGalleryDetails(intent.item.id)
+            is GalleryIntent.OpenMediaStoreFolder -> emitEffect(GalleryEffect.OpenUri(intent.uri))
+        }
+    }
 
-    fun launchGalleryExportConfirmation() = setActiveDialog(GalleryState.Dialog.ConfirmExport)
 
-    fun launchGalleryExport() = galleryExporter()
+    private fun launchGalleryExport() = galleryExporter()
         .doOnSubscribe { setActiveDialog(GalleryState.Dialog.ExportInProgress) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
@@ -74,7 +84,7 @@ class GalleryViewModel(
         )
         .addToDisposable()
 
-    private fun setActiveDialog(dialog: GalleryState.Dialog) = currentState
-        .copy(screenDialog = dialog)
-        .let(::setState)
+    private fun setActiveDialog(dialog: GalleryState.Dialog) = updateState {
+        it.copy(screenDialog = dialog)
+    }
 }

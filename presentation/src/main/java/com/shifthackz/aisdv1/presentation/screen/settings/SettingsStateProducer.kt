@@ -23,7 +23,8 @@ class SettingsStateProducer(
         sdModelsProducer,
         preferenceManager.observe(),
     ) { version, modelData, settings ->
-        SettingsState.Content(
+        SettingsState(
+            loading = false,
             sdModels = modelData.map { (model, _) -> model.title },
             sdModelSelected = modelData.firstOrNull { it.second }?.first?.title ?: "",
             localUseNNAPI = settings.localUseNNAPI,

@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 fun HuggingFaceForm(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
-    handleIntent: (ServerSetupIntent) -> Unit,
+    processIntent: (ServerSetupIntent) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
@@ -73,7 +73,7 @@ fun HuggingFaceForm(
                 },
             value = state.huggingFaceApiKey,
             onValueChange = {
-                handleIntent(ServerSetupIntent.UpdateHuggingFaceApiKey(it))
+                processIntent(ServerSetupIntent.UpdateHuggingFaceApiKey(it))
                 coroutineScope.launch {
                     bringIntoViewRequester.bringIntoView()
                 }
@@ -89,7 +89,7 @@ fun HuggingFaceForm(
             label = R.string.hint_hugging_face_model.asUiText(),
             items = state.huggingFaceModels,
             value = state.huggingFaceModel,
-            onItemSelected = { handleIntent(ServerSetupIntent.UpdateHuggingFaceModel(it)) },
+            onItemSelected = { processIntent(ServerSetupIntent.UpdateHuggingFaceModel(it)) },
         )
         SettingsItem(
             modifier = Modifier
@@ -97,7 +97,7 @@ fun HuggingFaceForm(
                 .fillMaxWidth(),
             startIcon = Icons.AutoMirrored.Filled.Help,
             text = R.string.hint_hugging_face_about.asUiText(),
-            onClick = { handleIntent(ServerSetupIntent.LaunchUrl.HuggingFaceInfo) },
+            onClick = { processIntent(ServerSetupIntent.LaunchUrl.HuggingFaceInfo) },
         )
     }
 }

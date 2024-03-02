@@ -43,37 +43,41 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shifthackz.aisdv1.core.extensions.shimmer
-import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.widget.error.ErrorComposable
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
+import org.koin.androidx.compose.koinViewModel
 
-class EmbeddingScreen(
-    private val viewModel: EmbeddingViewModel,
-    private val onNewPrompts: (String, String) -> Unit,
-    private val onClose: () -> Unit,
-) : MviScreen<EmbeddingState, ExtrasEffect>(viewModel) {
+@Composable
+fun EmbeddingScreen(
+    prompt: String,
+    negativePrompt: String,
+    onNewPrompts: (String, String) -> Unit,
+    onClose: () -> Unit,
+) {
+    MviComponent(
+        viewModel = koinViewModel<EmbeddingViewModel>().apply {
+            updateData(prompt, negativePrompt)
+        },
+        processEffect = { effect ->
+            when (effect) {
+                is ExtrasEffect.ApplyPrompts -> {
+                    onNewPrompts(effect.prompt, effect.negativePrompt)
+                    onClose()
+                }
 
-    @Composable
-    override fun Content() {
-        ScreenContent(
-            state = viewModel.state.collectAsStateWithLifecycle().value,
-            onClose = onClose,
-            onSelectorChange = viewModel::changeSelector,
-            onItemToggle = viewModel::toggleItem,
-            onApplyNewPrompts = viewModel::applyNewPrompts,
-        )
-    }
-
-    override fun processEffect(effect: ExtrasEffect) = when (effect) {
-        is ExtrasEffect.ApplyPrompts -> {
-            onNewPrompts(effect.prompt, effect.negativePrompt)
-            onClose()
+                ExtrasEffect.Close -> onClose()
+            }
         }
+    ) { state, intentHandler ->
+        ScreenContent(
+            state = state,
+            processIntent = intentHandler,
+        )
     }
 }
 
@@ -81,10 +85,7 @@ class EmbeddingScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: EmbeddingState,
-    onClose: () -> Unit,
-    onSelectorChange: (Boolean) -> Unit,
-    onItemToggle: (EmbeddingItemUi) -> Unit,
-    onApplyNewPrompts: () -> Unit,
+    processIntent: (EmbeddingIntent) -> Unit,
 ) {
     Dialog(
         onDismissRequest = {},
@@ -105,7 +106,7 @@ private fun ScreenContent(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 12.dp, vertical = 8.dp),
-                            onClick = onApplyNewPrompts
+                            onClick = { processIntent(EmbeddingIntent.ApplyNewPrompts) }
                         ) {
                             Text(
                                 text = stringResource(
@@ -125,7 +126,7 @@ private fun ScreenContent(
                 ) {
                     ModalDialogToolbar(
                         text = stringResource(id = R.string.title_txt_inversion),
-                        onClose = onClose,
+                        onClose = { processIntent(EmbeddingIntent.Close) },
                     )
                     val bgColor = MaterialTheme.colorScheme.surface
                     var dividerHeight by remember {
@@ -150,7 +151,7 @@ private fun ScreenContent(
                                     .weight(1f)
                                     .clip(RoundedCornerShape(16.dp))
                                     .background(color = if (state.selector) MaterialTheme.colorScheme.primary else Color.Transparent)
-                                    .clickable { onSelectorChange(true) },
+                                    .clickable { processIntent(EmbeddingIntent.ChangeSelector(true)) },
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(
@@ -166,7 +167,7 @@ private fun ScreenContent(
                                     .weight(1f)
                                     .clip(RoundedCornerShape(16.dp))
                                     .background(color = if (!state.selector) MaterialTheme.colorScheme.primary else Color.Transparent)
-                                    .clickable { onSelectorChange(false) },
+                                    .clickable { processIntent(EmbeddingIntent.ChangeSelector(false)) },
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(
@@ -211,7 +212,9 @@ private fun ScreenContent(
                                     EmbeddingItemComposable(
                                         item = state.embeddings[index],
                                         selector = state.selector,
-                                        onItemToggle = onItemToggle,
+                                        onItemToggle = {
+                                            processIntent(EmbeddingIntent.ToggleItem(it))
+                                        },
                                     )
                                 }
                             }

@@ -26,4 +26,3 @@ fun Context.openUrl(url: String) {
     val uri = Uri.parse(url)
     openUri(uri)
 }
-

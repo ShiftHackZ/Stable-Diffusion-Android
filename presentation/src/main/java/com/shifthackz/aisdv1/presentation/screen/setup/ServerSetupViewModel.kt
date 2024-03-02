@@ -7,12 +7,11 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.horde.CommonStringValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
-import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel2
+import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.interactor.settings.SetupConnectionInterActor
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
@@ -22,9 +21,7 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
-import com.shifthackz.aisdv1.presentation.features.SetupConnectEvent
-import com.shifthackz.aisdv1.presentation.features.SetupConnectFailure
-import com.shifthackz.aisdv1.presentation.features.SetupConnectSuccess
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomModelSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
@@ -45,11 +42,11 @@ class ServerSetupViewModel(
     private val deleteModelUseCase: DeleteModelUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
-    private val analytics: Analytics,
     private val wakeLockInterActor: WakeLockInterActor,
-) : MviRxViewModel2<ServerSetupState, ServerSetupIntent, ServerSetupEffect>() {
+    private val mainRouter: MainRouter,
+) : MviRxViewModel<ServerSetupState, ServerSetupIntent, ServerSetupEffect>() {
 
-    override val emptyState = ServerSetupState(
+    override val initialState = ServerSetupState(
         showBackNavArrow = launchSource == ServerSetupLaunchSource.SETTINGS,
     )
 
@@ -82,7 +79,7 @@ class ServerSetupViewModel(
             }
     }
 
-    override fun handleIntent(intent: ServerSetupIntent) = when (intent) {
+    override fun processIntent(intent: ServerSetupIntent) = when (intent) {
         is ServerSetupIntent.AllowLocalCustomModel -> updateState {
             it.copy(
                 localCustomModel = intent.allow,
@@ -176,7 +173,7 @@ class ServerSetupViewModel(
         }
 
         ServerSetupIntent.NavigateBack -> if (currentState.step == ServerSetupState.Step.entries.first()) {
-            emitEffect(ServerSetupEffect.NavigateBack)
+            mainRouter.navigateBack()
         } else {
             emitEffect(ServerSetupEffect.HideKeyboard)
             updateState {
@@ -200,7 +197,6 @@ class ServerSetupViewModel(
                     onSuccess = { onSetupComplete() },
                     onFailure = { t ->
                         val message = t.localizedMessage ?: "Bad key"
-                        analytics.logEvent(SetupConnectFailure(message))
                         setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
                     },
                 )
@@ -275,7 +271,6 @@ class ServerSetupViewModel(
 
             else -> AuthorizationCredentials.None
         }
-        analytics.logEvent(SetupConnectEvent(connectUrl, demoMode))
         return setupConnectionInterActor.connectToA1111(
             connectUrl,
             demoMode,
@@ -399,8 +394,7 @@ class ServerSetupViewModel(
 
     private fun onSetupComplete() {
         preferenceManager.forceSetupAfterUpdate = false
-        analytics.logEvent(SetupConnectSuccess)
-        handleIntent(ServerSetupIntent.DismissDialog)
-        emitEffect(ServerSetupEffect.CompleteSetup)
+        processIntent(ServerSetupIntent.DismissDialog)
+        mainRouter.navigateToHomeScreen()
     }
 }

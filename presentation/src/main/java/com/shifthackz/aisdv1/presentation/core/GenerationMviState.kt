@@ -1,13 +1,13 @@
 package com.shifthackz.aisdv1.presentation.core
 
 import com.shifthackz.aisdv1.core.model.UiText
-import com.shifthackz.aisdv1.core.ui.MviState
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.android.core.mvi.MviState
 
 abstract class GenerationMviState : MviState {
     abstract val screenModal: Modal

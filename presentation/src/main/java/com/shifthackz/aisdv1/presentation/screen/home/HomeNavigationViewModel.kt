@@ -6,9 +6,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.RxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
-import com.shifthackz.aisdv1.presentation.features.HomeNavigationItemClick
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -19,7 +17,6 @@ import kotlinx.coroutines.launch
 class HomeNavigationViewModel(
     generationFormUpdateEvent: GenerationFormUpdateEvent,
     schedulersProvider: SchedulersProvider,
-    private val analytics: Analytics,
 ) : RxViewModel() {
 
     private val routeEffectChannel: Channel<String> = Channel()
@@ -36,9 +33,5 @@ class HomeNavigationViewModel(
                     routeEffectChannel.send(route)
                 }
             }
-    }
-
-    fun logNavItemClickEvent(item: HomeNavigationItem) {
-        analytics.logEvent(HomeNavigationItemClick(item))
     }
 }

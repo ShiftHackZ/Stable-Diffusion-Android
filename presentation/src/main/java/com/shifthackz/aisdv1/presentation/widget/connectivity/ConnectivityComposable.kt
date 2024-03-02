@@ -13,27 +13,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
-import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.theme.colors
 import com.shifthackz.catppuccin.palette.Catppuccin
+import org.koin.androidx.compose.koinViewModel
 
-class ConnectivityComposable(
-    private val viewModel: ConnectivityViewModel,
-) : MviScreen<ConnectivityState, EmptyEffect>(viewModel) {
-
-    @Composable
-    override fun Content() {
+@Composable
+fun ConnectivityComposable() {
+    MviComponent(
+        viewModel = koinViewModel<ConnectivityViewModel>(),
+        applySystemUiColors = false,
+    ) { state, _ ->
         ConnectivityWidgetState(
             modifier = Modifier.fillMaxWidth(),
-            viewModel.state.collectAsStateWithLifecycle().value,
+            state = state,
         )
     }
-
-    @Composable
-    override fun ApplySystemUiColors() = Unit
 }
 
 @Composable

@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.SettingsEthernet
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -24,23 +24,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.EmptyEffect
-import com.shifthackz.aisdv1.core.ui.EmptyState
-import com.shifthackz.aisdv1.core.ui.MviScreen
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
+import org.koin.androidx.compose.koinViewModel
 
-class DebugMenuScreen(
-    private val viewModel: DebugMenuViewModel,
-    private val onNavigateBack: () -> Unit = {},
-) : MviScreen<EmptyState, EmptyEffect>(viewModel) {
-
-    @Composable
-    override fun Content() {
+@Composable
+fun DebugMenuScreen() {
+    MviComponent(
+        viewModel = koinViewModel<DebugMenuViewModel>(),
+    ) { _, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
-            onNavigateBack = onNavigateBack,
-            onInsertBadBase64 = viewModel::insertBadBase64,
+            processIntent = intentHandler,
         )
     }
 }
@@ -48,8 +44,7 @@ class DebugMenuScreen(
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
-    onNavigateBack: () -> Unit = {},
-    onInsertBadBase64: () -> Unit = {},
+    processIntent: (DebugMenuIntent) -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier,
@@ -63,10 +58,10 @@ private fun ScreenContent(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = onNavigateBack,
+                        onClick = { processIntent(DebugMenuIntent.NavigateBack) },
                         content = {
                             Icon(
-                                Icons.Outlined.ArrowBack,
+                                Icons.AutoMirrored.Outlined.ArrowBack,
                                 contentDescription = "Back button",
                             )
                         },
@@ -95,7 +90,7 @@ private fun ScreenContent(
                 modifier = itemModifier,
                 startIcon = Icons.Default.SettingsEthernet,
                 text = R.string.debug_action_bad_base64.asUiText(),
-                onClick = onInsertBadBase64,
+                onClick = { processIntent(DebugMenuIntent.InsertBadBase64) },
             )
         }
     }

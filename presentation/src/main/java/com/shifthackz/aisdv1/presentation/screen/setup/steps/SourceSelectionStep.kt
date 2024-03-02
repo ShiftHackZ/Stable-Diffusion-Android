@@ -16,7 +16,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationM
 fun SourceSelectionStep(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
-    handleIntent: (ServerSetupIntent) -> Unit = {},
+    processIntent: (ServerSetupIntent) -> Unit = {},
 ) {
     BaseServerSetupStateWrapper(modifier) {
         Column {
@@ -29,7 +29,7 @@ fun SourceSelectionStep(
                     state = state,
                     mode = mode,
                     onClick = {
-                        handleIntent(ServerSetupIntent.UpdateServerMode(it))
+                        processIntent(ServerSetupIntent.UpdateServerMode(it))
                     },
                 )
             }

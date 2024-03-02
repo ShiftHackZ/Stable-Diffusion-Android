@@ -26,18 +26,20 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
+import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.model.Modal
 
 @Composable
 fun GenerationBottomToolbar(
     modifier: Modifier = Modifier,
-    showToolbar: Boolean = false,
+    state: GenerationMviState,
     strokeAccentState: Boolean = false,
-    onOpenLoraInput: () -> Unit = {},
-    onOpenHyperNetInput: () -> Unit = {},
-    onOpenEmbedding: () -> Unit = {},
+    processIntent: (GenerationMviIntent) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     Box(
@@ -47,13 +49,12 @@ fun GenerationBottomToolbar(
             .padding(top = 8.dp),
         contentAlignment = Alignment.BottomCenter,
     ) {
-        if (showToolbar) {
+        if (state.mode == ServerSource.AUTOMATIC1111) {
             GenerationBottomToolbarBottomLayer(
                 modifier = Modifier.padding(bottom = 36.dp),
                 strokeAccentState = strokeAccentState,
-                onOpenLoraInput = onOpenLoraInput,
-                onOpenHyperNetInput = onOpenHyperNetInput,
-                onOpenEmbedding = onOpenEmbedding,
+                state = state,
+                processIntent = processIntent,
             )
             Box(
                 modifier = Modifier
@@ -66,7 +67,7 @@ fun GenerationBottomToolbar(
                             topEnd = 22.dp,
                         )
                     )
-                    .background(color = MaterialTheme.colorScheme.surface)
+                    .background(color = MaterialTheme.colorScheme.surface),
             )
         }
         content()
@@ -74,13 +75,11 @@ fun GenerationBottomToolbar(
 }
 
 @Composable
-@Preview
 private fun GenerationBottomToolbarBottomLayer(
     modifier: Modifier = Modifier,
+    state: GenerationMviState,
     strokeAccentState: Boolean = false,
-    onOpenLoraInput: () -> Unit = {},
-    onOpenHyperNetInput: () -> Unit = {},
-    onOpenEmbedding: () -> Unit = {},
+    processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
     val shape = RoundedCornerShape(
         topStart = 16.dp,
@@ -122,7 +121,17 @@ private fun GenerationBottomToolbarBottomLayer(
         val localStyle = MaterialTheme.typography.labelLarge
 
         Text(
-            modifier = localModifier { onOpenLoraInput() },
+            modifier = localModifier {
+                processIntent(
+                    GenerationMviIntent.SetModal(
+                        Modal.ExtraBottomSheet(
+                            state.prompt,
+                            state.negativePrompt,
+                            ExtraType.Lora,
+                        ),
+                    ),
+                )
+            },
             text = stringResource(id = R.string.title_lora),
             textAlign = TextAlign.Center,
             color = localColor,
@@ -135,7 +144,16 @@ private fun GenerationBottomToolbarBottomLayer(
                 .background(color = accentColor),
         )
         Text(
-            modifier = localModifier { onOpenEmbedding() },
+            modifier = localModifier {
+                processIntent(
+                    GenerationMviIntent.SetModal(
+                        Modal.Embeddings(
+                            state.prompt,
+                            state.negativePrompt,
+                        )
+                    )
+                )
+            },
             text = stringResource(id = R.string.title_txt_inversion_short),
             textAlign = TextAlign.Center,
             color = localColor,
@@ -148,13 +166,21 @@ private fun GenerationBottomToolbarBottomLayer(
                 .background(color = accentColor),
         )
         Text(
-            modifier = localModifier { onOpenHyperNetInput() },
+            modifier = localModifier {
+                processIntent(
+                    GenerationMviIntent.SetModal(
+                        Modal.ExtraBottomSheet(
+                            state.prompt,
+                            state.negativePrompt,
+                            ExtraType.HyperNet,
+                        ),
+                    ),
+                )
+            },
             text = stringResource(id = R.string.title_hyper_net_short),
             textAlign = TextAlign.Center,
             color = localColor,
             style = localStyle,
         )
-
     }
 }
-

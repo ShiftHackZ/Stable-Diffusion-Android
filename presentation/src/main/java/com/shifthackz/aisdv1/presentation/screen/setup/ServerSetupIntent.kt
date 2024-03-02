@@ -1,8 +1,8 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
-import com.shifthackz.aisdv1.core.ui.MviIntent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.android.core.mvi.MviIntent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -48,7 +48,7 @@ sealed interface ServerSetupIntent : MviIntent {
 
     sealed class LaunchUrl : ServerSetupIntent, KoinComponent {
 
-        val linksProvider: LinksProvider by inject()
+        protected val linksProvider: LinksProvider by inject()
         abstract val url: String
 
         data object A1111Instructions : LaunchUrl() {

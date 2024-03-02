@@ -18,6 +18,7 @@ ext {
     pagingVersion = '3.1.1'
     pagingComposeVersion = '1.0.0-alpha18'
     imagePickerVersion = 'v2.0.3'
+    mviVersion = '1.0.1'
     timberVersion = '5.0.1'
     gsonVersion = '2.10.1'
     googleMaterialVersion = '1.9.0'
@@ -83,9 +84,10 @@ ext {
             rxnetwork: "io.github.softartdev:reactivenetwork-rx3:$rxNetworkVersion",
     ]
     ui = [
-            imagePicker: "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion",
-            catppuccinLegacy: "com.github.ShiftHackZ.Catppuccin-Android-Library:palette-legacy:$catppuccinVersion",
-            catppuccinCompose: "com.github.ShiftHackZ.Catppuccin-Android-Library:compose:$catppuccinVersion",
+            imagePicker           : "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion",
+            mvi                   : "com.github.ShiftHackZ:AndroidCoreMVI:$mviVersion",
+            catppuccinLegacy      : "com.github.ShiftHackZ.Catppuccin-Android-Library:palette-legacy:$catppuccinVersion",
+            catppuccinCompose     : "com.github.ShiftHackZ.Catppuccin-Android-Library:compose:$catppuccinVersion",
             catppuccinSplashscreen: "com.github.ShiftHackZ.Catppuccin-Android-Library:splashscreen:$catppuccinVersion",
     ]
     log = [

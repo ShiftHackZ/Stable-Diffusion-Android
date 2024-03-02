@@ -28,65 +28,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.domain.entity.OpenAiModel
-import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
-import com.shifthackz.aisdv1.domain.entity.OpenAiSize
-import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
-import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.core.GenerationMviEffect
-import com.shifthackz.aisdv1.presentation.core.GenerationMviScreen
+import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
+import org.koin.androidx.compose.koinViewModel
 
-class TextToImageScreen(
-    private val viewModel: TextToImageViewModel,
-    launchGalleryDetail: (Long) -> Unit,
-) : GenerationMviScreen<TextToImageState, GenerationMviEffect>(
-    viewModel,
-    launchGalleryDetail,
-) {
-
-    @Composable
-    override fun Content() {
-        val state = viewModel.state.collectAsStateWithLifecycle().value
+@Composable
+fun TextToImageScreen() {
+    MviComponent(viewModel = koinViewModel<TextToImageViewModel>()) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
-            onShowAdvancedOptionsToggle = viewModel::toggleAdvancedOptions,
-            onPromptUpdated = viewModel::updatePrompt,
-            onNegativePromptUpdated = viewModel::updateNegativePrompt,
-            onWidthUpdated = viewModel::updateWidth,
-            onHeightUpdated = viewModel::updateHeight,
-            onSamplingStepsUpdated = viewModel::updateSamplingSteps,
-            onCfgScaleUpdated = viewModel::updateCfgScale,
-            onRestoreFacesUpdated = viewModel::updateRestoreFaces,
-            onSeedUpdated = viewModel::updateSeed,
-            onSubSeedUpdated = viewModel::updateSubSeed,
-            onSubSeedStrengthUpdated = viewModel::updateSubSeedStrength,
-            onSamplerUpdated = viewModel::updateSampler,
-            onNsfwUpdated = viewModel::updateNsfw,
-            onBatchCountUpdated = viewModel::updateBatchCount,
-
-            onOpenAiModelSelected = viewModel::updateOpenAiModel,
-            onOpenAiSizeSelected = viewModel::updateOpenAiSize,
-            onOpenAiQualitySelected = viewModel::updateOpenAiQuality,
-            onOpenAiStyleSelected = viewModel::updateOpenAiStyle,
-
-            onGenerateClicked = viewModel::generate,
-            onSaveGeneratedImages = viewModel::saveGeneratedResults,
-            onViewGeneratedImage = viewModel::viewGeneratedResult,
-            onOpenPreviousGenerationInput = viewModel::openPreviousGenerationInput,
-            onUpdateFromPreviousAiGeneration = viewModel::updateFormPreviousAiGeneration,
-            onOpenLoraInput = viewModel::openLoraInput,
-            onOpenHyperNetInput = viewModel::openHyperNetInput,
-            onOpenEmbedding = viewModel::openEmbeddingInput,
-            onProcessNewPrompts = viewModel::processNewPrompts,
-            onCancelGeneration = viewModel::cancelGeneration,
-            onDismissScreenDialog = viewModel::dismissScreenModal,
+            processIntent = intentHandler,
         )
     }
 }
@@ -95,42 +52,22 @@ class TextToImageScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: TextToImageState,
-    onShowAdvancedOptionsToggle: (Boolean) -> Unit = {},
-    onPromptUpdated: (String) -> Unit = {},
-    onNegativePromptUpdated: (String) -> Unit = {},
-    onWidthUpdated: (String) -> Unit = {},
-    onHeightUpdated: (String) -> Unit = {},
-    onSamplingStepsUpdated: (Int) -> Unit = {},
-    onCfgScaleUpdated: (Float) -> Unit = {},
-    onRestoreFacesUpdated: (Boolean) -> Unit = {},
-    onSeedUpdated: (String) -> Unit = {},
-    onSubSeedUpdated: (String) -> Unit = {},
-    onSubSeedStrengthUpdated: (Float) -> Unit = {},
-    onSamplerUpdated: (String) -> Unit = {},
-    onNsfwUpdated: (Boolean) -> Unit = {},
-    onBatchCountUpdated: (Int) -> Unit = {},
-
-    onOpenAiModelSelected: (OpenAiModel) -> Unit = {},
-    onOpenAiSizeSelected: (OpenAiSize) -> Unit = {},
-    onOpenAiQualitySelected: (OpenAiQuality) -> Unit = {},
-    onOpenAiStyleSelected: (OpenAiStyle) -> Unit = {},
-
-    onGenerateClicked: () -> Unit = {},
-    onSaveGeneratedImages: (List<AiGenerationResult>) -> Unit = {},
-    onViewGeneratedImage: (AiGenerationResult) -> Unit = {},
-    onOpenPreviousGenerationInput: () -> Unit = {},
-    onUpdateFromPreviousAiGeneration: (AiGenerationResult) -> Unit = {},
-    onOpenLoraInput: () -> Unit = {},
-    onOpenHyperNetInput: () -> Unit = {},
-    onOpenEmbedding: () -> Unit = {},
-    onProcessNewPrompts: (String, String) -> Unit = { _, _ -> },
-    onCancelGeneration: () -> Unit = {},
-    onDismissScreenDialog: () -> Unit = {},
+    processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
     Box(modifier) {
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
+//                    navigationIcon = {
+//                        IconButton(onClick = {
+//                            processIntent(GenerationMviIntent.Drawer(DrawerIntent.Open))
+//                        }) {
+//                            Icon(
+//                                imageVector = Icons.Default.Menu,
+//                                contentDescription = "Menu",
+//                            )
+//                        }
+//                    },
                     title = {
                         Text(
                             text = stringResource(id = R.string.title_text_to_image),
@@ -138,7 +75,9 @@ private fun ScreenContent(
                         )
                     },
                     actions = {
-                        IconButton(onClick = onOpenPreviousGenerationInput) {
+                        IconButton(onClick = {
+                            processIntent(GenerationMviIntent.SetModal(Modal.PromptBottomSheet))
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = null,
@@ -157,38 +96,15 @@ private fun ScreenContent(
                 ) {
                     GenerationInputForm(
                         state = state,
-                        onShowAdvancedOptionsToggle = onShowAdvancedOptionsToggle,
-                        onPromptUpdated = onPromptUpdated,
-                        onNegativePromptUpdated = onNegativePromptUpdated,
-                        onWidthUpdated = onWidthUpdated,
-                        onHeightUpdated = onHeightUpdated,
-                        onSamplingStepsUpdated = onSamplingStepsUpdated,
-                        onCfgScaleUpdated = onCfgScaleUpdated,
-                        onRestoreFacesUpdated = onRestoreFacesUpdated,
-                        onSeedUpdated = onSeedUpdated,
-                        onSubSeedUpdated = onSubSeedUpdated,
-                        onSubSeedStrengthUpdated = onSubSeedStrengthUpdated,
-                        onSamplerUpdated = onSamplerUpdated,
-                        onNsfwUpdated = onNsfwUpdated,
-                        onBatchCountUpdated = onBatchCountUpdated,
-
-                        onOpenAiModelSelected = onOpenAiModelSelected,
-                        onOpenAiSizeSelected = onOpenAiSizeSelected,
-                        onOpenAiQualitySelected = onOpenAiQualitySelected,
-                        onOpenAiStyleSelected = onOpenAiStyleSelected,
-
-                        widthValidationError = state.widthValidationError,
-                        heightValidationError = state.heightValidationError,
+                        processIntent = processIntent,
                     )
                 }
             },
             bottomBar = {
                 GenerationBottomToolbar(
-                    showToolbar = state.mode == ServerSource.AUTOMATIC1111,
                     strokeAccentState = !state.hasValidationErrors,
-                    onOpenLoraInput = onOpenLoraInput,
-                    onOpenHyperNetInput = onOpenHyperNetInput,
-                    onOpenEmbedding = onOpenEmbedding,
+                    state = state,
+                    processIntent = processIntent,
                 ) {
                     Button(
                         modifier = Modifier
@@ -196,7 +112,7 @@ private fun ScreenContent(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
-                        onClick = onGenerateClicked,
+                        onClick = { processIntent(GenerationMviIntent.Generate) },
                         enabled = !state.hasValidationErrors
                     ) {
                         Icon(
@@ -215,12 +131,7 @@ private fun ScreenContent(
         )
         ModalRenderer(
             screenModal = state.screenModal,
-            onSaveGeneratedImages = onSaveGeneratedImages,
-            onViewGeneratedImage = onViewGeneratedImage,
-            onUpdateFromPreviousAiGeneration = onUpdateFromPreviousAiGeneration,
-            onProcessNewPrompts = onProcessNewPrompts,
-            onCancelGeneration = onCancelGeneration,
-            onDismissScreenDialog = onDismissScreenDialog,
+            processIntent = processIntent,
         )
     }
 }

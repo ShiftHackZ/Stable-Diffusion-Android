@@ -77,7 +77,6 @@ dependencies {
     implementation project(":network")
     implementation project(":storage")
     implementation project(":domain")
-    implementation project(":feature:analytics")
     implementation project(":feature:auth")
     implementation project(":feature:diffusion")
     implementation project(":data")

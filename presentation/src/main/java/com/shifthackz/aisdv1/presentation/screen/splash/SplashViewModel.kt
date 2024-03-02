@@ -3,22 +3,34 @@ package com.shifthackz.aisdv1.presentation.screen.splash
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
-import com.shifthackz.aisdv1.core.ui.EmptyState
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
+import com.shifthackz.android.core.mvi.EmptyEffect
+import com.shifthackz.android.core.mvi.EmptyIntent
+import com.shifthackz.android.core.mvi.EmptyState
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class SplashViewModel(
+    mainRouter: MainRouter,
     splashNavigationUseCase: SplashNavigationUseCase,
     schedulersProvider: SchedulersProvider,
-) : MviRxViewModel<EmptyState, SplashEffect>() {
+) : MviRxViewModel<EmptyState, EmptyIntent, EmptyEffect>() {
 
-    override val emptyState = EmptyState
+    override val initialState = EmptyState
 
     init {
         !splashNavigationUseCase()
-            .map(SplashNavigationUseCase.Action::toEffect)
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog, ::emitEffect)
+            .subscribeBy(::errorLog) { action ->
+                when (action) {
+                    SplashNavigationUseCase.Action.LAUNCH_ONBOARDING -> {}
+                    SplashNavigationUseCase.Action.LAUNCH_SERVER_SETUP -> mainRouter.navigateToServerSetup(
+                        source = ServerSetupLaunchSource.SPLASH
+                    )
+                    SplashNavigationUseCase.Action.LAUNCH_HOME -> mainRouter.navigateToPostSplashConfigLoader()
+                }
+            }
     }
 }

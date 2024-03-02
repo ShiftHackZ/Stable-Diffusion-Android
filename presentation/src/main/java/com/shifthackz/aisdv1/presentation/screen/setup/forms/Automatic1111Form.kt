@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.DeveloperMode
-import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
@@ -36,7 +36,7 @@ import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 fun Automatic1111Form(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
-    handleIntent: (ServerSetupIntent) -> Unit,
+    processIntent: (ServerSetupIntent) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -58,7 +58,7 @@ fun Automatic1111Form(
             modifier = fieldModifier,
             value = if (!state.demoMode) state.serverUrl else state.demoModeUrl,
             onValueChange = {
-                handleIntent(ServerSetupIntent.UpdateServerUrl(it))
+                processIntent(ServerSetupIntent.UpdateServerUrl(it))
             },
             label = { Text(stringResource(id = R.string.hint_server_url)) },
             enabled = !state.demoMode,
@@ -74,7 +74,7 @@ fun Automatic1111Form(
                 items = ServerSetupState.AuthType.entries,
                 value = state.authType,
                 onItemSelected = {
-                    handleIntent(ServerSetupIntent.UpdateAuthType(it))
+                    processIntent(ServerSetupIntent.UpdateAuthType(it))
                 },
                 displayDelegate = { type ->
                     when (type) {
@@ -90,7 +90,7 @@ fun Automatic1111Form(
                         modifier = fieldModifier,
                         value = state.login,
                         onValueChange = {
-                            handleIntent(ServerSetupIntent.UpdateLogin(it))
+                            processIntent(ServerSetupIntent.UpdateLogin(it))
                         },
                         label = { Text(stringResource(id = R.string.hint_login)) },
                         isError = state.loginValidationError != null,
@@ -102,7 +102,7 @@ fun Automatic1111Form(
                         modifier = fieldModifier,
                         value = state.password,
                         onValueChange = {
-                            handleIntent(ServerSetupIntent.UpdatePassword(it))
+                            processIntent(ServerSetupIntent.UpdatePassword(it))
                         },
                         label = { Text(stringResource(id = R.string.hint_password)) },
                         isError = state.passwordValidationError != null,
@@ -118,7 +118,7 @@ fun Automatic1111Form(
                             val description = if (state.passwordVisible) "Hide password" else "Show password"
                             IconButton(
                                 onClick = {
-                                    handleIntent(
+                                    processIntent(
                                         ServerSetupIntent.UpdatePasswordVisibility(
                                             state.passwordVisible,
                                         ),
@@ -136,9 +136,9 @@ fun Automatic1111Form(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
-            startIcon = Icons.Default.Help,
+            startIcon = Icons.AutoMirrored.Filled.Help,
             text = R.string.settings_item_instructions.asUiText(),
-            onClick = { handleIntent(ServerSetupIntent.LaunchUrl.A1111Instructions) },
+            onClick = { processIntent(ServerSetupIntent.LaunchUrl.A1111Instructions) },
         )
         SettingsItem(
             modifier = Modifier
@@ -146,13 +146,13 @@ fun Automatic1111Form(
                 .fillMaxWidth(),
             startIcon = Icons.Default.DeveloperMode,
             text = R.string.settings_item_demo.asUiText(),
-            onClick = { handleIntent(ServerSetupIntent.UpdateDemoMode(!state.demoMode)) },
+            onClick = { processIntent(ServerSetupIntent.UpdateDemoMode(!state.demoMode)) },
             endValueContent = {
                 Switch(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     checked = state.demoMode,
                     onCheckedChange = {
-                        handleIntent(ServerSetupIntent.UpdateDemoMode(it))
+                        processIntent(ServerSetupIntent.UpdateDemoMode(it))
                     },
                 )
             }
