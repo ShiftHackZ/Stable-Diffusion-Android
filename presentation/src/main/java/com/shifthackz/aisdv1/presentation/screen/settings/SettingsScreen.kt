@@ -2,6 +2,8 @@
 
 package com.shifthackz.aisdv1.presentation.screen.settings
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -35,13 +37,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.common.extensions.openUrl
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.features.ReportProblemEmailComposer
+import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
@@ -49,18 +55,28 @@ import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SettingsScreen(
-    launchUrl: (String) -> Unit = {},
-    shareLogFile: () -> Unit = {},
-    requestStoragePermissions: () -> Unit,
-) {
+fun SettingsScreen() {
+    val viewModel = koinViewModel<SettingsViewModel>()
+    val context = LocalContext.current
+
+    val storagePermission = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { result ->
+        if (!result.values.any { !it }) {
+            viewModel.processIntent(SettingsIntent.StoragePermissionGranted)
+        }
+    }
     MviComponent(
-        viewModel = koinViewModel<SettingsViewModel>(),
+        viewModel = viewModel,
         effectHandler = { effect ->
             when (effect) {
-                SettingsEffect.RequestStoragePermission -> requestStoragePermissions()
-                SettingsEffect.ShareLogFile -> shareLogFile()
-                is SettingsEffect.OpenUrl -> launchUrl(effect.url)
+                SettingsEffect.RequestStoragePermission -> {
+                    if (PermissionUtil.checkStoragePermission(context, storagePermission::launch)) {
+                        viewModel.processIntent(SettingsIntent.StoragePermissionGranted)
+                    }
+                }
+                SettingsEffect.ShareLogFile -> ReportProblemEmailComposer().invoke(context)
+                is SettingsEffect.OpenUrl -> context.openUrl(effect.url)
             }
         },
         applySystemUiColors = false,

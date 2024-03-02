@@ -7,7 +7,6 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
@@ -34,13 +33,12 @@ class ImageToImageViewModel(
     private val getRandomImageUseCase: GetRandomImageUseCase,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
-    private val dimensionValidator: DimensionValidator,
     private val preferenceManager: PreferenceManager,
     private val schedulersProvider: SchedulersProvider,
     private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
     private val wakeLockInterActor: WakeLockInterActor,
-) : GenerationMviViewModel<ImageToImageState, GenerationMviIntent>() {
+) : GenerationMviViewModel<ImageToImageState, GenerationMviIntent, ImageToImageEffect>() {
 
     override val initialState = ImageToImageState()
 
@@ -86,6 +84,18 @@ class ImageToImageViewModel(
 
             is ImageToImageIntent.UpdateDenoisingStrength -> updateState {
                 it.copy(denoisingStrength = intent.value)
+            }
+
+            ImageToImageIntent.Pick.Camera -> emitEffect(ImageToImageEffect.CameraPicker)
+
+            ImageToImageIntent.Pick.Gallery -> emitEffect(ImageToImageEffect.GalleryPicker)
+
+            is ImageToImageIntent.UpdateImage -> when (intent.result) {
+                is PickedResult.Single -> updateState {
+                    it.copy(imageState = ImageToImageState.ImageState.Image(intent.result.image.bitmap))
+                }
+
+                else -> Unit
             }
 
             else -> super.processIntent(intent)
@@ -160,13 +170,5 @@ class ImageToImageViewModel(
             )
 
         return super.updateFormPreviousAiGeneration(ai)
-    }
-
-    fun updateInputImage(value: PickedResult) = when (value) {
-        is PickedResult.Single -> updateState {
-            it.copy(imageState = ImageToImageState.ImageState.Image(value.image.bitmap))
-        }
-
-        else -> Unit
     }
 }

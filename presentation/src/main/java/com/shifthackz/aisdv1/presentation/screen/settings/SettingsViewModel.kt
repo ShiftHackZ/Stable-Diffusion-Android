@@ -88,6 +88,8 @@ class SettingsViewModel(
             )
 
             is SettingsIntent.LaunchUrl -> emitEffect(SettingsEffect.OpenUrl(intent.url))
+
+            SettingsIntent.StoragePermissionGranted -> preferenceManager.saveToMediaStore = true
         }
     }
 

@@ -34,41 +34,54 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.core.sharing.shareFile
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.theme.colors
+import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
 import com.shifthackz.catppuccin.palette.Catppuccin
 import org.koin.androidx.compose.getViewModel
+import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
-import java.io.File
 
 @Composable
-fun GalleryDetailScreen(
-    itemId: Long,
-    shareGalleryFile: (File) -> Unit = {},
-    shareGenerationParams: (GalleryDetailState) -> Unit = {},
-    copyToClipboard: (CharSequence) -> Unit = {},
-) {
+fun GalleryDetailScreen(itemId: Long) {
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+    val fileProviderDescriptor: FileProviderDescriptor = koinInject()
+    val galleryDetailSharing: GalleryDetailSharing = koinInject()
     MviComponent(
         viewModel = getViewModel<GalleryDetailViewModel>(
             parameters = { parametersOf(itemId) },
         ),
         effectHandler = { effect ->
             when (effect) {
-                is GalleryDetailEffect.ShareImageFile -> shareGalleryFile(effect.file)
-                is GalleryDetailEffect.ShareGenerationParams -> shareGenerationParams(effect.state)
-                is GalleryDetailEffect.ShareClipBoard -> copyToClipboard(effect.text)
+                is GalleryDetailEffect.ShareImageFile -> context.shareFile(
+                    file = effect.file,
+                    fileProviderPath = fileProviderDescriptor.providerPath,
+                    fileMimeType = Constants.MIME_TYPE_JPG,
+                )
+
+                is GalleryDetailEffect.ShareGenerationParams -> galleryDetailSharing(context, effect.state)
+
+                is GalleryDetailEffect.ShareClipBoard -> {
+                    clipboardManager.setText(AnnotatedString(effect.text))
+                }
             }
         }
     ) { state, intentHandler ->

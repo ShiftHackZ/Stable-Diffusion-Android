@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.android.core.mvi.MviIntent
+import com.shz.imagepicker.imagepicker.model.PickedResult
 
 sealed interface GenerationMviIntent : MviIntent {
 
@@ -87,4 +88,10 @@ sealed interface ImageToImageIntent : GenerationMviIntent {
     data object ClearImageInput : ImageToImageIntent
 
     data class UpdateDenoisingStrength(val value: Float) : ImageToImageIntent
+
+    data class UpdateImage(val result: PickedResult) : ImageToImageIntent
+
+    enum class Pick : ImageToImageIntent {
+        Camera, Gallery
+    }
 }

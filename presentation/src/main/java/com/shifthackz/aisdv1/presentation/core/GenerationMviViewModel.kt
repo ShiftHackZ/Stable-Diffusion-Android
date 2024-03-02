@@ -24,15 +24,15 @@ import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.Router
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
-import com.shifthackz.android.core.mvi.EmptyEffect
+import com.shifthackz.android.core.mvi.MviEffect
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviIntent> :
-    MviRxViewModel<S, I, EmptyEffect>(), KoinComponent {
+abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviIntent, E : MviEffect> :
+    MviRxViewModel<S, I, E>(), KoinComponent {
 
     private val preferenceManager: PreferenceManager by inject()
     private val schedulersProvider: SchedulersProvider by inject()

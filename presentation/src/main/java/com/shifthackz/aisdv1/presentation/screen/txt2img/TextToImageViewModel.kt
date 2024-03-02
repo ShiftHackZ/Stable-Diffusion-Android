@@ -4,7 +4,6 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
@@ -19,18 +18,18 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
+import com.shifthackz.android.core.mvi.EmptyEffect
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
     generationFormUpdateEvent: GenerationFormUpdateEvent,
     private val textToImageUseCase: TextToImageUseCase,
     private val schedulersProvider: SchedulersProvider,
-    private val dimensionValidator: DimensionValidator,
     private val preferenceManager: PreferenceManager,
     private val notificationManager: SdaiPushNotificationManager,
     private val analytics: Analytics,
     private val wakeLockInterActor: WakeLockInterActor,
-) : GenerationMviViewModel<TextToImageState, GenerationMviIntent>() {
+) : GenerationMviViewModel<TextToImageState, GenerationMviIntent, EmptyEffect>() {
 
     private val progressModal: Modal
         get() {

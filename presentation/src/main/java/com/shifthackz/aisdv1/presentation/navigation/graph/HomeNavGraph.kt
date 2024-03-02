@@ -1,6 +1,5 @@
-package com.shifthackz.aisdv1.presentation.screen.home
+package com.shifthackz.aisdv1.presentation.navigation.graph
 
-import android.content.Intent
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -13,41 +12,22 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryScreen
+import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationItem
+import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationScreen
 import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageScreen
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsScreen
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreen
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import com.shz.imagepicker.imagepicker.ImagePickerCallback
-import java.io.File
 
-fun NavGraphBuilder.homeScreenNavGraph(
-    route: String = Constants.ROUTE_HOME,
-    pickImage: (ImagePickerCallback) -> Unit = {},
-    takePhoto: (ImagePickerCallback) -> Unit = {},
-    shareGalleryFile: (File) -> Unit = {},
-    launchIntent: (Intent) -> Unit = {},
-    launchUrl: (String) -> Unit = {},
-    shareLogFile: () -> Unit = {},
-    requestStoragePermissions: () -> Unit = {},
-) {
+fun NavGraphBuilder.homeScreenNavGraph(route: String = Constants.ROUTE_HOME) {
     addDestination(
         ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
             HomeNavigationScreen(
                 navItems = listOf(
                     txt2ImgTab(),
-                    img2imgTab(
-                        pickImage = pickImage,
-                        takePhoto = takePhoto,
-                    ),
-                    galleryTab(
-                        shareGalleryFile = shareGalleryFile,
-                        launchIntent = launchIntent,
-                    ),
-                    settingsTab(
-                        launchUrl = launchUrl,
-                        shareLogFile = shareLogFile,
-                        requestStoragePermissions = requestStoragePermissions,
-                    ),
+                    img2imgTab(),
+                    galleryTab(),
+                    settingsTab(),
                 ),
             )
         }.apply { this.route = route }
@@ -66,10 +46,7 @@ private fun txt2ImgTab() = HomeNavigationItem(
 )
 
 @Composable
-private fun img2imgTab(
-    pickImage: (ImagePickerCallback) -> Unit = {},
-    takePhoto: (ImagePickerCallback) -> Unit = {},
-) = HomeNavigationItem(
+private fun img2imgTab() = HomeNavigationItem(
     name = stringResource(R.string.home_tab_img_to_img),
     route = Constants.ROUTE_IMG_TO_IMG,
     icon = HomeNavigationItem.Icon.Resource(
@@ -77,18 +54,12 @@ private fun img2imgTab(
         modifier = Modifier.size(24.dp),
     ),
     content = {
-        ImageToImageScreen(
-            pickImage = pickImage,
-            takePhoto = takePhoto,
-        )
+        ImageToImageScreen()
     },
 )
 
 @Composable
-private fun galleryTab(
-    shareGalleryFile: (File) -> Unit = {},
-    launchIntent: (Intent) -> Unit = {},
-) = HomeNavigationItem(
+private fun galleryTab() = HomeNavigationItem(
     name = stringResource(R.string.home_tab_gallery),
     route = Constants.ROUTE_GALLERY,
     icon = HomeNavigationItem.Icon.Resource(
@@ -96,29 +67,18 @@ private fun galleryTab(
         modifier = Modifier.size(24.dp),
     ),
     content = {
-        GalleryScreen(
-            shareGalleryFile = shareGalleryFile,
-            launchIntent = launchIntent,
-        )
+        GalleryScreen()
     },
 )
 
 @Composable
-private fun settingsTab(
-    launchUrl: (String) -> Unit = {},
-    shareLogFile: () -> Unit = {},
-    requestStoragePermissions: () -> Unit = {},
-) = HomeNavigationItem(
+private fun settingsTab() = HomeNavigationItem(
     name = stringResource(id = R.string.home_tab_settings),
     route = Constants.ROUTE_SETTINGS,
     icon = HomeNavigationItem.Icon.Vector(
         vector = Icons.Default.Settings,
     ),
     content = {
-        SettingsScreen(
-            launchUrl = launchUrl,
-            shareLogFile = shareLogFile,
-            requestStoragePermissions = requestStoragePermissions,
-        )
+        SettingsScreen()
     }
 )

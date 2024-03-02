@@ -2,7 +2,12 @@
 
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -30,16 +35,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.extensions.openUrl
+import com.shifthackz.aisdv1.core.extensions.showToast
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationStepBar
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.ConfigurationStep
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.SourceSelectionStep
+import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import org.koin.androidx.compose.getViewModel
@@ -50,18 +59,33 @@ import org.koin.core.parameter.parametersOf
 fun ServerSetupScreen(
     modifier: Modifier = Modifier,
     launchSourceKey: Int,
-    launchUrl: (String) -> Unit = {},
-    launchManageStoragePermission: () -> Unit = {},
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val context = LocalContext.current
+
+    val storagePermission = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { result ->
+        if (!result.values.any { !it }) context.showToast("Granted successfully")
+    }
+
     MviComponent(
         viewModel = getViewModel<ServerSetupViewModel>(
             parameters = { parametersOf(launchSourceKey) }
         ),
         effectHandler = { effect ->
             when (effect) {
-                ServerSetupEffect.LaunchManageStoragePermission -> launchManageStoragePermission()
-                is ServerSetupEffect.LaunchUrl -> launchUrl(effect.url)
+                ServerSetupEffect.LaunchManageStoragePermission -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                        context.startActivity(intent)
+                    } else {
+                        if (PermissionUtil.checkStoragePermission(context, storagePermission::launch)) {
+                            context.showToast("Already Granted")
+                        }
+                    }
+                }
+                is ServerSetupEffect.LaunchUrl -> context.openUrl(effect.url)
                 ServerSetupEffect.HideKeyboard -> keyboardController?.hide()
             }
         },

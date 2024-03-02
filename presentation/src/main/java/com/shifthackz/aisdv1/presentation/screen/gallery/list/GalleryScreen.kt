@@ -38,6 +38,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.intl.Locale
@@ -48,37 +49,43 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.extensions.items
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.core.sharing.shareFile
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
-import java.io.File
+import org.koin.compose.koinInject
 
 @Composable
-fun GalleryScreen(
-    shareGalleryFile: (File) -> Unit = {},
-    launchIntent: (Intent) -> Unit = {},
-) {
+fun GalleryScreen() {
     val viewModel = koinViewModel<GalleryViewModel>()
+    val context = LocalContext.current
+    val fileProviderDescriptor: FileProviderDescriptor = koinInject()
     MviComponent(
         viewModel = viewModel,
         effectHandler = { effect ->
             when (effect) {
                 is GalleryEffect.OpenUri -> with(Intent(Intent.ACTION_VIEW)) {
                     setDataAndType(effect.uri, DocumentsContract.Document.MIME_TYPE_DIR)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    launchIntent(this)
+                    context.startActivity(this)
                 }
 
-                is GalleryEffect.Share -> shareGalleryFile(effect.zipFile)
+                is GalleryEffect.Share -> context.shareFile(
+                    file = effect.zipFile,
+                    fileProviderPath = fileProviderDescriptor.providerPath,
+                    fileMimeType = Constants.MIME_TYPE_ZIP,
+                )
             }
         },
         applySystemUiColors = false,

@@ -62,5 +62,7 @@ sealed interface SettingsIntent : MviIntent {
         data class AdvancedFormVisibility(override val flag: Boolean) : UpdateFlag
     }
 
+    data object StoragePermissionGranted : SettingsIntent
+
     data object DismissDialog : SettingsIntent
 }

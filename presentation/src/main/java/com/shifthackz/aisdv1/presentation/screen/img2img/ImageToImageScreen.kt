@@ -44,9 +44,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
@@ -60,21 +62,34 @@ import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MIN
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
-import com.shz.imagepicker.imagepicker.ImagePickerCallback
+import com.shz.imagepicker.imagepicker.ImagePicker
+import com.shz.imagepicker.imagepicker.model.GalleryPicker
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
-fun ImageToImageScreen(
-    pickImage: (ImagePickerCallback) -> Unit,
-    takePhoto: (ImagePickerCallback) -> Unit,
-) {
+fun ImageToImageScreen() {
+    val context = LocalContext.current
     val viewModel = koinViewModel<ImageToImageViewModel>()
-    MviComponent(viewModel) { state, intentHandler ->
+    val fileProviderDescriptor: FileProviderDescriptor = koinInject()
+    MviComponent(
+        viewModel = viewModel,
+        effectHandler = { effect ->
+            ImagePicker.Builder(fileProviderDescriptor.providerPath) { result ->
+                viewModel.processIntent(ImageToImageIntent.UpdateImage(result))
+            }
+                .useGallery(effect == ImageToImageEffect.GalleryPicker)
+                .useCamera(effect == ImageToImageEffect.CameraPicker)
+                .autoRotate(effect == ImageToImageEffect.GalleryPicker)
+                .multipleSelection(false)
+                .galleryPicker(GalleryPicker.NATIVE)
+                .build()
+                .launch(context)
+        },
+    ) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
-            onPickImage = { pickImage(viewModel::updateInputImage) },
-            onTakePhoto = { takePhoto(viewModel::updateInputImage) },
             processIntent = intentHandler,
         )
     }
@@ -84,8 +99,6 @@ fun ImageToImageScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ImageToImageState,
-    onPickImage: () -> Unit = {},
-    onTakePhoto: () -> Unit = {},
     processIntent: (GenerationMviIntent) -> Unit = {}
 ) {
     Box(modifier) {
@@ -131,8 +144,6 @@ private fun ScreenContent(
                                     .fillMaxWidth()
                                     .padding(top = 16.dp),
                                 imageState = state.imageState,
-                                onPickImage = onPickImage,
-                                onTakePhoto = onTakePhoto,
                                 processIntent = processIntent
                             )
                             GenerationInputForm(
@@ -151,7 +162,11 @@ private fun ScreenContent(
                                         valueRange = DENOISING_STRENGTH_MIN..DENOISING_STRENGTH_MAX,
                                         colors = sliderColors,
                                         onValueChange = {
-                                            processIntent(ImageToImageIntent.UpdateDenoisingStrength(it.roundTo(2)))
+                                            processIntent(
+                                                ImageToImageIntent.UpdateDenoisingStrength(
+                                                    it.roundTo(2)
+                                                )
+                                            )
                                         },
                                     )
                                 }
@@ -261,8 +276,6 @@ private fun ScreenContent(
 private fun InputImageState(
     modifier: Modifier = Modifier,
     imageState: ImageToImageState.ImageState,
-    onPickImage: () -> Unit = {},
-    onTakePhoto: () -> Unit = {},
     processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
     when (imageState) {
@@ -306,12 +319,12 @@ private fun InputImageState(
                 ImagePickButtonBox(
                     modifier = pickButtonModifier,
                     buttonType = ImagePickButton.PHOTO,
-                    onClick = onPickImage,
+                    onClick = { processIntent(ImageToImageIntent.Pick.Gallery) },
                 )
                 ImagePickButtonBox(
                     modifier = pickButtonModifier,
                     buttonType = ImagePickButton.CAMERA,
-                    onClick = onTakePhoto,
+                    onClick = { processIntent(ImageToImageIntent.Pick.Camera) },
                 )
             }
             Row(

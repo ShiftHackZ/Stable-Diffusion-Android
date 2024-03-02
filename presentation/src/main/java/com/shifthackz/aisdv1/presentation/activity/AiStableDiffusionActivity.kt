@@ -1,56 +1,28 @@
 package com.shifthackz.aisdv1.presentation.activity
 
-import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Box
-import androidx.core.app.ActivityCompat
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.shifthackz.aisdv1.core.common.extensions.copyToClipboard
-import com.shifthackz.aisdv1.core.common.extensions.openUrl
-import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
-import com.shifthackz.aisdv1.presentation.features.FileSharingFeature
-import com.shifthackz.aisdv1.presentation.features.GalleryExportZip
-import com.shifthackz.aisdv1.presentation.features.GalleryItemImageShare
-import com.shifthackz.aisdv1.presentation.features.GalleryItemInfoShare
-import com.shifthackz.aisdv1.presentation.features.ImagePickerFeature
-import com.shifthackz.aisdv1.presentation.features.ReportProblemEmailComposer
 import com.shifthackz.aisdv1.presentation.navigation.MainRouter
 import com.shifthackz.aisdv1.presentation.navigation.Router
-import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
-import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
-import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSharing
-import com.shifthackz.aisdv1.presentation.screen.home.homeScreenNavGraph
-import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreen
-import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreen
+import com.shifthackz.aisdv1.presentation.navigation.graph.mainNavGraph
 import com.shifthackz.aisdv1.presentation.theme.AiStableDiffusionAppTheme
 import com.shifthackz.aisdv1.presentation.utils.Constants
+import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 
-class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileSharingFeature {
-
-    private val galleryDetailSharing: GalleryDetailSharing by inject()
-    private val analytics: Analytics by inject()
+class AiStableDiffusionActivity : ComponentActivity() {
 
     private val viewModel: AiStableDiffusionViewModel by viewModel()
+    private val analytics: Analytics by inject()
 
     private val notificationPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -65,157 +37,30 @@ class AiStableDiffusionActivity : ComponentActivity(), ImagePickerFeature, FileS
         debugLog("Storage permission is ${result}.")
     }
 
-    override val fileProviderDescriptor: FileProviderDescriptor by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
         analytics.initialize()
-        requestNotificationPermission()
-        requestStoragePermission()
+        PermissionUtil.checkNotificationPermission(this, notificationPermission::launch)
+        PermissionUtil.checkStoragePermission(this, storagePermission::launch)
         setContent {
             val navController = rememberNavController()
 
             loadKoinModules(
                 module = module {
-                    single<Router>{
+                    single<Router> {
                         MainRouter(navController, get())
                     }
                 }
             )
 
             AiStableDiffusionAppTheme {
-                Box {
-                    NavHost(
-                        navController = navController,
-                        startDestination = Constants.ROUTE_SPLASH,
-                    ) {
-                        composable(Constants.ROUTE_SPLASH) {
-                            SplashScreen()
-                        }
-
-                        composable(
-                            route = Constants.ROUTE_SERVER_SETUP_FULL,
-                            arguments = listOf(
-                                navArgument(Constants.PARAM_SOURCE) { type = NavType.IntType },
-                            )
-                        ) { entry ->
-                            val sourceKey = entry.arguments
-                                ?.getInt(Constants.PARAM_SOURCE)
-                                ?: ServerSetupLaunchSource.SPLASH.key
-                            ServerSetupScreen(
-                                launchSourceKey = sourceKey,
-                                launchUrl = ::openUrl,
-                                launchManageStoragePermission = ::setupManageStoragePermission,
-                            )
-                        }
-
-                        composable(Constants.ROUTE_CONFIG_LOADER) {
-                            ConfigurationLoaderScreen()
-                        }
-
-                        homeScreenNavGraph(
-                            route = Constants.ROUTE_HOME,
-                            pickImage = { clb -> pickPhoto(this@AiStableDiffusionActivity, clb) },
-                            takePhoto = { clb -> takePhoto(this@AiStableDiffusionActivity, clb) },
-                            shareGalleryFile = { zipFile ->
-                                analytics.logEvent(GalleryExportZip)
-                                shareFile(
-                                    context = this@AiStableDiffusionActivity,
-                                    file = zipFile,
-                                    mimeType = Constants.MIME_TYPE_ZIP,
-                                )
-                            },
-                            launchIntent = ::startActivity,
-                            launchUrl = ::openUrl,
-                            shareLogFile = {
-                                ReportProblemEmailComposer().invoke(this@AiStableDiffusionActivity)
-                            },
-                            requestStoragePermissions = {
-                                val hasPermission = requestStoragePermission()
-                                if (hasPermission) viewModel.onStoragePermissionsGranted()
-                            },
-                        )
-
-                        composable(
-                            route = Constants.ROUTE_GALLERY_DETAIL_FULL,
-                            arguments = listOf(
-                                navArgument(Constants.PARAM_ITEM_ID) { type = NavType.LongType },
-                            ),
-                        ) { entry ->
-                            val itemId = entry.arguments?.getLong(Constants.PARAM_ITEM_ID) ?: -1L
-                            GalleryDetailScreen(
-                                itemId = itemId,
-                                shareGalleryFile = { jpgFile ->
-                                    analytics.logEvent(GalleryItemImageShare)
-                                    shareFile(
-                                        context = this@AiStableDiffusionActivity,
-                                        file = jpgFile,
-                                        mimeType = Constants.MIME_TYPE_JPG,
-                                    )
-                                },
-                                shareGenerationParams = { uiState ->
-                                    analytics.logEvent(GalleryItemInfoShare)
-                                    galleryDetailSharing(
-                                        context = this@AiStableDiffusionActivity,
-                                        state = uiState,
-                                    )
-                                },
-                                copyToClipboard = { text -> copyToClipboard(text) },
-                            )
-                        }
-
-                        composable(Constants.ROUTE_DEBUG) {
-                            DebugMenuScreen()
-                        }
-                    }
-                }
+                NavHost(
+                    navController = navController,
+                    startDestination = Constants.ROUTE_SPLASH,
+                    builder = { mainNavGraph() },
+                )
             }
         }
-    }
-
-    private fun setupManageStoragePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val intent = Intent(ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-            startActivity(intent)
-        } else {
-            val hasPermission = requestStoragePermission()
-            if (hasPermission) {
-                Toast.makeText(this, "Already granted", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-    private fun requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-    }
-
-    private fun requestStoragePermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) return false
-        val missingPermissions = buildList {
-            if (ActivityCompat.checkSelfPermission(
-                    this@AiStableDiffusionActivity,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                add(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-            if (ActivityCompat.checkSelfPermission(
-                    this@AiStableDiffusionActivity,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
-        }
-        if (missingPermissions.isEmpty()) return true
-        storagePermission.launch(missingPermissions.toTypedArray())
-        return false
     }
 }
