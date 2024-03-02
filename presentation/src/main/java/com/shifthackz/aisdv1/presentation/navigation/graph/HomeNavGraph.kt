@@ -11,8 +11,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.model.NavItem
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryScreen
-import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationItem
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationScreen
 import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageScreen
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsScreen
@@ -35,10 +35,10 @@ fun NavGraphBuilder.homeScreenNavGraph(route: String = Constants.ROUTE_HOME) {
 }
 
 @Composable
-private fun txt2ImgTab() = HomeNavigationItem(
+private fun txt2ImgTab() = NavItem(
     name = stringResource(R.string.home_tab_txt_to_img),
     route = Constants.ROUTE_TXT_TO_IMG,
-    icon = HomeNavigationItem.Icon.Resource(
+    icon = NavItem.Icon.Resource(
         resId = R.drawable.ic_text,
         modifier = Modifier.size(24.dp),
     ),
@@ -46,10 +46,10 @@ private fun txt2ImgTab() = HomeNavigationItem(
 )
 
 @Composable
-private fun img2imgTab() = HomeNavigationItem(
+private fun img2imgTab() = NavItem(
     name = stringResource(R.string.home_tab_img_to_img),
     route = Constants.ROUTE_IMG_TO_IMG,
-    icon = HomeNavigationItem.Icon.Resource(
+    icon = NavItem.Icon.Resource(
         resId = R.drawable.ic_image,
         modifier = Modifier.size(24.dp),
     ),
@@ -59,10 +59,10 @@ private fun img2imgTab() = HomeNavigationItem(
 )
 
 @Composable
-private fun galleryTab() = HomeNavigationItem(
+private fun galleryTab() = NavItem(
     name = stringResource(R.string.home_tab_gallery),
     route = Constants.ROUTE_GALLERY,
-    icon = HomeNavigationItem.Icon.Resource(
+    icon = NavItem.Icon.Resource(
         resId = R.drawable.ic_gallery,
         modifier = Modifier.size(24.dp),
     ),
@@ -72,10 +72,10 @@ private fun galleryTab() = HomeNavigationItem(
 )
 
 @Composable
-private fun settingsTab() = HomeNavigationItem(
+private fun settingsTab() = NavItem(
     name = stringResource(id = R.string.home_tab_settings),
     route = Constants.ROUTE_SETTINGS,
-    icon = HomeNavigationItem.Icon.Vector(
+    icon = NavItem.Icon.Vector(
         vector = Icons.Default.Settings,
     ),
     content = {

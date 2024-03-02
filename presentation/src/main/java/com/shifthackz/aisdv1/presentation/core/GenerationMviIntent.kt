@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.android.core.mvi.MviIntent
 import com.shz.imagepicker.imagepicker.model.PickedResult
 
@@ -79,6 +80,8 @@ sealed interface GenerationMviIntent : MviIntent {
     data object Generate : GenerationMviIntent
 
     data class UpdateFromGeneration(val ai: AiGenerationResult) : GenerationMviIntent
+
+    data class Drawer(val intent: DrawerIntent) : GenerationMviIntent
 }
 
 sealed interface ImageToImageIntent : GenerationMviIntent {

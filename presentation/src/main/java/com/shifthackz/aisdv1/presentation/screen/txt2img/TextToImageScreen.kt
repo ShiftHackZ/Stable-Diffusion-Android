@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +34,7 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 import org.koin.androidx.compose.koinViewModel
@@ -58,6 +60,16 @@ private fun ScreenContent(
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            processIntent(GenerationMviIntent.Drawer(DrawerIntent.Open))
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = "Menu",
+                            )
+                        }
+                    },
                     title = {
                         Text(
                             text = stringResource(id = R.string.title_text_to_image),

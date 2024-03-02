@@ -1,8 +1,10 @@
-package com.shifthackz.aisdv1.presentation.navigation
+package com.shifthackz.aisdv1.presentation.navigation.router.main
 
+import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
+import com.shifthackz.aisdv1.presentation.navigation.router.Router
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 
-interface Router {
+interface MainRouter : Router<NavigationEffect> {
 
     fun navigateBack()
 

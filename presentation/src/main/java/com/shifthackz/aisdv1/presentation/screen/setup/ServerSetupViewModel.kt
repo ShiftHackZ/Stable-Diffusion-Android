@@ -12,7 +12,6 @@ import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.interactor.settings.SetupConnectionInterActor
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
@@ -22,10 +21,7 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
-import com.shifthackz.aisdv1.presentation.features.SetupConnectEvent
-import com.shifthackz.aisdv1.presentation.features.SetupConnectFailure
-import com.shifthackz.aisdv1.presentation.features.SetupConnectSuccess
-import com.shifthackz.aisdv1.presentation.navigation.Router
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomModelSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
@@ -46,9 +42,8 @@ class ServerSetupViewModel(
     private val deleteModelUseCase: DeleteModelUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
-    private val analytics: Analytics,
     private val wakeLockInterActor: WakeLockInterActor,
-    private val router: Router,
+    private val mainRouter: MainRouter,
 ) : MviRxViewModel<ServerSetupState, ServerSetupIntent, ServerSetupEffect>() {
 
     override val initialState = ServerSetupState(
@@ -178,7 +173,7 @@ class ServerSetupViewModel(
         }
 
         ServerSetupIntent.NavigateBack -> if (currentState.step == ServerSetupState.Step.entries.first()) {
-            router.navigateBack()
+            mainRouter.navigateBack()
         } else {
             emitEffect(ServerSetupEffect.HideKeyboard)
             updateState {
@@ -202,7 +197,6 @@ class ServerSetupViewModel(
                     onSuccess = { onSetupComplete() },
                     onFailure = { t ->
                         val message = t.localizedMessage ?: "Bad key"
-                        analytics.logEvent(SetupConnectFailure(message))
                         setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
                     },
                 )
@@ -277,7 +271,6 @@ class ServerSetupViewModel(
 
             else -> AuthorizationCredentials.None
         }
-        analytics.logEvent(SetupConnectEvent(connectUrl, demoMode))
         return setupConnectionInterActor.connectToA1111(
             connectUrl,
             demoMode,
@@ -401,8 +394,7 @@ class ServerSetupViewModel(
 
     private fun onSetupComplete() {
         preferenceManager.forceSetupAfterUpdate = false
-        analytics.logEvent(SetupConnectSuccess)
         processIntent(ServerSetupIntent.DismissDialog)
-        router.navigateToHomeScreen()
+        mainRouter.navigateToHomeScreen()
     }
 }

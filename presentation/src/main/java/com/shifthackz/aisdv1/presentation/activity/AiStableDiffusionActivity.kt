@@ -4,25 +4,27 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.core.common.log.debugLog
-import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
-import com.shifthackz.aisdv1.presentation.navigation.MainRouter
-import com.shifthackz.aisdv1.presentation.navigation.Router
+import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
+import com.shifthackz.aisdv1.presentation.navigation.graph.mainDrawerNavItems
 import com.shifthackz.aisdv1.presentation.navigation.graph.mainNavGraph
+import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerScreen
 import com.shifthackz.aisdv1.presentation.theme.AiStableDiffusionAppTheme
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
-import org.koin.android.ext.android.inject
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.loadKoinModules
-import org.koin.dsl.module
 
 class AiStableDiffusionActivity : ComponentActivity() {
 
     private val viewModel: AiStableDiffusionViewModel by viewModel()
-    private val analytics: Analytics by inject()
 
     private val notificationPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -40,26 +42,60 @@ class AiStableDiffusionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
-        analytics.initialize()
         PermissionUtil.checkNotificationPermission(this, notificationPermission::launch)
         PermissionUtil.checkStoragePermission(this, storagePermission::launch)
         setContent {
             val navController = rememberNavController()
-
-            loadKoinModules(
-                module = module {
-                    single<Router> {
-                        MainRouter(navController, get())
-                    }
-                }
-            )
+            val backStackEntry = navController.currentBackStackEntryAsState()
+            val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+            val scope = rememberCoroutineScope()
 
             AiStableDiffusionAppTheme {
-                NavHost(
-                    navController = navController,
-                    startDestination = Constants.ROUTE_SPLASH,
-                    builder = { mainNavGraph() },
-                )
+                MviComponent(
+                    viewModel = viewModel,
+                    effectHandler = { effect ->
+                        when (effect) {
+                            NavigationEffect.Back -> navController.navigateUp()
+
+                            is NavigationEffect.Navigate.Route -> {
+                                navController.navigate(effect.route)
+                            }
+
+                            is NavigationEffect.Navigate.RouteBuilder -> navController.navigate(
+                                effect.route, effect.builder,
+                            )
+
+                            is NavigationEffect.Navigate.RoutePopUp -> {
+                                navController.navigate(effect.route) {
+                                    navController.currentBackStackEntry?.destination?.route?.let {
+                                        popUpTo(it) { inclusive = true }
+                                    }
+                                }
+                            }
+
+                            NavigationEffect.Drawer.Close -> scope.launch {
+                                drawerState.close()
+                            }
+
+                            NavigationEffect.Drawer.Open -> scope.launch {
+                                drawerState.open()
+                            }
+                        }
+                    }
+                ) { _, _ ->
+                    DrawerScreen(
+                        drawerState = drawerState,
+                        backStackEntry = backStackEntry,
+                        onNavigate = navController::navigate,
+                        navItems = mainDrawerNavItems(),
+                    ) {
+                        NavHost(
+                            navController = navController,
+                            startDestination = Constants.ROUTE_SPLASH,
+                            builder = { mainNavGraph() },
+                        )
+                    }
+                }
             }
         }
     }

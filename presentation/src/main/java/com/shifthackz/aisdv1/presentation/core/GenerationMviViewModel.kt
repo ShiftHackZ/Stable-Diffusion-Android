@@ -21,7 +21,9 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProc
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.model.Modal
-import com.shifthackz.aisdv1.presentation.navigation.Router
+import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
 import com.shifthackz.android.core.mvi.MviEffect
@@ -43,7 +45,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase by inject()
     private val interruptGenerationUseCase: InterruptGenerationUseCase by inject()
 
-    private val router: Router by inject()
+    private val mainRouter: MainRouter by inject()
+    private val drawerRouter: DrawerRouter by inject()
     private val dimensionValidator: DimensionValidator by inject()
 
     private var generationDisposable: Disposable? = null
@@ -209,7 +212,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
 
             is GenerationMviIntent.Result.View -> !saveLastResultToCacheUseCase(intent.ai)
                 .subscribeOnMainThread(schedulersProvider)
-                .subscribeBy(::errorLog) { router.navigateToGalleryDetails(it.id) }
+                .subscribeBy(::errorLog) { mainRouter.navigateToGalleryDetails(it.id) }
 
             is GenerationMviIntent.SetModal -> setActiveModal(intent.modal)
 
@@ -230,13 +233,18 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
 
             GenerationMviIntent.Generate -> generate { generate() }
 
-            GenerationMviIntent.Configuration -> router.navigateToServerSetup(
+            GenerationMviIntent.Configuration -> mainRouter.navigateToServerSetup(
                 ServerSetupLaunchSource.SETTINGS
             )
 
             is GenerationMviIntent.UpdateFromGeneration -> updateFormPreviousAiGeneration(
                 intent.ai
             )
+
+            is GenerationMviIntent.Drawer -> when (intent.intent) {
+                DrawerIntent.Close -> drawerRouter.closeDrawer()
+                DrawerIntent.Open -> drawerRouter.openDrawer()
+            }
         }
     }
 

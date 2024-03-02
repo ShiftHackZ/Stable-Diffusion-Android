@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingViewModel
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryViewModel
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuViewModel
+import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryViewModel
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationViewModel
@@ -23,6 +24,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModelOf(::AiStableDiffusionViewModel)
     viewModelOf(::SplashViewModel)
+    viewModelOf(::DrawerViewModel)
     viewModelOf(::HomeNavigationViewModel)
     viewModelOf(::ConfigurationLoaderViewModel)
     viewModelOf(::ImageToImageViewModel)
@@ -49,9 +51,8 @@ val viewModelModule = module {
             deleteModelUseCase = get(),
             schedulersProvider = get(),
             preferenceManager = get(),
-            analytics = get(),
             wakeLockInterActor = get(),
-            router = get(),
+            mainRouter = get(),
         )
     }
 
@@ -65,8 +66,7 @@ val viewModelModule = module {
             base64ToBitmapConverter = get(),
             schedulersProvider = get(),
             generationFormUpdateEvent = get(),
-            analytics = get(),
-            router = get(),
+            mainRouter = get(),
         )
     }
 }

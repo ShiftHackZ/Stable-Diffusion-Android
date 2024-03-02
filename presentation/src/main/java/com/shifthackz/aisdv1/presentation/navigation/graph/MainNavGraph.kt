@@ -1,10 +1,14 @@
 package com.shifthackz.aisdv1.presentation.navigation.graph
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.runtime.Composable
 import androidx.navigation.NavArgument
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
+import com.shifthackz.aisdv1.presentation.model.NavItem
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
@@ -63,3 +67,17 @@ fun NavGraphBuilder.mainNavGraph() {
         }
     )
 }
+
+@Composable
+fun mainDrawerNavItems(): List<NavItem> = listOf(
+    homeScreenTab(),
+)
+
+@Composable
+private fun homeScreenTab() = NavItem(
+    name = "Home",
+    route = Constants.ROUTE_HOME,
+    icon = NavItem.Icon.Vector(
+        vector = Icons.Default.Home,
+    )
+)

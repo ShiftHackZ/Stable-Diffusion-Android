@@ -1,10 +1,8 @@
 package com.shifthackz.aisdv1.presentation.screen.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -15,18 +13,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.shifthackz.aisdv1.presentation.model.NavItem
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
+import com.shifthackz.aisdv1.presentation.widget.item.NavigationItemIcon
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeNavigationScreen(
-    navItems: List<HomeNavigationItem> = emptyList(),
+    navItems: List<NavItem> = emptyList(),
 ) {
     require(navItems.isNotEmpty()) { "navItems collection must not be empty." }
 
@@ -65,26 +63,8 @@ fun HomeNavigationScreen(
                             colors = NavigationBarItemDefaults.colors().copy(
                                 selectedIndicatorColor = MaterialTheme.colorScheme.primary,
                             ),
-                            icon = {
-                                when (item.icon) {
-                                    is HomeNavigationItem.Icon.Resource -> Image(
-                                        modifier = item.icon.modifier,
-                                        painter = painterResource(item.icon.resId),
-                                        contentDescription = "",
-                                        colorFilter = ColorFilter.tint(LocalContentColor.current),
-                                    )
-                                    is HomeNavigationItem.Icon.Vector -> Icon(
-                                        modifier = item.icon.modifier,
-                                        imageVector = item.icon.vector,
-                                        contentDescription = item.name,
-                                        tint = LocalContentColor.current,
-                                    )
-                                }
-                            },
-                            onClick = {
-                                navigate(item.route)
-                                viewModel.logNavItemClickEvent(item)
-                            },
+                            icon = { NavigationItemIcon(item.icon) },
+                            onClick = { navigate(item.route) },
                         )
                     }
                 }
@@ -100,7 +80,7 @@ fun HomeNavigationScreen(
                 ) {
                     navItems.forEach { item ->
                         composable(item.route) {
-                            item.content()
+                            item.content?.invoke()
                         }
                     }
                 }

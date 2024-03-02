@@ -4,18 +4,22 @@ import android.content.Context
 import android.content.res.Resources
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 
 sealed class UiText {
 
+    @Immutable
     data class Static(val value: String) : UiText()
 
+    @Immutable
     class Resource(
         @StringRes val resId: Int,
         vararg val args: Any,
     ) : UiText()
 
+    @Immutable
     class Concat(
         vararg val texts: Any,
         val separator: String = "",

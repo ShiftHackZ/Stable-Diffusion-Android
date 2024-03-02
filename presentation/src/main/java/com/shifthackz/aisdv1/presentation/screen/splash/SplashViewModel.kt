@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
-import com.shifthackz.aisdv1.presentation.navigation.Router
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.android.core.mvi.EmptyEffect
 import com.shifthackz.android.core.mvi.EmptyIntent
@@ -13,7 +13,7 @@ import com.shifthackz.android.core.mvi.EmptyState
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class SplashViewModel(
-    router: Router,
+    mainRouter: MainRouter,
     splashNavigationUseCase: SplashNavigationUseCase,
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<EmptyState, EmptyIntent, EmptyEffect>() {
@@ -26,10 +26,10 @@ class SplashViewModel(
             .subscribeBy(::errorLog) { action ->
                 when (action) {
                     SplashNavigationUseCase.Action.LAUNCH_ONBOARDING -> {}
-                    SplashNavigationUseCase.Action.LAUNCH_SERVER_SETUP -> router.navigateToServerSetup(
+                    SplashNavigationUseCase.Action.LAUNCH_SERVER_SETUP -> mainRouter.navigateToServerSetup(
                         source = ServerSetupLaunchSource.SPLASH
                     )
-                    SplashNavigationUseCase.Action.LAUNCH_HOME -> router.navigateToPostSplashConfigLoader()
+                    SplashNavigationUseCase.Action.LAUNCH_HOME -> mainRouter.navigateToPostSplashConfigLoader()
                 }
             }
     }

@@ -46,8 +46,8 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.features.ReportProblemEmailComposer
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
+import com.shifthackz.aisdv1.presentation.utils.ReportProblemEmailComposer
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
@@ -58,7 +58,6 @@ import org.koin.androidx.compose.koinViewModel
 fun SettingsScreen() {
     val viewModel = koinViewModel<SettingsViewModel>()
     val context = LocalContext.current
-
     val storagePermission = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->

@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.features
+package com.shifthackz.aisdv1.presentation.utils
 
 import android.content.Context
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider

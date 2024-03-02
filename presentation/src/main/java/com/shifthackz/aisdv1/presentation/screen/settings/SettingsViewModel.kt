@@ -6,13 +6,10 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
-import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
-import com.shifthackz.aisdv1.presentation.features.SdModelSelected
-import com.shifthackz.aisdv1.presentation.features.SettingsCacheCleared
-import com.shifthackz.aisdv1.presentation.navigation.Router
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
@@ -22,8 +19,7 @@ class SettingsViewModel(
     private val clearAppCacheUseCase: ClearAppCacheUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
-    private val analytics: Analytics,
-    private val router: Router,
+    private val mainRouter: MainRouter,
 ) : MviRxViewModel<SettingsState, SettingsIntent, SettingsEffect>() {
 
     override val initialState = SettingsState()
@@ -38,7 +34,7 @@ class SettingsViewModel(
 
     override fun processIntent(intent: SettingsIntent) {
         when (intent) {
-            SettingsIntent.Action.AppVersion -> router.navigateToDebugMenu()
+            SettingsIntent.Action.AppVersion -> mainRouter.navigateToDebugMenu()
 
             SettingsIntent.Action.ClearAppCache.Request -> updateState {
                 it.copy(screenDialog = SettingsState.Dialog.ClearAppCache)
@@ -52,7 +48,7 @@ class SettingsViewModel(
                 it.copy(screenDialog = SettingsState.Dialog.None)
             }
 
-            SettingsIntent.NavigateConfiguration -> router.navigateToServerSetup(
+            SettingsIntent.NavigateConfiguration -> mainRouter.navigateToServerSetup(
                 ServerSetupLaunchSource.SETTINGS
             )
 
@@ -104,7 +100,6 @@ class SettingsViewModel(
             }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { state ->
-                analytics.logEvent(SdModelSelected(value))
                 updateState { state }
             }
 
@@ -113,7 +108,6 @@ class SettingsViewModel(
         .doOnSubscribe { processIntent(SettingsIntent.DismissDialog) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(::errorLog) { state ->
-            analytics.logEvent(SettingsCacheCleared)
             updateState { state }
         }
 

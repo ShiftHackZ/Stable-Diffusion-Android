@@ -6,7 +6,6 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -15,7 +14,6 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
-import com.shifthackz.aisdv1.presentation.features.AiImageGenerated
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import com.shifthackz.android.core.mvi.EmptyEffect
@@ -27,7 +25,6 @@ class TextToImageViewModel(
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
     private val notificationManager: SdaiPushNotificationManager,
-    private val analytics: Analytics,
     private val wakeLockInterActor: WakeLockInterActor,
 ) : GenerationMviViewModel<TextToImageState, GenerationMviIntent, EmptyEffect>() {
 
@@ -50,16 +47,6 @@ class TextToImageViewModel(
                 onNext = ::updateFormPreviousAiGeneration,
             )
     }
-
-//    override fun updateState(mutation: (TextToImageState) -> TextToImageState) {
-//        super.updateState { oldState ->
-//            val mutatedState = mutation(oldState)
-//            mutatedState.copy(
-//                widthValidationError = dimensionValidator(mutatedState.width).mapToUi(),
-//                heightValidationError = dimensionValidator(mutatedState.height).mapToUi(),
-//            )
-//        }
-//    }
 
     override fun generate() = currentState
         .mapToPayload()
@@ -84,7 +71,6 @@ class TextToImageViewModel(
                 errorLog(t)
             },
             onSuccess = { ai ->
-                ai.forEach { analytics.logEvent(AiImageGenerated(it)) }
                 notificationManager.show(
                     R.string.notification_finish_title.asUiText(),
                     R.string.notification_finish_sub_title.asUiText(),

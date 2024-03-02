@@ -7,14 +7,11 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.domain.feature.analytics.Analytics
 import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
-import com.shifthackz.aisdv1.presentation.features.GalleryDetailTabClick
-import com.shifthackz.aisdv1.presentation.features.GalleryItemDelete
-import com.shifthackz.aisdv1.presentation.navigation.Router
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
@@ -27,8 +24,7 @@ class GalleryDetailViewModel(
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val schedulersProvider: SchedulersProvider,
     private val generationFormUpdateEvent: GenerationFormUpdateEvent,
-    private val analytics: Analytics,
-    private val router: Router,
+    private val mainRouter: MainRouter,
 ) : MviRxViewModel<GalleryDetailState, GalleryDetailIntent, GalleryDetailEffect>() {
 
     override val initialState = GalleryDetailState.Loading()
@@ -65,10 +61,9 @@ class GalleryDetailViewModel(
                 emitEffect(GalleryDetailEffect.ShareGenerationParams(currentState))
             }
 
-            GalleryDetailIntent.NavigateBack -> router.navigateBack()
+            GalleryDetailIntent.NavigateBack -> mainRouter.navigateBack()
 
             is GalleryDetailIntent.SelectTab -> updateState {
-                analytics.logEvent(GalleryDetailTabClick(intent.tab))
                 it.withTab(intent.tab)
             }
 
@@ -96,10 +91,9 @@ class GalleryDetailViewModel(
 
     private fun delete() {
         if (currentState !is GalleryDetailState.Content) return
-        analytics.logEvent(GalleryItemDelete)
         !deleteGalleryItemUseCase((currentState as GalleryDetailState.Content).id)
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog) { router.navigateBack() }
+            .subscribeBy(::errorLog) { mainRouter.navigateBack() }
     }
 
     private fun setActiveDialog(dialog: GalleryDetailState.Dialog) = updateState {
@@ -125,7 +119,7 @@ class GalleryDetailViewModel(
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { ai ->
                 generationFormUpdateEvent.update(ai, screenType)
-                router.navigateBack()
+                mainRouter.navigateBack()
             }
 
     private fun getGenerationResult(id: Long): Single<AiGenerationResult> {
