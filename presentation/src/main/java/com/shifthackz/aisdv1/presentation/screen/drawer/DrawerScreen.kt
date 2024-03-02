@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
@@ -30,13 +31,19 @@ fun DrawerScreen(
     onNavigate: (String) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
+    if (navItems.isEmpty()) {
+        return content()
+    }
+    val currentRoute = backStackEntry.value?.destination?.route
+    val routes = remember { navItems.map(NavItem::route) }
     MviComponent(viewModel = koinViewModel<DrawerViewModel>()) { _, intentHandler ->
         ModalNavigationDrawer(
+            gesturesEnabled = routes.contains(currentRoute)
+                    && currentRoute == navItems.firstOrNull()?.route,
             drawerState = drawerState,
             drawerContent = {
                 ModalDrawerSheet {
                     Spacer(modifier = Modifier.height(16.dp))
-                    val currentRoute = backStackEntry.value?.destination?.route
                     navItems.forEach { item ->
                         val selected = item.route == currentRoute
                         NavigationDrawerItem(

@@ -12,8 +12,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.aisdv1.presentation.extensions.navigatePopUpToCurrent
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
-import com.shifthackz.aisdv1.presentation.navigation.graph.mainDrawerNavItems
 import com.shifthackz.aisdv1.presentation.navigation.graph.mainNavGraph
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerScreen
 import com.shifthackz.aisdv1.presentation.theme.AiStableDiffusionAppTheme
@@ -66,11 +66,7 @@ class AiStableDiffusionActivity : ComponentActivity() {
                             )
 
                             is NavigationEffect.Navigate.RoutePopUp -> {
-                                navController.navigate(effect.route) {
-                                    navController.currentBackStackEntry?.destination?.route?.let {
-                                        popUpTo(it) { inclusive = true }
-                                    }
-                                }
+                                navController.navigatePopUpToCurrent(effect.route)
                             }
 
                             NavigationEffect.Drawer.Close -> scope.launch {
@@ -87,7 +83,7 @@ class AiStableDiffusionActivity : ComponentActivity() {
                         drawerState = drawerState,
                         backStackEntry = backStackEntry,
                         onNavigate = navController::navigate,
-                        navItems = mainDrawerNavItems(),
+//                        navItems = mainDrawerNavItems(),
                     ) {
                         NavHost(
                             navController = navController,

@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.navigation.graph
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Deck
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavArgument
@@ -71,6 +72,7 @@ fun NavGraphBuilder.mainNavGraph() {
 @Composable
 fun mainDrawerNavItems(): List<NavItem> = listOf(
     homeScreenTab(),
+    debugMenuTab(),
 )
 
 @Composable
@@ -79,5 +81,14 @@ private fun homeScreenTab() = NavItem(
     route = Constants.ROUTE_HOME,
     icon = NavItem.Icon.Vector(
         vector = Icons.Default.Home,
-    )
+    ),
+)
+
+@Composable
+private fun debugMenuTab() = NavItem(
+    name = "Debug Menu",
+    route = Constants.ROUTE_DEBUG,
+    icon = NavItem.Icon.Vector(
+        vector = Icons.Default.Deck,
+    ),
 )
