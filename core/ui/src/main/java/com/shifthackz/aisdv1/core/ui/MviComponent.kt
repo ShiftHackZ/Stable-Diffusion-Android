@@ -14,7 +14,7 @@ import com.shifthackz.android.core.mvi.MviViewModel
 @Composable
 fun <S : MviState, I: MviIntent, E : MviEffect> MviComponent(
     viewModel: MviViewModel<S, I, E>,
-    effectHandler: (effect: E) -> Unit = {},
+    processEffect: (effect: E) -> Unit = {},
     applySystemUiColors: Boolean = true,
     navigationBarColor: Color =  MaterialTheme.colorScheme.background,
     content: @Composable (state: S, intentHandler: (I) -> Unit) -> Unit,
@@ -27,7 +27,7 @@ fun <S : MviState, I: MviIntent, E : MviEffect> MviComponent(
     }
     MviComponent(
         viewModel = viewModel,
-        processEffect = effectHandler,
+        processEffect = processEffect,
         content = content,
     )
 }

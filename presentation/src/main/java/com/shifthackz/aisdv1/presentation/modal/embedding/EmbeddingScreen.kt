@@ -63,7 +63,7 @@ fun EmbeddingScreen(
         viewModel = koinViewModel<EmbeddingViewModel>().apply {
             updateData(prompt, negativePrompt)
         },
-        effectHandler = { effect ->
+        processEffect = { effect ->
             when (effect) {
                 is ExtrasEffect.ApplyPrompts -> {
                     onNewPrompts(effect.prompt, effect.negativePrompt)

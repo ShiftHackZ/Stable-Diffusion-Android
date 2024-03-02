@@ -73,7 +73,7 @@ fun ServerSetupScreen(
         viewModel = getViewModel<ServerSetupViewModel>(
             parameters = { parametersOf(launchSourceKey) }
         ),
-        effectHandler = { effect ->
+        processEffect = { effect ->
             when (effect) {
                 ServerSetupEffect.LaunchManageStoragePermission -> {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

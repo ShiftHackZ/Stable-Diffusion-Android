@@ -67,7 +67,7 @@ fun SettingsScreen() {
     }
     MviComponent(
         viewModel = viewModel,
-        effectHandler = { effect ->
+        processEffect = { effect ->
             when (effect) {
                 SettingsEffect.RequestStoragePermission -> {
                     if (PermissionUtil.checkStoragePermission(context, storagePermission::launch)) {

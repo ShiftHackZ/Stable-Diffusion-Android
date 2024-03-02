@@ -69,7 +69,7 @@ fun GalleryDetailScreen(itemId: Long) {
         viewModel = getViewModel<GalleryDetailViewModel>(
             parameters = { parametersOf(itemId) },
         ),
-        effectHandler = { effect ->
+        processEffect = { effect ->
             when (effect) {
                 is GalleryDetailEffect.ShareImageFile -> context.shareFile(
                     file = effect.file,

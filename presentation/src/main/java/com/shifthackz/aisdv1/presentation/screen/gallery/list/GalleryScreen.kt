@@ -72,7 +72,7 @@ fun GalleryScreen() {
     val fileProviderDescriptor: FileProviderDescriptor = koinInject()
     MviComponent(
         viewModel = viewModel,
-        effectHandler = { effect ->
+        processEffect = { effect ->
             when (effect) {
                 is GalleryEffect.OpenUri -> with(Intent(Intent.ACTION_VIEW)) {
                     setDataAndType(effect.uri, DocumentsContract.Document.MIME_TYPE_DIR)

@@ -62,7 +62,7 @@ fun ExtrasScreen(
         viewModel = koinViewModel<ExtrasViewModel>().apply {
             updateData(prompt, negativePrompt, type)
         },
-        effectHandler = { effect ->
+        processEffect = { effect ->
             when (effect) {
                 is ExtrasEffect.ApplyPrompts -> {
                     onNewPrompts(effect.prompt, effect.negativePrompt)

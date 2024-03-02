@@ -53,7 +53,7 @@ class AiStableDiffusionActivity : ComponentActivity() {
             AiStableDiffusionAppTheme {
                 MviComponent(
                     viewModel = viewModel,
-                    effectHandler = { effect ->
+                    processEffect = { effect ->
                         when (effect) {
                             NavigationEffect.Back -> navController.navigateUp()
 

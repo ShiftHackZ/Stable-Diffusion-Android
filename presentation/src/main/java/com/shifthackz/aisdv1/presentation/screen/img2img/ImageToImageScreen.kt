@@ -74,7 +74,7 @@ fun ImageToImageScreen() {
     val fileProviderDescriptor: FileProviderDescriptor = koinInject()
     MviComponent(
         viewModel = viewModel,
-        effectHandler = { effect ->
+        processEffect = { effect ->
             ImagePicker.Builder(fileProviderDescriptor.providerPath) { result ->
                 viewModel.processIntent(ImageToImageIntent.UpdateImage(result))
             }
