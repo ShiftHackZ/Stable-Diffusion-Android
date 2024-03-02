@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
 import android.graphics.Bitmap
+import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
@@ -12,6 +13,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.model.Modal
 
+@Immutable
 data class ImageToImageState(
     val imageState: ImageState = ImageState.None,
     val imageBase64: String = "",

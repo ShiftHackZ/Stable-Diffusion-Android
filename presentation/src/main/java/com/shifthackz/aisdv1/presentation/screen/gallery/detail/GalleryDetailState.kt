@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 import android.graphics.Bitmap
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -16,12 +17,14 @@ sealed interface GalleryDetailState : MviState {
     val selectedTab: Tab
     val screenDialog: Dialog
 
+    @Immutable
     data class Loading(
         override val tabs: List<Tab> = emptyList(),
         override val selectedTab: Tab = Tab.IMAGE,
         override val screenDialog: Dialog = Dialog.None,
     ) : GalleryDetailState
 
+    @Immutable
     data class Content(
         override val tabs: List<Tab> = emptyList(),
         override val selectedTab: Tab = Tab.IMAGE,

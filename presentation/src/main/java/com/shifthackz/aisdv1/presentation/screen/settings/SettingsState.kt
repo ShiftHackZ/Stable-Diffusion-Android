@@ -1,7 +1,9 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
+import androidx.compose.runtime.Immutable
 import com.shifthackz.android.core.mvi.MviState
 
+@Immutable
 data class SettingsState(
     val loading: Boolean = true,
     val screenDialog: Dialog = Dialog.None,

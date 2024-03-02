@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.Configuration
@@ -11,6 +12,7 @@ import com.shifthackz.android.core.mvi.MviState
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+@Immutable
 data class ServerSetupState(
     val showBackNavArrow: Boolean = false,
     val step: Step = Step.SOURCE,

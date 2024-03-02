@@ -1,9 +1,11 @@
 package com.shifthackz.aisdv1.presentation.modal.extras
 
+import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.android.core.mvi.MviState
 
+@Immutable
 data class ExtrasState(
     val loading: Boolean = true,
     val error: ErrorState = ErrorState.None,
@@ -13,6 +15,7 @@ data class ExtrasState(
     val loras: List<ExtraItemUi> = emptyList(),
 ) : MviState
 
+@Immutable
 data class ExtraItemUi(
     val type: ExtraType,
     val key: String,

@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
+import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.ValidationResult
@@ -14,6 +15,7 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.model.Modal
 
+@Immutable
 data class TextToImageState(
     override val screenModal: Modal = Modal.None,
     override val mode: ServerSource = ServerSource.AUTOMATIC1111,
