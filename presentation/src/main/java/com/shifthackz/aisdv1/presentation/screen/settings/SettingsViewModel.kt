@@ -64,19 +64,28 @@ class SettingsViewModel(
             is SettingsIntent.SdModel.Select -> selectStableDiffusionModel(intent.model)
 
             is SettingsIntent.UpdateFlag.AdvancedFormVisibility -> updateState {
+                preferenceManager.formAdvancedOptionsAlwaysShow = intent.flag
                 it.copy(formAdvancedOptionsAlwaysShow = intent.flag)
             }
 
             is SettingsIntent.UpdateFlag.AutoSaveResult -> updateState {
+                preferenceManager.autoSaveAiResults = intent.flag
                 it.copy(autoSaveAiResults = intent.flag)
             }
 
             is SettingsIntent.UpdateFlag.MonitorConnection -> updateState {
+                preferenceManager.monitorConnectivity = intent.flag
                 it.copy(monitorConnectivity = intent.flag)
             }
 
             is SettingsIntent.UpdateFlag.NNAPI -> updateState {
+                preferenceManager.localUseNNAPI = intent.flag
                 it.copy(localUseNNAPI = intent.flag)
+            }
+
+            is SettingsIntent.UpdateFlag.TaggedInput -> updateState {
+                preferenceManager.formPromptTaggedInput = intent.flag
+                it.copy(formPromptTaggedInput = intent.flag)
             }
 
             is SettingsIntent.UpdateFlag.SaveToMediaStore -> changeSaveToMediaStoreSetting(

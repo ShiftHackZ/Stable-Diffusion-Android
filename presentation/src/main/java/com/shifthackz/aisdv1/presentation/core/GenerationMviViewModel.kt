@@ -65,6 +65,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
                             .copyState(
                                 mode = settings.source,
                                 advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow,
+                                formPromptTaggedInput = settings.formPromptTaggedInput,
                             )
                             .let { state ->
                                 if (!settings.formAdvancedOptionsAlwaysShow) state

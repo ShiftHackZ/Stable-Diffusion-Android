@@ -93,6 +93,9 @@ ext {
     log = [
             timber: "com.jakewharton.timber:timber:$timberVersion",
     ]
+    apache = [
+            stringutils: "org.apache.commons:commons-lang3:3.0"
+    ]
     test = [
             junit: "junit:junit:$testJunitVersion",
     ]

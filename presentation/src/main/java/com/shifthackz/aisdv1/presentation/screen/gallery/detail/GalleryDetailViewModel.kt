@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -41,6 +42,7 @@ class GalleryDetailViewModel(
     }
 
     override fun processIntent(intent: GalleryDetailIntent) {
+        debugLog("INTENT : $intent")
         when (intent) {
             is GalleryDetailIntent.CopyToClipboard -> {
                 emitEffect(GalleryDetailEffect.ShareClipBoard(intent.content.toString()))
@@ -67,11 +69,11 @@ class GalleryDetailViewModel(
                 it.withTab(intent.tab)
             }
 
-            GalleryDetailIntent.SendTo.Img2Img -> sendPromptToGenerationScreen(
+            GalleryDetailIntent.SendTo.Txt2Img -> sendPromptToGenerationScreen(
                 AiGenerationResult.Type.TEXT_TO_IMAGE,
             )
 
-            GalleryDetailIntent.SendTo.Txt2Img -> sendPromptToGenerationScreen(
+            GalleryDetailIntent.SendTo.Img2Img -> sendPromptToGenerationScreen(
                 AiGenerationResult.Type.IMAGE_TO_IMAGE,
             )
 
@@ -117,9 +119,9 @@ class GalleryDetailViewModel(
     private fun sendPromptToGenerationScreen(screenType: AiGenerationResult.Type) =
         !getGenerationResult(itemId)
             .subscribeOnMainThread(schedulersProvider)
+            .doFinally { mainRouter.navigateBack() }
             .subscribeBy(::errorLog) { ai ->
                 generationFormUpdateEvent.update(ai, screenType)
-                mainRouter.navigateBack()
             }
 
     private fun getGenerationResult(id: Long): Single<AiGenerationResult> {

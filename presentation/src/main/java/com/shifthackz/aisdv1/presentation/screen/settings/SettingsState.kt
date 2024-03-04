@@ -14,6 +14,7 @@ data class SettingsState(
     val autoSaveAiResults: Boolean = false,
     val saveToMediaStore: Boolean = false,
     val formAdvancedOptionsAlwaysShow: Boolean = false,
+    val formPromptTaggedInput: Boolean = false,
     val appVersion: String = "",
     val showLocalUseNNAPI: Boolean = false,
     val showSdModelSelector: Boolean = false,

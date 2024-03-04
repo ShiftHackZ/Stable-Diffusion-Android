@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.shifthackz.aisdv1.presentation.utils
 
 import com.shifthackz.aisdv1.presentation.model.ExtraType
@@ -52,7 +54,7 @@ object ExtrasFormatter {
             .filterNot(String::isBlank)
         val index = keywords.indexOfFirst { it.startsWith("<${type.raw}:$loraAlias:") }
         if (index == -1) {
-            return "${prompt.trim()} <${type.raw}:$loraAlias:1>".trim()
+            return "${prompt.trim()}, <${type.raw}:$loraAlias:1>".trim()
         }
         return prompt.replaceFirst(keywords[index], "").trim()
     }
@@ -66,7 +68,7 @@ object ExtrasFormatter {
             .filterNot(String::isBlank)
         val index = keywords.indexOfFirst { it == embedding }
         if (index == -1) {
-            return "${prompt.trim()} $embedding".trim()
+            return "${prompt.trim()}, $embedding".trim()
         }
         return prompt.replaceFirst(keywords[index], "").trim()
     }

@@ -14,6 +14,7 @@ abstract class GenerationMviState : MviState {
     abstract val mode: ServerSource
     abstract val advancedToggleButtonVisible: Boolean
     abstract val advancedOptionsVisible: Boolean
+    abstract val formPromptTaggedInput: Boolean
     abstract val prompt: String
     abstract val negativePrompt: String
     abstract val width: String
@@ -36,6 +37,16 @@ abstract class GenerationMviState : MviState {
     abstract val batchCount: Int
     abstract val generateButtonEnabled: Boolean
 
+    open val promptKeywords: List<String>
+        get() = prompt.split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+
+    open val negativePromptKeywords: List<String>
+        get() = negativePrompt.split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+
     open val hasValidationErrors: Boolean
         get() = widthValidationError != null || heightValidationError != null
 
@@ -44,6 +55,7 @@ abstract class GenerationMviState : MviState {
         mode: ServerSource = this.mode,
         advancedToggleButtonVisible: Boolean = this.advancedToggleButtonVisible,
         advancedOptionsVisible: Boolean = this.advancedOptionsVisible,
+        formPromptTaggedInput: Boolean = this.formPromptTaggedInput,
         prompt: String = this.prompt,
         negativePrompt: String = this.negativePrompt,
         width: String = this.width,

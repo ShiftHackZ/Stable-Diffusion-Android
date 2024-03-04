@@ -7,8 +7,8 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseC
 import io.reactivex.rxjava3.core.Flowable
 
 class SettingsStateProducer(
+    getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
     private val buildInfoProvider: BuildInfoProvider,
-    private val getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
     private val preferenceManager: PreferenceManager,
 ) {
 
@@ -32,6 +32,7 @@ class SettingsStateProducer(
             autoSaveAiResults = settings.autoSaveAiResults,
             saveToMediaStore = settings.saveToMediaStore,
             formAdvancedOptionsAlwaysShow = settings.formAdvancedOptionsAlwaysShow,
+            formPromptTaggedInput = settings.formPromptTaggedInput,
             appVersion = version,
             showLocalUseNNAPI = settings.source == ServerSource.LOCAL,
             showSdModelSelector = settings.source == ServerSource.AUTOMATIC1111,

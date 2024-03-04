@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SettingsEthernet
+import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -263,6 +264,23 @@ private fun ContentSettingsState(
                     },
                 )
             }
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            startIcon = Icons.Default.Tag,
+            text = "Tagged input".asUiText(),
+            onClick = {
+                processIntent(SettingsIntent.UpdateFlag.TaggedInput(!state.formPromptTaggedInput))
+            },
+            endValueContent = {
+                Switch(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    checked = state.formPromptTaggedInput,
+                    onCheckedChange = {
+                        processIntent(SettingsIntent.UpdateFlag.TaggedInput(it))
+                    },
+                )
+            },
         )
         if (state.showFormAdvancedOption) {
             SettingsItem(
