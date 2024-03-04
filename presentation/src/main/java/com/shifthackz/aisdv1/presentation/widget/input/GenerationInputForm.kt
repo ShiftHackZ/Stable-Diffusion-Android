@@ -19,10 +19,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.model.asString
@@ -55,6 +57,8 @@ import kotlin.random.Random
 fun GenerationInputForm(
     modifier: Modifier = Modifier,
     state: GenerationMviState,
+    promptChipTextFieldState: MutableState<TextFieldValue>,
+    negativePromptChipTextFieldState: MutableState<TextFieldValue>,
     processIntent: (GenerationMviIntent) -> Unit = {},
     afterSlidersSection: @Composable () -> Unit = {},
 ) {
@@ -82,6 +86,7 @@ fun GenerationInputForm(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp),
+                textFieldValueState = promptChipTextFieldState,
                 label = R.string.hint_prompt,
                 list = state.promptKeywords,
             ) { event ->
@@ -109,6 +114,7 @@ fun GenerationInputForm(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
+                        textFieldValueState = negativePromptChipTextFieldState,
                         label = R.string.hint_prompt_negative,
                         list = state.negativePromptKeywords,
                     ) { event ->

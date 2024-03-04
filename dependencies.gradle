@@ -20,6 +20,7 @@ ext {
     imagePickerVersion = 'v2.0.3'
     mviVersion = '1.0.1'
     timberVersion = '5.0.1'
+    apacheLangVersion = '3.14.0'
     gsonVersion = '2.10.1'
     googleMaterialVersion = '1.9.0'
     accompanistSystemUiControllerVersion = '0.30.1'
@@ -94,7 +95,7 @@ ext {
             timber: "com.jakewharton.timber:timber:$timberVersion",
     ]
     apache = [
-            stringutils: "org.apache.commons:commons-lang3:3.0"
+            stringutils: "org.apache.commons:commons-lang3:$apacheLangVersion"
     ]
     test = [
             junit: "junit:junit:$testJunitVersion",

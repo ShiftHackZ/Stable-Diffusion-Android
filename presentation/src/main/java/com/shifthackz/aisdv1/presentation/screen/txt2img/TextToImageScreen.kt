@@ -24,8 +24,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.ui.MviComponent
@@ -54,6 +57,8 @@ private fun ScreenContent(
     state: TextToImageState,
     processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
+    val promptChipTextFieldState = remember { mutableStateOf(TextFieldValue()) }
+    val negativePromptChipTextFieldState = remember { mutableStateOf(TextFieldValue()) }
     Box(modifier) {
         Scaffold(
             topBar = {
@@ -96,6 +101,8 @@ private fun ScreenContent(
                 ) {
                     GenerationInputForm(
                         state = state,
+                        promptChipTextFieldState = promptChipTextFieldState,
+                        negativePromptChipTextFieldState = negativePromptChipTextFieldState,
                         processIntent = processIntent,
                     )
                 }
@@ -112,7 +119,21 @@ private fun ScreenContent(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
-                        onClick = { processIntent(GenerationMviIntent.Generate) },
+                        onClick = {
+                            promptChipTextFieldState.value.text.takeIf(String::isNotBlank)
+                                ?.let { "${state.prompt}, ${it.trim()}" }
+                                ?.let(GenerationMviIntent.Update::Prompt)
+                                ?.let(processIntent::invoke)
+                                ?.also { promptChipTextFieldState.value = TextFieldValue("") }
+
+                            negativePromptChipTextFieldState.value.text.takeIf(String::isNotBlank)
+                                ?.let { "${state.negativePrompt}, ${it.trim()}" }
+                                ?.let(GenerationMviIntent.Update::NegativePrompt)
+                                ?.let(processIntent::invoke)
+                                ?.also { negativePromptChipTextFieldState.value = TextFieldValue("") }
+
+                            processIntent(GenerationMviIntent.Generate)
+                        },
                         enabled = !state.hasValidationErrors
                     ) {
                         Icon(
