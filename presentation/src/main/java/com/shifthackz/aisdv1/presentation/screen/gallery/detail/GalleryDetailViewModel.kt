@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCas
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -49,11 +50,11 @@ class GalleryDetailViewModel(
             }
 
             GalleryDetailIntent.Delete.Request -> {
-                setActiveDialog(GalleryDetailState.Dialog.DeleteConfirm)
+                setActiveModal(Modal.DeleteConfirm)
             }
 
             GalleryDetailIntent.Delete.Confirm -> {
-                setActiveDialog(GalleryDetailState.Dialog.DeleteConfirm)
+                setActiveModal(Modal.None)
                 delete()
             }
 
@@ -77,7 +78,7 @@ class GalleryDetailViewModel(
                 AiGenerationResult.Type.IMAGE_TO_IMAGE,
             )
 
-            GalleryDetailIntent.DismissDialog -> setActiveDialog(GalleryDetailState.Dialog.None)
+            GalleryDetailIntent.DismissDialog -> setActiveModal(Modal.None)
         }
 
     }
@@ -98,7 +99,7 @@ class GalleryDetailViewModel(
             .subscribeBy(::errorLog) { mainRouter.navigateBack() }
     }
 
-    private fun setActiveDialog(dialog: GalleryDetailState.Dialog) = updateState {
+    private fun setActiveModal(dialog: Modal) = updateState {
         it.withDialog(dialog)
     }
 

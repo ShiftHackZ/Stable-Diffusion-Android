@@ -13,6 +13,8 @@ sealed interface Modal {
 
     data object ClearAppCache : Modal
 
+    data object DeleteConfirm : Modal
+
     @Immutable
     data class SelectSdModel(val models: List<String>, val selected: String) : Modal
 
