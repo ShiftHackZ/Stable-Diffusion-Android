@@ -180,6 +180,7 @@
     <string name="settings_item_lf_dynamic_colors">Dynamic colors</string>
     <string name="settings_item_lf_system_dark_theme">System dark theme</string>
     <string name="settings_item_lf_dark_theme">Dark theme</string>
+    <string name="settings_item_lf_accent_color">Accent color</string>
 
     <string name="settings_item_report_problem">Report a problem</string>
     <string name="settings_item_policy">Privacy and legal policy</string>

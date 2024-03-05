@@ -5,23 +5,31 @@ package com.shifthackz.aisdv1.presentation.screen.settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.AccountTree
 import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.ColorLens
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Gavel
+import androidx.compose.material.icons.filled.InvertColors
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Save
@@ -37,6 +45,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -47,10 +56,14 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
+import com.shifthackz.aisdv1.presentation.theme.colorTokenPalette
+import com.shifthackz.aisdv1.presentation.theme.isSdAppInDarkTheme
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import com.shifthackz.aisdv1.presentation.utils.ReportProblemEmailComposer
+import com.shifthackz.aisdv1.presentation.widget.color.AccentColorSelector
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsHeader
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
+import com.shifthackz.aisdv1.presentation.widget.item.SettingsItemContent
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -321,7 +334,7 @@ private fun ContentSettingsState(
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
-            startIcon = Icons.Default.Save,
+            startIcon = Icons.Default.InvertColors,
             text = R.string.settings_item_lf_system_dark_theme.asUiText(),
             onClick = {
                 processIntent(SettingsIntent.UpdateFlag.SystemDarkTheme(!state.useSystemDarkTheme))
@@ -340,7 +353,7 @@ private fun ContentSettingsState(
             SettingsItem(
                 modifier = itemModifier,
                 loading = state.loading,
-                startIcon = Icons.Default.Save,
+                startIcon = Icons.Default.DarkMode,
                 text = R.string.settings_item_lf_dark_theme.asUiText(),
                 onClick = {
                     processIntent(SettingsIntent.UpdateFlag.DarkTheme(!state.darkTheme))
@@ -355,6 +368,32 @@ private fun ContentSettingsState(
                     )
                 },
             )
+        }
+        AnimatedVisibility(visible = !state.loading) {
+            val isDark = isSdAppInDarkTheme()
+            val palette = colorTokenPalette(isDark = isDark)
+            Column(
+                modifier = itemModifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f))
+                    .defaultMinSize(minHeight = 50.dp),
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                SettingsItemContent(
+                    text = R.string.settings_item_lf_accent_color.asUiText(),
+                    icon = Icons.Default.ColorLens,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                AccentColorSelector(
+                    modifier = Modifier.padding(horizontal = 10.dp),
+                    palette = palette,
+                    selectedToken = state.colorToken,
+                    onSelected = { _, token ->
+                        processIntent(SettingsIntent.NewColorToken(token))
+                    }
+                )
+                Spacer(modifier = Modifier.height(14.dp))
+            }
         }
         //endregion
 

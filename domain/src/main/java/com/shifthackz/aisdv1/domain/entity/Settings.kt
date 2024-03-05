@@ -14,4 +14,5 @@ data class Settings(
     val designUseSystemColorPalette: Boolean,
     val designUseSystemDarkTheme: Boolean,
     val designDarkTheme: Boolean,
+    val designColorToken: String,
 )

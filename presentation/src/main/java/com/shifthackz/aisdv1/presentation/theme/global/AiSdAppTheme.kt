@@ -8,9 +8,8 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.shifthackz.aisdv1.core.ui.MviComponent
-import com.shifthackz.catppuccin.compose.CatppuccinMaterial
+import com.shifthackz.aisdv1.presentation.theme.colorTokenPalette
 import com.shifthackz.catppuccin.compose.CatppuccinTheme
-import com.shifthackz.catppuccin.palette.Catppuccin
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -22,12 +21,12 @@ fun AiSdAppTheme(
         applySystemUiColors = false,
     ) { state, _ ->
         val context = LocalContext.current
-        val isDark = if (state.useSystemDarkTheme) {
+        val isDark = if (state.systemDarkTheme) {
             isSystemInDarkTheme()
         } else {
-            state.useDarkTheme
+            state.darkTheme
         }
-        if (state.useSystemColorPalette && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (state.systemColorPalette && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             MaterialTheme(
                 colorScheme = if (isDark) {
                     dynamicDarkColorScheme(context)
@@ -37,21 +36,11 @@ fun AiSdAppTheme(
                 content = content,
             )
         } else {
-            val palette = if (isDark) {
-                CatppuccinMaterial.Frappe(
-                    primary = Catppuccin.Frappe.Mauve,
-                    secondary = Catppuccin.Frappe.Mauve.copy(alpha = 0.5f),
-                    tertiary = Catppuccin.Frappe.Mauve.copy(alpha = 0.5f),
-                )
-            } else {
-                CatppuccinMaterial.Latte(
-                    primary = Catppuccin.Latte.Mauve,
-                    secondary = Catppuccin.Latte.Mauve.copy(alpha = 0.5f),
-                    tertiary = Catppuccin.Latte.Mauve.copy(alpha = 0.5f),
-                )
-            }
             CatppuccinTheme.Palette(
-                palette = palette,
+                palette = colorTokenPalette(
+                    token = state.colorToken,
+                    isDark = isDark
+                ),
                 content = content,
             )
         }

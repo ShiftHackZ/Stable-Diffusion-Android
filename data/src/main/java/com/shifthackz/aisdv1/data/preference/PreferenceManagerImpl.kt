@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.data.preference
 import android.content.SharedPreferences
 import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
 import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
+import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
@@ -149,6 +150,12 @@ class PreferenceManagerImpl(
             .putBoolean(KEY_DESIGN_DARK_THEME, value)
             .apply()
             .also { onPreferencesChanged() }
+    override var designColorToken: String
+        get() = preferences.getString(KEY_DESIGN_COLOR_TOKEN, "${ColorToken.MAUVE}") ?: "${ColorToken.MAUVE}"
+        set(value) = preferences.edit()
+            .putString(KEY_DESIGN_COLOR_TOKEN, value)
+            .apply()
+            .also { onPreferencesChanged() }
 
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
@@ -167,6 +174,7 @@ class PreferenceManagerImpl(
                 designUseSystemColorPalette = designUseSystemColorPalette,
                 designUseSystemDarkTheme = designUseSystemDarkTheme,
                 designDarkTheme = designDarkTheme,
+                designColorToken = designColorToken,
             )
         }
 
@@ -190,6 +198,7 @@ class PreferenceManagerImpl(
         private const val KEY_DESIGN_DYNAMIC_COLORS = "key_design_dynamic_colors"
         private const val KEY_DESIGN_SYSTEM_DARK_THEME = "key_design_system_dark_theme"
         private const val KEY_DESIGN_DARK_THEME = "key_design_dark_theme"
+        private const val KEY_DESIGN_COLOR_TOKEN = "key_design_color_token_theme"
         private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.8"
     }
 }

@@ -94,24 +94,13 @@ fun SettingsItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-
-            Row(
+            SettingsItemContent(
                 modifier = endValueContent
                     ?.let { Modifier.fillMaxWidth(0.8f) }
                     ?: Modifier,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Spacer(modifier = Modifier.width(8.dp))
-                Icon(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    imageVector = startIcon,
-                    contentDescription = null,
-                )
-                Text(
-                    text = text.asString(),
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-            }
+                icon = startIcon,
+                text = text,
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -133,5 +122,28 @@ fun SettingsItem(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun SettingsItemContent(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    text: UiText,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Spacer(modifier = Modifier.width(8.dp))
+        Icon(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            imageVector = icon,
+            contentDescription = null,
+        )
+        Text(
+            text = text.asString(),
+            style = MaterialTheme.typography.bodyLarge,
+        )
     }
 }

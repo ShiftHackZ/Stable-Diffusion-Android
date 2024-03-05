@@ -2,7 +2,6 @@ package com.shifthackz.aisdv1.presentation.widget.input.chip
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.theme.isSdAppInDarkTheme
 import com.shifthackz.catppuccin.palette.Catppuccin
 
 @Composable
@@ -31,7 +31,7 @@ fun ChipTextFieldItem(
     onDeleteClick: () -> Unit = {},
     onItemClick: () -> Unit = {},
 ) {
-    val isDark = isSystemInDarkTheme()
+    val isDark = isSdAppInDarkTheme()
     val bgColor = when (type) {
         ExtraType.Lora -> if (isDark) {
             Catppuccin.Frappe.Lavender

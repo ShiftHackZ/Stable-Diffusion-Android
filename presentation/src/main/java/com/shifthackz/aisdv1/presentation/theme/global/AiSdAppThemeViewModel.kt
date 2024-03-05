@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.android.core.mvi.EmptyEffect
 import com.shifthackz.android.core.mvi.EmptyIntent
@@ -23,9 +24,10 @@ class AiSdAppThemeViewModel(
             .subscribeBy(::errorLog, EmptyLambda) { settings ->
                 updateState { state ->
                     state.copy(
-                        useSystemColorPalette = settings.designUseSystemColorPalette,
-                        useSystemDarkTheme = settings.designUseSystemDarkTheme,
-                        useDarkTheme = settings.designDarkTheme,
+                        systemColorPalette = settings.designUseSystemColorPalette,
+                        systemDarkTheme = settings.designUseSystemDarkTheme,
+                        darkTheme = settings.designDarkTheme,
+                        colorToken = ColorToken.parse(settings.designColorToken),
                     )
                 }
             }
