@@ -62,6 +62,13 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
+    override var formPromptTaggedInput: Boolean
+        get() = preferences.getBoolean(KEY_FORM_PROMPT_TAGGED_INPUT, true)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_FORM_PROMPT_TAGGED_INPUT, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
     override var source: ServerSource
         get() = (preferences.getString(KEY_SERVER_SOURCE, ServerSource.AUTOMATIC1111.key) ?: ServerSource.AUTOMATIC1111.key)
             .let(ServerSource.Companion::parse)
@@ -132,6 +139,7 @@ class PreferenceManagerImpl(
                 autoSaveAiResults = autoSaveAiResults,
                 saveToMediaStore = saveToMediaStore,
                 formAdvancedOptionsAlwaysShow = formAdvancedOptionsAlwaysShow,
+                formPromptTaggedInput = formPromptTaggedInput,
                 source = source,
                 hordeApiKey = hordeApiKey,
                 localUseNNAPI = localUseNNAPI,
@@ -147,6 +155,7 @@ class PreferenceManagerImpl(
         private const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
         private const val KEY_SAVE_TO_MEDIA_STORE = "key_save_to_media_store"
         private const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
+        private const val KEY_FORM_PROMPT_TAGGED_INPUT = "key_prompt_tagged_input"
         private const val KEY_SERVER_SOURCE = "key_server_source"
         private const val KEY_HORDE_API_KEY = "key_horde_api_key"
         private const val KEY_OPEN_AI_API_KEY = "key_open_ai_api_key"

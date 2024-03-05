@@ -19,10 +19,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.model.asString
@@ -35,6 +37,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.utils.Constants.BATCH_RANGE_MAX
@@ -45,6 +48,8 @@ import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_M
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MIN
+import com.shifthackz.aisdv1.presentation.widget.input.chip.ChipTextFieldEvent
+import com.shifthackz.aisdv1.presentation.widget.input.chip.ChipTextFieldWithItem
 import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlin.random.Random
@@ -53,6 +58,8 @@ import kotlin.random.Random
 fun GenerationInputForm(
     modifier: Modifier = Modifier,
     state: GenerationMviState,
+    promptChipTextFieldState: MutableState<TextFieldValue>,
+    negativePromptChipTextFieldState: MutableState<TextFieldValue>,
     processIntent: (GenerationMviIntent) -> Unit = {},
     afterSlidersSection: @Composable () -> Unit = {},
 ) {
@@ -73,28 +80,83 @@ fun GenerationInputForm(
             onValueChange = { processIntent(GenerationMviIntent.Update.Batch(it.roundToInt())) },
         )
     }
+
     Column(modifier = modifier) {
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            value = state.prompt,
-            onValueChange = { processIntent(GenerationMviIntent.Update.Prompt(it)) },
-            label = { Text(stringResource(id = R.string.hint_prompt)) },
-        )
+        if (state.formPromptTaggedInput) {
+            ChipTextFieldWithItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                textFieldValueState = promptChipTextFieldState,
+                label = R.string.hint_prompt,
+                list = state.promptKeywords,
+                onItemClick = { _, tag ->
+                    processIntent(
+                        GenerationMviIntent.SetModal(
+                            Modal.EditTag(
+                                prompt = state.prompt,
+                                negativePrompt = state.negativePrompt,
+                                tag = tag,
+                                isNegative = false,
+                            )
+                        )
+                    )
+                },
+            ) { event ->
+                val prompt = processTaggedPrompt(state.promptKeywords, event)
+                processIntent(GenerationMviIntent.Update.Prompt(prompt))
+            }
+        } else {
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                value = state.prompt,
+                onValueChange = { processIntent(GenerationMviIntent.Update.Prompt(it)) },
+                label = { Text(stringResource(id = R.string.hint_prompt)) },
+            )
+        }
 
         // Horde does not support "negative prompt"
         when (state.mode) {
             ServerSource.AUTOMATIC1111,
             ServerSource.HUGGING_FACE,
-            ServerSource.LOCAL -> TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                value = state.negativePrompt,
-                onValueChange = { processIntent(GenerationMviIntent.Update.NegativePrompt(it))  },
-                label = { Text(stringResource(id = R.string.hint_prompt_negative)) },
-            )
+            ServerSource.LOCAL -> {
+                if (state.formPromptTaggedInput) {
+                    ChipTextFieldWithItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        textFieldValueState = negativePromptChipTextFieldState,
+                        label = R.string.hint_prompt_negative,
+                        list = state.negativePromptKeywords,
+                        onItemClick = { _, tag ->
+                            processIntent(
+                                GenerationMviIntent.SetModal(
+                                    Modal.EditTag(
+                                        prompt = state.prompt,
+                                        negativePrompt = state.negativePrompt,
+                                        tag = tag,
+                                        isNegative = true,
+                                    )
+                                )
+                            )
+                        },
+                    ) { event ->
+                        val prompt = processTaggedPrompt(state.negativePromptKeywords, event)
+                        processIntent(GenerationMviIntent.Update.NegativePrompt(prompt))
+                    }
+                } else {
+                    TextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        value = state.negativePrompt,
+                        onValueChange = { processIntent(GenerationMviIntent.Update.NegativePrompt(it)) },
+                        label = { Text(stringResource(id = R.string.hint_prompt_negative)) },
+                    )
+                }
+            }
 
             else -> Unit
         }
@@ -396,7 +458,9 @@ fun GenerationInputForm(
                 }
 
                 // Batch is not available for Local Diffusion
-                if (state.mode != ServerSource.LOCAL) { batchComponent() }
+                if (state.mode != ServerSource.LOCAL) {
+                    batchComponent()
+                }
                 //Restore faces available only for A1111
                 if (state.mode == ServerSource.AUTOMATIC1111) {
                     Row(
@@ -420,4 +484,22 @@ fun GenerationInputForm(
             }
         }
     }
+}
+
+fun processTaggedPrompt(keywords: List<String>, event: ChipTextFieldEvent<String>): String {
+    val newKeywords = when (event) {
+        is ChipTextFieldEvent.Add -> buildList {
+            addAll(keywords)
+            add(event.item)
+        }
+
+        is ChipTextFieldEvent.AddBatch -> buildList {
+            addAll(keywords)
+            addAll(event.items)
+        }
+
+        is ChipTextFieldEvent.Remove -> keywords.filterIndexed { i, _ -> i != event.index }
+        is ChipTextFieldEvent.Update -> keywords.mapIndexed { i, s -> if (i == event.index) event.item else s }
+    }
+    return newKeywords.joinToString(", ")
 }

@@ -149,7 +149,7 @@ class ImageToImageViewModel(
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {
         if (currentState.screenModal is Modal.Communicating) {
-            setActiveModal(Modal.Communicating(status))
+            setActiveModal(Modal.Communicating(hordeProcessStatus = status))
         }
     }
 

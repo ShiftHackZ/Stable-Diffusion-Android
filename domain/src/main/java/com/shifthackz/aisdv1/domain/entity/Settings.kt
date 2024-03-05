@@ -7,6 +7,7 @@ data class Settings(
     val autoSaveAiResults: Boolean,
     val saveToMediaStore: Boolean,
     val formAdvancedOptionsAlwaysShow: Boolean,
+    val formPromptTaggedInput: Boolean,
     val source: ServerSource,
     val hordeApiKey: String,
     val localUseNNAPI: Boolean,

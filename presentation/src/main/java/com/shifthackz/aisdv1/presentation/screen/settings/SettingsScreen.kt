@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SettingsEthernet
+import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -32,25 +33,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
-import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import com.shifthackz.aisdv1.presentation.utils.ReportProblemEmailComposer
-import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
-import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
-import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import org.koin.androidx.compose.koinViewModel
 
@@ -117,42 +112,8 @@ private fun ScreenContent(
                 }
             }
         )
-        when (state.screenDialog) {
-            SettingsState.Dialog.Communicating -> ProgressDialog(
-                canDismiss = false,
-            )
-
-            SettingsState.Dialog.None -> Unit
-            is SettingsState.Dialog.SelectSdModel -> {
-                var selectedItem by remember {
-                    mutableStateOf(state.screenDialog.selected,)
-                }
-                DecisionInteractiveDialog(
-                    title = R.string.title_select_sd_model.asUiText(),
-                    text = UiText.empty,
-                    confirmActionResId = R.string.action_select,
-                    onConfirmAction = { processIntent(SettingsIntent.SdModel.Select(selectedItem)) },
-                    onDismissRequest = { processIntent(SettingsIntent.DismissDialog) },
-                    content = {
-                        DropdownTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            label = R.string.hint_sd_model.asUiText(),
-                            value = selectedItem,
-                            items = state.screenDialog.models,
-                            onItemSelected = { selectedItem = it },
-                        )
-                    }
-                )
-            }
-
-            SettingsState.Dialog.ClearAppCache -> DecisionInteractiveDialog(
-                title = R.string.title_clear_app_cache.asUiText(),
-                text = R.string.interaction_cache_sub_title.asUiText(),
-                confirmActionResId = R.string.yes,
-                dismissActionResId = R.string.no,
-                onDismissRequest = { processIntent(SettingsIntent.DismissDialog) },
-                onConfirmAction = { processIntent(SettingsIntent.Action.ClearAppCache.Confirm) },
-            )
+        ModalRenderer(screenModal = state.screenModal) {
+            (it as? SettingsIntent)?.let(processIntent::invoke)
         }
     }
 }
@@ -263,6 +224,23 @@ private fun ContentSettingsState(
                     },
                 )
             }
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            startIcon = Icons.Default.Tag,
+            text = R.string.settings_item_tagged_input.asUiText(),
+            onClick = {
+                processIntent(SettingsIntent.UpdateFlag.TaggedInput(!state.formPromptTaggedInput))
+            },
+            endValueContent = {
+                Switch(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    checked = state.formPromptTaggedInput,
+                    onCheckedChange = {
+                        processIntent(SettingsIntent.UpdateFlag.TaggedInput(it))
+                    },
+                )
+            },
         )
         if (state.showFormAdvancedOption) {
             SettingsItem(

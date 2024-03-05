@@ -21,6 +21,7 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomModelSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
@@ -91,7 +92,7 @@ class ServerSetupViewModel(
             )
         }
 
-        ServerSetupIntent.DismissDialog -> setScreenDialog(ServerSetupState.Dialog.None)
+        ServerSetupIntent.DismissDialog -> setScreenModal(Modal.None)
 
         is ServerSetupIntent.DownloadCardButtonClick -> localModelDownloadClickReducer(intent.model)
 
@@ -191,13 +192,13 @@ class ServerSetupViewModel(
             ServerSource.AUTOMATIC1111 -> connectToAutomaticInstance()
             ServerSource.HUGGING_FACE -> connectToHuggingFace()
             ServerSource.OPEN_AI -> connectToOpenAi()
-        }.doOnSubscribe { setScreenDialog(ServerSetupState.Dialog.Communicating) }
+        }.doOnSubscribe { setScreenModal(Modal.Communicating(canCancel = false)) }
             .subscribeOnMainThread(schedulersProvider).subscribeBy(::errorLog) { result ->
                 result.fold(
                     onSuccess = { onSetupComplete() },
                     onFailure = { t ->
                         val message = t.localizedMessage ?: "Bad key"
-                        setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
+                        setScreenModal(Modal.Error(message.asUiText()))
                     },
                 )
             }
@@ -360,7 +361,7 @@ class ServerSetupViewModel(
                                     ),
                                 )
                             }
-                            setScreenDialog(ServerSetupState.Dialog.Error(message.asUiText()))
+                            setScreenModal(Modal.Error(message.asUiText()))
                         },
                         onNext = { downloadState ->
                             debugLog("DOWNLOAD STATE : $downloadState")
@@ -388,8 +389,8 @@ class ServerSetupViewModel(
         }
     }
 
-    private fun setScreenDialog(value: ServerSetupState.Dialog) = updateState {
-        it.copy(screenDialog = value)
+    private fun setScreenModal(value: Modal) = updateState {
+        it.copy(screenModal = value)
     }
 
     private fun onSetupComplete() {

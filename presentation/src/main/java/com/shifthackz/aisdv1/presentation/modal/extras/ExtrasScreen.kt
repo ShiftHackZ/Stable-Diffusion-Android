@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DataExploration
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Button
@@ -75,7 +76,7 @@ fun ExtrasScreen(
     ) { state, intentHandler ->
         ScreenContent(
             state = state,
-            hanleIntent = intentHandler,
+            processIntent = intentHandler,
         )
     }
 }
@@ -84,7 +85,7 @@ fun ExtrasScreen(
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ExtrasState,
-    hanleIntent: (ExtrasIntent) -> Unit = {},
+    processIntent: (ExtrasIntent) -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = {},
@@ -105,9 +106,14 @@ private fun ScreenContent(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 12.dp, vertical = 8.dp),
-                            onClick = { hanleIntent(ExtrasIntent.ApplyPrompts) }
+                            onClick = { processIntent(ExtrasIntent.ApplyPrompts) }
                         ) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = null,
+                            )
                             Text(
+                                modifier = Modifier.padding(horizontal = 8.dp),
                                 text = stringResource(
                                     id = if (state.error != ErrorState.None) R.string.close
                                     else R.string.apply
@@ -130,7 +136,7 @@ private fun ScreenContent(
                                 ExtraType.HyperNet -> R.string.title_hyper_net
                             }
                         ),
-                        onClose = { hanleIntent(ExtrasIntent.Close) },
+                        onClose = { processIntent(ExtrasIntent.Close) },
                     )
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(1),
@@ -168,7 +174,7 @@ private fun ScreenContent(
                                     ExtrasItemComposable(
                                         item = state.loras[index],
                                         onLoraSelected = {
-                                            hanleIntent(ExtrasIntent.ToggleItem(it))
+                                            processIntent(ExtrasIntent.ToggleItem(it))
                                         },
                                     )
                                 }

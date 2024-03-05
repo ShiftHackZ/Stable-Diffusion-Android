@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -11,6 +12,7 @@ import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCas
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -41,17 +43,18 @@ class GalleryDetailViewModel(
     }
 
     override fun processIntent(intent: GalleryDetailIntent) {
+        debugLog("INTENT : $intent")
         when (intent) {
             is GalleryDetailIntent.CopyToClipboard -> {
                 emitEffect(GalleryDetailEffect.ShareClipBoard(intent.content.toString()))
             }
 
             GalleryDetailIntent.Delete.Request -> {
-                setActiveDialog(GalleryDetailState.Dialog.DeleteConfirm)
+                setActiveModal(Modal.DeleteConfirm)
             }
 
             GalleryDetailIntent.Delete.Confirm -> {
-                setActiveDialog(GalleryDetailState.Dialog.DeleteConfirm)
+                setActiveModal(Modal.None)
                 delete()
             }
 
@@ -67,15 +70,15 @@ class GalleryDetailViewModel(
                 it.withTab(intent.tab)
             }
 
-            GalleryDetailIntent.SendTo.Img2Img -> sendPromptToGenerationScreen(
+            GalleryDetailIntent.SendTo.Txt2Img -> sendPromptToGenerationScreen(
                 AiGenerationResult.Type.TEXT_TO_IMAGE,
             )
 
-            GalleryDetailIntent.SendTo.Txt2Img -> sendPromptToGenerationScreen(
+            GalleryDetailIntent.SendTo.Img2Img -> sendPromptToGenerationScreen(
                 AiGenerationResult.Type.IMAGE_TO_IMAGE,
             )
 
-            GalleryDetailIntent.DismissDialog -> setActiveDialog(GalleryDetailState.Dialog.None)
+            GalleryDetailIntent.DismissDialog -> setActiveModal(Modal.None)
         }
 
     }
@@ -96,7 +99,7 @@ class GalleryDetailViewModel(
             .subscribeBy(::errorLog) { mainRouter.navigateBack() }
     }
 
-    private fun setActiveDialog(dialog: GalleryDetailState.Dialog) = updateState {
+    private fun setActiveModal(dialog: Modal) = updateState {
         it.withDialog(dialog)
     }
 
@@ -117,9 +120,9 @@ class GalleryDetailViewModel(
     private fun sendPromptToGenerationScreen(screenType: AiGenerationResult.Type) =
         !getGenerationResult(itemId)
             .subscribeOnMainThread(schedulersProvider)
+            .doFinally { mainRouter.navigateBack() }
             .subscribeBy(::errorLog) { ai ->
                 generationFormUpdateEvent.update(ai, screenType)
-                mainRouter.navigateBack()
             }
 
     private fun getGenerationResult(id: Long): Single<AiGenerationResult> {

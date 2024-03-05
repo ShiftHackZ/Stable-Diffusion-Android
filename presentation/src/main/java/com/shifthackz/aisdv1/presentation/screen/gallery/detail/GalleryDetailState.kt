@@ -10,25 +10,26 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.extensions.mapToUi
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.android.core.mvi.MviState
 
 sealed interface GalleryDetailState : MviState {
     val tabs: List<Tab>
     val selectedTab: Tab
-    val screenDialog: Dialog
+    val screenModal: Modal
 
     @Immutable
     data class Loading(
         override val tabs: List<Tab> = emptyList(),
         override val selectedTab: Tab = Tab.IMAGE,
-        override val screenDialog: Dialog = Dialog.None,
+        override val screenModal: Modal = Modal.None,
     ) : GalleryDetailState
 
     @Immutable
     data class Content(
         override val tabs: List<Tab> = emptyList(),
         override val selectedTab: Tab = Tab.IMAGE,
-        override val screenDialog: Dialog = Dialog.None,
+        override val screenModal: Modal = Modal.None,
         val generationType: AiGenerationResult.Type,
         val id: Long,
         val bitmap: Bitmap,
@@ -53,9 +54,9 @@ sealed interface GalleryDetailState : MviState {
         is Loading -> copy(selectedTab = tab)
     }
 
-    fun withDialog(dialog: Dialog) = when (this) {
-        is Content -> copy(screenDialog = dialog)
-        is Loading -> copy(screenDialog = dialog)
+    fun withDialog(dialog: Modal) = when (this) {
+        is Content -> copy(screenModal = dialog)
+        is Loading -> copy(screenModal = dialog)
     }
 
     enum class Tab(
@@ -75,11 +76,6 @@ sealed interface GalleryDetailState : MviState {
                 AiGenerationResult.Type.IMAGE_TO_IMAGE -> entries
             }
         }
-    }
-
-    sealed interface Dialog {
-        data object None : Dialog
-        data object DeleteConfirm : Dialog
     }
 }
 

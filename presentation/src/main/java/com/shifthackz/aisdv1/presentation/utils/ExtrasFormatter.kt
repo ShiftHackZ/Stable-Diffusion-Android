@@ -1,8 +1,20 @@
+@file:Suppress("unused")
+
 package com.shifthackz.aisdv1.presentation.utils
 
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 
 object ExtrasFormatter {
+
+    fun determineExtraType(input: String?) : ExtraType? {
+        if (input.isNullOrBlank()) return null
+        ExtraType.entries.forEach { type ->
+            if (input.startsWith("<${type.raw}:") && input.endsWith(">")) {
+                return type
+            }
+        }
+        return null
+    }
 
     fun isEmbeddingPresentInPrompt(
         prompt: String,
@@ -52,9 +64,13 @@ object ExtrasFormatter {
             .filterNot(String::isBlank)
         val index = keywords.indexOfFirst { it.startsWith("<${type.raw}:$loraAlias:") }
         if (index == -1) {
-            return "${prompt.trim()} <${type.raw}:$loraAlias:1>".trim()
+            return if (prompt.isEmpty()) {
+                "<${type.raw}:$loraAlias:1>"
+            } else {
+                "${prompt.trim()}, <${type.raw}:$loraAlias:1>".trim().trim(',')
+            }
         }
-        return prompt.replaceFirst(keywords[index], "").trim()
+        return prompt.replaceFirst(keywords[index], "").trim().trim(',')
     }
 
     fun toggleEmbedding(
@@ -66,8 +82,12 @@ object ExtrasFormatter {
             .filterNot(String::isBlank)
         val index = keywords.indexOfFirst { it == embedding }
         if (index == -1) {
-            return "${prompt.trim()} $embedding".trim()
+            return if (prompt.isEmpty()) {
+                embedding
+            } else {
+                "${prompt.trim()}, $embedding".trim().trim(',')
+            }
         }
-        return prompt.replaceFirst(keywords[index], "").trim()
+        return prompt.replaceFirst(keywords[index], "").trim().trim(',')
     }
 }

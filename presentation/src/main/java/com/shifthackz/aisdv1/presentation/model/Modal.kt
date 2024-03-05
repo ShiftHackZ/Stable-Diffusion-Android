@@ -7,9 +7,22 @@ import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 
 sealed interface Modal {
+
     data object None : Modal
 
     data object LoadingRandomImage : Modal
+
+    data object ClearAppCache : Modal
+
+    data object DeleteConfirm : Modal
+
+    data object ConfirmExport : Modal
+
+    data object ExportInProgress : Modal
+
+
+    @Immutable
+    data class SelectSdModel(val models: List<String>, val selected: String) : Modal
 
     @Immutable
     data class Generating(val status: LocalDiffusion.Status? = null) : Modal {
@@ -18,7 +31,10 @@ sealed interface Modal {
     }
 
     @Immutable
-    data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
+    data class Communicating(
+        val canCancel: Boolean = true,
+        val hordeProcessStatus: HordeProcessStatus? = null,
+    ) : Modal
 
     data object PromptBottomSheet : Modal
 
@@ -33,6 +49,14 @@ sealed interface Modal {
     data class Embeddings(
         val prompt: String,
         val negativePrompt: String,
+    ) : Modal
+
+    @Immutable
+    data class EditTag(
+        val prompt: String,
+        val negativePrompt: String,
+        val tag: String,
+        val isNegative: Boolean = false
     ) : Modal
 
     sealed interface Image : Modal {

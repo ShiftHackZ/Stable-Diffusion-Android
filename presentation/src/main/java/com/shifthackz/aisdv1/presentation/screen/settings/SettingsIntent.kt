@@ -59,6 +59,8 @@ sealed interface SettingsIntent : MviIntent {
 
         data class SaveToMediaStore(override val flag: Boolean) : UpdateFlag
 
+        data class TaggedInput(override val flag: Boolean) : UpdateFlag
+
         data class AdvancedFormVisibility(override val flag: Boolean) : UpdateFlag
     }
 

@@ -39,6 +39,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +48,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
@@ -101,6 +104,8 @@ private fun ScreenContent(
     state: ImageToImageState,
     processIntent: (GenerationMviIntent) -> Unit = {}
 ) {
+    val promptChipTextFieldState = remember { mutableStateOf(TextFieldValue()) }
+    val negativePromptChipTextFieldState = remember { mutableStateOf(TextFieldValue()) }
     Box(modifier) {
         Scaffold(
             topBar = {
@@ -149,6 +154,8 @@ private fun ScreenContent(
                             GenerationInputForm(
                                 state = state,
                                 processIntent = processIntent,
+                                promptChipTextFieldState = promptChipTextFieldState,
+                                negativePromptChipTextFieldState = negativePromptChipTextFieldState,
                                 afterSlidersSection = {
                                     Text(
                                         modifier = Modifier.padding(top = 8.dp),
@@ -231,14 +238,26 @@ private fun ScreenContent(
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
                         onClick = {
-                            processIntent(
-                                when (state.mode) {
-                                    ServerSource.LOCAL,
-                                    ServerSource.OPEN_AI -> GenerationMviIntent.Configuration
+                            when (state.mode) {
+                                ServerSource.OPEN_AI,
+                                ServerSource.LOCAL -> processIntent(GenerationMviIntent.Configuration)
 
-                                    else -> GenerationMviIntent.Generate
+                                else -> {
+                                    promptChipTextFieldState.value.text.takeIf(String::isNotBlank)
+                                        ?.let { "${state.prompt}, ${it.trim()}" }
+                                        ?.let(GenerationMviIntent.Update::Prompt)
+                                        ?.let(processIntent::invoke)
+                                        ?.also { promptChipTextFieldState.value = TextFieldValue("") }
+
+                                    negativePromptChipTextFieldState.value.text.takeIf(String::isNotBlank)
+                                        ?.let { "${state.negativePrompt}, ${it.trim()}" }
+                                        ?.let(GenerationMviIntent.Update::NegativePrompt)
+                                        ?.let(processIntent::invoke)
+                                        ?.also { negativePromptChipTextFieldState.value = TextFieldValue("") }
+
+                                    processIntent(GenerationMviIntent.Generate)
                                 }
-                            )
+                            }
                         },
                         enabled = isEnabled,
                     ) {
@@ -267,7 +286,7 @@ private fun ScreenContent(
         )
         ModalRenderer(
             screenModal = state.screenModal,
-            processIntent = processIntent,
+            processIntent = { (it as? GenerationMviIntent)?.let(processIntent::invoke) },
         )
     }
 }

@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -108,7 +110,12 @@ private fun ScreenContent(
                                 .padding(horizontal = 12.dp, vertical = 8.dp),
                             onClick = { processIntent(EmbeddingIntent.ApplyNewPrompts) }
                         ) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = null,
+                            )
                             Text(
+                                modifier = Modifier.padding(horizontal = 8.dp),
                                 text = stringResource(
                                     id = if (state.error != ErrorState.None) R.string.close
                                     else R.string.apply

@@ -11,6 +11,7 @@ interface PreferenceManager {
     var autoSaveAiResults: Boolean
     var saveToMediaStore: Boolean
     var formAdvancedOptionsAlwaysShow: Boolean
+    var formPromptTaggedInput: Boolean
     var source: ServerSource
     var hordeApiKey: String
     var openAiApiKey: String

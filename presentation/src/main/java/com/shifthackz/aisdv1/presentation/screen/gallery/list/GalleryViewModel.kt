@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -56,8 +57,8 @@ class GalleryViewModel(
 
     override fun processIntent(intent: GalleryIntent) {
         when (intent) {
-            GalleryIntent.DismissDialog -> setActiveDialog(GalleryState.Dialog.None)
-            GalleryIntent.Export.Request -> setActiveDialog(GalleryState.Dialog.ConfirmExport)
+            GalleryIntent.DismissDialog -> setActiveModal(Modal.None)
+            GalleryIntent.Export.Request -> setActiveModal(Modal.ConfirmExport)
             GalleryIntent.Export.Confirm -> launchGalleryExport()
             is GalleryIntent.OpenItem -> mainRouter.navigateToGalleryDetails(intent.item.id)
             is GalleryIntent.OpenMediaStoreFolder -> emitEffect(GalleryEffect.OpenUri(intent.uri))
@@ -66,25 +67,25 @@ class GalleryViewModel(
 
 
     private fun launchGalleryExport() = galleryExporter()
-        .doOnSubscribe { setActiveDialog(GalleryState.Dialog.ExportInProgress) }
+        .doOnSubscribe { setActiveModal(Modal.ExportInProgress) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
             onError = { t ->
-                setActiveDialog(
-                    GalleryState.Dialog.Error(
+                setActiveModal(
+                    Modal.Error(
                         (t.localizedMessage ?: "Something went wrong").asUiText()
                     )
                 )
                 errorLog(t)
             },
             onSuccess = { zipFile ->
-                setActiveDialog(GalleryState.Dialog.None)
+                setActiveModal(Modal.None)
                 emitEffect(GalleryEffect.Share(zipFile))
             }
         )
         .addToDisposable()
 
-    private fun setActiveDialog(dialog: GalleryState.Dialog) = updateState {
-        it.copy(screenDialog = dialog)
+    private fun setActiveModal(dialog: Modal) = updateState {
+        it.copy(screenModal = dialog)
     }
 }

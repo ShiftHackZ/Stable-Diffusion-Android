@@ -49,9 +49,9 @@ import com.shifthackz.aisdv1.core.sharing.shareFile
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.theme.colors
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
 import com.shifthackz.catppuccin.palette.Catppuccin
@@ -159,17 +159,8 @@ private fun ScreenContent(
                 )
             },
         )
-        when (state.screenDialog) {
-            GalleryDetailState.Dialog.DeleteConfirm -> DecisionInteractiveDialog(
-                title = R.string.interaction_delete_generation_title.asUiText(),
-                text = R.string.interaction_delete_generation_sub_title.asUiText(),
-                confirmActionResId = R.string.yes,
-                dismissActionResId = R.string.no,
-                onConfirmAction = { processIntent(GalleryDetailIntent.Delete.Confirm) },
-                onDismissRequest = { processIntent(GalleryDetailIntent.DismissDialog) },
-            )
-
-            GalleryDetailState.Dialog.None -> Unit
+        ModalRenderer(screenModal = state.screenModal) {
+            (it as? GalleryDetailIntent)?.let(processIntent::invoke)
         }
     }
 }

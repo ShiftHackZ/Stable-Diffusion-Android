@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.domain.gateway
 
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Flowable
 
 fun interface ServerConnectivityGateway {
-    fun observe(): Observable<Boolean>
+    fun observe(): Flowable<Boolean>
 }
