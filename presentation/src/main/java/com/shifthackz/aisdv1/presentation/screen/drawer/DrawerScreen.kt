@@ -36,7 +36,10 @@ fun DrawerScreen(
     }
     val currentRoute = backStackEntry.value?.destination?.route
     val routes = remember { navItems.map(NavItem::route) }
-    MviComponent(viewModel = koinViewModel<DrawerViewModel>()) { _, intentHandler ->
+    MviComponent(
+        viewModel = koinViewModel<DrawerViewModel>(),
+        applySystemUiColors = false,
+    ) { _, intentHandler ->
         ModalNavigationDrawer(
             gesturesEnabled = routes.contains(currentRoute)
                     && currentRoute == navItems.firstOrNull()?.route,

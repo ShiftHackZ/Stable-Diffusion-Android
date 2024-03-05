@@ -62,6 +62,12 @@ sealed interface SettingsIntent : MviIntent {
         data class TaggedInput(override val flag: Boolean) : UpdateFlag
 
         data class AdvancedFormVisibility(override val flag: Boolean) : UpdateFlag
+
+        data class DynamicColors(override val flag: Boolean) : UpdateFlag
+
+        data class SystemDarkTheme(override val flag: Boolean) : UpdateFlag
+
+        data class DarkTheme(override val flag: Boolean) : UpdateFlag
     }
 
     data object StoragePermissionGranted : SettingsIntent

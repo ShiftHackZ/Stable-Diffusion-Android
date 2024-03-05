@@ -20,6 +20,9 @@ interface PreferenceManager {
     var forceSetupAfterUpdate: Boolean
     var localModelId: String
     var localUseNNAPI: Boolean
+    var designUseSystemColorPalette: Boolean
+    var designUseSystemDarkTheme: Boolean
+    var designDarkTheme: Boolean
 
     fun observe(): Flowable<Settings>
 }

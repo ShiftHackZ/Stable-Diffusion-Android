@@ -56,11 +56,15 @@ class SettingsViewModel(
                         saveToMediaStore = settings.saveToMediaStore,
                         formAdvancedOptionsAlwaysShow = settings.formAdvancedOptionsAlwaysShow,
                         formPromptTaggedInput = settings.formPromptTaggedInput,
+                        useSystemColorPalette = settings.designUseSystemColorPalette,
+                        useSystemDarkTheme = settings.designUseSystemDarkTheme,
+                        darkTheme = settings.designDarkTheme,
                         appVersion = version,
                         showLocalUseNNAPI = settings.source == ServerSource.LOCAL,
                         showSdModelSelector = settings.source == ServerSource.AUTOMATIC1111,
                         showMonitorConnectionOption = settings.source == ServerSource.AUTOMATIC1111,
                         showFormAdvancedOption = settings.source != ServerSource.OPEN_AI,
+                        showUseSystemColorPalette = false,//Build.VERSION.SDK_INT >= Build.VERSION_CODES.S,
                     )
                 }
             }
@@ -97,29 +101,24 @@ class SettingsViewModel(
 
             is SettingsIntent.SdModel.Select -> selectSdModel(intent.model)
 
-            is SettingsIntent.UpdateFlag.AdvancedFormVisibility -> updateState {
+            is SettingsIntent.UpdateFlag.AdvancedFormVisibility -> {
                 preferenceManager.formAdvancedOptionsAlwaysShow = intent.flag
-                it.copy(formAdvancedOptionsAlwaysShow = intent.flag)
             }
 
-            is SettingsIntent.UpdateFlag.AutoSaveResult -> updateState {
+            is SettingsIntent.UpdateFlag.AutoSaveResult -> {
                 preferenceManager.autoSaveAiResults = intent.flag
-                it.copy(autoSaveAiResults = intent.flag)
             }
 
-            is SettingsIntent.UpdateFlag.MonitorConnection -> updateState {
+            is SettingsIntent.UpdateFlag.MonitorConnection -> {
                 preferenceManager.monitorConnectivity = intent.flag
-                it.copy(monitorConnectivity = intent.flag)
             }
 
-            is SettingsIntent.UpdateFlag.NNAPI -> updateState {
+            is SettingsIntent.UpdateFlag.NNAPI -> {
                 preferenceManager.localUseNNAPI = intent.flag
-                it.copy(localUseNNAPI = intent.flag)
             }
 
-            is SettingsIntent.UpdateFlag.TaggedInput -> updateState {
+            is SettingsIntent.UpdateFlag.TaggedInput -> {
                 preferenceManager.formPromptTaggedInput = intent.flag
-                it.copy(formPromptTaggedInput = intent.flag)
             }
 
             is SettingsIntent.UpdateFlag.SaveToMediaStore -> changeSaveToMediaStoreSetting(
@@ -129,6 +128,18 @@ class SettingsViewModel(
             is SettingsIntent.LaunchUrl -> emitEffect(SettingsEffect.OpenUrl(intent.url))
 
             SettingsIntent.StoragePermissionGranted -> preferenceManager.saveToMediaStore = true
+
+            is SettingsIntent.UpdateFlag.DynamicColors -> {
+                preferenceManager.designUseSystemColorPalette = intent.flag
+            }
+
+            is SettingsIntent.UpdateFlag.SystemDarkTheme -> {
+                preferenceManager.designUseSystemDarkTheme = intent.flag
+            }
+
+            is SettingsIntent.UpdateFlag.DarkTheme -> {
+                preferenceManager.designDarkTheme = intent.flag
+            }
         }
     }
 

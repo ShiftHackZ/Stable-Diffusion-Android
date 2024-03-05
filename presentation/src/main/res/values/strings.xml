@@ -161,6 +161,7 @@
     <string name="settings_header_server">AI settings</string>
     <string name="settings_header_app">App settings</string>
     <string name="settings_header_info">Info</string>
+    <string name="settings_header_look_and_feel">Look and feel</string>
 
     <string name="settings_item_config">Configuration</string>
     <string name="settings_item_sd_model">SD Model</string>
@@ -175,6 +176,10 @@
     <string name="settings_item_tagged_input">Tagged input</string>
     <string name="settings_item_advanced_form_default">Always show advanced options</string>
     <string name="settings_item_clear_cache">Clear app &amp; gallery cache</string>
+
+    <string name="settings_item_lf_dynamic_colors">Dynamic colors</string>
+    <string name="settings_item_lf_system_dark_theme">System dark theme</string>
+    <string name="settings_item_lf_dark_theme">Dark theme</string>
 
     <string name="settings_item_report_problem">Report a problem</string>
     <string name="settings_item_policy">Privacy and legal policy</string>

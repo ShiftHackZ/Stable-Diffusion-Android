@@ -89,6 +89,7 @@ fun ImageToImageScreen() {
                 .build()
                 .launch(context)
         },
+        applySystemUiColors = false,
     ) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),

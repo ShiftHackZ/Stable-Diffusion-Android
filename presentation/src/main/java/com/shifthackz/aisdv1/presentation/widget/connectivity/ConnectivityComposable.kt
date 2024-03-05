@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +26,6 @@ fun ConnectivityComposable() {
         applySystemUiColors = false,
     ) { state, _ ->
         ConnectivityWidgetState(
-            modifier = Modifier.fillMaxWidth(),
             state = state,
         )
     }
@@ -45,9 +43,7 @@ private fun ConnectivityWidgetState(
             is ConnectivityState.Uninitialized -> colors(light = Catppuccin.Latte.Lavender, dark = Catppuccin.Frappe.Lavender)
         }
         Column(
-            modifier = modifier
-                .background(MaterialTheme.colorScheme.surface)
-                .padding(top = 4.dp),
+            modifier = modifier.padding(top = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(

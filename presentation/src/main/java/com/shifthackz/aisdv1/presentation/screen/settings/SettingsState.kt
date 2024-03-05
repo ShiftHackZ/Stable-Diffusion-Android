@@ -16,9 +16,17 @@ data class SettingsState(
     val saveToMediaStore: Boolean = false,
     val formAdvancedOptionsAlwaysShow: Boolean = false,
     val formPromptTaggedInput: Boolean = false,
+
+    val useSystemColorPalette: Boolean = false,
+    val useSystemDarkTheme: Boolean = false,
+    val darkTheme: Boolean = false,
+
+    // --
     val appVersion: String = "",
+    // --
     val showLocalUseNNAPI: Boolean = false,
     val showSdModelSelector: Boolean = false,
     val showMonitorConnectionOption: Boolean = false,
     val showFormAdvancedOption: Boolean = false,
+    val showUseSystemColorPalette: Boolean = false,
 ) : MviState
