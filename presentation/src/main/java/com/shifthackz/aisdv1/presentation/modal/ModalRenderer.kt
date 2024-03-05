@@ -21,6 +21,7 @@ import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailIntent
+import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryIntent
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
@@ -41,6 +42,7 @@ fun ModalRenderer(
         processIntent(ServerSetupIntent.DismissDialog)
         processIntent(SettingsIntent.DismissDialog)
         processIntent(GenerationMviIntent.SetModal(Modal.None))
+        processIntent(GalleryIntent.DismissDialog)
         processIntent(GalleryDetailIntent.DismissDialog)
     }
     when (screenModal) {
@@ -174,6 +176,20 @@ fun ModalRenderer(
             dismissActionResId = R.string.no,
             onConfirmAction = { processIntent(GalleryDetailIntent.Delete.Confirm) },
             onDismissRequest = dismiss,
+        )
+
+        Modal.ConfirmExport -> DecisionInteractiveDialog(
+            title = R.string.interaction_export_title.asUiText(),
+            text = R.string.interaction_export_sub_title.asUiText(),
+            confirmActionResId = R.string.action_export,
+            onConfirmAction = { processIntent(GalleryIntent.Export.Confirm) },
+            onDismissRequest = dismiss,
+        )
+
+        Modal.ExportInProgress ->  ProgressDialog(
+            titleResId = R.string.exporting_progress_title,
+            subTitleResId = R.string.exporting_progress_sub_title,
+            canDismiss = false,
         )
     }
 }

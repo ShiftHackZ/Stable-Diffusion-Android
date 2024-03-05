@@ -15,6 +15,11 @@ sealed interface Modal {
 
     data object DeleteConfirm : Modal
 
+    data object ConfirmExport : Modal
+
+    data object ExportInProgress : Modal
+
+
     @Immutable
     data class SelectSdModel(val models: List<String>, val selected: String) : Modal
 

@@ -52,15 +52,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.extensions.items
 import com.shifthackz.aisdv1.core.extensions.shimmer
-import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.sharing.shareFile
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
-import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
-import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -211,27 +208,8 @@ private fun ScreenContent(
                 }
             }
         })
-        when (state.screenDialog) {
-            GalleryState.Dialog.None -> Unit
-            GalleryState.Dialog.ConfirmExport -> DecisionInteractiveDialog(
-                title = R.string.interaction_export_title.asUiText(),
-                text = R.string.interaction_export_sub_title.asUiText(),
-                confirmActionResId = R.string.action_export,
-                onConfirmAction = { processIntent(GalleryIntent.Export.Confirm) },
-                onDismissRequest = { processIntent(GalleryIntent.DismissDialog) },
-            )
-
-            GalleryState.Dialog.ExportInProgress -> ProgressDialog(
-                titleResId = R.string.exporting_progress_title,
-                subTitleResId = R.string.exporting_progress_sub_title,
-                canDismiss = false,
-            )
-
-            is GalleryState.Dialog.Error -> ErrorDialog(
-                text = state.screenDialog.error,
-            ) {
-                processIntent(GalleryIntent.DismissDialog)
-            }
+        ModalRenderer(screenModal = state.screenModal) {
+            (it as? GalleryIntent)?.let(processIntent::invoke)
         }
     }
 }
