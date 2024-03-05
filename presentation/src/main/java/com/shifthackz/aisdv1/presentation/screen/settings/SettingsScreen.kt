@@ -64,6 +64,7 @@ import com.shifthackz.aisdv1.presentation.widget.color.AccentColorSelector
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsHeader
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItemContent
+import com.shifthackz.android.compose.daynightswitch.DayNightSwitch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -359,9 +360,10 @@ private fun ContentSettingsState(
                     processIntent(SettingsIntent.UpdateFlag.DarkTheme(!state.darkTheme))
                 },
                 endValueContent = {
-                    Switch(
+                    DayNightSwitch(
                         modifier = Modifier.padding(horizontal = 8.dp),
                         checked = state.darkTheme,
+                        animationDurationMillis = 225,
                         onCheckedChange = {
                             processIntent(SettingsIntent.UpdateFlag.DarkTheme(it))
                         },
