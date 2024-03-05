@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.android.core.mvi.MviState
 import org.koin.core.component.KoinComponent
@@ -18,7 +19,7 @@ data class ServerSetupState(
     val step: Step = Step.SOURCE,
     val mode: ServerSource = ServerSource.AUTOMATIC1111,
     val allowedModes: List<ServerSource> = ServerSource.entries,
-    val screenDialog: Dialog = Dialog.None,
+    val screenModal: Modal = Modal.None,
     val serverUrl: String = "",
     val hordeApiKey: String = "",
     val huggingFaceApiKey: String = "",
@@ -63,12 +64,6 @@ data class ServerSetupState(
     enum class Step {
         SOURCE,
         CONFIGURE;
-    }
-
-    sealed interface Dialog {
-        data object None : Dialog
-        data object Communicating : Dialog
-        data class Error(val error: UiText) : Dialog
     }
 
     enum class AuthType {

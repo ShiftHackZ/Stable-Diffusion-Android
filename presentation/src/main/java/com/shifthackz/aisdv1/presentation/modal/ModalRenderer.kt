@@ -21,6 +21,7 @@ import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsIntent
+import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageBatchResultModal
@@ -34,139 +35,134 @@ import com.shifthackz.android.core.mvi.MviIntent
 fun ModalRenderer(
     screenModal: Modal,
     processIntent: (MviIntent) -> Unit,
-) = when (screenModal) {
-    Modal.None -> Unit
-
-    is Modal.Communicating -> ProgressDialog(
-        canDismiss = false,
-        waitTimeSeconds = screenModal.hordeProcessStatus?.waitTimeSeconds,
-        positionInQueue = screenModal.hordeProcessStatus?.queuePosition,
-        content = screenModal.canCancel.takeIf { it }?.let {
-            {
-                ProgressDialogCancelButton {
-                    processIntent(GenerationMviIntent.Cancel.Generation)
-                }
-            }
-        },
-    )
-
-    Modal.LoadingRandomImage -> ProgressDialog(
-        titleResId = R.string.communicating_random_image_title,
-        canDismiss = false,
-    ) {
-        ProgressDialogCancelButton {
-            processIntent(GenerationMviIntent.Cancel.FetchRandomImage)
-        }
+) {
+    val dismiss: () -> Unit = {
+        processIntent(ServerSetupIntent.DismissDialog)
+        processIntent(SettingsIntent.DismissDialog)
+        processIntent(GenerationMviIntent.SetModal(Modal.None))
     }
+    when (screenModal) {
+        Modal.None -> Unit
 
-    is Modal.Error -> ErrorDialog(
-        text = screenModal.error,
-        onDismissRequest = {
-            processIntent(GenerationMviIntent.SetModal(Modal.None))
-        },
-    )
+        is Modal.Communicating -> ProgressDialog(
+            canDismiss = false,
+            waitTimeSeconds = screenModal.hordeProcessStatus?.waitTimeSeconds,
+            positionInQueue = screenModal.hordeProcessStatus?.queuePosition,
+            content = screenModal.canCancel.takeIf { it }?.let {
+                {
+                    ProgressDialogCancelButton {
+                        processIntent(GenerationMviIntent.Cancel.Generation)
+                    }
+                }
+            },
+        )
 
-    is Modal.Generating -> ProgressDialog(
-        titleResId = R.string.communicating_local_title,
-        canDismiss = false,
-        step = screenModal.pair,
-    )
+        Modal.LoadingRandomImage -> ProgressDialog(
+            titleResId = R.string.communicating_random_image_title,
+            canDismiss = false,
+        ) {
+            ProgressDialogCancelButton {
+                processIntent(GenerationMviIntent.Cancel.FetchRandomImage)
+            }
+        }
 
-    is Modal.Image.Single -> GenerationImageResultDialog(
-        imageBase64 = screenModal.result.image,
-        showSaveButton = !screenModal.autoSaveEnabled,
-        onDismissRequest = {
-            processIntent(GenerationMviIntent.SetModal(Modal.None))
-        },
-        onSaveRequest = {
-            processIntent(GenerationMviIntent.Result.Save(listOf(screenModal.result)))
-        },
-        onViewDetailRequest = {
-            processIntent(GenerationMviIntent.Result.View(screenModal.result))
-        },
-    )
+        is Modal.Error -> ErrorDialog(
+            text = screenModal.error,
+            onDismissRequest = dismiss,
+        )
 
-    is Modal.Image.Batch -> ModalBottomSheet(
-        onDismissRequest = {
-            processIntent(GenerationMviIntent.SetModal(Modal.None))
-        },
-        shape = RectangleShape,
-    ) {
-        GenerationImageBatchResultModal(
-            screenModal.results,
+        is Modal.Generating -> ProgressDialog(
+            titleResId = R.string.communicating_local_title,
+            canDismiss = false,
+            step = screenModal.pair,
+        )
+
+        is Modal.Image.Single -> GenerationImageResultDialog(
+            imageBase64 = screenModal.result.image,
             showSaveButton = !screenModal.autoSaveEnabled,
+            onDismissRequest = dismiss,
             onSaveRequest = {
-                processIntent(GenerationMviIntent.Result.Save(screenModal.results))
+                processIntent(GenerationMviIntent.Result.Save(listOf(screenModal.result)))
             },
             onViewDetailRequest = {
-                processIntent(GenerationMviIntent.Result.View(it))
+                processIntent(GenerationMviIntent.Result.View(screenModal.result))
             },
         )
-    }
 
-    is Modal.PromptBottomSheet -> ModalBottomSheet(
-        onDismissRequest = {
-            processIntent(GenerationMviIntent.SetModal(Modal.None))
-        },
-        shape = RectangleShape,
-    ) {
-        InputHistoryScreen(
-            onGenerationSelected = { ai ->
-                processIntent(GenerationMviIntent.UpdateFromGeneration(ai))
-                processIntent(GenerationMviIntent.SetModal(Modal.None))
+        is Modal.Image.Batch -> ModalBottomSheet(
+            onDismissRequest = dismiss,
+            shape = RectangleShape,
+        ) {
+            GenerationImageBatchResultModal(
+                screenModal.results,
+                showSaveButton = !screenModal.autoSaveEnabled,
+                onSaveRequest = {
+                    processIntent(GenerationMviIntent.Result.Save(screenModal.results))
+                },
+                onViewDetailRequest = {
+                    processIntent(GenerationMviIntent.Result.View(it))
+                },
+            )
+        }
+
+        is Modal.PromptBottomSheet -> ModalBottomSheet(
+            onDismissRequest = dismiss,
+            shape = RectangleShape,
+        ) {
+            InputHistoryScreen(
+                onGenerationSelected = { ai ->
+                    processIntent(GenerationMviIntent.UpdateFromGeneration(ai))
+                    processIntent(GenerationMviIntent.SetModal(Modal.None))
+                },
+            )
+        }
+
+        is Modal.ExtraBottomSheet -> ExtrasScreen(
+            prompt = screenModal.prompt,
+            negativePrompt = screenModal.negativePrompt,
+            type = screenModal.type,
+            onNewPrompts = { p, n ->
+                processIntent(GenerationMviIntent.NewPrompts(p, n))
             },
+            onClose = dismiss,
         )
-    }
 
-    is Modal.ExtraBottomSheet -> ExtrasScreen(
-        prompt = screenModal.prompt,
-        negativePrompt = screenModal.negativePrompt,
-        type = screenModal.type,
-        onNewPrompts = { p, n ->
-            processIntent(GenerationMviIntent.NewPrompts(p, n))
-        },
-        onClose = {
-            processIntent(GenerationMviIntent.SetModal(Modal.None))
-        },
-    )
-
-    is Modal.Embeddings -> EmbeddingScreen(
-        prompt = screenModal.prompt,
-        negativePrompt = screenModal.negativePrompt,
-        onNewPrompts = { p, n ->
-            processIntent(GenerationMviIntent.NewPrompts(p, n))
-        },
-        onClose = {
-            processIntent(GenerationMviIntent.SetModal(Modal.None))
-        },
-    )
-
-    is Modal.ClearAppCache -> DecisionInteractiveDialog(
-        title = R.string.title_clear_app_cache.asUiText(),
-        text = R.string.interaction_cache_sub_title.asUiText(),
-        confirmActionResId = R.string.yes,
-        dismissActionResId = R.string.no,
-        onDismissRequest = { processIntent(SettingsIntent.DismissDialog) },
-        onConfirmAction = { processIntent(SettingsIntent.Action.ClearAppCache.Confirm) },
-    )
-
-    is Modal.SelectSdModel -> {
-        var selectedItem by remember { mutableStateOf(screenModal.selected) }
-        DecisionInteractiveDialog(
-            title = R.string.title_select_sd_model.asUiText(),
-            text = UiText.empty,
-            confirmActionResId = R.string.action_select,
-            onConfirmAction = { processIntent(SettingsIntent.SdModel.Select(selectedItem)) },
-            onDismissRequest = { processIntent(SettingsIntent.DismissDialog) },
-            content = {
-                DropdownTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = R.string.hint_sd_model.asUiText(),
-                    value = selectedItem,
-                    items = screenModal.models,
-                    onItemSelected = { selectedItem = it },
-                )
-            }
+        is Modal.Embeddings -> EmbeddingScreen(
+            prompt = screenModal.prompt,
+            negativePrompt = screenModal.negativePrompt,
+            onNewPrompts = { p, n ->
+                processIntent(GenerationMviIntent.NewPrompts(p, n))
+            },
+            onClose = dismiss,
         )
+
+        is Modal.ClearAppCache -> DecisionInteractiveDialog(
+            title = R.string.title_clear_app_cache.asUiText(),
+            text = R.string.interaction_cache_sub_title.asUiText(),
+            confirmActionResId = R.string.yes,
+            dismissActionResId = R.string.no,
+            onDismissRequest = dismiss,
+            onConfirmAction = { processIntent(SettingsIntent.Action.ClearAppCache.Confirm) },
+        )
+
+        is Modal.SelectSdModel -> {
+            var selectedItem by remember { mutableStateOf(screenModal.selected) }
+            DecisionInteractiveDialog(
+                title = R.string.title_select_sd_model.asUiText(),
+                text = UiText.empty,
+                confirmActionResId = R.string.action_select,
+                onConfirmAction = { processIntent(SettingsIntent.SdModel.Select(selectedItem)) },
+                onDismissRequest = dismiss,
+                content = {
+                    DropdownTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = R.string.hint_sd_model.asUiText(),
+                        value = selectedItem,
+                        items = screenModal.models,
+                        onItemSelected = { selectedItem = it },
+                    )
+                }
+            )
+        }
     }
 }

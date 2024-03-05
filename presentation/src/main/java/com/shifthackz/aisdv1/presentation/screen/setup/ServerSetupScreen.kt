@@ -45,12 +45,11 @@ import com.shifthackz.aisdv1.core.extensions.showToast
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationStepBar
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.ConfigurationStep
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.SourceSelectionStep
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
-import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
-import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import org.koin.androidx.compose.getViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
@@ -210,17 +209,8 @@ private fun ScreenContent(
                 }
             },
         )
-        when (state.screenDialog) {
-            ServerSetupState.Dialog.Communicating -> ProgressDialog(
-                canDismiss = false,
-            )
-
-            is ServerSetupState.Dialog.Error -> ErrorDialog(
-                text = state.screenDialog.error,
-                onDismissRequest = { processIntent(ServerSetupIntent.DismissDialog) },
-            )
-
-            ServerSetupState.Dialog.None -> Unit
+        ModalRenderer(screenModal = state.screenModal) {
+            (it as? ServerSetupIntent)?.let(processIntent::invoke)
         }
     }
 }
