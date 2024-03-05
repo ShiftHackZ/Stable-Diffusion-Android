@@ -69,7 +69,19 @@ If for some reason you have no ability to run your server instance, you can togg
 
 AI Horde requires to use API KEY, this mobile app alows to use either default API KEY (which is "0000000000"), or type your own. You can sign up and get your own AI Horde API KEY [here](https://stablehorde.net/register).
 
-### Option 3: Local Diffusion (Beta)
+### Option 3: Hugging Face Inference
+
+[Hugging Face Inference API](https://huggingface.co/docs/api-inference/index) allows to test and evaluate, over 150,000 publicly accessible machine learning models, or your own private models, via simple HTTP requests, with fast inference hosted on Hugging Face shared infrastructure. This service is free, but is rate-limited.
+
+Hugging Face Inference requires to use API KEY, which can be created in [Hugging Face account settings](https://huggingface.co/settings/tokens).
+
+### Option 4: OpenAI
+
+OpenAI provides a service for text to image generation using [DALLE-2](https://openai.com/dall-e-2) or [DALLE-3](https://openai.com/dall-e-3) models. This service is paid, 
+
+OpenAI requires to use API KEY, which can be created in [OpenAI API Key settings](https://platform.openai.com/api-keys).
+
+### Option 5: Local Diffusion (Beta)
 
 Only **txt2img** mode is supported.
 
@@ -89,6 +101,14 @@ User interface of the app is translated for languages listed in this table:
 | Russian | 0.5.5 | `Translated` |
 
 Any contributions to the translations are welcome.
+
+## Difference between builds from Google Play and F-Droid/GitHub releases
+
+As Google Play has some policies that app needs to be compliant with in order to be allowed to publist on Google Play there are some differences between builds distributed via Google Play and F-Droid/GitHub releases, listed in table.
+
+| Feature | Google Play build | F-Droid/GitHub build | Reason |
+| --- |:---:|:---:| --- |
+| Sideloading LocalDiffusion custom model | ❌ | ✅ | Google Play does not allow publishing apps with `android.permission.MANAGE_EXTERNAL_STORAGE` permission, which is required to read custom model files from external storage directly. |
 
 ## Donate
 
