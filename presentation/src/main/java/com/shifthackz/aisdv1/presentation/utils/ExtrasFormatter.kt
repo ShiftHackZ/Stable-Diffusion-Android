@@ -6,6 +6,16 @@ import com.shifthackz.aisdv1.presentation.model.ExtraType
 
 object ExtrasFormatter {
 
+    fun determineExtraType(input: String?) : ExtraType? {
+        if (input.isNullOrBlank()) return null
+        ExtraType.entries.forEach { type ->
+            if (input.startsWith("<${type.raw}:") && input.endsWith(">")) {
+                return type
+            }
+        }
+        return null
+    }
+
     fun isEmbeddingPresentInPrompt(
         prompt: String,
         embedding: String,

@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 
 @Composable
 fun ChipTextFieldWithItem(
@@ -28,8 +29,10 @@ fun ChipTextFieldWithItem(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         chipEventListener = { onEvent(it) },
     ) { index, item ->
+        val type = ExtrasFormatter.determineExtraType(item)
         ChipTextFieldItem(
             text = item,
+            type = type,
             showDeleteIcon = true,
             onDeleteClick = { onEvent(ChipTextFieldEvent.Remove(index)) },
         )

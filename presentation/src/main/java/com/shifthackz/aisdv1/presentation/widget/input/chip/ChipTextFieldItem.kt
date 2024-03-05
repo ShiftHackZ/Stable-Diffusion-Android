@@ -16,19 +16,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.catppuccin.palette.Catppuccin
 
 @Composable
 fun ChipTextFieldItem(
     modifier: Modifier = Modifier,
+    type: ExtraType? = null,
     text: String,
     showDeleteIcon: Boolean = false,
     onDeleteClick: () -> Unit,
 ) {
     val isDark = isSystemInDarkTheme()
+    val bgColor = when (type) {
+        ExtraType.Lora -> if (isDark) {
+            Catppuccin.Frappe.Lavender
+        } else {
+            Catppuccin.Latte.Lavender
+        }
+        ExtraType.HyperNet -> if (isDark) {
+            Catppuccin.Frappe.Maroon
+        } else {
+            Catppuccin.Latte.Maroon
+        }
+        null -> MaterialTheme.colorScheme.primary.copy(alpha = if (isDark) 0.9f else 0.75f)
+    }
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(4.dp))
-            .background(MaterialTheme.colorScheme.primary.copy(alpha = if (isDark) 0.9f else 0.75f))
+            .background(bgColor)
             .padding(vertical = 1.dp, horizontal = 2.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
