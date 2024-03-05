@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DataExploration
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Button
@@ -107,7 +108,12 @@ private fun ScreenContent(
                                 .padding(horizontal = 12.dp, vertical = 8.dp),
                             onClick = { processIntent(ExtrasIntent.ApplyPrompts) }
                         ) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = null,
+                            )
                             Text(
+                                modifier = Modifier.padding(horizontal = 8.dp),
                                 text = stringResource(
                                     id = if (state.error != ErrorState.None) R.string.close
                                     else R.string.apply

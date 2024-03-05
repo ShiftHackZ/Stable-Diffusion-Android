@@ -64,9 +64,13 @@ object ExtrasFormatter {
             .filterNot(String::isBlank)
         val index = keywords.indexOfFirst { it.startsWith("<${type.raw}:$loraAlias:") }
         if (index == -1) {
-            return "${prompt.trim()}, <${type.raw}:$loraAlias:1>".trim()
+            return if (prompt.isEmpty()) {
+                "<${type.raw}:$loraAlias:1>"
+            } else {
+                "${prompt.trim()}, <${type.raw}:$loraAlias:1>".trim().trim(',')
+            }
         }
-        return prompt.replaceFirst(keywords[index], "").trim()
+        return prompt.replaceFirst(keywords[index], "").trim().trim(',')
     }
 
     fun toggleEmbedding(
@@ -78,8 +82,12 @@ object ExtrasFormatter {
             .filterNot(String::isBlank)
         val index = keywords.indexOfFirst { it == embedding }
         if (index == -1) {
-            return "${prompt.trim()}, $embedding".trim()
+            return if (prompt.isEmpty()) {
+                embedding
+            } else {
+                "${prompt.trim()}, $embedding".trim().trim(',')
+            }
         }
-        return prompt.replaceFirst(keywords[index], "").trim()
+        return prompt.replaceFirst(keywords[index], "").trim().trim(',')
     }
 }

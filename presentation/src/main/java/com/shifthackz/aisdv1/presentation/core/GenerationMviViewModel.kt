@@ -117,8 +117,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
         when (intent) {
             is GenerationMviIntent.NewPrompts -> updateGenerationState {
                 it.copyState(
-                    prompt = intent.positive,
-                    negativePrompt = intent.negative,
+                    prompt = intent.positive.trim(),
+                    negativePrompt = intent.negative.trim(),
                 )
             }
 
