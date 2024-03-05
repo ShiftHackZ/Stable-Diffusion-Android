@@ -267,7 +267,7 @@ private fun ContentSettingsState(
         SettingsItem(
             modifier = itemModifier,
             startIcon = Icons.Default.Tag,
-            text = "Tagged input".asUiText(),
+            text = R.string.settings_item_tagged_input.asUiText(),
             onClick = {
                 processIntent(SettingsIntent.UpdateFlag.TaggedInput(!state.formPromptTaggedInput))
             },

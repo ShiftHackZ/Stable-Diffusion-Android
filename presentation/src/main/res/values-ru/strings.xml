@@ -158,6 +158,7 @@
     <string name="settings_item_monitor_connection">Мониторинг сервера</string>
     <string name="settings_item_auto_save">Авто-сохранение фото</string>
     <string name="settings_item_auto_save_media_store">Сохранять в Загрузках</string>
+    <string name="settings_item_tagged_input">Ввод с тегами</string>
     <string name="settings_item_advanced_form_default">Всегда показывать все опции</string>
     <string name="settings_item_clear_cache">Очистить кэш</string>
 
