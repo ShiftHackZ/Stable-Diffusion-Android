@@ -11,6 +11,11 @@ sealed interface Modal {
 
     data object LoadingRandomImage : Modal
 
+    data object ClearAppCache : Modal
+
+    @Immutable
+    data class SelectSdModel(val models: List<String>, val selected: String) : Modal
+
     @Immutable
     data class Generating(val status: LocalDiffusion.Status? = null) : Modal {
         val pair: Pair<Int, Int>?
@@ -18,7 +23,10 @@ sealed interface Modal {
     }
 
     @Immutable
-    data class Communicating(val hordeProcessStatus: HordeProcessStatus? = null) : Modal
+    data class Communicating(
+        val canCancel: Boolean = true,
+        val hordeProcessStatus: HordeProcessStatus? = null,
+    ) : Modal
 
     data object PromptBottomSheet : Modal
 

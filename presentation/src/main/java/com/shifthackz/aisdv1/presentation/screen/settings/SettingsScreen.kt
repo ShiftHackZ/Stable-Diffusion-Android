@@ -33,25 +33,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
-import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import com.shifthackz.aisdv1.presentation.utils.ReportProblemEmailComposer
-import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
-import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
-import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import org.koin.androidx.compose.koinViewModel
 
@@ -118,6 +112,10 @@ private fun ScreenContent(
                 }
             }
         )
+        ModalRenderer(screenModal = state.screenModal) {
+            (it as? SettingsIntent)?.let(processIntent::invoke)
+        }
+        /*
         when (state.screenDialog) {
             SettingsState.Dialog.Communicating -> ProgressDialog(
                 canDismiss = false,
@@ -155,6 +153,7 @@ private fun ScreenContent(
                 onConfirmAction = { processIntent(SettingsIntent.Action.ClearAppCache.Confirm) },
             )
         }
+         */
     }
 }
 

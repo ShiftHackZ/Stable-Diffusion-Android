@@ -1,34 +1,68 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class SettingsViewModel(
-    private val settingsStateProducer: SettingsStateProducer,
+    getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
     private val clearAppCacheUseCase: ClearAppCacheUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
+    private val buildInfoProvider: BuildInfoProvider,
     private val mainRouter: MainRouter,
 ) : MviRxViewModel<SettingsState, SettingsIntent, SettingsEffect>() {
 
     override val initialState = SettingsState()
 
+    private val appVersionProducer = Flowable.fromCallable { buildInfoProvider.toString() }
+
+    private val sdModelsProducer = getStableDiffusionModelsUseCase()
+        .toFlowable()
+        .onErrorReturn { emptyList() }
+
     init {
-        !settingsStateProducer()
+        !Flowable.combineLatest(
+            appVersionProducer,
+            sdModelsProducer,
+            preferenceManager.observe(),
+            ::Triple,
+        )
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog, EmptyLambda) { state ->
-                updateState { state }
+            .subscribeBy(::errorLog, EmptyLambda) { (version, modelData, settings) ->
+                updateState { state ->
+                    state.copy(
+                        loading = false,
+                        sdModels = modelData.map { (model, _) -> model.title },
+                        sdModelSelected = modelData.firstOrNull { it.second }?.first?.title ?: "",
+                        localUseNNAPI = settings.localUseNNAPI,
+                        monitorConnectivity = settings.monitorConnectivity,
+                        autoSaveAiResults = settings.autoSaveAiResults,
+                        saveToMediaStore = settings.saveToMediaStore,
+                        formAdvancedOptionsAlwaysShow = settings.formAdvancedOptionsAlwaysShow,
+                        formPromptTaggedInput = settings.formPromptTaggedInput,
+                        appVersion = version,
+                        showLocalUseNNAPI = settings.source == ServerSource.LOCAL,
+                        showSdModelSelector = settings.source == ServerSource.AUTOMATIC1111,
+                        showMonitorConnectionOption = settings.source == ServerSource.AUTOMATIC1111,
+                        showFormAdvancedOption = settings.source != ServerSource.OPEN_AI,
+                    )
+                }
             }
     }
 
@@ -37,7 +71,7 @@ class SettingsViewModel(
             SettingsIntent.Action.AppVersion -> mainRouter.navigateToDebugMenu()
 
             SettingsIntent.Action.ClearAppCache.Request -> updateState {
-                it.copy(screenDialog = SettingsState.Dialog.ClearAppCache)
+                it.copy(screenModal = Modal.ClearAppCache)
             }
 
             SettingsIntent.Action.ClearAppCache.Confirm -> clearAppCache()
@@ -45,7 +79,7 @@ class SettingsViewModel(
             SettingsIntent.Action.ReportProblem -> emitEffect(SettingsEffect.ShareLogFile)
 
             SettingsIntent.DismissDialog -> updateState {
-                it.copy(screenDialog = SettingsState.Dialog.None)
+                it.copy(screenModal = Modal.None)
             }
 
             SettingsIntent.NavigateConfiguration -> mainRouter.navigateToServerSetup(
@@ -54,14 +88,14 @@ class SettingsViewModel(
 
             SettingsIntent.SdModel.OpenChooser -> updateState {
                 it.copy(
-                    screenDialog = SettingsState.Dialog.SelectSdModel(
-                        it.sdModels,
-                        it.sdModelSelected
-                    )
+                    screenModal = Modal.SelectSdModel(
+                        models = it.sdModels,
+                        selected = it.sdModelSelected,
+                    ),
                 )
             }
 
-            is SettingsIntent.SdModel.Select -> selectStableDiffusionModel(intent.model)
+            is SettingsIntent.SdModel.Select -> selectSdModel(intent.model)
 
             is SettingsIntent.UpdateFlag.AdvancedFormVisibility -> updateState {
                 preferenceManager.formAdvancedOptionsAlwaysShow = intent.flag
@@ -99,26 +133,20 @@ class SettingsViewModel(
     }
 
     //region BUSINESS LOGIC METHODS
-    private fun selectStableDiffusionModel(value: String) =
-        !selectStableDiffusionModelUseCase(value)
-            .andThen(settingsStateProducer())
-            .doOnSubscribe {
-                updateState {
-                    it.copy(screenDialog = SettingsState.Dialog.Communicating)
-                }
+    private fun selectSdModel(value: String) = !selectStableDiffusionModelUseCase(value)
+        .doOnSubscribe {
+            updateState { state ->
+                state.copy(screenModal = Modal.Communicating(canCancel = false))
             }
-            .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog) { state ->
-                updateState { state }
-            }
+        }
+        .doFinally { processIntent(SettingsIntent.DismissDialog) }
+        .subscribeOnMainThread(schedulersProvider)
+        .subscribeBy(::errorLog)
 
     private fun clearAppCache() = !clearAppCacheUseCase()
-        .andThen(settingsStateProducer())
         .doOnSubscribe { processIntent(SettingsIntent.DismissDialog) }
         .subscribeOnMainThread(schedulersProvider)
-        .subscribeBy(::errorLog) { state ->
-            updateState { state }
-        }
+        .subscribeBy(::errorLog)
 
     private fun changeSaveToMediaStoreSetting(value: Boolean) {
         val oldImpl: () -> Unit = {

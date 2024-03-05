@@ -286,7 +286,7 @@ private fun ScreenContent(
         )
         ModalRenderer(
             screenModal = state.screenModal,
-            processIntent = processIntent,
+            processIntent = { (it as? GenerationMviIntent)?.let(processIntent::invoke) },
         )
     }
 }
