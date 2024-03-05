@@ -115,45 +115,6 @@ private fun ScreenContent(
         ModalRenderer(screenModal = state.screenModal) {
             (it as? SettingsIntent)?.let(processIntent::invoke)
         }
-        /*
-        when (state.screenDialog) {
-            SettingsState.Dialog.Communicating -> ProgressDialog(
-                canDismiss = false,
-            )
-
-            SettingsState.Dialog.None -> Unit
-            is SettingsState.Dialog.SelectSdModel -> {
-                var selectedItem by remember {
-                    mutableStateOf(state.screenDialog.selected,)
-                }
-                DecisionInteractiveDialog(
-                    title = R.string.title_select_sd_model.asUiText(),
-                    text = UiText.empty,
-                    confirmActionResId = R.string.action_select,
-                    onConfirmAction = { processIntent(SettingsIntent.SdModel.Select(selectedItem)) },
-                    onDismissRequest = { processIntent(SettingsIntent.DismissDialog) },
-                    content = {
-                        DropdownTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            label = R.string.hint_sd_model.asUiText(),
-                            value = selectedItem,
-                            items = state.screenDialog.models,
-                            onItemSelected = { selectedItem = it },
-                        )
-                    }
-                )
-            }
-
-            SettingsState.Dialog.ClearAppCache -> DecisionInteractiveDialog(
-                title = R.string.title_clear_app_cache.asUiText(),
-                text = R.string.interaction_cache_sub_title.asUiText(),
-                confirmActionResId = R.string.yes,
-                dismissActionResId = R.string.no,
-                onDismissRequest = { processIntent(SettingsIntent.DismissDialog) },
-                onConfirmAction = { processIntent(SettingsIntent.Action.ClearAppCache.Confirm) },
-            )
-        }
-         */
     }
 }
 
