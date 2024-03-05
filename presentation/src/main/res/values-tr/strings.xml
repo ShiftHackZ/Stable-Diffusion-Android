@@ -75,6 +75,8 @@
     <string name="hint_image_size">Görüntü boyutu</string>
     <string name="hint_quality">Kalite</string>
     <string name="hint_style">Stil</string>
+    <string name="hint_tag">Etiket</string>
+    <string name="hint_value">Değer</string>
 
     <string name="auth_anonymous">Anonim</string>
     <string name="auth_http_basic">HTTP Temel</string>
@@ -125,6 +127,7 @@
     <string name="title_lora">Lora</string>
     <string name="title_txt_inversion">Metin İnversiyon</string>
     <string name="title_txt_inversion_short">İnversiyon</string>
+    <string name="title_tag_edit">Etiketi düzenle</string>
 
     <string name="gallery_media_store_banner">Kayıtlı %1$s fotoğrafınız var Download/SDAI</string>
     <string name="gallery_info_field_date">Oluşturulma</string>

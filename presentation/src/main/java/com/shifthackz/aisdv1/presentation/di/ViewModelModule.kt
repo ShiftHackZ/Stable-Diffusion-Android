@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.presentation.activity.AiStableDiffusionViewModel
 import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingViewModel
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryViewModel
+import com.shifthackz.aisdv1.presentation.modal.tag.EditTagViewModel
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuViewModel
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
@@ -36,6 +37,7 @@ val viewModelModule = module {
     viewModelOf(::DebugMenuViewModel)
     viewModelOf(::ExtrasViewModel)
     viewModelOf(::EmbeddingViewModel)
+    viewModelOf(::EditTagViewModel)
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())

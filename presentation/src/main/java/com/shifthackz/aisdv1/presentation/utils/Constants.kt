@@ -35,6 +35,10 @@ object Constants {
     const val DENOISING_STRENGTH_MIN = 0f
     const val DENOISING_STRENGTH_MAX = 1f
 
+    const val EXTRA_MINIMUM = -1.0
+    const val EXTRA_MAXIMUM = 1.0
+    const val EXTRA_STEP = 0.25
+
     const val MIME_TYPE_ZIP = "application/zip"
     const val MIME_TYPE_JPG = "image/jpeg"
 

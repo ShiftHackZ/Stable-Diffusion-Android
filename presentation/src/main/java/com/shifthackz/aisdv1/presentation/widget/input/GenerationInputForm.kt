@@ -37,6 +37,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.utils.Constants.BATCH_RANGE_MAX
@@ -89,6 +90,18 @@ fun GenerationInputForm(
                 textFieldValueState = promptChipTextFieldState,
                 label = R.string.hint_prompt,
                 list = state.promptKeywords,
+                onItemClick = { _, tag ->
+                    processIntent(
+                        GenerationMviIntent.SetModal(
+                            Modal.EditTag(
+                                prompt = state.prompt,
+                                negativePrompt = state.negativePrompt,
+                                tag = tag,
+                                isNegative = false,
+                            )
+                        )
+                    )
+                },
             ) { event ->
                 val prompt = processTaggedPrompt(state.promptKeywords, event)
                 processIntent(GenerationMviIntent.Update.Prompt(prompt))
@@ -117,6 +130,18 @@ fun GenerationInputForm(
                         textFieldValueState = negativePromptChipTextFieldState,
                         label = R.string.hint_prompt_negative,
                         list = state.negativePromptKeywords,
+                        onItemClick = { _, tag ->
+                            processIntent(
+                                GenerationMviIntent.SetModal(
+                                    Modal.EditTag(
+                                        prompt = state.prompt,
+                                        negativePrompt = state.negativePrompt,
+                                        tag = tag,
+                                        isNegative = true,
+                                    )
+                                )
+                            )
+                        },
                     ) { event ->
                         val prompt = processTaggedPrompt(state.negativePromptKeywords, event)
                         processIntent(GenerationMviIntent.Update.NegativePrompt(prompt))
@@ -433,7 +458,9 @@ fun GenerationInputForm(
                 }
 
                 // Batch is not available for Local Diffusion
-                if (state.mode != ServerSource.LOCAL) { batchComponent() }
+                if (state.mode != ServerSource.LOCAL) {
+                    batchComponent()
+                }
                 //Restore faces available only for A1111
                 if (state.mode == ServerSource.AUTOMATIC1111) {
                     Row(
@@ -459,16 +486,18 @@ fun GenerationInputForm(
     }
 }
 
-private fun processTaggedPrompt(keywords: List<String>, event: ChipTextFieldEvent<String>): String {
+fun processTaggedPrompt(keywords: List<String>, event: ChipTextFieldEvent<String>): String {
     val newKeywords = when (event) {
         is ChipTextFieldEvent.Add -> buildList {
             addAll(keywords)
             add(event.item)
         }
+
         is ChipTextFieldEvent.AddBatch -> buildList {
             addAll(keywords)
             addAll(event.items)
         }
+
         is ChipTextFieldEvent.Remove -> keywords.filterIndexed { i, _ -> i != event.index }
         is ChipTextFieldEvent.Update -> keywords.mapIndexed { i, s -> if (i == event.index) event.item else s }
     }

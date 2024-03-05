@@ -75,6 +75,8 @@
     <string name="hint_image_size">Размер изображения</string>
     <string name="hint_quality">Качество</string>
     <string name="hint_style">Стиль</string>
+    <string name="hint_tag">Тег</string>
+    <string name="hint_value">Значения</string>
 
     <string name="auth_anonymous">Анонимно</string>
     <string name="auth_http_basic">HTTP Базовая</string>
@@ -125,6 +127,7 @@
     <string name="title_lora">Лора</string>
     <string name="title_txt_inversion">Инверсия текста</string>
     <string name="title_txt_inversion_short">Инверсия</string>
+    <string name="title_tag_edit">Редактор тега</string>
 
     <string name="gallery_media_store_banner">%1$s генераций находится в Download/SDAI</string>
     <string name="gallery_info_field_date">Создано</string>

@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 
 sealed interface Modal {
+
     data object None : Modal
 
     data object LoadingRandomImage : Modal
@@ -48,6 +49,14 @@ sealed interface Modal {
     data class Embeddings(
         val prompt: String,
         val negativePrompt: String,
+    ) : Modal
+
+    @Immutable
+    data class EditTag(
+        val prompt: String,
+        val negativePrompt: String,
+        val tag: String,
+        val isNegative: Boolean = false
     ) : Modal
 
     sealed interface Image : Modal {

@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.catppuccin.palette.Catppuccin
@@ -24,8 +25,11 @@ fun ChipTextFieldItem(
     modifier: Modifier = Modifier,
     type: ExtraType? = null,
     text: String,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
     showDeleteIcon: Boolean = false,
-    onDeleteClick: () -> Unit,
+    onDeleteClick: () -> Unit = {},
+    onItemClick: () -> Unit = {},
 ) {
     val isDark = isSystemInDarkTheme()
     val bgColor = when (type) {
@@ -45,12 +49,15 @@ fun ChipTextFieldItem(
         modifier = modifier
             .clip(RoundedCornerShape(4.dp))
             .background(bgColor)
+            .clickable { onItemClick() }
             .padding(vertical = 1.dp, horizontal = 2.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val localColor = MaterialTheme.colorScheme.onPrimary
         Text(
             text = text,
+            overflow = overflow,
+            maxLines = maxLines,
             color = localColor,
         )
         if (showDeleteIcon) {

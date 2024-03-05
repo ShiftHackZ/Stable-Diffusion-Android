@@ -17,6 +17,7 @@ fun ChipTextFieldWithItem(
     textFieldValueState: MutableState<TextFieldValue>,
     label: Int,
     list: List<String>,
+    onItemClick: (type: Int, item: String) -> Unit = { _, _ -> },
     onEvent: (event: ChipTextFieldEvent<String>) -> Unit,
 ) {
     ChipTextField(
@@ -29,12 +30,14 @@ fun ChipTextFieldWithItem(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         chipEventListener = { onEvent(it) },
     ) { index, item ->
-        val type = ExtrasFormatter.determineExtraType(item)
         ChipTextFieldItem(
             text = item,
-            type = type,
+            type = ExtrasFormatter.determineExtraType(item),
             showDeleteIcon = true,
             onDeleteClick = { onEvent(ChipTextFieldEvent.Remove(index)) },
+            onItemClick = {
+                onItemClick(index, item)
+            }
         )
     }
 }

@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingScreen
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
+import com.shifthackz.aisdv1.presentation.modal.tag.EditTagDialog
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailIntent
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryIntent
@@ -190,6 +191,17 @@ fun ModalRenderer(
             titleResId = R.string.exporting_progress_title,
             subTitleResId = R.string.exporting_progress_sub_title,
             canDismiss = false,
+        )
+
+        is Modal.EditTag -> EditTagDialog(
+            prompt = screenModal.prompt,
+            negativePrompt = screenModal.negativePrompt,
+            tag = screenModal.tag,
+            isNegative = screenModal.isNegative,
+            onDismissRequest = dismiss,
+            onNewPrompts = { p, n ->
+                processIntent(GenerationMviIntent.NewPrompts(p, n))
+            },
         )
     }
 }
