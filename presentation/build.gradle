@@ -42,5 +42,6 @@ dependencies {
     implementation ui.imagePicker
     implementation ui.catppuccinCompose
     implementation ui.dayNightSwitch
+    implementation ui.catppuccinSplashscreen
     implementation "androidx.exifinterface:exifinterface:1.3.6"
 }

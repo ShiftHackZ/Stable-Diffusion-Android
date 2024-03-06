@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="empty">Boş</string>
     <string name="language">Türkçe</string>
+    <string name="locale">tr</string>
     <string name="ok">Tamam</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
@@ -163,6 +164,7 @@
     <string name="settings_item_advanced_form_default">Her zaman gelişmiş seçenekleri göster</string>
     <string name="settings_item_clear_cache">Uygulama ve galeri önbelleğini temizleyin</string>
 
+    <string name="settings_item_lf_lang">Dil</string>
     <string name="settings_item_lf_dynamic_colors">Dinamik renkler</string>
     <string name="settings_item_lf_system_dark_theme">Sistemin koyu teması</string>
     <string name="settings_item_lf_dark_theme">Koyu tema</string>

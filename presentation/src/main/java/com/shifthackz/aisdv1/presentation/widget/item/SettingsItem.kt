@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -44,9 +46,11 @@ fun SettingsItem(
     modifier: Modifier = Modifier,
     loading: Boolean = false,
     enabled: Boolean = true,
+    selected: Boolean = false,
     startIcon: ImageVector,
     text: UiText,
     animateBackground: Boolean = false,
+    showChevron: Boolean = true,
     endValueText: UiText = UiText.empty,
     endValueContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit = {},
@@ -90,7 +94,12 @@ fun SettingsItem(
                     )
                 )
                 .defaultMinSize(minHeight = 50.dp)
-                .clickable(enabled = enabled) { onClick() },
+                .clickable(enabled = enabled) { onClick() }
+                .border(
+                    width = 2.dp,
+                    shape = RoundedCornerShape(16.dp),
+                    color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -114,11 +123,13 @@ fun SettingsItem(
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Right,
                     )
-                    Icon(
-                        modifier = Modifier.padding(horizontal = 6.dp),
-                        imageVector = Icons.Default.ChevronRight,
-                        contentDescription = null,
-                    )
+                    if (showChevron) {
+                        Icon(
+                            modifier = Modifier.padding(horizontal = 6.dp),
+                            imageVector = Icons.Default.ChevronRight,
+                            contentDescription = null,
+                        )
+                    }
                 }
             }
         }

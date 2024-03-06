@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingScreen
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
+import com.shifthackz.aisdv1.presentation.modal.language.LanguageBottomSheet
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagDialog
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailIntent
@@ -203,5 +204,12 @@ fun ModalRenderer(
                 processIntent(GenerationMviIntent.NewPrompts(p, n))
             },
         )
+
+        Modal.Language -> ModalBottomSheet(
+            onDismissRequest = dismiss,
+            shape = RectangleShape,
+        ) {
+            LanguageBottomSheet(onDismissRequest = dismiss)
+        }
     }
 }

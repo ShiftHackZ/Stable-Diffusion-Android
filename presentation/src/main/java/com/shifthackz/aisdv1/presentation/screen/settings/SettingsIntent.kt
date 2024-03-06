@@ -24,6 +24,8 @@ sealed interface SettingsIntent : MviIntent {
         data object ReportProblem : Action
 
         data object AppVersion : Action
+
+        data object PickLanguage : Action
     }
 
     sealed class LaunchUrl : SettingsIntent, KoinComponent {

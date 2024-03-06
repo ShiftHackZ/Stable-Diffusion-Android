@@ -46,5 +46,12 @@ object Constants {
 
     val sizes = listOf("64", "128", "256", "320", "384", "448", "512")
 
+    val locales = listOf(
+        "en" to "English",
+        "uk" to "Українська",
+        "tr" to "Türkçe",
+        "ru" to "Русский",
+    )
+
     fun lora(alias: String) = "<lora:$alias:1>"
 }
