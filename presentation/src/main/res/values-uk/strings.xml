@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="empty">Порожньо</string>
     <string name="language">Українська</string>
+    <string name="locale">uk</string>
     <string name="ok">OK</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
@@ -163,6 +164,7 @@
     <string name="settings_item_advanced_form_default">Завжди показувати всі опції</string>
     <string name="settings_item_clear_cache">Очистити кеш</string>
 
+    <string name="settings_item_lf_lang">Мова</string>
     <string name="settings_item_lf_dynamic_colors">Системні кольори</string>
     <string name="settings_item_lf_system_dark_theme">Системна тема</string>
     <string name="settings_item_lf_dark_theme">Темна тема</string>

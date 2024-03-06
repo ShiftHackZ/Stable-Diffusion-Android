@@ -6,6 +6,7 @@
 
     <string name="empty">Empty</string>
     <string name="language">English</string>
+    <string name="locale">en</string>
     <string name="ok">OK</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -181,6 +182,7 @@
     <string name="settings_item_advanced_form_default">Always show advanced options</string>
     <string name="settings_item_clear_cache">Clear app &amp; gallery cache</string>
 
+    <string name="settings_item_lf_lang">Language</string>
     <string name="settings_item_lf_dynamic_colors">Dynamic colors</string>
     <string name="settings_item_lf_system_dark_theme">System dark theme</string>
     <string name="settings_item_lf_dark_theme">Dark theme</string>

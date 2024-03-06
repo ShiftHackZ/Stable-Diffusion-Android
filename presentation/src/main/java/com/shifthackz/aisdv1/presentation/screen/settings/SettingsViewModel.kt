@@ -147,6 +147,10 @@ class SettingsViewModel(
             is SettingsIntent.NewColorToken -> {
                 preferenceManager.designColorToken = "${intent.token}"
             }
+
+            SettingsIntent.Action.PickLanguage -> updateState {
+                it.copy(screenModal = Modal.Language)
+            }
         }
     }
 

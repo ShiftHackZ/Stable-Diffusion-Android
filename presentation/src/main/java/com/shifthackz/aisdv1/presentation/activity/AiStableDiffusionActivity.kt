@@ -1,12 +1,13 @@
 package com.shifthackz.aisdv1.presentation.activity
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -22,7 +23,7 @@ import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AiStableDiffusionActivity : ComponentActivity() {
+class AiStableDiffusionActivity : AppCompatActivity() {
 
     private val viewModel: AiStableDiffusionViewModel by viewModel()
 
@@ -40,6 +41,7 @@ class AiStableDiffusionActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         actionBar?.hide()
         PermissionUtil.checkNotificationPermission(this, notificationPermission::launch)

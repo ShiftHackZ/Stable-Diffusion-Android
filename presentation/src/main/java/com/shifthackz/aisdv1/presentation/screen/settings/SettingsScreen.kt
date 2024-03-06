@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SettingsEthernet
 import androidx.compose.material.icons.filled.Tag
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -320,6 +321,14 @@ private fun ContentSettingsState(
             modifier = headerModifier,
             loading = state.loading,
             text = R.string.settings_header_look_and_feel.asUiText(),
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            loading = state.loading,
+            startIcon = Icons.Default.Translate,
+            text = R.string.settings_item_lf_lang.asUiText(),
+            endValueText = R.string.language.asUiText(),
+            onClick = { processIntent(SettingsIntent.Action.PickLanguage) },
         )
         if (state.showUseSystemColorPalette) {
             SettingsItem(
