@@ -14,8 +14,8 @@ android {
     namespace 'com.shifthackz.aisdv1.app'
     defaultConfig {
         applicationId "com.shifthackz.aisdv1.app"
-        versionName "0.5.9"
-        versionCode 175
+        versionName "0.5.10"
+        versionCode 176
 
         buildConfigField "String", "IMAGE_CDN_URL", "\"https://random.imagecdn.app/\""
         buildConfigField "String", "HUGGING_FACE_URL", "\"https://huggingface.co/\""
