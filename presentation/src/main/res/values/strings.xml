@@ -57,9 +57,13 @@
     <string name="srv_step_2">Configure</string>
 
     <string name="srv_type_own" translatable="false">Automatic 1111</string>
+    <string name="srv_type_own_short" translatable="false">A1111</string>
     <string name="srv_type_horde" translatable="false">Horde AI Cloud</string>
+    <string name="srv_type_horde_short" translatable="false">Horde</string>
     <string name="srv_type_local" translatable="false">Local Diffusion (Beta)</string>
+    <string name="srv_type_local_short" translatable="false">Local</string>
     <string name="srv_type_hugging_face" translatable="false">Hugging Face Inference</string>
+    <string name="srv_type_hugging_face_short" translatable="false">HuggingFace</string>
     <string name="srv_type_open_ai" translatable="false">Open AI</string>
 
     <string name="hint_prompt">Prompt</string>

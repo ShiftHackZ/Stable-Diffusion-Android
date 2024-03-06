@@ -54,6 +54,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.theme.colorTokenPalette
@@ -168,6 +169,13 @@ private fun ContentSettingsState(
             loading = state.loading,
             startIcon = Icons.Default.SettingsEthernet,
             text = R.string.settings_item_config.asUiText(),
+            endValueText = when (state.serverSource) {
+                ServerSource.AUTOMATIC1111 -> R.string.srv_type_own_short
+                ServerSource.HORDE -> R.string.srv_type_horde_short
+                ServerSource.HUGGING_FACE -> R.string.srv_type_hugging_face_short
+                ServerSource.OPEN_AI -> R.string.srv_type_open_ai
+                ServerSource.LOCAL -> R.string.srv_type_local_short
+            }.asUiText(),
             onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
         )
         if (state.showSdModelSelector) SettingsItem(

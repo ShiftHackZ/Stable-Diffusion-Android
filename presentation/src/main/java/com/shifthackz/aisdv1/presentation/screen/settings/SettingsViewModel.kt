@@ -49,6 +49,7 @@ class SettingsViewModel(
                 updateState { state ->
                     state.copy(
                         loading = false,
+                        serverSource = settings.source,
                         sdModels = modelData.map { (model, _) -> model.title },
                         sdModelSelected = modelData.firstOrNull { it.second }?.first?.title ?: "",
                         localUseNNAPI = settings.localUseNNAPI,
