@@ -189,6 +189,7 @@
     <string name="settings_item_report_problem">Report a problem</string>
     <string name="settings_item_policy">Privacy and legal policy</string>
     <string name="settings_item_instructions">Server setup instructions</string>
+    <string name="settings_item_donate">Donate</string>
     <string name="settings_item_source">Get source code</string>
 
     <string name="communicating_progress_title">Hang tight, communicating with server…</string>

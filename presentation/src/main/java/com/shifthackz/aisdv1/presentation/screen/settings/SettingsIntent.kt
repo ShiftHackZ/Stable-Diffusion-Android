@@ -44,7 +44,11 @@ sealed interface SettingsIntent : MviIntent {
         data object OpenSourceCode : LaunchUrl() {
             override val url: String
                 get() = linksProvider.gitHubSourceUrl
+        }
 
+        data object Donate : LaunchUrl() {
+            override val url: String
+                get() = linksProvider.donateUrl
         }
     }
 

@@ -171,6 +171,7 @@
     <string name="settings_item_report_problem">Сообщить о проблеме</string>
     <string name="settings_item_policy">Политика конфиденциальности</string>
     <string name="settings_item_instructions">Как настроить сервер</string>
+    <string name="settings_item_donate">Поддержать проект</string>
     <string name="settings_item_source">Исходный код</string>
 
     <string name="communicating_progress_title">Подождите, коммуницируем с сервером…</string>

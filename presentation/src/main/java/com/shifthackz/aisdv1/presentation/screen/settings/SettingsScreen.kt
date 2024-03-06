@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.InvertColors
+import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Save
@@ -433,6 +434,13 @@ private fun ContentSettingsState(
             startIcon = Icons.AutoMirrored.Filled.Help,
             text = R.string.settings_item_instructions.asUiText(),
             onClick = { processIntent(SettingsIntent.LaunchUrl.OpenServerInstructions) },
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            loading = state.loading,
+            startIcon = Icons.Default.MonetizationOn,
+            text = R.string.settings_item_donate.asUiText(),
+            onClick = { processIntent(SettingsIntent.LaunchUrl.Donate) },
         )
         SettingsItem(
             modifier = itemModifier,
