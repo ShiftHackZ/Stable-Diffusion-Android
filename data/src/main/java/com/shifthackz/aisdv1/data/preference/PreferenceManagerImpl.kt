@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.data.preference
 import android.content.SharedPreferences
 import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
 import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
+import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
@@ -129,6 +130,33 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
+    override var designUseSystemColorPalette: Boolean
+        get() = preferences.getBoolean(KEY_DESIGN_DYNAMIC_COLORS, false)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_DESIGN_DYNAMIC_COLORS, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
+    override var designUseSystemDarkTheme: Boolean
+        get() = preferences.getBoolean(KEY_DESIGN_SYSTEM_DARK_THEME, true)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_DESIGN_SYSTEM_DARK_THEME, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
+    override var designDarkTheme: Boolean
+        get() = preferences.getBoolean(KEY_DESIGN_DARK_THEME, true)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_DESIGN_DARK_THEME, value)
+            .apply()
+            .also { onPreferencesChanged() }
+    override var designColorToken: String
+        get() = preferences.getString(KEY_DESIGN_COLOR_TOKEN, "${ColorToken.MAUVE}") ?: "${ColorToken.MAUVE}"
+        set(value) = preferences.edit()
+            .putString(KEY_DESIGN_COLOR_TOKEN, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
         .map {
@@ -143,6 +171,10 @@ class PreferenceManagerImpl(
                 source = source,
                 hordeApiKey = hordeApiKey,
                 localUseNNAPI = localUseNNAPI,
+                designUseSystemColorPalette = designUseSystemColorPalette,
+                designUseSystemDarkTheme = designUseSystemDarkTheme,
+                designDarkTheme = designDarkTheme,
+                designColorToken = designColorToken,
             )
         }
 
@@ -163,6 +195,10 @@ class PreferenceManagerImpl(
         private const val KEY_HUGGING_FACE_MODEL_KEY = "key_hugging_face_model_key"
         private const val KEY_LOCAL_NN_API = "key_local_nn_api"
         private const val KEY_LOCAL_MODEL_ID = "key_local_model_id"
+        private const val KEY_DESIGN_DYNAMIC_COLORS = "key_design_dynamic_colors"
+        private const val KEY_DESIGN_SYSTEM_DARK_THEME = "key_design_system_dark_theme"
+        private const val KEY_DESIGN_DARK_THEME = "key_design_dark_theme"
+        private const val KEY_DESIGN_COLOR_TOKEN = "key_design_color_token_theme"
         private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.8"
     }
 }

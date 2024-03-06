@@ -147,6 +147,7 @@
     <string name="settings_header_server">AI ayarları</string>
     <string name="settings_header_app">Uygulama ayarları</string>
     <string name="settings_header_info">Bilgi</string>
+    <string name="settings_header_look_and_feel">Kişiselleştirme</string>
 
     <string name="settings_item_config">Ayarlar</string>
     <string name="settings_item_sd_model">SD Modeli</string>
@@ -162,9 +163,15 @@
     <string name="settings_item_advanced_form_default">Her zaman gelişmiş seçenekleri göster</string>
     <string name="settings_item_clear_cache">Uygulama ve galeri önbelleğini temizleyin</string>
 
+    <string name="settings_item_lf_dynamic_colors">Dinamik renkler</string>
+    <string name="settings_item_lf_system_dark_theme">Sistemin koyu teması</string>
+    <string name="settings_item_lf_dark_theme">Koyu tema</string>
+    <string name="settings_item_lf_accent_color">Vurgu rengi</string>
+
     <string name="settings_item_report_problem">Hata Bildirin</string>
     <string name="settings_item_policy">Gizlilik ve Hukuksal Politikalar</string>
     <string name="settings_item_instructions">Sunucu kurulum talimatları</string>
+    <string name="settings_item_donate">Bağış yapmak</string>
     <string name="settings_item_source">Kaynak kodunu alın</string>
 
     <string name="communicating_progress_title">Lütfen bekleyin, sunucu ile iletişime geçiliyor…</string>

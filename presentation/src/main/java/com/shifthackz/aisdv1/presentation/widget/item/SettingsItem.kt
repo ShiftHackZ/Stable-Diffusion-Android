@@ -1,10 +1,14 @@
 package com.shifthackz.aisdv1.presentation.widget.item
 
 import androidx.compose.animation.Animatable
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -30,6 +34,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import kotlinx.coroutines.delay
@@ -37,6 +42,8 @@ import kotlinx.coroutines.delay
 @Composable
 fun SettingsItem(
     modifier: Modifier = Modifier,
+    loading: Boolean = false,
+    enabled: Boolean = true,
     startIcon: ImageVector,
     text: UiText,
     animateBackground: Boolean = false,
@@ -60,51 +67,83 @@ fun SettingsItem(
             }
         }
     }
-    Row(
-        modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(color = if (animateBackground) colorState.value else MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f))
-            .defaultMinSize(minHeight = 50.dp)
-            .clickable { onClick() },
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+
+    if (loading) {
+        Box(
+            modifier = modifier
+                .clip(RoundedCornerShape(16.dp))
+                .defaultMinSize(minHeight = 50.dp)
+                .shimmer()
+        )
+    }
+    AnimatedVisibility(
+        visible = !loading,
+        enter = fadeIn(),
+        exit = fadeOut(),
     ) {
         Row(
-            modifier = endValueContent
-                ?.let { Modifier.fillMaxWidth(0.8f) }
-                ?: Modifier,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(
-                modifier = Modifier.padding(horizontal = 8.dp),
-                imageVector = startIcon,
-                contentDescription = null,
-            )
-            Text(
-                text = text.asString(),
-                style = MaterialTheme.typography.bodyLarge,
-            )
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            endValueContent?.invoke() ?: run {
-                val value = endValueText.asString()
-                if (value.isNotEmpty()) Text(
-                    modifier = Modifier.fillMaxWidth(0.5f),
-                    text = endValueText.asString(),
-                    style = MaterialTheme.typography.bodySmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Right,
+            modifier = modifier
+                .clip(RoundedCornerShape(16.dp))
+                .background(
+                    color = if (animateBackground) colorState.value else MaterialTheme.colorScheme.surfaceTint.copy(
+                        alpha = 0.8f
+                    )
                 )
-                Icon(
-                    modifier = Modifier.padding(horizontal = 6.dp),
-                    imageVector = Icons.Default.ChevronRight,
-                    contentDescription = null,
-                )
+                .defaultMinSize(minHeight = 50.dp)
+                .clickable(enabled = enabled) { onClick() },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            SettingsItemContent(
+                modifier = endValueContent
+                    ?.let { Modifier.fillMaxWidth(0.8f) }
+                    ?: Modifier,
+                icon = startIcon,
+                text = text,
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                endValueContent?.invoke() ?: run {
+                    val value = endValueText.asString()
+                    if (value.isNotEmpty()) Text(
+                        modifier = Modifier.fillMaxWidth(0.5f),
+                        text = endValueText.asString(),
+                        style = MaterialTheme.typography.bodySmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Right,
+                    )
+                    Icon(
+                        modifier = Modifier.padding(horizontal = 6.dp),
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = null,
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+fun SettingsItemContent(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    text: UiText,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Spacer(modifier = Modifier.width(8.dp))
+        Icon(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            imageVector = icon,
+            contentDescription = null,
+        )
+        Text(
+            text = text.asString(),
+            style = MaterialTheme.typography.bodyLarge,
+        )
     }
 }

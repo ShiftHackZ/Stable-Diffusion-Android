@@ -11,4 +11,8 @@ data class Settings(
     val source: ServerSource,
     val hordeApiKey: String,
     val localUseNNAPI: Boolean,
+    val designUseSystemColorPalette: Boolean,
+    val designUseSystemDarkTheme: Boolean,
+    val designDarkTheme: Boolean,
+    val designColorToken: String,
 )

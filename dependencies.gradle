@@ -19,6 +19,7 @@ ext {
     pagingComposeVersion = '1.0.0-alpha18'
     imagePickerVersion = 'v2.0.3'
     mviVersion = '1.0.1'
+    dayNightSwitchVersion = '1.0.0'
     timberVersion = '5.0.1'
     apacheLangVersion = '3.14.0'
     gsonVersion = '2.10.1'
@@ -87,6 +88,7 @@ ext {
     ui = [
             imagePicker           : "com.github.ShiftHackZ:ImagePicker:$imagePickerVersion",
             mvi                   : "com.github.ShiftHackZ:AndroidCoreMVI:$mviVersion",
+            dayNightSwitch        : "com.github.ShiftHackZ:DayNightSwitch:$dayNightSwitchVersion",
             catppuccinLegacy      : "com.github.ShiftHackZ.Catppuccin-Android-Library:palette-legacy:$catppuccinVersion",
             catppuccinCompose     : "com.github.ShiftHackZ.Catppuccin-Android-Library:compose:$catppuccinVersion",
             catppuccinSplashscreen: "com.github.ShiftHackZ.Catppuccin-Android-Library:splashscreen:$catppuccinVersion",

@@ -14,9 +14,9 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
 import com.shifthackz.aisdv1.feature.diffusion.environment.DeviceNNAPIFlagProvider
 import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
+import com.shifthackz.aisdv1.network.qualifiers.ApiKeyProvider
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import com.shifthackz.aisdv1.network.qualifiers.CredentialsProvider
-import com.shifthackz.aisdv1.network.qualifiers.ApiKeyProvider
 import com.shifthackz.aisdv1.network.qualifiers.NetworkHeaders
 import com.shifthackz.aisdv1.network.qualifiers.NetworkPrefixes
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -95,6 +95,7 @@ val providersModule = module {
             override val huggingFaceUrl: String = BuildConfig.HUGGING_FACE_INFO_URL
             override val openAiInfoUrl: String = BuildConfig.OPEN_AI_INFO_URL
             override val privacyPolicyUrl: String = BuildConfig.POLICY_URL
+            override val donateUrl: String = BuildConfig.DONATE_URL
             override val gitHubSourceUrl: String = BuildConfig.GITHUB_SOURCE_URL
             override val setupInstructionsUrl: String = BuildConfig.SETUP_INSTRUCTIONS_URL
             override val demoModeUrl: String = BuildConfig.DEMO_MODE_API_URL

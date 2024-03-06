@@ -147,6 +147,7 @@
     <string name="settings_header_server">Параметри AI</string>
     <string name="settings_header_app">Параметри додатку</string>
     <string name="settings_header_info">Інформація</string>
+    <string name="settings_header_look_and_feel">Зовнішній вигляд</string>
 
     <string name="settings_item_config">Конфігурація</string>
     <string name="settings_item_sd_model">SD Модель</string>
@@ -162,9 +163,15 @@
     <string name="settings_item_advanced_form_default">Завжди показувати всі опції</string>
     <string name="settings_item_clear_cache">Очистити кеш</string>
 
+    <string name="settings_item_lf_dynamic_colors">Системні кольори</string>
+    <string name="settings_item_lf_system_dark_theme">Системна тема</string>
+    <string name="settings_item_lf_dark_theme">Темна тема</string>
+    <string name="settings_item_lf_accent_color">Акцентний колір</string>
+
     <string name="settings_item_report_problem">Повідомити про проблему</string>
     <string name="settings_item_policy">Політика конфіденційності</string>
     <string name="settings_item_instructions">Як налаштувати сервер</string>
+    <string name="settings_item_donate">Підтримати проект</string>
     <string name="settings_item_source">Вихідний код</string>
 
     <string name="communicating_progress_title">Зачекайте, йде коммунікація із сервером…</string>

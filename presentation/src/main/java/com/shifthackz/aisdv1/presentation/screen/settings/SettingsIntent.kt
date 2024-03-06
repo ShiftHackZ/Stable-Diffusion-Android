@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
+import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.android.core.mvi.MviIntent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -43,7 +44,11 @@ sealed interface SettingsIntent : MviIntent {
         data object OpenSourceCode : LaunchUrl() {
             override val url: String
                 get() = linksProvider.gitHubSourceUrl
+        }
 
+        data object Donate : LaunchUrl() {
+            override val url: String
+                get() = linksProvider.donateUrl
         }
     }
 
@@ -62,7 +67,15 @@ sealed interface SettingsIntent : MviIntent {
         data class TaggedInput(override val flag: Boolean) : UpdateFlag
 
         data class AdvancedFormVisibility(override val flag: Boolean) : UpdateFlag
+
+        data class DynamicColors(override val flag: Boolean) : UpdateFlag
+
+        data class SystemDarkTheme(override val flag: Boolean) : UpdateFlag
+
+        data class DarkTheme(override val flag: Boolean) : UpdateFlag
     }
+
+    data class NewColorToken(val token: ColorToken) : SettingsIntent
 
     data object StoragePermissionGranted : SettingsIntent
 

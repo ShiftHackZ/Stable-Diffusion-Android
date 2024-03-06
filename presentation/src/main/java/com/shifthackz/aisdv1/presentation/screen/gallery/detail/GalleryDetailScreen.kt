@@ -77,13 +77,18 @@ fun GalleryDetailScreen(itemId: Long) {
                     fileMimeType = Constants.MIME_TYPE_JPG,
                 )
 
-                is GalleryDetailEffect.ShareGenerationParams -> galleryDetailSharing(context, effect.state)
+                is GalleryDetailEffect.ShareGenerationParams -> galleryDetailSharing(
+                    context = context,
+                    state = effect.state,
+                )
 
                 is GalleryDetailEffect.ShareClipBoard -> {
                     clipboardManager.setText(AnnotatedString(effect.text))
                 }
             }
-        }
+        },
+        applySystemUiColors = true,
+        navigationBarColor = MaterialTheme.colorScheme.surface,
     ) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),

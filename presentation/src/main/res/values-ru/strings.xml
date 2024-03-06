@@ -147,6 +147,7 @@
     <string name="settings_header_server">Параметры AI</string>
     <string name="settings_header_app">Параметры приложения</string>
     <string name="settings_header_info">Информация</string>
+    <string name="settings_header_look_and_feel">Персонализация</string>
 
     <string name="settings_item_config">Конфигурация</string>
     <string name="settings_item_sd_model">SD Модель</string>
@@ -162,9 +163,15 @@
     <string name="settings_item_advanced_form_default">Всегда показывать все опции</string>
     <string name="settings_item_clear_cache">Очистить кэш</string>
 
+    <string name="settings_item_lf_dynamic_colors">Системные цвета</string>
+    <string name="settings_item_lf_system_dark_theme">Системная тема</string>
+    <string name="settings_item_lf_dark_theme">Темная тема</string>
+    <string name="settings_item_lf_accent_color">Цвет акцента</string>
+
     <string name="settings_item_report_problem">Сообщить о проблеме</string>
     <string name="settings_item_policy">Политика конфиденциальности</string>
     <string name="settings_item_instructions">Как настроить сервер</string>
+    <string name="settings_item_donate">Поддержать проект</string>
     <string name="settings_item_source">Исходный код</string>
 
     <string name="communicating_progress_title">Подождите, коммуницируем с сервером…</string>

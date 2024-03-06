@@ -16,7 +16,7 @@ import com.shifthackz.aisdv1.presentation.extensions.navigatePopUpToCurrent
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
 import com.shifthackz.aisdv1.presentation.navigation.graph.mainNavGraph
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerScreen
-import com.shifthackz.aisdv1.presentation.theme.AiStableDiffusionAppTheme
+import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppTheme
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import kotlinx.coroutines.launch
@@ -50,7 +50,7 @@ class AiStableDiffusionActivity : ComponentActivity() {
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val scope = rememberCoroutineScope()
 
-            AiStableDiffusionAppTheme {
+            AiSdAppTheme {
                 MviComponent(
                     viewModel = viewModel,
                     processEffect = { effect ->
@@ -77,7 +77,8 @@ class AiStableDiffusionActivity : ComponentActivity() {
                                 drawerState.open()
                             }
                         }
-                    }
+                    },
+                    applySystemUiColors = false,
                 ) { _, _ ->
                     DrawerScreen(
                         drawerState = drawerState,

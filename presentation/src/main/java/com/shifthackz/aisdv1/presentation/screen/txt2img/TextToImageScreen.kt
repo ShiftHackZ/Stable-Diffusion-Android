@@ -42,7 +42,10 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TextToImageScreen() {
-    MviComponent(viewModel = koinViewModel<TextToImageViewModel>()) { state, intentHandler ->
+    MviComponent(
+        viewModel = koinViewModel<TextToImageViewModel>(),
+        applySystemUiColors = false,
+    ) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
