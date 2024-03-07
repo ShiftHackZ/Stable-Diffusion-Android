@@ -99,7 +99,7 @@ fun LocalDiffusionForm(
                 if (model.id != LocalAiModel.CUSTOM.id) {
                     Button(
                         modifier = Modifier.padding(end = 8.dp),
-                        onClick = { processIntent(ServerSetupIntent.DownloadCardButtonClick(model)) },
+                        onClick = { processIntent(ServerSetupIntent.LocalModel.ClickReduce(model)) },
                     ) {
                         Text(
                             text = stringResource(

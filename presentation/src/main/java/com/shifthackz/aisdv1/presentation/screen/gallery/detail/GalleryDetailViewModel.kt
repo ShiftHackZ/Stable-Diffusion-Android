@@ -1,6 +1,5 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -43,15 +42,12 @@ class GalleryDetailViewModel(
     }
 
     override fun processIntent(intent: GalleryDetailIntent) {
-        debugLog("INTENT : $intent")
         when (intent) {
             is GalleryDetailIntent.CopyToClipboard -> {
                 emitEffect(GalleryDetailEffect.ShareClipBoard(intent.content.toString()))
             }
 
-            GalleryDetailIntent.Delete.Request -> {
-                setActiveModal(Modal.DeleteConfirm)
-            }
+            GalleryDetailIntent.Delete.Request -> setActiveModal(Modal.DeleteImageConfirm)
 
             GalleryDetailIntent.Delete.Confirm -> {
                 setActiveModal(Modal.None)

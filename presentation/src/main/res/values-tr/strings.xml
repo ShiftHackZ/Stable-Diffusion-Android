@@ -194,6 +194,9 @@
     <string name="interaction_delete_generation_title">Resmi sil</string>
     <string name="interaction_delete_generation_sub_title">Kalıcı olarak bu resmi silmek istediğinize emin misiniz?</string>
 
+    <string name="interaction_delete_local_model_title">Modeli sil</string>
+    <string name="interaction_delete_local_model_sub_title">Modeli silmek istediğinizden emin misiniz "%1$s"?</string>
+
     <string name="gallery_empty_title">Burada henüz bir şey yok…</string>
     <string name="gallery_empty_sub_title">Bir şeyler üretmeyi deneyin! Ürettiğiniz resimler burada gözükecektir.</string>
 

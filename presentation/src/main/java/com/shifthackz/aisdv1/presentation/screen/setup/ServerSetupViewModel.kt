@@ -1,6 +1,5 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -94,7 +93,22 @@ class ServerSetupViewModel(
 
         ServerSetupIntent.DismissDialog -> setScreenModal(Modal.None)
 
-        is ServerSetupIntent.DownloadCardButtonClick -> localModelDownloadClickReducer(intent.model)
+        is ServerSetupIntent.LocalModel.ClickReduce -> localModelDownloadClickReducer(intent.model)
+
+        is ServerSetupIntent.LocalModel.DeleteConfirm -> updateState {
+            !deleteModelUseCase(intent.model.id)
+                .subscribeOnMainThread(schedulersProvider)
+                .subscribeBy(::errorLog)
+            it.copy(
+                screenModal = Modal.None,
+                localModels = currentState.localModels.withNewState(
+                    intent.model.copy(
+                        downloadState = DownloadState.Unknown,
+                        downloaded = false,
+                    ),
+                ),
+            )
+        }
 
         is ServerSetupIntent.SelectLocalModel -> {
             if (currentState.localModels.any { it.downloadState is DownloadState.Downloading }) {
@@ -319,19 +333,8 @@ class ServerSetupViewModel(
                 }
             }
             // User deletes local model
-            localModel.downloaded -> {
-                updateState {
-                    it.copy(
-                        localModels = currentState.localModels.withNewState(
-                            localModel.copy(
-                                downloadState = DownloadState.Unknown,
-                                downloaded = false,
-                            ),
-                        ),
-                    )
-                }
-                !deleteModelUseCase(localModel.id).subscribeOnMainThread(schedulersProvider)
-                    .subscribeBy(::errorLog)
+            localModel.downloaded -> updateState {
+                it.copy(screenModal = Modal.DeleteLocalModelConfirm(localModel))
             }
             // User requested new download operation
             else -> {
@@ -364,7 +367,6 @@ class ServerSetupViewModel(
                             setScreenModal(Modal.Error(message.asUiText()))
                         },
                         onNext = { downloadState ->
-                            debugLog("DOWNLOAD STATE : $downloadState")
                             updateState {
                                 when (downloadState) {
                                     is DownloadState.Complete -> it.copy(

@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
+import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 
 sealed interface Modal {
 
@@ -14,7 +15,7 @@ sealed interface Modal {
 
     data object ClearAppCache : Modal
 
-    data object DeleteConfirm : Modal
+    data object DeleteImageConfirm : Modal
 
     data object ConfirmExport : Modal
 
@@ -73,6 +74,9 @@ sealed interface Modal {
                 else Single(list.first(), autoSaveEnabled)
         }
     }
+
+    @Immutable
+    data class DeleteLocalModelConfirm(val model: ServerSetupState.LocalModel) : Modal
 
     @Immutable
     data class Error(val error: UiText) : Modal
