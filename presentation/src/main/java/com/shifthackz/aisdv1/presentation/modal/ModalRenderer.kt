@@ -216,7 +216,7 @@ fun ModalRenderer(
             title = R.string.interaction_delete_local_model_title.asUiText(),
             text = UiText.Resource(
                 R.string.interaction_delete_local_model_sub_title,
-                screenModal.model.name
+                screenModal.model.name,
             ),
             confirmActionResId = R.string.yes,
             dismissActionResId = R.string.no,
