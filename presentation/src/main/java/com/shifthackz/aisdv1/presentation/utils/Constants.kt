@@ -39,6 +39,12 @@ object Constants {
     const val DRAW_CAP_RANGE_MIN = 1
     const val DRAW_CAP_RANGE_MAX = 60
 
+    const val MASK_BLUR_MIN = 1
+    const val MASK_BLUR_MAX = 64
+
+    const val ONLY_MASKED_PADDING_MIN = 0
+    const val ONLY_MASKED_PADDING_MAX = 256
+
     const val EXTRA_MINIMUM = -10.0
     const val EXTRA_MAXIMUM = 10.0
     const val EXTRA_STEP = 0.25

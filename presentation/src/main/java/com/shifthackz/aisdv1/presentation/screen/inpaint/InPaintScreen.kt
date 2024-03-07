@@ -51,6 +51,7 @@ import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.inpaint.components.CapSizeSlider
 import com.shifthackz.aisdv1.presentation.screen.inpaint.forms.ImageDrawForm
+import com.shifthackz.aisdv1.presentation.screen.inpaint.forms.InPaintParamsForm
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -212,9 +213,11 @@ private fun ScreenContent(
                         processIntent = processIntent,
                     )
 
-                    InPaintState.Tab.FORM -> {
-
-                    }
+                    InPaintState.Tab.FORM -> InPaintParamsForm(
+                        modifier = Modifier.padding(16.dp),
+                        model = state.model,
+                        processIntent = processIntent,
+                    )
                 }
             }
             LaunchedEffect(state.selectedTab) {

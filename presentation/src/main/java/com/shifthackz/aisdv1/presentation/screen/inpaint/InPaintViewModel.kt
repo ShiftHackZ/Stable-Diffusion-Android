@@ -10,8 +10,8 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class InPaintViewModel(
+    schedulersProvider: SchedulersProvider,
     private val stateProducer: InPaintStateProducer,
-    private val schedulersProvider: SchedulersProvider,
     private val mainRouter: MainRouter,
 ) : MviRxViewModel<InPaintState, InPaintIntent, InPaintEffect>() {
 
@@ -77,6 +77,36 @@ class InPaintViewModel(
                 state.copy(
                     screenModal = Modal.None,
                     model = state.model.copy(paths = emptyList()),
+                )
+            }
+
+            is InPaintIntent.Update.MaskBlur -> updateState { state ->
+                state.copy(
+                    model = state.model.copy(maskBlur = intent.value)
+                )
+            }
+
+            is InPaintIntent.Update.OnlyMaskedPadding -> updateState { state ->
+                state.copy(
+                    model = state.model.copy(onlyMaskedPaddingPx = intent.value)
+                )
+            }
+
+            is InPaintIntent.Update.Area -> updateState { state ->
+                state.copy(
+                    model = state.model.copy(inPaintArea = intent.value)
+                )
+            }
+
+            is InPaintIntent.Update.MaskContent -> updateState { state ->
+                state.copy(
+                    model = state.model.copy(maskContent = intent.value)
+                )
+            }
+
+            is InPaintIntent.Update.MaskMode -> updateState { state ->
+                state.copy(
+                    model = state.model.copy(maskMode = intent.value)
                 )
             }
         }

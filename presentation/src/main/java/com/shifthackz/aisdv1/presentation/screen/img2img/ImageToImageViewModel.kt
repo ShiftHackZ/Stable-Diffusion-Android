@@ -18,6 +18,7 @@ import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
+import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
@@ -63,6 +64,7 @@ class ImageToImageViewModel(
     override fun processIntent(intent: GenerationMviIntent) {
         when (intent) {
             ImageToImageIntent.ClearImageInput -> updateState {
+                inPaintStateProducer.updateInPaint(InPaintModel())
                 it.copy(imageState = ImageToImageState.ImageState.None)
             }
 
@@ -83,6 +85,7 @@ class ImageToImageViewModel(
                         },
                         onSuccess = { bitmap ->
                             setActiveModal(Modal.None)
+                            inPaintStateProducer.updateInPaint(InPaintModel())
                             updateState {
                                 it.copy(imageState = ImageToImageState.ImageState.Image(bitmap))
                             }
@@ -100,6 +103,7 @@ class ImageToImageViewModel(
 
             is ImageToImageIntent.UpdateImage -> when (intent.result) {
                 is PickedResult.Single -> updateState {
+                    inPaintStateProducer.updateInPaint(InPaintModel())
                     it.copy(imageState = ImageToImageState.ImageState.Image(intent.result.image.bitmap))
                 }
 
@@ -116,49 +120,47 @@ class ImageToImageViewModel(
     }
 
     override fun generate() = when (currentState.imageState) {
-        is ImageToImageState.ImageState.Image -> {
-            Single
-                .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
-                .doOnSubscribe {
-                    wakeLockInterActor.acquireWakelockUseCase()
-                    setActiveModal(Modal.Communicating())
+        is ImageToImageState.ImageState.Image -> Single
+            .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
+            .doOnSubscribe {
+                wakeLockInterActor.acquireWakelockUseCase()
+                setActiveModal(Modal.Communicating())
+            }
+            .map(BitmapToBase64Converter::Input)
+            .flatMap(bitmapToBase64Converter::invoke)
+            .map(currentState::preProcessed)
+            .map(ImageToImageState::mapToPayload)
+            .flatMap(imageToImageUseCase::invoke)
+            .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = { t ->
+                    notificationManager.show(
+                        R.string.notification_fail_title.asUiText(),
+                        R.string.notification_fail_sub_title.asUiText(),
+                    )
+                    setActiveModal(
+                        Modal.Error(
+                            UiText.Static(
+                                t.localizedMessage ?: "Error"
+                            )
+                        )
+                    )
+                    errorLog(t)
+                },
+                onSuccess = { ai ->
+                    notificationManager.show(
+                        R.string.notification_finish_title.asUiText(),
+                        R.string.notification_finish_sub_title.asUiText(),
+                    )
+                    setActiveModal(
+                        Modal.Image.create(
+                            ai,
+                            preferenceManager.autoSaveAiResults,
+                        )
+                    )
                 }
-                .map(BitmapToBase64Converter::Input)
-                .flatMap(bitmapToBase64Converter::invoke)
-                .map(currentState::preProcessed)
-                .map(ImageToImageState::mapToPayload)
-                .flatMap(imageToImageUseCase::invoke)
-                .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
-                .subscribeOnMainThread(schedulersProvider)
-                .subscribeBy(
-                    onError = { t ->
-                        notificationManager.show(
-                            R.string.notification_fail_title.asUiText(),
-                            R.string.notification_fail_sub_title.asUiText(),
-                        )
-                        setActiveModal(
-                            Modal.Error(
-                                UiText.Static(
-                                    t.localizedMessage ?: "Error"
-                                )
-                            )
-                        )
-                        errorLog(t)
-                    },
-                    onSuccess = { ai ->
-                        notificationManager.show(
-                            R.string.notification_finish_title.asUiText(),
-                            R.string.notification_finish_sub_title.asUiText(),
-                        )
-                        setActiveModal(
-                            Modal.Image.create(
-                                ai,
-                                preferenceManager.autoSaveAiResults,
-                            )
-                        )
-                    }
-                )
-        }
+            )
 
         else -> Disposable.empty()
     }
