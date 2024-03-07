@@ -50,7 +50,7 @@ class GalleryDetailViewModel(
             }
 
             GalleryDetailIntent.Delete.Request -> {
-                setActiveModal(Modal.DeleteConfirm)
+                setActiveModal(Modal.DeleteImageConfirm)
             }
 
             GalleryDetailIntent.Delete.Confirm -> {

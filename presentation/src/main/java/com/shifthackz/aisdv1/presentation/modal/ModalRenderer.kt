@@ -171,7 +171,7 @@ fun ModalRenderer(
             )
         }
 
-        Modal.DeleteConfirm -> DecisionInteractiveDialog(
+        Modal.DeleteImageConfirm -> DecisionInteractiveDialog(
             title = R.string.interaction_delete_generation_title.asUiText(),
             text = R.string.interaction_delete_generation_sub_title.asUiText(),
             confirmActionResId = R.string.yes,
@@ -211,5 +211,17 @@ fun ModalRenderer(
         ) {
             LanguageBottomSheet(onDismissRequest = dismiss)
         }
+
+        is Modal.DeleteLocalModelConfirm -> DecisionInteractiveDialog(
+            title = R.string.interaction_delete_local_model_title.asUiText(),
+            text = UiText.Resource(
+                R.string.interaction_delete_local_model_sub_title,
+                screenModal.model.name
+            ),
+            confirmActionResId = R.string.yes,
+            dismissActionResId = R.string.no,
+            onConfirmAction = { processIntent(ServerSetupIntent.LocalModel.DeleteConfirm(screenModal.model)) },
+            onDismissRequest = dismiss,
+        )
     }
 }

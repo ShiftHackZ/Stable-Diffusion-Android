@@ -32,8 +32,6 @@ sealed interface ServerSetupIntent : MviIntent {
 
     data class UpdateHordeDefaultApiKey(val value: Boolean) : ServerSetupIntent
 
-    data class DownloadCardButtonClick(val model: ServerSetupState.LocalModel) : ServerSetupIntent
-
     data class SelectLocalModel(val model: ServerSetupState.LocalModel) : ServerSetupIntent
 
     data class AllowLocalCustomModel(val allow: Boolean) : ServerSetupIntent
@@ -76,5 +74,12 @@ sealed interface ServerSetupIntent : MviIntent {
             override val url: String
                 get() = linksProvider.openAiInfoUrl
         }
+    }
+
+    sealed interface LocalModel : ServerSetupIntent {
+
+        data class ClickReduce(val model: ServerSetupState.LocalModel) : LocalModel
+
+        data class DeleteConfirm(val model: ServerSetupState.LocalModel) : LocalModel
     }
 }

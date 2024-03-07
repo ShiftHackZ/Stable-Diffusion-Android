@@ -194,6 +194,9 @@
     <string name="interaction_delete_generation_title">Удалить изображение</string>
     <string name="interaction_delete_generation_sub_title">Вы уверены, что хотите окончательно удалить это изображение?</string>
 
+    <string name="interaction_delete_local_model_title">Удалить модель</string>
+    <string name="interaction_delete_local_model_sub_title">Вы уверены, что хотите удалить модель "%1$s"?</string>
+
     <string name="gallery_empty_title">Здесь еще ничего нет…</string>
     <string name="gallery_empty_sub_title">Попытайтесь создать что-то, и вы увидите свое изображение здесь!</string>
 

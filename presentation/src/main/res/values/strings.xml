@@ -210,7 +210,10 @@
     <string name="interaction_cache_sub_title">This will reset app settings and delete all the generated images. Do you want to proceed?</string>
 
     <string name="interaction_delete_generation_title">Delete image</string>
-    <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently remove this image?</string>
+    <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently delete this image?</string>
+
+    <string name="interaction_delete_local_model_title">Delete model</string>
+    <string name="interaction_delete_local_model_sub_title">Are you sure you want to delete model "%1$s"?</string>
 
     <string name="gallery_empty_title">There is nothing here yet…</string>
     <string name="gallery_empty_sub_title">Try to generate something, and you will see your image here!</string>
