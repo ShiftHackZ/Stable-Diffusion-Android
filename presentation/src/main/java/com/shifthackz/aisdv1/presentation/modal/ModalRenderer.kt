@@ -24,6 +24,7 @@ import com.shifthackz.aisdv1.presentation.modal.tag.EditTagDialog
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailIntent
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryIntent
+import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintIntent
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
@@ -46,6 +47,7 @@ fun ModalRenderer(
         processIntent(GenerationMviIntent.SetModal(Modal.None))
         processIntent(GalleryIntent.DismissDialog)
         processIntent(GalleryDetailIntent.DismissDialog)
+        processIntent(InPaintIntent.ScreenModal.Dismiss)
     }
     when (screenModal) {
         Modal.None -> Unit
@@ -221,6 +223,15 @@ fun ModalRenderer(
             confirmActionResId = R.string.yes,
             dismissActionResId = R.string.no,
             onConfirmAction = { processIntent(ServerSetupIntent.LocalModel.DeleteConfirm(screenModal.model)) },
+            onDismissRequest = dismiss,
+        )
+
+        Modal.ClearInPaintConfirm -> DecisionInteractiveDialog(
+            title = R.string.interaction_in_paint_clear_title.asUiText(),
+            text = R.string.interaction_in_paint_clear_title.asUiText(),
+            confirmActionResId = R.string.yes,
+            dismissActionResId = R.string.no,
+            onConfirmAction = { processIntent(InPaintIntent.Action.Clear) },
             onDismissRequest = dismiss,
         )
     }

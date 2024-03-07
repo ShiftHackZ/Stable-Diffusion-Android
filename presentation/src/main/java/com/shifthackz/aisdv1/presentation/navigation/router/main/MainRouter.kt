@@ -16,5 +16,7 @@ interface MainRouter : Router<NavigationEffect> {
 
     fun navigateToGalleryDetails(itemId: Long)
 
+    fun navigateToInPaint()
+
     fun navigateToDebugMenu()
 }

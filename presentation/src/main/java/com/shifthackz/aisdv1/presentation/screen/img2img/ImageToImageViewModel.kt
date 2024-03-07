@@ -19,7 +19,9 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
+import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintStateProducer
 import com.shz.imagepicker.imagepicker.model.PickedResult
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
@@ -35,6 +37,8 @@ class ImageToImageViewModel(
     private val schedulersProvider: SchedulersProvider,
     private val notificationManager: SdaiPushNotificationManager,
     private val wakeLockInterActor: WakeLockInterActor,
+    private val inPaintStateProducer: InPaintStateProducer,
+    private val mainRouter: MainRouter,
 ) : GenerationMviViewModel<ImageToImageState, GenerationMviIntent, ImageToImageEffect>() {
 
     override val initialState = ImageToImageState()
@@ -47,6 +51,13 @@ class ImageToImageViewModel(
                 onError = ::errorLog,
                 onNext = ::updateFormPreviousAiGeneration,
             )
+
+        !inPaintStateProducer
+            .observeInPaint()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog) { inPaint ->
+                updateState {  it.copy(inPaintModel = inPaint) }
+            }
     }
 
     override fun processIntent(intent: GenerationMviIntent) {
@@ -94,6 +105,11 @@ class ImageToImageViewModel(
 
                 else -> Unit
             }
+
+            ImageToImageIntent.InPaint -> (currentState.imageState as? ImageToImageState.ImageState.Image)
+                ?.let { image -> inPaintStateProducer.updateBitmap(image.bitmap) }
+                ?.also { inPaintStateProducer.updateInPaint(currentState.inPaintModel) }
+                ?.also { mainRouter.navigateToInPaint() }
 
             else -> super.processIntent(intent)
         }

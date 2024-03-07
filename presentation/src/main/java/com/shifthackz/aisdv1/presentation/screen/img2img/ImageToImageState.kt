@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.Modal
 
 @Immutable
@@ -18,6 +19,7 @@ data class ImageToImageState(
     val imageState: ImageState = ImageState.None,
     val imageBase64: String = "",
     val denoisingStrength: Float = 0.75f,
+    val inPaintModel: InPaintModel = InPaintModel(),
     override val screenModal: Modal = Modal.None,
     override val mode: ServerSource = ServerSource.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,

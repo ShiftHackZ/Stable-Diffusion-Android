@@ -81,5 +81,7 @@ sealed interface Modal {
     @Immutable
     data class Error(val error: UiText) : Modal
 
+    data object ClearInPaintConfirm : Modal
+
     data object Language : Modal
 }

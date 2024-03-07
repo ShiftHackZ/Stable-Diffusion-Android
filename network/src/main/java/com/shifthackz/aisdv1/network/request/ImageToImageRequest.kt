@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class ImageToImageRequest(
     @SerializedName("init_images")
     val initImages: List<String>,
+    @SerializedName("include_init_images")
+    val includeInitImages: Boolean,
     @SerializedName("denoising_strength")
     val denoisingStrength: Float,
     @SerializedName("prompt")

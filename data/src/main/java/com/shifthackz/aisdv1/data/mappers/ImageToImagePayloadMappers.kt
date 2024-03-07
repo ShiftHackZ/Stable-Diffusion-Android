@@ -11,6 +11,7 @@ import java.util.Date
 fun ImageToImagePayload.mapToRequest(): ImageToImageRequest = with(this) {
     ImageToImageRequest(
         initImages = listOf(base64Image),
+        includeInitImages = true,
         denoisingStrength = denoisingStrength,
         prompt = prompt,
         negativePrompt = negativePrompt,

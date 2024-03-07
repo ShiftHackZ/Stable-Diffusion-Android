@@ -28,6 +28,7 @@ ext {
     cryptoVersion = '1.0.0'
     onnxruntimeVersion = '1.16.3'
     catppuccinVersion = '0.1.1'
+    composeGesturesVersion = '3.1'
 
     testJunitVersion = '4.13.2'
 
@@ -92,6 +93,7 @@ ext {
             catppuccinLegacy      : "com.github.ShiftHackZ.Catppuccin-Android-Library:palette-legacy:$catppuccinVersion",
             catppuccinCompose     : "com.github.ShiftHackZ.Catppuccin-Android-Library:compose:$catppuccinVersion",
             catppuccinSplashscreen: "com.github.ShiftHackZ.Catppuccin-Android-Library:splashscreen:$catppuccinVersion",
+            composeGestures       : "com.github.SmartToolFactory:Compose-Extended-Gestures:$composeGesturesVersion",
     ]
     log = [
             timber: "com.jakewharton.timber:timber:$timberVersion",

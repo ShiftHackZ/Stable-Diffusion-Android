@@ -47,6 +47,10 @@ internal class MainRouterImpl(
         effectSubject.onNext(NavigationEffect.Navigate.Route("${Constants.ROUTE_GALLERY_DETAIL}/$itemId"))
     }
 
+    override fun navigateToInPaint() {
+        effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_IN_PAINT))
+    }
+
     override fun navigateToDebugMenu() {
         if (debugMenuAccessor.invoke()) {
             effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_DEBUG))

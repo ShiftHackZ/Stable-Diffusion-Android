@@ -47,6 +47,8 @@
     <string name="action_save">Save</string>
     <string name="action_update">Update</string>
     <string name="action_skip">Skip</string>
+    <string name="action_undo">Undo</string>
+    <string name="action_clear">Clear</string>
     <string name="action_options_show">Show advanced options</string>
     <string name="action_options_hide">Hide advanced options</string>
     <string name="action_image_picker_gallery">Choose photo</string>
@@ -216,6 +218,9 @@
     <string name="interaction_delete_local_model_title">Delete model</string>
     <string name="interaction_delete_local_model_sub_title">Are you sure you want to delete model "%1$s"?</string>
 
+    <string name="interaction_in_paint_clear_title">Clear drawings</string>
+    <string name="interaction_in_paint_clear_sub_title">Are you sure you want to clear drawings?</string>
+
     <string name="gallery_empty_title">There is nothing here yet…</string>
     <string name="gallery_empty_sub_title">Try to generate something, and you will see your image here!</string>
 
@@ -258,4 +263,8 @@
     <string name="extras_empty_sub_title_lora">Add some content on AUTOMATIC1111 server to: \n\n../models/Lora</string>
     <string name="extras_empty_sub_title_hypernet">Add some content on AUTOMATIC1111 server to: \n\n../models/hypernetworks</string>
     <string name="extras_empty_sub_title_embedding">Add some content on AUTOMATIC1111 server to: \n\n../embeddings</string>
+
+    <string name="in_paint_title">Inpaint</string>
+    <string name="in_paint_tab_1">Draw</string>
+    <string name="in_paint_tab_2">Adjust</string>
 </resources>

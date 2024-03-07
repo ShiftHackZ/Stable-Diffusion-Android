@@ -2,7 +2,6 @@
 
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,9 +42,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -60,6 +58,7 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.screen.inpaint.components.InPaintComponent
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MIN
@@ -149,7 +148,7 @@ private fun ScreenContent(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = 16.dp),
-                                imageState = state.imageState,
+                                state = state,
                                 processIntent = processIntent
                             )
                             GenerationInputForm(
@@ -295,28 +294,29 @@ private fun ScreenContent(
 @Composable
 private fun InputImageState(
     modifier: Modifier = Modifier,
-    imageState: ImageToImageState.ImageState,
+    state: ImageToImageState,
     processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
-    when (imageState) {
+    when (state.imageState) {
         is ImageToImageState.ImageState.Image -> Box(
             modifier = modifier,
             contentAlignment = Alignment.TopEnd,
         ) {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .align(Alignment.Center),
-                bitmap = imageState.bitmap.asImageBitmap(),
-                contentDescription = "img2img input",
-                contentScale = ContentScale.Crop,
+            InPaintComponent(
+                drawMode = false,
+                bitmap = state.imageState.bitmap,
+                inPaint = state.inPaintModel,
             )
+
             IconButton(
                 modifier = Modifier
                     .padding(4.dp)
                     .background(color = Color.LightGray, shape = RoundedCornerShape(16.dp)),
-                onClick = { processIntent(ImageToImageIntent.ClearImageInput) },
+                onClick = {
+
+                    processIntent(ImageToImageIntent.InPaint)
+//                    processIntent(ImageToImageIntent.ClearImageInput)
+                          },
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
@@ -382,11 +382,13 @@ private fun ImagePickButtonBox(
     buttonType: ImagePickButton,
     onClick: () -> Unit = {},
 ) {
+    val localShape = RoundedCornerShape(16.dp)
     Column(
         modifier = modifier
+            .clip(localShape)
             .background(
                 MaterialTheme.colorScheme.surfaceTint,
-                shape = RoundedCornerShape(16.dp)
+                shape = localShape,
             )
             .clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally,

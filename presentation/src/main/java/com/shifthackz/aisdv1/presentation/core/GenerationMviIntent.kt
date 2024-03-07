@@ -86,6 +86,8 @@ sealed interface GenerationMviIntent : MviIntent {
 
 sealed interface ImageToImageIntent : GenerationMviIntent {
 
+    data object InPaint : ImageToImageIntent
+
     data object FetchRandomPhoto : ImageToImageIntent
 
     data object ClearImageInput : ImageToImageIntent
