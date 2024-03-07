@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId "com.shifthackz.aisdv1.app"
         versionName "0.5.11"
-        versionCode 177
+        versionCode 178
 
         buildConfigField "String", "IMAGE_CDN_URL", "\"https://random.imagecdn.app/\""
         buildConfigField "String", "HUGGING_FACE_URL", "\"https://huggingface.co/\""
@@ -69,6 +69,12 @@ android {
 
     buildFeatures {
         buildConfig true
+    }
+
+    bundle {
+        language {
+            enableSplit = false
+        }
     }
 }
 
