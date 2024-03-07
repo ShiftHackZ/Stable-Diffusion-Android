@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
 import io.reactivex.rxjava3.core.Single
 import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -22,6 +23,6 @@ interface HuggingFaceInferenceApi {
         fun generate(
             @Path("model") model: String,
             @Body request: HuggingFaceGenerationRequest,
-        ): Single<ResponseBody>
+        ): Single<Response<ResponseBody>>
     }
 }

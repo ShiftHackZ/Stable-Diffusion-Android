@@ -47,57 +47,52 @@ internal class HordeGenerationRemoteDataSource(
         ?.let(hordeApi::cancelRequest)
         ?: Completable.error(Throwable("No cached request id"))
 
-    private fun executeRequestChain(request: HordeGenerationAsyncRequest): Single<String> {
-        val observableChain = hordeApi
-            .generateAsync(request)
-            .flatMapObservable { asyncStartResponse ->
-                statusSource.id = asyncStartResponse.id
-                asyncStartResponse.id?.let { id ->
-                    val pingObs = Observable
-                        .fromSingle(hordeApi.checkGeneration(id))
-                        .flatMap { pingResponse ->
-                            if (pingResponse.isPossible == false) {
-                                return@flatMap Observable.error(Throwable("Response is not possible"))
-                            }
-                            if (pingResponse.done == true) {
-                                return@flatMap Observable.fromSingle(hordeApi.checkStatus(id))
-                            }
-                            statusSource.update(
-                                HordeProcessStatus(
-                                    waitTimeSeconds = pingResponse.waitTime ?: 0,
-                                    queuePosition = pingResponse.queuePosition,
-                                )
+    private fun executeRequestChain(request: HordeGenerationAsyncRequest) = hordeApi
+        .generateAsync(request)
+        .flatMapObservable { asyncStartResponse ->
+            statusSource.id = asyncStartResponse.id
+            asyncStartResponse.id?.let { id ->
+                Observable
+                    .fromSingle(hordeApi.checkGeneration(id))
+                    .flatMap { pingResponse ->
+                        if (pingResponse.isPossible == false) {
+                            return@flatMap Observable.error(Throwable("Response is not possible"))
+                        }
+                        if (pingResponse.done == true) {
+                            return@flatMap Observable.fromSingle(hordeApi.checkStatus(id))
+                        }
+                        statusSource.update(
+                            HordeProcessStatus(
+                                waitTimeSeconds = pingResponse.waitTime ?: 0,
+                                queuePosition = pingResponse.queuePosition,
                             )
-                            return@flatMap Observable.error(RetryException())
-                        }
-                        .retryWhen { obs ->
-                            obs.flatMap { t ->
-                                if (t is RetryException) {
-                                    return@flatMap Observable
-                                        .timer(HORDE_SOCKET_PING_TIME_SECONDS, TimeUnit.SECONDS)
-                                        .doOnNext {
-                                            debugLog("Retrying HORDE status check...")
-                                        }
+                        )
+                        return@flatMap Observable.error(RetryException())
+                    }
+                    .retryWhen { obs ->
+                        obs.flatMap { t ->
+                            if (t is RetryException) Observable
+                                .timer(HORDE_SOCKET_PING_TIME_SECONDS, TimeUnit.SECONDS)
+                                .doOnNext {
+                                    debugLog("Retrying HORDE status check...")
                                 }
-                                return@flatMap Observable.error(t)
-                            }
+                            else
+                                Observable.error(t)
                         }
+                    }
+            } ?: Observable.error(Throwable("Horde returned null generation id"))
+        }
+        .flatMapSingle {
+            it.generations?.firstOrNull()?.let { generation ->
+                val bytes = URL(generation.img).readBytes()
+                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                Single.just(bitmap)
+            } ?: Single.error(Throwable("Error extracting image"))
+        }
+        .flatMapSingle { converter(BitmapToBase64Converter.Input(it)) }
+        .map { it.base64ImageString }
+        .let { Single.fromObservable(it) }
 
-                    pingObs
-                } ?: Observable.error(Throwable("Horde returned null generation id"))
-            }
-            .flatMapSingle {
-                it.generations?.firstOrNull()?.let { generation ->
-                    val bytes = URL(generation.img).readBytes()
-                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                    Single.just(bitmap)
-                } ?: Single.error(Throwable("Error extracting image"))
-            }
-            .flatMapSingle { converter(BitmapToBase64Converter.Input(it)) }
-            .map { it.base64ImageString }
-
-        return Single.fromObservable(observableChain)
-    }
 
     private class RetryException : Throwable()
 
