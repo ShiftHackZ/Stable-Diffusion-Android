@@ -7,6 +7,18 @@ data class ImageToImageRequest(
     val initImages: List<String>,
     @SerializedName("include_init_images")
     val includeInitImages: Boolean,
+    @SerializedName("mask")
+    val mask: String?,
+    @SerializedName("inpainting_mask_invert")
+    val inPaintingMaskInvert: Int?,
+    @SerializedName("inpaint_full_res_padding")
+    val inPaintFullResPadding: Int?,
+    @SerializedName("inpainting_fill")
+    val inPaintingFill: Int?,
+    @SerializedName("inpaint_full_res")
+    val inPaintFullRes: Boolean?,
+    @SerializedName("mask_blur")
+    val maskBlur: Int?,
     @SerializedName("denoising_strength")
     val denoisingStrength: Float,
     @SerializedName("prompt")

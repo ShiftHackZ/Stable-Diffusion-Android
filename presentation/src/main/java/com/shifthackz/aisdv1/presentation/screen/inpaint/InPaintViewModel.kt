@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.inpaint
 
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -30,8 +31,9 @@ class InPaintViewModel(
     }
 
     override fun processIntent(intent: InPaintIntent) {
+        debugLog("INTENT : $intent")
         when (intent) {
-            is InPaintIntent.Draw -> updateState { state ->
+            is InPaintIntent.DrawPath -> updateState { state ->
                 state.copy(
                     model = state.model.copy(
                         paths = buildList {
@@ -39,6 +41,12 @@ class InPaintViewModel(
                             add(intent.path to state.size)
                         },
                     ),
+                )
+            }
+
+            is InPaintIntent.DrawPathBmp -> updateState { state ->
+                state.copy(
+                    model = state.model.copy(bitmap = intent.bitmap)
                 )
             }
 

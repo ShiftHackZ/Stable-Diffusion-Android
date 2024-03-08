@@ -18,7 +18,6 @@ import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
-import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
@@ -64,7 +63,13 @@ class ImageToImageViewModel(
     override fun processIntent(intent: GenerationMviIntent) {
         when (intent) {
             ImageToImageIntent.ClearImageInput -> updateState {
-                inPaintStateProducer.updateInPaint(InPaintModel())
+                inPaintStateProducer.updateInPaint(
+                    it.inPaintModel.copy(
+                        paths = emptyList(),
+                        bitmap = null,
+                        base64 = "",
+                    ),
+                )
                 it.copy(imageState = ImageToImageState.ImageState.None)
             }
 
@@ -85,9 +90,15 @@ class ImageToImageViewModel(
                         },
                         onSuccess = { bitmap ->
                             setActiveModal(Modal.None)
-                            inPaintStateProducer.updateInPaint(InPaintModel())
-                            updateState {
-                                it.copy(imageState = ImageToImageState.ImageState.Image(bitmap))
+                            updateState { state ->
+                                inPaintStateProducer.updateInPaint(
+                                    state.inPaintModel.copy(
+                                        paths = emptyList(),
+                                        bitmap = null,
+                                        base64 = "",
+                                    )
+                                )
+                                state.copy(imageState = ImageToImageState.ImageState.Image(bitmap))
                             }
                         },
                     )
@@ -127,13 +138,30 @@ class ImageToImageViewModel(
 
     override fun generate() = when (currentState.imageState) {
         is ImageToImageState.ImageState.Image -> Single
-            .just((currentState.imageState as ImageToImageState.ImageState.Image).bitmap)
+            .just(
+                Pair(
+                    (currentState.imageState as ImageToImageState.ImageState.Image).bitmap,
+                    currentState.inPaintModel.bitmap,
+                )
+            )
+
             .doOnSubscribe {
                 wakeLockInterActor.acquireWakelockUseCase()
                 setActiveModal(Modal.Communicating())
             }
-            .map(BitmapToBase64Converter::Input)
-            .flatMap(bitmapToBase64Converter::invoke)
+            .flatMap { (bmp, maskBmp) ->
+                bitmapToBase64Converter(BitmapToBase64Converter.Input(bmp))
+                    .map(BitmapToBase64Converter.Output::base64ImageString)
+                    .flatMap { base64 ->
+                        maskBmp?.let {
+                            bitmapToBase64Converter(BitmapToBase64Converter.Input(maskBmp))
+                                .map(BitmapToBase64Converter.Output::base64ImageString)
+                                .map { maskBase64 -> base64 to maskBase64 }
+                        } ?: run {
+                            Single.just(base64 to "")
+                        }
+                    }
+            }
             .map(currentState::preProcessed)
             .map(ImageToImageState::mapToPayload)
             .flatMap(imageToImageUseCase::invoke)

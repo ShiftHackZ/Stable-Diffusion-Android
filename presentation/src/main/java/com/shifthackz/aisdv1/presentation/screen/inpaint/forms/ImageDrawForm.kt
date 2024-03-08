@@ -28,7 +28,8 @@ fun ImageDrawForm(
             inPaint = state.model,
             bitmap = state.bitmap,
             capWidth = state.size,
-            onPathDrawn = { processIntent(InPaintIntent.Draw(it)) }
+            onPathDrawn = { processIntent(InPaintIntent.DrawPath(it)) },
+            onPathBitmapDrawn = { processIntent(InPaintIntent.DrawPathBmp(it)) },
         )
     }
 }

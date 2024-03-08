@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.inpaint
 
+import android.graphics.Bitmap
 import androidx.compose.ui.graphics.Path
 import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.Modal
@@ -13,7 +14,9 @@ sealed interface InPaintIntent : MviIntent {
 
     data class ChangeCapSize(val size: Int) : InPaintIntent
 
-    data class Draw(val path: Path) : InPaintIntent
+    data class DrawPath(val path: Path) : InPaintIntent
+
+    data class DrawPathBmp(val bitmap: Bitmap?) : InPaintIntent
 
     enum class Action : InPaintIntent {
         Undo, Clear;

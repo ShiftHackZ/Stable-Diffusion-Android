@@ -12,6 +12,12 @@ fun ImageToImagePayload.mapToRequest(): ImageToImageRequest = with(this) {
     ImageToImageRequest(
         initImages = listOf(base64Image),
         includeInitImages = true,
+        mask = base64MaskImage.takeIf(String::isNotBlank),
+        inPaintingMaskInvert = inPaintingMaskInvert,
+        inPaintFullResPadding = inPaintFullResPadding,
+        inPaintingFill = inPaintingFill,
+        inPaintFullRes = inPaintFullRes,
+        maskBlur = maskBlur,
         denoisingStrength = denoisingStrength,
         prompt = prompt,
         negativePrompt = negativePrompt,
