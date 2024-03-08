@@ -143,16 +143,15 @@ private fun ScreenContent(
                             modifier = Modifier
                                 .padding(paddingValues)
                                 .verticalScroll(scrollState)
-                                .padding(horizontal = 16.dp),
+//                                .padding(horizontal = 16.dp),
                         ) {
                             InputImageState(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 16.dp),
+                                modifier = Modifier.fillMaxWidth(),
                                 state = state,
                                 processIntent = processIntent
                             )
                             GenerationInputForm(
+                                modifier = Modifier.padding(horizontal = 16.dp),
                                 state = state,
                                 processIntent = processIntent,
                                 promptChipTextFieldState = promptChipTextFieldState,
@@ -310,6 +309,7 @@ private fun InputImageState(
             Row(
                 modifier = Modifier
                     .padding(top = 8.dp)
+                    .padding(horizontal = 16.dp)
                     .fillMaxSize(),
             ) {
                 OutlinedButton(
@@ -347,7 +347,9 @@ private fun InputImageState(
         }
 
         ImageToImageState.ImageState.None -> Column(
-            modifier = modifier,
+            modifier = modifier
+                .padding(top = 16.dp)
+                .padding(horizontal = 16.dp),
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -371,6 +373,7 @@ private fun InputImageState(
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
                     .background(
                         MaterialTheme.colorScheme.surfaceTint,
                         shape = RoundedCornerShape(16.dp)

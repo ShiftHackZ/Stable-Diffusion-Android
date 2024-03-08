@@ -13,9 +13,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -24,6 +23,7 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.PointerInputChange
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.MotionEvent
@@ -49,10 +49,11 @@ fun InPaintComponent(
         bitmap?.asImageBitmap()?.let {
             Image(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.Center),
+                    .fillMaxSize(),
+//                    .clipToBounds(),
                 bitmap = it,
                 contentDescription = null,
+                contentScale = ContentScale.FillBounds,
             )
         }
         var motionEvent by remember { mutableStateOf(MotionEvent.Idle) }
@@ -61,9 +62,10 @@ fun InPaintComponent(
         var currentPath by remember { mutableStateOf(Path()) }
         Canvas(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .clipToBounds()
+                .alpha(0.5f)
+                .fillMaxSize()
+//                .aspectRatio(1f)
+//                .clipToBounds()
                 .let {
                     if (drawMode) it.pointerMotionEvents(
                         onDown = { pointerInputChange: PointerInputChange ->
