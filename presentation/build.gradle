@@ -44,5 +44,6 @@ dependencies {
     implementation ui.dayNightSwitch
     implementation ui.catppuccinSplashscreen
     implementation ui.composeGestures
+    implementation ui.composeEasyCrop
     implementation "androidx.exifinterface:exifinterface:1.3.6"
 }

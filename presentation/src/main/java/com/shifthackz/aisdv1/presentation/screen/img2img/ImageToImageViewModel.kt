@@ -101,13 +101,19 @@ class ImageToImageViewModel(
 
             ImageToImageIntent.Pick.Gallery -> emitEffect(ImageToImageEffect.GalleryPicker)
 
-            is ImageToImageIntent.UpdateImage -> when (intent.result) {
+            is ImageToImageIntent.CropImage -> when (intent.result) {
                 is PickedResult.Single -> updateState {
-                    inPaintStateProducer.updateInPaint(InPaintModel())
-                    it.copy(imageState = ImageToImageState.ImageState.Image(intent.result.image.bitmap))
+                    it.copy(screenModal = Modal.Image.Crop(intent.result.image.bitmap))
                 }
 
                 else -> Unit
+            }
+
+            is ImageToImageIntent.UpdateImage -> updateState {
+                it.copy(
+                    screenModal = Modal.None,
+                    imageState = ImageToImageState.ImageState.Image(intent.bitmap),
+                )
             }
 
             ImageToImageIntent.InPaint -> (currentState.imageState as? ImageToImageState.ImageState.Image)

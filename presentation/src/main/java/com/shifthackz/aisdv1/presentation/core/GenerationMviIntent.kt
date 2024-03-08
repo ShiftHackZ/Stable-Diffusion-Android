@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.core
 
+import android.graphics.Bitmap
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
@@ -94,7 +95,9 @@ sealed interface ImageToImageIntent : GenerationMviIntent {
 
     data class UpdateDenoisingStrength(val value: Float) : ImageToImageIntent
 
-    data class UpdateImage(val result: PickedResult) : ImageToImageIntent
+    data class UpdateImage(val bitmap: Bitmap) : ImageToImageIntent
+
+    data class CropImage(val result: PickedResult) : ImageToImageIntent
 
     enum class Pick : ImageToImageIntent {
         Camera, Gallery

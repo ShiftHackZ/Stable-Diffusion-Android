@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeviceUnknown
+import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
@@ -34,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -43,7 +45,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -78,7 +79,7 @@ fun ImageToImageScreen() {
         viewModel = viewModel,
         processEffect = { effect ->
             ImagePicker.Builder(fileProviderDescriptor.providerPath) { result ->
-                viewModel.processIntent(ImageToImageIntent.UpdateImage(result))
+                viewModel.processIntent(ImageToImageIntent.CropImage(result))
             }
                 .useGallery(effect == ImageToImageEffect.GalleryPicker)
                 .useCamera(effect == ImageToImageEffect.CameraPicker)
@@ -298,31 +299,50 @@ private fun InputImageState(
     processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
     when (state.imageState) {
-        is ImageToImageState.ImageState.Image -> Box(
+        is ImageToImageState.ImageState.Image -> Column(
             modifier = modifier,
-            contentAlignment = Alignment.TopEnd,
         ) {
             InPaintComponent(
                 drawMode = false,
                 bitmap = state.imageState.bitmap,
                 inPaint = state.inPaintModel,
             )
-
-            IconButton(
+            Row(
                 modifier = Modifier
-                    .padding(4.dp)
-                    .background(color = Color.LightGray, shape = RoundedCornerShape(16.dp)),
-                onClick = {
-
-                    processIntent(ImageToImageIntent.InPaint)
-//                    processIntent(ImageToImageIntent.ClearImageInput)
-                          },
+                    .padding(top = 8.dp)
+                    .fillMaxSize(),
             ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = null,
-                    tint = Color.DarkGray,
-                )
+                OutlinedButton(
+                    modifier = Modifier.weight(1f),
+                    onClick = { processIntent(ImageToImageIntent.InPaint) },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Draw,
+                        contentDescription = null,
+                        tint = LocalContentColor.current,
+                    )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        text = stringResource(id = R.string.in_paint_title),
+                        color = LocalContentColor.current,
+                    )
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                OutlinedButton(
+                    modifier = Modifier.weight(1f),
+                    onClick = { processIntent(ImageToImageIntent.ClearImageInput) },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null,
+                        tint = LocalContentColor.current,
+                    )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        text = stringResource(id = R.string.action_clear),
+                        color = LocalContentColor.current,
+                    )
+                }
             }
         }
 

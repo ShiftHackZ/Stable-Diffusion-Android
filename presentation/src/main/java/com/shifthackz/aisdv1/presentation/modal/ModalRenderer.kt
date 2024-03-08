@@ -16,6 +16,8 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
+import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
+import com.shifthackz.aisdv1.presentation.modal.crop.CropImageModal
 import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingScreen
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
@@ -233,6 +235,12 @@ fun ModalRenderer(
             dismissActionResId = R.string.no,
             onConfirmAction = { processIntent(InPaintIntent.Action.Clear) },
             onDismissRequest = dismiss,
+        )
+
+        is Modal.Image.Crop -> CropImageModal(
+            bitmap = screenModal.bitmap,
+            onDismissRequest = dismiss,
+            onResult = { processIntent(ImageToImageIntent.UpdateImage(it)) }
         )
     }
 }
