@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.shifthackz.aisdv1.domain.entity.ColorToken
+import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.catppuccin.compose.CatppuccinMaterial
 import com.shifthackz.catppuccin.palette.Catppuccin
@@ -31,14 +32,27 @@ fun isSdAppInDarkTheme(): Boolean {
 @Composable
 fun colorTokenPalette(
     token: ColorToken = ColorToken.MAUVE,
+    darkThemeToken: DarkThemeToken = DarkThemeToken.FRAPPE,
     isDark: Boolean,
 ): CatppuccinPalette {
     return if (isDark) {
-        CatppuccinMaterial.Frappe(
-            primary = token.toColor(Catppuccin.Frappe),
-            secondary = token.toColor(Catppuccin.Frappe).copy(alpha = 0.5f),
-            tertiary = token.toColor(Catppuccin.Frappe).copy(alpha = 0.5f),
-        )
+        when (darkThemeToken) {
+            DarkThemeToken.FRAPPE -> CatppuccinMaterial.Frappe(
+                primary = token.toColor(Catppuccin.Frappe),
+                secondary = token.toColor(Catppuccin.Frappe).copy(alpha = 0.5f),
+                tertiary = token.toColor(Catppuccin.Frappe).copy(alpha = 0.5f),
+            )
+            DarkThemeToken.MACCHIATO -> CatppuccinMaterial.Macchiato(
+                primary = token.toColor(Catppuccin.Macchiato),
+                secondary = token.toColor(Catppuccin.Macchiato).copy(alpha = 0.5f),
+                tertiary = token.toColor(Catppuccin.Macchiato).copy(alpha = 0.5f),
+            )
+            DarkThemeToken.MOCHA -> CatppuccinMaterial.Mocha(
+                primary = token.toColor(Catppuccin.Mocha),
+                secondary = token.toColor(Catppuccin.Mocha).copy(alpha = 0.5f),
+                tertiary = token.toColor(Catppuccin.Mocha).copy(alpha = 0.5f),
+            )
+        }
     } else {
         CatppuccinMaterial.Latte(
             primary = token.toColor(Catppuccin.Latte),

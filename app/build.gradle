@@ -54,6 +54,12 @@ android {
 
     flavorDimensions = ["type"]
     productFlavors {
+        dev {
+            dimension "type"
+            applicationIdSuffix = ".dev"
+            resValue "string", "app_name", "SDAI Dev"
+            buildConfigField "String", "BUILD_FLAVOR_TYPE", "\"FOSS\""
+        }
         foss {
             dimension "type"
             applicationIdSuffix = ".foss"

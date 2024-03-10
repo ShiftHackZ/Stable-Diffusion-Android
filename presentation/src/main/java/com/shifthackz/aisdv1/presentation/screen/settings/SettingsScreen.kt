@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.FormatColorFill
 import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.InvertColors
 import androidx.compose.material.icons.filled.MonetizationOn
@@ -64,6 +65,7 @@ import com.shifthackz.aisdv1.presentation.theme.isSdAppInDarkTheme
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import com.shifthackz.aisdv1.presentation.utils.ReportProblemEmailComposer
 import com.shifthackz.aisdv1.presentation.widget.color.AccentColorSelector
+import com.shifthackz.aisdv1.presentation.widget.color.DarkThemeColorSelector
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsHeader
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItemContent
@@ -144,11 +146,17 @@ private fun ContentSettingsState(
     state: SettingsState,
     processIntent: (SettingsIntent) -> Unit = {},
 ) {
+    val isDark = isSdAppInDarkTheme()
+    val palette = colorTokenPalette(
+        isDark = isDark,
+        darkThemeToken = state.darkThemeToken,
+    )
     val systemUiController = rememberSystemUiController()
     val navBarColor = MaterialTheme.colorScheme.surface
     LaunchedEffect(
-        state.useSystemDarkTheme,
+        isDark,
         state.darkTheme,
+        state.darkThemeToken,
     ) {
         systemUiController.setNavigationBarColor(navBarColor)
     }
@@ -389,9 +397,31 @@ private fun ContentSettingsState(
                 },
             )
         }
+        AnimatedVisibility(visible = !state.loading && isDark) {
+            Column(
+                modifier = itemModifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f))
+                    .defaultMinSize(minHeight = 50.dp),
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                SettingsItemContent(
+                    text = R.string.settings_item_lf_dark_theme_color.asUiText(),
+                    icon = Icons.Default.FormatColorFill,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                DarkThemeColorSelector(
+                    modifier = Modifier.padding(horizontal = 10.dp),
+                    selectedToken = state.darkThemeToken,
+                    colorToken = state.colorToken,
+                    onSelected = { _, token ->
+                        processIntent(SettingsIntent.NewDarkThemeToken(token))
+                    }
+                )
+                Spacer(modifier = Modifier.height(14.dp))
+            }
+        }
         AnimatedVisibility(visible = !state.loading) {
-            val isDark = isSdAppInDarkTheme()
-            val palette = colorTokenPalette(isDark = isDark)
             Column(
                 modifier = itemModifier
                     .clip(RoundedCornerShape(16.dp))
