@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.ColorToken
+import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.android.core.mvi.EmptyEffect
 import com.shifthackz.android.core.mvi.EmptyIntent
@@ -28,6 +29,7 @@ class AiSdAppThemeViewModel(
                         systemDarkTheme = settings.designUseSystemDarkTheme,
                         darkTheme = settings.designDarkTheme,
                         colorToken = ColorToken.parse(settings.designColorToken),
+                        darkThemeToken = DarkThemeToken.parse(settings.designDarkThemeToken),
                     )
                 }
             }

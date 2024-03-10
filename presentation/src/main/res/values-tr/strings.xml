@@ -168,6 +168,7 @@
     <string name="settings_item_lf_dynamic_colors">Dinamik renkler</string>
     <string name="settings_item_lf_system_dark_theme">Sistemin koyu teması</string>
     <string name="settings_item_lf_dark_theme">Koyu tema</string>
+    <string name="settings_item_lf_dark_theme_color">Arka plan rengi</string>
     <string name="settings_item_lf_accent_color">Vurgu rengi</string>
 
     <string name="settings_item_report_problem">Hata Bildirin</string>

@@ -168,6 +168,7 @@
     <string name="settings_item_lf_dynamic_colors">Системные цвета</string>
     <string name="settings_item_lf_system_dark_theme">Системная тема</string>
     <string name="settings_item_lf_dark_theme">Темная тема</string>
+    <string name="settings_item_lf_dark_theme_color">Цвет фона</string>
     <string name="settings_item_lf_accent_color">Цвет акцента</string>
 
     <string name="settings_item_report_problem">Сообщить о проблеме</string>

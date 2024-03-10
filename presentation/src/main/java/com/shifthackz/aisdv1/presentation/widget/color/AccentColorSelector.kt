@@ -1,21 +1,13 @@
 package com.shifthackz.aisdv1.presentation.widget.color
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -158,43 +150,6 @@ fun AccentColorSelector(
                 token = ColorToken.LAVENDER,
                 color = palette.Lavender,
                 onClick = onSelected,
-            )
-        }
-    }
-}
-
-@Composable
-fun ColorComposable(
-    modifier: Modifier = Modifier,
-    palette: CatppuccinPalette,
-    selectedToken: ColorToken,
-    token: ColorToken,
-    color: Color,
-    onClick: (Color, ColorToken) -> Unit,
-) {
-    val selected = token == selectedToken
-    Box(
-        modifier = modifier
-            .background(
-                color = if (selected) color.copy(alpha = 0.4f) else Color.Transparent,
-                shape = CircleShape,
-            )
-            .clip(CircleShape)
-            .clickable { onClick(color, token) },
-        contentAlignment = Alignment.Center,
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(4.dp)
-                .size(100.dp)
-                .background(color = color, shape = CircleShape)
-                .clip(CircleShape)
-        )
-        if (selected) {
-            Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = null,
-                tint = palette.Base,
             )
         }
     }

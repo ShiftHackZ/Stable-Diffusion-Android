@@ -39,6 +39,7 @@ fun AiSdAppTheme(
             CatppuccinTheme.Palette(
                 palette = colorTokenPalette(
                     token = state.colorToken,
+                    darkThemeToken = state.darkThemeToken,
                     isDark = isDark
                 ),
                 content = content,

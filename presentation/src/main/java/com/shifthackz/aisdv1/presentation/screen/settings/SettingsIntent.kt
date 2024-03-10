@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.screen.settings
 
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.domain.entity.ColorToken
+import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.android.core.mvi.MviIntent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -78,6 +79,8 @@ sealed interface SettingsIntent : MviIntent {
     }
 
     data class NewColorToken(val token: ColorToken) : SettingsIntent
+
+    data class NewDarkThemeToken(val token: DarkThemeToken) : SettingsIntent
 
     data object StoragePermissionGranted : SettingsIntent
 
