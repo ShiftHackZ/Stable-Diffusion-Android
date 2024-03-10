@@ -13,6 +13,7 @@ import com.shifthackz.aisdv1.network.api.openai.OpenAiApi
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApi
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApiImpl
 import com.shifthackz.aisdv1.network.api.sdai.HuggingFaceModelsApi
+import com.shifthackz.aisdv1.network.api.stabilityai.StabilityAiApi
 import com.shifthackz.aisdv1.network.authenticator.RestAuthenticator
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
@@ -143,6 +144,12 @@ val networkModule = module {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().openAiApiUrl)
             .create(OpenAiApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().stabilityAiApiUrl)
+            .create(StabilityAiApi::class.java)
     }
 
     singleOf(::ImageCdnRestApiImpl) bind ImageCdnRestApi::class

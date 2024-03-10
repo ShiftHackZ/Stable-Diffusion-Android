@@ -184,6 +184,7 @@ private fun ContentSettingsState(
                 ServerSource.HORDE -> R.string.srv_type_horde_short
                 ServerSource.HUGGING_FACE -> R.string.srv_type_hugging_face_short
                 ServerSource.OPEN_AI -> R.string.srv_type_open_ai
+                ServerSource.STABILITY_AI -> R.string.srv_type_stability_ai
                 ServerSource.LOCAL -> R.string.srv_type_local_short
             }.asUiText(),
             onClick = { processIntent(SettingsIntent.NavigateConfiguration) },

@@ -19,6 +19,7 @@ internal class GetConfigurationUseCaseImpl(
             openAiApiKey = preferenceManager.openAiApiKey,
             huggingFaceApiKey = preferenceManager.huggingFaceApiKey,
             huggingFaceModel = preferenceManager.huggingFaceModel,
+            stabilityAiApiKey = preferenceManager.stabilityAiApiKey,
             authCredentials = authorizationStore.getAuthorizationCredentials(),
             localModelId = preferenceManager.localModelId,
         )

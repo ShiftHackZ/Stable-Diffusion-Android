@@ -17,6 +17,8 @@ interface PreferenceManager {
     var openAiApiKey: String
     var huggingFaceApiKey: String
     var huggingFaceModel: String
+    var stabilityAiApiKey: String
+    var stabilityAiEngineId: String
     var forceSetupAfterUpdate: Boolean
     var localModelId: String
     var localUseNNAPI: Boolean

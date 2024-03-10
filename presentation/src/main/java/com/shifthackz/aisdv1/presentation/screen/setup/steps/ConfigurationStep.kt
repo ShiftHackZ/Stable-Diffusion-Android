@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.forms.HordeForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.HuggingFaceForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.LocalDiffusionForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.OpenAiForm
+import com.shifthackz.aisdv1.presentation.screen.setup.forms.StabilityAiForm
 
 @Composable
 fun ConfigurationStep(
@@ -43,6 +44,11 @@ fun ConfigurationStep(
             )
 
             ServerSource.OPEN_AI -> OpenAiForm(
+                state = state,
+                processIntent = processIntent,
+            )
+
+            ServerSource.STABILITY_AI -> StabilityAiForm(
                 state = state,
                 processIntent = processIntent,
             )

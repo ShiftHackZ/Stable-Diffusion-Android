@@ -68,6 +68,7 @@ fun ConfigurationModeButton(
                     ServerSource.AUTOMATIC1111 -> Icons.Default.Computer
                     ServerSource.HORDE,
                     ServerSource.OPEN_AI,
+                    ServerSource.STABILITY_AI,
                     ServerSource.HUGGING_FACE -> Icons.Default.Cloud
                     ServerSource.LOCAL -> Icons.Default.Android
                     else -> Icons.Default.QuestionMark
@@ -84,6 +85,7 @@ fun ConfigurationModeButton(
                     ServerSource.LOCAL -> R.string.srv_type_local
                     ServerSource.HUGGING_FACE -> R.string.srv_type_hugging_face
                     ServerSource.OPEN_AI -> R.string.srv_type_open_ai
+                    ServerSource.STABILITY_AI -> R.string.srv_type_stability_ai
                 }),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge,
@@ -95,6 +97,7 @@ fun ConfigurationModeButton(
             ServerSource.HUGGING_FACE -> R.string.hint_hugging_face_sub_title
             ServerSource.OPEN_AI -> R.string.hint_open_ai_sub_title
             ServerSource.LOCAL -> R.string.hint_local_diffusion_sub_title
+            ServerSource.STABILITY_AI -> R.string.hint_stability_ai_sub_title
         }
         descriptionId?.let { resId ->
             Text(

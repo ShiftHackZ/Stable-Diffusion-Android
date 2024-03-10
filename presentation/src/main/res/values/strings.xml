@@ -66,6 +66,7 @@
     <string name="srv_type_hugging_face" translatable="false">Hugging Face Inference</string>
     <string name="srv_type_hugging_face_short" translatable="false">HuggingFace</string>
     <string name="srv_type_open_ai" translatable="false">Open AI</string>
+    <string name="srv_type_stability_ai" translatable="false">Stability AI</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -118,6 +119,10 @@
     <string name="hint_open_ai_title">Connect to Open AI</string>
     <string name="hint_open_ai_sub_title">Open AI service allows to generate images with DALL·E models.</string>
     <string name="hint_open_ai_about">About Open AI</string>
+
+    <string name="hint_stability_ai_title">Connect to Stability AI</string>
+    <string name="hint_stability_ai_sub_title">StabilityAI is the image generation service provided by DreamStudio.</string>
+    <string name="hint_stability_ai_about">About Stability AI</string>
 
     <string name="hint_local_diffusion_title" translatable="false">Local Diffusion</string>
     <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>

@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
 import com.shifthackz.aisdv1.network.request.ImageToImageRequest
+import com.shifthackz.aisdv1.network.request.StabilityImageToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import java.util.Date
 
@@ -61,6 +62,24 @@ fun ImageToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest 
             this["num_inference_steps"] = samplingSteps
             this["guidance_scale"] = cfgScale
         }
+    )
+}
+
+fun ImageToImagePayload.mapToStabilityAiRequest(): StabilityImageToImageRequest = with(this) {
+    StabilityImageToImageRequest(
+        textPrompts = buildList {
+            addAll(prompt.mapToStabilityPrompt(1.0))
+            addAll(negativePrompt.mapToStabilityPrompt(-1.0))
+        },
+        initImage = base64Image,
+        initImageMode = "", //ToDO
+        imageStrength = denoisingStrength,
+        cfgScale = cfgScale,
+        clipGuidancePreset = "", //ToDO
+        sampler = sampler,
+        seed = seed.toLongOrNull()?.coerceIn(0L .. 4294967295L) ?: 0L,
+        steps = samplingSteps,
+        stylePreset = null, //ToDO
     )
 }
 

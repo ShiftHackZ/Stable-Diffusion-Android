@@ -199,6 +199,7 @@ fun GenerationInputForm(
                 }
 
                 ServerSource.AUTOMATIC1111,
+                ServerSource.STABILITY_AI,
                 ServerSource.HUGGING_FACE -> {
                     TextField(
                         modifier = localModifier.padding(end = 4.dp),

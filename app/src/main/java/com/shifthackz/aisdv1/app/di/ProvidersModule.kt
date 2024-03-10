@@ -44,6 +44,7 @@ val providersModule = module {
             override val huggingFaceApiUrl: String = BuildConfig.HUGGING_FACE_URL
             override val huggingFaceInferenceApiUrl = BuildConfig.HUGGING_FACE_INFERENCE_URL
             override val openAiApiUrl: String = BuildConfig.OPEN_AI_URL
+            override val stabilityAiApiUrl = BuildConfig.STABILITY_AI_URL
         }
     }
 
@@ -64,6 +65,11 @@ val providersModule = module {
 
                 ServerSource.OPEN_AI -> {
                     val key = "${NetworkPrefixes.BEARER} ${preference.openAiApiKey}"
+                    NetworkHeaders.AUTHORIZATION to key
+                }
+
+                ServerSource.STABILITY_AI -> {
+                    val key = "${NetworkPrefixes.BEARER} ${preference.stabilityAiApiKey}"
                     NetworkHeaders.AUTHORIZATION to key
                 }
 
@@ -94,6 +100,7 @@ val providersModule = module {
             override val hordeSignUpUrl: String = BuildConfig.HORDE_AI_SIGN_UP_URL
             override val huggingFaceUrl: String = BuildConfig.HUGGING_FACE_INFO_URL
             override val openAiInfoUrl: String = BuildConfig.OPEN_AI_INFO_URL
+            override val stabilityAiInfoUrl: String = BuildConfig.STABILITY_AI_INFO_URL
             override val privacyPolicyUrl: String = BuildConfig.POLICY_URL
             override val donateUrl: String = BuildConfig.DONATE_URL
             override val gitHubSourceUrl: String = BuildConfig.GITHUB_SOURCE_URL

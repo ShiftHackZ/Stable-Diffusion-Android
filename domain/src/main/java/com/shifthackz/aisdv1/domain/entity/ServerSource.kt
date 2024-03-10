@@ -41,6 +41,14 @@ enum class ServerSource(
             FeatureTag.Batch,
         ),
     ),
+    STABILITY_AI(
+        key = "stability_ai",
+        featureTags = setOf(
+            FeatureTag.Txt2Img,
+            FeatureTag.Img2Img,
+            FeatureTag.Batch,
+        ),
+    ),
     LOCAL(
         key = "local",
         featureTags = setOf(

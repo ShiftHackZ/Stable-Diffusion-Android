@@ -112,6 +112,20 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
+    override var stabilityAiApiKey: String
+        get() = preferences.getString(KEY_STABILITY_AI_API_KEY, "") ?: ""
+        set(value) = preferences.edit()
+            .putString(KEY_STABILITY_AI_API_KEY, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
+    override var stabilityAiEngineId: String
+        get() = preferences.getString(KEY_STABILITY_AI_ENGINE_ID_KEY, "") ?: ""
+        set(value) = preferences.edit()
+            .putString(KEY_STABILITY_AI_ENGINE_ID_KEY, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
     override var forceSetupAfterUpdate: Boolean
         get() = preferences.getBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, true)
         set(value) = preferences.edit()
@@ -203,6 +217,8 @@ class PreferenceManagerImpl(
         private const val KEY_OPEN_AI_API_KEY = "key_open_ai_api_key"
         private const val KEY_HUGGING_FACE_API_KEY = "key_hugging_face_api_key"
         private const val KEY_HUGGING_FACE_MODEL_KEY = "key_hugging_face_model_key"
+        private const val KEY_STABILITY_AI_API_KEY = "key_stability_ai_api_key"
+        private const val KEY_STABILITY_AI_ENGINE_ID_KEY = "key_stability_ai_engine_id_key"
         private const val KEY_LOCAL_NN_API = "key_local_nn_api"
         private const val KEY_LOCAL_MODEL_ID = "key_local_model_id"
         private const val KEY_DESIGN_DYNAMIC_COLORS = "key_design_dynamic_colors"

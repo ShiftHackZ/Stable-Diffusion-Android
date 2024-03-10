@@ -137,6 +137,7 @@ private fun ScreenContent(
                 when (state.mode) {
                     ServerSource.AUTOMATIC1111,
                     ServerSource.HORDE,
+                    ServerSource.STABILITY_AI,
                     ServerSource.HUGGING_FACE -> {
                         val scrollState = rememberScrollState()
                         Column(
