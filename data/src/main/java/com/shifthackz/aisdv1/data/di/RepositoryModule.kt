@@ -11,6 +11,8 @@ import com.shifthackz.aisdv1.data.repository.LocalDiffusionGenerationRepositoryI
 import com.shifthackz.aisdv1.data.repository.OpenAiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.RandomImageRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.ServerConfigurationRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.StabilityAiCreditsRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.StabilityAiEnginesRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StabilityAiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionEmbeddingsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionGenerationRepositoryImpl
@@ -29,6 +31,8 @@ import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepositor
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.RandomImageRepository
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
+import com.shifthackz.aisdv1.domain.repository.StabilityAiCreditsRepository
+import com.shifthackz.aisdv1.domain.repository.StabilityAiEnginesRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionEmbeddingsRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
@@ -57,6 +61,8 @@ val repositoryModule = module {
     factoryOf(::HuggingFaceGenerationRepositoryImpl) bind HuggingFaceGenerationRepository::class
     factoryOf(::OpenAiGenerationRepositoryImpl) bind OpenAiGenerationRepository::class
     factoryOf(::StabilityAiGenerationRepositoryImpl) bind StabilityAiGenerationRepository::class
+    factoryOf(::StabilityAiCreditsRepositoryImpl) bind StabilityAiCreditsRepository::class
+    factoryOf(::StabilityAiEnginesRepositoryImpl) bind StabilityAiEnginesRepository::class
     factoryOf(::StableDiffusionGenerationRepositoryImpl) bind StableDiffusionGenerationRepository::class
     factoryOf(::StableDiffusionModelsRepositoryImpl) bind StableDiffusionModelsRepository::class
     factoryOf(::StableDiffusionSamplersRepositoryImpl) bind StableDiffusionSamplersRepository::class

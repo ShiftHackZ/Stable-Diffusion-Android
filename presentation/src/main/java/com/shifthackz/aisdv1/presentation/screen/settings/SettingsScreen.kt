@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.AccountTree
 import androidx.compose.material.icons.filled.AutoFixNormal
+import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DarkMode
@@ -55,6 +56,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
+import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
@@ -188,6 +190,14 @@ private fun ContentSettingsState(
                 ServerSource.LOCAL -> R.string.srv_type_local_short
             }.asUiText(),
             onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
+        )
+        if (state.showStabilityAiCredits) SettingsItem(
+            modifier = itemModifier,
+            loading = state.loading,
+            enabled = false,
+            startIcon = Icons.Default.Circle,
+            text = R.string.settings_item_stability_ai_credits.asUiText(),
+            endValueText = state.stabilityAiCredits.roundTo(4).toString().asUiText(),
         )
         if (state.showSdModelSelector) SettingsItem(
             modifier = itemModifier,

@@ -11,6 +11,8 @@ import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.entity.StabilityAiSampler
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -32,6 +34,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.concurrent.TimeUnit
 
 abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviIntent, E : MviEffect> :
     MviRxViewModel<S, I, E>(), KoinComponent {
@@ -76,15 +79,20 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
             )
 
         !getStableDiffusionSamplersUseCase()
+            .delay(500L, TimeUnit.MILLISECONDS)
             .map { samplers -> samplers.map(StableDiffusionSampler::name) }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = ::errorLog,
                 onSuccess = { samplers ->
-                    updateGenerationState {
-                        it.copyState(
-                            availableSamplers = samplers,
-                            selectedSampler = samplers.firstOrNull() ?: "",
+                    updateGenerationState { state ->
+                        val allSamplers = when (state.mode) {
+                            ServerSource.STABILITY_AI -> StabilityAiSampler.entries.map { "$it" }
+                            else -> samplers
+                        }
+                        state.copyState(
+                            availableSamplers = allSamplers,
+                            selectedSampler = allSamplers.firstOrNull() ?: "",
                         )
                     }
                 }

@@ -5,6 +5,8 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
+import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
+import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.android.core.mvi.MviIntent
@@ -59,6 +61,12 @@ sealed interface GenerationMviIntent : MviIntent {
             data class Quality(val value: OpenAiQuality) : OpenAi
 
             data class Style(val value: OpenAiStyle) : OpenAi
+        }
+
+        sealed interface StabilityAi : Update {
+            data class Style(val value: StabilityAiStylePreset) : StabilityAi
+
+            data class ClipGuidance(val value: StabilityAiClipGuidance) : StabilityAi
         }
     }
 

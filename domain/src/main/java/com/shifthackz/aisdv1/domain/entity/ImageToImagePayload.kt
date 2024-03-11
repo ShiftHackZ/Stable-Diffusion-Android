@@ -16,4 +16,6 @@ data class ImageToImagePayload(
     val sampler: String,
     val nsfw: Boolean,
     val batchCount: Int,
+    val stabilityAiClipGuidance: StabilityAiClipGuidance?,
+    val stabilityAiStylePreset: StabilityAiStylePreset?,
 )

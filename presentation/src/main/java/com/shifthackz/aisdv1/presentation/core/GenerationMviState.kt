@@ -6,6 +6,8 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
+import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.android.core.mvi.MviState
 
@@ -27,6 +29,8 @@ abstract class GenerationMviState : MviState {
     abstract val subSeedStrength: Float
     abstract val selectedSampler: String
     abstract val availableSamplers: List<String>
+    abstract val selectedStylePreset: StabilityAiStylePreset
+    abstract val selectedClipGuidancePreset: StabilityAiClipGuidance
     abstract val openAiModel: OpenAiModel
     abstract val openAiSize: OpenAiSize
     abstract val openAiQuality: OpenAiQuality
@@ -68,6 +72,8 @@ abstract class GenerationMviState : MviState {
         subSeedStrength: Float = this.subSeedStrength,
         selectedSampler: String = this.selectedSampler,
         availableSamplers: List<String> = this.availableSamplers,
+        selectedStylePreset: StabilityAiStylePreset = this.selectedStylePreset,
+        selectedClipGuidancePreset: StabilityAiClipGuidance = this.selectedClipGuidancePreset,
         openAiModel: OpenAiModel = this.openAiModel,
         openAiSize: OpenAiSize = this.openAiSize,
         openAiQuality: OpenAiQuality = this.openAiQuality,

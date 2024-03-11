@@ -17,4 +17,6 @@ data class TextToImagePayload(
     val style: String?,
     val quality: String?,
     val openAiModel: OpenAiModel?,
+    val stabilityAiClipGuidance: StabilityAiClipGuidance?,
+    val stabilityAiStylePreset: StabilityAiStylePreset?,
 )

@@ -3,7 +3,8 @@ package com.shifthackz.aisdv1.network.api.stabilityai
 import com.shifthackz.aisdv1.network.model.StabilityAiEngineRaw
 import com.shifthackz.aisdv1.network.request.StabilityImageToImageRequest
 import com.shifthackz.aisdv1.network.request.StabilityTextToImageRequest
-import com.shifthackz.aisdv1.network.response.StabilityResponse
+import com.shifthackz.aisdv1.network.response.StabilityCreditsResponse
+import com.shifthackz.aisdv1.network.response.StabilityGenerationResponse
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.Body
@@ -18,8 +19,16 @@ interface StabilityAiApi {
      *
      * Documentation: https://platform.stability.ai/docs/api-reference/#tag/v1user
      */
-    @GET("/v1/user")
+    @GET("/v1/user/account")
     fun validateBearerToken(): Completable
+
+    /**
+     * Gets stability ai credits amount.
+     *
+     * Documentation: https://platform.stability.ai/docs/api-reference#tag/v1user/operation/userBalance
+     */
+    @GET("/v1/user/balance")
+    fun fetchCredits(): Single<StabilityCreditsResponse>
 
     /**
      * Gets a list of stability ai engines
@@ -38,7 +47,7 @@ interface StabilityAiApi {
     fun textToImage(
         @Path("engine_id") engineId: String,
         @Body request: StabilityTextToImageRequest,
-    ): Single<StabilityResponse>
+    ): Single<StabilityGenerationResponse>
 
     /**
      * Generates image to image
@@ -49,5 +58,5 @@ interface StabilityAiApi {
     fun imageToImage(
         @Path("engine_id") engineId: String,
         @Body request: StabilityImageToImageRequest,
-    ): Single<StabilityResponse>
+    ): Single<StabilityGenerationResponse>
 }

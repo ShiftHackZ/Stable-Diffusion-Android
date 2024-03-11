@@ -2,6 +2,8 @@ package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
+import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
+import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
 import com.shifthackz.aisdv1.network.request.ImageToImageRequest
@@ -72,14 +74,14 @@ fun ImageToImagePayload.mapToStabilityAiRequest(): StabilityImageToImageRequest 
             addAll(negativePrompt.mapToStabilityPrompt(-1.0))
         },
         initImage = base64Image,
-        initImageMode = "", //ToDO
+        initImageMode = "IMAGE_STRENGTH",
         imageStrength = denoisingStrength,
         cfgScale = cfgScale,
-        clipGuidancePreset = "", //ToDO
+        clipGuidancePreset = (stabilityAiClipGuidance ?: StabilityAiClipGuidance.NONE).toString(),
         sampler = sampler,
         seed = seed.toLongOrNull()?.coerceIn(0L .. 4294967295L) ?: 0L,
         steps = samplingSteps,
-        stylePreset = null, //ToDO
+        stylePreset = stabilityAiStylePreset?.takeIf { it != StabilityAiStylePreset.NONE }?.key,
     )
 }
 

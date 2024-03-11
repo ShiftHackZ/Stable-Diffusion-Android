@@ -21,6 +21,7 @@ internal class SetServerConfigurationUseCaseImpl(
             preferenceManager.huggingFaceApiKey = configuration.huggingFaceApiKey
             preferenceManager.huggingFaceModel = configuration.huggingFaceModel
             preferenceManager.stabilityAiApiKey = configuration.stabilityAiApiKey
+            preferenceManager.stabilityAiEngineId = configuration.stabilityAiEngineId
             preferenceManager.localModelId = configuration.localModelId
         }
 }

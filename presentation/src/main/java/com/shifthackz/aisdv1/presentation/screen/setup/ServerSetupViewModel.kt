@@ -66,6 +66,7 @@ class ServerSetupViewModel(
                         huggingFaceModel = configuration.huggingFaceModel,
                         huggingFaceApiKey = configuration.huggingFaceApiKey,
                         openAiApiKey = configuration.openAiApiKey,
+                        stabilityAiApiKey = configuration.stabilityAiApiKey,
                         localModels = localModels.mapToUi(),
                         localCustomModel = localModels.mapLocalCustomModelSwitchState(),
                         mode = configuration.source,

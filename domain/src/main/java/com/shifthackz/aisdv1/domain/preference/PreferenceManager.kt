@@ -13,6 +13,7 @@ interface PreferenceManager {
     var formAdvancedOptionsAlwaysShow: Boolean
     var formPromptTaggedInput: Boolean
     var source: ServerSource
+    var sdModel: String
     var hordeApiKey: String
     var openAiApiKey: String
     var huggingFaceApiKey: String

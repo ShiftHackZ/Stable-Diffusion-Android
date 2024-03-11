@@ -78,6 +78,12 @@ class PreferenceManagerImpl(
             .putString(KEY_SERVER_SOURCE, value.key)
             .apply()
             .also { onPreferencesChanged() }
+    override var sdModel: String
+        get() = preferences.getString(KEY_SD_MODEL, "") ?: ""
+        set(value) = preferences.edit()
+            .putString(KEY_SD_MODEL, value)
+            .apply()
+            .also { onPreferencesChanged() }
 
     override var hordeApiKey: String
         get() = preferences.getString(KEY_HORDE_API_KEY, "") ?: ""
@@ -131,12 +137,14 @@ class PreferenceManagerImpl(
         set(value) = preferences.edit()
             .putBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, value)
             .apply()
+            .also { onPreferencesChanged() }
 
     override var localModelId: String
         get() = preferences.getString(KEY_LOCAL_MODEL_ID, "") ?: ""
         set(value) = preferences.edit()
             .putString(KEY_LOCAL_MODEL_ID, value)
             .apply()
+            .also { onPreferencesChanged() }
 
     override var localUseNNAPI: Boolean
         get() = preferences.getBoolean(KEY_LOCAL_NN_API, false)
@@ -185,6 +193,7 @@ class PreferenceManagerImpl(
         .map {
             Settings(
                 serverUrl = serverUrl,
+                sdModel = sdModel,
                 demoMode = demoMode,
                 monitorConnectivity = monitorConnectivity,
                 autoSaveAiResults = autoSaveAiResults,
@@ -213,6 +222,7 @@ class PreferenceManagerImpl(
         private const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
         private const val KEY_FORM_PROMPT_TAGGED_INPUT = "key_prompt_tagged_input"
         private const val KEY_SERVER_SOURCE = "key_server_source"
+        private const val KEY_SD_MODEL = "key_sd_model"
         private const val KEY_HORDE_API_KEY = "key_horde_api_key"
         private const val KEY_OPEN_AI_API_KEY = "key_open_ai_api_key"
         private const val KEY_HUGGING_FACE_API_KEY = "key_hugging_face_api_key"

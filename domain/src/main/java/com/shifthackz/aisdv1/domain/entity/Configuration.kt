@@ -11,6 +11,7 @@ data class Configuration(
     val huggingFaceApiKey: String,
     val huggingFaceModel: String,
     val stabilityAiApiKey: String,
+    val stabilityAiEngineId: String,
     val authCredentials: AuthorizationCredentials,
     val localModelId: String,
 )

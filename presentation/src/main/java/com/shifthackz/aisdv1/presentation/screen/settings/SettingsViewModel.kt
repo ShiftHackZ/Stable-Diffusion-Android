@@ -4,16 +4,17 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.model.Quadruple
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
-import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.stabilityai.ObserveStabilityAiCreditsUseCase
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
@@ -22,6 +23,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class SettingsViewModel(
     getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
+    observeStabilityAiCreditsUseCase: ObserveStabilityAiCreditsUseCase,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
     private val clearAppCacheUseCase: ClearAppCacheUseCase,
     private val schedulersProvider: SchedulersProvider,
@@ -43,36 +45,39 @@ class SettingsViewModel(
             appVersionProducer,
             sdModelsProducer,
             preferenceManager.observe(),
-            ::Triple,
+            observeStabilityAiCreditsUseCase(),
+            ::Quadruple,
         )
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog, EmptyLambda) { (version, modelData, settings) ->
-                updateState { state ->
-                    state.copy(
-                        loading = false,
-                        serverSource = settings.source,
-                        sdModels = modelData.map { (model, _) -> model.title },
-                        sdModelSelected = modelData.firstOrNull { it.second }?.first?.title ?: "",
-                        localUseNNAPI = settings.localUseNNAPI,
-                        monitorConnectivity = settings.monitorConnectivity,
-                        autoSaveAiResults = settings.autoSaveAiResults,
-                        saveToMediaStore = settings.saveToMediaStore,
-                        formAdvancedOptionsAlwaysShow = settings.formAdvancedOptionsAlwaysShow,
-                        formPromptTaggedInput = settings.formPromptTaggedInput,
-                        useSystemColorPalette = settings.designUseSystemColorPalette,
-                        useSystemDarkTheme = settings.designUseSystemDarkTheme,
-                        darkTheme = settings.designDarkTheme,
-                        colorToken = ColorToken.parse(settings.designColorToken),
-                        darkThemeToken = DarkThemeToken.parse(settings.designDarkThemeToken),
-                        appVersion = version,
-                        showLocalUseNNAPI = settings.source == ServerSource.LOCAL,
-                        showSdModelSelector = settings.source == ServerSource.AUTOMATIC1111,
-                        showMonitorConnectionOption = settings.source == ServerSource.AUTOMATIC1111,
-                        showFormAdvancedOption = settings.source != ServerSource.OPEN_AI,
-                        showUseSystemColorPalette = false,//Build.VERSION.SDK_INT >= Build.VERSION_CODES.S,
-                    )
-                }
-            }
+            .subscribeBy(
+                onError = ::errorLog,
+                onComplete = EmptyLambda,
+                onNext = { (version, modelData, settings, credits) ->
+                    updateState { state ->
+                        state.copy(
+                            loading = false,
+                            serverSource = settings.source,
+                            sdModels = modelData.map { (model, _) -> model.title },
+                            sdModelSelected = settings.sdModel.takeIf(String::isNotBlank)
+                                ?: modelData.firstOrNull { it.second }?.first?.title
+                                ?: "",
+                            stabilityAiCredits = credits,
+                            localUseNNAPI = settings.localUseNNAPI,
+                            monitorConnectivity = settings.monitorConnectivity,
+                            autoSaveAiResults = settings.autoSaveAiResults,
+                            saveToMediaStore = settings.saveToMediaStore,
+                            formAdvancedOptionsAlwaysShow = settings.formAdvancedOptionsAlwaysShow,
+                            formPromptTaggedInput = settings.formPromptTaggedInput,
+                            useSystemColorPalette = settings.designUseSystemColorPalette,
+                            useSystemDarkTheme = settings.designUseSystemDarkTheme,
+                            darkTheme = settings.designDarkTheme,
+                            colorToken = ColorToken.parse(settings.designColorToken),
+                            darkThemeToken = DarkThemeToken.parse(settings.designDarkThemeToken),
+                            appVersion = version,
+                        )
+                    }
+                },
+            )
     }
 
     override fun processIntent(intent: SettingsIntent) {

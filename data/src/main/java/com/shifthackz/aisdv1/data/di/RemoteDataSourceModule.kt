@@ -11,6 +11,8 @@ import com.shifthackz.aisdv1.data.remote.HuggingFaceModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.OpenAiGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.RandomImageRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.ServerConfigurationRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.StabilityAiCreditsRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.StabilityAiEnginesRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StabilityAiGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionEmbeddingsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionGenerationRemoteDataSource
@@ -25,6 +27,8 @@ import com.shifthackz.aisdv1.domain.datasource.HuggingFaceModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.OpenAiGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.RandomImageDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
+import com.shifthackz.aisdv1.domain.datasource.StabilityAiCreditsDataSource
+import com.shifthackz.aisdv1.domain.datasource.StabilityAiEnginesDataSource
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionEmbeddingsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
@@ -68,6 +72,8 @@ val remoteDataSourceModule = module {
     factoryOf(::DownloadableModelRemoteDataSource) bind DownloadableModelDataSource.Remote::class
     factoryOf(::HuggingFaceModelsRemoteDataSource) bind HuggingFaceModelsDataSource.Remote::class
     factoryOf(::StabilityAiGenerationRemoteDataSource) bind StabilityAiGenerationDataSource.Remote::class
+    factoryOf(::StabilityAiCreditsRemoteDataSource) bind StabilityAiCreditsDataSource.Remote::class
+    factoryOf(::StabilityAiEnginesRemoteDataSource) bind StabilityAiEnginesDataSource.Remote::class
 
     factory<ServerConnectivityGateway> {
         val lambda: () -> Boolean = {

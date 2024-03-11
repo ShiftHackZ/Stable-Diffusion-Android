@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.domain.entity
 
 data class Settings(
     val serverUrl: String,
+    val sdModel: String,
     val demoMode: Boolean,
     val monitorConnectivity: Boolean,
     val autoSaveAiResults: Boolean,

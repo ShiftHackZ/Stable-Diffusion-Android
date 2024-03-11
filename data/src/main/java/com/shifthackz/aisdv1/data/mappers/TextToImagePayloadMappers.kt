@@ -2,6 +2,8 @@ package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
+import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
+import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
@@ -82,9 +84,11 @@ fun TextToImagePayload.mapToStabilityAiRequest(): StabilityTextToImageRequest = 
             addAll(negativePrompt.mapToStabilityPrompt(-1.0))
         },
         cfgScale = cfgScale,
+        clipGuidancePreset = (stabilityAiClipGuidance ?: StabilityAiClipGuidance.NONE).toString(),
         sampler = sampler,
         seed = seed.toLongOrNull()?.coerceIn(0L .. 4294967295L) ?: 0L,
         steps = samplingSteps,
+        stylePreset = stabilityAiStylePreset?.takeIf { it != StabilityAiStylePreset.NONE }?.key,
     )
 }
 

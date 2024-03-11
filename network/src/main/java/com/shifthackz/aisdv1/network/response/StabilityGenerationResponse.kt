@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.network.response
 
 import com.google.gson.annotations.SerializedName
 
-data class StabilityResponse(
+data class StabilityGenerationResponse(
     @SerializedName("artifacts")
     val artifacts: List<Artifact>?,
 ) {

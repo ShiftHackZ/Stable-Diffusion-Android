@@ -90,6 +90,10 @@ import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCa
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.stabilityai.FetchAndGetStabilityAiEnginesUseCase
+import com.shifthackz.aisdv1.domain.usecase.stabilityai.FetchAndGetStabilityAiEnginesUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.stabilityai.ObserveStabilityAiCreditsUseCase
+import com.shifthackz.aisdv1.domain.usecase.stabilityai.ObserveStabilityAiCreditsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.wakelock.AcquireWakelockUseCase
 import com.shifthackz.aisdv1.domain.usecase.wakelock.AcquireWakelockUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.wakelock.ReleaseWakeLockUseCase
@@ -143,6 +147,8 @@ internal val useCasesModule = module {
     factoryOf(::ConnectToOpenAiUseCaseImpl) bind ConnectToOpenAiUseCase::class
     factoryOf(::ConnectToStabilityAiUseCaseImpl) bind ConnectToStabilityAiUseCase::class
     factoryOf(::FetchAndGetHuggingFaceModelsUseCaseImpl) bind FetchAndGetHuggingFaceModelsUseCase::class
+    factoryOf(::ObserveStabilityAiCreditsUseCaseImpl) bind ObserveStabilityAiCreditsUseCase::class
+    factoryOf(::FetchAndGetStabilityAiEnginesUseCaseImpl) bind FetchAndGetStabilityAiEnginesUseCase::class
 }
 
 internal val interActorsModule = module {
