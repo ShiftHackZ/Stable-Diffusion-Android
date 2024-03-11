@@ -18,6 +18,7 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
 - Can use server environment powered by [Stable-Diffusion-WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) (AUTOMATIC1111)
 - Can use server envitonment powered by [Hugging Face Inference API](https://huggingface.co/docs/api-inference/quicktour).
 - Can use server environment powered by [OpenAI](https://platform.openai.com/docs/api-reference/images) (DALL-E-2, DALL-E-3).
+- Can use server environment powered by [Stability AI](https://platform.stability.ai/).
 - Can use local environment powered by LocalDiffusion (Beta)
 - Supports original Txt2Img, Img2Img modes
   - **Positive** and **negative** prompt support
@@ -30,6 +31,12 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
   - ( Img2Img ONLY ) : Image selection from device gallery _(requires user permission)_
   - ( Img2Img ONLY ) : Capture input image from camera _(requires user permission)_
   - ( Img2Img ONLY ) : Fetching random image for the input
+  - ( Img2Img ONLY ) : Inpaint (for A1111)
+    - Mask blur (1 to 64)
+    - Mask mode (Masked, not masked)
+    - Masked content (Fill, Original, Latent noise, Latent nothing)
+    - Inpaint area (Whole picture, only masked)
+    - Only maked padding (0 to 256 px)
   - Batch generation with maximum of 20 images (for A1111 and Horde)
   - Lora picker (for A1111)
   - Textual inversion picker (for A1111)
@@ -81,7 +88,13 @@ OpenAI provides a service for text to image generation using [DALLE-2](https://o
 
 OpenAI requires to use API KEY, which can be created in [OpenAI API Key settings](https://platform.openai.com/api-keys).
 
-### Option 5: Local Diffusion (Beta)
+### Option 5: StabilityAI
+
+[StabilityAI](https://platform.stability.ai/) is the image generation service provided by DreamStudio.
+
+StabilityAI requires to use API KEY, which can be created in [API Keys page](https://platform.stability.ai/account/keys).
+
+### Option 6: Local Diffusion (Beta)
 
 Only **txt2img** mode is supported.
 
