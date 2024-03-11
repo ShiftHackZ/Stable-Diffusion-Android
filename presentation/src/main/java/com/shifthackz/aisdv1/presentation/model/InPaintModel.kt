@@ -32,4 +32,10 @@ data class InPaintModel(
         WholePicture(true),
         OnlyMasked(false);
     }
+
+    fun clear(): InPaintModel = copy(
+        paths = emptyList(),
+        bitmap = null,
+        base64 = "",
+    )
 }

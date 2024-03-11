@@ -63,13 +63,7 @@ class ImageToImageViewModel(
     override fun processIntent(intent: GenerationMviIntent) {
         when (intent) {
             ImageToImageIntent.ClearImageInput -> updateState {
-                inPaintStateProducer.updateInPaint(
-                    it.inPaintModel.copy(
-                        paths = emptyList(),
-                        bitmap = null,
-                        base64 = "",
-                    ),
-                )
+                inPaintStateProducer.updateInPaint(it.inPaintModel.clear())
                 it.copy(imageState = ImageToImageState.ImageState.None)
             }
 
@@ -91,13 +85,7 @@ class ImageToImageViewModel(
                         onSuccess = { bitmap ->
                             setActiveModal(Modal.None)
                             updateState { state ->
-                                inPaintStateProducer.updateInPaint(
-                                    state.inPaintModel.copy(
-                                        paths = emptyList(),
-                                        bitmap = null,
-                                        base64 = "",
-                                    )
-                                )
+                                inPaintStateProducer.updateInPaint(state.inPaintModel.clear())
                                 state.copy(imageState = ImageToImageState.ImageState.Image(bitmap))
                             }
                         },
@@ -144,7 +132,6 @@ class ImageToImageViewModel(
                     currentState.inPaintModel.bitmap,
                 )
             )
-
             .doOnSubscribe {
                 wakeLockInterActor.acquireWakelockUseCase()
                 setActiveModal(Modal.Communicating())
@@ -213,7 +200,12 @@ class ImageToImageViewModel(
             .subscribeBy(
                 onError = ::errorLog,
                 onSuccess = { imageState ->
-                    updateState { it.copy(imageState = imageState) }
+                    updateState { state ->
+                        state.copy(
+                            imageState = imageState,
+                            inPaintModel = state.inPaintModel.clear(),
+                        )
+                    }
                 }
             )
 

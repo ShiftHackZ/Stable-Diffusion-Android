@@ -154,7 +154,6 @@
     <string name="title_txt_inversion">Textual Inversion</string>
     <string name="title_txt_inversion_short">Inversion</string>
     <string name="title_tag_edit">Edit tag</string>
-    <string name="title_image_crop">Crop image</string>
 
     <string name="gallery_media_store_banner">You have %1$s photos saved in Download/SDAI</string>
     <string name="gallery_info_field_date">Created</string>
@@ -270,7 +269,7 @@
     <string name="extras_empty_sub_title_hypernet">Add some content on AUTOMATIC1111 server to: \n\n../models/hypernetworks</string>
     <string name="extras_empty_sub_title_embedding">Add some content on AUTOMATIC1111 server to: \n\n../embeddings</string>
 
-    <string name="in_paint_title">Inpaint</string>
+    <string name="in_paint_title" translatable="false">Inpaint</string>
     <string name="in_paint_tab_1">Draw</string>
     <string name="in_paint_tab_2">Adjust</string>
 

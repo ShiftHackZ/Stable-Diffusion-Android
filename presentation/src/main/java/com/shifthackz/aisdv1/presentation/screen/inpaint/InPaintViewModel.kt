@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.android.core.mvi.EmptyEffect
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
@@ -14,7 +15,7 @@ class InPaintViewModel(
     schedulersProvider: SchedulersProvider,
     private val stateProducer: InPaintStateProducer,
     private val mainRouter: MainRouter,
-) : MviRxViewModel<InPaintState, InPaintIntent, InPaintEffect>() {
+) : MviRxViewModel<InPaintState, InPaintIntent, EmptyEffect>() {
 
     override val initialState = InPaintState()
 

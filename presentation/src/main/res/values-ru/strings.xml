@@ -43,6 +43,8 @@
     <string name="action_save">Сохранить</string>
     <string name="action_update">Обновить</string>
     <string name="action_skip">Пропустить</string>
+    <string name="action_undo">Отменить</string>
+    <string name="action_clear">Очистить</string>
     <string name="action_options_show">Показать все опции</string>
     <string name="action_options_hide">Скрыть все опции</string>
     <string name="action_image_picker_gallery">Выбрать фото</string>
@@ -77,7 +79,12 @@
     <string name="hint_quality">Качество</string>
     <string name="hint_style">Стиль</string>
     <string name="hint_tag">Тег</string>
-    <string name="hint_value">Значения</string>
+    <string name="hint_value">Значение</string>
+    <string name="hint_mask_blur">Блюр маски: %1$s</string>
+    <string name="hint_only_masked_padding">Отступы (только маска): %1$s px</string>
+    <string name="hint_mask_mode">Режим маски</string>
+    <string name="hint_mask_content">Контент маски</string>
+    <string name="hint_in_paint_area">Область Inpaint</string>
 
     <string name="auth_anonymous">Анонимно</string>
     <string name="auth_http_basic">HTTP Базовая</string>
@@ -198,6 +205,9 @@
     <string name="interaction_delete_local_model_title">Удалить модель</string>
     <string name="interaction_delete_local_model_sub_title">Вы уверены, что хотите удалить модель "%1$s"?</string>
 
+    <string name="interaction_in_paint_clear_title">Очистить зарисовки</string>
+    <string name="interaction_in_paint_clear_sub_title">Вы уверены что хотите очистить зарисовки?</string>
+
     <string name="gallery_empty_title">Здесь еще ничего нет…</string>
     <string name="gallery_empty_sub_title">Попытайтесь создать что-то, и вы увидите свое изображение здесь!</string>
 
@@ -238,4 +248,18 @@
     <string name="extras_empty_sub_title_lora">Добавьте что-нибуть на AUTOMATIC1111 сервере в: \n\n../models/Lora</string>
     <string name="extras_empty_sub_title_hypernet">Добавьте что-нибуть на AUTOMATIC1111 сервере в: \n\n../models/hypernetworks</string>
     <string name="extras_empty_sub_title_embedding">Добавьте что-нибуть на AUTOMATIC1111 сервере в: \n\n../embeddings</string>
+
+    <string name="in_paint_tab_1">Зарисовка</string>
+    <string name="in_paint_tab_2">Регулировка</string>
+
+    <string name="in_paint_mode_masked">Inpaint в маске</string>
+    <string name="in_paint_mode_not_masked">Inpaint вне маски</string>
+
+    <string name="in_paint_mask_content_fill">Заполнение</string>
+    <string name="in_paint_mask_content_original">Оригинал</string>
+    <string name="in_paint_mask_content_latent_noise">Скрытый шум</string>
+    <string name="in_paint_mask_content_latent_nothing">Без скрытия</string>
+
+    <string name="in_paint_area_whole">Вся картинка</string>
+    <string name="in_paint_area_only_masked">Только маска</string>
 </resources>
