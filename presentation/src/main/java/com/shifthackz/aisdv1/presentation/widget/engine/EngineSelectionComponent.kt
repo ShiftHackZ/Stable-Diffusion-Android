@@ -15,6 +15,7 @@ fun EngineSelectionComponent(
 ) {
     MviComponent(
         viewModel = koinViewModel<EngineSelectionViewModel>(),
+        applySystemUiColors = false,
     ) { state, intentHandler ->
         when (state.mode) {
             ServerSource.AUTOMATIC1111 -> DropdownTextField(
