@@ -64,6 +64,8 @@
     <string name="hint_offline_generation">Генерація без інтернету</string>
     <string name="hint_cfg_scale">CFG Шкала: %1$s</string>
     <string name="hint_sampler">Метод вибірки</string>
+    <string name="hint_style_preset">Стиль</string>
+    <string name="hint_clip_guidance_preset">Кліпінг пресет</string>
     <string name="hint_restore_faces">Відновлення обличч</string>
     <string name="hint_seed">Seed ідентифікатор</string>
     <string name="hint_sub_seed">Seed варіації</string>
