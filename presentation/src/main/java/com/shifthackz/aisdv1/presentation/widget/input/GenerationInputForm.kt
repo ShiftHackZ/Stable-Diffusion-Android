@@ -139,20 +139,22 @@ fun GenerationInputForm(
     }
 
     Column(modifier = modifier) {
-        if (state.mode == ServerSource.OPEN_AI) {
-            DropdownTextField(
+        when (state.mode) {
+            ServerSource.AUTOMATIC1111,
+            ServerSource.STABILITY_AI,
+            ServerSource.HUGGING_FACE -> EngineSelectionComponent(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+            )
+            ServerSource.OPEN_AI -> DropdownTextField(
                 modifier = Modifier.padding(top = 8.dp),
                 label = R.string.hint_model_open_ai.asUiText(),
                 value = state.openAiModel,
                 items = OpenAiModel.entries,
                 onItemSelected = { processIntent(GenerationMviIntent.Update.OpenAi.Model(it)) },
             )
-        } else {
-            EngineSelectionComponent(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-            )
+            else -> Unit
         }
         if (state.formPromptTaggedInput) {
             ChipTextFieldWithItem(
