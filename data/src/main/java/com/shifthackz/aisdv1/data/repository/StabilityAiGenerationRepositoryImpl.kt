@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.data.repository
 
+import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
@@ -12,10 +13,11 @@ import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 import io.reactivex.rxjava3.core.Single
+import java.io.ByteArrayOutputStream
 
 internal class StabilityAiGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
-    base64ToBitmapConverter: Base64ToBitmapConverter,
+    private val base64ToBitmapConverter: Base64ToBitmapConverter,
     localDataSource: GenerationResultDataSource.Local,
     private val preferenceManager: PreferenceManager,
     private val generationRds: StabilityAiGenerationDataSource.Remote,
@@ -35,10 +37,26 @@ internal class StabilityAiGenerationRepositoryImpl(
         .flatMap(::insertGenerationResult)
         .flatMap(::refreshCredits)
 
-    override fun generateFromImage(payload: ImageToImagePayload) = generationRds
-        .imageToImage(preferenceManager.stabilityAiEngineId, payload)
+    override fun generateFromImage(payload: ImageToImagePayload) = payload
+        .base64Image
+        .let(Base64ToBitmapConverter::Input)
+        .let(base64ToBitmapConverter::invoke)
+        .map(Base64ToBitmapConverter.Output::bitmap)
+        .map { bmp ->
+            val stream = ByteArrayOutputStream()
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            stream.toByteArray()
+        }
+        .flatMap { bytes ->
+            generationRds.imageToImage(
+                engineId = preferenceManager.stabilityAiEngineId,
+                payload = payload,
+                imageBytes = bytes,
+            )
+        }
         .flatMap(::insertGenerationResult)
         .flatMap(::refreshCredits)
+
 
     private fun refreshCredits(ai: AiGenerationResult) = creditsRds
         .fetch()

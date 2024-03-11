@@ -15,7 +15,7 @@ data class StabilityTextToImageRequest(
     @SerializedName("clip_guidance_preset")
     val clipGuidancePreset: String,
     @SerializedName("sampler")
-    val sampler: String,
+    val sampler: String?,
     @SerializedName("seed")
     val seed: Long,
     @SerializedName("steps")

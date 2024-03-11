@@ -1,12 +1,12 @@
 package com.shifthackz.aisdv1.network.api.stabilityai
 
 import com.shifthackz.aisdv1.network.model.StabilityAiEngineRaw
-import com.shifthackz.aisdv1.network.request.StabilityImageToImageRequest
 import com.shifthackz.aisdv1.network.request.StabilityTextToImageRequest
 import com.shifthackz.aisdv1.network.response.StabilityCreditsResponse
 import com.shifthackz.aisdv1.network.response.StabilityGenerationResponse
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -57,6 +57,6 @@ interface StabilityAiApi {
     @POST("/v1/generation/{engine_id}/image-to-image")
     fun imageToImage(
         @Path("engine_id") engineId: String,
-        @Body request: StabilityImageToImageRequest,
+        @Body body: RequestBody,
     ): Single<StabilityGenerationResponse>
 }

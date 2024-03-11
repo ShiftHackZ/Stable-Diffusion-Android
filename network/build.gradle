@@ -17,7 +17,7 @@ dependencies {
     implementation retrofit.core
     implementation retrofit.converterGson
     implementation retrofit.adapterRx
-    implementation okhttp.core
+    api okhttp.core
     implementation okhttp.logging
     implementation di.koinCore
     implementation reactive.rxkotlin

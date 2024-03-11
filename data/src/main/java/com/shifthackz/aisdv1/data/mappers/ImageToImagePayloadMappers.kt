@@ -7,7 +7,6 @@ import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
 import com.shifthackz.aisdv1.network.request.ImageToImageRequest
-import com.shifthackz.aisdv1.network.request.StabilityImageToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import java.util.Date
 
@@ -67,22 +66,24 @@ fun ImageToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest 
     )
 }
 
-fun ImageToImagePayload.mapToStabilityAiRequest(): StabilityImageToImageRequest = with(this) {
-    StabilityImageToImageRequest(
-        textPrompts = buildList {
+fun ImageToImagePayload.mapToStabilityAiRequest() = with(this) {
+    buildMap {
+        buildList {
             addAll(prompt.mapToStabilityPrompt(1.0))
             addAll(negativePrompt.mapToStabilityPrompt(-1.0))
-        },
-        initImage = base64Image,
-        initImageMode = "IMAGE_STRENGTH",
-        imageStrength = denoisingStrength,
-        cfgScale = cfgScale,
-        clipGuidancePreset = (stabilityAiClipGuidance ?: StabilityAiClipGuidance.NONE).toString(),
-        sampler = sampler,
-        seed = seed.toLongOrNull()?.coerceIn(0L .. 4294967295L) ?: 0L,
-        steps = samplingSteps,
-        stylePreset = stabilityAiStylePreset?.takeIf { it != StabilityAiStylePreset.NONE }?.key,
-    )
+        }.forEachIndexed { index, stpRaw ->
+            this["text_prompts[$index][text]"] = stpRaw.text
+            this["text_prompts[$index][weight]"] = stpRaw.weight.toString()
+        }
+        this["image_strength"] = "$denoisingStrength"
+        this["cfg_scale"] = "$cfgScale"
+        this["clip_guidance_preset"] = (stabilityAiClipGuidance ?: StabilityAiClipGuidance.NONE).toString()
+        this["seed"] = (seed.toLongOrNull()?.coerceIn(0L .. 4294967295L) ?: 0L).toString()
+        this["steps"] = "$samplingSteps"
+        stabilityAiStylePreset?.takeIf { it != StabilityAiStylePreset.NONE }?.key?.let {
+            this["style_preset"] = it
+        }
+    }
 }
 
 fun Pair<ImageToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerationResult =

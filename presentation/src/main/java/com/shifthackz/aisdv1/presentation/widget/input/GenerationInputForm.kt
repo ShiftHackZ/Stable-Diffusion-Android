@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.widget.input
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -63,6 +64,7 @@ import kotlin.random.Random
 fun GenerationInputForm(
     modifier: Modifier = Modifier,
     state: GenerationMviState,
+    isImg2Img: Boolean = false,
     promptChipTextFieldState: MutableState<TextFieldValue>,
     negativePromptChipTextFieldState: MutableState<TextFieldValue>,
     processIntent: (GenerationMviIntent) -> Unit = {},
@@ -83,6 +85,56 @@ fun GenerationInputForm(
             steps = abs(BATCH_RANGE_MIN - BATCH_RANGE_MAX) - 1,
             colors = sliderColors,
             onValueChange = { processIntent(GenerationMviIntent.Update.Batch(it.roundToInt())) },
+        )
+    }
+
+    @Composable
+    fun RowScope.sizeTextFieldsComponent(modifier: Modifier = Modifier) {
+        TextField(
+            modifier = modifier.padding(end = 4.dp),
+            value = state.width,
+            onValueChange = { value ->
+                if (value.length <= 4) {
+                    value
+                        .filter { it.isDigit() }
+                        .let(GenerationMviIntent.Update.Size::Width)
+                        .let(processIntent::invoke)
+                }
+            },
+            isError = state.widthValidationError != null,
+            supportingText = {
+                state.widthValidationError?.let {
+                    Text(
+                        it.asString(),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            label = { Text(stringResource(id = R.string.width)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        TextField(
+            modifier = modifier.padding(start = 4.dp),
+            value = state.height,
+            onValueChange = { value ->
+                if (value.length <= 4) {
+                    value
+                        .filter { it.isDigit() }
+                        .let(GenerationMviIntent.Update.Size::Height)
+                        .let(processIntent::invoke)
+                }
+            },
+            isError = state.heightValidationError != null,
+            supportingText = {
+                state.heightValidationError?.let {
+                    Text(
+                        it.asString(),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            label = { Text(stringResource(id = R.string.height)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
     }
 
@@ -210,54 +262,13 @@ fun GenerationInputForm(
                 }
 
                 ServerSource.AUTOMATIC1111,
-                ServerSource.STABILITY_AI,
                 ServerSource.HUGGING_FACE -> {
-                    TextField(
-                        modifier = localModifier.padding(end = 4.dp),
-                        value = state.width,
-                        onValueChange = { value ->
-                            if (value.length <= 4) {
-                                value
-                                    .filter { it.isDigit() }
-                                    .let(GenerationMviIntent.Update.Size::Width)
-                                    .let(processIntent::invoke)
-                            }
-                        },
-                        isError = state.widthValidationError != null,
-                        supportingText = {
-                            state.widthValidationError?.let {
-                                Text(
-                                    it.asString(),
-                                    color = MaterialTheme.colorScheme.error
-                                )
-                            }
-                        },
-                        label = { Text(stringResource(id = R.string.width)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    )
-                    TextField(
-                        modifier = localModifier.padding(start = 4.dp),
-                        value = state.height,
-                        onValueChange = { value ->
-                            if (value.length <= 4) {
-                                value
-                                    .filter { it.isDigit() }
-                                    .let(GenerationMviIntent.Update.Size::Height)
-                                    .let(processIntent::invoke)
-                            }
-                        },
-                        isError = state.heightValidationError != null,
-                        supportingText = {
-                            state.heightValidationError?.let {
-                                Text(
-                                    it.asString(),
-                                    color = MaterialTheme.colorScheme.error
-                                )
-                            }
-                        },
-                        label = { Text(stringResource(id = R.string.height)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    )
+                    sizeTextFieldsComponent(localModifier)
+                }
+
+                ServerSource.STABILITY_AI -> {
+                    if (isImg2Img) Unit
+                    else sizeTextFieldsComponent(localModifier)
                 }
 
                 ServerSource.OPEN_AI -> {
@@ -271,6 +282,7 @@ fun GenerationInputForm(
                         displayDelegate = { it.key.asUiText() },
                     )
                 }
+
             }
         }
 
@@ -508,6 +520,7 @@ fun GenerationInputForm(
 
                 when (state.mode) {
                     ServerSource.AUTOMATIC1111,
+                    ServerSource.STABILITY_AI,
                     ServerSource.HORDE -> afterSlidersSection()
 
                     else -> Unit

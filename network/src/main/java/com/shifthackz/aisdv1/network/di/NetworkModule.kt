@@ -16,6 +16,7 @@ import com.shifthackz.aisdv1.network.api.sdai.HuggingFaceModelsApi
 import com.shifthackz.aisdv1.network.api.stabilityai.StabilityAiApi
 import com.shifthackz.aisdv1.network.authenticator.RestAuthenticator
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
+import com.shifthackz.aisdv1.network.error.StabilityAiErrorMapper
 import com.shifthackz.aisdv1.network.extensions.withBaseUrl
 import com.shifthackz.aisdv1.network.interceptor.HeaderInterceptor
 import com.shifthackz.aisdv1.network.interceptor.LoggingInterceptor
@@ -159,4 +160,6 @@ val networkModule = module {
     factory {params ->
         ConnectivityMonitor(params.get())
     }
+
+    factory { StabilityAiErrorMapper(get()) }
 }

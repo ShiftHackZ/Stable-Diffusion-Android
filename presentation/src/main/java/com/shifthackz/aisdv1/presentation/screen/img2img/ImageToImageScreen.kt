@@ -155,6 +155,7 @@ private fun ScreenContent(
                             )
                             GenerationInputForm(
                                 state = state,
+                                isImg2Img = true,
                                 processIntent = processIntent,
                                 promptChipTextFieldState = promptChipTextFieldState,
                                 negativePromptChipTextFieldState = negativePromptChipTextFieldState,
