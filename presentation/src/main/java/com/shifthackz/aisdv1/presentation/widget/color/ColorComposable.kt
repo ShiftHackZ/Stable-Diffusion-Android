@@ -45,7 +45,7 @@ fun <T : Any> ColorComposable(
         Box(
             modifier = Modifier
                 .padding(borderSize)
-                .size(100.dp)
+                .size(1000.dp)
                 .background(color = color, shape = CircleShape)
                 .clip(CircleShape)
         )

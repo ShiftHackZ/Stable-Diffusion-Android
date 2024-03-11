@@ -137,6 +137,7 @@ private fun ScreenContent(
                 when (state.mode) {
                     ServerSource.AUTOMATIC1111,
                     ServerSource.HORDE,
+                    ServerSource.STABILITY_AI,
                     ServerSource.HUGGING_FACE -> {
                         val scrollState = rememberScrollState()
                         Column(
@@ -152,6 +153,7 @@ private fun ScreenContent(
                             GenerationInputForm(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 state = state,
+                                isImg2Img = true,
                                 processIntent = processIntent,
                                 promptChipTextFieldState = promptChipTextFieldState,
                                 negativePromptChipTextFieldState = negativePromptChipTextFieldState,

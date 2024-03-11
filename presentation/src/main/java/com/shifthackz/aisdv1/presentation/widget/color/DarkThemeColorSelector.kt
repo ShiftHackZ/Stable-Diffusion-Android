@@ -51,7 +51,7 @@ fun DarkThemeColorSelector(
                     onClick = onSelected,
                     iconTint = colorToken.toColor(palette),
                     selectedBorderTint = colorToken.toColor(palette).copy(alpha = 0.4f),
-                    unselectedBorderTint = palette.Overlay2.copy(alpha = 0.6f),
+                    unselectedBorderTint = palette.Overlay2.copy(alpha = 0.3f),
                     borderSize = 2.dp,
                 )
             }

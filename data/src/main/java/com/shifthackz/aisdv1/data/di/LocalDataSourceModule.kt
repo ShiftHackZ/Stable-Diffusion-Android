@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.data.local.DownloadableModelLocalDataSource
 import com.shifthackz.aisdv1.data.local.GenerationResultLocalDataSource
 import com.shifthackz.aisdv1.data.local.HuggingFaceModelsLocalDataSource
 import com.shifthackz.aisdv1.data.local.ServerConfigurationLocalDataSource
+import com.shifthackz.aisdv1.data.local.StabilityAiCreditsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionEmbeddingsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionHyperNetworksLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionLorasLocalDataSource
@@ -15,6 +16,7 @@ import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
+import com.shifthackz.aisdv1.domain.datasource.StabilityAiCreditsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionEmbeddingsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionLorasDataSource
@@ -29,6 +31,7 @@ import org.koin.dsl.module
 
 val localDataSourceModule = module {
     singleOf(::DatabaseClearGatewayImpl) bind DatabaseClearGateway::class
+    singleOf(::StabilityAiCreditsLocalDataSource) bind StabilityAiCreditsDataSource.Local::class
     factoryOf(::StableDiffusionModelsLocalDataSource) bind StableDiffusionModelsDataSource.Local::class
     factoryOf(::StableDiffusionSamplersLocalDataSource) bind StableDiffusionSamplersDataSource.Local::class
     factoryOf(::StableDiffusionLorasLocalDataSource) bind StableDiffusionLorasDataSource.Local::class

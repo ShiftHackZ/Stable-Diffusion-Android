@@ -24,6 +24,7 @@ data class ServerSetupState(
     val hordeApiKey: String = "",
     val huggingFaceApiKey: String = "",
     val openAiApiKey: String = "",
+    val stabilityAiApiKey: String = "",
     val hordeDefaultApiKey: Boolean = false,
     val demoMode: Boolean = false,
     val authType: AuthType = AuthType.ANONYMOUS,
@@ -40,6 +41,7 @@ data class ServerSetupState(
     val hordeApiKeyValidationError: UiText? = null,
     val huggingFaceApiKeyValidationError: UiText? = null,
     val openAiApiKeyValidationError: UiText? = null,
+    val stabilityAiApiKeyValidationError: UiText? = null,
 ) : MviState, KoinComponent {
 
     val demoModeUrl: String

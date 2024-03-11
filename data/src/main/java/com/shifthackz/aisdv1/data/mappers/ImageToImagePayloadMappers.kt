@@ -2,6 +2,8 @@ package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
+import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
+import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
 import com.shifthackz.aisdv1.network.request.ImageToImageRequest
@@ -69,6 +71,26 @@ fun ImageToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest 
             this["guidance_scale"] = cfgScale
         }
     )
+}
+
+fun ImageToImagePayload.mapToStabilityAiRequest() = with(this) {
+    buildMap {
+        buildList {
+            addAll(prompt.mapToStabilityPrompt(1.0))
+            addAll(negativePrompt.mapToStabilityPrompt(-1.0))
+        }.forEachIndexed { index, stpRaw ->
+            this["text_prompts[$index][text]"] = stpRaw.text
+            this["text_prompts[$index][weight]"] = stpRaw.weight.toString()
+        }
+        this["image_strength"] = "$denoisingStrength"
+        this["cfg_scale"] = "$cfgScale"
+        this["clip_guidance_preset"] = (stabilityAiClipGuidance ?: StabilityAiClipGuidance.NONE).toString()
+        this["seed"] = (seed.toLongOrNull()?.coerceIn(0L .. 4294967295L) ?: 0L).toString()
+        this["steps"] = "$samplingSteps"
+        stabilityAiStylePreset?.takeIf { it != StabilityAiStylePreset.NONE }?.key?.let {
+            this["style_preset"] = it
+        }
+    }
 }
 
 fun Pair<ImageToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerationResult =

@@ -2,10 +2,14 @@ package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
+import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
+import com.shifthackz.aisdv1.domain.entity.StabilityAiSampler
+import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
 import com.shifthackz.aisdv1.network.request.OpenAiRequest
+import com.shifthackz.aisdv1.network.request.StabilityTextToImageRequest
 import com.shifthackz.aisdv1.network.request.TextToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import java.util.Date
@@ -69,6 +73,25 @@ fun TextToImagePayload.mapToOpenAiRequest(): OpenAiRequest = with(this) {
         responseFormat = "b64_json",
         quality = quality,
         style = style,
+    )
+}
+
+fun TextToImagePayload.mapToStabilityAiRequest(): StabilityTextToImageRequest = with(this) {
+    StabilityTextToImageRequest(
+        height = height,
+        width = width,
+        textPrompts = buildList {
+            addAll(prompt.mapToStabilityPrompt(1.0))
+            addAll(negativePrompt.mapToStabilityPrompt(-1.0))
+        },
+        cfgScale = cfgScale,
+        clipGuidancePreset = (stabilityAiClipGuidance ?: StabilityAiClipGuidance.NONE).toString(),
+        sampler = sampler
+            .takeIf { it != "${StabilityAiSampler.NONE}" }
+            .takeIf { StabilityAiSampler.entries.map { s -> "$s" }.contains(it) },
+        seed = seed.toLongOrNull()?.coerceIn(0L .. 4294967295L) ?: 0L,
+        steps = samplingSteps,
+        stylePreset = stabilityAiStylePreset?.takeIf { it != StabilityAiStylePreset.NONE }?.key,
     )
 }
 

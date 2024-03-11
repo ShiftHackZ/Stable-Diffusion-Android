@@ -9,6 +9,8 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
+import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.Modal
@@ -36,6 +38,8 @@ data class ImageToImageState(
     override val subSeedStrength: Float = 0f,
     override val selectedSampler: String = "",
     override val availableSamplers: List<String> = emptyList(),
+    override val selectedStylePreset: StabilityAiStylePreset = StabilityAiStylePreset.NONE,
+    override val selectedClipGuidancePreset: StabilityAiClipGuidance = StabilityAiClipGuidance.NONE,
     override val openAiModel: OpenAiModel = OpenAiModel.DALL_E_2,
     override val openAiSize: OpenAiSize = OpenAiSize.W1024_H1024,
     override val openAiQuality: OpenAiQuality = OpenAiQuality.STANDARD,
@@ -74,6 +78,8 @@ data class ImageToImageState(
         subSeedStrength: Float,
         selectedSampler: String,
         availableSamplers: List<String>,
+        selectedStylePreset: StabilityAiStylePreset,
+        selectedClipGuidancePreset: StabilityAiClipGuidance,
         openAiModel: OpenAiModel,
         openAiSize: OpenAiSize,
         openAiQuality: OpenAiQuality,
@@ -101,6 +107,8 @@ data class ImageToImageState(
         subSeedStrength = subSeedStrength,
         selectedSampler = selectedSampler,
         availableSamplers = availableSamplers,
+        selectedStylePreset = selectedStylePreset,
+        selectedClipGuidancePreset = selectedClipGuidancePreset,
         openAiModel = openAiModel,
         openAiSize = openAiSize,
         openAiQuality = openAiQuality,
@@ -145,5 +153,7 @@ fun ImageToImageState.mapToPayload(): ImageToImagePayload = with(this) {
         inPaintingFill = inPaintModel.maskContent.fill,
         inPaintFullRes = inPaintModel.inPaintArea.fullRes,
         maskBlur = inPaintModel.maskBlur,
+        stabilityAiClipGuidance = selectedClipGuidancePreset.takeIf { mode == ServerSource.STABILITY_AI },
+        stabilityAiStylePreset = selectedStylePreset.takeIf { mode == ServerSource.STABILITY_AI },
     )
 }

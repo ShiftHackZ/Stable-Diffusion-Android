@@ -1,20 +1,20 @@
 package com.shifthackz.aisdv1.domain.usecase.generation
 
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import java.lang.IllegalStateException
 
 internal class ImageToImageUseCaseImpl(
     private val stableDiffusionGenerationRepository: StableDiffusionGenerationRepository,
     private val hordeGenerationRepository: HordeGenerationRepository,
     private val huggingFaceGenerationRepository: HuggingFaceGenerationRepository,
+    private val stabilityAiGenerationRepository: StabilityAiGenerationRepository,
     private val preferenceManager: PreferenceManager,
 ) : ImageToImageUseCase {
 
@@ -27,6 +27,7 @@ internal class ImageToImageUseCaseImpl(
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.generateFromImage(payload)
         ServerSource.HORDE -> hordeGenerationRepository.generateFromImage(payload)
         ServerSource.HUGGING_FACE -> huggingFaceGenerationRepository.generateFromImage(payload)
+        ServerSource.STABILITY_AI -> stabilityAiGenerationRepository.generateFromImage(payload)
         else -> Single.error(IllegalStateException("Img2Img not yet supported on ${preferenceManager.source}!"))
     }
 }

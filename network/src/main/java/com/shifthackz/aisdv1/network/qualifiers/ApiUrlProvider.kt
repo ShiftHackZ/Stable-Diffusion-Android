@@ -8,4 +8,5 @@ interface ApiUrlProvider {
     val huggingFaceApiUrl: String
     val huggingFaceInferenceApiUrl: String
     val openAiApiUrl: String
+    val stabilityAiApiUrl: String
 }

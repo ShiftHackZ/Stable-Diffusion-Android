@@ -66,6 +66,7 @@ class ServerSetupViewModel(
                         huggingFaceModel = configuration.huggingFaceModel,
                         huggingFaceApiKey = configuration.huggingFaceApiKey,
                         openAiApiKey = configuration.openAiApiKey,
+                        stabilityAiApiKey = configuration.stabilityAiApiKey,
                         localModels = localModels.mapToUi(),
                         localCustomModel = localModels.mapLocalCustomModelSwitchState(),
                         mode = configuration.source,
@@ -195,6 +196,10 @@ class ServerSetupViewModel(
                 it.copy(step = ServerSetupState.Step.entries[it.step.ordinal - 1])
             }
         }
+
+        is ServerSetupIntent.UpdateStabilityAiApiKey -> updateState {
+            it.copy(stabilityAiApiKey = intent.key)
+        }
     }
 
     private fun connectToServer() {
@@ -206,6 +211,7 @@ class ServerSetupViewModel(
             ServerSource.AUTOMATIC1111 -> connectToAutomaticInstance()
             ServerSource.HUGGING_FACE -> connectToHuggingFace()
             ServerSource.OPEN_AI -> connectToOpenAi()
+            ServerSource.STABILITY_AI -> connectToStabilityAi()
         }.doOnSubscribe { setScreenModal(Modal.Communicating(canCancel = false)) }
             .subscribeOnMainThread(schedulersProvider).subscribeBy(::errorLog) { result ->
                 result.fold(
@@ -273,6 +279,14 @@ class ServerSetupViewModel(
             }
             validation.isValid
         }
+
+        ServerSource.STABILITY_AI -> {
+            val validation = stringValidator(currentState.stabilityAiApiKey)
+            updateState {
+                it.copy(stabilityAiApiKeyValidationError = validation.mapToUi())
+            }
+            validation.isValid
+        }
     }
 
     private fun connectToAutomaticInstance(): Single<Result<Unit>> {
@@ -302,6 +316,10 @@ class ServerSetupViewModel(
 
     private fun connectToOpenAi() = setupConnectionInterActor.connectToOpenAi(
         currentState.openAiApiKey,
+    )
+
+    private fun connectToStabilityAi() = setupConnectionInterActor.connectToStabilityAi(
+        currentState.stabilityAiApiKey,
     )
 
     private fun connectToHorde(): Single<Result<Unit>> {

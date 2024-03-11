@@ -5,6 +5,7 @@ interface LinksProvider {
     val hordeSignUpUrl: String
     val huggingFaceUrl: String
     val openAiInfoUrl: String
+    val stabilityAiInfoUrl: String
     val privacyPolicyUrl: String
     val donateUrl: String
     val gitHubSourceUrl: String

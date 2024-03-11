@@ -14,6 +14,7 @@ data class SettingsState(
     val serverSource: ServerSource = ServerSource.AUTOMATIC1111,
     val sdModels: List<String> = emptyList(),
     val sdModelSelected: String = "",
+    val stabilityAiCredits: Float = 0f,
     val localUseNNAPI: Boolean = false,
     val monitorConnectivity: Boolean = false,
     val autoSaveAiResults: Boolean = false,
@@ -26,9 +27,22 @@ data class SettingsState(
     val colorToken: ColorToken = ColorToken.MAUVE,
     val darkThemeToken: DarkThemeToken = DarkThemeToken.FRAPPE,
     val appVersion: String = "",
-    val showLocalUseNNAPI: Boolean = false,
-    val showSdModelSelector: Boolean = false,
-    val showMonitorConnectionOption: Boolean = false,
-    val showFormAdvancedOption: Boolean = false,
-    val showUseSystemColorPalette: Boolean = false,
-) : MviState
+) : MviState {
+
+    val showStabilityAiCredits: Boolean
+        get() = serverSource == ServerSource.STABILITY_AI
+
+    val showLocalUseNNAPI: Boolean
+        get() = serverSource == ServerSource.LOCAL
+
+    val showSdModelSelector: Boolean
+        get() = serverSource == ServerSource.AUTOMATIC1111
+
+    val showMonitorConnectionOption: Boolean
+        get() = serverSource == ServerSource.AUTOMATIC1111
+
+    val showFormAdvancedOption: Boolean
+        get() = serverSource != ServerSource.OPEN_AI
+
+    val showUseSystemColorPalette: Boolean = false
+}

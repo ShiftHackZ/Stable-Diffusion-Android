@@ -22,4 +22,6 @@ data class ImageToImagePayload(
     val inPaintingFill: Int,
     val inPaintFullRes: Boolean,
     val maskBlur: Int,
+    val stabilityAiClipGuidance: StabilityAiClipGuidance?,
+    val stabilityAiStylePreset: StabilityAiStylePreset?,
 )

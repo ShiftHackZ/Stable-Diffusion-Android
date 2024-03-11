@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.widget.input
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -34,6 +35,9 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
+import com.shifthackz.aisdv1.domain.entity.StabilityAiSampler
+import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
@@ -46,8 +50,10 @@ import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_MIN
+import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_STABILITY_AI_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.SUB_SEED_STRENGTH_MIN
+import com.shifthackz.aisdv1.presentation.widget.engine.EngineSelectionComponent
 import com.shifthackz.aisdv1.presentation.widget.input.chip.ChipTextFieldEvent
 import com.shifthackz.aisdv1.presentation.widget.input.chip.ChipTextFieldWithItem
 import kotlin.math.abs
@@ -58,6 +64,7 @@ import kotlin.random.Random
 fun GenerationInputForm(
     modifier: Modifier = Modifier,
     state: GenerationMviState,
+    isImg2Img: Boolean = false,
     promptChipTextFieldState: MutableState<TextFieldValue>,
     negativePromptChipTextFieldState: MutableState<TextFieldValue>,
     processIntent: (GenerationMviIntent) -> Unit = {},
@@ -81,7 +88,72 @@ fun GenerationInputForm(
         )
     }
 
+    @Composable
+    fun RowScope.sizeTextFieldsComponent(modifier: Modifier = Modifier) {
+        TextField(
+            modifier = modifier.padding(end = 4.dp),
+            value = state.width,
+            onValueChange = { value ->
+                if (value.length <= 4) {
+                    value
+                        .filter { it.isDigit() }
+                        .let(GenerationMviIntent.Update.Size::Width)
+                        .let(processIntent::invoke)
+                }
+            },
+            isError = state.widthValidationError != null,
+            supportingText = {
+                state.widthValidationError?.let {
+                    Text(
+                        it.asString(),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            label = { Text(stringResource(id = R.string.width)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        TextField(
+            modifier = modifier.padding(start = 4.dp),
+            value = state.height,
+            onValueChange = { value ->
+                if (value.length <= 4) {
+                    value
+                        .filter { it.isDigit() }
+                        .let(GenerationMviIntent.Update.Size::Height)
+                        .let(processIntent::invoke)
+                }
+            },
+            isError = state.heightValidationError != null,
+            supportingText = {
+                state.heightValidationError?.let {
+                    Text(
+                        it.asString(),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            label = { Text(stringResource(id = R.string.height)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+    }
+
     Column(modifier = modifier) {
+        if (state.mode == ServerSource.OPEN_AI) {
+            DropdownTextField(
+                modifier = Modifier.padding(top = 8.dp),
+                label = R.string.hint_model_open_ai.asUiText(),
+                value = state.openAiModel,
+                items = OpenAiModel.entries,
+                onItemSelected = { processIntent(GenerationMviIntent.Update.OpenAi.Model(it)) },
+            )
+        } else {
+            EngineSelectionComponent(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+            )
+        }
         if (state.formPromptTaggedInput) {
             ChipTextFieldWithItem(
                 modifier = Modifier
@@ -121,6 +193,7 @@ fun GenerationInputForm(
         when (state.mode) {
             ServerSource.AUTOMATIC1111,
             ServerSource.HUGGING_FACE,
+            ServerSource.STABILITY_AI,
             ServerSource.LOCAL -> {
                 if (state.formPromptTaggedInput) {
                     ChipTextFieldWithItem(
@@ -161,16 +234,6 @@ fun GenerationInputForm(
             else -> Unit
         }
 
-        if (state.mode == ServerSource.OPEN_AI) {
-            DropdownTextField(
-                modifier = Modifier.padding(top = 8.dp),
-                label = R.string.hint_model_open_ai.asUiText(),
-                value = state.openAiModel,
-                items = OpenAiModel.entries,
-                onItemSelected = { processIntent(GenerationMviIntent.Update.OpenAi.Model(it)) },
-            )
-        }
-
         // Size input fields
         Row(
             modifier = Modifier
@@ -200,52 +263,12 @@ fun GenerationInputForm(
 
                 ServerSource.AUTOMATIC1111,
                 ServerSource.HUGGING_FACE -> {
-                    TextField(
-                        modifier = localModifier.padding(end = 4.dp),
-                        value = state.width,
-                        onValueChange = { value ->
-                            if (value.length <= 4) {
-                                value
-                                    .filter { it.isDigit() }
-                                    .let(GenerationMviIntent.Update.Size::Width)
-                                    .let(processIntent::invoke)
-                            }
-                        },
-                        isError = state.widthValidationError != null,
-                        supportingText = {
-                            state.widthValidationError?.let {
-                                Text(
-                                    it.asString(),
-                                    color = MaterialTheme.colorScheme.error
-                                )
-                            }
-                        },
-                        label = { Text(stringResource(id = R.string.width)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    )
-                    TextField(
-                        modifier = localModifier.padding(start = 4.dp),
-                        value = state.height,
-                        onValueChange = { value ->
-                            if (value.length <= 4) {
-                                value
-                                    .filter { it.isDigit() }
-                                    .let(GenerationMviIntent.Update.Size::Height)
-                                    .let(processIntent::invoke)
-                            }
-                        },
-                        isError = state.heightValidationError != null,
-                        supportingText = {
-                            state.heightValidationError?.let {
-                                Text(
-                                    it.asString(),
-                                    color = MaterialTheme.colorScheme.error
-                                )
-                            }
-                        },
-                        label = { Text(stringResource(id = R.string.height)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    )
+                    sizeTextFieldsComponent(localModifier)
+                }
+
+                ServerSource.STABILITY_AI -> {
+                    if (isImg2Img) Unit
+                    else sizeTextFieldsComponent(localModifier)
                 }
 
                 ServerSource.OPEN_AI -> {
@@ -259,6 +282,7 @@ fun GenerationInputForm(
                         displayDelegate = { it.key.asUiText() },
                     )
                 }
+
             }
         }
 
@@ -309,9 +333,10 @@ fun GenerationInputForm(
             visible = state.advancedOptionsVisible && state.mode != ServerSource.OPEN_AI,
         ) {
             Column {
-                // Sampler selection only supported for A1111
-                if (state.mode == ServerSource.AUTOMATIC1111) {
-                    DropdownTextField(
+                // Sampler selection only supported for A1111, STABILITY AI
+                when (state.mode) {
+                    ServerSource.STABILITY_AI,
+                    ServerSource.AUTOMATIC1111 -> DropdownTextField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
@@ -319,8 +344,46 @@ fun GenerationInputForm(
                         value = state.selectedSampler,
                         items = state.availableSamplers,
                         onItemSelected = { processIntent(GenerationMviIntent.Update.Sampler(it)) },
+                        displayDelegate = { value ->
+                            if (value == StabilityAiSampler.NONE.toString()) {
+                                R.string.hint_autodetect.asUiText()
+                            } else {
+                                value.asUiText()
+                            }
+                        }
+                    )
+
+                    else -> Unit
+                }
+                // Style-preset only for Stablity AI
+                if (state.mode == ServerSource.STABILITY_AI) {
+                    DropdownTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        label = R.string.hint_style_preset.asUiText(),
+                        value = state.selectedStylePreset,
+                        items = StabilityAiStylePreset.entries,
+                        onItemSelected = { processIntent(GenerationMviIntent.Update.StabilityAi.Style(it)) },
+                        displayDelegate = { value ->
+                            if (value == StabilityAiStylePreset.NONE) {
+                                R.string.hint_autodetect.asUiText()
+                            } else {
+                                value.key.asUiText()
+                            }
+                        },
+                    )
+                    DropdownTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        label = R.string.hint_clip_guidance_preset.asUiText(),
+                        value = state.selectedClipGuidancePreset,
+                        items = StabilityAiClipGuidance.entries,
+                        onItemSelected = { processIntent(GenerationMviIntent.Update.StabilityAi.ClipGuidance(it)) },
                     )
                 }
+
                 // Seed is not available for Hugging Face
                 if (state.mode != ServerSource.OPEN_AI) {
                     TextField(
@@ -418,17 +481,19 @@ fun GenerationInputForm(
                 }
 
                 if (state.mode != ServerSource.OPEN_AI) {
+                    val stepsMax = when (state.mode) {
+                        ServerSource.STABILITY_AI -> SAMPLING_STEPS_RANGE_STABILITY_AI_MAX
+                        else -> SAMPLING_STEPS_RANGE_MAX
+                    }
+                    val steps = state.samplingSteps.coerceIn(SAMPLING_STEPS_RANGE_MIN, stepsMax)
                     Text(
                         modifier = Modifier.padding(top = 8.dp),
-                        text = stringResource(
-                            id = R.string.hint_sampling_steps,
-                            "${state.samplingSteps}"
-                        ),
+                        text = stringResource(id = R.string.hint_sampling_steps, "$steps"),
                     )
                     Slider(
-                        value = state.samplingSteps * 1f,
-                        valueRange = (SAMPLING_STEPS_RANGE_MIN * 1f)..(SAMPLING_STEPS_RANGE_MAX * 1f),
-                        steps = abs(SAMPLING_STEPS_RANGE_MAX - SAMPLING_STEPS_RANGE_MIN) - 1,
+                        value = steps * 1f,
+                        valueRange = (SAMPLING_STEPS_RANGE_MIN * 1f)..(stepsMax * 1f),
+                        steps = abs(stepsMax - SAMPLING_STEPS_RANGE_MIN) - 1,
                         colors = sliderColors,
                         onValueChange = {
                             processIntent(GenerationMviIntent.Update.SamplingSteps(it.roundToInt()))
@@ -437,7 +502,10 @@ fun GenerationInputForm(
 
                     Text(
                         modifier = Modifier.padding(top = 8.dp),
-                        text = stringResource(id = R.string.hint_cfg_scale, "${state.cfgScale}"),
+                        text = stringResource(
+                            R.string.hint_cfg_scale,
+                            "${state.cfgScale.roundTo(2)}",
+                        ),
                     )
                     Slider(
                         value = state.cfgScale,
@@ -452,6 +520,7 @@ fun GenerationInputForm(
 
                 when (state.mode) {
                     ServerSource.AUTOMATIC1111,
+                    ServerSource.STABILITY_AI,
                     ServerSource.HORDE -> afterSlidersSection()
 
                     else -> Unit
