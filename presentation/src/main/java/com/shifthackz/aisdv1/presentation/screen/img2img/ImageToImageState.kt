@@ -2,7 +2,6 @@ package com.shifthackz.aisdv1.presentation.screen.img2img
 
 import android.graphics.Bitmap
 import androidx.compose.runtime.Immutable
-import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
@@ -11,6 +10,7 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
+import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.Modal
 
 @Immutable
@@ -18,6 +18,7 @@ data class ImageToImageState(
     val imageState: ImageState = ImageState.None,
     val imageBase64: String = "",
     val denoisingStrength: Float = 0.75f,
+    val inPaintModel: InPaintModel = InPaintModel(),
     override val screenModal: Modal = Modal.None,
     override val mode: ServerSource = ServerSource.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,
@@ -111,8 +112,10 @@ data class ImageToImageState(
         generateButtonEnabled = generateButtonEnabled,
     )
 
-    fun preProcessed(output: BitmapToBase64Converter.Output): ImageToImageState =
-        copy(imageBase64 = output.base64ImageString)
+    fun preProcessed(pair: Pair<String, String>): ImageToImageState = copy(
+        imageBase64 = pair.first,
+        inPaintModel = this.inPaintModel.copy(base64 = pair.second),
+    )
 }
 
 enum class ImagePickButton {
@@ -122,6 +125,7 @@ enum class ImagePickButton {
 fun ImageToImageState.mapToPayload(): ImageToImagePayload = with(this) {
     ImageToImagePayload(
         base64Image = imageBase64,
+        base64MaskImage = inPaintModel.base64,
         denoisingStrength = denoisingStrength,
         prompt = prompt.trim(),
         negativePrompt = negativePrompt.trim(),
@@ -136,5 +140,10 @@ fun ImageToImageState.mapToPayload(): ImageToImagePayload = with(this) {
         sampler = selectedSampler,
         nsfw = if (mode == ServerSource.HORDE) nsfw else false,
         batchCount = batchCount,
+        inPaintingMaskInvert = inPaintModel.maskMode.inverse,
+        inPaintFullResPadding = inPaintModel.onlyMaskedPaddingPx,
+        inPaintingFill = inPaintModel.maskContent.fill,
+        inPaintFullRes = inPaintModel.inPaintArea.fullRes,
+        maskBlur = inPaintModel.maskBlur,
     )
 }

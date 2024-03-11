@@ -2,7 +2,6 @@
 
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +25,7 @@ import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeviceUnknown
+import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
@@ -35,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -43,9 +44,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -60,6 +59,7 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.screen.inpaint.components.InPaintComponent
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MIN
@@ -79,7 +79,7 @@ fun ImageToImageScreen() {
         viewModel = viewModel,
         processEffect = { effect ->
             ImagePicker.Builder(fileProviderDescriptor.providerPath) { result ->
-                viewModel.processIntent(ImageToImageIntent.UpdateImage(result))
+                viewModel.processIntent(ImageToImageIntent.CropImage(result))
             }
                 .useGallery(effect == ImageToImageEffect.GalleryPicker)
                 .useCamera(effect == ImageToImageEffect.CameraPicker)
@@ -143,16 +143,14 @@ private fun ScreenContent(
                             modifier = Modifier
                                 .padding(paddingValues)
                                 .verticalScroll(scrollState)
-                                .padding(horizontal = 16.dp),
                         ) {
                             InputImageState(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 16.dp),
-                                imageState = state.imageState,
+                                modifier = Modifier.fillMaxWidth(),
+                                state = state,
                                 processIntent = processIntent
                             )
                             GenerationInputForm(
+                                modifier = Modifier.padding(horizontal = 16.dp),
                                 state = state,
                                 processIntent = processIntent,
                                 promptChipTextFieldState = promptChipTextFieldState,
@@ -295,39 +293,64 @@ private fun ScreenContent(
 @Composable
 private fun InputImageState(
     modifier: Modifier = Modifier,
-    imageState: ImageToImageState.ImageState,
+    state: ImageToImageState,
     processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
-    when (imageState) {
-        is ImageToImageState.ImageState.Image -> Box(
+    when (state.imageState) {
+        is ImageToImageState.ImageState.Image -> Column(
             modifier = modifier,
-            contentAlignment = Alignment.TopEnd,
         ) {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .align(Alignment.Center),
-                bitmap = imageState.bitmap.asImageBitmap(),
-                contentDescription = "img2img input",
-                contentScale = ContentScale.Crop,
+            InPaintComponent(
+                drawMode = false,
+                bitmap = state.imageState.bitmap,
+                inPaint = state.inPaintModel,
             )
-            IconButton(
+            Row(
                 modifier = Modifier
-                    .padding(4.dp)
-                    .background(color = Color.LightGray, shape = RoundedCornerShape(16.dp)),
-                onClick = { processIntent(ImageToImageIntent.ClearImageInput) },
+                    .padding(top = 8.dp)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxSize(),
             ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = null,
-                    tint = Color.DarkGray,
-                )
+                if (state.mode == ServerSource.AUTOMATIC1111) {
+                    OutlinedButton(
+                        modifier = Modifier.weight(1f),
+                        onClick = { processIntent(ImageToImageIntent.InPaint) },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Draw,
+                            contentDescription = null,
+                            tint = LocalContentColor.current,
+                        )
+                        Text(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            text = stringResource(id = R.string.in_paint_title),
+                            color = LocalContentColor.current,
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                }
+                OutlinedButton(
+                    modifier = Modifier.weight(1f),
+                    onClick = { processIntent(ImageToImageIntent.ClearImageInput) },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null,
+                        tint = LocalContentColor.current,
+                    )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        text = stringResource(id = R.string.action_clear),
+                        color = LocalContentColor.current,
+                    )
+                }
             }
         }
 
         ImageToImageState.ImageState.None -> Column(
-            modifier = modifier,
+            modifier = modifier
+                .padding(top = 16.dp)
+                .padding(horizontal = 16.dp),
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -351,6 +374,7 @@ private fun InputImageState(
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
                     .background(
                         MaterialTheme.colorScheme.surfaceTint,
                         shape = RoundedCornerShape(16.dp)
@@ -382,11 +406,13 @@ private fun ImagePickButtonBox(
     buttonType: ImagePickButton,
     onClick: () -> Unit = {},
 ) {
+    val localShape = RoundedCornerShape(16.dp)
     Column(
         modifier = modifier
+            .clip(localShape)
             .background(
                 MaterialTheme.colorScheme.surfaceTint,
-                shape = RoundedCornerShape(16.dp)
+                shape = localShape,
             )
             .clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally,

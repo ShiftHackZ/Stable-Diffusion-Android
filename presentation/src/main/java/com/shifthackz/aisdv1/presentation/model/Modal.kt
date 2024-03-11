@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.model
 
+import android.graphics.Bitmap
 import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
@@ -68,6 +69,9 @@ sealed interface Modal {
         @Immutable
         data class Batch(val results: List<AiGenerationResult>, val autoSaveEnabled: Boolean): Image
 
+        @Immutable
+        data class Crop(val bitmap: Bitmap): Image
+
         companion object {
             fun create(list: List<AiGenerationResult>, autoSaveEnabled: Boolean): Image =
                 if (list.size > 1) Batch(list, autoSaveEnabled)
@@ -80,6 +84,8 @@ sealed interface Modal {
 
     @Immutable
     data class Error(val error: UiText) : Modal
+
+    data object ClearInPaintConfirm : Modal
 
     data object Language : Modal
 }

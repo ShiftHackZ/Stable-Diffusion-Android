@@ -19,6 +19,7 @@ object Constants {
     const val ROUTE_GALLERY_DETAIL_FULL = "$ROUTE_GALLERY_DETAIL/{$PARAM_ITEM_ID}"
     const val ROUTE_SETTINGS = "settings"
     const val ROUTE_DEBUG = "debug"
+    const val ROUTE_IN_PAINT = "in_paint"
 
     const val SUB_SEED_STRENGTH_MIN = 0f
     const val SUB_SEED_STRENGTH_MAX = 1f
@@ -34,6 +35,15 @@ object Constants {
 
     const val DENOISING_STRENGTH_MIN = 0f
     const val DENOISING_STRENGTH_MAX = 1f
+
+    const val DRAW_CAP_RANGE_MIN = 1
+    const val DRAW_CAP_RANGE_MAX = 60
+
+    const val MASK_BLUR_MIN = 1
+    const val MASK_BLUR_MAX = 64
+
+    const val ONLY_MASKED_PADDING_MIN = 0
+    const val ONLY_MASKED_PADDING_MAX = 256
 
     const val EXTRA_MINIMUM = -10.0
     const val EXTRA_MAXIMUM = 10.0

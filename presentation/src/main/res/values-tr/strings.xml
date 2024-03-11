@@ -43,6 +43,8 @@
     <string name="action_save">Kaydet</string>
     <string name="action_update">Güncelle</string>
     <string name="action_skip">Atla</string>
+    <string name="action_undo">Geri alma</string>
+    <string name="action_clear">Temizlemek</string>
     <string name="action_options_show">Gelişmiş seçenekleri göster</string>
     <string name="action_options_hide">Gelişmiş seçenekleri gizle</string>
     <string name="action_image_picker_gallery">Fotoğraf seç</string>
@@ -78,6 +80,11 @@
     <string name="hint_style">Stil</string>
     <string name="hint_tag">Etiket</string>
     <string name="hint_value">Değer</string>
+    <string name="hint_mask_blur">Maske bulanıklığı: %1$s</string>
+    <string name="hint_only_masked_padding">Yalnızca maskelenmiş dolgu: %1$s px</string>
+    <string name="hint_mask_mode">Maske modu</string>
+    <string name="hint_mask_content">Maskelenmiş içerik</string>
+    <string name="hint_in_paint_area">Inpaint alan</string>
 
     <string name="auth_anonymous">Anonim</string>
     <string name="auth_http_basic">HTTP Temel</string>
@@ -198,6 +205,9 @@
     <string name="interaction_delete_local_model_title">Modeli sil</string>
     <string name="interaction_delete_local_model_sub_title">Modeli silmek istediğinizden emin misiniz "%1$s"?</string>
 
+    <string name="interaction_in_paint_clear_title">Çizimleri temizle</string>
+    <string name="interaction_in_paint_clear_sub_title">Çizimleri temizlemek istediğinizden emin misiniz?</string>
+
     <string name="gallery_empty_title">Burada henüz bir şey yok…</string>
     <string name="gallery_empty_sub_title">Bir şeyler üretmeyi deneyin! Ürettiğiniz resimler burada gözükecektir.</string>
 
@@ -238,4 +248,18 @@
     <string name="extras_empty_sub_title_lora">AUTOMATIC1111 sunucusuna biraz içerik ekleyin: \n\n../models/Lora</string>
     <string name="extras_empty_sub_title_hypernet">AUTOMATIC1111 sunucusuna biraz içerik ekleyin: \n\n../models/hypernetworks</string>
     <string name="extras_empty_sub_title_embedding">AUTOMATIC1111 sunucusuna biraz içerik ekleyin: \n\n../embeddings</string>
+
+    <string name="in_paint_tab_1">Çizmek</string>
+    <string name="in_paint_tab_2">Ayarlamak</string>
+
+    <string name="in_paint_mode_masked">Inpaint maskeli</string>
+    <string name="in_paint_mode_not_masked">Inpaint maskelenmemiş</string>
+
+    <string name="in_paint_mask_content_fill">Doldurmak</string>
+    <string name="in_paint_mask_content_original">Orijinal</string>
+    <string name="in_paint_mask_content_latent_noise">Gizli gürültü</string>
+    <string name="in_paint_mask_content_latent_nothing">Gizli hiçbir şey</string>
+
+    <string name="in_paint_area_whole">Bütün resim</string>
+    <string name="in_paint_area_only_masked">Sadece maskeli</string>
 </resources>

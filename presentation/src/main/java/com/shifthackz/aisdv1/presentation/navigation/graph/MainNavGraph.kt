@@ -12,6 +12,7 @@ import androidx.navigation.get
 import com.shifthackz.aisdv1.presentation.model.NavItem
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
+import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintScreen
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreen
@@ -65,6 +66,13 @@ fun NavGraphBuilder.mainNavGraph() {
             DebugMenuScreen()
         }.apply {
             route = Constants.ROUTE_DEBUG
+        }
+    )
+    addDestination(
+        ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
+            InPaintScreen()
+        }.apply {
+            route = Constants.ROUTE_IN_PAINT
         }
     )
 }
