@@ -43,6 +43,8 @@
     <string name="action_save">Зберегти</string>
     <string name="action_update">Оновити</string>
     <string name="action_skip">Пропустити</string>
+    <string name="action_undo">Скасувати</string>
+    <string name="action_clear">Очистити</string>
     <string name="action_options_show">Показати всі опції</string>
     <string name="action_options_hide">Сховати всі опції</string>
     <string name="action_image_picker_gallery">Вибрати фото</string>
@@ -62,8 +64,6 @@
     <string name="hint_offline_generation">Генерація без інтернету</string>
     <string name="hint_cfg_scale">CFG Шкала: %1$s</string>
     <string name="hint_sampler">Метод вибірки</string>
-    <string name="hint_style_preset">Стиль</string>
-    <string name="hint_clip_guidance_preset">Кліпінг пресет</string>
     <string name="hint_restore_faces">Відновлення обличч</string>
     <string name="hint_seed">Seed ідентифікатор</string>
     <string name="hint_sub_seed">Seed варіації</string>
@@ -80,6 +80,11 @@
     <string name="hint_style">Стиль</string>
     <string name="hint_tag">Тег</string>
     <string name="hint_value">Значення</string>
+    <string name="hint_mask_blur">Блюр маски: %1$s</string>
+    <string name="hint_only_masked_padding">Відтупи (тільки маска): %1$s px</string>
+    <string name="hint_mask_mode">Режим маски</string>
+    <string name="hint_mask_content">Контент маски</string>
+    <string name="hint_in_paint_area">Область Inpaint</string>
     <string name="hint_autodetect">Авто</string>
 
     <string name="auth_anonymous">Анонімна</string>
@@ -207,6 +212,9 @@
     <string name="interaction_delete_local_model_title">Видалити модель</string>
     <string name="interaction_delete_local_model_sub_title">Ви впевнені, що хочете видалити модель "%1$s"?</string>
 
+    <string name="interaction_in_paint_clear_title">Очистити креслення</string>
+    <string name="interaction_in_paint_clear_sub_title">Ви впевнені що хочете очистити креслення?</string>
+
     <string name="gallery_empty_title">Тут ще нічого немає…</string>
     <string name="gallery_empty_sub_title">Спробуйте створити щось, і ви побачите своє зображення тут!</string>
 
@@ -247,4 +255,18 @@
     <string name="extras_empty_sub_title_lora">Додайте щось на AUTOMATIC1111 сервері до: \n\n../models/Lora</string>
     <string name="extras_empty_sub_title_hypernet">Додайте щось на AUTOMATIC1111 сервері до: \n\n../models/hypernetworks</string>
     <string name="extras_empty_sub_title_embedding">Додайте щось на AUTOMATIC1111 сервері до: \n\n../embeddings</string>
+
+    <string name="in_paint_tab_1">Креслення</string>
+    <string name="in_paint_tab_2">Регулювання</string>
+
+    <string name="in_paint_mode_masked">Inpaint в масці</string>
+    <string name="in_paint_mode_not_masked">Inpaint поза маскою</string>
+
+    <string name="in_paint_mask_content_fill">Заповнення</string>
+    <string name="in_paint_mask_content_original">Оригінал</string>
+    <string name="in_paint_mask_content_latent_noise">Прихований шум</string>
+    <string name="in_paint_mask_content_latent_nothing">Без приховування</string>
+
+    <string name="in_paint_area_whole">Вся картинка</string>
+    <string name="in_paint_area_only_masked">Тільки маска</string>
 </resources>

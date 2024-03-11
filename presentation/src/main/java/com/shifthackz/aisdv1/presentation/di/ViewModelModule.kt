@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailVie
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryViewModel
 import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationViewModel
 import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageViewModel
+import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintViewModel
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderViewModel
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsViewModel
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
@@ -41,6 +42,7 @@ val viewModelModule = module {
     viewModelOf(::ExtrasViewModel)
     viewModelOf(::EmbeddingViewModel)
     viewModelOf(::EditTagViewModel)
+    viewModelOf(::InPaintViewModel)
     viewModelOf(::EngineSelectionViewModel)
 
     viewModel { parameters ->
