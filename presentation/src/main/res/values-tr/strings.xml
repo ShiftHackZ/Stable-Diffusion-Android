@@ -62,6 +62,8 @@
     <string name="hint_offline_generation">Çevrimdışı nesil</string>
     <string name="hint_cfg_scale">CFG Scale: %1$s</string>
     <string name="hint_sampler">Örneklerme Yöntemi</string>
+    <string name="hint_style_preset">Stil ön ayarı</string>
+    <string name="hint_clip_guidance_preset">Klip yönlendirme ön ayarı</string>
     <string name="hint_restore_faces">Yüzleri Düzelt</string>
     <string name="hint_seed">Başlangıç Noktası (Seed)</string>
     <string name="hint_sub_seed">Varyasyon Noktası (Variation seed)</string>
@@ -78,6 +80,7 @@
     <string name="hint_style">Stil</string>
     <string name="hint_tag">Etiket</string>
     <string name="hint_value">Değer</string>
+    <string name="hint_autodetect">Otomatik olarak algıla</string>
 
     <string name="auth_anonymous">Anonim</string>
     <string name="auth_http_basic">HTTP Temel</string>
@@ -103,6 +106,11 @@
     <string name="hint_open_ai_title">Open AI bulutuna bağlanın</string>
     <string name="hint_open_ai_sub_title">Açık AI hizmeti, DALL·E modelleriyle görüntüler oluşturmaya olanak tanır.</string>
     <string name="hint_open_ai_about">Hakkında Open AI</string>
+
+    <string name="hint_stability_ai_title">Stability AI\'ya bağlanın</string>
+    <string name="hint_stability_ai_sub_title">StabilityAI - DreamStudio tarafından sağlanan görüntü oluşturma hizmetidir.</string>
+    <string name="hint_stability_ai_about">Hakkında Stability AI</string>
+    <string name="hint_stability_ai_engine">Stability AI motoru</string>
 
     <string name="hint_local_diffusion_sub_title">Bu yapılandırma, telefonunuzda uzak sunucuya/buluta bağlanmaya gerek kalmadan Stable Diffusion AI nesillerini çalıştırmanıza izin verir.</string>
     <string name="hint_local_diffusion_warning">Uyarı! Yerel Yayılma işlevi beta testindedir. Yerel modu kullanarak yüksek kaliteli görüntüler beklemeyin. \n\nBu uygulama, güçlü olmayan telefonlarda iyi çalışmayabilir. Oluşturma performansı ve hızı, telefonunuzun kaynaklarına (CPU, RAM) ve oluşturulan görüntünün boyutuna bağlıdır (görüntü boyutu ne kadar küçükse, oluşturma o kadar hızlı olur).</string>
@@ -152,6 +160,7 @@
 
     <string name="settings_item_config">Ayarlar</string>
     <string name="settings_item_sd_model">SD Modeli</string>
+    <string name="settings_item_stability_ai_credits">Stability AI Kredi</string>
     <string name="settings_item_local_nnapi">NNAPI (Beta)*</string>
     <string name="settings_item_local_nnapi_warning">*NNAPI kararlı çalışmayabilir, hata, çökme veya kötü performansla karşılaşırsanız bunu devre dışı bırakın.</string>
 

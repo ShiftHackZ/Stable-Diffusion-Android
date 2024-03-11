@@ -179,7 +179,7 @@
 
     <string name="settings_item_config">Configuration</string>
     <string name="settings_item_sd_model">SD Model</string>
-    <string name="settings_item_stability_ai_credits">Credits</string>
+    <string name="settings_item_stability_ai_credits">Stability AI Credits</string>
     <string name="settings_item_local_nnapi">Use NNAPI (Beta)*</string>
     <string name="settings_item_local_nnapi_warning">*NNAPI may not work stable, if you experience errors, crashes or bad performance disable this.</string>
 

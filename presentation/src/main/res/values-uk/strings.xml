@@ -62,6 +62,8 @@
     <string name="hint_offline_generation">Генерація без інтернету</string>
     <string name="hint_cfg_scale">CFG Шкала: %1$s</string>
     <string name="hint_sampler">Метод вибірки</string>
+    <string name="hint_style_preset">Стиль</string>
+    <string name="hint_clip_guidance_preset">Кліпінг пресет</string>
     <string name="hint_restore_faces">Відновлення обличч</string>
     <string name="hint_seed">Seed ідентифікатор</string>
     <string name="hint_sub_seed">Seed варіації</string>
@@ -78,6 +80,7 @@
     <string name="hint_style">Стиль</string>
     <string name="hint_tag">Тег</string>
     <string name="hint_value">Значення</string>
+    <string name="hint_autodetect">Авто</string>
 
     <string name="auth_anonymous">Анонімна</string>
     <string name="auth_http_basic">HTTP Базова</string>
@@ -103,6 +106,11 @@
     <string name="hint_open_ai_title">Підключитися до Open AI</string>
     <string name="hint_open_ai_sub_title">Сервіс Open AI дозволяє генерувати зображення використовуючи моделі DALL·E.</string>
     <string name="hint_open_ai_about">Про Open AI</string>
+
+    <string name="hint_stability_ai_title">Підключитися до Stability AI</string>
+    <string name="hint_stability_ai_sub_title">StabilityAI — це сервіс генерації зображень від DreamStudio.</string>
+    <string name="hint_stability_ai_about">Про Stability AI</string>
+    <string name="hint_stability_ai_engine">Stability AI двигун</string>
 
     <string name="hint_local_diffusion_sub_title">Ця конфігурація дозволяє запускати генерації Stable Diffusion на вашому телефоні без необхідності підключатися до віддаленого сервера/хмари.</string>
     <string name="hint_local_diffusion_warning">УВАГА! Функціональність Local Diffusion у бета-тестуванні. Не очікуйте високоякісних зображень у локальному режимі. \n\nЦя реалізація може не працювати належним чином на телефонах із слабкою потужністю. Продуктивність і швидкість генерації залежать від ресурсів вашого телефону (ЦП, ОЗУ) і розміру згенерованого зображення (чим менший розмір зображення, тим швидше генерується).</string>
@@ -152,6 +160,7 @@
 
     <string name="settings_item_config">Конфігурація</string>
     <string name="settings_item_sd_model">SD Модель</string>
+    <string name="settings_item_stability_ai_credits">Stability AI Кредити</string>
     <string name="settings_item_local_nnapi">NNAPI (Beta)*</string>
     <string name="settings_item_local_nnapi_warning">*NNAPI може працювати нестабільно, якщо у вас виникають помилки, збої або погана продуктивність, вимкніть це.</string>
 
