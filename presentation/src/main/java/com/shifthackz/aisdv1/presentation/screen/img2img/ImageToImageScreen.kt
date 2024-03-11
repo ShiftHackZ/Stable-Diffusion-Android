@@ -143,7 +143,6 @@ private fun ScreenContent(
                             modifier = Modifier
                                 .padding(paddingValues)
                                 .verticalScroll(scrollState)
-//                                .padding(horizontal = 16.dp),
                         ) {
                             InputImageState(
                                 modifier = Modifier.fillMaxWidth(),
@@ -312,22 +311,24 @@ private fun InputImageState(
                     .padding(horizontal = 16.dp)
                     .fillMaxSize(),
             ) {
-                OutlinedButton(
-                    modifier = Modifier.weight(1f),
-                    onClick = { processIntent(ImageToImageIntent.InPaint) },
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Draw,
-                        contentDescription = null,
-                        tint = LocalContentColor.current,
-                    )
-                    Text(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        text = stringResource(id = R.string.in_paint_title),
-                        color = LocalContentColor.current,
-                    )
+                if (state.mode == ServerSource.AUTOMATIC1111) {
+                    OutlinedButton(
+                        modifier = Modifier.weight(1f),
+                        onClick = { processIntent(ImageToImageIntent.InPaint) },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Draw,
+                            contentDescription = null,
+                            tint = LocalContentColor.current,
+                        )
+                        Text(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            text = stringResource(id = R.string.in_paint_title),
+                            color = LocalContentColor.current,
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
                 }
-                Spacer(modifier = Modifier.width(16.dp))
                 OutlinedButton(
                     modifier = Modifier.weight(1f),
                     onClick = { processIntent(ImageToImageIntent.ClearImageInput) },
