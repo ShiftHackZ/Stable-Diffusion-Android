@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.widget.engine
 
 import androidx.compose.runtime.Immutable
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.android.core.mvi.MviState
 
@@ -14,4 +15,6 @@ data class EngineSelectionState(
     val selectedHfModel: String = "",
     val stEngines: List<String> = emptyList(),
     val selectedStEngine: String = "",
+    val localAiModels: List<LocalAiModel> = emptyList(),
+    val selectedLocalAiModelId: String = "",
 ): MviState

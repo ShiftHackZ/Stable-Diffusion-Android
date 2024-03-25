@@ -142,7 +142,8 @@ fun GenerationInputForm(
         when (state.mode) {
             ServerSource.AUTOMATIC1111,
             ServerSource.STABILITY_AI,
-            ServerSource.HUGGING_FACE -> EngineSelectionComponent(
+            ServerSource.HUGGING_FACE,
+            ServerSource.LOCAL -> EngineSelectionComponent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp),

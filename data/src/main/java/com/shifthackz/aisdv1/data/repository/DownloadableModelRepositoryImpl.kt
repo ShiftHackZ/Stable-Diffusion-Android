@@ -25,5 +25,8 @@ internal class DownloadableModelRepositoryImpl(
         .onErrorResumeNext { localDataSource.getAll() }
 
     override fun getById(id: String) = localDataSource.getById(id)
+
+    override fun observeAll() = localDataSource.observeAll()
+
     override fun select(id: String) = localDataSource.select(id)
 }

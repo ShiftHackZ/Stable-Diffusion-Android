@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
 import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.io.File
@@ -21,6 +22,7 @@ internal class DownloadableModelLocalDataSource(
     private val preferenceManager: PreferenceManager,
     private val buildInfoProvider: BuildInfoProvider,
 ) : DownloadableModelDataSource.Local {
+
     override fun getAll(): Single<List<LocalAiModel>> = dao.query()
         .map(List<LocalModelEntity>::mapEntityToDomain)
         .map { models ->
@@ -44,6 +46,17 @@ internal class DownloadableModelLocalDataSource(
         .just(preferenceManager.localModelId)
         .flatMap(::getById)
         .onErrorResumeNext { Single.error(Throwable("No selected model")) }
+
+    override fun observeAll(): Flowable<List<LocalAiModel>> = dao
+        .observe()
+        .map(List<LocalModelEntity>::mapEntityToDomain)
+        .map { models ->
+            buildList {
+                addAll(models)
+                if (buildInfoProvider.type == BuildType.FOSS) add(LocalAiModel.CUSTOM)
+            }
+        }
+        .flatMap { models -> models.withLocalData().toFlowable() }
 
     override fun select(id: String): Completable = Completable.fromAction {
         preferenceManager.localModelId = id

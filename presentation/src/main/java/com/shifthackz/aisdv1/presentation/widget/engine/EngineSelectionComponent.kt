@@ -45,7 +45,18 @@ fun EngineSelectionComponent(
                 onItemSelected = { intentHandler(EngineSelectionIntent(it)) },
             )
 
-            else -> Unit
+            ServerSource.LOCAL -> DropdownTextField(
+                label = R.string.hint_sd_model.asUiText(),
+                loading = state.loading,
+                modifier = modifier,
+                value = state.localAiModels.firstOrNull { it.id == state.selectedLocalAiModelId },
+                items = state.localAiModels,
+                onItemSelected = { intentHandler(EngineSelectionIntent(it.id)) },
+                displayDelegate = { it.name.asUiText() },
+            )
+
+            ServerSource.HORDE -> Unit
+            ServerSource.OPEN_AI -> Unit
         }
     }
 }
