@@ -2,12 +2,14 @@ package com.shifthackz.aisdv1.presentation.widget.engine
 
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
-import com.shifthackz.aisdv1.core.common.model.Quadruple
+import com.shifthackz.aisdv1.core.common.model.Quintuple
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
@@ -23,6 +25,7 @@ class EngineSelectionViewModel(
     private val getConfigurationUseCase: GetConfigurationUseCase,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
     private val getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
+    observeLocalAiModelsUseCase: ObserveLocalAiModelsUseCase,
     fetchAndGetStabilityAiEnginesUseCase: FetchAndGetStabilityAiEnginesUseCase,
     getHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
 ) : MviRxViewModel<EngineSelectionState, EngineSelectionIntent, EmptyEffect>() {
@@ -46,28 +49,37 @@ class EngineSelectionViewModel(
             .onErrorReturn { emptyList() }
             .toFlowable()
 
+        val localAiModels = observeLocalAiModelsUseCase()
+            .map { models -> models.filter { it.downloaded || it.id == LocalAiModel.CUSTOM.id } }
+            .onErrorReturn { emptyList() }
+
         !Flowable.combineLatest(
             configuration,
             a1111Models,
             huggingFaceModels,
             stabilityAiEngines,
-            ::Quadruple,
+            localAiModels,
+            ::Quintuple,
         )
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = ::errorLog,
                 onComplete = EmptyLambda,
-                onNext = { (config, sdModels, hfModels, stEngines) ->
+                onNext = { (config, sdModels, hfModels, stEngines, localModels) ->
                     updateState { state ->
                         state.copy(
                             loading = false,
                             mode = config.source,
                             sdModels = sdModels.map { it.first.title },
-                            selectedSdModel = sdModels.first { it.second }.first.title,
+                            selectedSdModel = sdModels.firstOrNull { it.second }?.first?.title
+                                ?: state.selectedSdModel,
                             hfModels = hfModels.map { it.alias },
                             selectedHfModel = config.huggingFaceModel,
                             stEngines = stEngines.map { it.id },
                             selectedStEngine = config.stabilityAiEngineId,
+                            localAiModels = localModels,
+                            selectedLocalAiModelId = localModels.firstOrNull { it.id == config.localModelId }?.id
+                                ?: state.selectedLocalAiModelId
                         )
                     }
                 },
@@ -82,7 +94,7 @@ class EngineSelectionViewModel(
                         it.copy(
                             loading = true,
                             selectedSdModel = intent.value,
-                            )
+                        )
                     }
                 }
                 .andThen(getStableDiffusionModelsUseCase())
@@ -100,6 +112,8 @@ class EngineSelectionViewModel(
             ServerSource.HUGGING_FACE -> preferenceManager.huggingFaceModel = intent.value
 
             ServerSource.STABILITY_AI -> preferenceManager.stabilityAiEngineId = intent.value
+
+            ServerSource.LOCAL -> preferenceManager.localModelId = intent.value
 
             else -> Unit
         }

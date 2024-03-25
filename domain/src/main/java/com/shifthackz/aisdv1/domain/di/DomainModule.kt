@@ -34,6 +34,8 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalAiModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalAiModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
@@ -136,6 +138,7 @@ internal val useCasesModule = module {
     factoryOf(::ObserveLocalDiffusionProcessStatusUseCaseImpl) bind ObserveLocalDiffusionProcessStatusUseCase::class
     factoryOf(::GetLocalAiModelsUseCaseImpl) bind GetLocalAiModelsUseCase::class
     factoryOf(::DownloadModelUseCaseImpl) bind DownloadModelUseCase::class
+    factoryOf(::ObserveLocalAiModelsUseCaseImpl) bind ObserveLocalAiModelsUseCase::class
     factoryOf(::DeleteModelUseCaseImpl) bind DeleteModelUseCase::class
     factoryOf(::AcquireWakelockUseCaseImpl) bind AcquireWakelockUseCase::class
     factoryOf(::ReleaseWakeLockUseCaseImpl) bind ReleaseWakeLockUseCase::class

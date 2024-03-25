@@ -30,7 +30,7 @@ fun <T : Any> DropdownTextField(
     modifier: Modifier = Modifier,
     loading: Boolean = false,
     label: UiText = UiText.empty,
-    value: T,
+    value: T?,
     items: List<T> = emptyList(),
     onItemSelected: (T) -> Unit = {},
     displayDelegate: (T) -> UiText = { t -> t.toString().asUiText() },
@@ -46,7 +46,7 @@ fun <T : Any> DropdownTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
-                value = displayDelegate(value).asString(),
+                value = value?.let { displayDelegate(it).asString() } ?: "",
                 onValueChange = {},
                 readOnly = true,
                 label = { Text(label.asString()) },
