@@ -62,6 +62,7 @@ object Constants {
         "uk" to "Українська",
         "tr" to "Türkçe",
         "ru" to "Русский",
+        "zh" to "中文简体",
     )
 
     fun lora(alias: String) = "<lora:$alias:1>"
