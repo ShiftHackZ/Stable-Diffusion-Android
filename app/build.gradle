@@ -35,7 +35,7 @@ android {
         buildConfigField "String", "GITHUB_SOURCE_URL", "\"https://github.com/ShiftHackZ/Stable-Diffusion-Android\""
         buildConfigField "String", "SETUP_INSTRUCTIONS_URL", "\"https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki\""
 
-        resourceConfigurations = ["en", "ru", "uk", "tr"]
+        resourceConfigurations = ["en", "ru", "uk", "tr", "zh"]
     }
 
     def hasPropertiesFile = new File("app/keystore/signing.properties").exists()
