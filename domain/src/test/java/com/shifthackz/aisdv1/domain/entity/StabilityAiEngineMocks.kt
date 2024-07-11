@@ -1,0 +1,12 @@
+package com.shifthackz.aisdv1.domain.entity
+
+val mockStabilityAiEngines = listOf(
+    StabilityAiEngine(
+        id = "engine_1",
+        name = "Engine 1",
+    ),
+    StabilityAiEngine(
+        id = "engine_2",
+        name = "Engine 2",
+    ),
+)

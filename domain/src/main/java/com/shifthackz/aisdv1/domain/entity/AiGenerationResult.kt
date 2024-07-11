@@ -26,7 +26,7 @@ data class AiGenerationResult(
         IMAGE_TO_IMAGE("img2img");
 
         companion object {
-            fun parse(input: String?) = values()
+            fun parse(input: String?) = entries
                 .find { it.key == input } ?: TEXT_TO_IMAGE
         }
     }

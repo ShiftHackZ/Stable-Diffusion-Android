@@ -15,4 +15,5 @@ dependencies {
     implementation di.koinCore
     implementation reactive.rxkotlin
     testImplementation test.junit
+    testImplementation test.mockito
 }

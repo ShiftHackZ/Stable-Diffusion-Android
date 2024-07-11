@@ -32,6 +32,7 @@ ext {
     composeEasyCropVersion = '0.1.1'
 
     testJunitVersion = '4.13.2'
+    testMockitoVersion = '2.2.0'
 
     androidx = [
             core                        : "androidx.core:core-ktx:$coreKtxVersion",
@@ -104,6 +105,7 @@ ext {
             stringutils: "org.apache.commons:commons-lang3:$apacheLangVersion"
     ]
     test = [
-            junit: "junit:junit:$testJunitVersion",
+            junit  : "junit:junit:$testJunitVersion",
+            mockito: "com.nhaarman.mockitokotlin2:mockito-kotlin:$testMockitoVersion",
     ]
 }
