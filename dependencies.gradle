@@ -33,6 +33,7 @@ ext {
 
     testJunitVersion = '4.13.2'
     testMockitoVersion = '2.2.0'
+    testMockkVersion = '1.13.11'
 
     androidx = [
             core                        : "androidx.core:core-ktx:$coreKtxVersion",
@@ -107,5 +108,6 @@ ext {
     test = [
             junit  : "junit:junit:$testJunitVersion",
             mockito: "com.nhaarman.mockitokotlin2:mockito-kotlin:$testMockitoVersion",
+            mockk  : "io.mockk:mockk:$testMockkVersion",
     ]
 }
