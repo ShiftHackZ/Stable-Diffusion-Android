@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.domain.entity
 import java.util.Date
 
 val mockAiGenerationResult = AiGenerationResult(
-    id = 1L,
+    id = 5598L,
     image = "img",
     inputImage = "inp",
     createdAt = Date(),
