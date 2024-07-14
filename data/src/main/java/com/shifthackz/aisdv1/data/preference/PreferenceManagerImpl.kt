@@ -42,7 +42,6 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
-
     override var autoSaveAiResults: Boolean
         get() = preferences.getBoolean(KEY_AI_AUTO_SAVE, true)
         set(value) = preferences.edit()
@@ -78,6 +77,7 @@ class PreferenceManagerImpl(
             .putString(KEY_SERVER_SOURCE, value.key)
             .apply()
             .also { onPreferencesChanged() }
+
     override var sdModel: String
         get() = preferences.getString(KEY_SD_MODEL, "") ?: ""
         set(value) = preferences.edit()
@@ -190,6 +190,7 @@ class PreferenceManagerImpl(
 
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
+        .distinctUntilChanged()
         .map {
             Settings(
                 serverUrl = serverUrl,
@@ -214,15 +215,15 @@ class PreferenceManagerImpl(
     private fun onPreferencesChanged() = preferencesChangedSubject.onNext(Unit)
 
     companion object {
-        private const val KEY_SERVER_URL = "key_server_url"
-        private const val KEY_DEMO_MODE = "key_demo_mode"
-        private const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
-        private const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
-        private const val KEY_SAVE_TO_MEDIA_STORE = "key_save_to_media_store"
-        private const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
-        private const val KEY_FORM_PROMPT_TAGGED_INPUT = "key_prompt_tagged_input"
-        private const val KEY_SERVER_SOURCE = "key_server_source"
-        private const val KEY_SD_MODEL = "key_sd_model"
+        const val KEY_SERVER_URL = "key_server_url"
+        const val KEY_DEMO_MODE = "key_demo_mode"
+        const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
+        const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
+        const val KEY_SAVE_TO_MEDIA_STORE = "key_save_to_media_store"
+        const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
+        const val KEY_FORM_PROMPT_TAGGED_INPUT = "key_prompt_tagged_input"
+        const val KEY_SERVER_SOURCE = "key_server_source"
+        const val KEY_SD_MODEL = "key_sd_model"
         private const val KEY_HORDE_API_KEY = "key_horde_api_key"
         private const val KEY_OPEN_AI_API_KEY = "key_open_ai_api_key"
         private const val KEY_HUGGING_FACE_API_KEY = "key_hugging_face_api_key"
