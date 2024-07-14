@@ -6,5 +6,7 @@ internal class ObserveLocalDiffusionProcessStatusUseCaseImpl(
     private val localDiffusionGenerationRepository: LocalDiffusionGenerationRepository,
 ) : ObserveLocalDiffusionProcessStatusUseCase {
 
-    override fun invoke() = localDiffusionGenerationRepository.observeStatus()
+    override fun invoke() = localDiffusionGenerationRepository
+        .observeStatus()
+        .distinctUntilChanged()
 }

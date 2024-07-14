@@ -6,5 +6,7 @@ internal class ObserveHordeProcessStatusUseCaseImpl(
     private val hordeGenerationRepository: HordeGenerationRepository,
 ) : ObserveHordeProcessStatusUseCase {
 
-    override fun invoke() = hordeGenerationRepository.observeStatus()
+    override fun invoke() = hordeGenerationRepository
+        .observeStatus()
+        .distinctUntilChanged()
 }
