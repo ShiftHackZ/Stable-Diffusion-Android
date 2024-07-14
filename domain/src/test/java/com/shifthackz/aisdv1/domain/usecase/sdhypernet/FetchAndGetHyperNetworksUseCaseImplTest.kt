@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.sdhypernet
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.shifthackz.aisdv1.domain.entity.mockStableDiffusionHyperNetworks
+import com.shifthackz.aisdv1.domain.mocks.mockStableDiffusionHyperNetworks
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionHyperNetworksRepository
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test

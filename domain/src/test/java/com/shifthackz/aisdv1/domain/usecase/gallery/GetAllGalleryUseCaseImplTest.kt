@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.gallery
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.shifthackz.aisdv1.domain.entity.mockAiGenerationResults
+import com.shifthackz.aisdv1.domain.mocks.mockAiGenerationResults
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test

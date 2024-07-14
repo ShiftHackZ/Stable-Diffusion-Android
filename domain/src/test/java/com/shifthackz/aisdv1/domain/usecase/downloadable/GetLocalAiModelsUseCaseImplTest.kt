@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.downloadable
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.shifthackz.aisdv1.domain.entity.mockLocalAiModels
+import com.shifthackz.aisdv1.domain.mocks.mockLocalAiModels
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test

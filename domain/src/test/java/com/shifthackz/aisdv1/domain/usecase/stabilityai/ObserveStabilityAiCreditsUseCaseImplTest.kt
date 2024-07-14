@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.domain.usecase.stabilityai
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.shifthackz.aisdv1.domain.entity.Settings
-import com.shifthackz.aisdv1.domain.entity.mockSettings
+import com.shifthackz.aisdv1.domain.mocks.mockSettings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.StabilityAiCreditsRepository
 import io.reactivex.rxjava3.core.BackpressureStrategy

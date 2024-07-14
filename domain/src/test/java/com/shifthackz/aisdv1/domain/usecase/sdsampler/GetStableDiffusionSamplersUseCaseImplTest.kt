@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.sdsampler
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.shifthackz.aisdv1.domain.entity.mockStableDiffusionSampler
+import com.shifthackz.aisdv1.domain.mocks.mockStableDiffusionSampler
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test

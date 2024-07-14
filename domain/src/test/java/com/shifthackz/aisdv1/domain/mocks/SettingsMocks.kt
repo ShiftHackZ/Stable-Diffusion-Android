@@ -1,4 +1,7 @@
-package com.shifthackz.aisdv1.domain.entity
+package com.shifthackz.aisdv1.domain.mocks
+
+import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.entity.Settings
 
 val mockSettings = Settings(
     serverUrl = "",

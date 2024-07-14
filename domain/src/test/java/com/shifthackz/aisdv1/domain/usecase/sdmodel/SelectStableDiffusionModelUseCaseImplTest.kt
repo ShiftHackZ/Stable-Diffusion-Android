@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.domain.usecase.sdmodel
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.shifthackz.aisdv1.domain.entity.mockServerConfiguration
+import com.shifthackz.aisdv1.domain.mocks.mockServerConfiguration
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import io.reactivex.rxjava3.core.Completable

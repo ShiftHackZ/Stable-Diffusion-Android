@@ -20,4 +20,8 @@ dependencies {
     implementation di.koinAndroid
     implementation reactive.rxkotlin
     implementation google.gson
+    testImplementation test.junit
+    testImplementation test.mockito
+    testImplementation test.mockk
+    testImplementation project(':domain')
 }

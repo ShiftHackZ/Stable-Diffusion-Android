@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.domain.usecase.sdembedding
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.shifthackz.aisdv1.domain.entity.mockStableDiffusionEmbeddings
+import com.shifthackz.aisdv1.domain.mocks.mockStableDiffusionEmbeddings
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionEmbeddingsRepository
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test

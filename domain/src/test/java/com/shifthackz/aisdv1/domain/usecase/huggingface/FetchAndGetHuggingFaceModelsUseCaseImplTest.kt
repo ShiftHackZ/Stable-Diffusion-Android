@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.huggingface
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.shifthackz.aisdv1.domain.entity.mockHuggingFaceModels
+import com.shifthackz.aisdv1.domain.mocks.mockHuggingFaceModels
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceModelsRepository
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test

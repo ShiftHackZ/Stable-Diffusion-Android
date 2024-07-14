@@ -1,4 +1,6 @@
-package com.shifthackz.aisdv1.domain.entity
+package com.shifthackz.aisdv1.domain.mocks
+
+import com.shifthackz.aisdv1.domain.entity.StableDiffusionHyperNetwork
 
 val mockStableDiffusionHyperNetworks = listOf(
     StableDiffusionHyperNetwork(

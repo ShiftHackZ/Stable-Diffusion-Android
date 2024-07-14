@@ -1,9 +1,8 @@
-package com.shifthackz.aisdv1.domain.entity
+package com.shifthackz.aisdv1.domain.mocks
 
-val mockImageToImagePayload = ImageToImagePayload(
-    base64Image = "",
-    base64MaskImage = "",
-    denoisingStrength = 7f,
+import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
+
+val mockTextToImagePayload = TextToImagePayload(
     prompt = "prompt",
     negativePrompt = "negative",
     samplingSteps = 12,
@@ -17,11 +16,9 @@ val mockImageToImagePayload = ImageToImagePayload(
     sampler = "sampler",
     nsfw = true,
     batchCount = 1,
-    inPaintingMaskInvert = 0,
-    inPaintFullResPadding = 0,
-    inPaintingFill = 0,
-    inPaintFullRes = false,
-    maskBlur = 0,
+    quality = null,
+    style = null,
+    openAiModel = null,
     stabilityAiClipGuidance = null,
     stabilityAiStylePreset = null,
 )

@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.stabilityai
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.shifthackz.aisdv1.domain.entity.mockStabilityAiEngines
+import com.shifthackz.aisdv1.domain.mocks.mockStabilityAiEngines
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.StabilityAiEnginesRepository
 import io.reactivex.rxjava3.core.Single

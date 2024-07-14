@@ -1,4 +1,6 @@
-package com.shifthackz.aisdv1.domain.entity
+package com.shifthackz.aisdv1.domain.mocks
+
+import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 
 val mockHuggingFaceModels = listOf(
     HuggingFaceModel.default,
