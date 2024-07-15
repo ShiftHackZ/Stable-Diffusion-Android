@@ -224,7 +224,7 @@ class PreferenceManagerImpl(
         const val KEY_FORM_PROMPT_TAGGED_INPUT = "key_prompt_tagged_input"
         const val KEY_SERVER_SOURCE = "key_server_source"
         const val KEY_SD_MODEL = "key_sd_model"
-        private const val KEY_HORDE_API_KEY = "key_horde_api_key"
+        const val KEY_HORDE_API_KEY = "key_horde_api_key"
         private const val KEY_OPEN_AI_API_KEY = "key_open_ai_api_key"
         private const val KEY_HUGGING_FACE_API_KEY = "key_hugging_face_api_key"
         private const val KEY_HUGGING_FACE_MODEL_KEY = "key_hugging_face_model_key"

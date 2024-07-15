@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_DEMO_MODE
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_FORM_PROMPT_TAGGED_INPUT
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_HORDE_API_KEY
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_MONITOR_CONNECTIVITY
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_SAVE_TO_MEDIA_STORE
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_SD_MODEL
@@ -238,5 +239,26 @@ class PreferenceManagerImplTest {
             .test()
             .assertNoErrors()
             .assertValueAt(0) { settings -> settings.sdModel == "model1504" }
+    }
+
+    @Test
+    fun `given user reads default hordeApiKey, changes it, expected default value, then changed value, observer emits changed value`() {
+        whenever(stubPreference.getString(eq(KEY_HORDE_API_KEY), any()))
+            .thenReturn("00000000")
+
+        Assert.assertEquals("00000000", preferenceManager.hordeApiKey)
+
+        whenever(stubPreference.getString(eq(KEY_HORDE_API_KEY), any()))
+            .thenReturn("key")
+
+        preferenceManager.hordeApiKey = "key"
+
+        Assert.assertEquals("key", preferenceManager.hordeApiKey)
+
+        preferenceManager
+            .observe()
+            .test()
+            .assertNoErrors()
+            .assertValueAt(0) { settings -> settings.hordeApiKey == "key" }
     }
 }
