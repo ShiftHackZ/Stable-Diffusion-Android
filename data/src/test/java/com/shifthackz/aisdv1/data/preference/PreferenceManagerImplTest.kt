@@ -8,14 +8,30 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_AI_AUTO_SAVE
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_DEMO_MODE
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_DESIGN_COLOR_TOKEN
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_DESIGN_DARK_THEME
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_DESIGN_DARK_TOKEN
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_DESIGN_DYNAMIC_COLORS
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_DESIGN_SYSTEM_DARK_THEME
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_FORCE_SETUP_AFTER_UPDATE
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_FORM_PROMPT_TAGGED_INPUT
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_HORDE_API_KEY
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_HUGGING_FACE_API_KEY
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_HUGGING_FACE_MODEL_KEY
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_LOCAL_MODEL_ID
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_LOCAL_NN_API
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_MONITOR_CONNECTIVITY
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_OPEN_AI_API_KEY
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_SAVE_TO_MEDIA_STORE
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_SD_MODEL
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_SERVER_SOURCE
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_SERVER_URL
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_STABILITY_AI_API_KEY
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_STABILITY_AI_ENGINE_ID_KEY
+import com.shifthackz.aisdv1.domain.entity.ColorToken
+import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
+import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import org.junit.Assert
 import org.junit.Before
@@ -260,5 +276,236 @@ class PreferenceManagerImplTest {
             .test()
             .assertNoErrors()
             .assertValueAt(0) { settings -> settings.hordeApiKey == "key" }
+    }
+
+    @Test
+    fun `given user reads default openAiApiKey, changes it, expected default value, then changed value`() {
+        whenever(stubPreference.getString(eq(KEY_OPEN_AI_API_KEY), any()))
+            .thenReturn("00000000")
+
+        Assert.assertEquals("00000000", preferenceManager.openAiApiKey)
+
+        whenever(stubPreference.getString(eq(KEY_OPEN_AI_API_KEY), any()))
+            .thenReturn("key")
+
+        preferenceManager.openAiApiKey = "key"
+
+        Assert.assertEquals("key", preferenceManager.openAiApiKey)
+    }
+
+    @Test
+    fun `given user reads default huggingFaceApiKey, changes it, expected default value, then changed value`() {
+        whenever(stubPreference.getString(eq(KEY_HUGGING_FACE_API_KEY), any()))
+            .thenReturn("00000000")
+
+        Assert.assertEquals("00000000", preferenceManager.huggingFaceApiKey)
+
+        whenever(stubPreference.getString(eq(KEY_HUGGING_FACE_API_KEY), any()))
+            .thenReturn("key")
+
+        preferenceManager.huggingFaceApiKey = "key"
+
+        Assert.assertEquals("key", preferenceManager.huggingFaceApiKey)
+    }
+
+    @Test
+    fun `given user reads default huggingFaceModel, changes it, expected default value, then changed value`() {
+        whenever(stubPreference.getString(eq(KEY_HUGGING_FACE_MODEL_KEY), any()))
+            .thenReturn(HuggingFaceModel.default.alias)
+
+        Assert.assertEquals(HuggingFaceModel.default.alias, preferenceManager.huggingFaceModel)
+
+        whenever(stubPreference.getString(eq(KEY_HUGGING_FACE_MODEL_KEY), any()))
+            .thenReturn("key")
+
+        preferenceManager.huggingFaceModel = "key"
+
+        Assert.assertEquals("key", preferenceManager.huggingFaceModel)
+    }
+
+    @Test
+    fun `given user reads default stabilityAiApiKey, changes it, expected default value, then changed value`() {
+        whenever(stubPreference.getString(eq(KEY_STABILITY_AI_API_KEY), any()))
+            .thenReturn("")
+
+        Assert.assertEquals("", preferenceManager.stabilityAiApiKey)
+
+        whenever(stubPreference.getString(eq(KEY_STABILITY_AI_API_KEY), any()))
+            .thenReturn("key")
+
+        preferenceManager.stabilityAiApiKey = "key"
+
+        Assert.assertEquals("key", preferenceManager.stabilityAiApiKey)
+    }
+
+    @Test
+    fun `given user reads default stabilityAiEngineId, changes it, expected default value, then changed value`() {
+        whenever(stubPreference.getString(eq(KEY_STABILITY_AI_ENGINE_ID_KEY), any()))
+            .thenReturn("")
+
+        Assert.assertEquals("", preferenceManager.stabilityAiEngineId)
+
+        whenever(stubPreference.getString(eq(KEY_STABILITY_AI_ENGINE_ID_KEY), any()))
+            .thenReturn("key")
+
+        preferenceManager.stabilityAiEngineId = "key"
+
+        Assert.assertEquals("key", preferenceManager.stabilityAiEngineId)
+    }
+
+    @Test
+    fun `given user reads default forceSetupAfterUpdate, changes it, expected default value, then changed value, observer emits changed value`() {
+        whenever(stubPreference.getBoolean(eq(KEY_FORCE_SETUP_AFTER_UPDATE), any()))
+            .thenReturn(false)
+
+        Assert.assertEquals(false, preferenceManager.forceSetupAfterUpdate)
+
+        whenever(stubPreference.getBoolean(eq(KEY_FORCE_SETUP_AFTER_UPDATE), any()))
+            .thenReturn(true)
+
+        preferenceManager.forceSetupAfterUpdate = true
+
+        Assert.assertEquals(true, preferenceManager.forceSetupAfterUpdate)
+    }
+
+    @Test
+    fun `given user reads default localModelId, changes it, expected default value, then changed value`() {
+        whenever(stubPreference.getString(eq(KEY_LOCAL_MODEL_ID), any()))
+            .thenReturn("")
+
+        Assert.assertEquals("", preferenceManager.localModelId)
+
+        whenever(stubPreference.getString(eq(KEY_LOCAL_MODEL_ID), any()))
+            .thenReturn("key")
+
+        preferenceManager.localModelId = "key"
+
+        Assert.assertEquals("key", preferenceManager.localModelId)
+    }
+
+    @Test
+    fun `given user reads default localUseNNAPI, changes it, expected default value, then changed value, observer emits changed value`() {
+        whenever(stubPreference.getBoolean(eq(KEY_LOCAL_NN_API), any()))
+            .thenReturn(false)
+
+        Assert.assertEquals(false, preferenceManager.localUseNNAPI)
+
+        whenever(stubPreference.getBoolean(eq(KEY_LOCAL_NN_API), any()))
+            .thenReturn(true)
+
+        preferenceManager.localUseNNAPI = true
+
+        Assert.assertEquals(true, preferenceManager.localUseNNAPI)
+
+        preferenceManager
+            .observe()
+            .test()
+            .assertNoErrors()
+            .assertValueAt(0) { settings -> settings.localUseNNAPI }
+    }
+
+    @Test
+    fun `given user reads default designUseSystemColorPalette, changes it, expected default value, then changed value, observer emits changed value`() {
+        whenever(stubPreference.getBoolean(eq(KEY_DESIGN_DYNAMIC_COLORS), any()))
+            .thenReturn(false)
+
+        Assert.assertEquals(false, preferenceManager.designUseSystemColorPalette)
+
+        whenever(stubPreference.getBoolean(eq(KEY_DESIGN_DYNAMIC_COLORS), any()))
+            .thenReturn(true)
+
+        preferenceManager.designUseSystemColorPalette = true
+
+        Assert.assertEquals(true, preferenceManager.designUseSystemColorPalette)
+
+        preferenceManager
+            .observe()
+            .test()
+            .assertNoErrors()
+            .assertValueAt(0) { settings -> settings.designUseSystemColorPalette }
+    }
+
+    @Test
+    fun `given user reads default designUseSystemDarkTheme, changes it, expected default value, then changed value, observer emits changed value`() {
+        whenever(stubPreference.getBoolean(eq(KEY_DESIGN_SYSTEM_DARK_THEME), any()))
+            .thenReturn(false)
+
+        Assert.assertEquals(false, preferenceManager.designUseSystemDarkTheme)
+
+        whenever(stubPreference.getBoolean(eq(KEY_DESIGN_SYSTEM_DARK_THEME), any()))
+            .thenReturn(true)
+
+        preferenceManager.designUseSystemDarkTheme = true
+
+        Assert.assertEquals(true, preferenceManager.designUseSystemDarkTheme)
+
+        preferenceManager
+            .observe()
+            .test()
+            .assertNoErrors()
+            .assertValueAt(0) { settings -> settings.designUseSystemDarkTheme }
+    }
+
+    @Test
+    fun `given user reads default designDarkTheme, changes it, expected default value, then changed value, observer emits changed value`() {
+        whenever(stubPreference.getBoolean(eq(KEY_DESIGN_DARK_THEME), any()))
+            .thenReturn(false)
+
+        Assert.assertEquals(false, preferenceManager.designDarkTheme)
+
+        whenever(stubPreference.getBoolean(eq(KEY_DESIGN_DARK_THEME), any()))
+            .thenReturn(true)
+
+        preferenceManager.designDarkTheme = true
+
+        Assert.assertEquals(true, preferenceManager.designDarkTheme)
+
+        preferenceManager
+            .observe()
+            .test()
+            .assertNoErrors()
+            .assertValueAt(0) { settings -> settings.designDarkTheme }
+    }
+
+    @Test
+    fun `given user reads default designColorToken, changes it, expected default value, then changed value, observer emits changed value`() {
+        whenever(stubPreference.getString(eq(KEY_DESIGN_COLOR_TOKEN), any()))
+            .thenReturn("${ColorToken.MAUVE}")
+
+        Assert.assertEquals("${ColorToken.MAUVE}", preferenceManager.designColorToken)
+
+        whenever(stubPreference.getString(eq(KEY_DESIGN_COLOR_TOKEN), any()))
+            .thenReturn("${ColorToken.PEACH}")
+
+        preferenceManager.designColorToken = "${ColorToken.PEACH}"
+
+        Assert.assertEquals("${ColorToken.PEACH}", preferenceManager.designColorToken)
+
+        preferenceManager
+            .observe()
+            .test()
+            .assertNoErrors()
+            .assertValueAt(0) { settings -> settings.designColorToken == "${ColorToken.PEACH}" }
+    }
+
+    @Test
+    fun `given user reads default designDarkThemeToken, changes it, expected default value, then changed value, observer emits changed value`() {
+        whenever(stubPreference.getString(eq(KEY_DESIGN_DARK_TOKEN), any()))
+            .thenReturn("${DarkThemeToken.FRAPPE}")
+
+        Assert.assertEquals("${DarkThemeToken.FRAPPE}", preferenceManager.designDarkThemeToken)
+
+        whenever(stubPreference.getString(eq(KEY_DESIGN_DARK_TOKEN), any()))
+            .thenReturn("${DarkThemeToken.MOCHA}")
+
+        preferenceManager.designDarkThemeToken = "${DarkThemeToken.MOCHA}"
+
+        Assert.assertEquals("${DarkThemeToken.MOCHA}", preferenceManager.designDarkThemeToken)
+
+        preferenceManager
+            .observe()
+            .test()
+            .assertNoErrors()
+            .assertValueAt(0) { settings -> settings.designDarkThemeToken == "${DarkThemeToken.MOCHA}" }
     }
 }
