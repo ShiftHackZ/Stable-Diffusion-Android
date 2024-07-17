@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.data.mappers.mapEntityToDomain
 import com.shifthackz.aisdv1.data.mocks.mockLocalModelEntities
+import com.shifthackz.aisdv1.data.mocks.mockLocalModelEntity
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
@@ -141,6 +142,101 @@ class DownloadableModelLocalDataSourceTest {
             .getAll()
             .test()
             .assertError(stubException)
+            .assertNoValues()
+            .await()
+            .assertNotComplete()
+    }
+
+    @Test
+    fun `given attempt to get model by id, dao returns model, model id does not match local model id in preference, expected valid domain model value with selected equals false`() {
+        every {
+            stubDao.queryById(any())
+        } returns Single.just(mockLocalModelEntity)
+
+        every {
+            stubPreferenceManager.localModelId
+        } returns ""
+
+        val expected = mockLocalModelEntity.mapEntityToDomain()
+
+        localDataSource
+            .getById("5598")
+            .test()
+            .assertNoErrors()
+            .assertValue(expected)
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to get model by id, dao returns model, model id matches local model id in preference, expected valid domain model value with selected equals true`() {
+        every {
+            stubDao.queryById(any())
+        } returns Single.just(mockLocalModelEntity)
+
+        every {
+            stubPreferenceManager.localModelId
+        } returns "5598"
+
+        val expected = mockLocalModelEntity.mapEntityToDomain().copy(selected = true)
+
+        localDataSource
+            .getById("5598")
+            .test()
+            .assertNoErrors()
+            .assertValue(expected)
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to get model by id, dao throws exception, expected error true`() {
+        every {
+            stubDao.queryById(any())
+        } returns Single.error(stubException)
+
+        localDataSource
+            .getById("5598")
+            .test()
+            .assertError(stubException)
+            .assertNoValues()
+            .await()
+            .assertNotComplete()
+    }
+
+    @Test
+    fun `given attempt to get selected model, dao has model with provided id in db, expected domain valid model value`() {
+        every {
+            stubDao.queryById(any())
+        } returns Single.just(mockLocalModelEntity)
+
+        every {
+            stubPreferenceManager.localModelId
+        } returns "5598"
+
+        val expected = mockLocalModelEntity.mapEntityToDomain().copy(selected = true)
+
+        localDataSource
+            .getSelected()
+            .test()
+            .assertNoErrors()
+            .assertValue(expected)
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to get selected model, preference throws exception, expected error value`() {
+        every {
+            stubPreferenceManager.localModelId
+        } returns ""
+
+        localDataSource
+            .getSelected()
+            .test()
+            .assertError { t ->
+                t is IllegalStateException && t.message == "No selected model."
+            }
             .assertNoValues()
             .await()
             .assertNotComplete()

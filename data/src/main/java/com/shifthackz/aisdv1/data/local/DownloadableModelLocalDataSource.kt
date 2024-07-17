@@ -44,8 +44,9 @@ internal class DownloadableModelLocalDataSource(
 
     override fun getSelected(): Single<LocalAiModel> = Single
         .just(preferenceManager.localModelId)
+        .onErrorResumeNext { Single.error(IllegalStateException("No selected model.")) }
         .flatMap(::getById)
-        .onErrorResumeNext { Single.error(Throwable("No selected model")) }
+        .onErrorResumeNext { Single.error(IllegalStateException("No selected model.")) }
 
     override fun observeAll(): Flowable<List<LocalAiModel>> = dao
         .observe()
