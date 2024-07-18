@@ -73,13 +73,12 @@ internal class DownloadableModelLocalDataSource(
             if (id == LocalAiModel.CUSTOM.id) {
                 if (!emitter.isDisposed) emitter.onSuccess(true)
             } else {
-                val localModelDir = getLocalModelDirectory(id)
-                val files =
-                    (localModelDir.listFiles()?.filter { it.isDirectory }) ?: emptyList<File>()
-                if (!emitter.isDisposed) emitter.onSuccess(localModelDir.exists() && files.size == 4)
+                val files = getLocalModelFiles(id)
+                if (!emitter.isDisposed) emitter.onSuccess(files.size == 4)
             }
         } catch (e: Exception) {
-            if (!emitter.isDisposed) emitter.onSuccess(false)
+//            if (!emitter.isDisposed) emitter.onSuccess(false)
+            if (!emitter.isDisposed) emitter.onError(e)
         }
     }
 
@@ -89,6 +88,12 @@ internal class DownloadableModelLocalDataSource(
 
     private fun getLocalModelDirectory(id: String): File {
         return File("${fileProviderDescriptor.localModelDirPath}/${id}")
+    }
+
+    private fun getLocalModelFiles(id: String): List<File> {
+        val localModelDir = getLocalModelDirectory(id)
+        if (!localModelDir.exists()) return emptyList()
+        return localModelDir.listFiles()?.filter { it.isDirectory } ?: emptyList()
     }
 
     private fun List<LocalAiModel>.withLocalData(): Single<List<LocalAiModel>> = Observable

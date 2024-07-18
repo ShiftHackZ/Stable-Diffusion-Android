@@ -4,19 +4,30 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.data.mappers.mapEntityToDomain
+import com.shifthackz.aisdv1.data.mocks.mockLocalAiModels
 import com.shifthackz.aisdv1.data.mocks.mockLocalModelEntities
 import com.shifthackz.aisdv1.data.mocks.mockLocalModelEntity
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
+import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkConstructor
+import io.mockk.mockkStatic
+import io.reactivex.rxjava3.core.BackpressureStrategy
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import org.junit.Assert
 import org.junit.Test
+import java.io.File
 
 class DownloadableModelLocalDataSourceTest {
 
     private val stubException = Throwable("Database error.")
+    private val stubLocalModels = BehaviorSubject.create<List<LocalModelEntity>>()
     private val stubFileProviderDescriptor = mockk<FileProviderDescriptor>()
     private val stubDao = mockk<LocalModelDao>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
@@ -42,6 +53,10 @@ class DownloadableModelLocalDataSourceTest {
         every {
             stubPreferenceManager.localModelId
         } returns ""
+
+        every {
+            stubFileProviderDescriptor.localModelDirPath
+        } returns "/tmp/local"
 
         val expected = mockLocalModelEntities.mapEntityToDomain()
 
@@ -92,6 +107,10 @@ class DownloadableModelLocalDataSourceTest {
         every {
             stubPreferenceManager.localModelId
         } returns ""
+
+        every {
+            stubFileProviderDescriptor.localModelDirPath
+        } returns "/tmp/local"
 
         val expected = buildList {
             addAll(mockLocalModelEntities.mapEntityToDomain())
@@ -157,6 +176,10 @@ class DownloadableModelLocalDataSourceTest {
             stubPreferenceManager.localModelId
         } returns ""
 
+        every {
+            stubFileProviderDescriptor.localModelDirPath
+        } returns "/tmp/local"
+
         val expected = mockLocalModelEntity.mapEntityToDomain()
 
         localDataSource
@@ -177,6 +200,10 @@ class DownloadableModelLocalDataSourceTest {
         every {
             stubPreferenceManager.localModelId
         } returns "5598"
+
+        every {
+            stubFileProviderDescriptor.localModelDirPath
+        } returns "/tmp/local"
 
         val expected = mockLocalModelEntity.mapEntityToDomain().copy(selected = true)
 
@@ -214,6 +241,10 @@ class DownloadableModelLocalDataSourceTest {
             stubPreferenceManager.localModelId
         } returns "5598"
 
+        every {
+            stubFileProviderDescriptor.localModelDirPath
+        } returns "/tmp/local"
+
         val expected = mockLocalModelEntity.mapEntityToDomain().copy(selected = true)
 
         localDataSource
@@ -240,5 +271,200 @@ class DownloadableModelLocalDataSourceTest {
             .assertNoValues()
             .await()
             .assertNotComplete()
+    }
+
+    @Test
+    fun `given attempt to observe all models, dao emits empty list, then list with two items, app build type is PLAY, expected empty list, then domain list with two items`() {
+        every {
+            stubDao.observe()
+        } returns stubLocalModels.toFlowable(BackpressureStrategy.LATEST)
+
+        every {
+            stubBuildInfoProvider.type
+        } returns BuildType.PLAY
+
+        every {
+            stubPreferenceManager.localModelId
+        } returns ""
+
+        every {
+            stubFileProviderDescriptor.localModelDirPath
+        } returns "/tmp/local"
+
+        val stubObserver = localDataSource
+            .observeAll()
+            .test()
+
+        stubLocalModels.onNext(emptyList())
+
+        stubObserver
+            .assertNoErrors()
+            .assertValueAt(0, emptyList())
+
+        stubLocalModels.onNext(mockLocalModelEntities)
+
+        stubObserver
+            .assertNoErrors()
+            .assertValueAt(1, mockLocalModelEntities.mapEntityToDomain())
+    }
+
+    @Test
+    fun `given attempt to observe all models, dao emits empty list, then list with two items, app build type is FOSS, expected list with only CUSTOM model included, then domain list with two items and CUSTOM`() {
+        every {
+            stubDao.observe()
+        } returns stubLocalModels.toFlowable(BackpressureStrategy.LATEST)
+
+        every {
+            stubBuildInfoProvider.type
+        } returns BuildType.FOSS
+
+        every {
+            stubPreferenceManager.localModelId
+        } returns ""
+
+        every {
+            stubFileProviderDescriptor.localModelDirPath
+        } returns "/tmp/local"
+
+        val stubObserver = localDataSource
+            .observeAll()
+            .test()
+
+        stubLocalModels.onNext(emptyList())
+
+        stubObserver
+            .assertNoErrors()
+            .assertValueAt(0, listOf(LocalAiModel.CUSTOM.copy(downloaded = true)))
+
+        stubLocalModels.onNext(mockLocalModelEntities)
+
+        stubObserver
+            .assertNoErrors()
+            .assertValueAt(1, buildList {
+                addAll(mockLocalModelEntities.mapEntityToDomain())
+                add(LocalAiModel.CUSTOM.copy(downloaded = true))
+            })
+    }
+
+    @Test
+    fun `given attempt to observe all models, dao throws exception, expected error value`() {
+        every {
+            stubDao.observe()
+        } returns Flowable.error(stubException)
+
+        localDataSource
+            .observeAll()
+            .test()
+            .assertError(stubException)
+            .assertNoValues()
+            .await()
+            .assertNotComplete()
+    }
+
+    @Test
+    fun `given attempt to select model, preference changed, expected preference returns changed selected model id value`() {
+        every {
+            stubPreferenceManager.localModelId
+        } returns ""
+
+        every {
+            stubPreferenceManager::localModelId.set(any())
+        } returns Unit
+
+        localDataSource
+            .select("5598")
+            .test()
+            .assertNoErrors()
+            .await()
+            .assertComplete()
+
+        every {
+            stubPreferenceManager.localModelId
+        } returns "5598"
+
+        Assert.assertEquals("5598", stubPreferenceManager.localModelId)
+    }
+
+    @Test
+    fun `given attempt to select model, preference throws exception, expected error value`() {
+        every {
+            stubPreferenceManager::localModelId.set(any())
+        } throws stubException
+
+        localDataSource
+            .select("5598")
+            .test()
+            .assertError(stubException)
+            .await()
+            .assertNotComplete()
+    }
+
+    @Test
+    fun `given attempt to save local model list, dao insert success, expected complete value`() {
+        every {
+            stubDao.insertList(any())
+        } returns Completable.complete()
+
+        localDataSource
+            .save(mockLocalAiModels)
+            .test()
+            .assertNoErrors()
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to save local model list, dao throws exception, expected error value`() {
+        every {
+            stubDao.insertList(any())
+        } returns Completable.error(stubException)
+
+        localDataSource
+            .save(mockLocalAiModels)
+            .test()
+            .assertError(stubException)
+            .await()
+            .assertNotComplete()
+    }
+
+    //--
+
+    @Test
+    fun `given attempt to delete file, delete operation success, expected complete value`() {
+        every {
+            stubFileProviderDescriptor.localModelDirPath
+        } returns "/tmp/local"
+
+        localDataSource
+            .delete("5598")
+            .test()
+            .assertNoErrors()
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to delete file, delete operation failed, expected error value`() {
+        every {
+            stubFileProviderDescriptor.localModelDirPath
+        } throws stubException
+
+        localDataSource
+            .delete("5598")
+            .test()
+            .assertError(stubException)
+            .await()
+            .assertNotComplete()
+    }
+
+    @Test
+    fun `given attempt to check if CUSTOM model is downloaded, expected true`() {
+        localDataSource
+            .isDownloaded(LocalAiModel.CUSTOM.id)
+            .test()
+            .assertNoErrors()
+            .assertValue(true)
+            .await()
+            .assertComplete()
     }
 }
