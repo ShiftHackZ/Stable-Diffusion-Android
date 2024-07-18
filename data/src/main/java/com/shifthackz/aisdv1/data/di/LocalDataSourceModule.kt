@@ -31,7 +31,8 @@ import org.koin.dsl.module
 
 val localDataSourceModule = module {
     singleOf(::DatabaseClearGatewayImpl) bind DatabaseClearGateway::class
-    singleOf(::StabilityAiCreditsLocalDataSource) bind StabilityAiCreditsDataSource.Local::class
+    // !!! Do not use [factoryOf] for StabilityAiCreditsLocalDataSource, it has default constructor
+    single<StabilityAiCreditsDataSource.Local> { StabilityAiCreditsLocalDataSource() }
     factoryOf(::StableDiffusionModelsLocalDataSource) bind StableDiffusionModelsDataSource.Local::class
     factoryOf(::StableDiffusionSamplersLocalDataSource) bind StableDiffusionSamplersDataSource.Local::class
     factoryOf(::StableDiffusionLorasLocalDataSource) bind StableDiffusionLorasDataSource.Local::class

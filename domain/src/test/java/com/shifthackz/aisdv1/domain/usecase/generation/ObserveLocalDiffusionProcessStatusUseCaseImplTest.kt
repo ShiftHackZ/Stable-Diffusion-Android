@@ -37,13 +37,13 @@ class ObserveLocalDiffusionProcessStatusUseCaseImplTest {
 
         stubObserver
             .assertNoErrors()
-            .assertValueAt(0, LocalDiffusion.Status(2, 3))
+            .assertValueAt(1, LocalDiffusion.Status(2, 3))
 
         stubLocalStatus.onNext(LocalDiffusion.Status(3, 3))
 
         stubObserver
             .assertNoErrors()
-            .assertValueAt(0, LocalDiffusion.Status(3, 3))
+            .assertValueAt(2, LocalDiffusion.Status(3, 3))
             .assertValueCount(3)
     }
 
