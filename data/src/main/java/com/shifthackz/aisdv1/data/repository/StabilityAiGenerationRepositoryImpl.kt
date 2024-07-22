@@ -61,5 +61,6 @@ internal class StabilityAiGenerationRepositoryImpl(
     private fun refreshCredits(ai: AiGenerationResult) = creditsRds
         .fetch()
         .flatMapCompletable(creditsLds::save)
+        .onErrorComplete()
         .andThen(Single.just(ai))
 }

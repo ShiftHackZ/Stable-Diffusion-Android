@@ -177,7 +177,6 @@ class StableDiffusionGenerationRepositoryImplTest {
             .assertNotComplete()
     }
 
-    //---
     @Test
     fun `given attempt to generate from image, demo mode is on, demo returns result, expected valid domain model value`() {
         every {
