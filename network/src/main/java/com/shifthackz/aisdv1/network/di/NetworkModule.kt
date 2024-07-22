@@ -157,7 +157,7 @@ val networkModule = module {
     singleOf(::DownloadableModelsApiImpl) bind DownloadableModelsApi::class
     singleOf(::HuggingFaceInferenceApiImpl) bind HuggingFaceInferenceApi::class
 
-    factory {params ->
+    factory { params ->
         ConnectivityMonitor(params.get())
     }
 

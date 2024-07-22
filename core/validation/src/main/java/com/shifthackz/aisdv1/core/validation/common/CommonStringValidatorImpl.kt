@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.core.validation.horde
+package com.shifthackz.aisdv1.core.validation.common
 
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 

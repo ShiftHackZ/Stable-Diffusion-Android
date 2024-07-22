@@ -4,7 +4,7 @@ interface CredentialsProvider {
     operator fun invoke(): Data
 
     sealed interface Data {
-        object None : Data
-        data class HttpBasic(val login: String, val password: String): Data
+        data object None : Data
+        data class HttpBasic(val login: String, val password: String) : Data
     }
 }

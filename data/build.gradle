@@ -31,5 +31,4 @@ dependencies {
     testImplementation test.junit
     testImplementation test.mockito
     testImplementation test.mockk
-    testImplementation project(':domain')
 }

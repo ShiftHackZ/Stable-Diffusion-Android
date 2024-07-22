@@ -22,4 +22,6 @@ dependencies {
     implementation di.koinCore
     implementation reactive.rxkotlin
     implementation reactive.rxnetwork
+    testImplementation test.junit
+    testImplementation test.mockk
 }
