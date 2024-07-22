@@ -21,14 +21,14 @@ internal class DownloadableModelRemoteDataSource(
         .map(List<DownloadableModelResponse>::mapRawToDomain)
 
     override fun download(id: String, url: String): Observable<DownloadState> =
-//        Completable
-//        .fromAction {
-//            val dir = File("${fileProviderDescriptor.localModelDirPath}/${id}")
-//            val destination = File(getDestinationPath(id))
-//            if (destination.exists()) destination.delete()
-//            if (!dir.exists()) dir.mkdirs()
-//        }
-//        .andThen(
+        Completable
+        .fromAction {
+            val dir = File("${fileProviderDescriptor.localModelDirPath}/${id}")
+            val destination = File(getDestinationPath(id))
+            if (destination.exists()) destination.delete()
+            if (!dir.exists()) dir.mkdirs()
+        }
+        .andThen(
             api.downloadModel(
                 remoteUrl = url,
                 localPath = getDestinationPath(id),
@@ -36,25 +36,25 @@ internal class DownloadableModelRemoteDataSource(
                 stateComplete = DownloadState::Complete,
                 stateFailed = DownloadState::Error,
             )
-//        )
-//        .flatMap { state ->
-//            val chain = Observable.just(state)
-//            if (state is DownloadState.Complete) {
-//                Completable
-//                    .create { emitter ->
-//                        try {
-//                            state.file.unzip()
-//                            emitter.onComplete()
-//                        } catch (e: Exception) {
-//                            emitter.onError(e)
-//                        }
-//                    }
-//                    .andThen(Completable.fromAction { File(getDestinationPath(id)).delete() })
-//                    .andThen(chain)
-//            } else {
-//                chain
-//            }
-//        }
+        )
+        .flatMap { state ->
+            val chain = Observable.just(state)
+            if (state is DownloadState.Complete) {
+                Completable
+                    .create { emitter ->
+                        try {
+                            state.file.unzip()
+                            emitter.onComplete()
+                        } catch (e: Exception) {
+                            emitter.onError(e)
+                        }
+                    }
+                    .andThen(Completable.fromAction { File(getDestinationPath(id)).delete() })
+                    .andThen(chain)
+            } else {
+                chain
+            }
+        }
 
     private fun getDestinationPath(id: String): String {
         return "${fileProviderDescriptor.localModelDirPath}/${id}/model.zip"
