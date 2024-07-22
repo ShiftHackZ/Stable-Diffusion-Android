@@ -18,30 +18,30 @@ internal class StabilityAiCreditsRepositoryImpl(
         onValid = remoteDataSource
             .fetch()
             .flatMapCompletable(localDataSource::save),
-        onNotValid = Completable.error(Throwable("Wrong server source selected.")),
+        onNotValid = Completable.error(IllegalStateException("Wrong server source selected.")),
     )
 
     override fun fetchAndGet() = checkServerSource(
         onValid = fetch().onErrorComplete().andThen(get()),
-        onNotValid = Single.error(Throwable("Wrong server source selected.")),
+        onNotValid = Single.error(IllegalStateException("Wrong server source selected.")),
     )
 
     override fun fetchAndObserve() = checkServerSource(
         onValid = fetch().onErrorComplete().andThen(observe()),
-        onNotValid = Flowable.error(Throwable("Wrong server source selected.")),
+        onNotValid = Flowable.error(IllegalStateException("Wrong server source selected.")),
     )
 
     override fun get() = checkServerSource(
         onValid = localDataSource.get(),
-        onNotValid = Single.error(Throwable("Wrong server source selected.")),
+        onNotValid = Single.error(IllegalStateException("Wrong server source selected.")),
     )
 
     override fun observe() = checkServerSource(
         onValid = localDataSource.observe(),
-        onNotValid = Flowable.error(Throwable("Wrong server source selected.")),
+        onNotValid = Flowable.error(IllegalStateException("Wrong server source selected.")),
     )
 
-    private fun <T: Any> checkServerSource(
+    private fun <T : Any> checkServerSource(
         onValid: T,
         onNotValid: T,
     ): T = when (preferenceManager.source) {

@@ -14,8 +14,11 @@ internal class GenerationResultRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     base64ToBitmapConverter: Base64ToBitmapConverter,
     private val localDataSource: GenerationResultDataSource.Local,
-) : CoreMediaStoreRepository(preferenceManager, mediaStoreGateway, base64ToBitmapConverter),
-    GenerationResultRepository {
+) : CoreMediaStoreRepository(
+    preferenceManager,
+    mediaStoreGateway,
+    base64ToBitmapConverter,
+), GenerationResultRepository {
 
     override fun getAll() = localDataSource.queryAll()
 
