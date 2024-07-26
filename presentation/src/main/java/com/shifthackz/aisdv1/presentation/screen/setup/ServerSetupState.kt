@@ -83,6 +83,7 @@ data class ServerSetupState(
     )
 }
 
+//ToDo refactor key to enum ordinal
 enum class ServerSetupLaunchSource(val key: Int) {
     SPLASH(0),
     SETTINGS(1);

@@ -146,4 +146,39 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
             }
         }
     }
+
+    @Test
+    fun `given open event from drawer router, expected domain model delivered to effect collector`() {
+        stubDrawerNavigationEffect.onNext(NavigationEffect.Drawer.Open)
+        runTest {
+            val expected = NavigationEffect.Drawer.Open
+            val actual = viewModel.effect.firstOrNull()
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given close event from drawer router, expected domain model delivered to effect collector`() {
+        stubDrawerNavigationEffect.onNext(NavigationEffect.Drawer.Close)
+        runTest {
+            val expected = NavigationEffect.Drawer.Close
+            val actual = viewModel.effect.firstOrNull()
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given open then close events from drawer router, expected two domain models delivered to effect collector in same order`() {
+        runTest {
+            viewModel.effect.test {
+                stubDrawerNavigationEffect.onNext(NavigationEffect.Drawer.Open)
+                Assert.assertEquals(NavigationEffect.Drawer.Open, awaitItem())
+
+                stubDrawerNavigationEffect.onNext(NavigationEffect.Drawer.Close)
+                Assert.assertEquals(NavigationEffect.Drawer.Close, awaitItem())
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+    }
 }
