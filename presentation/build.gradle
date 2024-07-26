@@ -31,6 +31,7 @@ dependencies {
     implementation androidx.appcompat
     implementation androidx.activity
     implementation androidx.pagingRx3
+    implementation androidx.exifinterface
 
     implementation google.material
     implementation apache.stringutils
@@ -45,5 +46,9 @@ dependencies {
     implementation ui.catppuccinSplashscreen
     implementation ui.composeGestures
     implementation ui.composeEasyCrop
-    implementation "androidx.exifinterface:exifinterface:1.3.6"
+
+    testImplementation test.junit
+    testImplementation test.mockk
+    testImplementation test.coroutines
+    testImplementation test.turbine
 }

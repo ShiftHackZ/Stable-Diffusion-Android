@@ -26,6 +26,7 @@ ext {
     googleMaterialVersion = '1.9.0'
     accompanistSystemUiControllerVersion = '0.30.1'
     cryptoVersion = '1.0.0'
+    exifinterfaceVersion = '1.3.6'
     onnxruntimeVersion = '1.16.3'
     catppuccinVersion = '0.1.1'
     composeGesturesVersion = '3.1'
@@ -34,6 +35,8 @@ ext {
     testJunitVersion = '4.13.2'
     testMockitoVersion = '2.2.0'
     testMockkVersion = '1.13.11'
+    testCoroutinesVersion = '1.8.1'
+    testTurbibeVersion = '1.1.0'
 
     androidx = [
             core                        : "androidx.core:core-ktx:$coreKtxVersion",
@@ -55,6 +58,7 @@ ext {
             pagingRx3                   : "androidx.paging:paging-rxjava3:$pagingVersion",
             pagingCompose               : "androidx.paging:paging-compose:$pagingComposeVersion",
             crypto                      : "androidx.security:security-crypto:$cryptoVersion",
+            exifinterface               : "androidx.exifinterface:exifinterface:$exifinterfaceVersion",
     ]
     google = [
             gson                         : "com.google.code.gson:gson:$gsonVersion",
@@ -106,8 +110,10 @@ ext {
             stringutils: "org.apache.commons:commons-lang3:$apacheLangVersion"
     ]
     test = [
-            junit  : "junit:junit:$testJunitVersion",
-            mockito: "com.nhaarman.mockitokotlin2:mockito-kotlin:$testMockitoVersion",
-            mockk  : "io.mockk:mockk:$testMockkVersion",
+            junit     : "junit:junit:$testJunitVersion",
+            mockito   : "com.nhaarman.mockitokotlin2:mockito-kotlin:$testMockitoVersion",
+            mockk     : "io.mockk:mockk:$testMockkVersion",
+            coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-test:$testCoroutinesVersion",
+            turbine   : "app.cash.turbine:turbine:$testTurbibeVersion",
     ]
 }
