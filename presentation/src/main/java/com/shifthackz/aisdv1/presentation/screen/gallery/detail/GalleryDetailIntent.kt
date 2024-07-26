@@ -15,7 +15,6 @@ sealed interface GalleryDetailIntent : MviIntent {
     }
 
     enum class Export : GalleryDetailIntent {
-
         Image, Params;
     }
 
