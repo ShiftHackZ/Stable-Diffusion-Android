@@ -36,7 +36,7 @@ Stable Diffusion AI is an easy-to-use app that lets you quickly generate images 
     - Mask mode (Masked, not masked)
     - Masked content (Fill, Original, Latent noise, Latent nothing)
     - Inpaint area (Whole picture, only masked)
-    - Only maked padding (0 to 256 px)
+    - Only masked padding (0 to 256 px)
   - Batch generation with maximum of 20 images (for A1111 and Horde)
   - Lora picker (for A1111)
   - Textual inversion picker (for A1111)
@@ -66,9 +66,9 @@ You can have it running either on your own hardware with modern GPU from Nvidia 
 1. Follow the setup instructions on [Stable-Diffusion-WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) repository.
 2. Add the arguments `--api --listen` to the command line arguments of WebUI launch script.
 3. After running the server, get the IP address, or URL of your WebUI server.
-4. On the first launch, app will ask you for the server URL, enter it and press Connect button. If you want to change the server URL, go to Settings tab, choose Configure option, and repeat the setup flow.
+4. On the first launch, app will ask you for the server URL, enter it and press "Connect" button. If you want to change the server URL, go to Settings tab, choose "Configure" option and repeat the setup flow.
 
-If for some reason you have no ability to run your server instance, you can toggle the **Demo mode** swith on server setup page: it will allow you to test the app and get familiar with it, but it will return some mock images instead of AI-generated ones.
+If for some reason you have no ability to run your server instance, you can toggle the **Demo mode** switch on server setup page: it will allow you to test the app and get familiar with it, but it will return some mock images instead of AI-generated ones.
 
 ### Option 2: Use AI Horde
 
@@ -84,7 +84,7 @@ Hugging Face Inference requires to use API KEY, which can be created in [Hugging
 
 ### Option 4: OpenAI
 
-OpenAI provides a service for text to image generation using [DALLE-2](https://openai.com/dall-e-2) or [DALLE-3](https://openai.com/dall-e-3) models. This service is paid, 
+OpenAI provides a service for text to image generation using [DALLE-2](https://openai.com/dall-e-2) or [DALLE-3](https://openai.com/dall-e-3) models. This service is paid. 
 
 OpenAI requires to use API KEY, which can be created in [OpenAI API Key settings](https://platform.openai.com/api-keys).
 
@@ -117,7 +117,7 @@ Any contributions to the translations are welcome.
 
 ## Difference between builds from Google Play and F-Droid/GitHub releases
 
-As Google Play has some policies that app needs to be compliant with in order to be allowed to publist on Google Play there are some differences between builds distributed via Google Play and F-Droid/GitHub releases, listed in table.
+As Google Play has some policies that app needs to be compliant with in order to be allowed to publish on Google Play there are some differences between builds distributed via Google Play and F-Droid/GitHub releases, listed in this table:
 
 | Feature | Google Play build | F-Droid/GitHub build | Reason |
 | --- |:---:|:---:| --- |
