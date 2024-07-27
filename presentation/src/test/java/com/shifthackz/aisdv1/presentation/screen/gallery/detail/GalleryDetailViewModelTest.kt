@@ -23,10 +23,12 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.io.File
 
 class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
 
     private val stubBitmap = mockk<Bitmap>()
+    private val stubFile = mockk<File>()
     private val stubGetGenerationResultUseCase = mockk<GetGenerationResultUseCase>()
     private val stubGetLastResultFromCacheUseCase = mockk<GetLastResultFromCacheUseCase>()
     private val stubDeleteGalleryItemUseCase = mockk<DeleteGalleryItemUseCase>()
@@ -103,7 +105,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     }
 
     @Test
-    fun `given received Delete_Request intent, expected modal field in UI state is DeleteImageConfirm`() {
+    fun `given received Delete Request intent, expected modal field in UI state is DeleteImageConfirm`() {
         viewModel.processIntent(GalleryDetailIntent.Delete.Request)
         runTest {
             val expected = Modal.DeleteImageConfirm
@@ -113,7 +115,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     }
 
     @Test
-    fun `given received Delete_Confirm intent, expected modal field in UI state is None, deleteGalleryItemUseCase() method is called`() {
+    fun `given received Delete Confirm intent, expected modal field in UI state is None, deleteGalleryItemUseCase() method is called`() {
         every {
             stubDeleteGalleryItemUseCase(any())
         } returns Completable.complete()
@@ -125,6 +127,73 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
         }
         verify {
             stubDeleteGalleryItemUseCase(5598L)
+        }
+    }
+
+    @Test
+    fun `given received Export Image intent, expected galleryDetailBitmapExporter() method is called, ShareImageFile effect delivered to effect collector`() {
+        every {
+            stubGalleryDetailBitmapExporter(any())
+        } returns Single.just(stubFile)
+        viewModel.processIntent(GalleryDetailIntent.Export.Image)
+        verify {
+            stubGalleryDetailBitmapExporter(stubBitmap)
+        }
+        runTest {
+            val expected = GalleryDetailEffect.ShareImageFile(stubFile)
+            val actual = viewModel.effect.firstOrNull()
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received Export Params intent, expected ShareGenerationParams effect delivered to effect collector`() {
+        viewModel.processIntent(GalleryDetailIntent.Export.Params)
+        runTest {
+            val expected = GalleryDetailEffect.ShareGenerationParams(viewModel.state.value)
+            val actual = viewModel.effect.firstOrNull()
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received NavigateBack intent, expected router navigateBack() method called`() {
+        every {
+            stubMainRouter.navigateBack()
+        } returns Unit
+        viewModel.processIntent(GalleryDetailIntent.NavigateBack)
+        verify {
+            stubMainRouter.navigateBack()
+        }
+    }
+
+    @Test
+    fun `given received SelectTab intent with IMAGE tab, expected expected selectedTab field in UI state is IMAGE`() {
+        viewModel.processIntent(GalleryDetailIntent.SelectTab(GalleryDetailState.Tab.IMAGE))
+        runTest {
+            val expected = GalleryDetailState.Tab.IMAGE
+            val actual = viewModel.state.value.selectedTab
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received SelectTab intent with INFO tab, expected expected selectedTab field in UI state is INFO`() {
+        viewModel.processIntent(GalleryDetailIntent.SelectTab(GalleryDetailState.Tab.INFO))
+        runTest {
+            val expected = GalleryDetailState.Tab.INFO
+            val actual = viewModel.state.value.selectedTab
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received SelectTab intent with ORIGINAL tab, expected expected selectedTab field in UI state is ORIGINAL`() {
+        viewModel.processIntent(GalleryDetailIntent.SelectTab(GalleryDetailState.Tab.ORIGINAL))
+        runTest {
+            val expected = GalleryDetailState.Tab.ORIGINAL
+            val actual = viewModel.state.value.selectedTab
+            Assert.assertEquals(expected, actual)
         }
     }
 }
