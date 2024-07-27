@@ -22,6 +22,8 @@ sealed interface Modal {
 
     data object ExportInProgress : Modal
 
+    data object ConnectLocalHost : Modal
+
 
     @Immutable
     data class SelectSdModel(val models: List<String>, val selected: String) : Modal
@@ -64,13 +66,13 @@ sealed interface Modal {
     sealed interface Image : Modal {
 
         @Immutable
-        data class Single(val result: AiGenerationResult, val autoSaveEnabled: Boolean): Image
+        data class Single(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Image
 
         @Immutable
-        data class Batch(val results: List<AiGenerationResult>, val autoSaveEnabled: Boolean): Image
+        data class Batch(val results: List<AiGenerationResult>, val autoSaveEnabled: Boolean) : Image
 
         @Immutable
-        data class Crop(val bitmap: Bitmap): Image
+        data class Crop(val bitmap: Bitmap) : Image
 
         companion object {
             fun create(list: List<AiGenerationResult>, autoSaveEnabled: Boolean): Image =

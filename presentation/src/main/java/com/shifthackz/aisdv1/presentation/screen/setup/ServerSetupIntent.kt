@@ -46,6 +46,8 @@ sealed interface ServerSetupIntent : MviIntent {
 
     data object LaunchManageStoragePermission : ServerSetupIntent
 
+    data object ConnectToLocalHost : ServerSetupIntent
+
     sealed class LaunchUrl : ServerSetupIntent, KoinComponent {
 
         protected val linksProvider: LinksProvider by inject()

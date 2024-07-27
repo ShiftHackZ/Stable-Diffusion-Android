@@ -10,6 +10,7 @@
     <string name="locale">zh</string>
     <string name="ok">确定</string>
     <string name="yes">是</string>
+    <string name="yes_i_did">是的，我做到了</string>
     <string name="no">否</string>
     <string name="cancel">取消</string>
     <string name="retry">重试</string>
@@ -254,6 +255,10 @@
     <string name="interaction_export_title">图库导出</string>
     <string name="interaction_export_sub_title">这将把所有图库图像导出为*.zip压缩包。此过程可能很长，如果您有很多图片，您想继续吗？</string>
     <string name="interaction_cache_sub_title">这将重置应用设置并删除所有生成的图像。您想继续吗？</string>
+
+    <!-- 警告互动 -->
+    <string name="interaction_warning_title">警告性的</string>
+    <string name="interaction_warning_localhost_sub_title">如果您想连接到本地主机（127.0.0.1）服务器，请确保您已启用 ssh 隧道以确保安全!</string>
 
     <!-- 删除图像提示 -->
     <string name="interaction_delete_generation_title">删除图像</string>

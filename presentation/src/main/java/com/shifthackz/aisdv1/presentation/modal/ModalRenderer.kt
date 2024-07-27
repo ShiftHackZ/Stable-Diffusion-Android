@@ -192,7 +192,7 @@ fun ModalRenderer(
             onDismissRequest = dismiss,
         )
 
-        Modal.ExportInProgress ->  ProgressDialog(
+        Modal.ExportInProgress -> ProgressDialog(
             titleResId = R.string.exporting_progress_title,
             subTitleResId = R.string.exporting_progress_sub_title,
             canDismiss = false,
@@ -241,6 +241,15 @@ fun ModalRenderer(
             bitmap = screenModal.bitmap,
             onDismissRequest = dismiss,
             onResult = { processIntent(ImageToImageIntent.UpdateImage(it)) }
+        )
+
+        Modal.ConnectLocalHost -> DecisionInteractiveDialog(
+            title = R.string.interaction_warning_title.asUiText(),
+            text = R.string.interaction_warning_localhost_sub_title.asUiText(),
+            confirmActionResId = R.string.yes_i_did,
+            dismissActionResId = R.string.cancel,
+            onConfirmAction = { processIntent(ServerSetupIntent.ConnectToLocalHost) },
+            onDismissRequest = dismiss,
         )
     }
 }

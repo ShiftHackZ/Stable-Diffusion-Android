@@ -200,6 +200,26 @@ class ServerSetupViewModel(
         is ServerSetupIntent.UpdateStabilityAiApiKey -> updateState {
             it.copy(stabilityAiApiKey = intent.key)
         }
+
+        ServerSetupIntent.ConnectToLocalHost -> {
+            connectToLocalHostWithSSH()
+        }
+    }
+
+    private fun connectToLocalHostWithSSH() {
+        emitEffect(ServerSetupEffect.HideKeyboard)
+        !connectToAutomaticInstance()
+            .doOnSubscribe { setScreenModal(Modal.Communicating(canCancel = false)) }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog) { result ->
+                result.fold(
+                    onSuccess = { onSetupComplete() },
+                    onFailure = { t ->
+                        val message = t.localizedMessage ?: "Bad key"
+                        setScreenModal(Modal.Error(message.asUiText()))
+                    }
+                )
+            }
     }
 
     private fun connectToServer() {
@@ -242,6 +262,9 @@ class ServerSetupViewModel(
                             passwordValidationError = passwordValidation.mapToUi()
                         )
                         isValid = isValid && loginValidation.isValid && passwordValidation.isValid
+                    }
+                    if (serverUrlValidation.validationError is UrlValidator.Error.Localhost) {
+                        newState = it.copy(screenModal = Modal.ConnectLocalHost)
                     }
                     newState
                 }

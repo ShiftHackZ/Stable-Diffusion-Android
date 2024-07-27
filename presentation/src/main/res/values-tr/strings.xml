@@ -5,6 +5,7 @@
     <string name="locale">tr</string>
     <string name="ok">Tamam</string>
     <string name="yes">Evet</string>
+    <string name="yes_i_did">Evet, yaptım</string>
     <string name="no">Hayır</string>
     <string name="cancel">İptal</string>
     <string name="retry">yeniden dene</string>
@@ -95,7 +96,7 @@
     <string name="hint_server_setup_title">Lütfen Stable Diffusion WebUI(AUTOMATIC1111) URL adresinizi yazın.</string>
     <string name="hint_valid_urls">Bazı sunucu örnekleri:\n• http://192.168.0.2:7860\n• http://alanadiniz.com:7860\n• https://alanadiniz.com</string>
     <string name="hint_demo_mode">This mode allows you to test the application behavior, even if you don\'t have Stable Diffusion WebUI server.\n\nIn demo mode app ignores user prompt, does not use AI server, and returns some mock images.</string>
-    <string name="hint_args_warning" tools:ignore="TypographyDashes">Before connecting ensure that:\n• you are running AUTOMATIC1111 WebUI with flags --api --listen\n• your firewall is not blocking 7860 port\n• phone is on the same WiFi with your PC</string>
+    <string name="hint_args_warning" tools:ignore="TypographyDashes,Typos">Before connecting ensure that:\n• you are running AUTOMATIC1111 WebUI with flags --api --listen\n• your firewall is not blocking 7860 port\n• phone is on the same WiFi with your PC</string>
 
     <string name="hint_server_horde_title">Horde AI bulutuna bağlanın</string>
     <string name="hint_server_horde_sub_title">Horde AI, Görüntü oluşturma çalışanları ve metin oluşturma çalışanlarından oluşan kitle kaynaklı dağıtılmış bir kümedir.</string>
@@ -128,7 +129,7 @@
     <string name="home_tab_settings">Ayarlar</string>
 
     <string name="gallery_tab_image">Resim</string>
-    <string name="gallery_tab_original">Orjinal</string>
+    <string name="gallery_tab_original">Orijinal</string>
     <string name="gallery_tab_info">Bilgi</string>
 
     <string name="title_text_to_image">Yazıdan Resime</string>
@@ -207,6 +208,9 @@
     <string name="interaction_export_title">Galeriyi Dışa Aktar</string>
     <string name="interaction_export_sub_title">Bu işlem bütün galerideki resimleri tek bir .zip arşivi dosyası olarak dışa aktaracaktır. Galerinizin boyutuna göre bu işlem uzun bir zaman alabailir. Devam etmek istiyor musunuz?</string>
     <string name="interaction_cache_sub_title">Bu işlem bütün uygulama ayarlarını ve oluşturulan resimleri silecektir. Devam etmek istiyor musunuz?</string>
+
+    <string name="interaction_warning_title">Uyarı</string>
+    <string name="interaction_warning_localhost_sub_title">Eğer localhost (127.0.0.1) sunucunuza bağlanmak istiyorsanız, lütfen güvenlik için ssh tünellemesinin etkinleştirildiğinden emin olun!</string>
 
     <string name="interaction_delete_generation_title">Resmi sil</string>
     <string name="interaction_delete_generation_sub_title">Kalıcı olarak bu resmi silmek istediğinize emin misiniz?</string>

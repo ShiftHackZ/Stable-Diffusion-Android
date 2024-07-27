@@ -5,6 +5,7 @@
     <string name="locale">uk</string>
     <string name="ok">OK</string>
     <string name="yes">Так</string>
+    <string name="yes_i_did">Так, я зробив</string>
     <string name="no">Ні</string>
     <string name="cancel">Скасувати</string>
     <string name="retry">Повторити</string>
@@ -207,6 +208,9 @@
     <string name="interaction_export_title">Експорт галереї</string>
     <string name="interaction_export_sub_title">Ця функція експортує всі зображення галереї у архів *.zip. Цей процес може тривати довго, якщо у вас багато зображень. Бажаєте продовжити?</string>
     <string name="interaction_cache_sub_title">Це призведе до скидання налаштувань програми та видалення всіх створених зображень. Ви бажаєте продовжити?</string>
+
+    <string name="interaction_warning_title">Попередження</string>
+    <string name="interaction_warning_localhost_sub_title">Якщо ви хочете підключитися до свого сервера localhost (127.0.0.1), будь ласка, переконайтеся, що у вас увімкнено тунелювання ssh з міркувань безпеки!</string>
 
     <string name="interaction_delete_generation_title">Видалити зображення</string>
     <string name="interaction_delete_generation_sub_title">Ви впевнені, що хочете остаточно видалити це зображення?</string>

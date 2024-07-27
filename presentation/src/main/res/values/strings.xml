@@ -9,6 +9,7 @@
     <string name="locale">en</string>
     <string name="ok">OK</string>
     <string name="yes">Yes</string>
+    <string name="yes_i_did">Yes, I did</string>
     <string name="no">No</string>
     <string name="cancel">Cancel</string>
     <string name="retry">Retry</string>
@@ -111,7 +112,7 @@
     <string name="hint_server_setup_title">Provide your Stable Diffusion WebUI URL</string>
     <string name="hint_valid_urls">Here are the examples of server URLs:\n• http://192.168.0.2:7860\n• http://yourdomain.com:7860\n• https://yourdomain.com</string>
     <string name="hint_demo_mode">This mode allows you to test the application behavior, even if you don\'t have Stable Diffusion WebUI server.\n\nIn demo mode app ignores user prompt, does not use AI server, and returns some mock images.</string>
-    <string name="hint_args_warning" tools:ignore="TypographyDashes">Before connecting ensure that:\n• you are running AUTOMATIC1111 WebUI with flags --api --listen\n• your firewall is not blocking 7860 port\n• phone is on the same WiFi with your PC</string>
+    <string name="hint_args_warning" tools:ignore="TypographyDashes,Typos">Before connecting ensure that:\n• you are running AUTOMATIC1111 WebUI with flags --api --listen\n• your firewall is not blocking 7860 port\n• phone is on the same WiFi with your PC</string>
 
     <string name="hint_server_horde_title">Connect to Horde AI cloud</string>
     <string name="hint_server_horde_sub_title">Horde AI is a crowdsourced distributed cluster of Image generation workers and text generation workers.</string>
@@ -226,6 +227,9 @@
     <string name="interaction_export_title">Gallery Export</string>
     <string name="interaction_export_sub_title">This will export all the gallery images as *.zip archive. This process may be long if you have many images, would you like to proceed?</string>
     <string name="interaction_cache_sub_title">This will reset app settings and delete all the generated images. Do you want to proceed?</string>
+
+    <string name="interaction_warning_title">Warning</string>
+    <string name="interaction_warning_localhost_sub_title">If you want to connect to your localhost (127.0.0.1) server, please make sure that you have ssh tunneling enabled for security!</string>
 
     <string name="interaction_delete_generation_title">Delete image</string>
     <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently delete this image?</string>

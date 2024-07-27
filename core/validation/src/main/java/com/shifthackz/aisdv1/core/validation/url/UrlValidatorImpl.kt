@@ -19,10 +19,6 @@ internal class UrlValidatorImpl : UrlValidator {
             isValid = false,
             validationError = UrlValidator.Error.BadScheme,
         )
-        input.contains(LOCALHOST_IPV4) -> ValidationResult(
-            isValid = false,
-            validationError = UrlValidator.Error.Localhost,
-        )
         !URLUtil.isValidUrl(input) -> ValidationResult(
             isValid = false,
             validationError = UrlValidator.Error.Invalid,
@@ -30,6 +26,10 @@ internal class UrlValidatorImpl : UrlValidator {
         !Patterns.WEB_URL.matcher(input).matches() -> ValidationResult(
             isValid = false,
             validationError = UrlValidator.Error.Invalid,
+        )
+        input.contains(LOCALHOST_IPV4) -> ValidationResult(
+            isValid = false,
+            validationError = UrlValidator.Error.Localhost,
         )
         else -> ValidationResult(isValid = true)
     }
