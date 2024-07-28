@@ -3,6 +3,7 @@
 package com.shifthackz.aisdv1.presentation.screen.home
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.presentation.core.CoreViewModelInitializeStrategy
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
@@ -27,6 +28,8 @@ class HomeNavigationViewModelTest : CoreViewModelTest<HomeNavigationViewModel>()
 
     override val testDispatcher: CoroutineDispatcher
         get() = UnconfinedTestDispatcher()
+
+    override val testViewModelStrategy = CoreViewModelInitializeStrategy.InitializeEveryTime
 
     override fun initializeViewModel() = HomeNavigationViewModel(
         generationFormUpdateEvent = stubGenerationFormUpdateEvent,
