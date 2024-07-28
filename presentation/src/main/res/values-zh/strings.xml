@@ -10,7 +10,6 @@
     <string name="locale">zh</string>
     <string name="ok">确定</string>
     <string name="yes">是</string>
-    <string name="yes_i_got_it">是的，我知道了</string>
     <string name="no">否</string>
     <string name="cancel">取消</string>
     <string name="retry">重试</string>
@@ -116,6 +115,7 @@
     <string name="hint_autodetect">自动检测</string>
 
     <!-- 认证方式 -->
+    <string name="auth_title">授权</string>
     <string name="auth_anonymous">匿名</string>
     <string name="auth_http_basic">HTTP基本认证</string>
 
@@ -258,7 +258,7 @@
 
     <!-- 警告互动 -->
     <string name="interaction_warning_title">警告性的</string>
-    <string name="interaction_warning_localhost_sub_title">如果您想连接到本地主机（127.0.0.1）服务器，请确保您已启用 ssh 隧道以确保安全!</string>
+    <string name="interaction_warning_localhost_sub_title">您正在尝试连接到本地主机（127.0.0.1）服务器。\n\n除非您的 Android 设备上设置了 ssh 隧道或其他端口转发机制，否则它可能无法工作。</string>
 
     <!-- 删除图像提示 -->
     <string name="interaction_delete_generation_title">删除图像</string>
@@ -288,6 +288,7 @@
     <string name="error_empty_field">字段不应为空</string>
     <string name="error_invalid">无效输入</string>
     <string name="error_invalid_scheme">服务器URL应以<b>http://</b>或<b>https://</b>开头</string>
+    <string name="error_invalid_port">端口范围应为 0 至 65535</string>
     <string name="error_invalid_url">无效的服务器URL</string>
     <string name="error_localhost_url">您不能使用本地主机(127.0.0.1)URL来连接到服务器。</string>
     <string name="error_min_size">最小尺寸为 %1$s</string>

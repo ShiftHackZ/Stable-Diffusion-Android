@@ -129,7 +129,7 @@ class ServerSetupViewModel(
                 it.copy(step = ServerSetupState.Step.CONFIGURE)
             }
 
-            ServerSetupState.Step.CONFIGURE -> connectToServer()
+            ServerSetupState.Step.CONFIGURE -> validateAndConnectToServer()
         }
 
         is ServerSetupIntent.UpdateAuthType -> updateState {
@@ -201,29 +201,15 @@ class ServerSetupViewModel(
             it.copy(stabilityAiApiKey = intent.key)
         }
 
-        ServerSetupIntent.ConnectToLocalHost -> {
-            connectToLocalHostWithSSH()
-        }
+        ServerSetupIntent.ConnectToLocalHost -> connectToServer()
     }
 
-    private fun connectToLocalHostWithSSH() {
-        emitEffect(ServerSetupEffect.HideKeyboard)
-        !connectToAutomaticInstance()
-            .doOnSubscribe { setScreenModal(Modal.Communicating(canCancel = false)) }
-            .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog) { result ->
-                result.fold(
-                    onSuccess = { onSetupComplete() },
-                    onFailure = { t ->
-                        val message = t.localizedMessage ?: "Bad key"
-                        setScreenModal(Modal.Error(message.asUiText()))
-                    }
-                )
-            }
+    private fun validateAndConnectToServer() {
+        if (!validate()) return
+        connectToServer()
     }
 
     private fun connectToServer() {
-        if (!validate()) return
         emitEffect(ServerSetupEffect.HideKeyboard)
         !when (currentState.mode) {
             ServerSource.HORDE -> connectToHorde()
@@ -232,8 +218,10 @@ class ServerSetupViewModel(
             ServerSource.HUGGING_FACE -> connectToHuggingFace()
             ServerSource.OPEN_AI -> connectToOpenAi()
             ServerSource.STABILITY_AI -> connectToStabilityAi()
-        }.doOnSubscribe { setScreenModal(Modal.Communicating(canCancel = false)) }
-            .subscribeOnMainThread(schedulersProvider).subscribeBy(::errorLog) { result ->
+        }
+            .doOnSubscribe { setScreenModal(Modal.Communicating(canCancel = false)) }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog) { result ->
                 result.fold(
                     onSuccess = { onSetupComplete() },
                     onFailure = { t ->
@@ -250,8 +238,8 @@ class ServerSetupViewModel(
             else {
                 val serverUrlValidation = urlValidator(currentState.serverUrl)
                 var isValid = serverUrlValidation.isValid
-                updateState {
-                    var newState = it.copy(
+                updateState { state ->
+                    var newState = state.copy(
                         serverUrlValidationError = serverUrlValidation.mapToUi()
                     )
                     if (currentState.authType == ServerSetupState.AuthType.HTTP_BASIC) {
@@ -263,8 +251,11 @@ class ServerSetupViewModel(
                         )
                         isValid = isValid && loginValidation.isValid && passwordValidation.isValid
                     }
-                    if (serverUrlValidation.validationError is UrlValidator.Error.Localhost) {
-                        newState = it.copy(screenModal = Modal.ConnectLocalHost)
+                    if (serverUrlValidation.validationError is UrlValidator.Error.Localhost
+                        && newState.loginValidationError == null
+                        && newState.passwordValidationError == null
+                    ) {
+                        newState = newState.copy(screenModal = Modal.ConnectLocalHost)
                     }
                     newState
                 }

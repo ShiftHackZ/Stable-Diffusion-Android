@@ -5,7 +5,6 @@
     <string name="locale">tr</string>
     <string name="ok">Tamam</string>
     <string name="yes">Evet</string>
-    <string name="yes_i_got_it">Evet, anladım</string>
     <string name="no">Hayır</string>
     <string name="cancel">İptal</string>
     <string name="retry">yeniden dene</string>
@@ -90,6 +89,7 @@
     <string name="hint_in_paint_area">Inpaint alan</string>
     <string name="hint_autodetect">Otomatik olarak algıla</string>
 
+    <string name="auth_title">Yetki</string>
     <string name="auth_anonymous">Anonim</string>
     <string name="auth_http_basic">HTTP Temel</string>
 
@@ -210,7 +210,7 @@
     <string name="interaction_cache_sub_title">Bu işlem bütün uygulama ayarlarını ve oluşturulan resimleri silecektir. Devam etmek istiyor musunuz?</string>
 
     <string name="interaction_warning_title">Uyarı</string>
-    <string name="interaction_warning_localhost_sub_title">Eğer localhost (127.0.0.1) sunucunuza bağlanmak istiyorsanız, lütfen güvenlik için ssh tünellemesinin etkinleştirildiğinden emin olun!</string>
+    <string name="interaction_warning_localhost_sub_title">Localhost (127.0.0.1) sunucusuna bağlanmaya çalışıyorsunuz.\n\nAndroid cihazınızda ssh tüneli veya başka bir bağlantı noktası yönlendirme mekanizması kurulu olmadığı sürece çalışmayabilir.</string>
 
     <string name="interaction_delete_generation_title">Resmi sil</string>
     <string name="interaction_delete_generation_sub_title">Kalıcı olarak bu resmi silmek istediğinize emin misiniz?</string>
@@ -234,6 +234,7 @@
     <string name="error_empty_field">Alan boş olmamalıdır</string>
     <string name="error_invalid">Geçerli olmayan bilgi girişi</string>
     <string name="error_invalid_scheme">Sunucu adresi <b>http://</b> veya <b>https://</b> ile başlamalıdır.</string>
+    <string name="error_invalid_port">Port 0 ile 65535 aralığında olmalıdır</string>
     <string name="error_invalid_url">Geçersiz sunucu adresi.</string>
     <string name="error_localhost_url">Sunucuya bağlanmak için localhost (127.0.0.1) URL adresi kullanamazsınız.</string>
     <string name="error_min_size">Asgari boyut %1$s</string>

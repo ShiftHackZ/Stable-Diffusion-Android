@@ -246,7 +246,7 @@ fun ModalRenderer(
         Modal.ConnectLocalHost -> DecisionInteractiveDialog(
             title = R.string.interaction_warning_title.asUiText(),
             text = R.string.interaction_warning_localhost_sub_title.asUiText(),
-            confirmActionResId = R.string.yes_i_got_it,
+            confirmActionResId = R.string.action_connect,
             dismissActionResId = R.string.cancel,
             onConfirmAction = { processIntent(ServerSetupIntent.ConnectToLocalHost) },
             onDismissRequest = dismiss,

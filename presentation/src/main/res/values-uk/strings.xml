@@ -5,7 +5,6 @@
     <string name="locale">uk</string>
     <string name="ok">OK</string>
     <string name="yes">Так</string>
-    <string name="yes_i_got_it">Так, я зрозумів</string>
     <string name="no">Ні</string>
     <string name="cancel">Скасувати</string>
     <string name="retry">Повторити</string>
@@ -90,6 +89,7 @@
     <string name="hint_in_paint_area">Область Inpaint</string>
     <string name="hint_autodetect">Авто</string>
 
+    <string name="auth_title">Авторизація</string>
     <string name="auth_anonymous">Анонімна</string>
     <string name="auth_http_basic">HTTP Базова</string>
 
@@ -210,7 +210,7 @@
     <string name="interaction_cache_sub_title">Це призведе до скидання налаштувань програми та видалення всіх створених зображень. Ви бажаєте продовжити?</string>
 
     <string name="interaction_warning_title">Попередження</string>
-    <string name="interaction_warning_localhost_sub_title">Якщо ви хочете підключитися до свого сервера localhost (127.0.0.1), будь ласка, переконайтеся, що у вас увімкнено тунелювання ssh з міркувань безпеки!</string>
+    <string name="interaction_warning_localhost_sub_title">Ви намагаєтеся підключитися до локального сервера localhost (127.0.0.1).\n\nЦе може не працювати, якщо на вашому пристрої Android не налаштовано SSH-тунелювання або інший механізм переадресації портів.</string>
 
     <string name="interaction_delete_generation_title">Видалити зображення</string>
     <string name="interaction_delete_generation_sub_title">Ви впевнені, що хочете остаточно видалити це зображення?</string>
@@ -234,6 +234,7 @@
     <string name="error_empty_field">Поле не може бути пустим</string>
     <string name="error_invalid">Неправильні дані</string>
     <string name="error_invalid_scheme">URL має починатися з <b>http://</b> або <b>https://</b></string>
+    <string name="error_invalid_port">Порт має бути в діапазоні від 0 до 65535</string>
     <string name="error_invalid_url">Недійсна URL-адреса сервера</string>
     <string name="error_localhost_url">Ви не можете використовувати localhost (127.0.0.1) URL-адресу для підключення до сервера.</string>
     <string name="error_min_size">Мінімальний розмір %1$s</string>
