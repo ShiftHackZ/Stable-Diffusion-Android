@@ -66,11 +66,12 @@ fun Automatic1111Form(
             supportingText = state.serverUrlValidationError
                 ?.takeIf { !state.demoMode }
                 ?.let { { Text(it.asString(), color = MaterialTheme.colorScheme.error) } },
+            maxLines = 1,
         )
         if (!state.demoMode) {
             DropdownTextField(
                 modifier = fieldModifier,
-                label = "Authorization".asUiText(),
+                label = R.string.auth_title.asUiText(),
                 items = ServerSetupState.AuthType.entries,
                 value = state.authType,
                 onItemSelected = {
@@ -85,7 +86,6 @@ fun Automatic1111Form(
             )
             when (state.authType) {
                 ServerSetupState.AuthType.HTTP_BASIC -> {
-
                     TextField(
                         modifier = fieldModifier,
                         value = state.login,
@@ -97,6 +97,7 @@ fun Automatic1111Form(
                         supportingText = state.loginValidationError?.let {
                             { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
                         },
+                        maxLines = 1,
                     )
                     TextField(
                         modifier = fieldModifier,
@@ -107,8 +108,11 @@ fun Automatic1111Form(
                         label = { Text(stringResource(id = R.string.hint_password)) },
                         isError = state.passwordValidationError != null,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        visualTransformation = if (state.passwordVisible) VisualTransformation.None
-                        else PasswordVisualTransformation(),
+                        visualTransformation = if (state.passwordVisible) {
+                            VisualTransformation.None
+                        } else {
+                            PasswordVisualTransformation()
+                        },
                         supportingText = state.passwordValidationError?.let {
                             { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
                         },
@@ -126,7 +130,8 @@ fun Automatic1111Form(
                                 },
                                 content = { Icon(image, description) },
                             )
-                        }
+                        },
+                        maxLines = 1,
                     )
                 }
                 else -> Unit

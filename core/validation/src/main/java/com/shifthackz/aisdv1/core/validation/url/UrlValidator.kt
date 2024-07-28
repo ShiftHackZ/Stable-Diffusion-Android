@@ -9,6 +9,7 @@ interface UrlValidator {
     sealed interface Error {
         data object Empty : Error
         data object BadScheme : Error
+        data object BadPort : Error
         data object Invalid : Error
         data object Localhost : Error
     }

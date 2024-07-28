@@ -89,6 +89,7 @@
     <string name="hint_in_paint_area">Область Inpaint</string>
     <string name="hint_autodetect">Авто</string>
 
+    <string name="auth_title">Авторизация</string>
     <string name="auth_anonymous">Анонимно</string>
     <string name="auth_http_basic">HTTP Базовая</string>
 
@@ -208,6 +209,9 @@
     <string name="interaction_export_sub_title">Эта функция экспортирует все изображения галереи в архив *.zip. Этот процесс может длиться долго, если у вас много изображений. Хотите продолжить?</string>
     <string name="interaction_cache_sub_title">Это приведет к сбросу настроек программы и удалению всех созданных изображений. Вы хотите продолжить?</string>
 
+    <string name="interaction_warning_title">Предупреждение</string>
+    <string name="interaction_warning_localhost_sub_title">Вы пытаетесь подключиться к локальному серверу localhost (127.0.0.1).\n\nЭто может не сработать, если на вашем Android-устройстве не настроено туннелирование ssh или другой механизм переадресации портов.</string>
+
     <string name="interaction_delete_generation_title">Удалить изображение</string>
     <string name="interaction_delete_generation_sub_title">Вы уверены, что хотите окончательно удалить это изображение?</string>
 
@@ -230,6 +234,7 @@
     <string name="error_empty_field">Поле не может быть пустым</string>
     <string name="error_invalid">Неверные данные</string>
     <string name="error_invalid_scheme">URL должно начинаться с <b>http://</b> или <b>https://</b></string>
+    <string name="error_invalid_port">Порт должен быть в диапазоне от 0 до 65535</string>
     <string name="error_invalid_url">Недействительный URL-адрес сервера</string>
     <string name="error_localhost_url">Вы не можете использовать localhost (127.0.0.1) URL-адрес для подключения к серверу.</string>
     <string name="error_min_size">Минимальный размер %1$s</string>

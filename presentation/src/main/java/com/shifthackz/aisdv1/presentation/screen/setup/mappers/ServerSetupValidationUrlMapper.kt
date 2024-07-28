@@ -10,8 +10,9 @@ fun ValidationResult<UrlValidator.Error>.mapToUi(): UiText? {
     if (this.isValid) return null
     return when (validationError as UrlValidator.Error) {
         UrlValidator.Error.BadScheme -> R.string.error_invalid_scheme
+        UrlValidator.Error.BadPort -> R.string.error_invalid_port
         UrlValidator.Error.Empty -> R.string.error_empty_url
         UrlValidator.Error.Invalid -> R.string.error_invalid_url
-        UrlValidator.Error.Localhost -> R.string.error_localhost_url
-    }.asUiText()
+        UrlValidator.Error.Localhost -> null
+    }?.asUiText()
 }
