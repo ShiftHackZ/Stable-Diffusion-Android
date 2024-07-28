@@ -239,4 +239,102 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
             Assert.assertEquals(expected, actual)
         }
     }
+
+    @Test
+    fun `given received UpdateAuthType intent, expected authType field in UI state is HTTP_BASIC`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateAuthType(ServerSetupState.AuthType.HTTP_BASIC))
+        runTest {
+            val expected = ServerSetupState.AuthType.HTTP_BASIC
+            val actual = viewModel.state.value.authType
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received UpdateDemoMode intent, expected demoMode field in UI state is true`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateDemoMode(true))
+        runTest {
+            val expected = true
+            val actual = viewModel.state.value.demoMode
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received UpdateHordeApiKey intent, expected hordeApiKey field in UI state is 5598`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateHordeApiKey("5598"))
+        runTest {
+            val expected = "5598"
+            val actual = viewModel.state.value.hordeApiKey
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received UpdateHordeDefaultApiKey intent, expected hordeDefaultApiKey field in UI state is true`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateHordeDefaultApiKey(true))
+        runTest {
+            val expected = true
+            val actual = viewModel.state.value.hordeDefaultApiKey
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received UpdateHuggingFaceApiKey intent, expected huggingFaceApiKey field in UI state is 5598`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateHuggingFaceApiKey("5598"))
+        runTest {
+            val expected = "5598"
+            val actual = viewModel.state.value.huggingFaceApiKey
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received UpdateHuggingFaceModel intent, expected huggingFaceModel field in UI state is 5598`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateHuggingFaceModel("5598"))
+        runTest {
+            val expected = "5598"
+            val actual = viewModel.state.value.huggingFaceModel
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received UpdateLogin intent, expected login field is 5598, loginValidationError is null in UI state`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateLogin("5598"))
+        runTest {
+            Assert.assertEquals("5598", viewModel.state.value.login)
+            Assert.assertEquals(null, viewModel.state.value.loginValidationError)
+        }
+    }
+
+    @Test
+    fun `given received UpdatePassword intent, expected password field is 5598, passwordValidationError is null in UI state`() {
+        viewModel.processIntent(ServerSetupIntent.UpdatePassword("5598"))
+        runTest {
+            Assert.assertEquals("5598", viewModel.state.value.password)
+            Assert.assertEquals(null, viewModel.state.value.passwordValidationError)
+        }
+    }
+
+    @Test
+    fun `given received UpdateOpenAiApiKey intent, expected openAiApiKey field in UI state is 5598`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateOpenAiApiKey("5598"))
+        runTest {
+            val expected = "5598"
+            val actual = viewModel.state.value.openAiApiKey
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received UpdatePasswordVisibility intent, expected passwordVisible field in UI state is false`() {
+        viewModel.processIntent(ServerSetupIntent.UpdatePasswordVisibility(true))
+        runTest {
+            val expected = false
+            val actual = viewModel.state.value.passwordVisible
+            Assert.assertEquals(expected, actual)
+        }
+    }
 }
