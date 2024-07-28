@@ -1,0 +1,242 @@
+package com.shifthackz.aisdv1.presentation.screen.setup
+
+import com.shifthackz.aisdv1.core.validation.common.CommonStringValidator
+import com.shifthackz.aisdv1.core.validation.url.UrlValidator
+import com.shifthackz.aisdv1.domain.entity.Configuration
+import com.shifthackz.aisdv1.domain.entity.DownloadState
+import com.shifthackz.aisdv1.domain.interactor.settings.SetupConnectionInterActor
+import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
+import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
+import com.shifthackz.aisdv1.presentation.mocks.mockHuggingFaceModels
+import com.shifthackz.aisdv1.presentation.mocks.mockLocalAiModels
+import com.shifthackz.aisdv1.presentation.mocks.mockServerSetupStateLocalModel
+import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
+
+class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
+
+    private val stubGetConfigurationUseCase = mockk<GetConfigurationUseCase>()
+    private val stubGetLocalAiModelsUseCase = mockk<GetLocalAiModelsUseCase>()
+    private val stubFetchAndGetHuggingFaceModelsUseCase =
+        mockk<FetchAndGetHuggingFaceModelsUseCase>()
+    private val stubUrlValidator = mockk<UrlValidator>()
+    private val stubCommonStringValidator = mockk<CommonStringValidator>()
+    private val stubSetupConnectionInterActor = mockk<SetupConnectionInterActor>()
+    private val stubDownloadModelUseCase = mockk<DownloadModelUseCase>()
+    private val stubDeleteModelUseCase = mockk<DeleteModelUseCase>()
+    private val stubPreferenceManager = mockk<PreferenceManager>()
+    private val stubWakeLockInterActor = mockk<WakeLockInterActor>()
+    private val stubMainRouter = mockk<MainRouter>()
+
+    override fun initializeViewModel() = ServerSetupViewModel(
+        launchSource = ServerSetupLaunchSource.SETTINGS,
+        getConfigurationUseCase = stubGetConfigurationUseCase,
+        getLocalAiModelsUseCase = stubGetLocalAiModelsUseCase,
+        fetchAndGetHuggingFaceModelsUseCase = stubFetchAndGetHuggingFaceModelsUseCase,
+        urlValidator = stubUrlValidator,
+        stringValidator = stubCommonStringValidator,
+        setupConnectionInterActor = stubSetupConnectionInterActor,
+        downloadModelUseCase = stubDownloadModelUseCase,
+        deleteModelUseCase = stubDeleteModelUseCase,
+        schedulersProvider = stubSchedulersProvider,
+        preferenceManager = stubPreferenceManager,
+        wakeLockInterActor = stubWakeLockInterActor,
+        mainRouter = stubMainRouter,
+    )
+
+    @Before
+    override fun initialize() {
+        super.initialize()
+
+        every {
+            stubGetConfigurationUseCase()
+        } returns Single.just(Configuration(serverUrl = "https://5598.is.my.favorite.com"))
+
+        every {
+            stubGetLocalAiModelsUseCase()
+        } returns Single.just(mockLocalAiModels)
+
+        every {
+            stubFetchAndGetHuggingFaceModelsUseCase()
+        } returns Single.just(mockHuggingFaceModels)
+    }
+
+    @Test
+    fun `initialized, expected UI state updated with correct stub values`() {
+        runTest {
+            val state = viewModel.state.value
+            Assert.assertEquals(true, state.huggingFaceModels.isNotEmpty())
+            Assert.assertEquals(true, state.localModels.isNotEmpty())
+            Assert.assertEquals("https://5598.is.my.favorite.com", state.serverUrl)
+            Assert.assertEquals(ServerSetupState.AuthType.ANONYMOUS, state.authType)
+        }
+    }
+
+    @Test
+    fun `given received AllowLocalCustomModel intent, expected Custom local model selected in UI state`() {
+        viewModel.processIntent(ServerSetupIntent.AllowLocalCustomModel(true))
+        runTest {
+            val state = viewModel.state.value
+            val expectedLocalModels = listOf(
+                ServerSetupState.LocalModel(
+                    id = "CUSTOM",
+                    name = "Custom",
+                    size = "NaN",
+                    downloaded = false,
+                    selected = true,
+                ),
+                ServerSetupState.LocalModel(
+                    id = "1",
+                    name = "Model 1",
+                    size = "5 Gb",
+                    downloaded = false,
+                    selected = false,
+                )
+            )
+            Assert.assertEquals(true, state.localCustomModel)
+            Assert.assertEquals(expectedLocalModels, state.localModels)
+        }
+    }
+
+    @Test
+    fun `given received DismissDialog intent, expected screenModal field in UI state is None`() {
+        viewModel.processIntent(ServerSetupIntent.DismissDialog)
+        runTest {
+            val expected = Modal.None
+            val actual = viewModel.state.value.screenModal
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received LocalModel ClickReduce intent, model not downloaded, expected UI state is Downloading, wakeLocks called`() {
+        every {
+            stubDownloadModelUseCase(any())
+        } returns Observable.just(DownloadState.Downloading(22))
+
+        every {
+            stubWakeLockInterActor.acquireWakelockUseCase()
+        } returns Result.success(Unit)
+
+        every {
+            stubWakeLockInterActor.releaseWakeLockUseCase()
+        } returns Result.success(Unit)
+
+        val localModel = mockServerSetupStateLocalModel.copy(
+            downloadState = DownloadState.Unknown,
+        )
+        val intent = ServerSetupIntent.LocalModel.ClickReduce(localModel)
+        viewModel.processIntent(intent)
+
+        runTest {
+            val state = viewModel.state.value
+            val expected = true
+            val actual = state.localModels.any {
+                it.downloadState == DownloadState.Downloading(22)
+            }
+            Assert.assertEquals(expected, actual)
+        }
+        verify {
+            stubWakeLockInterActor.acquireWakelockUseCase()
+        }
+        verify {
+            stubWakeLockInterActor.releaseWakeLockUseCase()
+        }
+        verify {
+            stubDownloadModelUseCase("1")
+        }
+    }
+
+    @Test
+    fun `given received LocalModel ClickReduce intent, model downloaded, expected screenModal field in UI state is DeleteLocalModelConfirm`() {
+        val localModel = mockServerSetupStateLocalModel.copy(
+            downloaded = true,
+            downloadState = DownloadState.Unknown,
+        )
+        val intent = ServerSetupIntent.LocalModel.ClickReduce(localModel)
+        viewModel.processIntent(intent)
+
+        runTest {
+            val expected = Modal.DeleteLocalModelConfirm(localModel)
+            val actual = viewModel.state.value.screenModal
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received LocalModel ClickReduce intent, model is downloading, expected UI state is Unknown`() {
+        val localModel = mockServerSetupStateLocalModel.copy(
+            downloadState = DownloadState.Downloading(22),
+        )
+        val intent = ServerSetupIntent.LocalModel.ClickReduce(localModel)
+        viewModel.processIntent(intent)
+
+        runTest {
+            val state = viewModel.state.value
+            val expected = false
+            val actual = state.localModels.any {
+                it.downloadState == DownloadState.Downloading(22)
+            }
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received LocalModel DeleteConfirm intent, expected downloaded field is false for LocalModel UI state`() {
+        every {
+            stubDeleteModelUseCase(any())
+        } returns Completable.complete()
+
+        val localModel = mockServerSetupStateLocalModel.copy(
+            downloaded = true,
+            downloadState = DownloadState.Unknown,
+        )
+        val intent = ServerSetupIntent.LocalModel.DeleteConfirm(localModel)
+        viewModel.processIntent(intent)
+
+        runTest {
+            val state = viewModel.state.value
+            Assert.assertEquals(Modal.None, state.screenModal)
+            Assert.assertEquals(false, state.localModels.find { it.id == "1" }!!.downloaded)
+        }
+        verify {
+            stubDeleteModelUseCase("1")
+        }
+    }
+
+    @Test
+    fun `given received SelectLocalModel intent, expected passed LocalModel is selected in UI state`() {
+        viewModel.processIntent(ServerSetupIntent.SelectLocalModel(mockServerSetupStateLocalModel))
+        runTest {
+            val state = viewModel.state.value
+            Assert.assertEquals(true, state.localModels.find { it.id == "1" }!!.selected)
+        }
+    }
+
+    @Test
+    fun `given received MainButtonClick intent, expected step field in UI state is CONFIGURE`() {
+        viewModel.processIntent(ServerSetupIntent.MainButtonClick)
+        runTest {
+            val expected = ServerSetupState.Step.CONFIGURE
+            val actual = viewModel.state.value.step
+            Assert.assertEquals(expected, actual)
+        }
+    }
+}

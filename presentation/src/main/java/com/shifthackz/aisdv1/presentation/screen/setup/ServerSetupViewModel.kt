@@ -58,7 +58,8 @@ class ServerSetupViewModel(
             getLocalAiModelsUseCase(),
             fetchAndGetHuggingFaceModelsUseCase(),
             ::Triple,
-        ).subscribeOnMainThread(schedulersProvider)
+        )
+            .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { (configuration, localModels, hfModels) ->
                 updateState { state ->
                     state.copy(
@@ -381,7 +382,8 @@ class ServerSetupViewModel(
                 }
                 downloadDisposable?.dispose()
                 downloadDisposable = null
-                downloadDisposable = downloadModelUseCase(localModel.id).distinctUntilChanged()
+                downloadDisposable = downloadModelUseCase(localModel.id)
+                    .distinctUntilChanged()
                     .doOnSubscribe { wakeLockInterActor.acquireWakelockUseCase() }
                     .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
                     .subscribeOnMainThread(schedulersProvider).subscribeBy(

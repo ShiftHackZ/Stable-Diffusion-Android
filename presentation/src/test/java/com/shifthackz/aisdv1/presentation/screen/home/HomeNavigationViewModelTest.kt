@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.shifthackz.aisdv1.presentation.screen.home
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
@@ -9,7 +11,10 @@ import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -19,6 +24,9 @@ class HomeNavigationViewModelTest : CoreViewModelTest<HomeNavigationViewModel>()
 
     private val stubRoute = BehaviorSubject.create<AiGenerationResult.Type>()
     private val stubGenerationFormUpdateEvent = mockk<GenerationFormUpdateEvent>()
+
+    override val testDispatcher: CoroutineDispatcher
+        get() = UnconfinedTestDispatcher()
 
     override fun initializeViewModel() = HomeNavigationViewModel(
         generationFormUpdateEvent = stubGenerationFormUpdateEvent,
