@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.core.validation.common.CommonStringValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.DownloadState
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.interactor.settings.SetupConnectionInterActor
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -25,6 +26,7 @@ import io.mockk.verify
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -335,6 +337,106 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
             val expected = false
             val actual = viewModel.state.value.passwordVisible
             Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received UpdateServerMode intent, expected mode field in UI state is LOCAL`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateServerMode(ServerSource.LOCAL))
+        runTest {
+            val expected = ServerSource.LOCAL
+            val actual = viewModel.state.value.mode
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received UpdateServerUrl intent, expected serverUrl field updated, serverUrlValidationError is null in UI state`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateServerUrl("https://5598.is.my.favorite.com"))
+        runTest {
+            val expected = "https://5598.is.my.favorite.com"
+            val actual = viewModel.state.value.serverUrl
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received LaunchUrl intent, expected LaunchUrl effect delivered to effect collector`() {
+        val intent = mockk<ServerSetupIntent.LaunchUrl.A1111Instructions>()
+        every {
+            intent::url.get()
+        } returns "https://5598.is.my.favorite.com"
+
+        viewModel.processIntent(intent)
+
+        runTest {
+            val expected = ServerSetupEffect.LaunchUrl("https://5598.is.my.favorite.com")
+            val actual = viewModel.effect.firstOrNull()
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received LaunchManageStoragePermission intent, expected LaunchManageStoragePermission effect delivered to effect collector`() {
+        viewModel.processIntent(ServerSetupIntent.LaunchManageStoragePermission)
+        runTest {
+            val expected = ServerSetupEffect.LaunchManageStoragePermission
+            val actual = viewModel.effect.firstOrNull()
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received NavigateBack intent, expected router navigateBack() method called`() {
+        every {
+            stubMainRouter.navigateBack()
+        } returns Unit
+
+        viewModel.processIntent(ServerSetupIntent.NavigateBack)
+
+        verify {
+            stubMainRouter.navigateBack()
+        }
+    }
+
+    @Test
+    fun `given received UpdateStabilityAiApiKey intent, expected stabilityAiApiKey field in UI state is 5598`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateStabilityAiApiKey("5598"))
+        runTest {
+            val expected = "5598"
+            val actual = viewModel.state.value.stabilityAiApiKey
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received ConnectToLocalHost intent, expected success, router navigateToHomeScreen() method called, preference forceSetupAfterUpdate is false, dialog is None`() {
+        every {
+            stubSetupConnectionInterActor.connectToA1111(any(), any(), any())
+        } returns Single.just(Result.success(Unit))
+
+        every {
+            stubMainRouter.navigateToHomeScreen()
+        } returns Unit
+
+        every {
+            stubPreferenceManager::forceSetupAfterUpdate.set(any())
+        } returns Unit
+
+        viewModel.processIntent(ServerSetupIntent.ConnectToLocalHost)
+
+        runTest {
+            Assert.assertEquals(
+                ServerSetupEffect.HideKeyboard,
+                viewModel.effect.firstOrNull(),
+            )
+            Assert.assertEquals(
+                Modal.None,
+                viewModel.state.value.screenModal,
+            )
+        }
+        verify {
+            stubMainRouter.navigateToHomeScreen()
         }
     }
 }
