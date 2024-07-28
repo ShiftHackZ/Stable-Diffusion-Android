@@ -112,7 +112,7 @@ User interface of the app is translated for languages listed in this table:
 | Ukrainian | 0.1.0 | `Translated` |
 | Turkish | 0.4.1 | `Translated` |
 | Russian | 0.5.5 | `Translated` |
-| Chinese (Simplified) | 0.6.1 | `Translated` |
+| Chinese (Simplified) | 0.6.2 | `Translated` |
 
 Any contributions to the translations are welcome.
 
