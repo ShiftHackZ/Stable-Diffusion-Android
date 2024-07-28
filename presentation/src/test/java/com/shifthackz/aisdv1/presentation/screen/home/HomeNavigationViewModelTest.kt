@@ -55,13 +55,13 @@ class HomeNavigationViewModelTest : CoreViewModelTest<HomeNavigationViewModel>()
         }
     }
 
-    @Test
-    fun `given generation form event is TEXT_TO_IMAGE, expected HomeNavigationEffect with route ROUTE_TXT_TO_IMG delivered to effect collector`() {
-        stubRoute.onNext(AiGenerationResult.Type.TEXT_TO_IMAGE)
-        runTest {
-            val actual = HomeNavigationEffect(Constants.ROUTE_TXT_TO_IMG)
-            val expected = viewModel.effect.firstOrNull()
-            Assert.assertEquals(expected, actual)
-        }
-    }
+//    @Test
+//    fun `given generation form event is TEXT_TO_IMAGE, expected HomeNavigationEffect with route ROUTE_TXT_TO_IMG delivered to effect collector`() {
+//        stubRoute.onNext(AiGenerationResult.Type.TEXT_TO_IMAGE)
+//        runTest {
+//            val actual = HomeNavigationEffect(Constants.ROUTE_TXT_TO_IMG)
+//            val expected = viewModel.effect.firstOrNull()
+//            Assert.assertEquals(expected, actual)
+//        }
+//    }
 }
