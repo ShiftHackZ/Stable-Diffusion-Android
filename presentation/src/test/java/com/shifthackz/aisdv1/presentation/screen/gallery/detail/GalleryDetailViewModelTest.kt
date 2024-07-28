@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
@@ -194,6 +195,20 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
             val expected = GalleryDetailState.Tab.ORIGINAL
             val actual = viewModel.state.value.selectedTab
             Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received SendTo Txt2Img intent, expected router navigateBack() and form event update() methods called`() {
+        viewModel.processIntent(GalleryDetailIntent.SendTo.Txt2Img)
+        verify {
+            stubMainRouter.navigateBack()
+        }
+        verify {
+            stubGenerationFormUpdateEvent.update(
+                mockAiGenerationResult,
+                AiGenerationResult.Type.TEXT_TO_IMAGE,
+            )
         }
     }
 }
