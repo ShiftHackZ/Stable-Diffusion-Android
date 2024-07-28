@@ -14,6 +14,15 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.7"
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            jvmArgs(
+                    "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+                    "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED"
+            )
+        }
+    }
 }
 
 dependencies {

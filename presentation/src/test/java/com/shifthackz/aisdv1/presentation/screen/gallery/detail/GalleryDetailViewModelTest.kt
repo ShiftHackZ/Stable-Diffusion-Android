@@ -116,11 +116,13 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     }
 
     @Test
-    fun `given received Delete Confirm intent, expected modal field in UI state is None, deleteGalleryItemUseCase() method is called`() {
+    fun `given received Delete Confirm intent, expected screenModal field in UI state is None, deleteGalleryItemUseCase() method is called`() {
         every {
             stubDeleteGalleryItemUseCase(any())
         } returns Completable.complete()
+
         viewModel.processIntent(GalleryDetailIntent.Delete.Confirm)
+
         runTest {
             val expected = Modal.None
             val actual = (viewModel.state.value as? GalleryDetailState.Content)?.screenModal
@@ -209,6 +211,30 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
                 mockAiGenerationResult,
                 AiGenerationResult.Type.TEXT_TO_IMAGE,
             )
+        }
+    }
+
+    @Test
+    fun `given received SendTo Img2Img intent, expected router navigateBack() and form event update() methods called`() {
+        viewModel.processIntent(GalleryDetailIntent.SendTo.Img2Img)
+        verify {
+            stubMainRouter.navigateBack()
+        }
+        verify {
+            stubGenerationFormUpdateEvent.update(
+                mockAiGenerationResult,
+                AiGenerationResult.Type.IMAGE_TO_IMAGE,
+            )
+        }
+    }
+
+    @Test
+    fun `given received DismissDialog intent, expected screenModal field in UI state is None`() {
+        viewModel.processIntent(GalleryDetailIntent.DismissDialog)
+        runTest {
+            val expected = Modal.None
+            val actual = viewModel.state.value.screenModal
+            Assert.assertEquals(expected, actual)
         }
     }
 }

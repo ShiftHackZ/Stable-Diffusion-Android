@@ -59,6 +59,16 @@ class UrlValidatorImplTest {
     }
 
     @Test
+    fun `given input is url with port 99999, expected not valid with BadPort error`() {
+        val expected = ValidationResult<UrlValidator.Error>(
+            isValid = false,
+            validationError = UrlValidator.Error.BadPort,
+        )
+        val actual = validator("http://5598.is.my.favorite.com:99999")
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
     fun `given input is http localhost ipv4 address, expected not valid with Localhost error`() {
         val expected = ValidationResult<UrlValidator.Error>(
             isValid = false,

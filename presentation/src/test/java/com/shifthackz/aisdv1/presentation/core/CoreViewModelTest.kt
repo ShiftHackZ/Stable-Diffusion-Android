@@ -3,6 +3,7 @@
 package com.shifthackz.aisdv1.presentation.core
 
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -13,18 +14,31 @@ import org.junit.Before
 
 abstract class CoreViewModelTest<V : ViewModel> {
 
-    private lateinit var _viewModel: V
+    private var _viewModel: V? = null
 
     protected val viewModel: V
-        get() {
-            if (this::_viewModel.isInitialized) return _viewModel
-            _viewModel = initializeViewModel()
-            return _viewModel
+        get() = when (testViewModelStrategy) {
+            CoreViewModelInitializeStrategy.InitializeOnce -> _viewModel ?: run {
+                val vm = initializeViewModel()
+                _viewModel = vm
+                vm
+            }
+            CoreViewModelInitializeStrategy.InitializeEveryTime -> {
+                val vm = initializeViewModel()
+                _viewModel = vm
+                vm
+            }
         }
+
+    open val testViewModelStrategy: CoreViewModelInitializeStrategy
+        get() = CoreViewModelInitializeStrategy.InitializeOnce
+
+    open val testDispatcher: CoroutineDispatcher
+        get() = StandardTestDispatcher()
 
     @Before
     open fun initialize() {
-        Dispatchers.setMain(StandardTestDispatcher())
+        Dispatchers.setMain(testDispatcher)
     }
 
     @After

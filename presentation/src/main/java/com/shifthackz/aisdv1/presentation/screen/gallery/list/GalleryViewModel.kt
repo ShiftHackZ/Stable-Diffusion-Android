@@ -65,7 +65,6 @@ class GalleryViewModel(
         }
     }
 
-
     private fun launchGalleryExport() = galleryExporter()
         .doOnSubscribe { setActiveModal(Modal.ExportInProgress) }
         .subscribeOnMainThread(schedulersProvider)
