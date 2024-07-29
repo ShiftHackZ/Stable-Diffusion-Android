@@ -56,7 +56,7 @@ class ImageToImageViewModel(
             .observeInPaint()
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { inPaint ->
-                updateState {  it.copy(inPaintModel = inPaint) }
+                updateState { it.copy(inPaintModel = inPaint) }
             }
     }
 

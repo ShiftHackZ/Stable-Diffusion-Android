@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
+import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
@@ -15,11 +16,13 @@ import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCa
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.junit.After
@@ -36,8 +39,6 @@ abstract class CoreGenerationMviViewModelTest<V : GenerationMviViewModel<*, *, *
 
     protected val stubSettings = BehaviorSubject.createDefault(Settings())
     protected val stubAiForm = BehaviorSubject.create<AiGenerationResult>()
-    protected val stubHordeProcessStatus = BehaviorSubject.create<HordeProcessStatus>()
-    protected val stubLdStatus = BehaviorSubject.create<LocalDiffusion.Status>()
 
     protected val stubPreferenceManager = mockk<PreferenceManager>()
     protected val stubSaveLastResultToCacheUseCase = mockk<SaveLastResultToCacheUseCase>()
@@ -49,8 +50,13 @@ abstract class CoreGenerationMviViewModelTest<V : GenerationMviViewModel<*, *, *
     protected val stubMainRouter = mockk<MainRouter>()
     protected val stubDrawerRouter = mockk<DrawerRouter>()
     protected val stubDimensionValidator = mockk<DimensionValidator>()
+    protected val stubSdaiPushNotificationManager = mockk<SdaiPushNotificationManager>()
+    protected val stubWakeLockInterActor = mockk<WakeLockInterActor>()
 
-    protected val stubCustomSchedulers = object : SchedulersProvider {
+    private val stubHordeProcessStatus = BehaviorSubject.create<HordeProcessStatus>()
+    private val stubLdStatus = BehaviorSubject.create<LocalDiffusion.Status>()
+
+    private val stubCustomSchedulers = object : SchedulersProvider {
         override val io: Scheduler = Schedulers.trampoline()
         override val ui: Scheduler = AndroidSchedulers.mainThread()
         override val computation: Scheduler = Schedulers.computation()
@@ -70,6 +76,10 @@ abstract class CoreGenerationMviViewModelTest<V : GenerationMviViewModel<*, *, *
         every {
             stubObserveLocalDiffusionProcessStatusUseCase()
         } returns stubLdStatus
+
+        every {
+            stubGetStableDiffusionSamplersUseCase()
+        } returns Single.just(emptyList())
 
         startKoin {
             modules(

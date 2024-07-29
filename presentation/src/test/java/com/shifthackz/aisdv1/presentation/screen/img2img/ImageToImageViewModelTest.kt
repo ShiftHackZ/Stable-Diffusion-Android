@@ -1,5 +1,8 @@
-package com.shifthackz.aisdv1.presentation.screen.txt2img
+package com.shifthackz.aisdv1.presentation.screen.img2img
 
+import android.graphics.Bitmap
+import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
+import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator.Error
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
@@ -9,13 +12,17 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiStyle
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
-import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreGenerationMviViewModelTest
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
+import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.mocks.mockAiGenerationResult
+import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
+import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintStateProducer
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
@@ -24,23 +31,36 @@ import io.mockk.verify
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewModel>() {
+class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageViewModel>() {
+
+    private val stubBitmap = mockk<Bitmap>()
+    private val stubInPainModel = BehaviorSubject.create<InPaintModel>()
 
     private val stubGenerationFormUpdateEvent = mockk<GenerationFormUpdateEvent>()
-    private val stubTextToImageUseCase = mockk<TextToImageUseCase>()
+    private val stubImageToImageUseCase = mockk<ImageToImageUseCase>()
+    private val stubGetRandomImageUseCase = mockk<GetRandomImageUseCase>()
+    private val stubBitmapToBase64Converter = mockk<BitmapToBase64Converter>()
+    private val stubBase64ToBitmapConverter = mockk<Base64ToBitmapConverter>()
+    private val stubInPaintStateProducer = mockk<InPaintStateProducer>()
 
-    override fun initializeViewModel() = TextToImageViewModel(
+    override fun initializeViewModel() = ImageToImageViewModel(
         generationFormUpdateEvent = stubGenerationFormUpdateEvent,
-        textToImageUseCase = stubTextToImageUseCase,
-        schedulersProvider = stubSchedulersProvider,
+        imageToImageUseCase = stubImageToImageUseCase,
+        getRandomImageUseCase = stubGetRandomImageUseCase,
+        bitmapToBase64Converter = stubBitmapToBase64Converter,
+        base64ToBitmapConverter = stubBase64ToBitmapConverter,
         preferenceManager = stubPreferenceManager,
+        schedulersProvider = stubSchedulersProvider,
         notificationManager = stubSdaiPushNotificationManager,
         wakeLockInterActor = stubWakeLockInterActor,
+        inPaintStateProducer = stubInPaintStateProducer,
+        mainRouter = stubMainRouter,
     )
 
     @Before
@@ -48,8 +68,12 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
         super.initialize()
 
         every {
-            stubGenerationFormUpdateEvent.observeTxt2ImgForm()
+            stubGenerationFormUpdateEvent.observeImg2ImgForm()
         } returns stubAiForm.toFlowable(BackpressureStrategy.LATEST)
+
+        every {
+            stubInPaintStateProducer.observeInPaint()
+        } returns stubInPainModel.toFlowable(BackpressureStrategy.LATEST)
     }
 
     @Test
@@ -419,11 +443,15 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
         } returns Unit
 
         every {
-            stubTextToImageUseCase(any())
+            stubBitmapToBase64Converter(any())
+        } returns Single.just(BitmapToBase64Converter.Output("base64"))
+
+        every {
+            stubImageToImageUseCase(any())
         } returns Single.just(listOf(mockAiGenerationResult))
 
-        val intent = GenerationMviIntent.Generate
-        viewModel.processIntent(intent)
+        viewModel.processIntent(ImageToImageIntent.UpdateImage(stubBitmap))
+        viewModel.processIntent(GenerationMviIntent.Generate)
 
         runTest {
             val expected = Modal.Image.Single(
@@ -457,8 +485,13 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
 
     @Test
     fun `given received UpdateFromGeneration intent, expected UI state fields are same as intent model`() {
+        every {
+            stubBase64ToBitmapConverter(any())
+        } returns Single.just(Base64ToBitmapConverter.Output(stubBitmap))
+
         val intent = GenerationMviIntent.UpdateFromGeneration(mockAiGenerationResult)
         viewModel.processIntent(intent)
+
         runTest {
             val state = viewModel.state.value
             Assert.assertEquals(true, state.advancedOptionsVisible)
