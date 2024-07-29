@@ -306,8 +306,9 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     fun `given received UpdateLogin intent, expected login field is 5598, loginValidationError is null in UI state`() {
         viewModel.processIntent(ServerSetupIntent.UpdateLogin("5598"))
         runTest {
-            Assert.assertEquals("5598", viewModel.state.value.login)
-            Assert.assertEquals(null, viewModel.state.value.loginValidationError)
+            val state = viewModel.state.value
+            Assert.assertEquals("5598", state.login)
+            Assert.assertEquals(null, state.loginValidationError)
         }
     }
 
@@ -315,8 +316,9 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     fun `given received UpdatePassword intent, expected password field is 5598, passwordValidationError is null in UI state`() {
         viewModel.processIntent(ServerSetupIntent.UpdatePassword("5598"))
         runTest {
-            Assert.assertEquals("5598", viewModel.state.value.password)
-            Assert.assertEquals(null, viewModel.state.value.passwordValidationError)
+            val state = viewModel.state.value
+            Assert.assertEquals("5598", state.password)
+            Assert.assertEquals(null, state.passwordValidationError)
         }
     }
 

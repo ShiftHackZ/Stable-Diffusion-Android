@@ -18,12 +18,14 @@ import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import io.mockk.verify
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -68,6 +70,12 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
         every {
             stubBase64ToBitmapConverter(any())
         } returns Single.just(Base64ToBitmapConverter.Output(stubBitmap))
+    }
+
+    @After
+    override fun finalize() {
+        super.finalize()
+        unmockkAll()
     }
 
     @Test
