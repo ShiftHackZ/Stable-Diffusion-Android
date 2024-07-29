@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.sdsampler
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.shifthackz.aisdv1.domain.mocks.mockStableDiffusionSampler
+import com.shifthackz.aisdv1.domain.mocks.mockStableDiffusionSamplers
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test
@@ -18,12 +18,12 @@ class GetStableDiffusionSamplersUseCaseImplTest {
     @Test
     fun `expected got samplers from repository, expected valid samplers value`() {
         whenever(stubStableDiffusionSamplersRepository.getSamplers())
-            .thenReturn(Single.just(mockStableDiffusionSampler))
+            .thenReturn(Single.just(mockStableDiffusionSamplers))
 
         useCase()
             .test()
             .assertNoErrors()
-            .assertValue(mockStableDiffusionSampler)
+            .assertValue(mockStableDiffusionSamplers)
             .await()
             .assertComplete()
     }

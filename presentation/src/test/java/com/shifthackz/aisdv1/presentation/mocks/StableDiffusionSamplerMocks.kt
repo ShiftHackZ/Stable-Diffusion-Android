@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.domain.mocks
+package com.shifthackz.aisdv1.presentation.mocks
 
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 
