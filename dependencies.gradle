@@ -110,7 +110,6 @@ ext {
             stringutils: "org.apache.commons:commons-lang3:$apacheLangVersion"
     ]
     test = [
-            kotlin    : "org.jetbrains.kotlin:kotlin-test",
             junit     : "junit:junit:$testJunitVersion",
             mockito   : "com.nhaarman.mockitokotlin2:mockito-kotlin:$testMockitoVersion",
             mockk     : "io.mockk:mockk:$testMockkVersion",

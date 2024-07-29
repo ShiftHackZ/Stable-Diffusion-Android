@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -41,16 +42,7 @@ class ExtrasViewModelTest : CoreViewModelTest<ExtrasViewModel>() {
 
     @Test
     fun `given update data, fetch loras successful, expected UI state with loras list`() {
-        every {
-            stubFetchAndGetLorasUseCase()
-        } returns Single.just(mockStableDiffusionLoras)
-
-        viewModel.updateData(
-            prompt = "prompt <lora:alias_5598:1>",
-            negativePrompt = "negative",
-            type = ExtraType.Lora,
-        )
-
+        mockInitialData()
         runTest {
             val expected = ExtrasState(
                 loading = false,
@@ -78,12 +70,12 @@ class ExtrasViewModelTest : CoreViewModelTest<ExtrasViewModel>() {
                 ),
             )
             val actual = viewModel.state.value
-//            assertEquals(expected.type, actual.type)
-//            assertEquals(expected.error, actual.error)
-//            assertEquals(expected.prompt, actual.prompt)
-//            assertEquals(expected.negativePrompt, actual.negativePrompt)
-//            assertEquals(expected.type, actual.type)
-            assert(actual.loras.any { it.name == "name_5598" && it.isApplied })
+            Assert.assertEquals(expected.type, actual.type)
+            Assert.assertEquals(expected.error, actual.error)
+            Assert.assertEquals(expected.prompt, actual.prompt)
+            Assert.assertEquals(expected.negativePrompt, actual.negativePrompt)
+            Assert.assertEquals(expected.type, actual.type)
+            Assert.assertEquals(true, actual.loras.any { it.name == "name_5598" && it.isApplied })
         }
     }
 
@@ -104,6 +96,61 @@ class ExtrasViewModelTest : CoreViewModelTest<ExtrasViewModel>() {
             Assert.assertEquals(false, state.loading)
             Assert.assertEquals(ErrorState.Generic, state.error)
         }
+    }
+
+    @Test
+    fun `given received ApplyPrompts intent, expected ApplyPrompts effect delivered to effect collector`() {
+        mockInitialData()
+        viewModel.processIntent(ExtrasIntent.ApplyPrompts)
+        runTest {
+            val expected = ExtrasEffect.ApplyPrompts(
+                prompt = "prompt <lora:alias_5598:1>",
+                negativePrompt = "negative",
+            )
+            val actual = viewModel.effect.firstOrNull()
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received Close intent, expected Close effect delivered to effect collector`() {
+        viewModel.processIntent(ExtrasIntent.Close)
+        runTest {
+            val expected = ExtrasEffect.Close
+            val actual = viewModel.effect.firstOrNull()
+            Assert.assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given received ToggleItem intent, expected prompt updated in UI state`() {
+        mockInitialData()
+        Thread.sleep(1000L)
+        val item = ExtraItemUi(
+            type = ExtraType.Lora,
+            key = "name_5598_lora_$MOCK_SYS_TIME",
+            name = "name_5598",
+            alias = "alias_5598",
+            isApplied = true,
+            value = "1",
+        )
+        viewModel.processIntent(ExtrasIntent.ToggleItem(item))
+        runTest {
+            val state = viewModel.state.value
+            Assert.assertEquals("prompt", state.prompt)
+        }
+    }
+
+    private fun mockInitialData() {
+        every {
+            stubFetchAndGetLorasUseCase()
+        } returns Single.just(mockStableDiffusionLoras)
+
+        viewModel.updateData(
+            prompt = "prompt <lora:alias_5598:1>",
+            negativePrompt = "negative",
+            type = ExtraType.Lora,
+        )
     }
 
     companion object {
