@@ -23,4 +23,4 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run Tests with Gradle
-        run: ./gradlew test --info
+        run: ./gradlew test

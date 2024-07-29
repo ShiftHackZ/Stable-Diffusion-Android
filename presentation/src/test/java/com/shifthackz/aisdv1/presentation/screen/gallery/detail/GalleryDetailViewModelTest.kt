@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
 import android.graphics.Bitmap
@@ -19,6 +21,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -121,6 +124,10 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
             stubDeleteGalleryItemUseCase(any())
         } returns Completable.complete()
 
+        every {
+            stubMainRouter.navigateBack()
+        } returns Unit
+
         viewModel.processIntent(GalleryDetailIntent.Delete.Confirm)
 
         runTest {
@@ -202,7 +209,16 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
 
     @Test
     fun `given received SendTo Txt2Img intent, expected router navigateBack() and form event update() methods called`() {
+        every {
+            stubGenerationFormUpdateEvent.update(any(), any())
+        } returns Unit
+
+        every {
+            stubMainRouter.navigateBack()
+        } returns Unit
+
         viewModel.processIntent(GalleryDetailIntent.SendTo.Txt2Img)
+
         verify {
             stubMainRouter.navigateBack()
         }
@@ -216,7 +232,16 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
 
     @Test
     fun `given received SendTo Img2Img intent, expected router navigateBack() and form event update() methods called`() {
+        every {
+            stubGenerationFormUpdateEvent.update(any(), any())
+        } returns Unit
+
+        every {
+            stubMainRouter.navigateBack()
+        } returns Unit
+
         viewModel.processIntent(GalleryDetailIntent.SendTo.Img2Img)
+
         verify {
             stubMainRouter.navigateBack()
         }

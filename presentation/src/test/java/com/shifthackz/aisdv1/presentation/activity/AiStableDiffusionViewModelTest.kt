@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.activity
 import androidx.navigation.NavOptionsBuilder
 import app.cash.turbine.test
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.presentation.core.CoreViewModelInitializeStrategy
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
@@ -29,6 +30,8 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
     private val stubMainRouter = mockk<MainRouter>()
     private val stubDrawerRouter = mockk<DrawerRouter>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
+
+    override val testViewModelStrategy = CoreViewModelInitializeStrategy.InitializeEveryTime
 
     override fun initializeViewModel() = AiStableDiffusionViewModel(
         schedulersProvider = stubSchedulersProvider,

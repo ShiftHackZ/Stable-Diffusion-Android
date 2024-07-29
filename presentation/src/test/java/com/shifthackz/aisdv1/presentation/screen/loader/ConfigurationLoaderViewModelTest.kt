@@ -27,6 +27,10 @@ class ConfigurationLoaderViewModelTest : CoreViewModelTest<ConfigurationLoaderVi
     @Test
     fun `given initialized, data loaded successfully, expected UI state is StatusNotification, router navigateToHomeScreen() method called`() {
         every {
+            stubMainRouter.navigateToHomeScreen()
+        } returns Unit
+
+        every {
             stubDataPreLoaderUseCase()
         } returns Completable.complete()
 
@@ -43,6 +47,10 @@ class ConfigurationLoaderViewModelTest : CoreViewModelTest<ConfigurationLoaderVi
 
     @Test
     fun `given initialized, data not loaded, expected UI state is StatusNotification, router navigateToHomeScreen() method called`() {
+        every {
+            stubMainRouter.navigateToHomeScreen()
+        } returns Unit
+
         every {
             stubDataPreLoaderUseCase()
         } returns Completable.error(stubException)
