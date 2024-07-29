@@ -74,11 +74,12 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
         every {
             stubInPaintStateProducer.observeInPaint()
         } returns stubInPainModel.toFlowable(BackpressureStrategy.LATEST)
+
+        stubSettings.onNext(Settings(source = ServerSource.AUTOMATIC1111))
     }
 
     @Test
     fun `initialized, expected UI state update with correct stub values`() {
-        stubSettings.onNext(Settings(source = ServerSource.AUTOMATIC1111))
         runTest {
             val state = viewModel.state.value
             Assert.assertNotNull(viewModel)
