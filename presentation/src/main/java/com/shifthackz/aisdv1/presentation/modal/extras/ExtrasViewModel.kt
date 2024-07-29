@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.modal.extras
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
+import com.shifthackz.aisdv1.core.common.time.TimeProvider
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionHyperNetwork
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionLora
@@ -17,6 +18,7 @@ class ExtrasViewModel(
     private val fetchAndGetLorasUseCase: FetchAndGetLorasUseCase,
     private val fetchAndGetHyperNetworksUseCase: FetchAndGetHyperNetworksUseCase,
     private val schedulersProvider: SchedulersProvider,
+    private val timeProvider: TimeProvider,
 ) : MviRxViewModel<ExtrasState, ExtrasIntent, ExtrasEffect>() {
 
     override val initialState = ExtrasState()
@@ -79,7 +81,7 @@ class ExtrasViewModel(
                             when (it) {
                                 is StableDiffusionLora -> ExtraItemUi(
                                     type = type,
-                                    key = "${it.name}_${type}_${System.nanoTime()}",
+                                    key = "${it.name}_${type}_${timeProvider.nanoTime()}",
                                     name = it.name,
                                     alias = it.alias,
                                     isApplied = isApplied,
@@ -88,7 +90,7 @@ class ExtrasViewModel(
 
                                 is StableDiffusionHyperNetwork -> ExtraItemUi(
                                     type = type,
-                                    key = "${it.name}_${type}_${System.nanoTime()}",
+                                    key = "${it.name}_${type}_${timeProvider.nanoTime()}",
                                     name = it.name,
                                     alias = null,
                                     isApplied = isApplied,

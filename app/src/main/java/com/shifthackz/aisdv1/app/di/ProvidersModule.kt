@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.core.common.time.TimeProvider
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
@@ -131,6 +132,12 @@ val providersModule = module {
             override val ui: Scheduler = AndroidSchedulers.mainThread()
             override val computation: Scheduler = Schedulers.computation()
             override val singleThread: Executor = Executors.newSingleThreadExecutor()
+        }
+    }
+
+    single<TimeProvider> {
+        object : TimeProvider {
+            override fun nanoTime(): Long = System.nanoTime()
         }
     }
 

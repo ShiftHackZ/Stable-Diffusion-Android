@@ -56,6 +56,7 @@ dependencies {
     implementation ui.composeGestures
     implementation ui.composeEasyCrop
 
+    testImplementation test.kotlin
     testImplementation test.junit
     testImplementation test.mockk
     testImplementation test.coroutines

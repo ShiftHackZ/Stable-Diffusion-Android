@@ -121,6 +121,14 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
 
     open fun onReceivedLocalDiffusionStatus(status: LocalDiffusion.Status) {}
 
+    override fun onCleared() {
+        super.onCleared()
+        generationDisposable?.dispose()
+        generationDisposable = null
+        randomImageDisposable?.dispose()
+        randomImageDisposable = null
+    }
+
     override fun processIntent(intent: I) {
         when (intent) {
             is GenerationMviIntent.NewPrompts -> updateGenerationState {
