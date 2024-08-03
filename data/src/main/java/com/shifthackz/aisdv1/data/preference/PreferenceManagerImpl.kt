@@ -190,7 +190,6 @@ class PreferenceManagerImpl(
 
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
-        .distinctUntilChanged()
         .map {
             Settings(
                 serverUrl = serverUrl,
