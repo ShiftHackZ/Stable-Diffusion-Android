@@ -115,6 +115,5 @@ ext {
             mockk     : "io.mockk:mockk:$testMockkVersion",
             coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-test:$testCoroutinesVersion",
             turbine   : "app.cash.turbine:turbine:$testTurbibeVersion",
-            koin      : "io.insert-koin:koin-android-test:$koinVersion"
     ]
 }

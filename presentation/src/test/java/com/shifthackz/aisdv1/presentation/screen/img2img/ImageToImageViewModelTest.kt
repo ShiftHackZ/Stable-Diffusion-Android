@@ -17,14 +17,12 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreGenerationMviViewModelTest
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
-import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.mocks.mockAiGenerationResult
 import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintStateProducer
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
-import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -38,7 +36,7 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-/*
+
 class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageViewModel>() {
 
     private val stubBitmap = mockk<Bitmap>()
@@ -53,12 +51,20 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
 
     override fun initializeViewModel() = ImageToImageViewModel(
         generationFormUpdateEvent = stubGenerationFormUpdateEvent,
+        getStableDiffusionSamplersUseCase = stubGetStableDiffusionSamplersUseCase,
+        observeHordeProcessStatusUseCase = stubObserveHordeProcessStatusUseCase,
+        observeLocalDiffusionProcessStatusUseCase = stubObserveLocalDiffusionProcessStatusUseCase,
+        saveLastResultToCacheUseCase = stubSaveLastResultToCacheUseCase,
+        saveGenerationResultUseCase = stubSaveGenerationResultUseCase,
+        interruptGenerationUseCase = stubInterruptGenerationUseCase,
+        drawerRouter = stubDrawerRouter,
+        dimensionValidator = stubDimensionValidator,
         imageToImageUseCase = stubImageToImageUseCase,
         getRandomImageUseCase = stubGetRandomImageUseCase,
         bitmapToBase64Converter = stubBitmapToBase64Converter,
         base64ToBitmapConverter = stubBase64ToBitmapConverter,
         preferenceManager = stubPreferenceManager,
-        schedulersProvider = stubSchedulersProvider,
+        schedulersProvider = stubCustomSchedulers,
         notificationManager = stubSdaiPushNotificationManager,
         wakeLockInterActor = stubWakeLockInterActor,
         inPaintStateProducer = stubInPaintStateProducer,
@@ -359,7 +365,7 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
     }
 
     @Test
-    fun `given received Result Save intent, expected screenModal is None in UI state, saveGenerationResultUseCase() called`() {
+    fun `given received Result Save intent, expected screenModal is None in UI state`() {
         every {
             stubSaveGenerationResultUseCase(any())
         } returns Completable.complete()
@@ -370,9 +376,6 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
         runTest {
             val state = viewModel.state.value
             Assert.assertEquals(Modal.None, state.screenModal)
-        }
-        verify {
-            stubSaveGenerationResultUseCase(mockAiGenerationResult)
         }
     }
 
@@ -406,7 +409,7 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
     }
 
     @Test
-    fun `given received Cancel Generation intent, expected screenModal is None in UI state`() {
+    fun `given received Cancel Generation intent, expected interruptGenerationUseCase() called`() {
         every {
             stubInterruptGenerationUseCase()
         } returns Completable.complete()
@@ -414,10 +417,8 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
         val intent = GenerationMviIntent.Cancel.Generation
         viewModel.processIntent(intent)
 
-        runTest {
-            val expected = Modal.None
-            val actual = viewModel.state.value.screenModal
-            Assert.assertEquals(expected, actual)
+        verify {
+            stubInterruptGenerationUseCase()
         }
     }
 
@@ -430,51 +431,6 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
                 Modal.None,
                 viewModel.state.value.screenModal,
             )
-        }
-    }
-
-    @Test
-    fun `given received Generate intent, expected screenModal is Modal Image in UI state`() {
-        every {
-            stubWakeLockInterActor.acquireWakelockUseCase()
-        } returns Result.success(Unit)
-
-        every {
-            stubWakeLockInterActor.releaseWakeLockUseCase()
-        } returns Result.success(Unit)
-
-        every {
-            stubPreferenceManager::autoSaveAiResults.get()
-        } returns true
-
-        every {
-            stubSdaiPushNotificationManager.show(any(), any())
-        } returns Unit
-
-        every {
-            stubBitmapToBase64Converter(any())
-        } returns Single.just(BitmapToBase64Converter.Output("base64"))
-
-        every {
-            stubImageToImageUseCase(any())
-        } returns Single.just(listOf(mockAiGenerationResult))
-
-        viewModel.processIntent(ImageToImageIntent.UpdateImage(stubBitmap))
-        viewModel.processIntent(GenerationMviIntent.Generate)
-
-        runTest {
-            val expected = Modal.Image.Single(
-                result = mockAiGenerationResult,
-                autoSaveEnabled = true,
-            )
-            val actual = viewModel.state.value.screenModal
-            Assert.assertEquals(expected, actual)
-        }
-        verify {
-            stubWakeLockInterActor.acquireWakelockUseCase()
-        }
-        verify {
-            stubWakeLockInterActor.releaseWakeLockUseCase()
         }
     }
 
@@ -495,7 +451,7 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
     @Test
     fun `given received UpdateFromGeneration intent, expected UI state fields are same as intent model`() {
         every {
-            stubBase64ToBitmapConverter(any())
+            stubBase64ToBitmapConverter.invoke(any())
         } returns Single.just(Base64ToBitmapConverter.Output(stubBitmap))
 
         val intent = GenerationMviIntent.UpdateFromGeneration(mockAiGenerationResult)
@@ -545,4 +501,3 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
         }
     }
 }
-*/

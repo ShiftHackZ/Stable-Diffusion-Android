@@ -60,5 +60,4 @@ dependencies {
     testImplementation test.mockk
     testImplementation test.coroutines
     testImplementation test.turbine
-    testImplementation test.koin
 }
