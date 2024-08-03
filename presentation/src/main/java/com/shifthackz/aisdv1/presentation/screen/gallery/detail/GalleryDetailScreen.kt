@@ -2,6 +2,9 @@
 
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -126,17 +129,23 @@ private fun ScreenContent(
                         )
                     },
                     actions = {
-                        IconButton(
-                            onClick = { processIntent(GalleryDetailIntent.Export.Image) },
-                            content = {
-                                Image(
-                                    modifier = Modifier.size(24.dp),
-                                    painter = painterResource(id = R.drawable.ic_share),
-                                    contentDescription = "Export",
-                                    colorFilter = ColorFilter.tint(LocalContentColor.current),
-                                )
-                            },
-                        )
+                        AnimatedVisibility(
+                            visible = state.selectedTab != GalleryDetailState.Tab.INFO,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                        ) {
+                            IconButton(
+                                onClick = { processIntent(GalleryDetailIntent.Export.Image) },
+                                content = {
+                                    Image(
+                                        modifier = Modifier.size(24.dp),
+                                        painter = painterResource(id = R.drawable.ic_share),
+                                        contentDescription = "Export",
+                                        colorFilter = ColorFilter.tint(LocalContentColor.current),
+                                    )
+                                },
+                            )
+                        }
                     }
                 )
             },

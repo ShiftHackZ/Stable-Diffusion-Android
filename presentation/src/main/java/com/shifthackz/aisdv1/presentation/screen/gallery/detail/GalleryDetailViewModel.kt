@@ -79,8 +79,17 @@ class GalleryDetailViewModel(
     }
 
     private fun share() {
-        if (currentState !is GalleryDetailState.Content) return
-        !galleryDetailBitmapExporter((currentState as GalleryDetailState.Content).bitmap)
+        val state = currentState as? GalleryDetailState.Content ?: return
+        val bitmap = if (
+            state.generationType == AiGenerationResult.Type.IMAGE_TO_IMAGE
+            && state.inputBitmap != null
+            && state.selectedTab == GalleryDetailState.Tab.ORIGINAL
+        ) {
+            state.inputBitmap
+        } else {
+            state.bitmap
+        }
+        !galleryDetailBitmapExporter(bitmap)
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { file ->
                 emitEffect(GalleryDetailEffect.ShareImageFile(file))
