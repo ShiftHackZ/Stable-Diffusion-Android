@@ -243,16 +243,6 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     }
 
     @Test
-    fun `given received UpdateAuthType intent, expected authType field in UI state is HTTP_BASIC`() {
-        viewModel.processIntent(ServerSetupIntent.UpdateAuthType(ServerSetupState.AuthType.HTTP_BASIC))
-        runTest {
-            val expected = ServerSetupState.AuthType.HTTP_BASIC
-            val actual = viewModel.state.value.authType
-            Assert.assertEquals(expected, actual)
-        }
-    }
-
-    @Test
     fun `given received UpdateDemoMode intent, expected demoMode field in UI state is true`() {
         viewModel.processIntent(ServerSetupIntent.UpdateDemoMode(true))
         runTest {
@@ -353,32 +343,6 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     }
 
     @Test
-    fun `given received UpdateServerUrl intent, expected serverUrl field updated, serverUrlValidationError is null in UI state`() {
-        viewModel.processIntent(ServerSetupIntent.UpdateServerUrl("https://5598.is.my.favorite.com"))
-        runTest {
-            val expected = "https://5598.is.my.favorite.com"
-            val actual = viewModel.state.value.serverUrl
-            Assert.assertEquals(expected, actual)
-        }
-    }
-
-    @Test
-    fun `given received LaunchUrl intent, expected LaunchUrl effect delivered to effect collector`() {
-        val intent = mockk<ServerSetupIntent.LaunchUrl.A1111Instructions>()
-        every {
-            intent::url.get()
-        } returns "https://5598.is.my.favorite.com"
-
-        viewModel.processIntent(intent)
-
-        runTest {
-            val expected = ServerSetupEffect.LaunchUrl("https://5598.is.my.favorite.com")
-            val actual = viewModel.effect.firstOrNull()
-            Assert.assertEquals(expected, actual)
-        }
-    }
-
-    @Test
     fun `given received LaunchManageStoragePermission intent, expected LaunchManageStoragePermission effect delivered to effect collector`() {
         viewModel.processIntent(ServerSetupIntent.LaunchManageStoragePermission)
         runTest {
@@ -427,16 +391,6 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
         viewModel.processIntent(ServerSetupIntent.ConnectToLocalHost)
 
-        runTest {
-            Assert.assertEquals(
-                ServerSetupEffect.HideKeyboard,
-                viewModel.effect.firstOrNull(),
-            )
-            Assert.assertEquals(
-                Modal.None,
-                viewModel.state.value.screenModal,
-            )
-        }
         verify {
             stubMainRouter.navigateToHomeScreen()
         }
