@@ -8,7 +8,7 @@ class DateExtensionsTest {
 
     companion object {
         private val date1 = Date(894333955000) // 1998-05-05 05:05:55
-        private val date2 = Date(882137712000) // 1997-12-15 00:15:12
+        private val date2 = Date(882137712000) // 1997-12-15 05:15:12
     }
 
     @Test
