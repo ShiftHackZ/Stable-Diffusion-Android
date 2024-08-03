@@ -1,13 +1,17 @@
 package com.shifthackz.aisdv1.presentation.modal.tag
 
+import app.cash.turbine.test
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
 class EditTagViewModelTest : CoreViewModelTest<EditTagViewModel>() {
+
+    override val testDispatcher = StandardTestDispatcher()
 
     override fun initializeViewModel() = EditTagViewModel()
 
@@ -32,9 +36,9 @@ class EditTagViewModelTest : CoreViewModelTest<EditTagViewModel>() {
     fun `given received Close intent, expected Close effect delivered to effect collector`() {
         viewModel.processIntent(EditTagIntent.Close)
         runTest {
-            val expected = EditTagEffect.Close
-            val actual = viewModel.effect.firstOrNull()
-            Assert.assertEquals(expected, actual)
+            viewModel.effect.test {
+                Assert.assertEquals(EditTagEffect.Close, awaitItem())
+            }
         }
     }
 
