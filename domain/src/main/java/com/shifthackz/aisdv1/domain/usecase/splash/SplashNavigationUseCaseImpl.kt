@@ -15,14 +15,8 @@ internal class SplashNavigationUseCaseImpl(
                 Action.LAUNCH_SERVER_SETUP
             }
 
-            preferenceManager.source == ServerSource.LOCAL
-                    || preferenceManager.source == ServerSource.HORDE
-                    || preferenceManager.source == ServerSource.OPEN_AI
-                    || preferenceManager.source == ServerSource.HUGGING_FACE -> {
-                Action.LAUNCH_HOME
-            }
-
-            preferenceManager.serverUrl.isEmpty() -> {
+            preferenceManager.serverUrl.isEmpty()
+                    && preferenceManager.source == ServerSource.AUTOMATIC1111 -> {
                 Action.LAUNCH_SERVER_SETUP
             }
 

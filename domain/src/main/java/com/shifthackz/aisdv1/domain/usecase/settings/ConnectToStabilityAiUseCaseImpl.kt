@@ -30,7 +30,7 @@ internal class ConnectToStabilityAiUseCaseImpl(
             .andThen(testStabilityAiApiKeyUseCase())
             .flatMap {
                 if (it) Single.just(Result.success(Unit))
-                else Single.error(Throwable("Bad key"))
+                else Single.error(IllegalStateException("Bad key"))
             }
             .onErrorResumeNext { t ->
                 val chain = configuration?.let(setServerConfigurationUseCase::invoke)

@@ -7,18 +7,26 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintStateProducer
@@ -29,6 +37,14 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ImageToImageViewModel(
     generationFormUpdateEvent: GenerationFormUpdateEvent,
+    getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
+    observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase,
+    saveGenerationResultUseCase: SaveGenerationResultUseCase,
+    interruptGenerationUseCase: InterruptGenerationUseCase,
+    drawerRouter: DrawerRouter,
+    dimensionValidator: DimensionValidator,
     private val imageToImageUseCase: ImageToImageUseCase,
     private val getRandomImageUseCase: GetRandomImageUseCase,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
@@ -39,7 +55,19 @@ class ImageToImageViewModel(
     private val wakeLockInterActor: WakeLockInterActor,
     private val inPaintStateProducer: InPaintStateProducer,
     private val mainRouter: MainRouter,
-) : GenerationMviViewModel<ImageToImageState, GenerationMviIntent, ImageToImageEffect>() {
+) : GenerationMviViewModel<ImageToImageState, GenerationMviIntent, ImageToImageEffect>(
+    preferenceManager = preferenceManager,
+    getStableDiffusionSamplersUseCase = getStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase = observeHordeProcessStatusUseCase,
+    observeLocalDiffusionProcessStatusUseCase = observeLocalDiffusionProcessStatusUseCase,
+    saveLastResultToCacheUseCase = saveLastResultToCacheUseCase,
+    saveGenerationResultUseCase = saveGenerationResultUseCase,
+    interruptGenerationUseCase = interruptGenerationUseCase,
+    mainRouter = mainRouter,
+    drawerRouter = drawerRouter,
+    dimensionValidator = dimensionValidator,
+    schedulersProvider = schedulersProvider,
+) {
 
     override val initialState = ImageToImageState()
 
@@ -56,7 +84,7 @@ class ImageToImageViewModel(
             .observeInPaint()
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { inPaint ->
-                updateState {  it.copy(inPaintModel = inPaint) }
+                updateState { it.copy(inPaintModel = inPaint) }
             }
     }
 

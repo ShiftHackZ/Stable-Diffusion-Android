@@ -45,7 +45,7 @@ internal class HordeGenerationRemoteDataSource(
 
     override fun interruptGeneration() = statusSource.id
         ?.let(hordeApi::cancelRequest)
-        ?: Completable.error(Throwable("No cached request id"))
+        ?: Completable.error(IllegalStateException("No cached request id"))
 
     private fun executeRequestChain(request: HordeGenerationAsyncRequest) = hordeApi
         .generateAsync(request)

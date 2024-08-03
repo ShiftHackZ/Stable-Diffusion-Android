@@ -6,7 +6,6 @@ import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.storage.db.cache.dao.StableDiffusionSamplerDao
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionSamplerEntity
-import io.reactivex.rxjava3.core.Completable
 
 internal class StableDiffusionSamplersLocalDataSource(
     private val dao: StableDiffusionSamplerDao,
@@ -16,7 +15,7 @@ internal class StableDiffusionSamplersLocalDataSource(
         .queryAll()
         .map(List<StableDiffusionSamplerEntity>::mapEntityToDomain)
 
-    override fun insertSamplers(samplers: List<StableDiffusionSampler>): Completable = dao
+    override fun insertSamplers(samplers: List<StableDiffusionSampler>) = dao
         .deleteAll()
         .andThen(dao.insertList(samplers.mapDomainToEntity()))
 }

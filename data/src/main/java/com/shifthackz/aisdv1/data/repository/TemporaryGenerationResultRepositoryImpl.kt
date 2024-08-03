@@ -16,6 +16,6 @@ internal class TemporaryGenerationResultRepositoryImpl : TemporaryGenerationResu
     override fun get(): Single<AiGenerationResult> {
         return lastCachedResult
             ?.let { Single.just(it) }
-            ?: Single.error(Throwable("No last cached result"))
+            ?: Single.error(IllegalStateException("No last cached result."))
     }
 }

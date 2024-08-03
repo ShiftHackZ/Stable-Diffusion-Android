@@ -76,7 +76,6 @@ class GalleryDetailViewModel(
 
             GalleryDetailIntent.DismissDialog -> setActiveModal(Modal.None)
         }
-
     }
 
     private fun share() {
@@ -122,7 +121,7 @@ class GalleryDetailViewModel(
             }
 
     private fun getGenerationResult(id: Long): Single<AiGenerationResult> {
-        if (id <= 0) return getLastResultFromCacheUseCase.invoke()
+        if (id <= 0) return getLastResultFromCacheUseCase()
         return getGenerationResultUseCase(id)
     }
 }

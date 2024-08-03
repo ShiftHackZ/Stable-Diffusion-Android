@@ -8,6 +8,14 @@ apply from: "$project.rootDir/gradle/common.gradle"
 
 android {
     namespace 'com.shifthackz.aisdv1.data'
+    testOptions {
+        unitTests.all {
+            jvmArgs(
+                    "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+                    "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -20,4 +28,7 @@ dependencies {
     implementation di.koinAndroid
     implementation reactive.rxkotlin
     implementation google.gson
+    testImplementation test.junit
+    testImplementation test.mockito
+    testImplementation test.mockk
 }

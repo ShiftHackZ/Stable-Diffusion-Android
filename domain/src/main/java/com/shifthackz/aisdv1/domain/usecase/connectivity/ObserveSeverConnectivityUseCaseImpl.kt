@@ -6,5 +6,7 @@ internal class ObserveSeverConnectivityUseCaseImpl(
     private val serverConnectivityGateway: ServerConnectivityGateway,
 ) : ObserveSeverConnectivityUseCase {
 
-    override fun invoke() = serverConnectivityGateway.observe()
+    override fun invoke() = serverConnectivityGateway
+        .observe()
+        .distinctUntilChanged()
 }

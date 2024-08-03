@@ -42,7 +42,6 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
-
     override var autoSaveAiResults: Boolean
         get() = preferences.getBoolean(KEY_AI_AUTO_SAVE, true)
         set(value) = preferences.edit()
@@ -78,6 +77,7 @@ class PreferenceManagerImpl(
             .putString(KEY_SERVER_SOURCE, value.key)
             .apply()
             .also { onPreferencesChanged() }
+
     override var sdModel: String
         get() = preferences.getString(KEY_SD_MODEL, "") ?: ""
         set(value) = preferences.edit()
@@ -190,6 +190,7 @@ class PreferenceManagerImpl(
 
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
+        .distinctUntilChanged()
         .map {
             Settings(
                 serverUrl = serverUrl,
@@ -214,28 +215,28 @@ class PreferenceManagerImpl(
     private fun onPreferencesChanged() = preferencesChangedSubject.onNext(Unit)
 
     companion object {
-        private const val KEY_SERVER_URL = "key_server_url"
-        private const val KEY_DEMO_MODE = "key_demo_mode"
-        private const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
-        private const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
-        private const val KEY_SAVE_TO_MEDIA_STORE = "key_save_to_media_store"
-        private const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
-        private const val KEY_FORM_PROMPT_TAGGED_INPUT = "key_prompt_tagged_input"
-        private const val KEY_SERVER_SOURCE = "key_server_source"
-        private const val KEY_SD_MODEL = "key_sd_model"
-        private const val KEY_HORDE_API_KEY = "key_horde_api_key"
-        private const val KEY_OPEN_AI_API_KEY = "key_open_ai_api_key"
-        private const val KEY_HUGGING_FACE_API_KEY = "key_hugging_face_api_key"
-        private const val KEY_HUGGING_FACE_MODEL_KEY = "key_hugging_face_model_key"
-        private const val KEY_STABILITY_AI_API_KEY = "key_stability_ai_api_key"
-        private const val KEY_STABILITY_AI_ENGINE_ID_KEY = "key_stability_ai_engine_id_key"
-        private const val KEY_LOCAL_NN_API = "key_local_nn_api"
-        private const val KEY_LOCAL_MODEL_ID = "key_local_model_id"
-        private const val KEY_DESIGN_DYNAMIC_COLORS = "key_design_dynamic_colors"
-        private const val KEY_DESIGN_SYSTEM_DARK_THEME = "key_design_system_dark_theme"
-        private const val KEY_DESIGN_DARK_THEME = "key_design_dark_theme"
-        private const val KEY_DESIGN_COLOR_TOKEN = "key_design_color_token_theme"
-        private const val KEY_DESIGN_DARK_TOKEN = "key_design_dark_color_token_theme"
-        private const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.8"
+        const val KEY_SERVER_URL = "key_server_url"
+        const val KEY_DEMO_MODE = "key_demo_mode"
+        const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
+        const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
+        const val KEY_SAVE_TO_MEDIA_STORE = "key_save_to_media_store"
+        const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
+        const val KEY_FORM_PROMPT_TAGGED_INPUT = "key_prompt_tagged_input"
+        const val KEY_SERVER_SOURCE = "key_server_source"
+        const val KEY_SD_MODEL = "key_sd_model"
+        const val KEY_HORDE_API_KEY = "key_horde_api_key"
+        const val KEY_OPEN_AI_API_KEY = "key_open_ai_api_key"
+        const val KEY_HUGGING_FACE_API_KEY = "key_hugging_face_api_key"
+        const val KEY_HUGGING_FACE_MODEL_KEY = "key_hugging_face_model_key"
+        const val KEY_STABILITY_AI_API_KEY = "key_stability_ai_api_key"
+        const val KEY_STABILITY_AI_ENGINE_ID_KEY = "key_stability_ai_engine_id_key"
+        const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.8"
+        const val KEY_LOCAL_MODEL_ID = "key_local_model_id"
+        const val KEY_LOCAL_NN_API = "key_local_nn_api"
+        const val KEY_DESIGN_DYNAMIC_COLORS = "key_design_dynamic_colors"
+        const val KEY_DESIGN_SYSTEM_DARK_THEME = "key_design_system_dark_theme"
+        const val KEY_DESIGN_DARK_THEME = "key_design_dark_theme"
+        const val KEY_DESIGN_COLOR_TOKEN = "key_design_color_token_theme"
+        const val KEY_DESIGN_DARK_TOKEN = "key_design_dark_color_token_theme"
     }
 }

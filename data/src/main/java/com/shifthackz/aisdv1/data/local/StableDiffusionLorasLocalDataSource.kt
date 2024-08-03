@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionLoraEntity
 internal class StableDiffusionLorasLocalDataSource(
     private val dao: StableDiffusionLoraDao,
 ) : StableDiffusionLorasDataSource.Local {
+
     override fun getLoras() = dao
         .queryAll()
         .map(List<StableDiffusionLoraEntity>::mapEntityToDomain)

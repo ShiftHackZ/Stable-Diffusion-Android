@@ -36,7 +36,7 @@ internal class LocalDiffusionGenerationRepositoryImpl(
         .getSelected()
         .flatMap { model ->
             if (model.downloaded) generate(payload)
-            else Single.error(Throwable("Model not downloaded"))
+            else Single.error(IllegalStateException("Model not downloaded."))
         }
 
     override fun interruptGeneration() = localDiffusion.interrupt()

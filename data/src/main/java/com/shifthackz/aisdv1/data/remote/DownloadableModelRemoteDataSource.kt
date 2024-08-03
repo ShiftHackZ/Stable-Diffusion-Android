@@ -20,7 +20,8 @@ internal class DownloadableModelRemoteDataSource(
         .fetchDownloadableModels()
         .map(List<DownloadableModelResponse>::mapRawToDomain)
 
-    override fun download(id: String, url: String): Observable<DownloadState> = Completable
+    override fun download(id: String, url: String): Observable<DownloadState> =
+        Completable
         .fromAction {
             val dir = File("${fileProviderDescriptor.localModelDirPath}/${id}")
             val destination = File(getDestinationPath(id))

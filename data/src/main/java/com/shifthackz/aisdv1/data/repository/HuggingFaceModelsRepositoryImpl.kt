@@ -13,6 +13,7 @@ internal class HuggingFaceModelsRepositoryImpl(
         .concatMapCompletable(localDataSource::save)
 
     override fun fetchAndGetHuggingFaceModels() = fetchHuggingFaceModels()
+        .onErrorComplete()
         .andThen(getHuggingFaceModels())
 
     override fun getHuggingFaceModels() = localDataSource.getAll()

@@ -37,8 +37,8 @@ internal abstract class CoreMediaStoreRepository(
             val stream = ByteArrayOutputStream()
             bmp.compress(Bitmap.CompressFormat.PNG, 100, stream)
             mediaStoreGateway.exportToFile(
-                "sdai_${System.currentTimeMillis()}",
-                stream.toByteArray()
+                fileName = "sdai_${System.currentTimeMillis()}",
+                content = stream.toByteArray(),
             )
         }
         .onErrorComplete { t ->

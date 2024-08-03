@@ -6,5 +6,7 @@ internal class ObserveLocalAiModelsUseCaseImpl(
     private val repository: DownloadableModelRepository,
 ) : ObserveLocalAiModelsUseCase {
 
-    override fun invoke() = repository.observeAll()
+    override fun invoke() = repository
+        .observeAll()
+        .distinctUntilChanged()
 }

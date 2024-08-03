@@ -11,7 +11,10 @@ android {
 }
 
 dependencies {
+    implementation project(":core:common")
     implementation project(":domain")
     implementation di.koinCore
     implementation reactive.rxkotlin
+    testImplementation test.junit
+    testImplementation test.mockk
 }

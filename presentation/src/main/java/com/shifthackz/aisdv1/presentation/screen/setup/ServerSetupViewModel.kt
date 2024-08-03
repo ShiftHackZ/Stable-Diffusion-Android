@@ -4,7 +4,7 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.validation.horde.CommonStringValidator
+import com.shifthackz.aisdv1.core.validation.common.CommonStringValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.DownloadState
@@ -58,7 +58,8 @@ class ServerSetupViewModel(
             getLocalAiModelsUseCase(),
             fetchAndGetHuggingFaceModelsUseCase(),
             ::Triple,
-        ).subscribeOnMainThread(schedulersProvider)
+        )
+            .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { (configuration, localModels, hfModels) ->
                 updateState { state ->
                     state.copy(
@@ -381,7 +382,8 @@ class ServerSetupViewModel(
                 }
                 downloadDisposable?.dispose()
                 downloadDisposable = null
-                downloadDisposable = downloadModelUseCase(localModel.id).distinctUntilChanged()
+                downloadDisposable = downloadModelUseCase(localModel.id)
+                    .distinctUntilChanged()
                     .doOnSubscribe { wakeLockInterActor.acquireWakelockUseCase() }
                     .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
                     .subscribeOnMainThread(schedulersProvider).subscribeBy(

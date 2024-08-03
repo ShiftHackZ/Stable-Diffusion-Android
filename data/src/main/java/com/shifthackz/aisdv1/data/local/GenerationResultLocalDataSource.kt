@@ -12,8 +12,9 @@ internal class GenerationResultLocalDataSource(
     private val dao: GenerationResultDao,
 ) : GenerationResultDataSource.Local {
 
-    override fun insert(result: AiGenerationResult) = dao
-        .insert(result.mapDomainToEntity())
+    override fun insert(result: AiGenerationResult) = result
+        .mapDomainToEntity()
+        .let(dao::insert)
 
     override fun queryAll(): Single<List<AiGenerationResult>> = dao
         .query()

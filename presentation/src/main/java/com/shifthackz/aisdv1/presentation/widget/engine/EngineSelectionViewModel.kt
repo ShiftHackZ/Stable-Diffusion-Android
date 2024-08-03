@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.common.model.Quintuple
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -36,6 +37,7 @@ class EngineSelectionViewModel(
         val configuration = preferenceManager
             .observe()
             .flatMap { getConfigurationUseCase().toFlowable() }
+            .onErrorReturn { Configuration() }
 
         val a1111Models = getStableDiffusionModelsUseCase()
             .onErrorReturn { emptyList() }

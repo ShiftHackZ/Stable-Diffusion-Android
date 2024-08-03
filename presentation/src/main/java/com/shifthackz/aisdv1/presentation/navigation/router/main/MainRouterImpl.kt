@@ -52,7 +52,7 @@ internal class MainRouterImpl(
     }
 
     override fun navigateToDebugMenu() {
-        if (debugMenuAccessor.invoke()) {
+        if (debugMenuAccessor()) {
             effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_DEBUG))
         }
     }

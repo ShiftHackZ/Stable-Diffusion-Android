@@ -1,6 +1,5 @@
 package com.shifthackz.aisdv1.network.authenticator
 
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.network.qualifiers.CredentialsProvider
 import com.shifthackz.aisdv1.network.qualifiers.NetworkHeaders
 import okhttp3.Authenticator

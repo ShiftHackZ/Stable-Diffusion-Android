@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.setup.mappers
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.ValidationResult
-import com.shifthackz.aisdv1.core.validation.horde.CommonStringValidator
+import com.shifthackz.aisdv1.core.validation.common.CommonStringValidator
 import com.shifthackz.aisdv1.presentation.R
 
 fun ValidationResult<CommonStringValidator.Error>.mapToUi(): UiText? {

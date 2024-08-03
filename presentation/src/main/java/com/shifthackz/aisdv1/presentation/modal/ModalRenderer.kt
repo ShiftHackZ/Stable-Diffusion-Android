@@ -171,7 +171,7 @@ fun ModalRenderer(
                         items = screenModal.models,
                         onItemSelected = { selectedItem = it },
                     )
-                }
+                },
             )
         }
 
@@ -240,7 +240,7 @@ fun ModalRenderer(
         is Modal.Image.Crop -> CropImageModal(
             bitmap = screenModal.bitmap,
             onDismissRequest = dismiss,
-            onResult = { processIntent(ImageToImageIntent.UpdateImage(it)) }
+            onResult = { processIntent(ImageToImageIntent.UpdateImage(it)) },
         )
 
         Modal.ConnectLocalHost -> DecisionInteractiveDialog(
