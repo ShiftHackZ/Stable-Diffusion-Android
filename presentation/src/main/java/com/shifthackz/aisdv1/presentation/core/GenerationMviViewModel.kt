@@ -32,25 +32,21 @@ import com.shifthackz.android.core.mvi.MviEffect
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.util.concurrent.TimeUnit
 
-abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviIntent, E : MviEffect> :
-    MviRxViewModel<S, I, E>(), KoinComponent {
-
-    private val preferenceManager: PreferenceManager by inject()
-    private val schedulersProvider: SchedulersProvider by inject()
-    private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase by inject()
-    private val saveGenerationResultUseCase: SaveGenerationResultUseCase by inject()
-    private val getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase by inject()
-    private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase by inject()
-    private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase by inject()
-    private val interruptGenerationUseCase: InterruptGenerationUseCase by inject()
-
-    private val mainRouter: MainRouter by inject()
-    private val drawerRouter: DrawerRouter by inject()
-    private val dimensionValidator: DimensionValidator by inject()
+abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviIntent, E : MviEffect>(
+    preferenceManager: PreferenceManager,
+    getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
+    observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase,
+    private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
+    private val interruptGenerationUseCase: InterruptGenerationUseCase,
+    private val mainRouter: MainRouter,
+    private val drawerRouter: DrawerRouter,
+    private val dimensionValidator: DimensionValidator,
+    private val schedulersProvider: SchedulersProvider,
+) : MviRxViewModel<S, I, E>() {
 
     private var generationDisposable: Disposable? = null
     private var randomImageDisposable: Disposable? = null

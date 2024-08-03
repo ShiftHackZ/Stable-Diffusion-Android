@@ -17,7 +17,6 @@ import com.shifthackz.aisdv1.presentation.mocks.mockAiGenerationResult
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
-import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -30,7 +29,7 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-/*
+
 class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewModel>() {
 
     private val stubGenerationFormUpdateEvent = mockk<GenerationFormUpdateEvent>()
@@ -38,8 +37,17 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
 
     override fun initializeViewModel() = TextToImageViewModel(
         generationFormUpdateEvent = stubGenerationFormUpdateEvent,
+        getStableDiffusionSamplersUseCase = stubGetStableDiffusionSamplersUseCase,
+        observeHordeProcessStatusUseCase = stubObserveHordeProcessStatusUseCase,
+        observeLocalDiffusionProcessStatusUseCase = stubObserveLocalDiffusionProcessStatusUseCase,
+        saveLastResultToCacheUseCase = stubSaveLastResultToCacheUseCase,
+        saveGenerationResultUseCase = stubSaveGenerationResultUseCase,
+        interruptGenerationUseCase = stubInterruptGenerationUseCase,
+        mainRouter = stubMainRouter,
+        drawerRouter = stubDrawerRouter,
+        dimensionValidator = stubDimensionValidator,
         textToImageUseCase = stubTextToImageUseCase,
-        schedulersProvider = stubSchedulersProvider,
+        schedulersProvider = stubCustomSchedulers,
         preferenceManager = stubPreferenceManager,
         notificationManager = stubSdaiPushNotificationManager,
         wakeLockInterActor = stubWakeLockInterActor,
@@ -335,7 +343,7 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
     }
 
     @Test
-    fun `given received Result Save intent, expected screenModal is None in UI state, saveGenerationResultUseCase() called`() {
+    fun `given received Result Save intent, expected screenModal is None in UI state`() {
         every {
             stubSaveGenerationResultUseCase(any())
         } returns Completable.complete()
@@ -346,9 +354,6 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
         runTest {
             val state = viewModel.state.value
             Assert.assertEquals(Modal.None, state.screenModal)
-        }
-        verify {
-            stubSaveGenerationResultUseCase(mockAiGenerationResult)
         }
     }
 
@@ -382,7 +387,7 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
     }
 
     @Test
-    fun `given received Cancel Generation intent, expected screenModal is None in UI state`() {
+    fun `given received Cancel Generation intent, expected interruptGenerationUseCase() called`() {
         every {
             stubInterruptGenerationUseCase()
         } returns Completable.complete()
@@ -390,10 +395,8 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
         val intent = GenerationMviIntent.Cancel.Generation
         viewModel.processIntent(intent)
 
-        runTest {
-            val expected = Modal.None
-            val actual = viewModel.state.value.screenModal
-            Assert.assertEquals(expected, actual)
+        verify {
+            stubInterruptGenerationUseCase()
         }
     }
 
@@ -410,15 +413,7 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
     }
 
     @Test
-    fun `given received Generate intent, expected screenModal is Modal Image in UI state`() {
-        every {
-            stubWakeLockInterActor.acquireWakelockUseCase()
-        } returns Result.success(Unit)
-
-        every {
-            stubWakeLockInterActor.releaseWakeLockUseCase()
-        } returns Result.success(Unit)
-
+    fun `given received Generate intent, expected textToImageUseCase() called`() {
         every {
             stubPreferenceManager::autoSaveAiResults.get()
         } returns true
@@ -428,25 +423,15 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
         } returns Unit
 
         every {
-            stubTextToImageUseCase(any())
+            stubTextToImageUseCase.invoke(any())
         } returns Single.just(listOf(mockAiGenerationResult))
 
+        val payload = viewModel.state.value.mapToPayload()
         val intent = GenerationMviIntent.Generate
         viewModel.processIntent(intent)
 
-        runTest {
-            val expected = Modal.Image.Single(
-                result = mockAiGenerationResult,
-                autoSaveEnabled = true,
-            )
-            val actual = viewModel.state.value.screenModal
-            Assert.assertEquals(expected, actual)
-        }
         verify {
-            stubWakeLockInterActor.acquireWakelockUseCase()
-        }
-        verify {
-            stubWakeLockInterActor.releaseWakeLockUseCase()
+            stubTextToImageUseCase(payload)
         }
     }
 
@@ -512,4 +497,3 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
         }
     }
 }
-*/

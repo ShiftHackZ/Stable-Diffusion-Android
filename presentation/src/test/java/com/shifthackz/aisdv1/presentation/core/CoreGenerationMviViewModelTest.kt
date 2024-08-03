@@ -14,6 +14,8 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatus
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.domain.usecase.wakelock.AcquireWakelockUseCase
+import com.shifthackz.aisdv1.domain.usecase.wakelock.ReleaseWakeLockUseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
@@ -25,17 +27,12 @@ import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import org.junit.After
 import org.junit.Before
-import org.koin.core.context.startKoin
-import org.koin.core.context.stopKoin
-import org.koin.dsl.module
-import org.koin.test.KoinTest
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 abstract class CoreGenerationMviViewModelTest<V : GenerationMviViewModel<*, *, *>> :
-    CoreViewModelTest<V>(), KoinTest {
+    CoreViewModelTest<V>() {
 
     protected val stubSettings = BehaviorSubject.createDefault(Settings())
     protected val stubAiForm = BehaviorSubject.create<AiGenerationResult>()
@@ -51,20 +48,25 @@ abstract class CoreGenerationMviViewModelTest<V : GenerationMviViewModel<*, *, *
     protected val stubDrawerRouter = mockk<DrawerRouter>()
     protected val stubDimensionValidator = mockk<DimensionValidator>()
     protected val stubSdaiPushNotificationManager = mockk<SdaiPushNotificationManager>()
+
+    protected val stubAcquireWakelockUseCase = mockk<AcquireWakelockUseCase>()
+    protected val stubReleaseWakelockUseCase = mockk<ReleaseWakeLockUseCase>()
     protected val stubWakeLockInterActor = mockk<WakeLockInterActor>()
 
     private val stubHordeProcessStatus = BehaviorSubject.create<HordeProcessStatus>()
     private val stubLdStatus = BehaviorSubject.create<LocalDiffusion.Status>()
 
-    private val stubCustomSchedulers = object : SchedulersProvider {
-        override val io: Scheduler = Schedulers.trampoline()
+    protected val stubCustomSchedulers = object : SchedulersProvider {
+        override val io: Scheduler = Schedulers.io()
         override val ui: Scheduler = AndroidSchedulers.mainThread()
-        override val computation: Scheduler = Schedulers.computation()
+        override val computation: Scheduler = Schedulers.trampoline()
         override val singleThread: Executor = Executors.newSingleThreadExecutor()
     }
 
     @Before
     override fun initialize() {
+        super.initialize()
+
         every {
             stubPreferenceManager.observe()
         } returns stubSettings.toFlowable(BackpressureStrategy.LATEST)
@@ -81,29 +83,24 @@ abstract class CoreGenerationMviViewModelTest<V : GenerationMviViewModel<*, *, *
             stubGetStableDiffusionSamplersUseCase()
         } returns Single.just(emptyList())
 
-        startKoin {
-            modules(
-                module {
-                    single<PreferenceManager> { stubPreferenceManager }
-                    single<SchedulersProvider> { stubCustomSchedulers }
-                    single<SaveLastResultToCacheUseCase> { stubSaveLastResultToCacheUseCase }
-                    single<SaveGenerationResultUseCase> { stubSaveGenerationResultUseCase }
-                    single<GetStableDiffusionSamplersUseCase> { stubGetStableDiffusionSamplersUseCase }
-                    single<ObserveHordeProcessStatusUseCase> { stubObserveHordeProcessStatusUseCase }
-                    single<ObserveLocalDiffusionProcessStatusUseCase> { stubObserveLocalDiffusionProcessStatusUseCase }
-                    single<InterruptGenerationUseCase> { stubInterruptGenerationUseCase }
-                    single<MainRouter> { stubMainRouter }
-                    single<DrawerRouter> { stubDrawerRouter }
-                    single<DimensionValidator> { stubDimensionValidator }
-                }
-            )
-        }
-        super.initialize()
-    }
+        every {
+            stubAcquireWakelockUseCase.invoke(any())
+        } returns Result.success(Unit)
 
-    @After
-    override fun finalize() {
-        stopKoin()
-        super.finalize()
+        every {
+            stubAcquireWakelockUseCase.invoke()
+        } returns Result.success(Unit)
+
+        every {
+            stubReleaseWakelockUseCase.invoke()
+        } returns Result.success(Unit)
+
+        every {
+            stubWakeLockInterActor::acquireWakelockUseCase.get()
+        } returns stubAcquireWakelockUseCase
+
+        every {
+            stubWakeLockInterActor::releaseWakeLockUseCase.get()
+        } returns stubReleaseWakelockUseCase
     }
 }
