@@ -3,6 +3,8 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -127,7 +129,11 @@ private fun ScreenContent(
                         )
                     },
                     actions = {
-                        AnimatedVisibility(visible = state.selectedTab != GalleryDetailState.Tab.INFO) {
+                        AnimatedVisibility(
+                            visible = state.selectedTab != GalleryDetailState.Tab.INFO,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                        ) {
                             IconButton(
                                 onClick = { processIntent(GalleryDetailIntent.Export.Image) },
                                 content = {
