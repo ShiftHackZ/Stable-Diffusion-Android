@@ -16,7 +16,7 @@ class GetStableDiffusionSamplersUseCaseImplTest {
     )
 
     @Test
-    fun `expected got samplers from repository, expected valid samplers value`() {
+    fun `given got samplers from repository, expected valid samplers value`() {
         whenever(stubStableDiffusionSamplersRepository.getSamplers())
             .thenReturn(Single.just(mockStableDiffusionSamplers))
 
@@ -29,7 +29,7 @@ class GetStableDiffusionSamplersUseCaseImplTest {
     }
 
     @Test
-    fun `expected got empty list from repository, expected empty value`() {
+    fun `given got empty list from repository, expected empty value`() {
         whenever(stubStableDiffusionSamplersRepository.getSamplers())
             .thenReturn(Single.just(emptyList()))
 
@@ -42,7 +42,7 @@ class GetStableDiffusionSamplersUseCaseImplTest {
     }
 
     @Test
-    fun `expected got error from repository, expected the same error`() {
+    fun `given got error from repository, expected the same error`() {
         val stubException = Throwable("Error query database.")
 
         whenever(stubStableDiffusionSamplersRepository.getSamplers())

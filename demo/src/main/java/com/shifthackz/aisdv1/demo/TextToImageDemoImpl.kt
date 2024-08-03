@@ -1,20 +1,21 @@
 package com.shifthackz.aisdv1.demo
 
+import com.shifthackz.aisdv1.core.common.time.TimeProvider
 import com.shifthackz.aisdv1.demo.serialize.DemoDataSerializer
 import com.shifthackz.aisdv1.domain.demo.TextToImageDemo
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
-import java.util.Date
 
 internal class TextToImageDemoImpl(
     override val demoDataSerializer: DemoDataSerializer,
+    private val timeProvider: TimeProvider,
 ) : TextToImageDemo, DemoFeature<TextToImagePayload> {
 
     override fun mapper(input: TextToImagePayload, base64: String) = AiGenerationResult(
         id = 0L,
         image = base64,
         inputImage = "",
-        createdAt = Date(),
+        createdAt = timeProvider.currentDate(),
         type = AiGenerationResult.Type.TEXT_TO_IMAGE,
         prompt = input.prompt,
         negativePrompt = input.negativePrompt,
@@ -24,8 +25,8 @@ internal class TextToImageDemoImpl(
         cfgScale = input.cfgScale,
         restoreFaces = input.restoreFaces,
         sampler = input.sampler,
-        seed = System.currentTimeMillis().toString(),
-        subSeed = System.currentTimeMillis().toString(),
+        seed = timeProvider.currentTimeMillis().toString(),
+        subSeed = timeProvider.currentTimeMillis().toString(),
         subSeedStrength = 0f,
         denoisingStrength = 0f,
     )

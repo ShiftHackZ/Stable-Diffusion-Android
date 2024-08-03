@@ -25,6 +25,7 @@ import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
+import java.util.Date
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -138,6 +139,8 @@ val providersModule = module {
     single<TimeProvider> {
         object : TimeProvider {
             override fun nanoTime(): Long = System.nanoTime()
+            override fun currentTimeMillis(): Long = System.currentTimeMillis()
+            override fun currentDate(): Date = Date()
         }
     }
 
