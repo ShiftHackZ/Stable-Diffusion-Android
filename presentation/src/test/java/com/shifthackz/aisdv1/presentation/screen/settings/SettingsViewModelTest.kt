@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
 import android.os.Build
+import app.cash.turbine.test
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
@@ -127,9 +128,9 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
     fun `given received Action ReportProblem intent, expected ShareLogFile effect delivered to effect collector`() {
         viewModel.processIntent(SettingsIntent.Action.ReportProblem)
         runTest {
-            val expected = SettingsEffect.ShareLogFile
-            val actual = viewModel.effect.firstOrNull()
-            Assert.assertEquals(expected, actual)
+            viewModel.effect.test {
+                Assert.assertEquals(SettingsEffect.ShareLogFile, awaitItem())
+            }
         }
     }
 
