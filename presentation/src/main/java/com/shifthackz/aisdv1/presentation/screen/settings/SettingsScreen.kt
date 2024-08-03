@@ -188,6 +188,7 @@ private fun ContentSettingsState(
                 ServerSource.OPEN_AI -> R.string.srv_type_open_ai
                 ServerSource.STABILITY_AI -> R.string.srv_type_stability_ai
                 ServerSource.LOCAL -> R.string.srv_type_local_short
+                ServerSource.SWARM_UI -> R.string.srv_type_swarm_ui
             }.asUiText(),
             onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
         )

@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.forms.HuggingFaceForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.LocalDiffusionForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.OpenAiForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.StabilityAiForm
+import com.shifthackz.aisdv1.presentation.screen.setup.forms.SwarmUiForm
 
 @Composable
 fun ConfigurationStep(
@@ -49,6 +50,11 @@ fun ConfigurationStep(
             )
 
             ServerSource.STABILITY_AI -> StabilityAiForm(
+                state = state,
+                processIntent = processIntent,
+            )
+
+            ServerSource.SWARM_UI -> SwarmUiForm(
                 state = state,
                 processIntent = processIntent,
             )

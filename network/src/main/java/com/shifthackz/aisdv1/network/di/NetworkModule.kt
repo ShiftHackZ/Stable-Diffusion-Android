@@ -14,6 +14,8 @@ import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApi
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApiImpl
 import com.shifthackz.aisdv1.network.api.sdai.HuggingFaceModelsApi
 import com.shifthackz.aisdv1.network.api.stabilityai.StabilityAiApi
+import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiApi
+import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiApiImpl
 import com.shifthackz.aisdv1.network.authenticator.RestAuthenticator
 import com.shifthackz.aisdv1.network.connectivity.ConnectivityMonitor
 import com.shifthackz.aisdv1.network.error.StabilityAiErrorMapper
@@ -107,6 +109,12 @@ val networkModule = module {
 
     single {
         get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAutomaticApiUrl)
+            .create(SwarmUiApi.RawApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().hordeApiUrl)
             .create(HordeRestApi::class.java)
     }
@@ -156,6 +164,7 @@ val networkModule = module {
     singleOf(::ImageCdnRestApiImpl) bind ImageCdnRestApi::class
     singleOf(::DownloadableModelsApiImpl) bind DownloadableModelsApi::class
     singleOf(::HuggingFaceInferenceApiImpl) bind HuggingFaceInferenceApi::class
+    singleOf(::SwarmUiApiImpl) bind SwarmUiApi::class
 
     factory { params ->
         ConnectivityMonitor(params.get())

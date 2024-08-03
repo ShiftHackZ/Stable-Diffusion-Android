@@ -20,6 +20,7 @@ import com.shifthackz.aisdv1.data.repository.StableDiffusionHyperNetworksReposit
 import com.shifthackz.aisdv1.data.repository.StableDiffusionLorasRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionSamplersRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.SwarmUiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.TemporaryGenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.WakeLockRepositoryImpl
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
@@ -40,6 +41,7 @@ import com.shifthackz.aisdv1.domain.repository.StableDiffusionHyperNetworksRepos
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionLorasRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
+import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.TemporaryGenerationResultRepository
 import com.shifthackz.aisdv1.domain.repository.WakeLockRepository
 import org.koin.android.ext.koin.androidContext
@@ -60,6 +62,7 @@ val repositoryModule = module {
     factoryOf(::HordeGenerationRepositoryImpl) bind HordeGenerationRepository::class
     factoryOf(::HuggingFaceGenerationRepositoryImpl) bind HuggingFaceGenerationRepository::class
     factoryOf(::OpenAiGenerationRepositoryImpl) bind OpenAiGenerationRepository::class
+    factoryOf(::SwarmUiGenerationRepositoryImpl) bind SwarmUiGenerationRepository::class
     factoryOf(::StabilityAiGenerationRepositoryImpl) bind StabilityAiGenerationRepository::class
     factoryOf(::StabilityAiCreditsRepositoryImpl) bind StabilityAiCreditsRepository::class
     factoryOf(::StabilityAiEnginesRepositoryImpl) bind StabilityAiEnginesRepository::class

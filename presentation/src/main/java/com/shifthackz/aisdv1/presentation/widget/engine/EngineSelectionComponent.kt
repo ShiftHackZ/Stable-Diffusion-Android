@@ -57,6 +57,7 @@ fun EngineSelectionComponent(
 
             ServerSource.HORDE -> Unit
             ServerSource.OPEN_AI -> Unit
+            ServerSource.SWARM_UI -> Unit
         }
     }
 }

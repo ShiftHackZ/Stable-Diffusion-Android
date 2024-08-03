@@ -15,6 +15,7 @@ internal class SetServerConfigurationUseCaseImpl(
             authorizationStore.storeAuthorizationCredentials(configuration.authCredentials)
             preferenceManager.source = configuration.source
             preferenceManager.serverUrl = configuration.serverUrl
+            preferenceManager.swarmServerUrl = configuration.swarmUiUrl
             preferenceManager.demoMode = configuration.demoMode
             preferenceManager.hordeApiKey = configuration.hordeApiKey
             preferenceManager.openAiApiKey = configuration.openAiApiKey
@@ -23,5 +24,6 @@ internal class SetServerConfigurationUseCaseImpl(
             preferenceManager.stabilityAiApiKey = configuration.stabilityAiApiKey
             preferenceManager.stabilityAiEngineId = configuration.stabilityAiEngineId
             preferenceManager.localModelId = configuration.localModelId
+            println("SWARM - set ${preferenceManager.swarmServerUrl}")
         }
 }

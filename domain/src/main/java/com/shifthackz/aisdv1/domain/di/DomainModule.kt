@@ -26,6 +26,8 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.TestOpenAiApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestOpenAiApiKeyUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestStabilityAiApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestStabilityAiApiKeyUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestSwarmUiConnectivityUseCase
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestSwarmUiConnectivityUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
@@ -86,6 +88,8 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToOpenAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToOpenAiUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToStabilityAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToStabilityAiUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSwarmUiUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSwarmUiUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
@@ -128,6 +132,7 @@ internal val useCasesModule = module {
     factoryOf(::TestHuggingFaceApiKeyUseCaseImpl) bind TestHuggingFaceApiKeyUseCase::class
     factoryOf(::TestOpenAiApiKeyUseCaseImpl) bind TestOpenAiApiKeyUseCase::class
     factoryOf(::TestStabilityAiApiKeyUseCaseImpl) bind TestStabilityAiApiKeyUseCase::class
+    factoryOf(::TestSwarmUiConnectivityUseCaseImpl) bind TestSwarmUiConnectivityUseCase::class
     factoryOf(::SaveGenerationResultUseCaseImpl) bind SaveGenerationResultUseCase::class
     factoryOf(::ObserveSeverConnectivityUseCaseImpl) bind ObserveSeverConnectivityUseCase::class
     factoryOf(::ObserveHordeProcessStatusUseCaseImpl) bind ObserveHordeProcessStatusUseCase::class
@@ -146,6 +151,7 @@ internal val useCasesModule = module {
     factoryOf(::ConnectToHordeUseCaseImpl) bind ConnectToHordeUseCase::class
     factoryOf(::ConnectToLocalDiffusionUseCaseImpl) bind ConnectToLocalDiffusionUseCase::class
     factoryOf(::ConnectToA1111UseCaseImpl) bind ConnectToA1111UseCase::class
+    factoryOf(::ConnectToSwarmUiUseCaseImpl) bind ConnectToSwarmUiUseCase::class
     factoryOf(::ConnectToHuggingFaceUseCaseImpl) bind ConnectToHuggingFaceUseCase::class
     factoryOf(::ConnectToOpenAiUseCaseImpl) bind ConnectToOpenAiUseCase::class
     factoryOf(::ConnectToStabilityAiUseCaseImpl) bind ConnectToStabilityAiUseCase::class

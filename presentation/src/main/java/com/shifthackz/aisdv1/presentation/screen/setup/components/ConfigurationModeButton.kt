@@ -65,7 +65,8 @@ fun ConfigurationModeButton(
                     .size(42.dp)
                     .padding(top = 8.dp, bottom = 8.dp),
                 imageVector = when (mode) {
-                    ServerSource.AUTOMATIC1111 -> Icons.Default.Computer
+                    ServerSource.AUTOMATIC1111,
+                    ServerSource.SWARM_UI -> Icons.Default.Computer
                     ServerSource.HORDE,
                     ServerSource.OPEN_AI,
                     ServerSource.STABILITY_AI,
@@ -86,6 +87,7 @@ fun ConfigurationModeButton(
                     ServerSource.HUGGING_FACE -> R.string.srv_type_hugging_face
                     ServerSource.OPEN_AI -> R.string.srv_type_open_ai
                     ServerSource.STABILITY_AI -> R.string.srv_type_stability_ai
+                    ServerSource.SWARM_UI -> R.string.srv_type_swarm_ui
                 }),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge,
@@ -98,6 +100,7 @@ fun ConfigurationModeButton(
             ServerSource.OPEN_AI -> R.string.hint_open_ai_sub_title
             ServerSource.LOCAL -> R.string.hint_local_diffusion_sub_title
             ServerSource.STABILITY_AI -> R.string.hint_stability_ai_sub_title
+            ServerSource.SWARM_UI -> R.string.hint_swarm_ui_sub_title
         }
         descriptionId?.let { resId ->
             Text(

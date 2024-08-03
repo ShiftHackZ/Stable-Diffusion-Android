@@ -286,6 +286,7 @@ fun GenerationInputForm(
                     )
                 }
 
+                ServerSource.SWARM_UI -> Unit
             }
         }
 

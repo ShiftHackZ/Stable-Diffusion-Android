@@ -11,6 +11,7 @@ fun FeatureTag.mapToUi(): String {
         id = when (this) {
             FeatureTag.Txt2Img -> R.string.home_tab_txt_to_img
             FeatureTag.Img2Img -> R.string.home_tab_img_to_img
+            FeatureTag.OwnServer -> R.string.hint_own_server
             FeatureTag.Lora -> R.string.title_lora
             FeatureTag.TextualInversion -> R.string.title_txt_inversion
             FeatureTag.HyperNetworks -> R.string.title_hyper_net

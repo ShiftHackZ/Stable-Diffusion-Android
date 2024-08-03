@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToOpenAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToStabilityAiUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSwarmUiUseCase
 
 interface SetupConnectionInterActor {
     val connectToHorde: ConnectToHordeUseCase
@@ -14,4 +15,5 @@ interface SetupConnectionInterActor {
     val connectToHuggingFace: ConnectToHuggingFaceUseCase
     val connectToOpenAi: ConnectToOpenAiUseCase
     val connectToStabilityAi: ConnectToStabilityAiUseCase
+    val connectToSwarmUi: ConnectToSwarmUiUseCase
 }

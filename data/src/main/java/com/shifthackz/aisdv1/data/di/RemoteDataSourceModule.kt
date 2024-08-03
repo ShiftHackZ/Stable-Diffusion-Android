@@ -20,6 +20,7 @@ import com.shifthackz.aisdv1.data.remote.StableDiffusionHyperNetworksRemoteDataS
 import com.shifthackz.aisdv1.data.remote.StableDiffusionLorasRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionSamplersRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.SwarmUiGenerationRemoteDataSource
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceGenerationDataSource
@@ -36,6 +37,7 @@ import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataS
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionLorasDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
+import com.shifthackz.aisdv1.domain.datasource.SwarmUiGenerationDataSource
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.gateway.ServerConnectivityGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -51,8 +53,12 @@ val remoteDataSourceModule = module {
     single {
         ServerUrlProvider { endpoint ->
             val prefs = get<PreferenceManager>()
-            Single
-                .fromCallable(prefs::serverUrl)
+            val chain = if (prefs.source == ServerSource.SWARM_UI) {
+                Single.fromCallable(prefs::swarmServerUrl)
+            } else {
+                Single.fromCallable(prefs::serverUrl)
+            }
+            chain
                 .map(String::fixUrlSlashes)
                 .map { baseUrl -> "$baseUrl/$endpoint" }
         }
@@ -61,6 +67,7 @@ val remoteDataSourceModule = module {
     factoryOf(::HordeGenerationRemoteDataSource) bind HordeGenerationDataSource.Remote::class
     factoryOf(::HuggingFaceGenerationRemoteDataSource) bind HuggingFaceGenerationDataSource.Remote::class
     factoryOf(::OpenAiGenerationRemoteDataSource) bind OpenAiGenerationDataSource.Remote::class
+    factoryOf(::SwarmUiGenerationRemoteDataSource) bind SwarmUiGenerationDataSource.Remote::class
     factoryOf(::StableDiffusionGenerationRemoteDataSource) bind StableDiffusionGenerationDataSource.Remote::class
     factoryOf(::StableDiffusionSamplersRemoteDataSource) bind StableDiffusionSamplersDataSource.Remote::class
     factoryOf(::StableDiffusionModelsRemoteDataSource) bind StableDiffusionModelsDataSource.Remote::class
@@ -78,7 +85,7 @@ val remoteDataSourceModule = module {
     factory<ServerConnectivityGateway> {
         val lambda: () -> Boolean = {
             val prefs = get<PreferenceManager>()
-            prefs.source == ServerSource.AUTOMATIC1111
+            prefs.source == ServerSource.AUTOMATIC1111 || prefs.source == ServerSource.SWARM_UI
         }
         val monitor = get<ConnectivityMonitor> { parametersOf(lambda) }
         ServerConnectivityGatewayImpl(monitor, get())

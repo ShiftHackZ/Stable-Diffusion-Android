@@ -69,6 +69,7 @@
     <string name="srv_type_hugging_face_short" translatable="false">HuggingFace</string>
     <string name="srv_type_open_ai" translatable="false">Open AI</string>
     <string name="srv_type_stability_ai" translatable="false">Stability AI</string>
+    <string name="srv_type_swarm_ui" translatable="false">Swarm UI</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
@@ -77,6 +78,7 @@
     <string name="hint_batch_tag">Batch</string>
     <string name="hint_multiple_models">Multiple Models</string>
     <string name="hint_offline_generation">Offline generation</string>
+    <string name="hint_own_server">Own Server</string>
     <string name="hint_cfg_scale">CFG Scale: %1$s</string>
     <string name="hint_sampler">Sampling method</string>
     <string name="hint_style_preset">Style preset</string>
@@ -135,6 +137,9 @@
     <string name="hint_stability_ai_sub_title">StabilityAI is the image generation service provided by DreamStudio.</string>
     <string name="hint_stability_ai_about">About Stability AI</string>
     <string name="hint_stability_ai_engine">Stability AI Engine</string>
+
+    <string name="hint_swarm_ui_title">Connect to Swarm UI</string>
+    <string name="hint_swarm_ui_sub_title">Swarm UI ...</string>
 
     <string name="hint_local_diffusion_title" translatable="false">Local Diffusion</string>
     <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>

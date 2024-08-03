@@ -12,6 +12,8 @@ sealed interface ServerSetupIntent : MviIntent {
 
     data class UpdateServerUrl(val url: String) : ServerSetupIntent
 
+    data class UpdateSwarmUiUrl(val url: String) : ServerSetupIntent
+
     data class UpdateAuthType(val type: ServerSetupState.AuthType) : ServerSetupIntent
 
     data class UpdateLogin(val login: String) : ServerSetupIntent

@@ -182,8 +182,7 @@ private fun ScreenContent(
                         }
                     }
 
-                    ServerSource.OPEN_AI,
-                    ServerSource.LOCAL -> {
+                    else -> {
                         Column(
                             modifier = Modifier
                                 .padding(paddingValues)
