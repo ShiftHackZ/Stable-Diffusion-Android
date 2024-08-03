@@ -1,10 +1,9 @@
-package com.shifthackz.aisdv1.domain.entity
+package com.shifthackz.aisdv1.core.common.appbuild
 
-import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import org.junit.Assert
 import org.junit.Test
 
-class AppVersionTest {
+class BuildVersionTest {
 
     @Test
     fun `Parse 1_0_0, expected success`() {
