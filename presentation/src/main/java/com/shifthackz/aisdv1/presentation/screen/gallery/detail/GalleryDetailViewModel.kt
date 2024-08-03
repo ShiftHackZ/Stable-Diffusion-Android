@@ -97,8 +97,8 @@ class GalleryDetailViewModel(
     }
 
     private fun delete() {
-        if (currentState !is GalleryDetailState.Content) return
-        !deleteGalleryItemUseCase((currentState as GalleryDetailState.Content).id)
+        val state = currentState as? GalleryDetailState.Content ?: return
+        !deleteGalleryItemUseCase(state.id)
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { mainRouter.navigateBack() }
     }
