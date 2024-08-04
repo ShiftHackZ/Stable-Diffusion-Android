@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.data.mappers
 
+import com.shifthackz.aisdv1.domain.entity.Embedding
 import com.shifthackz.aisdv1.domain.entity.LoRA
 import com.shifthackz.aisdv1.domain.entity.SwarmUiModel
 import com.shifthackz.aisdv1.network.model.SwarmUiModelRaw
@@ -35,6 +36,18 @@ fun SwarmUiModelRaw.mapRawToLoraDomain(): LoRA = with(this) {
         alias = title ?: "",
         path = "",
     )
+}
+//endregion
+
+//region RAW -> EMBEDDING DOMAIN
+fun SwarmUiModelsResponse.mapRawToEmbeddingDomain(): List<Embedding> = with(this) {
+    this.files?.mapRawToEmbeddingDomain() ?: emptyList()
+}
+
+fun List<SwarmUiModelRaw>.mapRawToEmbeddingDomain(): List<Embedding> = map(SwarmUiModelRaw::mapRawToEmbeddingDomain)
+
+fun SwarmUiModelRaw.mapRawToEmbeddingDomain(): Embedding = with(this) {
+    Embedding(title ?: "")
 }
 //endregion
 

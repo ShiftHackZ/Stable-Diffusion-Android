@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.data.di
 import android.content.Context
 import android.os.PowerManager
 import com.shifthackz.aisdv1.data.repository.DownloadableModelRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.EmbeddingsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.GenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HordeGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HuggingFaceGenerationRepositoryImpl
@@ -15,7 +16,6 @@ import com.shifthackz.aisdv1.data.repository.ServerConfigurationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StabilityAiCreditsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StabilityAiEnginesRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StabilityAiGenerationRepositoryImpl
-import com.shifthackz.aisdv1.data.repository.StableDiffusionEmbeddingsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionHyperNetworksRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionModelsRepositoryImpl
@@ -25,6 +25,7 @@ import com.shifthackz.aisdv1.data.repository.SwarmUiModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.TemporaryGenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.WakeLockRepositoryImpl
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
+import com.shifthackz.aisdv1.domain.repository.EmbeddingsRepository
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
@@ -37,7 +38,6 @@ import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiCreditsRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiEnginesRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
-import com.shifthackz.aisdv1.domain.repository.StableDiffusionEmbeddingsRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionHyperNetworksRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
@@ -74,7 +74,7 @@ val repositoryModule = module {
     factoryOf(::StableDiffusionSamplersRepositoryImpl) bind StableDiffusionSamplersRepository::class
     factoryOf(::LorasRepositoryImpl) bind LorasRepository::class
     factoryOf(::StableDiffusionHyperNetworksRepositoryImpl) bind StableDiffusionHyperNetworksRepository::class
-    factoryOf(::StableDiffusionEmbeddingsRepositoryImpl) bind StableDiffusionEmbeddingsRepository::class
+    factoryOf(::EmbeddingsRepositoryImpl) bind EmbeddingsRepository::class
     factoryOf(::ServerConfigurationRepositoryImpl) bind ServerConfigurationRepository::class
     factoryOf(::GenerationResultRepositoryImpl) bind GenerationResultRepository::class
     factoryOf(::RandomImageRepositoryImpl) bind RandomImageRepository::class

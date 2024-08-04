@@ -1,29 +1,29 @@
 package com.shifthackz.aisdv1.data.repository
 
-import com.shifthackz.aisdv1.data.mocks.mockStableDiffusionEmbeddings
-import com.shifthackz.aisdv1.domain.datasource.StableDiffusionEmbeddingsDataSource
+import com.shifthackz.aisdv1.data.mocks.mockEmbeddings
+import com.shifthackz.aisdv1.domain.datasource.EmbeddingsDataSource
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test
 
-class StableDiffusionEmbeddingsRepositoryImplTest {
+class EmbeddingsRepositoryImplTest {
 
     private val stubException = Throwable("Something went wrong.")
-    private val stubRemoteDataSource = mockk<StableDiffusionEmbeddingsDataSource.Remote>()
-    private val stubLocalDataSource = mockk<StableDiffusionEmbeddingsDataSource.Local>()
+    private val stubRemoteDataSource = mockk<EmbeddingsDataSource.Remote>()
+    private val stubLocalDataSource = mockk<EmbeddingsDataSource.Local>()
 
-    private val repository = StableDiffusionEmbeddingsRepositoryImpl(
-        remoteDataSource = stubRemoteDataSource,
-        localDataSource = stubLocalDataSource,
+    private val repository = EmbeddingsRepositoryImpl(
+        rdsA1111 = stubRemoteDataSource,
+        lds = stubLocalDataSource,
     )
 
     @Test
     fun `given attempt to fetch embeddings, remote returns data, local insert success, expected complete value`() {
         every {
             stubRemoteDataSource.fetchEmbeddings()
-        } returns Single.just(mockStableDiffusionEmbeddings)
+        } returns Single.just(mockEmbeddings)
 
         every {
             stubLocalDataSource.insertEmbeddings(any())
@@ -59,7 +59,7 @@ class StableDiffusionEmbeddingsRepositoryImplTest {
     fun `given attempt to fetch embeddings, remote returns data, local insert fails, expected error value`() {
         every {
             stubRemoteDataSource.fetchEmbeddings()
-        } returns Single.just(mockStableDiffusionEmbeddings)
+        } returns Single.just(mockEmbeddings)
 
         every {
             stubLocalDataSource.insertEmbeddings(any())
@@ -77,13 +77,13 @@ class StableDiffusionEmbeddingsRepositoryImplTest {
     fun `given attempt to get embeddings, local data source returns list, expected valid domain models list value`() {
         every {
             stubLocalDataSource.getEmbeddings()
-        } returns Single.just(mockStableDiffusionEmbeddings)
+        } returns Single.just(mockEmbeddings)
 
         repository
             .getEmbeddings()
             .test()
             .assertNoErrors()
-            .assertValue(mockStableDiffusionEmbeddings)
+            .assertValue(mockEmbeddings)
             .await()
             .assertComplete()
     }
@@ -122,7 +122,7 @@ class StableDiffusionEmbeddingsRepositoryImplTest {
     fun `given attempt to fetch and get embeddings, remote returns data, local returns data, expected valid domain models list value`() {
         every {
             stubRemoteDataSource.fetchEmbeddings()
-        } returns Single.just(mockStableDiffusionEmbeddings)
+        } returns Single.just(mockEmbeddings)
 
         every {
             stubLocalDataSource.insertEmbeddings(any())
@@ -130,13 +130,13 @@ class StableDiffusionEmbeddingsRepositoryImplTest {
 
         every {
             stubLocalDataSource.getEmbeddings()
-        } returns Single.just(mockStableDiffusionEmbeddings)
+        } returns Single.just(mockEmbeddings)
 
         repository
             .fetchAndGetEmbeddings()
             .test()
             .assertNoErrors()
-            .assertValue(mockStableDiffusionEmbeddings)
+            .assertValue(mockEmbeddings)
             .await()
             .assertComplete()
     }
@@ -153,13 +153,13 @@ class StableDiffusionEmbeddingsRepositoryImplTest {
 
         every {
             stubLocalDataSource.getEmbeddings()
-        } returns Single.just(mockStableDiffusionEmbeddings)
+        } returns Single.just(mockEmbeddings)
 
         repository
             .fetchAndGetEmbeddings()
             .test()
             .assertNoErrors()
-            .assertValue(mockStableDiffusionEmbeddings)
+            .assertValue(mockEmbeddings)
             .await()
             .assertComplete()
     }

@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.presentation.modal.embedding
 
 import com.shifthackz.aisdv1.domain.usecase.sdembedding.FetchAndGetEmbeddingsUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
-import com.shifthackz.aisdv1.presentation.mocks.mockStableDiffusionEmbeddings
+import com.shifthackz.aisdv1.presentation.mocks.mockEmbeddings
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
@@ -28,7 +28,7 @@ class EmbeddingViewModelTest : CoreViewModelTest<EmbeddingViewModel>() {
     fun `given update data, fetch embeddings successful, expected UI state with embeddings list`() {
         every {
             stubFetchAndGetEmbeddingsUseCase()
-        } returns Single.just(mockStableDiffusionEmbeddings)
+        } returns Single.just(mockEmbeddings)
 
         viewModel.updateData("prompt", "negative")
 
@@ -106,7 +106,7 @@ class EmbeddingViewModelTest : CoreViewModelTest<EmbeddingViewModel>() {
     fun `given received ToggleItem intent, expected item from intent isInNegativePrompt changed in UI state`() {
         every {
             stubFetchAndGetEmbeddingsUseCase()
-        } returns Single.just(mockStableDiffusionEmbeddings)
+        } returns Single.just(mockEmbeddings)
 
         viewModel.updateData("prompt", "negative")
 

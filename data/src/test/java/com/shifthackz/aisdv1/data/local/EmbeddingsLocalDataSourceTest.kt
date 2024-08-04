@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.data.local
 
+import com.shifthackz.aisdv1.data.mocks.mockEmbeddings
 import com.shifthackz.aisdv1.data.mocks.mockStableDiffusionEmbeddingEntities
-import com.shifthackz.aisdv1.data.mocks.mockStableDiffusionEmbeddings
 import com.shifthackz.aisdv1.storage.db.cache.dao.StableDiffusionEmbeddingDao
 import io.mockk.every
 import io.mockk.mockk
@@ -9,12 +9,12 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test
 
-class StableDiffusionEmbeddingsLocalDataSourceTest {
+class EmbeddingsLocalDataSourceTest {
 
     private val stubException = Throwable("Database error.")
     private val stubDao = mockk<StableDiffusionEmbeddingDao>()
 
-    private val localDataSource = StableDiffusionEmbeddingsLocalDataSource(stubDao)
+    private val localDataSource = EmbeddingsLocalDataSource(stubDao)
 
     @Test
     fun `given attempt to get embeddings, dao returns list, expected valid domain model list value`() {
@@ -26,7 +26,7 @@ class StableDiffusionEmbeddingsLocalDataSourceTest {
             .getEmbeddings()
             .test()
             .assertNoErrors()
-            .assertValue(mockStableDiffusionEmbeddings)
+            .assertValue(mockEmbeddings)
             .await()
             .assertComplete()
     }
@@ -72,7 +72,7 @@ class StableDiffusionEmbeddingsLocalDataSourceTest {
         } returns Completable.complete()
 
         localDataSource
-            .insertEmbeddings(mockStableDiffusionEmbeddings)
+            .insertEmbeddings(mockEmbeddings)
             .test()
             .assertNoErrors()
             .await()
@@ -90,7 +90,7 @@ class StableDiffusionEmbeddingsLocalDataSourceTest {
         } returns Completable.complete()
 
         localDataSource
-            .insertEmbeddings(mockStableDiffusionEmbeddings)
+            .insertEmbeddings(mockEmbeddings)
             .test()
             .assertError(stubException)
             .await()
@@ -108,7 +108,7 @@ class StableDiffusionEmbeddingsLocalDataSourceTest {
         } returns Completable.error(stubException)
 
         localDataSource
-            .insertEmbeddings(mockStableDiffusionEmbeddings)
+            .insertEmbeddings(mockEmbeddings)
             .test()
             .assertError(stubException)
             .await()

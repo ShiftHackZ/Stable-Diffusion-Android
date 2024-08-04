@@ -20,11 +20,13 @@ import com.shifthackz.aisdv1.data.remote.StableDiffusionHyperNetworksRemoteDataS
 import com.shifthackz.aisdv1.data.remote.StableDiffusionLorasRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionSamplersRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.SwarmUiEmbeddingsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.SwarmUiGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.SwarmUiLorasRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.SwarmUiModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.SwarmUiSessionDataSourceImpl
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
+import com.shifthackz.aisdv1.domain.datasource.EmbeddingsDataSource
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceModelsDataSource
@@ -35,7 +37,6 @@ import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiCreditsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiEnginesDataSource
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiGenerationDataSource
-import com.shifthackz.aisdv1.domain.datasource.StableDiffusionEmbeddingsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
@@ -76,12 +77,13 @@ val remoteDataSourceModule = module {
     factoryOf(::SwarmUiGenerationRemoteDataSource) bind SwarmUiGenerationDataSource.Remote::class
     factoryOf(::SwarmUiModelsRemoteDataSource) bind SwarmUiModelsDataSource.Remote::class
     factoryOf(::SwarmUiLorasRemoteDataSource) bind LorasDataSource.Remote.SwarmUi::class
+    factoryOf(::SwarmUiEmbeddingsRemoteDataSource) bind EmbeddingsDataSource.Remote.SwarmUi::class
     factoryOf(::StableDiffusionGenerationRemoteDataSource) bind StableDiffusionGenerationDataSource.Remote::class
     factoryOf(::StableDiffusionSamplersRemoteDataSource) bind StableDiffusionSamplersDataSource.Remote::class
     factoryOf(::StableDiffusionModelsRemoteDataSource) bind StableDiffusionModelsDataSource.Remote::class
     factoryOf(::StableDiffusionLorasRemoteDataSource) bind LorasDataSource.Remote.Automatic1111::class
     factoryOf(::StableDiffusionHyperNetworksRemoteDataSource) bind StableDiffusionHyperNetworksDataSource.Remote::class
-    factoryOf(::StableDiffusionEmbeddingsRemoteDataSource) bind StableDiffusionEmbeddingsDataSource.Remote::class
+    factoryOf(::StableDiffusionEmbeddingsRemoteDataSource) bind EmbeddingsDataSource.Remote.Automatic1111::class
     factoryOf(::ServerConfigurationRemoteDataSource) bind ServerConfigurationDataSource.Remote::class
     factoryOf(::RandomImageRemoteDataSource) bind RandomImageDataSource.Remote::class
     factoryOf(::DownloadableModelRemoteDataSource) bind DownloadableModelDataSource.Remote::class
