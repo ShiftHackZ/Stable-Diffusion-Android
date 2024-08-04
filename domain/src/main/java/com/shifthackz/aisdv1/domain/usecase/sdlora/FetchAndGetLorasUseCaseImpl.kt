@@ -1,10 +1,10 @@
 package com.shifthackz.aisdv1.domain.usecase.sdlora
 
-import com.shifthackz.aisdv1.domain.repository.StableDiffusionLorasRepository
+import com.shifthackz.aisdv1.domain.repository.LorasRepository
 
 internal class FetchAndGetLorasUseCaseImpl(
-    private val stableDiffusionLorasRepository: StableDiffusionLorasRepository,
+    private val lorasRepository: LorasRepository,
 ) : FetchAndGetLorasUseCase {
 
-    override fun invoke() = stableDiffusionLorasRepository.getLoras()
+    override fun invoke() = lorasRepository.fetchAndGetLoras()
 }

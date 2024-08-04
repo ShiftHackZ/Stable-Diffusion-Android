@@ -5,10 +5,10 @@ import com.shifthackz.aisdv1.network.model.StableDiffusionHyperNetworkRaw
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionHyperNetworkEntity
 
 //region RAW -> DOMAIN
-fun List<StableDiffusionHyperNetworkRaw>.mapRawToDomain(): List<StableDiffusionHyperNetwork> =
-    map(StableDiffusionHyperNetworkRaw::mapRawToDomain)
+fun List<StableDiffusionHyperNetworkRaw>.mapRawToCheckpointDomain(): List<StableDiffusionHyperNetwork> =
+    map(StableDiffusionHyperNetworkRaw::mapRawToCheckpointDomain)
 
-fun StableDiffusionHyperNetworkRaw.mapRawToDomain(): StableDiffusionHyperNetwork = with(this) {
+fun StableDiffusionHyperNetworkRaw.mapRawToCheckpointDomain(): StableDiffusionHyperNetwork = with(this) {
     StableDiffusionHyperNetwork(
         name = name ?: "",
         path = path ?: "",

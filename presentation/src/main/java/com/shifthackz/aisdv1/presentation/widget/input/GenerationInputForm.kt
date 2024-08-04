@@ -529,6 +529,7 @@ fun GenerationInputForm(
 
                 when (state.mode) {
                     ServerSource.AUTOMATIC1111,
+                    ServerSource.SWARM_UI,
                     ServerSource.STABILITY_AI,
                     ServerSource.HORDE -> afterSlidersSection()
 
@@ -564,7 +565,7 @@ fun GenerationInputForm(
     }
 }
 
-fun processTaggedPrompt(keywords: List<String>, event: ChipTextFieldEvent<String>): String {
+private fun processTaggedPrompt(keywords: List<String>, event: ChipTextFieldEvent<String>): String {
     val newKeywords = when (event) {
         is ChipTextFieldEvent.Add -> buildList {
             addAll(keywords)

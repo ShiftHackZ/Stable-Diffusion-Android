@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.data.remote
 
-import com.shifthackz.aisdv1.data.mappers.mapRawToDomain
+import com.shifthackz.aisdv1.data.mappers.mapRawToCheckpointDomain
 import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionEmbeddingsDataSource
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
@@ -14,5 +14,5 @@ internal class StableDiffusionEmbeddingsRemoteDataSource(
 
     override fun fetchEmbeddings() = serverUrlProvider(PATH_EMBEDDINGS)
         .flatMap(api::fetchEmbeddings)
-        .map(SdEmbeddingsResponse::mapRawToDomain)
+        .map(SdEmbeddingsResponse::mapRawToCheckpointDomain)
 }

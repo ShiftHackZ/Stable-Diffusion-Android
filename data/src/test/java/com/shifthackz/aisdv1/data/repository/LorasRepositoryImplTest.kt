@@ -1,23 +1,22 @@
 package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.data.mocks.mockStableDiffusionLoras
-import com.shifthackz.aisdv1.data.mocks.mockStableDiffusionModels
-import com.shifthackz.aisdv1.domain.datasource.StableDiffusionLorasDataSource
+import com.shifthackz.aisdv1.domain.datasource.LorasDataSource
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test
 
-class StableDiffusionLorasRepositoryImplTest {
+class LorasRepositoryImplTest {
 
     private val stubException = Throwable("Something went wrong.")
-    private val stubRemoteDataSource = mockk<StableDiffusionLorasDataSource.Remote>()
-    private val stubLocalDataSource = mockk<StableDiffusionLorasDataSource.Local>()
+    private val stubRemoteDataSource = mockk<LorasDataSource.Remote>()
+    private val stubLocalDataSource = mockk<LorasDataSource.Local>()
     
-    private val repository = StableDiffusionLorasRepositoryImpl(
-        remoteDataSource = stubRemoteDataSource,
-        localDataSource = stubLocalDataSource,
+    private val repository = LorasRepositoryImpl(
+        rdsA1111 = stubRemoteDataSource,
+        lds = stubLocalDataSource,
     )
 
     @Test

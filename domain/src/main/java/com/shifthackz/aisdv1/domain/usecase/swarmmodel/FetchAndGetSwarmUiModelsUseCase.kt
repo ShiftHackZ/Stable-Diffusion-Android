@@ -4,5 +4,5 @@ import com.shifthackz.aisdv1.domain.entity.SwarmUiModel
 import io.reactivex.rxjava3.core.Single
 
 interface FetchAndGetSwarmUiModelsUseCase {
-    operator fun invoke(): Single<List<Pair<SwarmUiModel, Boolean>>>
+    operator fun invoke(): Single<List<SwarmUiModel>>
 }

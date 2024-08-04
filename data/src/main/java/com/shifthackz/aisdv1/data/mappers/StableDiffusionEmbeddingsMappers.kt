@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.network.response.SdEmbeddingsResponse
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionEmbeddingEntity
 
 //region RAW -> DOMAIN
-fun SdEmbeddingsResponse.mapRawToDomain(): List<StableDiffusionEmbedding> =
+fun SdEmbeddingsResponse.mapRawToCheckpointDomain(): List<StableDiffusionEmbedding> =
     loaded?.keys?.map(::StableDiffusionEmbedding) ?: emptyList()
 
 //endregion

@@ -5,10 +5,10 @@ import com.shifthackz.aisdv1.network.model.StableDiffusionModelRaw
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionModelEntity
 
 //region RAW --> DOMAIN
-fun List<StableDiffusionModelRaw>.mapRawToDomain(): List<StableDiffusionModel> =
-    map(StableDiffusionModelRaw::mapRawToDomain)
+fun List<StableDiffusionModelRaw>.mapRawToCheckpointDomain(): List<StableDiffusionModel> =
+    map(StableDiffusionModelRaw::mapRawToCheckpointDomain)
 
-fun StableDiffusionModelRaw.mapRawToDomain(): StableDiffusionModel = with(this) {
+fun StableDiffusionModelRaw.mapRawToCheckpointDomain(): StableDiffusionModel = with(this) {
     StableDiffusionModel(
         title = title ?: "",
         modelName = modelName ?: "",

@@ -10,10 +10,12 @@ import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
 import com.shifthackz.aisdv1.network.request.OpenAiRequest
 import com.shifthackz.aisdv1.network.request.StabilityTextToImageRequest
+import com.shifthackz.aisdv1.network.request.SwarmUiGenerationRequest
 import com.shifthackz.aisdv1.network.request.TextToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import java.util.Date
 
+//region PAYLOAD --> REQUEST
 fun TextToImagePayload.mapToRequest(): TextToImageRequest = with(this) {
     TextToImageRequest(
         prompt = prompt,
@@ -95,6 +97,30 @@ fun TextToImagePayload.mapToStabilityAiRequest(): StabilityTextToImageRequest = 
     )
 }
 
+fun TextToImagePayload.mapToSwarmUiRequest(
+    sessionId: String,
+    swarmUiModel: String,
+): SwarmUiGenerationRequest = with(this) {
+    SwarmUiGenerationRequest(
+        sessionId = sessionId,
+        model = swarmUiModel,
+        initImage = null,
+        initImageCreativity = null,
+        images = 1,
+        prompt = prompt,
+        negativePrompt = negativePrompt,
+        width = width,
+        height = height,
+        seed = seed.trim().ifEmpty { null },
+        variationSeed = subSeed.trim().ifEmpty { null },
+        variationSeedStrength = subSeedStrength.takeIf { it >= 0.1 }?.toString(),
+        cfgScale = cfgScale,
+        steps = samplingSteps,
+    )
+}
+//endregion
+
+//region RESPONSE --> RESULT
 fun Pair<TextToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerationResult =
     let { (payload, response) ->
         AiGenerationResult(
@@ -165,3 +191,4 @@ fun Pair<TextToImagePayload, String>.mapLocalDiffusionToAiGenResult(): AiGenerat
             subSeedStrength = payload.subSeedStrength,
         )
     }
+//endregion

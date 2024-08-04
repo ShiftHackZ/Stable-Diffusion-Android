@@ -1,18 +1,19 @@
 package com.shifthackz.aisdv1.data.mappers
 
+import com.shifthackz.aisdv1.domain.entity.LoRA
 import com.shifthackz.aisdv1.domain.entity.SwarmUiModel
 import com.shifthackz.aisdv1.network.model.SwarmUiModelRaw
 import com.shifthackz.aisdv1.network.response.SwarmUiModelsResponse
 import com.shifthackz.aisdv1.storage.db.cache.entity.SwarmUiModelEntity
 
-//region RAW --> DOMAIN
-fun SwarmUiModelsResponse.mapRawToDomain(): List<SwarmUiModel> = with(this) {
-    this.files?.mapRawToDomain() ?: emptyList()
+//region RAW --> CHECKPOINT DOMAIN
+fun SwarmUiModelsResponse.mapRawToCheckpointDomain(): List<SwarmUiModel> = with(this) {
+    this.files?.mapRawToCheckpointDomain() ?: emptyList()
 }
 
-fun List<SwarmUiModelRaw>.mapRawToDomain(): List<SwarmUiModel> = map(SwarmUiModelRaw::mapRawToDomain)
+fun List<SwarmUiModelRaw>.mapRawToCheckpointDomain(): List<SwarmUiModel> = map(SwarmUiModelRaw::mapRawToCheckpointDomain)
 
-fun SwarmUiModelRaw.mapRawToDomain(): SwarmUiModel = with(this) {
+fun SwarmUiModelRaw.mapRawToCheckpointDomain(): SwarmUiModel = with(this) {
     SwarmUiModel(
         name = name ?: "",
         title = title ?: "",
@@ -21,7 +22,23 @@ fun SwarmUiModelRaw.mapRawToDomain(): SwarmUiModel = with(this) {
 }
 //endregion
 
-//region DOMAIN --> ENTITY
+//region RAW --> LORA DOMAIN
+fun SwarmUiModelsResponse.mapRawToLoraDomain(): List<LoRA> = with(this) {
+    this.files?.mapRawToLoraDomain() ?: emptyList()
+}
+
+fun List<SwarmUiModelRaw>.mapRawToLoraDomain(): List<LoRA> = map(SwarmUiModelRaw::mapRawToLoraDomain)
+
+fun SwarmUiModelRaw.mapRawToLoraDomain(): LoRA = with(this) {
+    LoRA(
+        name = name ?: "",
+        alias = title ?: "",
+        path = "",
+    )
+}
+//endregion
+
+//region CHECKPOINT DOMAIN --> ENTITY
 fun List<SwarmUiModel>.mapDomainToEntity(): List<SwarmUiModelEntity> = map(SwarmUiModel::mapDomainToEntity)
 
 fun SwarmUiModel.mapDomainToEntity(): SwarmUiModelEntity = with(this) {
@@ -34,7 +51,7 @@ fun SwarmUiModel.mapDomainToEntity(): SwarmUiModelEntity = with(this) {
 }
 //endregion
 
-//region ENTITY --> DOMAIN
+//region ENTITY --> CHECKPOINT DOMAIN
 fun List<SwarmUiModelEntity>.mapEntityToDomain(): List<SwarmUiModel> = map(SwarmUiModelEntity::mapEntityToDomain)
 
 fun SwarmUiModelEntity.mapEntityToDomain(): SwarmUiModel = with(this) {

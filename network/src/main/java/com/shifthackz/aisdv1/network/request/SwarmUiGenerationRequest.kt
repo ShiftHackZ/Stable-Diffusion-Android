@@ -9,6 +9,8 @@ data class SwarmUiGenerationRequest(
     val model: String,
     @SerializedName("initimage")
     val initImage: String?,
+    @SerializedName("initimagecreativity")
+    val initImageCreativity: String?,
     @SerializedName("images")
     val images: Int,
     @SerializedName("prompt")
@@ -29,11 +31,9 @@ data class SwarmUiGenerationRequest(
     val cfgScale: Float?,
     @SerializedName("steps")
     val steps: Int,
-    @SerializedName("initimagecreativity")
-    val initimagecreativity: String = "0.6",
-    @SerializedName("initimageresettonorm")
-    val initimageresettonorm: String = "0",
-    @SerializedName("initimagerecompositemask")
-    val initimagerecompositemask: String = "0",
+//    @SerializedName("initimageresettonorm")
+//    val initimageresettonorm: String = "0",
+//    @SerializedName("initimagerecompositemask")
+//    val initimagerecompositemask: String = "0",
 
 )

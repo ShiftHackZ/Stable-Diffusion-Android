@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.data.remote
 
-import com.shifthackz.aisdv1.data.mappers.mapRawToDomain
+import com.shifthackz.aisdv1.data.mappers.mapRawToCheckpointDomain
 import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
@@ -14,5 +14,5 @@ internal class StableDiffusionModelsRemoteDataSource(
 
     override fun fetchSdModels() = serverUrlProvider(PATH_SD_MODELS)
         .flatMap(api::fetchSdModels)
-        .map(List<StableDiffusionModelRaw>::mapRawToDomain)
+        .map(List<StableDiffusionModelRaw>::mapRawToCheckpointDomain)
 }

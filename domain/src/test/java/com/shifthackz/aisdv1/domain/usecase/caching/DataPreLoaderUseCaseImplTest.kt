@@ -2,10 +2,10 @@ package com.shifthackz.aisdv1.domain.usecase.caching
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import com.shifthackz.aisdv1.domain.repository.LorasRepository
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionEmbeddingsRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionHyperNetworksRepository
-import com.shifthackz.aisdv1.domain.repository.StableDiffusionLorasRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
 import io.reactivex.rxjava3.core.Completable
@@ -16,7 +16,7 @@ class DataPreLoaderUseCaseImplTest {
     private val stubServerConfigurationRepository = mock<ServerConfigurationRepository>()
     private val stubStableDiffusionModelsRepository = mock<StableDiffusionModelsRepository>()
     private val stubStableDiffusionSamplersRepository = mock<StableDiffusionSamplersRepository>()
-    private val stubStableDiffusionLorasRepository = mock<StableDiffusionLorasRepository>()
+    private val stubLorasRepository = mock<LorasRepository>()
     private val stubStableDiffusionHyperNetworksRepository = mock<StableDiffusionHyperNetworksRepository>()
     private val stubStableDiffusionEmbeddingsRepository = mock<StableDiffusionEmbeddingsRepository>()
 
@@ -24,7 +24,7 @@ class DataPreLoaderUseCaseImplTest {
         serverConfigurationRepository = stubServerConfigurationRepository,
         sdModelsRepository = stubStableDiffusionModelsRepository,
         sdSamplersRepository = stubStableDiffusionSamplersRepository,
-        sdLorasRepository = stubStableDiffusionLorasRepository,
+        sdLorasRepository = stubLorasRepository,
         sdHyperNetworksRepository = stubStableDiffusionHyperNetworksRepository,
         sdEmbeddingsRepository = stubStableDiffusionEmbeddingsRepository,
     )
@@ -40,7 +40,7 @@ class DataPreLoaderUseCaseImplTest {
         whenever(stubStableDiffusionSamplersRepository.fetchSamplers())
             .thenReturn(Completable.complete())
 
-        whenever(stubStableDiffusionLorasRepository.fetchLoras())
+        whenever(stubLorasRepository.fetchLoras())
             .thenReturn(Completable.complete())
 
         whenever(stubStableDiffusionHyperNetworksRepository.fetchHyperNetworks())
@@ -69,7 +69,7 @@ class DataPreLoaderUseCaseImplTest {
         whenever(stubStableDiffusionSamplersRepository.fetchSamplers())
             .thenReturn(Completable.complete())
 
-        whenever(stubStableDiffusionLorasRepository.fetchLoras())
+        whenever(stubLorasRepository.fetchLoras())
             .thenReturn(Completable.complete())
 
         whenever(stubStableDiffusionHyperNetworksRepository.fetchHyperNetworks())
@@ -98,7 +98,7 @@ class DataPreLoaderUseCaseImplTest {
         whenever(stubStableDiffusionSamplersRepository.fetchSamplers())
             .thenReturn(Completable.complete())
 
-        whenever(stubStableDiffusionLorasRepository.fetchLoras())
+        whenever(stubLorasRepository.fetchLoras())
             .thenReturn(Completable.complete())
 
         whenever(stubStableDiffusionHyperNetworksRepository.fetchHyperNetworks())
@@ -127,7 +127,7 @@ class DataPreLoaderUseCaseImplTest {
         whenever(stubStableDiffusionSamplersRepository.fetchSamplers())
             .thenReturn(Completable.error(stubException))
 
-        whenever(stubStableDiffusionLorasRepository.fetchLoras())
+        whenever(stubLorasRepository.fetchLoras())
             .thenReturn(Completable.complete())
 
         whenever(stubStableDiffusionHyperNetworksRepository.fetchHyperNetworks())
@@ -156,7 +156,7 @@ class DataPreLoaderUseCaseImplTest {
         whenever(stubStableDiffusionSamplersRepository.fetchSamplers())
             .thenReturn(Completable.complete())
 
-        whenever(stubStableDiffusionLorasRepository.fetchLoras())
+        whenever(stubLorasRepository.fetchLoras())
             .thenReturn(Completable.error(stubException))
 
         whenever(stubStableDiffusionHyperNetworksRepository.fetchHyperNetworks())
@@ -185,7 +185,7 @@ class DataPreLoaderUseCaseImplTest {
         whenever(stubStableDiffusionSamplersRepository.fetchSamplers())
             .thenReturn(Completable.complete())
 
-        whenever(stubStableDiffusionLorasRepository.fetchLoras())
+        whenever(stubLorasRepository.fetchLoras())
             .thenReturn(Completable.complete())
 
         whenever(stubStableDiffusionHyperNetworksRepository.fetchHyperNetworks())
@@ -214,7 +214,7 @@ class DataPreLoaderUseCaseImplTest {
         whenever(stubStableDiffusionSamplersRepository.fetchSamplers())
             .thenReturn(Completable.complete())
 
-        whenever(stubStableDiffusionLorasRepository.fetchLoras())
+        whenever(stubLorasRepository.fetchLoras())
             .thenReturn(Completable.complete())
 
         whenever(stubStableDiffusionHyperNetworksRepository.fetchHyperNetworks())

@@ -27,7 +27,7 @@ class EngineSelectionViewModel(
     private val getConfigurationUseCase: GetConfigurationUseCase,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
     private val getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
-    private val fetchAndGetSwarmUiModelsUseCase: FetchAndGetSwarmUiModelsUseCase,
+    fetchAndGetSwarmUiModelsUseCase: FetchAndGetSwarmUiModelsUseCase,
     observeLocalAiModelsUseCase: ObserveLocalAiModelsUseCase,
     fetchAndGetStabilityAiEnginesUseCase: FetchAndGetStabilityAiEnginesUseCase,
     getHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
@@ -82,8 +82,8 @@ class EngineSelectionViewModel(
                             sdModels = sdModels.map { it.first.title },
                             selectedSdModel = sdModels.firstOrNull { it.second }?.first?.title
                                 ?: state.selectedSdModel,
-                            swarmModels = swarmModels.map { it.first.name },
-                            selectedSwarmModel = swarmModels.firstOrNull { it.second }?.first?.name
+                            swarmModels = swarmModels.map { it.name },
+                            selectedSwarmModel = swarmModels.firstOrNull { it.name == config.swarmUiModel }?.name
                                 ?: state.selectedSwarmModel,
                             hfModels = hfModels.map { it.alias },
                             selectedHfModel = config.huggingFaceModel,
@@ -121,7 +121,7 @@ class EngineSelectionViewModel(
                     }
                 }
 
-            ServerSource.SWARM_UI -> preferenceManager.swarmModel = intent.value
+            ServerSource.SWARM_UI -> preferenceManager.swarmUiModel = intent.value
 
             ServerSource.HUGGING_FACE -> preferenceManager.huggingFaceModel = intent.value
 

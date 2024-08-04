@@ -41,7 +41,7 @@ internal class SwarmUiGenerationRepositoryImpl(
         .flatMap { sessionId ->
             remoteDataSource.textToImage(
                 sessionId = sessionId,
-                model = preferenceManager.swarmModel,
+                model = preferenceManager.swarmUiModel,
                 payload = payload,
             )
         }
@@ -52,7 +52,7 @@ internal class SwarmUiGenerationRepositoryImpl(
         .flatMap { sessionId ->
             remoteDataSource.imageToImage(
                 sessionId = sessionId,
-                model = preferenceManager.swarmModel,
+                model = preferenceManager.swarmUiModel,
                 payload = payload,
             )
         }

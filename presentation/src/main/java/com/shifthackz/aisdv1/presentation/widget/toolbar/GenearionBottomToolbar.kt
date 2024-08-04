@@ -49,26 +49,30 @@ fun GenerationBottomToolbar(
             .padding(top = 8.dp),
         contentAlignment = Alignment.BottomCenter,
     ) {
-        if (state.mode == ServerSource.AUTOMATIC1111) {
-            GenerationBottomToolbarBottomLayer(
-                modifier = Modifier.padding(bottom = 36.dp),
-                strokeAccentState = strokeAccentState,
-                state = state,
-                processIntent = processIntent,
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .padding(horizontal = 16.dp)
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 22.dp,
-                            topEnd = 22.dp,
+        when (state.mode) {
+            ServerSource.AUTOMATIC1111,
+            ServerSource.SWARM_UI -> {
+                GenerationBottomToolbarBottomLayer(
+                    modifier = Modifier.padding(bottom = 36.dp),
+                    strokeAccentState = strokeAccentState,
+                    state = state,
+                    processIntent = processIntent,
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(60.dp)
+                        .padding(horizontal = 16.dp)
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = 22.dp,
+                                topEnd = 22.dp,
+                            )
                         )
-                    )
-                    .background(color = MaterialTheme.colorScheme.surface),
-            )
+                        .background(color = MaterialTheme.colorScheme.surface),
+                )
+            }
+            else -> Unit
         }
         content()
     }

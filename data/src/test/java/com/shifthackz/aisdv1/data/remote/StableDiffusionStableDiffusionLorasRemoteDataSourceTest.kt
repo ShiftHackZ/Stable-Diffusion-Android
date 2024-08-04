@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.data.remote
 
 import com.shifthackz.aisdv1.data.mocks.mockStableDiffusionLoraRaw
 import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
-import com.shifthackz.aisdv1.domain.entity.StableDiffusionLora
+import com.shifthackz.aisdv1.domain.entity.LoRA
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
 import io.mockk.every
 import io.mockk.mockk
@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.core.Single
 import org.junit.Before
 import org.junit.Test
 
-class StableDiffusionLorasRemoteDataSourceTest {
+class StableDiffusionStableDiffusionLorasRemoteDataSourceTest {
 
     private val stubException = Throwable("Internal server error.")
     private val stubUrlProvider = mockk<ServerUrlProvider>()
@@ -18,7 +18,7 @@ class StableDiffusionLorasRemoteDataSourceTest {
 
     private val remoteDataSource = StableDiffusionLorasRemoteDataSource(
         serverUrlProvider = stubUrlProvider,
-        api = stubApi,
+        automatic1111Api = stubApi,
     )
 
     @Before
@@ -39,7 +39,7 @@ class StableDiffusionLorasRemoteDataSourceTest {
             .test()
             .assertNoErrors()
             .assertValue { loras ->
-                loras is List<StableDiffusionLora>
+                loras is List<LoRA>
                         && loras.size == mockStableDiffusionLoraRaw.size
             }
             .await()

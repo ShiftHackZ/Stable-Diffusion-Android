@@ -5,10 +5,10 @@ import com.shifthackz.aisdv1.network.model.StableDiffusionSamplerRaw
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionSamplerEntity
 
 //region RAW --> DOMAIN
-fun List<StableDiffusionSamplerRaw>.mapRawToDomain(): List<StableDiffusionSampler> =
-    map(StableDiffusionSamplerRaw::mapRawToDomain)
+fun List<StableDiffusionSamplerRaw>.mapRawToCheckpointDomain(): List<StableDiffusionSampler> =
+    map(StableDiffusionSamplerRaw::mapRawToCheckpointDomain)
 
-fun StableDiffusionSamplerRaw.mapRawToDomain(): StableDiffusionSampler = with(this) {
+fun StableDiffusionSamplerRaw.mapRawToCheckpointDomain(): StableDiffusionSampler = with(this) {
     StableDiffusionSampler(
         name = name ?: "",
         aliases = aliases ?: emptyList(),

@@ -14,7 +14,7 @@ class StableDiffusionLorasLocalDataSourceTest {
     private val stubException = Throwable("Database error.")
     private val stubDao = mockk<StableDiffusionLoraDao>()
     
-    private val localDataSource = StableDiffusionLorasLocalDataSource(stubDao)
+    private val localDataSource = LorasLocalDataSource(stubDao)
 
     @Test
     fun `given attempt to get loras, dao returns list, expected valid domain model list value`() {

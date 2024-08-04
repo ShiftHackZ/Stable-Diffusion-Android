@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 data class Configuration(
     val serverUrl: String = "",
     val swarmUiUrl: String = "",
+    val swarmUiModel: String = "",
     val demoMode: Boolean = false,
     val source: ServerSource = ServerSource.AUTOMATIC1111,
     val hordeApiKey: String = "",

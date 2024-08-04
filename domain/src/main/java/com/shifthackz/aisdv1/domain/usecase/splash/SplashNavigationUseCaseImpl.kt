@@ -15,7 +15,7 @@ internal class SplashNavigationUseCaseImpl(
                 Action.LAUNCH_SERVER_SETUP
             }
 
-            preferenceManager.serverUrl.isEmpty()
+            preferenceManager.automatic1111serverUrl.isEmpty()
                     && preferenceManager.source == ServerSource.AUTOMATIC1111 -> {
                 Action.LAUNCH_SERVER_SETUP
             }

@@ -5,10 +5,10 @@ import com.shifthackz.aisdv1.network.model.HuggingFaceModelRaw
 import com.shifthackz.aisdv1.storage.db.persistent.entity.HuggingFaceModelEntity
 
 //region RAW --> DOMAIN
-fun List<HuggingFaceModelRaw>.mapRawToDomain(): List<HuggingFaceModel> =
-    map(HuggingFaceModelRaw::mapRawToDomain)
+fun List<HuggingFaceModelRaw>.mapRawToCheckpointDomain(): List<HuggingFaceModel> =
+    map(HuggingFaceModelRaw::mapRawToCheckpointDomain)
 
-fun HuggingFaceModelRaw.mapRawToDomain(): HuggingFaceModel = with(this) {
+fun HuggingFaceModelRaw.mapRawToCheckpointDomain(): HuggingFaceModel = with(this) {
     HuggingFaceModel(
         id = id ?: "",
         name = name ?: "",

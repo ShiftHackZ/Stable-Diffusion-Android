@@ -10,14 +10,12 @@ internal class FetchAndGetSwarmUiModelsUseCaseImpl(
     private val repository: SwarmUiModelsRepository,
 ) : FetchAndGetSwarmUiModelsUseCase {
 
-    override fun invoke(): Single<List<Pair<SwarmUiModel, Boolean>>> = repository
+    override fun invoke(): Single<List<SwarmUiModel>> = repository
         .fetchAndGetModels()
         .map { models ->
-            if (!models.map(SwarmUiModel::name).contains(preferenceManager.swarmModel)) {
-                preferenceManager.swarmModel = models.firstOrNull()?.name ?: ""
+            if (!models.map(SwarmUiModel::name).contains(preferenceManager.swarmUiModel)) {
+                preferenceManager.swarmUiModel = models.firstOrNull()?.name ?: ""
             }
-            models.map { model ->
-                model to (preferenceManager.swarmModel == model.name)
-            }
+            models
         }
 }

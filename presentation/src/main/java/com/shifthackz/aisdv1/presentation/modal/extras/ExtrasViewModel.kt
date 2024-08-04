@@ -5,8 +5,8 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.common.time.TimeProvider
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.LoRA
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionHyperNetwork
-import com.shifthackz.aisdv1.domain.entity.StableDiffusionLora
 import com.shifthackz.aisdv1.domain.usecase.sdhypernet.FetchAndGetHyperNetworksUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdlora.FetchAndGetLorasUseCase
 import com.shifthackz.aisdv1.presentation.model.ErrorState
@@ -72,14 +72,14 @@ class ExtrasViewModel(
                             val (isApplied, value) = ExtrasFormatter.isExtraWithValuePresentInPrompt(
                                 prompt = prompt,
                                 loraAlias = when (it) {
-                                    is StableDiffusionLora -> it.alias
+                                    is LoRA -> it.alias
                                     is StableDiffusionHyperNetwork -> it.name
                                     else -> ""
                                 },
                                 type = type,
                             )
                             when (it) {
-                                is StableDiffusionLora -> ExtraItemUi(
+                                is LoRA -> ExtraItemUi(
                                     type = type,
                                     key = "${it.name}_${type}_${timeProvider.nanoTime()}",
                                     name = it.name,

@@ -204,6 +204,7 @@ private fun ExtrasEmptyState(type: ExtraType) {
                 .align(Alignment.CenterHorizontally),
             text = stringResource(
                 id = when (type) {
+                    //ToDo change empty state path depending on A1111/SWARM provider
                     ExtraType.Lora -> R.string.extras_empty_sub_title_lora
                     ExtraType.HyperNet -> R.string.extras_empty_sub_title_hypernet
                 }

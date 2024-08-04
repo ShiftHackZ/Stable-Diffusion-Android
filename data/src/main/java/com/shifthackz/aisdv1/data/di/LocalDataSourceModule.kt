@@ -5,22 +5,22 @@ import com.shifthackz.aisdv1.data.gateway.mediastore.MediaStoreGatewayFactory
 import com.shifthackz.aisdv1.data.local.DownloadableModelLocalDataSource
 import com.shifthackz.aisdv1.data.local.GenerationResultLocalDataSource
 import com.shifthackz.aisdv1.data.local.HuggingFaceModelsLocalDataSource
+import com.shifthackz.aisdv1.data.local.LorasLocalDataSource
 import com.shifthackz.aisdv1.data.local.ServerConfigurationLocalDataSource
 import com.shifthackz.aisdv1.data.local.StabilityAiCreditsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionEmbeddingsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionHyperNetworksLocalDataSource
-import com.shifthackz.aisdv1.data.local.StableDiffusionLorasLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionModelsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionSamplersLocalDataSource
 import com.shifthackz.aisdv1.data.local.SwarmUiModelsLocalDataSource
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceModelsDataSource
+import com.shifthackz.aisdv1.domain.datasource.LorasDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiCreditsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionEmbeddingsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataSource
-import com.shifthackz.aisdv1.domain.datasource.StableDiffusionLorasDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiModelsDataSource
@@ -37,7 +37,7 @@ val localDataSourceModule = module {
     single<StabilityAiCreditsDataSource.Local> { StabilityAiCreditsLocalDataSource() }
     factoryOf(::StableDiffusionModelsLocalDataSource) bind StableDiffusionModelsDataSource.Local::class
     factoryOf(::StableDiffusionSamplersLocalDataSource) bind StableDiffusionSamplersDataSource.Local::class
-    factoryOf(::StableDiffusionLorasLocalDataSource) bind StableDiffusionLorasDataSource.Local::class
+    factoryOf(::LorasLocalDataSource) bind LorasDataSource.Local::class
     factoryOf(::StableDiffusionHyperNetworksLocalDataSource) bind StableDiffusionHyperNetworksDataSource.Local::class
     factoryOf(::StableDiffusionEmbeddingsLocalDataSource) bind StableDiffusionEmbeddingsDataSource.Local::class
     factoryOf(::SwarmUiModelsLocalDataSource) bind SwarmUiModelsDataSource.Local::class

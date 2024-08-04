@@ -20,21 +20,21 @@ class PreferenceManagerImpl(
     private val preferencesChangedSubject: BehaviorSubject<Unit> =
         BehaviorSubject.createDefault(Unit)
 
-    override var serverUrl: String
+    override var automatic1111serverUrl: String
         get() = (preferences.getString(KEY_SERVER_URL, "") ?: "").fixUrlSlashes()
         set(value) = preferences.edit()
             .putString(KEY_SERVER_URL, value.fixUrlSlashes())
             .apply()
             .also { onPreferencesChanged() }
 
-    override var swarmServerUrl: String
+    override var swarmUiServerUrl: String
         get() = (preferences.getString(KEY_SWARM_SERVER_URL, "") ?: "").fixUrlSlashes()
         set(value) = preferences.edit()
             .putString(KEY_SWARM_SERVER_URL, value.fixUrlSlashes())
             .apply()
             .also { onPreferencesChanged() }
 
-    override var swarmModel: String
+    override var swarmUiModel: String
         get() = preferences.getString(KEY_SWARM_MODEL, "") ?: ""
         set(value) = preferences
             .edit()
@@ -207,7 +207,7 @@ class PreferenceManagerImpl(
         .toFlowable(BackpressureStrategy.LATEST)
         .map {
             Settings(
-                serverUrl = serverUrl,
+                serverUrl = automatic1111serverUrl,
                 sdModel = sdModel,
                 demoMode = demoMode,
                 monitorConnectivity = monitorConnectivity,
