@@ -6,10 +6,12 @@ import com.shifthackz.aisdv1.data.mappers.mapCloudToAiGenResult
 import com.shifthackz.aisdv1.data.mappers.mapToSwarmUiRequest
 import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiGenerationDataSource
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiApi
-import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiApi.Companion.PATH_SESSION
-import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiApi.Companion.PATH_TXT_TO_IMG
+import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiApi.Companion.PATH_GENERATE
+import com.shifthackz.aisdv1.network.request.SwarmUiGenerationRequest
 import io.reactivex.rxjava3.core.Single
 
 class SwarmUiGenerationRemoteDataSource(
@@ -18,18 +20,33 @@ class SwarmUiGenerationRemoteDataSource(
     private val converter: BitmapToBase64Converter,
 ) : SwarmUiGenerationDataSource.Remote {
 
-    override fun getNewSession() = PATH_SESSION
-        .let(serverUrlProvider::invoke)
-        .flatMap(::getSessionForUrl)
-
-    override fun getNewSession(url: String) =
-        getSessionForUrl("${url.fixUrlSlashes()}/$PATH_SESSION")
-
     override fun textToImage(
         sessionId: String,
-        payload: TextToImagePayload,
-    ) = serverUrlProvider(PATH_TXT_TO_IMG)
-        .flatMap { url -> api.textToImage(url, payload.mapToSwarmUiRequest(sessionId)) }
+        model: String,
+        payload: TextToImagePayload
+    ): Single<AiGenerationResult> =
+        generate(
+            payload = payload,
+            request = payload.mapToSwarmUiRequest(sessionId, model),
+        )
+        .map(Pair<TextToImagePayload, String>::mapCloudToAiGenResult)
+
+    override fun imageToImage(
+        sessionId: String,
+        model: String,
+        payload: ImageToImagePayload,
+    ): Single<AiGenerationResult> =
+        generate(
+            payload = payload,
+            request = payload.mapToSwarmUiRequest(sessionId, model),
+        )
+        .map(Pair<ImageToImagePayload, String>::mapCloudToAiGenResult)
+
+    private fun <T: Any> generate(
+        payload: T,
+        request: SwarmUiGenerationRequest,
+    ): Single<Pair<T, String>> = serverUrlProvider(PATH_GENERATE)
+        .flatMap { url -> api.generate(url, request) }
         .flatMap { response ->
             serverUrlProvider("").map { url -> response to url }
         }
@@ -44,14 +61,4 @@ class SwarmUiGenerationRemoteDataSource(
         .flatMap(converter::invoke)
         .map(BitmapToBase64Converter.Output::base64ImageString)
         .map { base64 -> payload to base64 }
-        .map(Pair<TextToImagePayload, String>::mapCloudToAiGenResult)
-
-    private fun getSessionForUrl(url: String) = api
-        .getNewSession(url)
-        .flatMap { response ->
-            response.sessionId
-                ?.takeIf(String::isNotBlank)
-                ?.let { Single.just(it) }
-                ?: Single.error(IllegalStateException("Bad session ID."))
-        }
 }

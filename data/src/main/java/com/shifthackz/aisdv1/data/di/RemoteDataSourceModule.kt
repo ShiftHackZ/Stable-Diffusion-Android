@@ -21,6 +21,8 @@ import com.shifthackz.aisdv1.data.remote.StableDiffusionLorasRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionSamplersRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.SwarmUiGenerationRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.SwarmUiModelsRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.SwarmUiSessionDataSourceImpl
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceGenerationDataSource
@@ -38,6 +40,8 @@ import com.shifthackz.aisdv1.domain.datasource.StableDiffusionLorasDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiGenerationDataSource
+import com.shifthackz.aisdv1.domain.datasource.SwarmUiModelsDataSource
+import com.shifthackz.aisdv1.domain.datasource.SwarmUiSessionDataSource
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.gateway.ServerConnectivityGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -67,7 +71,9 @@ val remoteDataSourceModule = module {
     factoryOf(::HordeGenerationRemoteDataSource) bind HordeGenerationDataSource.Remote::class
     factoryOf(::HuggingFaceGenerationRemoteDataSource) bind HuggingFaceGenerationDataSource.Remote::class
     factoryOf(::OpenAiGenerationRemoteDataSource) bind OpenAiGenerationDataSource.Remote::class
+    factoryOf(::SwarmUiSessionDataSourceImpl) bind SwarmUiSessionDataSource::class
     factoryOf(::SwarmUiGenerationRemoteDataSource) bind SwarmUiGenerationDataSource.Remote::class
+    factoryOf(::SwarmUiModelsRemoteDataSource) bind SwarmUiModelsDataSource.Remote::class
     factoryOf(::StableDiffusionGenerationRemoteDataSource) bind StableDiffusionGenerationDataSource.Remote::class
     factoryOf(::StableDiffusionSamplersRemoteDataSource) bind StableDiffusionSamplersDataSource.Remote::class
     factoryOf(::StableDiffusionModelsRemoteDataSource) bind StableDiffusionModelsDataSource.Remote::class

@@ -34,6 +34,14 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
+    override var swarmModel: String
+        get() = preferences.getString(KEY_SWARM_MODEL, "") ?: ""
+        set(value) = preferences
+            .edit()
+            .putString(KEY_SWARM_MODEL, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
     override var demoMode: Boolean
         get() = preferences.getBoolean(KEY_DEMO_MODE, false)
         set(value) = preferences.edit()
@@ -223,6 +231,7 @@ class PreferenceManagerImpl(
     companion object {
         const val KEY_SERVER_URL = "key_server_url"
         const val KEY_SWARM_SERVER_URL = "key_swarm_server_url"
+        const val KEY_SWARM_MODEL = "key_swarm_model"
         const val KEY_DEMO_MODE = "key_demo_mode"
         const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
         const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"

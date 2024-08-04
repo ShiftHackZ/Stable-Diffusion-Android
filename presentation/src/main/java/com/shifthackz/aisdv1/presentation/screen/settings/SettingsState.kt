@@ -39,7 +39,7 @@ data class SettingsState(
         get() = serverSource == ServerSource.AUTOMATIC1111
 
     val showMonitorConnectionOption: Boolean
-        get() = serverSource == ServerSource.AUTOMATIC1111
+        get() = serverSource == ServerSource.AUTOMATIC1111 || serverSource == ServerSource.SWARM_UI
 
     val showFormAdvancedOption: Boolean
         get() = serverSource != ServerSource.OPEN_AI

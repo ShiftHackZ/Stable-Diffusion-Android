@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.data.local.StableDiffusionHyperNetworksLocalDataSou
 import com.shifthackz.aisdv1.data.local.StableDiffusionLorasLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionModelsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionSamplersLocalDataSource
+import com.shifthackz.aisdv1.data.local.SwarmUiModelsLocalDataSource
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceModelsDataSource
@@ -22,6 +23,7 @@ import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataS
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionLorasDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
+import com.shifthackz.aisdv1.domain.datasource.SwarmUiModelsDataSource
 import com.shifthackz.aisdv1.domain.gateway.DatabaseClearGateway
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
@@ -38,6 +40,7 @@ val localDataSourceModule = module {
     factoryOf(::StableDiffusionLorasLocalDataSource) bind StableDiffusionLorasDataSource.Local::class
     factoryOf(::StableDiffusionHyperNetworksLocalDataSource) bind StableDiffusionHyperNetworksDataSource.Local::class
     factoryOf(::StableDiffusionEmbeddingsLocalDataSource) bind StableDiffusionEmbeddingsDataSource.Local::class
+    factoryOf(::SwarmUiModelsLocalDataSource) bind SwarmUiModelsDataSource.Local::class
     factoryOf(::ServerConfigurationLocalDataSource) bind ServerConfigurationDataSource.Local::class
     factoryOf(::GenerationResultLocalDataSource) bind GenerationResultDataSource.Local::class
     factoryOf(::DownloadableModelLocalDataSource) bind DownloadableModelDataSource.Local::class

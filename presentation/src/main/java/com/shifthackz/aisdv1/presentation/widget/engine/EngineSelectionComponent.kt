@@ -27,6 +27,15 @@ fun EngineSelectionComponent(
                 onItemSelected = { intentHandler(EngineSelectionIntent(it)) },
             )
 
+            ServerSource.SWARM_UI -> DropdownTextField(
+                label = R.string.hint_sd_model.asUiText(),
+                loading = state.loading,
+                modifier = modifier,
+                value = state.selectedSwarmModel,
+                items = state.swarmModels,
+                onItemSelected = { intentHandler(EngineSelectionIntent(it)) },
+            )
+
             ServerSource.HUGGING_FACE -> DropdownTextField(
                 label = R.string.hint_hugging_face_model.asUiText(),
                 loading = state.loading,
@@ -57,7 +66,6 @@ fun EngineSelectionComponent(
 
             ServerSource.HORDE -> Unit
             ServerSource.OPEN_AI -> Unit
-            ServerSource.SWARM_UI -> Unit
         }
     }
 }

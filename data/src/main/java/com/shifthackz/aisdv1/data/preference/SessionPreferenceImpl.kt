@@ -12,6 +12,7 @@ class SessionPreferenceImpl : SessionPreference {
         set(value) {
             _coinsPerDay = value
         }
+
     override var swarmUiSessionId: String
         get() = _swarmUiSessionId
         set(value) {

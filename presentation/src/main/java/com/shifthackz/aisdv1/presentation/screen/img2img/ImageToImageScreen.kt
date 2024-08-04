@@ -136,6 +136,7 @@ private fun ScreenContent(
             content = { paddingValues ->
                 when (state.mode) {
                     ServerSource.AUTOMATIC1111,
+                    ServerSource.SWARM_UI,
                     ServerSource.HORDE,
                     ServerSource.STABILITY_AI,
                     ServerSource.HUGGING_FACE -> {

@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.core.Flowable
 interface PreferenceManager {
     var serverUrl: String
     var swarmServerUrl: String
+    var swarmModel: String
     var demoMode: Boolean
     var monitorConnectivity: Boolean
     var autoSaveAiResults: Boolean

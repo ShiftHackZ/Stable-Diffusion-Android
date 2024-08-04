@@ -7,11 +7,13 @@ import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 internal class ImageToImageUseCaseImpl(
     private val stableDiffusionGenerationRepository: StableDiffusionGenerationRepository,
+    private val swarmUiGenerationRepository: SwarmUiGenerationRepository,
     private val hordeGenerationRepository: HordeGenerationRepository,
     private val huggingFaceGenerationRepository: HuggingFaceGenerationRepository,
     private val stabilityAiGenerationRepository: StabilityAiGenerationRepository,
@@ -25,6 +27,7 @@ internal class ImageToImageUseCaseImpl(
 
     private fun generate(payload: ImageToImagePayload) = when (preferenceManager.source) {
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.generateFromImage(payload)
+        ServerSource.SWARM_UI -> swarmUiGenerationRepository.generateFromImage(payload)
         ServerSource.HORDE -> hordeGenerationRepository.generateFromImage(payload)
         ServerSource.HUGGING_FACE -> huggingFaceGenerationRepository.generateFromImage(payload)
         ServerSource.STABILITY_AI -> stabilityAiGenerationRepository.generateFromImage(payload)

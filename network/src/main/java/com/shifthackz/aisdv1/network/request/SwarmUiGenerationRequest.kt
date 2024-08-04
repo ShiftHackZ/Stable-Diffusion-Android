@@ -7,12 +7,33 @@ data class SwarmUiGenerationRequest(
     val sessionId: String,
     @SerializedName("model")
     val model: String,
+    @SerializedName("initimage")
+    val initImage: String?,
     @SerializedName("images")
     val images: Int,
     @SerializedName("prompt")
     val prompt: String,
+    @SerializedName("negativeprompt")
+    val negativePrompt: String,
     @SerializedName("width")
     val width: Int,
     @SerializedName("height")
     val height: Int,
+    @SerializedName("seed")
+    val seed: String?,
+    @SerializedName("variationseed")
+    val variationSeed: String?,
+    @SerializedName("variationseedstrength")
+    val variationSeedStrength: String?,
+    @SerializedName("cfgscale")
+    val cfgScale: Float?,
+    @SerializedName("steps")
+    val steps: Int,
+    @SerializedName("initimagecreativity")
+    val initimagecreativity: String = "0.6",
+    @SerializedName("initimageresettonorm")
+    val initimageresettonorm: String = "0",
+    @SerializedName("initimagerecompositemask")
+    val initimagerecompositemask: String = "0",
+
 )

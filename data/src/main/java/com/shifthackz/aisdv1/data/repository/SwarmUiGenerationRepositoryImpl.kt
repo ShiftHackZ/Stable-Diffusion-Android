@@ -4,20 +4,23 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiGenerationDataSource
+import com.shifthackz.aisdv1.domain.datasource.SwarmUiSessionDataSource
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
-import com.shifthackz.aisdv1.domain.preference.SessionPreference
 import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
 internal class SwarmUiGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     base64ToBitmapConverter: Base64ToBitmapConverter,
     localDataSource: GenerationResultDataSource.Local,
-    private val remoteDataSource: SwarmUiGenerationDataSource.Remote,
     private val preferenceManager: PreferenceManager,
-    private val sessionPreference: SessionPreference,
+    private val session: SwarmUiSessionDataSource,
+    private val remoteDataSource: SwarmUiGenerationDataSource.Remote,
 ) : CoreGenerationRepository(
     mediaStoreGateway,
     base64ToBitmapConverter,
@@ -25,27 +28,33 @@ internal class SwarmUiGenerationRepositoryImpl(
     preferenceManager,
 ), SwarmUiGenerationRepository {
 
-    override fun checkApiAvailability() = obtainSessionId()
+    override fun checkApiAvailability(): Completable = session
+        .getSessionId()
         .ignoreElement()
 
-    override fun checkApiAvailability(url: String) = obtainSessionId(url)
+    override fun checkApiAvailability(url: String): Completable = session
+        .getSessionId(url)
         .ignoreElement()
 
-    override fun generateFromText(payload: TextToImagePayload) = obtainSessionId()
-        .flatMap { sessionId -> remoteDataSource.textToImage(sessionId, payload) }
+    override fun generateFromText(payload: TextToImagePayload): Single<AiGenerationResult> = session
+        .getSessionId()
+        .flatMap { sessionId ->
+            remoteDataSource.textToImage(
+                sessionId = sessionId,
+                model = preferenceManager.swarmModel,
+                payload = payload,
+            )
+        }
         .flatMap(::insertGenerationResult)
 
-    private fun obtainSessionId(connectUrl: String? = null) =
-        if (sessionPreference.swarmUiSessionId.isBlank()) {
-            val chain = connectUrl
-                ?.let(remoteDataSource::getNewSession)
-                ?: remoteDataSource.getNewSession()
-
-            chain.map { sessionId ->
-                sessionPreference.swarmUiSessionId = sessionId
-                sessionId
-            }
-        } else {
-            Single.just(sessionPreference.swarmUiSessionId)
+    override fun generateFromImage(payload: ImageToImagePayload): Single<AiGenerationResult> = session
+        .getSessionId()
+        .flatMap { sessionId ->
+            remoteDataSource.imageToImage(
+                sessionId = sessionId,
+                model = preferenceManager.swarmModel,
+                payload = payload,
+            )
         }
+        .flatMap(::insertGenerationResult)
 }
