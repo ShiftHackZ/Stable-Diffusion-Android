@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.demo.serialize
 
 internal class DemoDataSerializer {
 
-    fun readDemoAssets() = demoData
+    fun readDemoAssets(): List<String> = demoData
 
     companion object {
         private val demoData = listOf(

@@ -45,7 +45,7 @@ class SdaiPushNotificationManager(
 
     }
 
-    private fun createNotification(title: UiText, body: UiText) = with(
+    private fun createNotification(title: UiText, body: UiText): Notification = with(
         NotificationCompat.Builder(context, SDAI_NOTIFICATION_CHANNEL_ID)
     ) {
         setSmallIcon(R.drawable.ic_notification)

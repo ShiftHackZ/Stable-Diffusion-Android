@@ -9,7 +9,7 @@ import org.junit.Test
 
 class EditTagViewModelTest : CoreViewModelTest<EditTagViewModel>() {
 
-    override fun initializeViewModel() = EditTagViewModel()
+    override fun initializeViewModel(): EditTagViewModel = EditTagViewModel()
 
     @Test
     fun `given received InitialData intent, expected UI state updated witch correct stub values`() {

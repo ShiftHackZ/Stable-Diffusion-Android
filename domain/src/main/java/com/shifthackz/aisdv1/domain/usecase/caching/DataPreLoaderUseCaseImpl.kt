@@ -17,7 +17,7 @@ internal class DataPreLoaderUseCaseImpl(
     private val sdEmbeddingsRepository: StableDiffusionEmbeddingsRepository,
 ) : DataPreLoaderUseCase {
 
-    override operator fun invoke() = serverConfigurationRepository
+    override operator fun invoke(): Completable = serverConfigurationRepository
         .fetchConfiguration()
         .andThen(sdModelsRepository.fetchModels())
         .andThen(sdSamplersRepository.fetchSamplers())

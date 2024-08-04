@@ -19,7 +19,7 @@ class SplashViewModelTest : CoreViewModelTest<SplashViewModel>() {
 
     override val testViewModelStrategy = CoreViewModelInitializeStrategy.InitializeEveryTime
 
-    override fun initializeViewModel() = SplashViewModel(
+    override fun initializeViewModel(): SplashViewModel = SplashViewModel(
         mainRouter = stubMainRouter,
         splashNavigationUseCase = stubSplashNavigationUseCase,
         schedulersProvider = stubSchedulersProvider,

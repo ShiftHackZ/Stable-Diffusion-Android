@@ -20,7 +20,7 @@ class InputHistoryViewModel(
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<EmptyState, EmptyIntent, EmptyEffect>() {
 
-    override val initialState = EmptyState
+    override val initialState: EmptyState = EmptyState
 
     private val config = PagingConfig(
         pageSize = Constants.PAGINATION_PAYLOAD_SIZE,

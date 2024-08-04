@@ -1,13 +1,14 @@
 package com.shifthackz.aisdv1.presentation.navigation.router.drawer
 
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
 internal class DrawerRouterImpl : DrawerRouter {
 
     private val effectSubject: PublishSubject<NavigationEffect.Drawer> = PublishSubject.create()
 
-    override fun observe() = effectSubject.distinctUntilChanged()
+    override fun observe(): Observable<NavigationEffect.Drawer> = effectSubject.distinctUntilChanged()
 
     override fun openDrawer() {
         effectSubject.onNext(NavigationEffect.Drawer.Open)

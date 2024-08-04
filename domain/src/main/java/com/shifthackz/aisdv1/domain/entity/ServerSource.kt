@@ -59,6 +59,6 @@ enum class ServerSource(
     );
 
     companion object {
-        fun parse(value: String) = entries.find { it.key == value } ?: AUTOMATIC1111
+        fun parse(value: String): ServerSource = entries.find { it.key == value } ?: AUTOMATIC1111
     }
 }

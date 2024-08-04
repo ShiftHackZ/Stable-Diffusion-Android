@@ -43,7 +43,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     private val stubGenerationFormUpdateEvent = mockk<GenerationFormUpdateEvent>()
     private val stubMainRouter = mockk<MainRouter>()
 
-    override fun initializeViewModel() = GalleryDetailViewModel(
+    override fun initializeViewModel(): GalleryDetailViewModel = GalleryDetailViewModel(
         itemId = 5598L,
         getGenerationResultUseCase = stubGetGenerationResultUseCase,
         getLastResultFromCacheUseCase = stubGetLastResultFromCacheUseCase,

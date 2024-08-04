@@ -18,7 +18,7 @@ class SplashViewModel(
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<EmptyState, EmptyIntent, EmptyEffect>() {
 
-    override val initialState = EmptyState
+    override val initialState: EmptyState = EmptyState
 
     init {
         !splashNavigationUseCase()

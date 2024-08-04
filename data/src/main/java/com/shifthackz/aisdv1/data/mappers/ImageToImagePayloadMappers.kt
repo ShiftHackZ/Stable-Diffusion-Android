@@ -73,7 +73,7 @@ fun ImageToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest 
     )
 }
 
-fun ImageToImagePayload.mapToStabilityAiRequest() = with(this) {
+fun ImageToImagePayload.mapToStabilityAiRequest(): Map<String, String> = with(this) {
     buildMap {
         buildList {
             addAll(prompt.mapToStabilityPrompt(1.0))

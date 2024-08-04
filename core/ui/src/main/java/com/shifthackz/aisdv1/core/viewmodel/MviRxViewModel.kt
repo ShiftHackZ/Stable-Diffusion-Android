@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 abstract class MviRxViewModel<S : MviState, I : MviIntent, E : MviEffect> : MviViewModel<S, I, E>(),
     RxDisposableContract {
 
-    override val compositeDisposable = CompositeDisposable()
+    override val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCleared() {
         super.onCleared()

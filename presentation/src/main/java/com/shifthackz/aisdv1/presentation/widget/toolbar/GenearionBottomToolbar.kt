@@ -109,7 +109,7 @@ private fun GenerationBottomToolbarBottomLayer(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        fun localModifier(click: () -> Unit) = Modifier
+        fun localModifier(click: () -> Unit): Modifier = Modifier
             .fillMaxWidth()
             .align(Alignment.CenterVertically)
             .clickable { click() }

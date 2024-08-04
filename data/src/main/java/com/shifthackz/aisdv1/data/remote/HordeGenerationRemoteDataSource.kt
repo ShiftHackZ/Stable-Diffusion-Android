@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.data.mappers.mapCloudToAiGenResult
 import com.shifthackz.aisdv1.data.mappers.mapToHordeRequest
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
@@ -26,28 +27,28 @@ internal class HordeGenerationRemoteDataSource(
     private val statusSource: HordeGenerationDataSource.StatusSource,
 ) : HordeGenerationDataSource.Remote {
 
-    override fun validateApiKey() = hordeApi
+    override fun validateApiKey(): Single<Boolean> = hordeApi
         .checkHordeApiKey()
         .map { user -> user.id != null }
         .onErrorReturn { false }
 
-    override fun textToImage(payload: TextToImagePayload) = Single
+    override fun textToImage(payload: TextToImagePayload): Single<AiGenerationResult> = Single
         .just(payload.mapToHordeRequest())
         .flatMap(::executeRequestChain)
         .map { base64 -> payload to base64 }
         .map(Pair<TextToImagePayload, String>::mapCloudToAiGenResult)
 
-    override fun imageToImage(payload: ImageToImagePayload) = Single
+    override fun imageToImage(payload: ImageToImagePayload): Single<AiGenerationResult> = Single
         .just(payload.mapToHordeRequest())
         .flatMap(::executeRequestChain)
         .map { base64 -> payload to base64 }
         .map(Pair<ImageToImagePayload, String>::mapCloudToAiGenResult)
 
-    override fun interruptGeneration() = statusSource.id
+    override fun interruptGeneration(): Completable = statusSource.id
         ?.let(hordeApi::cancelRequest)
         ?: Completable.error(IllegalStateException("No cached request id"))
 
-    private fun executeRequestChain(request: HordeGenerationAsyncRequest) = hordeApi
+    private fun executeRequestChain(request: HordeGenerationAsyncRequest): Single<String> = hordeApi
         .generateAsync(request)
         .flatMapObservable { asyncStartResponse ->
             statusSource.id = asyncStartResponse.id

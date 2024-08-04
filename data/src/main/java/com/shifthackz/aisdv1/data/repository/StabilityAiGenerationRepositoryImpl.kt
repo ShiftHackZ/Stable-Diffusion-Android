@@ -30,14 +30,14 @@ internal class StabilityAiGenerationRepositoryImpl(
     preferenceManager,
 ), StabilityAiGenerationRepository {
 
-    override fun validateApiKey() = generationRds.validateApiKey()
+    override fun validateApiKey(): Single<Boolean> = generationRds.validateApiKey()
 
-    override fun generateFromText(payload: TextToImagePayload) = generationRds
+    override fun generateFromText(payload: TextToImagePayload): Single<AiGenerationResult> = generationRds
         .textToImage(preferenceManager.stabilityAiEngineId, payload)
         .flatMap(::insertGenerationResult)
         .flatMap(::refreshCredits)
 
-    override fun generateFromImage(payload: ImageToImagePayload) = payload
+    override fun generateFromImage(payload: ImageToImagePayload): Single<AiGenerationResult> = payload
         .base64Image
         .let(Base64ToBitmapConverter::Input)
         .let(base64ToBitmapConverter::invoke)
@@ -58,7 +58,7 @@ internal class StabilityAiGenerationRepositoryImpl(
         .flatMap(::refreshCredits)
 
 
-    private fun refreshCredits(ai: AiGenerationResult) = creditsRds
+    private fun refreshCredits(ai: AiGenerationResult): Single<AiGenerationResult> = creditsRds
         .fetch()
         .flatMapCompletable(creditsLds::save)
         .onErrorComplete()

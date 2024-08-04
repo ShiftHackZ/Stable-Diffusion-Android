@@ -21,7 +21,7 @@ class ConnectivityViewModelTest : CoreViewModelTest<ConnectivityViewModel>() {
     private val stubPreferenceManager = mockk<PreferenceManager>()
     private val stubObserveSeverConnectivityUseCase = mockk<ObserveSeverConnectivityUseCase>()
 
-    override fun initializeViewModel() = ConnectivityViewModel(
+    override fun initializeViewModel(): ConnectivityViewModel = ConnectivityViewModel(
         preferenceManager = stubPreferenceManager,
         observeServerConnectivityUseCase = stubObserveSeverConnectivityUseCase,
         schedulersProvider = stubSchedulersProvider,

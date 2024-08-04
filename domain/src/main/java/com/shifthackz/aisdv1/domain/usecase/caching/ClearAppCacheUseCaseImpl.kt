@@ -10,7 +10,7 @@ internal class ClearAppCacheUseCaseImpl(
     private val repository: GenerationResultRepository,
 ) : ClearAppCacheUseCase {
 
-    override fun invoke() = Completable.concatArray(
+    override fun invoke(): Completable = Completable.concatArray(
         repository.deleteAll(),
         Completable.fromAction { FileLoggingTree.clearLog(fileProviderDescriptor) },
     )

@@ -16,7 +16,7 @@ class DebugMenuViewModel(
     private val mainRouter: MainRouter,
 ) : MviRxViewModel<EmptyState, DebugMenuIntent, EmptyEffect>() {
 
-    override val initialState = EmptyState
+    override val initialState: EmptyState = EmptyState
 
     override fun processIntent(intent: DebugMenuIntent) {
         when (intent) {

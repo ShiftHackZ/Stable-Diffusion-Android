@@ -17,7 +17,8 @@ sealed interface AuthorizationCredentials {
         HTTP_BASIC("http");
 
         companion object {
-            fun from(value: String) = entries.find { it.key == value } ?: NONE
+            fun from(value: String): Key =
+                entries.find { it.key == value } ?: NONE
         }
     }
 }

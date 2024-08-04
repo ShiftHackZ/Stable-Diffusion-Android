@@ -45,7 +45,7 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
     private val stubBuildInfoProvider = mockk<BuildInfoProvider>()
     private val stubMainRouter = mockk<MainRouter>()
 
-    override fun initializeViewModel() = SettingsViewModel(
+    override fun initializeViewModel(): SettingsViewModel = SettingsViewModel(
         getStableDiffusionModelsUseCase = stubGetStableDiffusionModelsUseCase,
         observeStabilityAiCreditsUseCase = stubObserveStabilityAiCreditsUseCase,
         selectStableDiffusionModelUseCase = stubSelectStableDiffusionModelUseCase,

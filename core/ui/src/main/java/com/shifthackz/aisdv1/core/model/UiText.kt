@@ -41,6 +41,7 @@ sealed class UiText {
             is Resource -> this is Resource && this.resId == other.resId
             is Static -> this is Static && this.value == other.value
         }
+
         else -> false
     }
 
@@ -55,7 +56,7 @@ fun String.asUiText(): UiText.Static = UiText.Static(this)
 
 fun Int.asUiText(): UiText.Resource = UiText.Resource(this)
 
-fun Array<out Any>.nestedArgs(resources: Resources) =
+fun Array<out Any>.nestedArgs(resources: Resources): Array<String> =
     map { it.mapArg(resources) }.toTypedArray()
 
 fun Any.mapArg(resources: Resources): String = when (this) {
@@ -66,14 +67,15 @@ fun Any.mapArg(resources: Resources): String = when (this) {
 }
 
 @Composable
-fun UiText.asString(): String = when(this) {
+fun UiText.asString(): String = when (this) {
     is UiText.Static -> value
     is UiText.Resource -> {
         stringResource(resId, *args.nestedArgs(LocalContext.current.resources))
     }
+
     is UiText.Concat -> buildString {
         texts
-            .map { it.mapArg(LocalContext.current.resources) + separator}
+            .map { it.mapArg(LocalContext.current.resources) + separator }
             .forEach(::append)
     }
 }

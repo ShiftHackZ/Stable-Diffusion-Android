@@ -5,7 +5,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 internal class LoggingInterceptor {
 
-    fun get() = HttpLoggingInterceptor { message ->
+    fun get(): HttpLoggingInterceptor = HttpLoggingInterceptor { message ->
         debugLog(HTTP_TAG, message)
     }.apply {
         level = HttpLoggingInterceptor.Level.HEADERS

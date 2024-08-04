@@ -15,7 +15,7 @@ class HomeNavigationViewModel(
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<EmptyState, EmptyIntent, HomeNavigationEffect>() {
 
-    override val initialState = EmptyState
+    override val initialState: EmptyState = EmptyState
 
     init {
         !generationFormUpdateEvent

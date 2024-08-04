@@ -4,6 +4,6 @@ enum class DarkThemeToken {
     FRAPPE, MACCHIATO, MOCHA;
 
     companion object {
-        fun parse(value: String) = entries.find { "$it" == value } ?: FRAPPE
+        fun parse(value: String): DarkThemeToken = entries.find { "$it" == value } ?: FRAPPE
     }
 }

@@ -5,7 +5,7 @@ enum class BuildType {
     PLAY;
 
     companion object {
-        fun fromBuildConfig(input: String) = when (input) {
+        fun fromBuildConfig(input: String): BuildType = when (input) {
             "FOSS" -> FOSS
             else -> PLAY
         }

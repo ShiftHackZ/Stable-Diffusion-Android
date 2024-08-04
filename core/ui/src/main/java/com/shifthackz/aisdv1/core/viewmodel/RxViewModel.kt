@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 abstract class RxViewModel : ViewModel(), RxDisposableContract {
 
-    override val compositeDisposable = CompositeDisposable()
+    override val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCleared() {
         super.onCleared()

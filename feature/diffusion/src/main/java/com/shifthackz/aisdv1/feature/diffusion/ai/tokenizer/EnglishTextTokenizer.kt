@@ -24,6 +24,7 @@ import java.io.InputStreamReader
 import java.nio.IntBuffer
 import java.util.Arrays
 import java.util.Locale
+import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 internal class EnglishTextTokenizer(
@@ -32,20 +33,20 @@ internal class EnglishTextTokenizer(
     private val localModelIdProvider: LocalModelIdProvider,
 ) : LocalDiffusionTextTokenizer {
 
-    private val pattern = Pattern.compile(TOKENIZER_REGEX)
+    private val pattern: Pattern = Pattern.compile(TOKENIZER_REGEX)
 
     private val encoder: MutableMap<String, Int> = HashMap()
     private val decoder: MutableMap<Int, String> = HashMap()
     private val bpeRanks: MutableMap<Pair<String, String>, Int?> = HashMap()
 
-    private var isInitMap = false
+    private var isInitMap: Boolean = false
     private var session: OrtSession? = null
 
-    override val maxLength = 77
+    override val maxLength: Int = 77
 
     override fun initialize() {
         if (session != null) return
-        val options = OrtSession.SessionOptions()
+        val options: OrtSession. SessionOptions = OrtSession.SessionOptions()
         options.addConfigEntry(ORT_KEY_MODEL_FORMAT, ORT)
         session = ortEnvironmentProvider.get().createSession(
             "${modelPathPrefix(fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.TOKENIZER_MODEL}",
@@ -61,13 +62,13 @@ internal class EnglishTextTokenizer(
 
     override fun decode(ids: IntArray?): String {
         if (ids == null) return  ""
-        val stringBuilder = StringBuilder()
+        val stringBuilder: StringBuilder = StringBuilder()
         for (value in ids) {
             if (decoder.containsKey(value)) stringBuilder.append(decoder[value])
         }
         val result: MutableList<Int> = ArrayList()
         for (element in stringBuilder) {
-            val key = element.toString()
+            val key: String = element.toString()
             if (TokenizerByteSet.byteDecoder.containsKey(key)) {
                 TokenizerByteSet.byteDecoder[key]?.let { result.add(it) }
             }
@@ -78,15 +79,15 @@ internal class EnglishTextTokenizer(
     }
 
     override fun encode(text: String?): IntArray {
-        var input = text
+        var input: String? = text
         input = input.toString().lowercase(Locale.getDefault()).halfCorner()
         val stringList: MutableList<String> = ArrayList()
-        val matcher = pattern.matcher(input)
+        val matcher: Matcher = pattern.matcher(input)
         while (matcher.find()) {
             val result = matcher.toMatchResult()
-            val value = result.group().trim { it <= ' ' }
-            val sb = StringBuilder()
-            val bytes = value.toByteArray()
+            val value: String = result.group().trim { it <= ' ' }
+            val sb: StringBuilder = StringBuilder()
+            val bytes: ByteArray = value.toByteArray()
             val array = IntArray(bytes.size)
             for (i in array.indices) array[i] = bytes[i].toInt() and 0xff
             for (o in array) {
@@ -118,7 +119,7 @@ internal class EnglishTextTokenizer(
 
     override fun tensor(ids: IntArray?): OnnxTensor? {
         if (ids == null) return null
-        val inputIds = OnnxTensor.createTensor(
+        val inputIds: OnnxTensor = OnnxTensor.createTensor(
             ortEnvironmentProvider.get(),
             IntBuffer.wrap(ids),
             longArrayOf(1, ids.size.toLong())
@@ -126,7 +127,7 @@ internal class EnglishTextTokenizer(
         val input: MutableMap<String, OnnxTensor> = HashMap()
         input[KEY_INPUT_IDS] = inputIds
         val result = session!!.run(input)
-        val lastHiddenState = result[0].value
+        val lastHiddenState: Any = result[0].value
         result.close()
         return OnnxTensor.createTensor(ortEnvironmentProvider.get(), lastHiddenState)
     }
@@ -143,7 +144,7 @@ internal class EnglishTextTokenizer(
             return listOf(token)
         }
         var word: MutableList<String?> = token.toArrays().toMutableList()
-        val lastItem = word.removeAt(word.size - 1)
+        val lastItem: String? = word.removeAt(word.size - 1)
         word.add("$lastItem</w>")
         var pairs = getPairs(word.toList())
         while (true) {

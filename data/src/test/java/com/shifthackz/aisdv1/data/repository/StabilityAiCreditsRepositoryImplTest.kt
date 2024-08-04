@@ -415,10 +415,10 @@ class StabilityAiCreditsRepositoryImplTest {
             .assertNotComplete()
     }
 
-    private fun <T : Any> TestObserver<T>.assertWrongServerSourceSelected() = this
+    private fun <T : Any> TestObserver<T>.assertWrongServerSourceSelected(): TestObserver<T> = this
         .assertError { t -> t.wrongSourceErrorPredicate() }
 
-    private fun <T : Any> TestSubscriber<T>.assertWrongServerSourceSelected() = this
+    private fun <T : Any> TestSubscriber<T>.assertWrongServerSourceSelected(): TestSubscriber<T> = this
         .assertError { t -> t.wrongSourceErrorPredicate() }
 
     private fun Throwable.wrongSourceErrorPredicate(): Boolean {

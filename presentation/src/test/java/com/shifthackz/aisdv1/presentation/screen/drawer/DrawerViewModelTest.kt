@@ -11,7 +11,7 @@ class DrawerViewModelTest : CoreViewModelTest<DrawerViewModel>() {
 
     private val stubDrawerRouter = mockk<DrawerRouter>()
 
-    override fun initializeViewModel() = DrawerViewModel(stubDrawerRouter)
+    override fun initializeViewModel(): DrawerViewModel = DrawerViewModel(stubDrawerRouter)
 
     @Test
     fun `given received Close intent, expected router closeDrawer() method called`() {

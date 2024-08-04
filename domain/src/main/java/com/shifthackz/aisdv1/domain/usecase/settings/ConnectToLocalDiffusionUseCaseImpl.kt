@@ -8,7 +8,7 @@ internal class ConnectToLocalDiffusionUseCaseImpl(
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
 ) : ConnectToLocalDiffusionUseCase {
 
-    override fun invoke(modelId: String) = getConfigurationUseCase()
+    override fun invoke(modelId: String): Single<Result<Unit>> = getConfigurationUseCase()
         .map { originalConfiguration ->
             originalConfiguration.copy(
                 source = ServerSource.LOCAL,

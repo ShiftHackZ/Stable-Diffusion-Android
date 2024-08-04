@@ -35,7 +35,7 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
     private val stubGenerationFormUpdateEvent = mockk<GenerationFormUpdateEvent>()
     private val stubTextToImageUseCase = mockk<TextToImageUseCase>()
 
-    override fun initializeViewModel() = TextToImageViewModel(
+    override fun initializeViewModel(): TextToImageViewModel = TextToImageViewModel(
         generationFormUpdateEvent = stubGenerationFormUpdateEvent,
         getStableDiffusionSamplersUseCase = stubGetStableDiffusionSamplersUseCase,
         observeHordeProcessStatusUseCase = stubObserveHordeProcessStatusUseCase,

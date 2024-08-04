@@ -17,6 +17,6 @@ enum class ColorToken {
     LAVENDER;
 
     companion object {
-        fun parse(value: String) = entries.find { "$it" == value } ?: MAUVE
+        fun parse(value: String): ColorToken = entries.find { "$it" == value } ?: MAUVE
     }
 }

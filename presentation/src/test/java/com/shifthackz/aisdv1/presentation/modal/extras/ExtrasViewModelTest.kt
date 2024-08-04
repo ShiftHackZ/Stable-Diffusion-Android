@@ -24,7 +24,7 @@ class ExtrasViewModelTest : CoreViewModelTest<ExtrasViewModel>() {
     private val stubFetchAndGetHyperNetworksUseCase = mockk<FetchAndGetHyperNetworksUseCase>()
     private val stubTimeProvider = mockk<TimeProvider>()
 
-    override fun initializeViewModel() = ExtrasViewModel(
+    override fun initializeViewModel(): ExtrasViewModel = ExtrasViewModel(
         stubFetchAndGetLorasUseCase,
         stubFetchAndGetHyperNetworksUseCase,
         stubSchedulersProvider,

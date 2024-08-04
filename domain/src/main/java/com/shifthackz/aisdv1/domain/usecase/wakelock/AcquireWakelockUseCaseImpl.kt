@@ -7,7 +7,7 @@ internal class AcquireWakelockUseCaseImpl(
     private val wakeLockRepository: WakeLockRepository,
 ) : AcquireWakelockUseCase {
 
-    override fun invoke(timeout: Long) = runCatching {
+    override fun invoke(timeout: Long): Result<Unit> = runCatching {
         wakeLockRepository.wakeLock.acquire(timeout)
     }.onFailure { t ->
         errorLog(t)

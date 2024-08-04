@@ -261,7 +261,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
         }
     }
 
-    protected open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) =
+    protected open fun updateFormPreviousAiGeneration(ai: AiGenerationResult): Result<Unit> =
         updateGenerationState {
             it
                 .copyState(
@@ -283,7 +283,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
                 }
         }
 
-    protected fun setActiveModal(modal: Modal) = updateGenerationState {
+    protected fun setActiveModal(modal: Modal): Result<Unit> = updateGenerationState {
         it.copyState(screenModal = modal)
     }
 
@@ -304,7 +304,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
     }
 
 
-    private fun updateGenerationState(mutation: (GenerationMviState) -> GenerationMviState) =
+    private fun updateGenerationState(mutation: (GenerationMviState) -> GenerationMviState): Result<Unit> =
         runCatching {
             updateState(mutation as (S) -> S)
         }

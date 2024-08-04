@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class SettingsViewModel(
@@ -166,7 +167,7 @@ class SettingsViewModel(
     }
 
     //region BUSINESS LOGIC METHODS
-    private fun selectSdModel(value: String) = !selectStableDiffusionModelUseCase(value)
+    private fun selectSdModel(value: String): Disposable = !selectStableDiffusionModelUseCase(value)
         .doOnSubscribe {
             updateState { state ->
                 state.copy(screenModal = Modal.Communicating(canCancel = false))
@@ -176,7 +177,7 @@ class SettingsViewModel(
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(::errorLog)
 
-    private fun clearAppCache() = !clearAppCacheUseCase()
+    private fun clearAppCache(): Disposable = !clearAppCacheUseCase()
         .doOnSubscribe { processIntent(SettingsIntent.DismissDialog) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(::errorLog)

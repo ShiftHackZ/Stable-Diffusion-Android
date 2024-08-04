@@ -47,7 +47,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     private val stubWakeLockInterActor = mockk<WakeLockInterActor>()
     private val stubMainRouter = mockk<MainRouter>()
 
-    override fun initializeViewModel() = ServerSetupViewModel(
+    override fun initializeViewModel(): ServerSetupViewModel = ServerSetupViewModel(
         launchSource = ServerSetupLaunchSource.SETTINGS,
         getConfigurationUseCase = stubGetConfigurationUseCase,
         getLocalAiModelsUseCase = stubGetLocalAiModelsUseCase,

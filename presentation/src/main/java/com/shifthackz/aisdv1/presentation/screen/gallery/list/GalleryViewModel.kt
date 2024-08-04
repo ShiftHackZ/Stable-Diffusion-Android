@@ -14,6 +14,7 @@ import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedU
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.utils.Constants
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import kotlinx.coroutines.flow.Flow
 
@@ -26,7 +27,7 @@ class GalleryViewModel(
     private val mainRouter: MainRouter,
 ) : MviRxViewModel<GalleryState, GalleryIntent, GalleryEffect>() {
 
-    override val initialState = GalleryState()
+    override val initialState: GalleryState = GalleryState()
 
     private val config = PagingConfig(
         pageSize = Constants.PAGINATION_PAYLOAD_SIZE,
@@ -65,7 +66,7 @@ class GalleryViewModel(
         }
     }
 
-    private fun launchGalleryExport() = galleryExporter()
+    private fun launchGalleryExport(): Disposable = !galleryExporter()
         .doOnSubscribe { setActiveModal(Modal.ExportInProgress) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
@@ -82,7 +83,6 @@ class GalleryViewModel(
                 emitEffect(GalleryEffect.Share(zipFile))
             }
         )
-        .addToDisposable()
 
     private fun setActiveModal(dialog: Modal) = updateState {
         it.copy(screenModal = dialog)

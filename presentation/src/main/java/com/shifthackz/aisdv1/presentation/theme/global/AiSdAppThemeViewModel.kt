@@ -17,7 +17,7 @@ class AiSdAppThemeViewModel(
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<AiSdAppThemeState, EmptyIntent, EmptyEffect>() {
 
-    override val initialState = AiSdAppThemeState()
+    override val initialState: AiSdAppThemeState = AiSdAppThemeState()
 
     init {
         !preferenceManager.observe()

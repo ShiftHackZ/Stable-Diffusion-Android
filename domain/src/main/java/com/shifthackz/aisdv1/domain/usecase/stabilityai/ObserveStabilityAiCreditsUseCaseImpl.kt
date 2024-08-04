@@ -11,7 +11,7 @@ internal class ObserveStabilityAiCreditsUseCaseImpl(
     private val preferenceManager: PreferenceManager,
 ) : ObserveStabilityAiCreditsUseCase {
 
-    override fun invoke() = Flowable
+    override fun invoke(): Flowable<Float> = Flowable
         .combineLatest(
             preferenceManager.observe().map(Settings::source),
             repository.fetchAndObserve(),

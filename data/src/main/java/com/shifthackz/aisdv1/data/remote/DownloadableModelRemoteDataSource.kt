@@ -5,10 +5,12 @@ import com.shifthackz.aisdv1.core.common.file.unzip
 import com.shifthackz.aisdv1.data.mappers.mapRawToDomain
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.entity.DownloadState
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApi
 import com.shifthackz.aisdv1.network.response.DownloadableModelResponse
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import java.io.File
 
 internal class DownloadableModelRemoteDataSource(
@@ -16,7 +18,7 @@ internal class DownloadableModelRemoteDataSource(
     private val fileProviderDescriptor: FileProviderDescriptor,
 ) : DownloadableModelDataSource.Remote {
 
-    override fun fetch() = api
+    override fun fetch(): Single<List<LocalAiModel>> = api
         .fetchDownloadableModels()
         .map(List<DownloadableModelResponse>::mapRawToDomain)
 

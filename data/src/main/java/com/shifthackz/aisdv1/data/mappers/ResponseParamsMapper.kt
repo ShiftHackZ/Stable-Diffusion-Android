@@ -15,7 +15,7 @@ fun mapSubSeedFromRemote(infoString: String?): String = parseInfo(infoString).fo
     onSuccess = { "${it.subSeed}" }
 )
 
-private fun parseInfo(infoString: String?) = runCatching {
+private fun parseInfo(infoString: String?): Result<SdGenerationResponse.Info> = runCatching {
     return@runCatching Gson().fromJson<SdGenerationResponse.Info>(
         infoString,
         object : TypeToken<SdGenerationResponse.Info>() {}.type

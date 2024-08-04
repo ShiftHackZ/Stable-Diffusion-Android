@@ -20,7 +20,7 @@ import javax.net.SocketFactory
 
 class RestAuthenticatorTest {
 
-    private val stubResponse
+    private val stubResponse: Response
         get() = Response.Builder()
             .request(
                 Request.Builder()
@@ -32,7 +32,7 @@ class RestAuthenticatorTest {
             .code(333)
             .build()
 
-    private val stubRoute
+    private val stubRoute: Route
         get() = Route(
             address = Address(
                 uriHost = "192.168.0.1",

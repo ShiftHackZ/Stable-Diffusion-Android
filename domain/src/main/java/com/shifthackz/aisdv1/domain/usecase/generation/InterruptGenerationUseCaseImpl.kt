@@ -14,7 +14,7 @@ internal class InterruptGenerationUseCaseImpl(
     private val preferenceManager: PreferenceManager,
 ) : InterruptGenerationUseCase {
 
-    override fun invoke() = when (preferenceManager.source) {
+    override fun invoke(): Completable = when (preferenceManager.source) {
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.interruptGeneration()
         ServerSource.HORDE -> hordeGenerationRepository.interruptGeneration()
         ServerSource.LOCAL -> localDiffusionGenerationRepository.interruptGeneration()

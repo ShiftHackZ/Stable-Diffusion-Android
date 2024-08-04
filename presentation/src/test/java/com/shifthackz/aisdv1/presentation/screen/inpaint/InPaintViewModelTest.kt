@@ -26,7 +26,7 @@ class InPaintViewModelTest : CoreViewModelTest<InPaintViewModel>() {
     private val stubInPaintStateProducer = mockk<InPaintStateProducer>()
     private val stubMainRouter = mockk<MainRouter>()
 
-    override fun initializeViewModel() = InPaintViewModel(
+    override fun initializeViewModel(): InPaintViewModel = InPaintViewModel(
         schedulersProvider = stubSchedulersProvider,
         stateProducer = stubInPaintStateProducer,
         mainRouter = stubMainRouter,

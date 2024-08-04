@@ -39,7 +39,7 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
     private val stubGalleryExporter = mockk<GalleryExporter>()
     private val stubMainRouter = mockk<MainRouter>()
 
-    override fun initializeViewModel() = GalleryViewModel(
+    override fun initializeViewModel(): GalleryViewModel = GalleryViewModel(
         getMediaStoreInfoUseCase = stubGetMediaStoreInfoUseCase,
         getGenerationResultPagedUseCase = stubGetGenerationResultPagedUseCase,
         base64ToBitmapConverter = stubBase64ToBitmapConverter,

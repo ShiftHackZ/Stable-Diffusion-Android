@@ -9,7 +9,7 @@ class DrawerViewModel(
     private val drawerRouter: DrawerRouter,
 ) : MviViewModel<EmptyState, DrawerIntent, EmptyEffect>() {
 
-    override val initialState = EmptyState
+    override val initialState: EmptyState = EmptyState
 
     override fun processIntent(intent: DrawerIntent) {
         when (intent) {

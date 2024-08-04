@@ -22,9 +22,9 @@ class InputHistoryPagingSource(
     private val schedulersProvider: SchedulersProvider,
 ) : RxPagingSource<Int, InputHistoryItemUi>() {
 
-    override fun getRefreshKey(state: PagingState<Int, InputHistoryItemUi>) = FIRST_KEY
+    override fun getRefreshKey(state: PagingState<Int, InputHistoryItemUi>): Int = FIRST_KEY
 
-    override fun loadSingle(params: LoadParams<Int>) = loadSingleImpl(params)
+    override fun loadSingle(params: LoadParams<Int>): Single<InputHistoryPagedResult> = loadSingleImpl(params)
 
     private fun loadSingleImpl(params: LoadParams<Int>): Single<InputHistoryPagedResult> {
         val pageSize = params.loadSize
@@ -55,7 +55,7 @@ class InputHistoryPagingSource(
             .map(Wrapper::loadResult)
     }
 
-    private fun mapOutputToUi(output: Pair<AiGenerationResult, Output>) = InputHistoryItemUi(
+    private fun mapOutputToUi(output: Pair<AiGenerationResult, Output>): InputHistoryItemUi = InputHistoryItemUi(
         output.first,
         output.second.bitmap,
     )

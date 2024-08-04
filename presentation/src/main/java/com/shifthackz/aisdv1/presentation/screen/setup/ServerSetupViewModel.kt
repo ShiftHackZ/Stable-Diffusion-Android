@@ -46,7 +46,7 @@ class ServerSetupViewModel(
     private val mainRouter: MainRouter,
 ) : MviRxViewModel<ServerSetupState, ServerSetupIntent, ServerSetupEffect>() {
 
-    override val initialState = ServerSetupState(
+    override val initialState: ServerSetupState = ServerSetupState(
         showBackNavArrow = launchSource == ServerSetupLaunchSource.SETTINGS,
     )
 
@@ -316,25 +316,25 @@ class ServerSetupViewModel(
             else -> AuthorizationCredentials.None
         }
         return setupConnectionInterActor.connectToA1111(
-            connectUrl,
-            demoMode,
-            credentials,
+            url = connectUrl,
+            isDemo = demoMode,
+            credentials = credentials,
         )
     }
 
-    private fun connectToHuggingFace() = with(currentState) {
+    private fun connectToHuggingFace(): Single<Result<Unit>> = with(currentState) {
         setupConnectionInterActor.connectToHuggingFace(
-            huggingFaceApiKey,
-            huggingFaceModel,
+            apiKey = huggingFaceApiKey,
+            model = huggingFaceModel,
         )
     }
 
-    private fun connectToOpenAi() = setupConnectionInterActor.connectToOpenAi(
-        currentState.openAiApiKey,
+    private fun connectToOpenAi(): Single<Result<Unit>> = setupConnectionInterActor.connectToOpenAi(
+        apiKey = currentState.openAiApiKey,
     )
 
-    private fun connectToStabilityAi() = setupConnectionInterActor.connectToStabilityAi(
-        currentState.stabilityAiApiKey,
+    private fun connectToStabilityAi(): Single<Result<Unit>> = setupConnectionInterActor.connectToStabilityAi(
+        apiKey = currentState.stabilityAiApiKey,
     )
 
     private fun connectToHorde(): Single<Result<Unit>> {

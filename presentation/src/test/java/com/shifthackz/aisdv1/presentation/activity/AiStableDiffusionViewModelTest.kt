@@ -33,7 +33,7 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
 
     override val testViewModelStrategy = CoreViewModelInitializeStrategy.InitializeEveryTime
 
-    override fun initializeViewModel() = AiStableDiffusionViewModel(
+    override fun initializeViewModel(): AiStableDiffusionViewModel = AiStableDiffusionViewModel(
         schedulersProvider = stubSchedulersProvider,
         mainRouter = stubMainRouter,
         drawerRouter = stubDrawerRouter,

@@ -19,8 +19,10 @@ import com.shifthackz.aisdv1.network.di.networkModule
 import com.shifthackz.aisdv1.presentation.di.presentationModule
 import com.shifthackz.aisdv1.storage.di.databaseModule
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import timber.log.Timber
+import java.lang.reflect.Field
 
 
 class AiStableDiffusionClientApp : Application() {
@@ -42,7 +44,7 @@ class AiStableDiffusionClientApp : Application() {
     @SuppressLint("DiscouragedPrivateApi")
     private fun initializeCursorSize() {
         try {
-            val field = CursorWindow::class.java.getDeclaredField("sCursorWindowSize")
+            val field: Field = CursorWindow::class.java.getDeclaredField("sCursorWindowSize")
             field.isAccessible = true
             field.set(null, 100 * 1024 * 1024) // 100 Mb
         } catch (e: Exception) {
@@ -50,7 +52,7 @@ class AiStableDiffusionClientApp : Application() {
         }
     }
 
-    private fun initializeKoin() = startKoin {
+    private fun initializeKoin(): KoinApplication = startKoin {
         androidContext(this@AiStableDiffusionClientApp)
         modules(
             demoModule,

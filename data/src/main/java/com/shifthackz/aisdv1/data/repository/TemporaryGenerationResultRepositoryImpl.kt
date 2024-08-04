@@ -9,7 +9,7 @@ internal class TemporaryGenerationResultRepositoryImpl : TemporaryGenerationResu
 
     private var lastCachedResult: AiGenerationResult? = null
 
-    override fun put(result: AiGenerationResult) = Completable.fromAction {
+    override fun put(result: AiGenerationResult): Completable = Completable.fromAction {
         lastCachedResult = result
     }
 

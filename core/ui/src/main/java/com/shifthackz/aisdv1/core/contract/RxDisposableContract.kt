@@ -7,7 +7,8 @@ interface RxDisposableContract {
 
     val compositeDisposable: CompositeDisposable
 
-    infix operator fun CompositeDisposable.plus(d: Disposable) = this.add(compositeDisposable)
+    infix operator fun CompositeDisposable.plus(d: Disposable): Boolean =
+        this.add(compositeDisposable)
 
     operator fun Disposable.not(): Disposable {
         compositeDisposable.add(this)

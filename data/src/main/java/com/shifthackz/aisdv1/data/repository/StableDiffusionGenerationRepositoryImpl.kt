@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
 internal class StableDiffusionGenerationRepositoryImpl(
@@ -29,9 +30,9 @@ internal class StableDiffusionGenerationRepositoryImpl(
     preferenceManager,
 ), StableDiffusionGenerationRepository {
 
-    override fun checkApiAvailability() = remoteDataSource.checkAvailability()
+    override fun checkApiAvailability(): Completable = remoteDataSource.checkAvailability()
 
-    override fun checkApiAvailability(url: String) = remoteDataSource.checkAvailability(url)
+    override fun checkApiAvailability(url: String): Completable = remoteDataSource.checkAvailability(url)
 
     override fun generateFromText(payload: TextToImagePayload): Single<AiGenerationResult> {
         val chain =
@@ -49,5 +50,5 @@ internal class StableDiffusionGenerationRepositoryImpl(
         return chain.flatMap(::insertGenerationResult)
     }
 
-    override fun interruptGeneration() = remoteDataSource.interruptGeneration()
+    override fun interruptGeneration(): Completable = remoteDataSource.interruptGeneration()
 }

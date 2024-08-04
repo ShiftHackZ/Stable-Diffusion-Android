@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.OpenAiGenerationDataSource
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -23,9 +24,9 @@ internal class OpenAiGenerationRepositoryImpl(
     preferenceManager,
 ), OpenAiGenerationRepository {
 
-    override fun validateApiKey() = remoteDataSource.validateApiKey()
+    override fun validateApiKey(): Single<Boolean> = remoteDataSource.validateApiKey()
 
-    override fun generateFromText(payload: TextToImagePayload) = remoteDataSource
+    override fun generateFromText(payload: TextToImagePayload): Single<AiGenerationResult> = remoteDataSource
         .textToImage(payload)
         .flatMap(::insertGenerationResult)
 }

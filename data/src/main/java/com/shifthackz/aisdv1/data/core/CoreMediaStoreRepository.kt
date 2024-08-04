@@ -26,13 +26,13 @@ internal abstract class CoreMediaStoreRepository(
         emitter.onSuccess(mediaStoreGateway.getInfo())
     }
 
-    private fun export(result: AiGenerationResult) = result.image
+    private fun export(result: AiGenerationResult): Completable = result.image
         .let(Base64ToBitmapConverter::Input)
         .let(base64ToBitmapConverter::invoke)
         .map(Base64ToBitmapConverter.Output::bitmap)
         .flatMapCompletable(::processBitmap)
 
-    private fun processBitmap(bmp: Bitmap) = Completable
+    private fun processBitmap(bmp: Bitmap): Completable = Completable
         .fromAction {
             val stream = ByteArrayOutputStream()
             bmp.compress(Bitmap.CompressFormat.PNG, 100, stream)

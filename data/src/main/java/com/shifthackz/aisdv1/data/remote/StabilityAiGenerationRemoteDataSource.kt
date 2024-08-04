@@ -20,7 +20,7 @@ internal class StabilityAiGenerationRemoteDataSource(
     private val stabilityAiErrorMapper: StabilityAiErrorMapper,
 ) : StabilityAiGenerationDataSource.Remote {
 
-    override fun validateApiKey() = api
+    override fun validateApiKey(): Single<Boolean> = api
         .validateBearerToken()
         .andThen(Single.just(true))
         .onErrorResumeNext { t ->
@@ -28,7 +28,7 @@ internal class StabilityAiGenerationRemoteDataSource(
             Single.just(false)
         }
 
-    override fun textToImage(engineId: String, payload: TextToImagePayload) = api
+    override fun textToImage(engineId: String, payload: TextToImagePayload): Single<AiGenerationResult> = api
         .textToImage(engineId, payload.mapToStabilityAiRequest())
         .flatMap { it.processResponse(payload) }
         .map(Pair<TextToImagePayload, String>::mapCloudToAiGenResult)

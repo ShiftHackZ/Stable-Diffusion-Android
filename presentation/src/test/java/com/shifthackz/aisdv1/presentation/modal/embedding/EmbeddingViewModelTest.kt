@@ -19,7 +19,7 @@ class EmbeddingViewModelTest : CoreViewModelTest<EmbeddingViewModel>() {
     private val stubException = Throwable("Something went wrong.")
     private val stubFetchAndGetEmbeddingsUseCase = mockk<FetchAndGetEmbeddingsUseCase>()
 
-    override fun initializeViewModel() = EmbeddingViewModel(
+    override fun initializeViewModel(): EmbeddingViewModel = EmbeddingViewModel(
         fetchAndGetEmbeddingsUseCase = stubFetchAndGetEmbeddingsUseCase,
         schedulersProvider = stubSchedulersProvider,
     )

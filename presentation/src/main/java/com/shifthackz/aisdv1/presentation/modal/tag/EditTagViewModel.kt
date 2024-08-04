@@ -6,7 +6,7 @@ import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 
 class EditTagViewModel : MviRxViewModel<EditTagState, EditTagIntent, EditTagEffect>() {
 
-    override val initialState = EditTagState()
+    override val initialState: EditTagState = EditTagState()
 
     override fun processIntent(intent: EditTagIntent) {
         when (intent) {

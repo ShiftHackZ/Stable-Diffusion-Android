@@ -16,7 +16,7 @@ class InPaintViewModel(
     private val mainRouter: MainRouter,
 ) : MviRxViewModel<InPaintState, InPaintIntent, EmptyEffect>() {
 
-    override val initialState = InPaintState()
+    override val initialState: InPaintState = InPaintState()
 
     init {
         !Flowable.combineLatest(

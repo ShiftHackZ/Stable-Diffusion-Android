@@ -21,9 +21,9 @@ class GalleryPagingSource(
     private val schedulersProvider: SchedulersProvider,
 ) : RxPagingSource<Int, GalleryGridItemUi>() {
 
-    override fun getRefreshKey(state: PagingState<Int, GalleryGridItemUi>) = FIRST_KEY
+    override fun getRefreshKey(state: PagingState<Int, GalleryGridItemUi>): Int = FIRST_KEY
 
-    override fun loadSingle(params: LoadParams<Int>) = loadSingleImpl(params)
+    override fun loadSingle(params: LoadParams<Int>): Single<GalleryPagedResult> = loadSingleImpl(params)
 
     private fun loadSingleImpl(params: LoadParams<Int>): Single<GalleryPagedResult> {
         val pageSize = params.loadSize
@@ -55,7 +55,7 @@ class GalleryPagingSource(
             .map(Wrapper::loadResult)
     }
 
-    private fun mapOutputToUi(output: Pair<Long, Output>) = GalleryGridItemUi(
+    private fun mapOutputToUi(output: Pair<Long, Output>): GalleryGridItemUi = GalleryGridItemUi(
         output.first,
         output.second.bitmap,
     )

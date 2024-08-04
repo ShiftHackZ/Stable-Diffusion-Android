@@ -30,6 +30,6 @@ class GalleryExporter(
         .toList()
         .flatMap(::saveFilesToZip)
 
-    private fun saveBitmapToFileImpl(data: Pair<AiGenerationResult, Output>) =
+    private fun saveBitmapToFileImpl(data: Pair<AiGenerationResult, Output>): Single<File> =
         saveBitmapToFile(data.first.hashCode().toString(), data.second.bitmap)
 }

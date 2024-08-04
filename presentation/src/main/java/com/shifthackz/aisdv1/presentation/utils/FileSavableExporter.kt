@@ -12,7 +12,7 @@ sealed interface FileSavableExporter {
     val fileProviderDescriptor: FileProviderDescriptor
 
     interface BmpToFile : FileSavableExporter {
-        fun saveBitmapToFile(fileName: String, bitmap: Bitmap) = Single.create { emitter ->
+        fun saveBitmapToFile(fileName: String, bitmap: Bitmap): Single<File> = Single.create { emitter ->
             val cacheDirectory = File(fileProviderDescriptor.imagesCacheDirPath)
             if (!cacheDirectory.exists()) cacheDirectory.mkdirs()
             val outFile = File(cacheDirectory, "$fileName.jpg")
@@ -22,7 +22,7 @@ sealed interface FileSavableExporter {
     }
 
     interface FilesToZip : FileSavableExporter {
-        fun saveFilesToZip(files: List<File>) = Single.create { emitter ->
+        fun saveFilesToZip(files: List<File>): Single<File> = Single.create { emitter ->
             val cacheDirectory = File(fileProviderDescriptor.imagesCacheDirPath)
             if (!cacheDirectory.exists()) cacheDirectory.mkdirs()
             val outFile = File(cacheDirectory, "export_${System.currentTimeMillis()}.zip")

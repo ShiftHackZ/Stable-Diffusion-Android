@@ -18,7 +18,7 @@ class ConfigurationLoaderViewModel(
     mainRouter: MainRouter,
 ) : MviRxViewModel<ConfigurationLoaderState, EmptyIntent, EmptyEffect>() {
 
-    override val initialState = ConfigurationLoaderState.StatusNotification(
+    override val initialState: ConfigurationLoaderState = ConfigurationLoaderState.StatusNotification(
         R.string.splash_status_initializing.asUiText()
     )
 

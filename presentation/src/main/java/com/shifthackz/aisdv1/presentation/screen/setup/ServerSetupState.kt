@@ -50,12 +50,12 @@ data class ServerSetupState(
             return linksProvider.demoModeUrl
         }
 
-    fun withHordeApiKey(value: String) = this.copy(
+    fun withHordeApiKey(value: String): ServerSetupState = this.copy(
         hordeApiKey = value,
         hordeDefaultApiKey = value == Constants.HORDE_DEFAULT_API_KEY,
     )
 
-    fun withCredentials(value: AuthorizationCredentials) = when (value) {
+    fun withCredentials(value: AuthorizationCredentials): ServerSetupState = when (value) {
         is AuthorizationCredentials.HttpBasic -> this.copy(
             login = value.login,
             password = value.password,
@@ -89,7 +89,7 @@ enum class ServerSetupLaunchSource(val key: Int) {
     SETTINGS(1);
 
     companion object {
-        fun fromKey(key: Int) = entries.firstOrNull { it.key == key } ?: SPLASH
+        fun fromKey(key: Int): ServerSetupLaunchSource = entries.firstOrNull { it.key == key } ?: SPLASH
     }
 }
 

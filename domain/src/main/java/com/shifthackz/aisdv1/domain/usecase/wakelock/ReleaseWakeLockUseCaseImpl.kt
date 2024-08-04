@@ -7,7 +7,7 @@ internal class ReleaseWakeLockUseCaseImpl(
     private val wakeLockRepository: WakeLockRepository,
 ) : ReleaseWakeLockUseCase {
 
-    override fun invoke() = runCatching {
+    override fun invoke(): Result<Unit> = runCatching {
         wakeLockRepository.wakeLock.release()
     }.onFailure { t ->
         errorLog(t)

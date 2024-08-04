@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.core
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import io.reactivex.rxjava3.core.BackpressureStrategy
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
 class GenerationFormUpdateEvent {
@@ -18,9 +19,9 @@ class GenerationFormUpdateEvent {
         }
     }
 
-    fun observeRoute() = sRoute.toFlowable(BackpressureStrategy.LATEST)
+    fun observeRoute(): Flowable<AiGenerationResult.Type> = sRoute.toFlowable(BackpressureStrategy.LATEST)
 
-    fun observeTxt2ImgForm() = sTxt2Img.toFlowable(BackpressureStrategy.LATEST)
+    fun observeTxt2ImgForm(): Flowable<AiGenerationResult> = sTxt2Img.toFlowable(BackpressureStrategy.LATEST)
 
-    fun observeImg2ImgForm() = sImg2Img.toFlowable(BackpressureStrategy.LATEST)
+    fun observeImg2ImgForm(): Flowable<AiGenerationResult> = sImg2Img.toFlowable(BackpressureStrategy.LATEST)
 }

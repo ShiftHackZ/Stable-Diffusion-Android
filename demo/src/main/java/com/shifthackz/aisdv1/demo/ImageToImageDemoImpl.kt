@@ -5,13 +5,14 @@ import com.shifthackz.aisdv1.demo.serialize.DemoDataSerializer
 import com.shifthackz.aisdv1.domain.demo.ImageToImageDemo
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
+import io.reactivex.rxjava3.core.Single
 
 internal class ImageToImageDemoImpl(
     override val demoDataSerializer: DemoDataSerializer,
     private val timeProvider: TimeProvider,
 ) : ImageToImageDemo, DemoFeature<ImageToImagePayload> {
 
-    override fun mapper(input: ImageToImagePayload, base64: String) = AiGenerationResult(
+    override fun mapper(input: ImageToImagePayload, base64: String): AiGenerationResult = AiGenerationResult(
         id = 0L,
         image = base64,
         inputImage = input.base64Image,
@@ -31,5 +32,5 @@ internal class ImageToImageDemoImpl(
         denoisingStrength = 0f,
     )
 
-    override fun getDemoBase64(payload: ImageToImagePayload) = execute(payload)
+    override fun getDemoBase64(payload: ImageToImagePayload): Single<AiGenerationResult> = execute(payload)
 }

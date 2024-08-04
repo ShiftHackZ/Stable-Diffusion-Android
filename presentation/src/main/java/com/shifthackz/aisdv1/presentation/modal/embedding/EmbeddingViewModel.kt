@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.domain.usecase.sdembedding.FetchAndGetEmbeddingsUse
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class EmbeddingViewModel(
@@ -16,7 +17,7 @@ class EmbeddingViewModel(
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<EmbeddingState, EmbeddingIntent, ExtrasEffect>() {
 
-    override val initialState = EmbeddingState()
+    override val initialState: EmbeddingState = EmbeddingState()
 
     override fun processIntent(intent: EmbeddingIntent) {
         when (intent) {
@@ -52,7 +53,7 @@ class EmbeddingViewModel(
         }
     }
 
-    fun updateData(prompt: String, negativePrompt: String) = !fetchAndGetEmbeddingsUseCase()
+    fun updateData(prompt: String, negativePrompt: String): Disposable = !fetchAndGetEmbeddingsUseCase()
         .doOnSubscribe { updateState { it.copy(loading = true) } }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(

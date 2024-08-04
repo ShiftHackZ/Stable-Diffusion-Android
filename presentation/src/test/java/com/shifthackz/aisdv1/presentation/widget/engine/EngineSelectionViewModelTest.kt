@@ -47,7 +47,7 @@ class EngineSelectionViewModelTest : CoreViewModelTest<EngineSelectionViewModel>
     private val stubFetchAndGetHuggingFaceModelsUseCase =
         mockk<FetchAndGetHuggingFaceModelsUseCase>()
 
-    override fun initializeViewModel() = EngineSelectionViewModel(
+    override fun initializeViewModel(): EngineSelectionViewModel = EngineSelectionViewModel(
         preferenceManager = stubPreferenceManager,
         schedulersProvider = stubSchedulersProvider,
         getConfigurationUseCase = stubGetConfigurationUseCase,

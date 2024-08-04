@@ -49,7 +49,7 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
     private val stubBase64ToBitmapConverter = mockk<Base64ToBitmapConverter>()
     private val stubInPaintStateProducer = mockk<InPaintStateProducer>()
 
-    override fun initializeViewModel() = ImageToImageViewModel(
+    override fun initializeViewModel(): ImageToImageViewModel = ImageToImageViewModel(
         generationFormUpdateEvent = stubGenerationFormUpdateEvent,
         getStableDiffusionSamplersUseCase = stubGetStableDiffusionSamplersUseCase,
         observeHordeProcessStatusUseCase = stubObserveHordeProcessStatusUseCase,

@@ -35,7 +35,7 @@ fun NavGraphBuilder.homeScreenNavGraph(route: String = Constants.ROUTE_HOME) {
 }
 
 @Composable
-private fun txt2ImgTab() = NavItem(
+private fun txt2ImgTab(): NavItem = NavItem(
     name = stringResource(R.string.home_tab_txt_to_img),
     route = Constants.ROUTE_TXT_TO_IMG,
     icon = NavItem.Icon.Resource(
@@ -46,7 +46,7 @@ private fun txt2ImgTab() = NavItem(
 )
 
 @Composable
-private fun img2imgTab() = NavItem(
+private fun img2imgTab(): NavItem = NavItem(
     name = stringResource(R.string.home_tab_img_to_img),
     route = Constants.ROUTE_IMG_TO_IMG,
     icon = NavItem.Icon.Resource(
@@ -59,7 +59,7 @@ private fun img2imgTab() = NavItem(
 )
 
 @Composable
-private fun galleryTab() = NavItem(
+private fun galleryTab(): NavItem = NavItem(
     name = stringResource(R.string.home_tab_gallery),
     route = Constants.ROUTE_GALLERY,
     icon = NavItem.Icon.Resource(
@@ -72,7 +72,7 @@ private fun galleryTab() = NavItem(
 )
 
 @Composable
-private fun settingsTab() = NavItem(
+private fun settingsTab(): NavItem = NavItem(
     name = stringResource(id = R.string.home_tab_settings),
     route = Constants.ROUTE_SETTINGS,
     icon = NavItem.Icon.Vector(

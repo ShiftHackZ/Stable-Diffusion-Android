@@ -26,6 +26,7 @@ import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import com.shifthackz.android.core.mvi.EmptyEffect
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class TextToImageViewModel(
@@ -78,7 +79,7 @@ class TextToImageViewModel(
             )
     }
 
-    override fun generate() = currentState
+    override fun generate(): Disposable = currentState
         .mapToPayload()
         .let(textToImageUseCase::invoke)
         .doOnSubscribe {

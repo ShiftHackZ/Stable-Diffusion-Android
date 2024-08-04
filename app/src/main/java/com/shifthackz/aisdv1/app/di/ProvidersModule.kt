@@ -44,34 +44,34 @@ val providersModule = module {
             override val hordeApiUrl: String = BuildConfig.HORDE_AI_URL
             override val imageCdnApiUrl: String = BuildConfig.IMAGE_CDN_URL
             override val huggingFaceApiUrl: String = BuildConfig.HUGGING_FACE_URL
-            override val huggingFaceInferenceApiUrl = BuildConfig.HUGGING_FACE_INFERENCE_URL
+            override val huggingFaceInferenceApiUrl: String = BuildConfig.HUGGING_FACE_INFERENCE_URL
             override val openAiApiUrl: String = BuildConfig.OPEN_AI_URL
-            override val stabilityAiApiUrl = BuildConfig.STABILITY_AI_URL
+            override val stabilityAiApiUrl: String = BuildConfig.STABILITY_AI_URL
         }
     }
 
     single {
         ApiKeyProvider {
-            val preference = get<PreferenceManager>()
+            val preference: PreferenceManager = get<PreferenceManager>()
             when (preference.source) {
                 ServerSource.HORDE -> {
-                    val key =
+                    val key: String =
                         preference.hordeApiKey.takeIf(String::isNotEmpty) ?: DEFAULT_HORDE_API_KEY
                     NetworkHeaders.API_KEY to key
                 }
 
                 ServerSource.HUGGING_FACE -> {
-                    val key = "${NetworkPrefixes.BEARER} ${preference.huggingFaceApiKey}"
+                    val key: String = "${NetworkPrefixes.BEARER} ${preference.huggingFaceApiKey}"
                     NetworkHeaders.AUTHORIZATION to key
                 }
 
                 ServerSource.OPEN_AI -> {
-                    val key = "${NetworkPrefixes.BEARER} ${preference.openAiApiKey}"
+                    val key: String = "${NetworkPrefixes.BEARER} ${preference.openAiApiKey}"
                     NetworkHeaders.AUTHORIZATION to key
                 }
 
                 ServerSource.STABILITY_AI -> {
-                    val key = "${NetworkPrefixes.BEARER} ${preference.stabilityAiApiKey}"
+                    val key: String = "${NetworkPrefixes.BEARER} ${preference.stabilityAiApiKey}"
                     NetworkHeaders.AUTHORIZATION to key
                 }
 
@@ -83,8 +83,9 @@ val providersModule = module {
     single<CredentialsProvider> {
         object : CredentialsProvider {
             override fun invoke(): CredentialsProvider.Data {
-                val store = get<AuthorizationStore>()
-                return when (val credentials = store.getAuthorizationCredentials()) {
+                val store: AuthorizationStore = get<AuthorizationStore>()
+                return when (val credentials: AuthorizationCredentials =
+                    store.getAuthorizationCredentials()) {
                     is AuthorizationCredentials.HttpBasic -> CredentialsProvider.Data.HttpBasic(
                         login = credentials.login,
                         password = credentials.password,
@@ -157,7 +158,7 @@ val providersModule = module {
     single {
         DeviceNNAPIFlagProvider {
             get<PreferenceManager>().localUseNNAPI
-                .let { nnApi -> if (nnApi) LocalDiffusionFlag.NN_API else LocalDiffusionFlag.CPU }
+                .let { nnApi: Boolean -> if (nnApi) LocalDiffusionFlag.NN_API else LocalDiffusionFlag.CPU }
                 .let(LocalDiffusionFlag::value)
         }
     }

@@ -18,7 +18,7 @@ class ConfigurationLoaderViewModelTest : CoreViewModelTest<ConfigurationLoaderVi
     private val stubDataPreLoaderUseCase = mockk<DataPreLoaderUseCase>()
     private val stubMainRouter = mockk<MainRouter>()
 
-    override fun initializeViewModel() = ConfigurationLoaderViewModel(
+    override fun initializeViewModel(): ConfigurationLoaderViewModel = ConfigurationLoaderViewModel(
         dataPreLoaderUseCase = stubDataPreLoaderUseCase,
         schedulersProvider = stubSchedulersProvider,
         mainRouter = stubMainRouter,

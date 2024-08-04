@@ -69,7 +69,7 @@ class ImageToImageViewModel(
     schedulersProvider = schedulersProvider,
 ) {
 
-    override val initialState = ImageToImageState()
+    override val initialState: ImageToImageState = ImageToImageState()
 
     init {
         !generationFormUpdateEvent
@@ -152,7 +152,7 @@ class ImageToImageViewModel(
         }
     }
 
-    override fun generate() = when (currentState.imageState) {
+    override fun generate(): Disposable = when (currentState.imageState) {
         is ImageToImageState.ImageState.Image -> Single
             .just(
                 Pair(

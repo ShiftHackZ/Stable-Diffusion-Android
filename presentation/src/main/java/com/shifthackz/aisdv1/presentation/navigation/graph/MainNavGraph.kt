@@ -84,7 +84,7 @@ fun mainDrawerNavItems(): List<NavItem> = listOf(
 )
 
 @Composable
-private fun homeScreenTab() = NavItem(
+private fun homeScreenTab(): NavItem = NavItem(
     name = "Home",
     route = Constants.ROUTE_HOME,
     icon = NavItem.Icon.Vector(
@@ -93,7 +93,7 @@ private fun homeScreenTab() = NavItem(
 )
 
 @Composable
-private fun debugMenuTab() = NavItem(
+private fun debugMenuTab(): NavItem = NavItem(
     name = "Debug Menu",
     route = Constants.ROUTE_DEBUG,
     icon = NavItem.Icon.Vector(

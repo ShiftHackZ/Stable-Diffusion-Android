@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
 import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.io.File
@@ -22,7 +23,7 @@ internal class DownloadableModelLocalDataSource(
     private val buildInfoProvider: BuildInfoProvider,
 ) : DownloadableModelDataSource.Local {
 
-    override fun getAll() = dao
+    override fun getAll(): Single<List<LocalAiModel>> = dao
         .query()
         .map(List<LocalModelEntity>::mapEntityToDomain)
         .map { models ->
@@ -45,13 +46,13 @@ internal class DownloadableModelLocalDataSource(
         return chain.flatMap { model -> model.withLocalData() }
     }
 
-    override fun getSelected() = Single
+    override fun getSelected(): Single<LocalAiModel> = Single
         .just(preferenceManager.localModelId)
         .onErrorResumeNext { Single.error(IllegalStateException("No selected model.")) }
         .flatMap(::getById)
         .onErrorResumeNext { Single.error(IllegalStateException("No selected model.")) }
 
-    override fun observeAll() = dao
+    override fun observeAll(): Flowable<List<LocalAiModel>> = dao
         .observe()
         .map(List<LocalModelEntity>::mapEntityToDomain)
         .map { models ->
@@ -62,16 +63,16 @@ internal class DownloadableModelLocalDataSource(
         }
         .flatMap { models -> models.withLocalData().toFlowable() }
 
-    override fun select(id: String) = Completable.fromAction {
+    override fun select(id: String): Completable = Completable.fromAction {
         preferenceManager.localModelId = id
     }
 
-    override fun save(list: List<LocalAiModel>) = list
+    override fun save(list: List<LocalAiModel>): Completable = list
         .filter { it.id != LocalAiModel.CUSTOM.id }
         .mapDomainToEntity()
         .let(dao::insertList)
 
-    override fun isDownloaded(id: String) = Single.create { emitter ->
+    override fun isDownloaded(id: String): Single<Boolean> = Single.create { emitter ->
         try {
             if (id == LocalAiModel.CUSTOM.id) {
                 if (!emitter.isDisposed) emitter.onSuccess(true)
@@ -98,12 +99,12 @@ internal class DownloadableModelLocalDataSource(
         return localModelDir.listFiles()?.filter { it.isDirectory } ?: emptyList()
     }
 
-    private fun List<LocalAiModel>.withLocalData() = Observable
+    private fun List<LocalAiModel>.withLocalData(): Single<List<LocalAiModel>> = Observable
         .fromIterable(this)
         .flatMapSingle { model -> model.withLocalData() }
         .toList()
 
-    private fun LocalAiModel.withLocalData() = isDownloaded(id)
+    private fun LocalAiModel.withLocalData(): Single<LocalAiModel> = isDownloaded(id)
         .map { downloaded ->
             copy(
                 downloaded = downloaded,

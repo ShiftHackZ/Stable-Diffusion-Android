@@ -54,7 +54,7 @@ sealed interface GalleryDetailState : MviState {
         is Loading -> copy(selectedTab = tab)
     }
 
-    fun withDialog(dialog: Modal) = when (this) {
+    fun withDialog(dialog: Modal): GalleryDetailState = when (this) {
         is Content -> copy(screenModal = dialog)
         is Loading -> copy(screenModal = dialog)
     }

@@ -15,7 +15,7 @@ class DebugMenuViewModelTest : CoreViewModelTest<DebugMenuViewModel>() {
     private val stubDebugInsertBadBase64UseCase = mockk<DebugInsertBadBase64UseCase>()
     private val stubMainRouter = mockk<MainRouter>()
 
-    override fun initializeViewModel() = DebugMenuViewModel(
+    override fun initializeViewModel(): DebugMenuViewModel = DebugMenuViewModel(
         debugInsertBadBase64UseCase = stubDebugInsertBadBase64UseCase,
         schedulersProvider = stubSchedulersProvider,
         mainRouter = stubMainRouter,

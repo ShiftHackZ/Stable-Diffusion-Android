@@ -132,7 +132,7 @@ fun LocalDiffusionForm(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    fun folderModifier(treeNum: Int) =
+                    fun folderModifier(treeNum: Int): Modifier =
                         Modifier.padding(start = (treeNum - 1) * 12.dp)
 
                     val folderStyle = MaterialTheme.typography.bodySmall

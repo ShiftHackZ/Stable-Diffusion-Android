@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.data.mappers.mapCloudToAiGenResult
 import com.shifthackz.aisdv1.data.mappers.mapToOpenAiRequest
 import com.shifthackz.aisdv1.domain.datasource.OpenAiGenerationDataSource
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.api.openai.OpenAiApi
 import io.reactivex.rxjava3.core.Single
@@ -13,7 +14,7 @@ internal class OpenAiGenerationRemoteDataSource(
     private val api: OpenAiApi,
 ) : OpenAiGenerationDataSource.Remote {
 
-    override fun validateApiKey() = api
+    override fun validateApiKey(): Single<Boolean> = api
         .validateBearerToken()
         .andThen(Single.just(true))
         .onErrorResumeNext { t ->
@@ -21,7 +22,7 @@ internal class OpenAiGenerationRemoteDataSource(
             Single.just(false)
         }
 
-    override fun textToImage(payload: TextToImagePayload) = payload
+    override fun textToImage(payload: TextToImagePayload): Single<AiGenerationResult> = payload
         .mapToOpenAiRequest()
         .let(api::generateImage)
         .flatMap { response ->

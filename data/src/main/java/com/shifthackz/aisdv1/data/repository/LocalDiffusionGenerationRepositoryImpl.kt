@@ -7,11 +7,14 @@ import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
 import com.shifthackz.aisdv1.data.mappers.mapLocalDiffusionToAiGenResult
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 internal class LocalDiffusionGenerationRepositoryImpl(
@@ -30,18 +33,18 @@ internal class LocalDiffusionGenerationRepositoryImpl(
     preferenceManager,
 ), LocalDiffusionGenerationRepository {
 
-    override fun observeStatus() = localDiffusion.observeStatus()
+    override fun observeStatus(): Observable<LocalDiffusion.Status> = localDiffusion.observeStatus()
 
-    override fun generateFromText(payload: TextToImagePayload) = downloadableLocalDataSource
+    override fun generateFromText(payload: TextToImagePayload): Single<AiGenerationResult> = downloadableLocalDataSource
         .getSelected()
         .flatMap { model ->
             if (model.downloaded) generate(payload)
             else Single.error(IllegalStateException("Model not downloaded."))
         }
 
-    override fun interruptGeneration() = localDiffusion.interrupt()
+    override fun interruptGeneration(): Completable = localDiffusion.interrupt()
 
-    private fun generate(payload: TextToImagePayload) = localDiffusion
+    private fun generate(payload: TextToImagePayload): Single<AiGenerationResult> = localDiffusion
         .process(payload)
         .subscribeOn(schedulersProvider.computation)
         .map(BitmapToBase64Converter::Input)
