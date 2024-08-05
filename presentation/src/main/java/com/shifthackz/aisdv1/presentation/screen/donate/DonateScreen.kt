@@ -205,7 +205,6 @@ private fun DonateScreenContent(
                                         .background(bgColor, shape)
                                         .clip(shape),
                                     supporter = supporter,
-                                    loading = false,
                                 )
                             }
                             item {

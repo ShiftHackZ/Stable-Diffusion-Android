@@ -31,7 +31,6 @@ import com.shifthackz.aisdv1.domain.entity.Supporter
 fun SupporterItem(
     modifier: Modifier = Modifier,
     supporter: Supporter? = null,
-    loading: Boolean = false,
 ) {
     Column(
         modifier = modifier.padding(12.dp),
