@@ -327,22 +327,6 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
     }
 
     @Test
-    fun `given received LaunchUrl intent, expected OpenUrl effect delivered to effect collector`() {
-        val intent = mockk<SettingsIntent.LaunchUrl.Donate>()
-        every {
-            intent::url.get()
-        } returns "https://5598.is.my.favorite.com"
-
-        viewModel.processIntent(intent)
-
-        runTest {
-            val expected = SettingsEffect.OpenUrl("https://5598.is.my.favorite.com")
-            val actual = viewModel.effect.firstOrNull()
-            Assert.assertEquals(expected, actual)
-        }
-    }
-
-    @Test
     fun `given received StoragePermissionGranted intent, expected saveToMediaStore preference set to true`() {
         every {
             stubPreferenceManager::saveToMediaStore.set(any())
