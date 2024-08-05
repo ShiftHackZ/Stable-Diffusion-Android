@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.data.local.StabilityAiCreditsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionHyperNetworksLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionModelsLocalDataSource
 import com.shifthackz.aisdv1.data.local.StableDiffusionSamplersLocalDataSource
+import com.shifthackz.aisdv1.data.local.SupportersLocalDataSource
 import com.shifthackz.aisdv1.data.local.SwarmUiModelsLocalDataSource
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.EmbeddingsDataSource
@@ -23,6 +24,7 @@ import com.shifthackz.aisdv1.domain.datasource.StabilityAiCreditsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
+import com.shifthackz.aisdv1.domain.datasource.SupportersDataSource
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiModelsDataSource
 import com.shifthackz.aisdv1.domain.gateway.DatabaseClearGateway
 import org.koin.android.ext.koin.androidContext
@@ -45,5 +47,6 @@ val localDataSourceModule = module {
     factoryOf(::GenerationResultLocalDataSource) bind GenerationResultDataSource.Local::class
     factoryOf(::DownloadableModelLocalDataSource) bind DownloadableModelDataSource.Local::class
     factoryOf(::HuggingFaceModelsLocalDataSource) bind HuggingFaceModelsDataSource.Local::class
+    factoryOf(::SupportersLocalDataSource) bind SupportersDataSource.Local::class
     factory { MediaStoreGatewayFactory(androidContext(), get()).invoke() }
 }

@@ -19,7 +19,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.AccountTree
 import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.Circle
@@ -481,6 +480,13 @@ private fun ContentSettingsState(
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
+            startIcon = Icons.Default.MonetizationOn,
+            text = R.string.settings_item_donate.asUiText(),
+            onClick = { processIntent(SettingsIntent.Action.Donate) },
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            loading = state.loading,
             startIcon = Icons.Default.Report,
             text = R.string.settings_item_report_problem.asUiText(),
             onClick = { processIntent(SettingsIntent.Action.ReportProblem) },
@@ -491,20 +497,6 @@ private fun ContentSettingsState(
             startIcon = Icons.Default.Gavel,
             text = R.string.settings_item_policy.asUiText(),
             onClick = { processIntent(SettingsIntent.LaunchUrl.OpenPolicy) },
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.AutoMirrored.Filled.Help,
-            text = R.string.settings_item_instructions.asUiText(),
-            onClick = { processIntent(SettingsIntent.LaunchUrl.OpenServerInstructions) },
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.MonetizationOn,
-            text = R.string.settings_item_donate.asUiText(),
-            onClick = { processIntent(SettingsIntent.LaunchUrl.Donate) },
         )
         SettingsItem(
             modifier = itemModifier,

@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
+import com.shifthackz.aisdv1.presentation.screen.donate.DonateScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintScreen
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
@@ -76,6 +77,13 @@ fun NavGraphBuilder.mainNavGraph() {
             WebUiScreen()
         }.apply {
             route = Constants.ROUTE_WEB_UI
+        }
+    )
+    addDestination(
+        ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
+            DonateScreen()
+        }.apply {
+            route = Constants.ROUTE_DONATE
         }
     )
 }

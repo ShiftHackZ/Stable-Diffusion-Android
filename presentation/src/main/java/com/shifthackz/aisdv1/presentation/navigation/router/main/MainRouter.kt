@@ -18,5 +18,7 @@ interface MainRouter : Router<NavigationEffect> {
 
     fun navigateToInPaint()
 
+    fun navigateToDonate()
+
     fun navigateToDebugMenu()
 }

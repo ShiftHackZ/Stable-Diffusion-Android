@@ -28,6 +28,8 @@ sealed interface SettingsIntent : MviIntent {
         data object AppVersion : Action
 
         data object PickLanguage : Action
+
+        data object Donate : Action
     }
 
     sealed class LaunchUrl : SettingsIntent, KoinComponent {
@@ -40,19 +42,9 @@ sealed interface SettingsIntent : MviIntent {
                 get() = linksProvider.privacyPolicyUrl
         }
 
-        data object OpenServerInstructions : LaunchUrl() {
-            override val url: String
-                get() = linksProvider.setupInstructionsUrl
-        }
-
         data object OpenSourceCode : LaunchUrl() {
             override val url: String
                 get() = linksProvider.gitHubSourceUrl
-        }
-
-        data object Donate : LaunchUrl() {
-            override val url: String
-                get() = linksProvider.donateUrl
         }
     }
 

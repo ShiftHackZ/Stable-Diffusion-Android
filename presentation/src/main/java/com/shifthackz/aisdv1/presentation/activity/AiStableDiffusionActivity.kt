@@ -69,7 +69,6 @@ class AiStableDiffusionActivity : AppCompatActivity() {
                 MviComponent(
                     viewModel = viewModel,
                     processEffect = { effect ->
-                        println("STUB $effect")
                         when (effect) {
                             NavigationEffect.Back -> navController.navigateUp()
 

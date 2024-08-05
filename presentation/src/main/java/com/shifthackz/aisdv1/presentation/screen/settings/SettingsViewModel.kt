@@ -170,6 +170,8 @@ class SettingsViewModel(
                 DrawerIntent.Close -> drawerRouter.closeDrawer()
                 DrawerIntent.Open -> drawerRouter.openDrawer()
             }
+
+            SettingsIntent.Action.Donate -> mainRouter.navigateToDonate()
         }
     }
 

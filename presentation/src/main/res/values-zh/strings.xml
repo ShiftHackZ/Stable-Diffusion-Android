@@ -163,6 +163,9 @@
     <string name="hint_local_diffusion_sub_title">此配置允许在您的手机上运行Stable Diffusion AI生成，无需连接到远程服务器/云。 </string>
     <string name="hint_local_diffusion_warning">警告！本地扩散功能处于测试版。不要期望使用本地模式获得高质量图像。 \n\n此实现可能在不强大的手机上运行不佳。生成性能和速度取决于您的手机资源（CPU、RAM）和生成的图像大小（图像越小，生成越快）。</string>
 
+    <!-- 抽屉 -->
+    <string name="drawer_web_ui">网络界面</string>
+
     <!-- 主界面标签 -->
     <string name="home_tab_txt_to_img">文本转图像</string>
     <string name="home_tab_img_to_img">图像转图像</string>
@@ -347,4 +350,9 @@
 
     <string name="in_paint_area_whole">整张图片</string>
     <string name="in_paint_area_only_masked">仅遮罩</string>
+
+    <string name="donate_title_thanks">感谢这些了不起的人的支持❤</string>
+    <string name="donate_bs_title">SDAI 是一款 Android 应用程序，它：</string>
+    <string name="donate_bs_sub_title">• 通过稳定的扩散 AI 为您提供创建图像的能力；\n• 让您自由选择生成提供商；\n• 没有广告、遥测并且不会监视您；\n• 是一个开源软件；\n• 欢迎您免费使用。</string>
+    <string name="donate_bs_ending">如果您发现该软件有价值，并且想要表示感谢并表示一点支持，请点击此处的按钮。</string>
 </resources>

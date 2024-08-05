@@ -20,6 +20,7 @@ import com.shifthackz.aisdv1.data.repository.StableDiffusionGenerationRepository
 import com.shifthackz.aisdv1.data.repository.StableDiffusionHyperNetworksRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionSamplersRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.SupportersRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.SwarmUiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.SwarmUiModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.TemporaryGenerationResultRepositoryImpl
@@ -42,6 +43,7 @@ import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationReposito
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionHyperNetworksRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
+import com.shifthackz.aisdv1.domain.repository.SupportersRepository
 import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.SwarmUiModelsRepository
 import com.shifthackz.aisdv1.domain.repository.TemporaryGenerationResultRepository
@@ -80,4 +82,5 @@ val repositoryModule = module {
     factoryOf(::RandomImageRepositoryImpl) bind RandomImageRepository::class
     factoryOf(::DownloadableModelRepositoryImpl) bind DownloadableModelRepository::class
     factoryOf(::HuggingFaceModelsRepositoryImpl) bind HuggingFaceModelsRepository::class
+    factoryOf(::SupportersRepositoryImpl) bind SupportersRepository::class
 }

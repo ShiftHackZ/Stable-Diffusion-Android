@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryViewModel
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagViewModel
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuViewModel
+import com.shifthackz.aisdv1.presentation.screen.donate.DonateViewModel
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailViewModel
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryViewModel
@@ -46,6 +47,7 @@ val viewModelModule = module {
     viewModelOf(::InPaintViewModel)
     viewModelOf(::EngineSelectionViewModel)
     viewModelOf(::WebUiViewModel)
+    viewModelOf(::DonateViewModel)
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())
