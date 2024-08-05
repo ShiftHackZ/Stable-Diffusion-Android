@@ -18,6 +18,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashViewModel
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageViewModel
+import com.shifthackz.aisdv1.presentation.screen.web.webui.WebUiViewModel
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppThemeViewModel
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityViewModel
 import com.shifthackz.aisdv1.presentation.widget.engine.EngineSelectionViewModel
@@ -44,6 +45,7 @@ val viewModelModule = module {
     viewModelOf(::EditTagViewModel)
     viewModelOf(::InPaintViewModel)
     viewModelOf(::EngineSelectionViewModel)
+    viewModelOf(::WebUiViewModel)
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())

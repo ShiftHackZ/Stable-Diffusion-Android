@@ -147,6 +147,9 @@
     <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>
     <string name="hint_local_diffusion_warning">Warning! Local Diffusion functionality is in beta-test. Don\'t expect for high quality images using local mode. \n\nThis implementation may not work well on non-powerful phones. Generation performance and speed depends on your phone resources (CPU, RAM) and the size of generated image (the smaller the image size, the faster the generation).</string>
 
+    <string name="drawer_home">Home</string>
+    <string name="drawer_web_ui">Web UI</string>
+
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
     <string name="home_tab_gallery">Gallery</string>

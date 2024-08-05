@@ -7,7 +7,7 @@ internal class DrawerRouterImpl : DrawerRouter {
 
     private val effectSubject: PublishSubject<NavigationEffect.Drawer> = PublishSubject.create()
 
-    override fun observe() = effectSubject.distinctUntilChanged()
+    override fun observe() = effectSubject
 
     override fun openDrawer() {
         effectSubject.onNext(NavigationEffect.Drawer.Open)

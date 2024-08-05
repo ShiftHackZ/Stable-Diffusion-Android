@@ -27,4 +27,6 @@ sealed interface NavigationEffect : MviEffect {
 
         data object Close : Drawer
     }
+
+    data class Home(val route: String) : NavigationEffect
 }

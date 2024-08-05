@@ -39,30 +39,4 @@ class DrawerRouterImplTest {
             .assertNoErrors()
             .assertValueAt(1, NavigationEffect.Drawer.Close)
     }
-
-    @Test
-    fun `given user opens drawer twice, expected router emits one Open event`() {
-        router
-            .observe()
-            .test()
-            .also { router.openDrawer() }
-            .assertNoErrors()
-            .assertValueAt(0, NavigationEffect.Drawer.Open)
-            .also { router.openDrawer() }
-            .assertNoErrors()
-            .assertValueCount(1)
-    }
-
-    @Test
-    fun `given user closes drawer twice, expected router emits one Close event`() {
-        router
-            .observe()
-            .test()
-            .also { router.closeDrawer() }
-            .assertNoErrors()
-            .assertValueAt(0, NavigationEffect.Drawer.Close)
-            .also { router.closeDrawer() }
-            .assertNoErrors()
-            .assertValueCount(1)
-    }
 }

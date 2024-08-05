@@ -3,13 +3,12 @@ package com.shifthackz.aisdv1.presentation.navigation.graph
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
+import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.NavItem
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryScreen
@@ -34,9 +33,8 @@ fun NavGraphBuilder.homeScreenNavGraph(route: String = Constants.ROUTE_HOME) {
     )
 }
 
-@Composable
-private fun txt2ImgTab() = NavItem(
-    name = stringResource(R.string.home_tab_txt_to_img),
+fun txt2ImgTab() = NavItem(
+    name = R.string.home_tab_txt_to_img.asUiText(),
     route = Constants.ROUTE_TXT_TO_IMG,
     icon = NavItem.Icon.Resource(
         resId = R.drawable.ic_text,
@@ -45,9 +43,8 @@ private fun txt2ImgTab() = NavItem(
     content = { TextToImageScreen() },
 )
 
-@Composable
-private fun img2imgTab() = NavItem(
-    name = stringResource(R.string.home_tab_img_to_img),
+fun img2imgTab() = NavItem(
+    name = R.string.home_tab_img_to_img.asUiText(),
     route = Constants.ROUTE_IMG_TO_IMG,
     icon = NavItem.Icon.Resource(
         resId = R.drawable.ic_image,
@@ -58,9 +55,8 @@ private fun img2imgTab() = NavItem(
     },
 )
 
-@Composable
-private fun galleryTab() = NavItem(
-    name = stringResource(R.string.home_tab_gallery),
+fun galleryTab() = NavItem(
+    name = R.string.home_tab_gallery.asUiText(),
     route = Constants.ROUTE_GALLERY,
     icon = NavItem.Icon.Resource(
         resId = R.drawable.ic_gallery,
@@ -71,9 +67,8 @@ private fun galleryTab() = NavItem(
     },
 )
 
-@Composable
-private fun settingsTab() = NavItem(
-    name = stringResource(id = R.string.home_tab_settings),
+fun settingsTab() = NavItem(
+    name = R.string.home_tab_settings.asUiText(),
     route = Constants.ROUTE_SETTINGS,
     icon = NavItem.Icon.Vector(
         vector = Icons.Default.Settings,

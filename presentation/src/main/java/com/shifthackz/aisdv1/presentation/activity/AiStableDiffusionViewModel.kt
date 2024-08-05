@@ -7,20 +7,21 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
+import com.shifthackz.aisdv1.presentation.navigation.graph.mainDrawerNavItems
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.home.HomeRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
-import com.shifthackz.android.core.mvi.EmptyIntent
-import com.shifthackz.android.core.mvi.EmptyState
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class AiStableDiffusionViewModel(
     schedulersProvider: SchedulersProvider,
     mainRouter: MainRouter,
     drawerRouter: DrawerRouter,
+    private val homeRouter: HomeRouter,
     private val preferenceManager: PreferenceManager,
-) : MviRxViewModel<EmptyState, EmptyIntent, NavigationEffect>() {
+) : MviRxViewModel<AppState, AppIntent, NavigationEffect>() {
 
-    override val initialState = EmptyState
+    override val initialState = AppState()
 
     init {
         !mainRouter.observe()
@@ -30,9 +31,28 @@ class AiStableDiffusionViewModel(
         !drawerRouter.observe()
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog, EmptyLambda, ::emitEffect)
+
+        !homeRouter.observe()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog, EmptyLambda, ::emitEffect)
+
+        !preferenceManager.observe()
+            .map(::mainDrawerNavItems)
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog, EmptyLambda) { drawerItems ->
+                updateState { state ->
+                    state.copy(drawerItems = drawerItems)
+                }
+            }
     }
 
-    fun onStoragePermissionsGranted() {
-        preferenceManager.saveToMediaStore = true
+    override fun processIntent(intent: AppIntent) = when (intent) {
+        AppIntent.GrantStoragePermission -> {
+            preferenceManager.saveToMediaStore = true
+        }
+
+        is AppIntent.HomeRoute -> {
+            homeRouter.navigateToRoute(intent.route)
+        }
     }
 }

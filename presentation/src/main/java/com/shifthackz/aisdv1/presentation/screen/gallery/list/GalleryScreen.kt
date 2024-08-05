@@ -23,8 +23,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -57,6 +60,7 @@ import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
+import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
@@ -114,6 +118,16 @@ private fun ScreenContent(
     Box(modifier) {
         Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
             CenterAlignedTopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = {
+                        processIntent(GalleryIntent.Drawer(DrawerIntent.Open))
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = "Menu",
+                        )
+                    }
+                },
                 title = {
                     Text(
                         text = stringResource(id = R.string.title_gallery),

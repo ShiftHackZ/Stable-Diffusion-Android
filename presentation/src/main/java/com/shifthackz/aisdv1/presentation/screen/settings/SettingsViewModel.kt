@@ -16,7 +16,9 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseC
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.stabilityai.ObserveStabilityAiCreditsUseCase
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -30,6 +32,7 @@ class SettingsViewModel(
     private val preferenceManager: PreferenceManager,
     private val buildInfoProvider: BuildInfoProvider,
     private val mainRouter: MainRouter,
+    private val drawerRouter: DrawerRouter,
 ) : MviRxViewModel<SettingsState, SettingsIntent, SettingsEffect>() {
 
     override val initialState = SettingsState()
@@ -161,6 +164,11 @@ class SettingsViewModel(
 
             SettingsIntent.Action.PickLanguage -> updateState {
                 it.copy(screenModal = Modal.Language)
+            }
+
+            is SettingsIntent.Drawer -> when (intent.intent) {
+                DrawerIntent.Close -> drawerRouter.closeDrawer()
+                DrawerIntent.Open -> drawerRouter.openDrawer()
             }
         }
     }

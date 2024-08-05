@@ -12,7 +12,9 @@ import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import kotlinx.coroutines.flow.Flow
@@ -24,6 +26,7 @@ class GalleryViewModel(
     private val galleryExporter: GalleryExporter,
     private val schedulersProvider: SchedulersProvider,
     private val mainRouter: MainRouter,
+    private val drawerRouter: DrawerRouter,
 ) : MviRxViewModel<GalleryState, GalleryIntent, GalleryEffect>() {
 
     override val initialState = GalleryState()
@@ -62,6 +65,10 @@ class GalleryViewModel(
             GalleryIntent.Export.Confirm -> launchGalleryExport()
             is GalleryIntent.OpenItem -> mainRouter.navigateToGalleryDetails(intent.item.id)
             is GalleryIntent.OpenMediaStoreFolder -> emitEffect(GalleryEffect.OpenUri(intent.uri))
+            is GalleryIntent.Drawer -> when (intent.intent) {
+                DrawerIntent.Close -> drawerRouter.closeDrawer()
+                DrawerIntent.Open -> drawerRouter.openDrawer()
+            }
         }
     }
 
