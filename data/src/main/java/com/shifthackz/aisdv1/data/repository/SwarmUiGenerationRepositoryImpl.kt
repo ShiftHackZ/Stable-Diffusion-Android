@@ -45,6 +45,7 @@ internal class SwarmUiGenerationRepositoryImpl(
                 payload = payload,
             )
         }
+        .let(session::handleSessionError)
         .flatMap(::insertGenerationResult)
 
     override fun generateFromImage(payload: ImageToImagePayload): Single<AiGenerationResult> = session
@@ -56,5 +57,6 @@ internal class SwarmUiGenerationRepositoryImpl(
                 payload = payload,
             )
         }
+        .let(session::handleSessionError)
         .flatMap(::insertGenerationResult)
 }

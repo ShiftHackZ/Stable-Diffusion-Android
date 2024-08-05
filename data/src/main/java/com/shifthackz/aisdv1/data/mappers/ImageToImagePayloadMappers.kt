@@ -1,7 +1,6 @@
 package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.core.common.math.roundTo
-import com.shifthackz.aisdv1.core.imageprocessing.utils.base64DefaultToNoWrap
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
@@ -104,7 +103,8 @@ fun ImageToImagePayload.mapToSwarmUiRequest(
     SwarmUiGenerationRequest(
         sessionId = sessionId,
         model = swarmUiModel,
-        initImage = "data:image/png;base64,${base64DefaultToNoWrap(base64Image)}",
+//        initImage = "data:image/png;base64,${base64DefaultToNoWrap(base64Image)}",
+        initImage = base64Image,
         initImageCreativity = denoisingStrength.roundTo(2).toString(),
         images = 1,
         prompt = prompt,

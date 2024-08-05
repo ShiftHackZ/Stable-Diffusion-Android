@@ -2,31 +2,52 @@ package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.data.mocks.mockEmbeddings
 import com.shifthackz.aisdv1.domain.datasource.EmbeddingsDataSource
+import com.shifthackz.aisdv1.domain.datasource.SwarmUiSessionDataSource
+import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import org.junit.Before
 import org.junit.Test
 
 class EmbeddingsRepositoryImplTest {
 
     private val stubException = Throwable("Something went wrong.")
-    private val stubRemoteDataSource = mockk<EmbeddingsDataSource.Remote>()
-    private val stubLocalDataSource = mockk<EmbeddingsDataSource.Local>()
+    private val stubRdsA1111 = mockk<EmbeddingsDataSource.Remote.Automatic1111>()
+    private val stubRdsSwarm = mockk<EmbeddingsDataSource.Remote.SwarmUi>()
+    private val stubSwarmSession = mockk<SwarmUiSessionDataSource>()
+    private val stubLds = mockk<EmbeddingsDataSource.Local>()
+    private val stubPreferenceManager = mockk<PreferenceManager>()
 
     private val repository = EmbeddingsRepositoryImpl(
-        rdsA1111 = stubRemoteDataSource,
-        lds = stubLocalDataSource,
+        rdsA1111 = stubRdsA1111,
+        rdsSwarm = stubRdsSwarm,
+        swarmSession = stubSwarmSession,
+        lds = stubLds,
+        preferenceManager = stubPreferenceManager,
     )
 
-    @Test
-    fun `given attempt to fetch embeddings, remote returns data, local insert success, expected complete value`() {
+    @Before
+    fun initialize() {
         every {
-            stubRemoteDataSource.fetchEmbeddings()
+            stubSwarmSession.handleSessionError(any<Single<Any>>())
+        } returnsArgument 0
+    }
+
+    @Test
+    fun `given attempt to fetch embeddings, source is AUTOMATIC1111, remote returns data, local insert success, expected complete value`() {
+        every {
+            stubPreferenceManager::source.get()
+        } returns ServerSource.AUTOMATIC1111
+
+        every {
+            stubRdsA1111.fetchEmbeddings()
         } returns Single.just(mockEmbeddings)
 
         every {
-            stubLocalDataSource.insertEmbeddings(any())
+            stubLds.insertEmbeddings(any())
         } returns Completable.complete()
 
         repository
@@ -38,13 +59,47 @@ class EmbeddingsRepositoryImplTest {
     }
 
     @Test
-    fun `given attempt to fetch embeddings, remote throws exception, local insert success, expected error value`() {
+    fun `given attempt to fetch embeddings, source is SWARM_UI, remote returns data, local insert success, expected complete value`() {
         every {
-            stubRemoteDataSource.fetchEmbeddings()
+            stubPreferenceManager::source.get()
+        } returns ServerSource.SWARM_UI
+
+        every {
+            stubSwarmSession.getSessionId(any())
+        } returns Single.just("5598")
+
+        every {
+            stubSwarmSession.getSessionId()
+        } returns Single.just("5598")
+
+        every {
+            stubRdsSwarm.fetchEmbeddings(any())
+        } returns Single.just(mockEmbeddings)
+
+        every {
+            stubLds.insertEmbeddings(any())
+        } returns Completable.complete()
+
+        repository
+            .fetchEmbeddings()
+            .test()
+            .assertNoErrors()
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to fetch embeddings, source is AUTOMATIC1111, remote throws exception, local insert success, expected error value`() {
+        every {
+            stubPreferenceManager::source.get()
+        } returns ServerSource.AUTOMATIC1111
+
+        every {
+            stubRdsA1111.fetchEmbeddings()
         } returns Single.error(stubException)
 
         every {
-            stubLocalDataSource.insertEmbeddings(any())
+            stubLds.insertEmbeddings(any())
         } returns Completable.complete()
 
         repository
@@ -56,13 +111,77 @@ class EmbeddingsRepositoryImplTest {
     }
 
     @Test
-    fun `given attempt to fetch embeddings, remote returns data, local insert fails, expected error value`() {
+    fun `given attempt to fetch embeddings, source is SWARM_UI, remote throws exception, local insert success, expected error value`() {
         every {
-            stubRemoteDataSource.fetchEmbeddings()
+            stubPreferenceManager::source.get()
+        } returns ServerSource.SWARM_UI
+
+        every {
+            stubSwarmSession.getSessionId(any())
+        } returns Single.just("5598")
+
+        every {
+            stubSwarmSession.getSessionId()
+        } returns Single.just("5598")
+
+        every {
+            stubRdsSwarm.fetchEmbeddings(any())
+        } returns Single.error(stubException)
+
+        every {
+            stubLds.insertEmbeddings(any())
+        } returns Completable.complete()
+
+        repository
+            .fetchEmbeddings()
+            .test()
+            .assertError(stubException)
+            .await()
+            .assertNotComplete()
+    }
+
+    @Test
+    fun `given attempt to fetch embeddings, source is AUTOMATIC1111, remote returns data, local insert fails, expected error value`() {
+        every {
+            stubPreferenceManager::source.get()
+        } returns ServerSource.AUTOMATIC1111
+
+        every {
+            stubRdsA1111.fetchEmbeddings()
         } returns Single.just(mockEmbeddings)
 
         every {
-            stubLocalDataSource.insertEmbeddings(any())
+            stubLds.insertEmbeddings(any())
+        } returns Completable.error(stubException)
+
+        repository
+            .fetchEmbeddings()
+            .test()
+            .assertError(stubException)
+            .await()
+            .assertNotComplete()
+    }
+
+    @Test
+    fun `given attempt to fetch embeddings, source is SWARM_UI, remote returns data, local insert fails, expected error value`() {
+        every {
+            stubPreferenceManager::source.get()
+        } returns ServerSource.SWARM_UI
+
+        every {
+            stubSwarmSession.getSessionId(any())
+        } returns Single.just("5598")
+
+        every {
+            stubSwarmSession.getSessionId()
+        } returns Single.just("5598")
+
+        every {
+            stubRdsSwarm.fetchEmbeddings(any())
+        } returns Single.just(mockEmbeddings)
+
+        every {
+            stubLds.insertEmbeddings(any())
         } returns Completable.error(stubException)
 
         repository
@@ -76,7 +195,7 @@ class EmbeddingsRepositoryImplTest {
     @Test
     fun `given attempt to get embeddings, local data source returns list, expected valid domain models list value`() {
         every {
-            stubLocalDataSource.getEmbeddings()
+            stubLds.getEmbeddings()
         } returns Single.just(mockEmbeddings)
 
         repository
@@ -91,7 +210,7 @@ class EmbeddingsRepositoryImplTest {
     @Test
     fun `given attempt to get embeddings, local data source returns empty list, expected empty domain models list value`() {
         every {
-            stubLocalDataSource.getEmbeddings()
+            stubLds.getEmbeddings()
         } returns Single.just(emptyList())
 
         repository
@@ -106,7 +225,7 @@ class EmbeddingsRepositoryImplTest {
     @Test
     fun `given attempt to get embeddings, local data source throws exception, expected error value`() {
         every {
-            stubLocalDataSource.getEmbeddings()
+            stubLds.getEmbeddings()
         } returns Single.error(stubException)
 
         repository
@@ -119,17 +238,21 @@ class EmbeddingsRepositoryImplTest {
     }
 
     @Test
-    fun `given attempt to fetch and get embeddings, remote returns data, local returns data, expected valid domain models list value`() {
+    fun `given attempt to fetch and get embeddings, source is AUTOMATIC1111, remote returns data, local returns data, expected valid domain models list value`() {
         every {
-            stubRemoteDataSource.fetchEmbeddings()
+            stubPreferenceManager::source.get()
+        } returns ServerSource.AUTOMATIC1111
+
+        every {
+            stubRdsA1111.fetchEmbeddings()
         } returns Single.just(mockEmbeddings)
 
         every {
-            stubLocalDataSource.insertEmbeddings(any())
+            stubLds.insertEmbeddings(any())
         } returns Completable.complete()
 
         every {
-            stubLocalDataSource.getEmbeddings()
+            stubLds.getEmbeddings()
         } returns Single.just(mockEmbeddings)
 
         repository
@@ -142,17 +265,29 @@ class EmbeddingsRepositoryImplTest {
     }
 
     @Test
-    fun `given attempt to fetch and get embeddings, remote fails, local returns data, expected valid domain models list value`() {
+    fun `given attempt to fetch and get embeddings, source is SWARM_UI, remote returns data, local returns data, expected valid domain models list value`() {
         every {
-            stubRemoteDataSource.fetchEmbeddings()
-        } returns Single.error(stubException)
+            stubPreferenceManager::source.get()
+        } returns ServerSource.SWARM_UI
 
         every {
-            stubLocalDataSource.insertEmbeddings(any())
+            stubSwarmSession.getSessionId(any())
+        } returns Single.just("5598")
+
+        every {
+            stubSwarmSession.getSessionId()
+        } returns Single.just("5598")
+
+        every {
+            stubRdsSwarm.fetchEmbeddings(any())
+        } returns Single.just(mockEmbeddings)
+
+        every {
+            stubLds.insertEmbeddings(any())
         } returns Completable.complete()
 
         every {
-            stubLocalDataSource.getEmbeddings()
+            stubLds.getEmbeddings()
         } returns Single.just(mockEmbeddings)
 
         repository
@@ -165,13 +300,110 @@ class EmbeddingsRepositoryImplTest {
     }
 
     @Test
-    fun `given attempt to fetch and get embeddings, remote fails, local fails, expected valid error value`() {
+    fun `given attempt to fetch and get embeddings, source is AUTOMATIC1111, remote fails, local returns data, expected valid domain models list value`() {
         every {
-            stubRemoteDataSource.fetchEmbeddings()
+            stubPreferenceManager::source.get()
+        } returns ServerSource.AUTOMATIC1111
+
+        every {
+            stubRdsA1111.fetchEmbeddings()
         } returns Single.error(stubException)
 
         every {
-            stubLocalDataSource.getEmbeddings()
+            stubLds.insertEmbeddings(any())
+        } returns Completable.complete()
+
+        every {
+            stubLds.getEmbeddings()
+        } returns Single.just(mockEmbeddings)
+
+        repository
+            .fetchAndGetEmbeddings()
+            .test()
+            .assertNoErrors()
+            .assertValue(mockEmbeddings)
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to fetch and get embeddings, source is SWARM_UI, remote fails, local returns data, expected valid domain models list value`() {
+        every {
+            stubPreferenceManager::source.get()
+        } returns ServerSource.SWARM_UI
+
+        every {
+            stubSwarmSession.getSessionId(any())
+        } returns Single.just("5598")
+
+        every {
+            stubSwarmSession.getSessionId()
+        } returns Single.just("5598")
+
+        every {
+            stubRdsA1111.fetchEmbeddings()
+        } returns Single.error(stubException)
+
+        every {
+            stubLds.insertEmbeddings(any())
+        } returns Completable.complete()
+
+        every {
+            stubLds.getEmbeddings()
+        } returns Single.just(mockEmbeddings)
+
+        repository
+            .fetchAndGetEmbeddings()
+            .test()
+            .assertNoErrors()
+            .assertValue(mockEmbeddings)
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to fetch and get embeddings, source is AUTOMATIC1111, remote fails, local fails, expected valid error value`() {
+        every {
+            stubPreferenceManager::source.get()
+        } returns ServerSource.AUTOMATIC1111
+
+        every {
+            stubRdsA1111.fetchEmbeddings()
+        } returns Single.error(stubException)
+
+        every {
+            stubLds.getEmbeddings()
+        } returns Single.error(stubException)
+
+        repository
+            .fetchAndGetEmbeddings()
+            .test()
+            .assertError(stubException)
+            .assertNoValues()
+            .await()
+            .assertNotComplete()
+    }
+
+    @Test
+    fun `given attempt to fetch and get embeddings, source is SWARM_UI, remote fails, local fails, expected valid error value`() {
+        every {
+            stubPreferenceManager::source.get()
+        } returns ServerSource.SWARM_UI
+
+        every {
+            stubSwarmSession.getSessionId(any())
+        } returns Single.just("5598")
+
+        every {
+            stubSwarmSession.getSessionId()
+        } returns Single.just("5598")
+
+        every {
+            stubRdsA1111.fetchEmbeddings()
+        } returns Single.error(stubException)
+
+        every {
+            stubLds.getEmbeddings()
         } returns Single.error(stubException)
 
         repository

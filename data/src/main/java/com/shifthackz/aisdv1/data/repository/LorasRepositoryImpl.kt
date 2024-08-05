@@ -25,6 +25,7 @@ internal class LorasRepositoryImpl(
         ServerSource.SWARM_UI -> swarmSession
             .getSessionId()
             .flatMap(rdsSwarm::fetchLoras)
+            .let(swarmSession::handleSessionError)
             .flatMapCompletable(lds::insertLoras)
 
         else -> Completable.complete()

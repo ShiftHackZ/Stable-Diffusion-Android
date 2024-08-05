@@ -17,7 +17,7 @@ internal class SwarmUiModelsLocalDataSource(
         .queryAll()
         .map(List<SwarmUiModelEntity>::mapEntityToDomain)
 
-    override fun insertModels(models: List<SwarmUiModel>): Completable = models
-        .mapDomainToEntity()
-        .let(dao::insertList)
+    override fun insertModels(models: List<SwarmUiModel>): Completable = dao
+        .deleteAll()
+        .andThen(dao.insertList(models.mapDomainToEntity()))
 }

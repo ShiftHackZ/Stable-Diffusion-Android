@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test
 
-class StableDiffusionLorasLocalDataSourceTest {
+class LorasLocalDataSourceTest {
 
     private val stubException = Throwable("Database error.")
     private val stubDao = mockk<StableDiffusionLoraDao>()

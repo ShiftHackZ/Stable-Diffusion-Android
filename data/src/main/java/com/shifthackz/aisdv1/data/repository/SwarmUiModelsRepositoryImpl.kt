@@ -16,6 +16,7 @@ internal class SwarmUiModelsRepositoryImpl(
     override fun fetchModels(): Completable = session
         .getSessionId()
         .flatMap(rds::fetchSwarmModels)
+        .let(session::handleSessionError)
         .flatMapCompletable(lds::insertModels)
 
     override fun fetchAndGetModels(): Single<List<SwarmUiModel>> = fetchModels()

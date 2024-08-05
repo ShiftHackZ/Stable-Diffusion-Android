@@ -26,7 +26,6 @@ import io.mockk.verify
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -36,8 +35,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
     private val stubGetConfigurationUseCase = mockk<GetConfigurationUseCase>()
     private val stubGetLocalAiModelsUseCase = mockk<GetLocalAiModelsUseCase>()
-    private val stubFetchAndGetHuggingFaceModelsUseCase =
-        mockk<FetchAndGetHuggingFaceModelsUseCase>()
+    private val stubFetchAndGetHuggingFaceModelsUseCase = mockk<FetchAndGetHuggingFaceModelsUseCase>()
     private val stubUrlValidator = mockk<UrlValidator>()
     private val stubCommonStringValidator = mockk<CommonStringValidator>()
     private val stubSetupConnectionInterActor = mockk<SetupConnectionInterActor>()
@@ -338,16 +336,6 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         runTest {
             val expected = ServerSource.LOCAL
             val actual = viewModel.state.value.mode
-            Assert.assertEquals(expected, actual)
-        }
-    }
-
-    @Test
-    fun `given received LaunchManageStoragePermission intent, expected LaunchManageStoragePermission effect delivered to effect collector`() {
-        viewModel.processIntent(ServerSetupIntent.LaunchManageStoragePermission)
-        runTest {
-            val expected = ServerSetupEffect.LaunchManageStoragePermission
-            val actual = viewModel.effect.firstOrNull()
             Assert.assertEquals(expected, actual)
         }
     }

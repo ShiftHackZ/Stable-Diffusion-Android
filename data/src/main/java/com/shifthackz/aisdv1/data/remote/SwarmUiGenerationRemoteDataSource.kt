@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.remote
 
 import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
+import com.shifthackz.aisdv1.core.imageprocessing.Base64EncodingConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.data.mappers.mapCloudToAiGenResult
 import com.shifthackz.aisdv1.data.mappers.mapToSwarmUiRequest
@@ -17,7 +18,8 @@ import io.reactivex.rxjava3.core.Single
 class SwarmUiGenerationRemoteDataSource(
     private val serverUrlProvider: ServerUrlProvider,
     private val api: SwarmUiApi,
-    private val converter: BitmapToBase64Converter,
+    private val bmpToBase64Converter: BitmapToBase64Converter,
+    private val base64EncodingConverter: Base64EncodingConverter,
 ) : SwarmUiGenerationDataSource.Remote {
 
     override fun textToImage(
@@ -35,11 +37,19 @@ class SwarmUiGenerationRemoteDataSource(
         sessionId: String,
         model: String,
         payload: ImageToImagePayload,
-    ): Single<AiGenerationResult> =
-        generate(
-            payload = payload,
-            request = payload.mapToSwarmUiRequest(sessionId, model),
-        )
+    ): Single<AiGenerationResult> = payload
+        .base64Image
+        .let(Base64EncodingConverter::Input)
+        .let(base64EncodingConverter::invoke)
+        .map(Base64EncodingConverter.Output::base64)
+        .map { base64 -> "data:image/png;base64,${base64}" }
+        .map { base64Uri -> payload.copy(base64Image = base64Uri) }
+        .flatMap { encodedPayload ->
+            generate(
+                payload = encodedPayload,
+                request = encodedPayload.mapToSwarmUiRequest(sessionId, model),
+            )
+        }
         .map(Pair<ImageToImagePayload, String>::mapCloudToAiGenResult)
 
     private fun <T: Any> generate(
@@ -58,7 +68,7 @@ class SwarmUiGenerationRemoteDataSource(
         }
         .flatMap(api::downloadImage)
         .map(BitmapToBase64Converter::Input)
-        .flatMap(converter::invoke)
+        .flatMap(bmpToBase64Converter::invoke)
         .map(BitmapToBase64Converter.Output::base64ImageString)
         .map { base64 -> payload to base64 }
 }

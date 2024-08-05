@@ -107,7 +107,6 @@ fun SettingsScreen() {
     }
 }
 
-
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,

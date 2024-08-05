@@ -98,8 +98,8 @@
     <string name="hint_server_setup_sub_title">Gradio kütüphanesi kullanılarak uygulanan Stable Diffusion için bir web arayüzü.</string>
     <string name="hint_valid_urls">Bazı sunucu örnekleri:\n• http://192.168.0.2:7860\n• http://alanadiniz.com:7860\n• https://alanadiniz.com</string>
     <string name="hint_demo_mode">Bu mod, Stable Diffusion WebUI sunucunuz olmasa bile uygulama davranışını test etmenize olanak tanır.\n\nDemo modunda uygulama kullanıcı istemini görmezden gelir, AI sunucusunu kullanmaz ve bazı sahte görüntüler döndürür.</string>
-    <string name="hint_args_warning" tools:ignore="TypographyDashes,Typos">Bağlanmadan önce şunlardan emin olun:\n• AUTOMATIC1111 WebUI\'yi --api --listen bayraklarıyla çalıştırıyorsunuz\n• Güvenlik duvarınız 7860 portunu engellemiyor\n• Telefon, bilgisayarınızla aynı WiFi'da.</string>
-    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes,Typos">Bağlanmadan önce şunlardan emin olun:\n• Güvenlik duvarınız 7860 portunu engellemiyor\n• Telefon, bilgisayarınızla aynı WiFi'da.</string>
+    <string name="hint_args_warning" tools:ignore="TypographyDashes,Typos">Bağlanmadan önce şunlardan emin olun:\n• AUTOMATIC1111 WebUI\'yi --api --listen bayraklarıyla çalıştırıyorsunuz\n• Güvenlik duvarınız 7860 portunu engellemiyor\n• Telefon, bilgisayarınızla aynı WiFi\'da.</string>
+    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes,Typos">Bağlanmadan önce şunlardan emin olun:\n• Güvenlik duvarınız 7860 portunu engellemiyor\n• Telefon, bilgisayarınızla aynı WiFi\'da.</string>
 
     <string name="hint_server_horde_title">Horde AI bulutuna bağlanın</string>
     <string name="hint_server_horde_sub_title">Horde AI, Görüntü oluşturma çalışanları ve metin oluşturma çalışanlarından oluşan kitle kaynaklı dağıtılmış bir kümedir.</string>

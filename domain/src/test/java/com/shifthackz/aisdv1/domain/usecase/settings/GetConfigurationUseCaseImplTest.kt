@@ -29,6 +29,14 @@ class GetConfigurationUseCaseImplTest {
         } returns mockConfiguration.serverUrl
 
         every {
+            stubPreferenceManager::swarmUiServerUrl.get()
+        } returns mockConfiguration.swarmUiUrl
+
+        every {
+            stubPreferenceManager::swarmUiModel.get()
+        } returns mockConfiguration.swarmUiModel
+
+        every {
             stubPreferenceManager::demoMode.get()
         } returns mockConfiguration.demoMode
 

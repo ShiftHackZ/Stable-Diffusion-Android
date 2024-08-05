@@ -25,6 +25,7 @@ internal class EmbeddingsRepositoryImpl(
         ServerSource.SWARM_UI -> swarmSession
             .getSessionId()
             .flatMap(rdsSwarm::fetchEmbeddings)
+            .let(swarmSession::handleSessionError)
             .flatMapCompletable(lds::insertEmbeddings)
 
         else -> Completable.complete()

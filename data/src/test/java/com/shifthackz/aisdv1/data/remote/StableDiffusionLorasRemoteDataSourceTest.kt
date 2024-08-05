@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.core.Single
 import org.junit.Before
 import org.junit.Test
 
-class StableDiffusionStableDiffusionLorasRemoteDataSourceTest {
+class StableDiffusionLorasRemoteDataSourceTest {
 
     private val stubException = Throwable("Internal server error.")
     private val stubUrlProvider = mockk<ServerUrlProvider>()
@@ -18,7 +18,7 @@ class StableDiffusionStableDiffusionLorasRemoteDataSourceTest {
 
     private val remoteDataSource = StableDiffusionLorasRemoteDataSource(
         serverUrlProvider = stubUrlProvider,
-        automatic1111Api = stubApi,
+        api = stubApi,
     )
 
     @Before
