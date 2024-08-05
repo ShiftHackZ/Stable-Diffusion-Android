@@ -62,7 +62,7 @@ val remoteDataSourceModule = module {
             val chain = if (prefs.source == ServerSource.SWARM_UI) {
                 Single.fromCallable(prefs::swarmUiServerUrl)
             } else {
-                Single.fromCallable(prefs::automatic1111serverUrl)
+                Single.fromCallable(prefs::automatic1111ServerUrl)
             }
             chain
                 .map(String::fixUrlSlashes)

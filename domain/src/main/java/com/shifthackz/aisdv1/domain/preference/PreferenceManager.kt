@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.domain.entity.Settings
 import io.reactivex.rxjava3.core.Flowable
 
 interface PreferenceManager {
-    var automatic1111serverUrl: String
+    var automatic1111ServerUrl: String
     var swarmUiServerUrl: String
     var swarmUiModel: String
     var demoMode: Boolean

@@ -103,7 +103,6 @@ fun ImageToImagePayload.mapToSwarmUiRequest(
     SwarmUiGenerationRequest(
         sessionId = sessionId,
         model = swarmUiModel,
-//        initImage = "data:image/png;base64,${base64DefaultToNoWrap(base64Image)}",
         initImage = base64Image,
         initImageCreativity = denoisingStrength.roundTo(2).toString(),
         images = 1,

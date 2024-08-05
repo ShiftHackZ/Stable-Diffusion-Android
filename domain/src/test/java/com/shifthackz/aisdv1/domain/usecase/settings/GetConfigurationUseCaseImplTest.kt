@@ -25,7 +25,7 @@ class GetConfigurationUseCaseImplTest {
         } returns AuthorizationCredentials.None
 
         every {
-            stubPreferenceManager::automatic1111serverUrl.get()
+            stubPreferenceManager::automatic1111ServerUrl.get()
         } returns mockConfiguration.serverUrl
 
         every {

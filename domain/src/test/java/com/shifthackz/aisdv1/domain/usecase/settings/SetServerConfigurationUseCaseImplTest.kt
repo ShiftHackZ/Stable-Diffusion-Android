@@ -28,7 +28,7 @@ class SetServerConfigurationUseCaseImplTest {
         } returns Unit
 
         every {
-            stubPreferenceManager::automatic1111serverUrl.set(any())
+            stubPreferenceManager::automatic1111ServerUrl.set(any())
         } returns Unit
 
         every {

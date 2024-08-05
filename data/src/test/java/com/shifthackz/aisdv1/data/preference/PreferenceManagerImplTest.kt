@@ -71,14 +71,14 @@ class PreferenceManagerImplTest {
         whenever(stubPreference.getString(eq(KEY_SERVER_URL), any()))
             .thenReturn("")
 
-        Assert.assertEquals("", preferenceManager.automatic1111serverUrl)
+        Assert.assertEquals("", preferenceManager.automatic1111ServerUrl)
 
         whenever(stubPreference.getString(eq(KEY_SERVER_URL), any()))
             .thenReturn("https://192.168.0.1:7860")
 
-        preferenceManager.automatic1111serverUrl = "https://192.168.0.1:7860"
+        preferenceManager.automatic1111ServerUrl = "https://192.168.0.1:7860"
 
-        Assert.assertEquals("https://192.168.0.1:7860", preferenceManager.automatic1111serverUrl)
+        Assert.assertEquals("https://192.168.0.1:7860", preferenceManager.automatic1111ServerUrl)
 
         preferenceManager
             .observe()

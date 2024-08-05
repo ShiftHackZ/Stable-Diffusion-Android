@@ -14,7 +14,7 @@ internal class SetServerConfigurationUseCaseImpl(
         Completable.fromAction {
             authorizationStore.storeAuthorizationCredentials(configuration.authCredentials)
             preferenceManager.source = configuration.source
-            preferenceManager.automatic1111serverUrl = configuration.serverUrl
+            preferenceManager.automatic1111ServerUrl = configuration.serverUrl
             preferenceManager.swarmUiServerUrl = configuration.swarmUiUrl
             preferenceManager.swarmUiModel = configuration.swarmUiModel
             preferenceManager.demoMode = configuration.demoMode

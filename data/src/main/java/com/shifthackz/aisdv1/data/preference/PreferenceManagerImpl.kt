@@ -20,7 +20,7 @@ class PreferenceManagerImpl(
     private val preferencesChangedSubject: BehaviorSubject<Unit> =
         BehaviorSubject.createDefault(Unit)
 
-    override var automatic1111serverUrl: String
+    override var automatic1111ServerUrl: String
         get() = (preferences.getString(KEY_SERVER_URL, "") ?: "").fixUrlSlashes()
         set(value) = preferences.edit()
             .putString(KEY_SERVER_URL, value.fixUrlSlashes())
@@ -207,7 +207,7 @@ class PreferenceManagerImpl(
         .toFlowable(BackpressureStrategy.LATEST)
         .map {
             Settings(
-                serverUrl = automatic1111serverUrl,
+                serverUrl = automatic1111ServerUrl,
                 sdModel = sdModel,
                 demoMode = demoMode,
                 monitorConnectivity = monitorConnectivity,
