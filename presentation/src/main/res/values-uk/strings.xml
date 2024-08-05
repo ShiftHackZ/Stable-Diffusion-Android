@@ -62,6 +62,7 @@
     <string name="hint_batch_tag">Пакетна генерація</string>
     <string name="hint_multiple_models">Підтримка моделей</string>
     <string name="hint_offline_generation">Генерація без інтернету</string>
+    <string name="hint_own_server">Власний сервер</string>
     <string name="hint_cfg_scale">CFG Шкала: %1$s</string>
     <string name="hint_sampler">Метод вибірки</string>
     <string name="hint_style_preset">Стиль</string>
@@ -94,9 +95,11 @@
     <string name="auth_http_basic">HTTP Базова</string>
 
     <string name="hint_server_setup_title">Вкажіть свою URL-адресу Stable Diffusion WebUI</string>
+    <string name="hint_server_setup_sub_title">Веб-інтерфейс для Stable Diffusion, реалізований за допомогою бібліотеки Gradio.</string>
     <string name="hint_valid_urls">Ось приклади URL-адрес сервера:\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
     <string name="hint_demo_mode">Цей режим дозволяє перевірити поведінку програми, навіть якщо у вас немає сервера Stable Diffusion WebUI.\n\nУ демонстраційному режимі програма ігнорує параметри генерації, не використовує сервер штучного інтелекту та повертає фіктивні зображення.</string>
     <string name="hint_args_warning" tools:ignore="TypographyDashes">Перед підключенням переконайтеся, що:\n• ви використовуєте AUTOMATIC1111 WebUI з аргументами --api --listen\n• ваш брандмауер не блокує порт 7860\n• телефон підключено до однієї мережі Wi-Fi з вашим ПК</string>
+    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes">Перед підключенням переконайтеся, що:\n• ваш брандмауер не блокує порт 7860\n• телефон підключено до однієї мережі Wi-Fi з вашим ПК</string>
 
     <string name="hint_server_horde_title">Підключитися до Horde AI</string>
     <string name="hint_server_horde_sub_title">Horde AI — це краудсорсинговий розподілений кластер нод генерації зображень і тексту.</string>
@@ -119,6 +122,9 @@
     <string name="hint_stability_ai_sub_title">StabilityAI — це сервіс генерації зображень від DreamStudio.</string>
     <string name="hint_stability_ai_about">Про Stability AI</string>
     <string name="hint_stability_ai_engine">Stability AI двигун</string>
+
+    <string name="hint_swarm_ui_title">Provide your Swarm UI URL</string>
+    <string name="hint_swarm_ui_sub_title">Модульний веб-інтерфейс Stable Diffusion з наголосом на полегшення доступу до інструментів, високу продуктивність і розширюваність.</string>
 
     <string name="hint_local_diffusion_sub_title">Ця конфігурація дозволяє запускати генерації Stable Diffusion на вашому телефоні без необхідності підключатися до віддаленого сервера/хмари.</string>
     <string name="hint_local_diffusion_warning">УВАГА! Функціональність Local Diffusion у бета-тестуванні. Не очікуйте високоякісних зображень у локальному режимі. \n\nЦя реалізація може не працювати належним чином на телефонах із слабкою потужністю. Продуктивність і швидкість генерації залежать від ресурсів вашого телефону (ЦП, ОЗУ) і розміру згенерованого зображення (чим менший розмір зображення, тим швидше генерується).</string>
