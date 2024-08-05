@@ -34,7 +34,7 @@ internal class MainRouterImpl(
     }
 
     override fun navigateToServerSetup(source: ServerSetupLaunchSource) {
-        effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder("${Constants.ROUTE_SERVER_SETUP}/${source.key}") {
+        effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder("${Constants.ROUTE_SERVER_SETUP}/${source.ordinal}") {
             if (source == ServerSetupLaunchSource.SPLASH) {
                 popUpTo(Constants.ROUTE_SPLASH) {
                     inclusive = true

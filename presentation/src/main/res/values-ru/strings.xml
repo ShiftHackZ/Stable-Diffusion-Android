@@ -96,10 +96,10 @@
 
     <string name="hint_server_setup_title">Укажите свой URL-адрес Stable Diffusion WebUI</string>
     <string name="hint_server_setup_sub_title">Веб-интерфейс для Stable Diffusion, реализованный с использованием библиотеки Gradio.</string>
-    <string name="hint_valid_urls">Примеры URL-адресов сервера:\nhttp://192.168.0.2:7860\nhttp://yourdomain.com:7860\nhttps://yourdomain.com</string>
+    <string name="hint_valid_urls">Примеры URL-адресов сервера:\nhttp://192.168.0.2:%1$s\nhttp://yourdomain.com:%1$s\nhttps://yourdomain.com</string>
     <string name="hint_demo_mode">Этот режим позволяет проверить поведение программы, даже если у вас нет сервера Stable Diffusion WebUI.\n\nВ демонстрационном режиме программа игнорирует параметры генерации, не использует сервер искусственного интеллекта и возвращает фиктивные изображения.</string>
     <string name="hint_args_warning" tools:ignore="TypographyDashes">Перед подключением убедитесь, что:\n• вы используете AUTOMATIC1111 WebUI с аргументами --api --listen\n• ваш брандмауэр не блокирует порт 7860\n• телефон подключен к одной сети Wi-Fi с ПК</string>
-    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes">Перед подключением убедитесь, что:\n• ваш брандмауэр не блокирует порт 7860\n• телефон подключен к одной сети Wi-Fi с ПК</string>
+    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes">Перед подключением убедитесь, что:\n• ваш брандмауэр не блокирует порт 7801\n• телефон подключен к одной сети Wi-Fi с ПК</string>
 
     <string name="hint_server_horde_title">Подключиться к Horde AI</string>
     <string name="hint_server_horde_sub_title">Horde AI – это краудсорсинговый распределенный кластер нод генерации изображений и текста.</string>
@@ -147,7 +147,7 @@
     <string name="title_select_sd_model">Выберите SD ML модель</string>
     <string name="title_clear_app_cache">Очистить кэш приложения</string>
     <string name="title_debug_menu">Дебаг Меню</string>
-    <string name="title_lora">Лора</string>
+    <string name="title_lora">ЛоРА</string>
     <string name="title_txt_inversion">Инверсия текста</string>
     <string name="title_txt_inversion_short">Инверсия</string>
     <string name="title_tag_edit">Редактор тега</string>
@@ -265,9 +265,9 @@
     <string name="debug_action_bad_base64">Внести битый Base64 в БД</string>
 
     <string name="extras_empty_title">Здесь пусто…</string>
-    <string name="extras_empty_sub_title_lora">Добавьте что-нибуть на AUTOMATIC1111 сервере в: \n\n../models/Lora</string>
-    <string name="extras_empty_sub_title_hypernet">Добавьте что-нибуть на AUTOMATIC1111 сервере в: \n\n../models/hypernetworks</string>
-    <string name="extras_empty_sub_title_embedding">Добавьте что-нибуть на AUTOMATIC1111 сервере в: \n\n../embeddings</string>
+    <string name="extras_empty_sub_title_lora">Добавьте что-нибуть на %1$s сервере в: \n\n%2$s</string>
+    <string name="extras_empty_sub_title_hypernet">Добавьте что-нибуть на %1$s сервере в: \n\n%2$s</string>
+    <string name="extras_empty_sub_title_embedding">Добавьте что-нибуть на %1$s сервере в: \n\n%2$s</string>
 
     <string name="in_paint_tab_1">Зарисовка</string>
     <string name="in_paint_tab_2">Регулировка</string>

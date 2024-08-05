@@ -123,10 +123,10 @@
     <!-- 服务器设置提示 -->
     <string name="hint_server_setup_title">提供您的Stable Diffusion WebUI URL</string>
     <string name="hint_server_setup_sub_title">使用 Gradio 库实现的稳定扩散的 Web 界面。</string>
-    <string name="hint_valid_urls">以下是服务器URL的示例：\n• http://192.168.0.2:7860\n• http://yourdomain.com:7860\n• https://yourdomain.com</string>
+    <string name="hint_valid_urls">以下是服务器URL的示例：\n• http://192.168.0.2:%1$s\n• http://yourdomain.com:%1$s\n• https://yourdomain.com</string>
     <string name="hint_demo_mode">此模式允许您测试应用程序的行为，即使您没有Stable Diffusion WebUI服务器。\n\n在演示模式下，应用程序忽略用户提示，不使用AI服务器，并返回一些模拟图像。</string>
     <string name="hint_args_warning" tools:ignore="TypographyDashes">在连接之前确保：\n• 您正在运行AUTOMATIC1111 WebUI并带有标志 --api --listen\n• 您的防火墙没有阻止7860端口\n• 手机与您的PC在同一WiFi下</string>
-    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes">在连接之前确保：\n• 您的防火墙没有阻止7860端口\n• 手机与您的PC在同一WiFi下</string>
+    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes">在连接之前确保：\n• 您的防火墙没有阻止7801端口\n• 手机与您的PC在同一WiFi下</string>
 
     <!-- Horde AI云连接提示 -->
     <string name="hint_server_horde_title">连接到Horde AI云</string>
@@ -184,7 +184,7 @@
     <string name="title_select_sd_model">选择SD ML模型</string>
     <string name="title_clear_app_cache">清除应用缓存</string>
     <string name="title_debug_menu">调试菜单</string>
-    <string name="title_lora">Lora</string>
+    <string name="title_lora">LoRA</string>
     <string name="title_hyper_net" translatable="false">超网络</string>
     <string name="title_hyper_net_short" translatable="false">H-Net</string>
     <string name="title_txt_inversion">文本反转</string>
@@ -327,9 +327,9 @@
 
     <!-- 附加内容提示 -->
     <string name="extras_empty_title">这里什么都没有…</string>
-    <string name="extras_empty_sub_title_lora">在AUTOMATIC1111服务器上添加一些内容到：\n\n../models/Lora</string>
-    <string name="extras_empty_sub_title_hypernet">在AUTOMATIC1111服务器上添加一些内容到：\n\n../models/hypernetworks</string>
-    <string name="extras_empty_sub_title_embedding">在AUTOMATIC1111服务器上添加一些内容到：\n\n../embeddings</string>
+    <string name="extras_empty_sub_title_lora">在%1$s服务器上添加一些内容到：\n\n%2$s</string>
+    <string name="extras_empty_sub_title_hypernet">在%1$s服务器上添加一些内容到：\n\n%2$s</string>
+    <string name="extras_empty_sub_title_embedding">在%1$s服务器上添加一些内容到：\n\n%2$s</string>
 
     <!-- 修复模式标题 -->
     <string name="in_paint_title" translatable="false">修复</string>

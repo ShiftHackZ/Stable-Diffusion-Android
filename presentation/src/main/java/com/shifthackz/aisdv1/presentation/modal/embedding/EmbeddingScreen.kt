@@ -47,10 +47,12 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.widget.error.ErrorComposable
+import com.shifthackz.aisdv1.presentation.widget.source.getName
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 import org.koin.androidx.compose.koinViewModel
 
@@ -209,7 +211,7 @@ private fun ScreenContent(
                         } else {
                             if (state.embeddings.isEmpty()) {
                                 item(key = "empty_state") {
-                                    EmbeddingEmptyState()
+                                    EmbeddingEmptyState(state.source)
                                 }
                             } else {
                                 items(
@@ -234,7 +236,7 @@ private fun ScreenContent(
 }
 
 @Composable
-private fun EmbeddingEmptyState() {
+private fun EmbeddingEmptyState(source: ServerSource) {
     Column(
         verticalArrangement = Arrangement.Center,
     ) {
@@ -243,12 +245,21 @@ private fun EmbeddingEmptyState() {
             text = stringResource(id = R.string.extras_empty_title),
             fontSize = 20.sp,
         )
+        val path = when (source) {
+            ServerSource.AUTOMATIC1111 -> "./embeddings"
+            ServerSource.SWARM_UI -> "./Models/Embeddings"
+            else -> ""
+        }
         Text(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .padding(horizontal = 16.dp)
                 .align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.extras_empty_sub_title_embedding),
+            text = stringResource(
+                id = R.string.extras_empty_sub_title_embedding,
+                source.getName(),
+                path,
+            ),
             textAlign = TextAlign.Center,
         )
     }

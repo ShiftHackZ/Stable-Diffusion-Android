@@ -85,13 +85,12 @@ data class ServerSetupState(
     )
 }
 
-//ToDo refactor key to enum ordinal
-enum class ServerSetupLaunchSource(val key: Int) {
-    SPLASH(0),
-    SETTINGS(1);
+enum class ServerSetupLaunchSource {
+    SPLASH,
+    SETTINGS;
 
     companion object {
-        fun fromKey(key: Int) = entries.firstOrNull { it.key == key } ?: SPLASH
+        fun fromKey(key: Int) = entries.firstOrNull { it.ordinal == key } ?: SPLASH
     }
 }
 

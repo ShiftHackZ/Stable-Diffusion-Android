@@ -165,7 +165,7 @@
     <string name="title_select_sd_model">Select SD ML Model</string>
     <string name="title_clear_app_cache">Clear app cache</string>
     <string name="title_debug_menu">Debug Menu</string>
-    <string name="title_lora">Lora</string>
+    <string name="title_lora">LoRA</string>
     <string name="title_hyper_net" translatable="false">Hypernetworks</string>
     <string name="title_hyper_net_short" translatable="false">H-Net</string>
     <string name="title_txt_inversion">Textual Inversion</string>
@@ -287,9 +287,9 @@
     <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>
 
     <string name="extras_empty_title">Nothing here…</string>
-    <string name="extras_empty_sub_title_lora">Add some content on AUTOMATIC1111 server to: \n\n../models/Lora</string>
-    <string name="extras_empty_sub_title_hypernet">Add some content on AUTOMATIC1111 server to: \n\n../models/hypernetworks</string>
-    <string name="extras_empty_sub_title_embedding">Add some content on AUTOMATIC1111 server to: \n\n../embeddings</string>
+    <string name="extras_empty_sub_title_lora">Add some content on %1$s server to: \n\n%2$s</string>
+    <string name="extras_empty_sub_title_hypernet">Add some content on %1$s server to: \n\n%2$s</string>
+    <string name="extras_empty_sub_title_embedding">Add some content on %1$s server to: \n\n.%2$s</string>
 
     <string name="in_paint_title" translatable="false">Inpaint</string>
     <string name="in_paint_tab_1">Draw</string>

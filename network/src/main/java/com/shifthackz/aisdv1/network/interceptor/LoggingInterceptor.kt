@@ -8,8 +8,7 @@ internal class LoggingInterceptor {
     fun get() = HttpLoggingInterceptor { message ->
         debugLog(HTTP_TAG, message)
     }.apply {
-//        level = HttpLoggingInterceptor.Level.HEADERS
-        level = HttpLoggingInterceptor.Level.BODY
+        level = HttpLoggingInterceptor.Level.HEADERS
     }
 
     companion object {

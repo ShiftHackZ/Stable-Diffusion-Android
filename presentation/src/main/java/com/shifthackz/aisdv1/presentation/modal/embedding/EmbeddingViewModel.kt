@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.sdembedding.FetchAndGetEmbeddingsUseCase
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
 import com.shifthackz.aisdv1.presentation.model.ErrorState
@@ -12,10 +13,17 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class EmbeddingViewModel(
     private val fetchAndGetEmbeddingsUseCase: FetchAndGetEmbeddingsUseCase,
+    private val preferenceManager: PreferenceManager,
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<EmbeddingState, EmbeddingIntent, ExtrasEffect>() {
 
     override val initialState = EmbeddingState()
+
+    init {
+        updateState {
+            it.copy(source = preferenceManager.source)
+        }
+    }
 
     override fun processIntent(intent: EmbeddingIntent) {
         when (intent) {
@@ -52,7 +60,14 @@ class EmbeddingViewModel(
     }
 
     fun updateData(prompt: String, negativePrompt: String) = !fetchAndGetEmbeddingsUseCase()
-        .doOnSubscribe { updateState { it.copy(loading = true) } }
+        .doOnSubscribe {
+            updateState { state ->
+                state.copy(
+                    loading = true,
+                    source = preferenceManager.source,
+                )
+            }
+        }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
             onError = { t ->
@@ -63,6 +78,7 @@ class EmbeddingViewModel(
                 updateState { state ->
                     state.copy(
                         loading = false,
+                        source = preferenceManager.source,
                         error = ErrorState.None,
                         prompt = prompt,
                         negativePrompt = negativePrompt,

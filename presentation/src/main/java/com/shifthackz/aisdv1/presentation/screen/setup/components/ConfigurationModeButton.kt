@@ -34,6 +34,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
+import com.shifthackz.aisdv1.presentation.widget.source.getName
 
 @Composable
 fun ConfigurationModeButton(
@@ -80,15 +81,7 @@ fun ConfigurationModeButton(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(top = 8.dp, bottom = 8.dp),
-                text = stringResource(id = when (mode) {
-                    ServerSource.AUTOMATIC1111 -> R.string.srv_type_own
-                    ServerSource.HORDE -> R.string.srv_type_horde
-                    ServerSource.LOCAL -> R.string.srv_type_local
-                    ServerSource.HUGGING_FACE -> R.string.srv_type_hugging_face
-                    ServerSource.OPEN_AI -> R.string.srv_type_open_ai
-                    ServerSource.STABILITY_AI -> R.string.srv_type_stability_ai
-                    ServerSource.SWARM_UI -> R.string.srv_type_swarm_ui
-                }),
+                text = mode.getName(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge,
             )

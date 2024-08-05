@@ -1,6 +1,8 @@
 package com.shifthackz.aisdv1.presentation.modal.extras
 
 import com.shifthackz.aisdv1.core.common.time.TimeProvider
+import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.sdhypernet.FetchAndGetHyperNetworksUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdlora.FetchAndGetLorasUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
@@ -22,18 +24,24 @@ class ExtrasViewModelTest : CoreViewModelTest<ExtrasViewModel>() {
     private val stubException = Throwable("Something went wrong.")
     private val stubFetchAndGetLorasUseCase = mockk<FetchAndGetLorasUseCase>()
     private val stubFetchAndGetHyperNetworksUseCase = mockk<FetchAndGetHyperNetworksUseCase>()
+    private val stubPreferenceManager = mockk<PreferenceManager>()
     private val stubTimeProvider = mockk<TimeProvider>()
 
     override fun initializeViewModel() = ExtrasViewModel(
         stubFetchAndGetLorasUseCase,
         stubFetchAndGetHyperNetworksUseCase,
         stubSchedulersProvider,
+        stubPreferenceManager,
         stubTimeProvider,
     )
 
     @Before
     override fun initialize() {
         super.initialize()
+
+        every {
+            stubPreferenceManager.source
+        } returns ServerSource.AUTOMATIC1111
 
         every {
             stubTimeProvider.nanoTime()
