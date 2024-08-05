@@ -20,6 +20,7 @@ import com.shifthackz.aisdv1.data.remote.StableDiffusionHyperNetworksRemoteDataS
 import com.shifthackz.aisdv1.data.remote.StableDiffusionLorasRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StableDiffusionSamplersRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.SupportersRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.SwarmUiEmbeddingsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.SwarmUiGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.SwarmUiLorasRemoteDataSource
@@ -41,6 +42,7 @@ import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSour
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
+import com.shifthackz.aisdv1.domain.datasource.SupportersDataSource
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiSessionDataSource
@@ -87,6 +89,7 @@ val remoteDataSourceModule = module {
     factoryOf(::ServerConfigurationRemoteDataSource) bind ServerConfigurationDataSource.Remote::class
     factoryOf(::RandomImageRemoteDataSource) bind RandomImageDataSource.Remote::class
     factoryOf(::DownloadableModelRemoteDataSource) bind DownloadableModelDataSource.Remote::class
+    factoryOf(::SupportersRemoteDataSource) bind SupportersDataSource.Remote::class
     factoryOf(::HuggingFaceModelsRemoteDataSource) bind HuggingFaceModelsDataSource.Remote::class
     factoryOf(::StabilityAiGenerationRemoteDataSource) bind StabilityAiGenerationDataSource.Remote::class
     factoryOf(::StabilityAiCreditsRemoteDataSource) bind StabilityAiCreditsDataSource.Remote::class

@@ -1,20 +1,29 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.shifthackz.aisdv1.presentation.activity
 
 import androidx.navigation.NavOptionsBuilder
 import app.cash.turbine.test
+import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelInitializeStrategy
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.home.HomeRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -23,12 +32,14 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
 
     private val stubNavigationEffect = BehaviorSubject.create<NavigationEffect>()
     private val stubDrawerNavigationEffect = BehaviorSubject.create<NavigationEffect.Drawer>()
+    private val stubHomeNavigationEffect = BehaviorSubject.create<NavigationEffect.Home>()
     private val stubNavBuilder: NavOptionsBuilder.() -> Unit = {
         popUpTo("splash") { inclusive = true }
     }
 
     private val stubMainRouter = mockk<MainRouter>()
     private val stubDrawerRouter = mockk<DrawerRouter>()
+    private val stubHomeRouter = mockk<HomeRouter>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
 
     override val testViewModelStrategy = CoreViewModelInitializeStrategy.InitializeEveryTime
@@ -37,6 +48,7 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
         schedulersProvider = stubSchedulersProvider,
         mainRouter = stubMainRouter,
         drawerRouter = stubDrawerRouter,
+        homeRouter = stubHomeRouter,
         preferenceManager = stubPreferenceManager,
     )
 
@@ -51,6 +63,14 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
         every {
             stubDrawerRouter.observe()
         } returns stubDrawerNavigationEffect
+
+        every {
+            stubHomeRouter.observe()
+        } returns stubHomeNavigationEffect
+
+        every {
+            stubPreferenceManager.observe()
+        } returns Flowable.just(Settings())
     }
 
     @Test
@@ -59,7 +79,7 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
             stubPreferenceManager::saveToMediaStore.set(any())
         } returns Unit
 
-        viewModel.onStoragePermissionsGranted()
+        viewModel.processIntent(AppIntent.GrantStoragePermission)
 
         verify {
             stubPreferenceManager::saveToMediaStore.set(true)
@@ -110,6 +130,7 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
 
     @Test
     fun `given route then back events from main router, expected two domain models delivered to effect collector in same order`() {
+        Dispatchers.setMain(StandardTestDispatcher())
         runTest {
             viewModel.effect.test {
                 stubNavigationEffect.onNext(NavigationEffect.Navigate.Route("route2"))

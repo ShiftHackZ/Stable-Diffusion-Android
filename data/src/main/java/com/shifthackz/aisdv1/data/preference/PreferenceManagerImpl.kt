@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
 import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
+import com.shifthackz.aisdv1.domain.entity.FeatureTag
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
@@ -50,7 +51,7 @@ class PreferenceManagerImpl(
             .also { onPreferencesChanged() }
 
     override var monitorConnectivity: Boolean
-        get() = if (source != ServerSource.AUTOMATIC1111) false
+        get() = if (!source.featureTags.contains(FeatureTag.OwnServer)) false
         else preferences.getBoolean(KEY_MONITOR_CONNECTIVITY, true)
         set(value) = preferences.edit()
             .putBoolean(KEY_MONITOR_CONNECTIVITY, value)

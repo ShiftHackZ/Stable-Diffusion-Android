@@ -51,6 +51,10 @@ internal class MainRouterImpl(
         effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_IN_PAINT))
     }
 
+    override fun navigateToDonate() {
+        effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_DONATE))
+    }
+
     override fun navigateToDebugMenu() {
         if (debugMenuAccessor()) {
             effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_DEBUG))

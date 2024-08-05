@@ -1,12 +1,17 @@
 package com.shifthackz.aisdv1.presentation.activity
 
 import android.os.Bundle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -36,7 +41,9 @@ class AiStableDiffusionActivity : AppCompatActivity() {
     private val storagePermission = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
-        if (!result.values.any { !it }) viewModel.onStoragePermissionsGranted()
+        if (!result.values.any { !it }) {
+            viewModel.processIntent(AppIntent.GrantStoragePermission)
+        }
         debugLog("Storage permission is ${result}.")
     }
 
@@ -48,9 +55,15 @@ class AiStableDiffusionActivity : AppCompatActivity() {
         PermissionUtil.checkStoragePermission(this, storagePermission::launch)
         setContent {
             val navController = rememberNavController()
-            val backStackEntry = navController.currentBackStackEntryAsState()
+            val backStackEntry by navController.currentBackStackEntryAsState()
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val scope = rememberCoroutineScope()
+
+            var homeRouteEntry: String? by remember { mutableStateOf(null) }
+
+            BackHandler(enabled = drawerState.isOpen) {
+                scope.launch { drawerState.close() }
+            }
 
             AiSdAppTheme {
                 MviComponent(
@@ -78,15 +91,21 @@ class AiStableDiffusionActivity : AppCompatActivity() {
                             NavigationEffect.Drawer.Open -> scope.launch {
                                 drawerState.open()
                             }
+
+                            is NavigationEffect.Home -> {
+                                homeRouteEntry = effect.route
+                            }
                         }
                     },
                     applySystemUiColors = false,
-                ) { _, _ ->
+                ) { state, _ ->
                     DrawerScreen(
                         drawerState = drawerState,
                         backStackEntry = backStackEntry,
-                        onNavigate = navController::navigate,
-//                        navItems = mainDrawerNavItems(),
+                        homeRouteEntry = homeRouteEntry,
+                        onRootNavigate = navController::navigate,
+                        onHomeNavigate = { viewModel.processIntent(AppIntent.HomeRoute(it)) },
+                        navItems = state.drawerItems,
                     ) {
                         NavHost(
                             navController = navController,

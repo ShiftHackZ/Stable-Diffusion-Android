@@ -129,6 +129,8 @@
     <string name="hint_local_diffusion_sub_title">Ця конфігурація дозволяє запускати генерації Stable Diffusion на вашому телефоні без необхідності підключатися до віддаленого сервера/хмари.</string>
     <string name="hint_local_diffusion_warning">УВАГА! Функціональність Local Diffusion у бета-тестуванні. Не очікуйте високоякісних зображень у локальному режимі. \n\nЦя реалізація може не працювати належним чином на телефонах із слабкою потужністю. Продуктивність і швидкість генерації залежать від ресурсів вашого телефону (ЦП, ОЗУ) і розміру згенерованого зображення (чим менший розмір зображення, тим швидше генерується).</string>
 
+    <string name="drawer_web_ui">Веб</string>
+
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
     <string name="home_tab_gallery">Галерея</string>
@@ -282,4 +284,9 @@
 
     <string name="in_paint_area_whole">Вся картинка</string>
     <string name="in_paint_area_only_masked">Тільки маска</string>
+
+    <string name="donate_title_thanks">Дякую цим чудовим людям за підтримку ❤</string>
+    <string name="donate_bs_title">SDAI – це програма для Android, яка:</string>
+    <string name="donate_bs_sub_title">• Надає Вам можливість створювати зображення за допомогою Stable Diffusion AI;\n• Дає Вам свободу вибору постачальника генерації;\n• Не містить реклами, телеметрії та не шпигує за вами;\n• ПО з відкритим кодом;\n• Ви можете використовувати його безкоштовно.</string>
+    <string name="donate_bs_ending">Якщо програма була Вам корисна, та Ви бажаєте подякувати та трохи підтримати розробника, натисніть кнопку нижче.</string>
 </resources>

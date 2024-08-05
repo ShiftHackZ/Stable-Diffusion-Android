@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.model.NavItem
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
@@ -34,37 +35,36 @@ fun HomeNavigationScreen(
 
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
-
-    val navigate: (String) -> Unit = { route ->
-        navController.navigate(route) {
-            navController.graph.startDestinationRoute?.let { route ->
-                popUpTo(route) {
-                    saveState = true
-                }
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-    }
+    val currentRoute = backStackEntry.value?.destination?.route
 
     MviComponent(
         viewModel = koinViewModel<HomeNavigationViewModel>(),
-        processEffect = { effect -> navigate(effect.route) },
+        processEffect = { effect ->
+            navController.navigate(effect.route) {
+                navController.graph.startDestinationRoute?.let { route ->
+                    popUpTo(route) {
+                        saveState = true
+                        navController.popBackStack()
+                    }
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        },
         applySystemUiColors = true,
         navigationBarColor = MaterialTheme.colorScheme.surface,
-    ) { _, _ ->
+    ) { _, processIntent ->
         Scaffold(
             bottomBar = {
                 Column {
                     NavigationBar {
-                        val currentRoute = backStackEntry.value?.destination?.route
                         navItems.forEach { item ->
                             val selected = item.route == currentRoute
                             NavigationBarItem(
                                 selected = selected,
                                 label = {
                                     Text(
-                                        text = item.name,
+                                        text = item.name.asString(),
                                         color = LocalContentColor.current,
                                     )
                                 },
@@ -72,7 +72,7 @@ fun HomeNavigationScreen(
                                     selectedIndicatorColor = MaterialTheme.colorScheme.primary,
                                 ),
                                 icon = { NavigationItemIcon(item.icon) },
-                                onClick = { navigate(item.route) },
+                                onClick = { processIntent(HomeNavigationIntent(item.route)) },
                             )
                         }
                     }

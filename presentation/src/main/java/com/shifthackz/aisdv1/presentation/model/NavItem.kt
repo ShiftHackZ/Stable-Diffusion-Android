@@ -5,10 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.shifthackz.aisdv1.core.model.UiText
 
 @Immutable
 data class NavItem(
-    val name: String,
+    val name: UiText,
     val route: String,
     val icon: Icon,
     val content: (@Composable () -> Unit)? = null,

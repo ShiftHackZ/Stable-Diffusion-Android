@@ -129,6 +129,8 @@
     <string name="hint_local_diffusion_sub_title">Bu yapılandırma, telefonunuzda uzak sunucuya/buluta bağlanmaya gerek kalmadan Stable Diffusion AI nesillerini çalıştırmanıza izin verir.</string>
     <string name="hint_local_diffusion_warning">Uyarı! Yerel Yayılma işlevi beta testindedir. Yerel modu kullanarak yüksek kaliteli görüntüler beklemeyin. \n\nBu uygulama, güçlü olmayan telefonlarda iyi çalışmayabilir. Oluşturma performansı ve hızı, telefonunuzun kaynaklarına (CPU, RAM) ve oluşturulan görüntünün boyutuna bağlıdır (görüntü boyutu ne kadar küçükse, oluşturma o kadar hızlı olur).</string>
 
+    <string name="drawer_web_ui">Web arayüzü</string>
+
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
     <string name="home_tab_gallery">Galeri</string>
@@ -282,4 +284,9 @@
 
     <string name="in_paint_area_whole">Bütün resim</string>
     <string name="in_paint_area_only_masked">Sadece maskeli</string>
+
+    <string name="donate_title_thanks">Destekleri için bu harika insanlara teşekkürler ❤</string>
+    <string name="donate_bs_title">SDAI, şu özelliklere sahip bir Android uygulamasıdır:</string>
+    <string name="donate_bs_sub_title">• Stable Diffusion AI ile görüntü oluşturma gücü sunar;\n• Üretim sağlayıcınızı seçme özgürlüğü verir;\n• AD, telemetri içermez ve sizi gözetlemez;\n• Açık kaynaklı bir yazılımdır;\n• Ücretsiz olarak kullanabilirsiniz.</string>
+    <string name="donate_bs_ending">Bu yazılımı değerli bulursanız ve teşekkür etmek ve biraz destek göstermek isterseniz, aşağıdaki düğmeyi kullanabilirsiniz.</string>
 </resources>

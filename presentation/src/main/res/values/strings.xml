@@ -147,6 +147,8 @@
     <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>
     <string name="hint_local_diffusion_warning">Warning! Local Diffusion functionality is in beta-test. Don\'t expect for high quality images using local mode. \n\nThis implementation may not work well on non-powerful phones. Generation performance and speed depends on your phone resources (CPU, RAM) and the size of generated image (the smaller the image size, the faster the generation).</string>
 
+    <string name="drawer_web_ui">Web UI</string>
+
     <string name="home_tab_txt_to_img">Txt2Img</string>
     <string name="home_tab_img_to_img">Img2Img</string>
     <string name="home_tab_gallery">Gallery</string>
@@ -305,4 +307,9 @@
 
     <string name="in_paint_area_whole">Whole picture</string>
     <string name="in_paint_area_only_masked">Only masked</string>
+
+    <string name="donate_title_thanks">Thanks to this amazing people for the support ❤</string>
+    <string name="donate_bs_title">SDAI is an Android application that:</string>
+    <string name="donate_bs_sub_title">• Brings you power of creating images with Stable Diffusion AI;\n• Gives you freedom to choose your generation provider;\n• Has not ADs, telemetry and does not spy on you;\n• Is an open source software;\n• You are welcome to use it for free.</string>
+    <string name="donate_bs_ending">In case you find this software valuable, and you\'d like to say thanks and show a little support, here is the button below.</string>
 </resources>

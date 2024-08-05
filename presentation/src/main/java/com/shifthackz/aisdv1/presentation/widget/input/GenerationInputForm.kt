@@ -57,6 +57,7 @@ import com.shifthackz.aisdv1.presentation.widget.engine.EngineSelectionComponent
 import com.shifthackz.aisdv1.presentation.widget.input.chip.ChipTextFieldEvent
 import com.shifthackz.aisdv1.presentation.widget.input.chip.ChipTextFieldWithItem
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -406,7 +407,7 @@ fun GenerationInputForm(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         trailingIcon = {
                             IconButton(onClick = {
-                                processIntent(GenerationMviIntent.Update.Seed("${Random.nextLong()}"))
+                                processIntent(GenerationMviIntent.Update.Seed("${Random.nextLong().absoluteValue}"))
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Casino,
@@ -452,7 +453,7 @@ fun GenerationInputForm(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         trailingIcon = {
                             IconButton(onClick = {
-                                processIntent(GenerationMviIntent.Update.SubSeed("${Random.nextLong()}"))
+                                processIntent(GenerationMviIntent.Update.SubSeed("${Random.nextLong().absoluteValue}"))
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Casino,

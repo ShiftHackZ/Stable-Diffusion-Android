@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
@@ -38,6 +39,7 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
     private val stubBase64ToBitmapConverter = mockk<Base64ToBitmapConverter>()
     private val stubGalleryExporter = mockk<GalleryExporter>()
     private val stubMainRouter = mockk<MainRouter>()
+    private val stubDrawerRouter = mockk<DrawerRouter>()
 
     override fun initializeViewModel() = GalleryViewModel(
         getMediaStoreInfoUseCase = stubGetMediaStoreInfoUseCase,
@@ -46,6 +48,7 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
         galleryExporter = stubGalleryExporter,
         schedulersProvider = stubSchedulersProvider,
         mainRouter = stubMainRouter,
+        drawerRouter = stubDrawerRouter,
     )
 
     @Before

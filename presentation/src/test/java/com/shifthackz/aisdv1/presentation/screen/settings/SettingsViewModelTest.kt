@@ -14,6 +14,7 @@ import com.shifthackz.aisdv1.domain.usecase.stabilityai.ObserveStabilityAiCredit
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.mocks.mockStableDiffusionModels
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
@@ -44,6 +45,7 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
     private val stubPreferenceManager = mockk<PreferenceManager>()
     private val stubBuildInfoProvider = mockk<BuildInfoProvider>()
     private val stubMainRouter = mockk<MainRouter>()
+    private val stubDrawerRouter = mockk<DrawerRouter>()
 
     override fun initializeViewModel() = SettingsViewModel(
         getStableDiffusionModelsUseCase = stubGetStableDiffusionModelsUseCase,
@@ -54,6 +56,7 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
         preferenceManager = stubPreferenceManager,
         buildInfoProvider = stubBuildInfoProvider,
         mainRouter = stubMainRouter,
+        drawerRouter = stubDrawerRouter,
     )
 
     @Before
@@ -320,22 +323,6 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
         }
         verify {
             stubPreferenceManager::saveToMediaStore.set(false)
-        }
-    }
-
-    @Test
-    fun `given received LaunchUrl intent, expected OpenUrl effect delivered to effect collector`() {
-        val intent = mockk<SettingsIntent.LaunchUrl.Donate>()
-        every {
-            intent::url.get()
-        } returns "https://5598.is.my.favorite.com"
-
-        viewModel.processIntent(intent)
-
-        runTest {
-            val expected = SettingsEffect.OpenUrl("https://5598.is.my.favorite.com")
-            val actual = viewModel.effect.firstOrNull()
-            Assert.assertEquals(expected, actual)
         }
     }
 

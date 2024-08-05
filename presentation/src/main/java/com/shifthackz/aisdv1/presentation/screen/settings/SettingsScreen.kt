@@ -19,7 +19,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.AccountTree
 import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.Circle
@@ -32,6 +31,7 @@ import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.FormatColorFill
 import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.InvertColors
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Report
@@ -41,6 +41,8 @@ import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
@@ -62,6 +64,7 @@ import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
+import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.theme.colorTokenPalette
 import com.shifthackz.aisdv1.presentation.theme.isSdAppInDarkTheme
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
@@ -117,6 +120,16 @@ private fun ScreenContent(
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            processIntent(SettingsIntent.Drawer(DrawerIntent.Open))
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = "Menu",
+                            )
+                        }
+                    },
                     title = {
                         Text(
                             text = stringResource(id = R.string.title_settings),
@@ -467,6 +480,13 @@ private fun ContentSettingsState(
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
+            startIcon = Icons.Default.MonetizationOn,
+            text = R.string.settings_item_donate.asUiText(),
+            onClick = { processIntent(SettingsIntent.Action.Donate) },
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            loading = state.loading,
             startIcon = Icons.Default.Report,
             text = R.string.settings_item_report_problem.asUiText(),
             onClick = { processIntent(SettingsIntent.Action.ReportProblem) },
@@ -477,20 +497,6 @@ private fun ContentSettingsState(
             startIcon = Icons.Default.Gavel,
             text = R.string.settings_item_policy.asUiText(),
             onClick = { processIntent(SettingsIntent.LaunchUrl.OpenPolicy) },
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.AutoMirrored.Filled.Help,
-            text = R.string.settings_item_instructions.asUiText(),
-            onClick = { processIntent(SettingsIntent.LaunchUrl.OpenServerInstructions) },
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.MonetizationOn,
-            text = R.string.settings_item_donate.asUiText(),
-            onClick = { processIntent(SettingsIntent.LaunchUrl.Donate) },
         )
         SettingsItem(
             modifier = itemModifier,

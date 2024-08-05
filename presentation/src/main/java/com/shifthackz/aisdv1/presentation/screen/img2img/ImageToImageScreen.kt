@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.DeviceUnknown
 import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -59,6 +60,7 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.screen.inpaint.components.InPaintComponent
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MAX
@@ -111,6 +113,16 @@ private fun ScreenContent(
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            processIntent(GenerationMviIntent.Drawer(DrawerIntent.Open))
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = "Menu",
+                            )
+                        }
+                    },
                     title = {
                         Text(
                             text = stringResource(id = R.string.title_image_to_image),
