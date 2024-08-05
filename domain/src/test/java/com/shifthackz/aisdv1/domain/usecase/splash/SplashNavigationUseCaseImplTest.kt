@@ -28,7 +28,7 @@ class SplashNavigationUseCaseImplTest {
         whenever(stubPreferenceManager.forceSetupAfterUpdate)
             .thenReturn(false)
 
-        whenever(stubPreferenceManager.serverUrl)
+        whenever(stubPreferenceManager.automatic1111ServerUrl)
             .thenReturn("")
 
         whenever(stubPreferenceManager.source)
@@ -45,7 +45,7 @@ class SplashNavigationUseCaseImplTest {
         whenever(stubPreferenceManager.forceSetupAfterUpdate)
             .thenReturn(false)
 
-        whenever(stubPreferenceManager.serverUrl)
+        whenever(stubPreferenceManager.automatic1111ServerUrl)
             .thenReturn("http://192.168.0.1:7860")
 
         whenever(stubPreferenceManager.source)
@@ -62,7 +62,7 @@ class SplashNavigationUseCaseImplTest {
         whenever(stubPreferenceManager.forceSetupAfterUpdate)
             .thenReturn(false)
 
-        whenever(stubPreferenceManager.serverUrl)
+        whenever(stubPreferenceManager.automatic1111ServerUrl)
             .thenReturn("")
 
         whenever(stubPreferenceManager.source)
@@ -79,7 +79,7 @@ class SplashNavigationUseCaseImplTest {
         whenever(stubPreferenceManager.forceSetupAfterUpdate)
             .thenReturn(false)
 
-        whenever(stubPreferenceManager.serverUrl)
+        whenever(stubPreferenceManager.automatic1111ServerUrl)
             .thenReturn("http://192.168.0.1:7860")
 
         whenever(stubPreferenceManager.source)

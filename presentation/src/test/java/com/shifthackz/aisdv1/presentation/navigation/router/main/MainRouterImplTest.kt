@@ -58,7 +58,7 @@ class MainRouterImplTest {
             .assertNoErrors()
             .assertValueAt(0) { actual ->
                 val expectedRoute =
-                    "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SPLASH.key}"
+                    "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SPLASH.ordinal}"
                 actual is NavigationEffect.Navigate.RouteBuilder
                         && actual.route == expectedRoute
             }
@@ -73,7 +73,7 @@ class MainRouterImplTest {
             .assertNoErrors()
             .assertValueAt(0) { actual ->
                 val expectedRoute =
-                    "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.key}"
+                    "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.ordinal}"
                 actual is NavigationEffect.Navigate.RouteBuilder
                         && actual.route == expectedRoute
             }

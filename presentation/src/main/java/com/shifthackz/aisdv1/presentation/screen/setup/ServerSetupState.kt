@@ -21,6 +21,7 @@ data class ServerSetupState(
     val allowedModes: List<ServerSource> = ServerSource.entries,
     val screenModal: Modal = Modal.None,
     val serverUrl: String = "",
+    val swarmUiUrl: String = "",
     val hordeApiKey: String = "",
     val huggingFaceApiKey: String = "",
     val openAiApiKey: String = "",
@@ -36,6 +37,7 @@ data class ServerSetupState(
     val localCustomModel: Boolean = false,
     val passwordVisible: Boolean = false,
     val serverUrlValidationError: UiText? = null,
+    val swarmUiUrlValidationError: UiText? = null,
     val loginValidationError: UiText? = null,
     val passwordValidationError: UiText? = null,
     val hordeApiKeyValidationError: UiText? = null,
@@ -83,13 +85,12 @@ data class ServerSetupState(
     )
 }
 
-//ToDo refactor key to enum ordinal
-enum class ServerSetupLaunchSource(val key: Int) {
-    SPLASH(0),
-    SETTINGS(1);
+enum class ServerSetupLaunchSource {
+    SPLASH,
+    SETTINGS;
 
     companion object {
-        fun fromKey(key: Int) = entries.firstOrNull { it.key == key } ?: SPLASH
+        fun fromKey(key: Int) = entries.firstOrNull { it.ordinal == key } ?: SPLASH
     }
 }
 

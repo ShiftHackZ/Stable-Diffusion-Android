@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.presentation.widget.engine
 
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
-import com.shifthackz.aisdv1.core.common.model.Quintuple
+import com.shifthackz.aisdv1.core.common.model.Hexagonal
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
@@ -16,6 +16,7 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseC
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.stabilityai.FetchAndGetStabilityAiEnginesUseCase
+import com.shifthackz.aisdv1.domain.usecase.swarmmodel.FetchAndGetSwarmUiModelsUseCase
 import com.shifthackz.android.core.mvi.EmptyEffect
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -26,6 +27,7 @@ class EngineSelectionViewModel(
     private val getConfigurationUseCase: GetConfigurationUseCase,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
     private val getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
+    fetchAndGetSwarmUiModelsUseCase: FetchAndGetSwarmUiModelsUseCase,
     observeLocalAiModelsUseCase: ObserveLocalAiModelsUseCase,
     fetchAndGetStabilityAiEnginesUseCase: FetchAndGetStabilityAiEnginesUseCase,
     getHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
@@ -40,6 +42,10 @@ class EngineSelectionViewModel(
             .onErrorReturn { Configuration() }
 
         val a1111Models = getStableDiffusionModelsUseCase()
+            .onErrorReturn { emptyList() }
+            .toFlowable()
+
+        val swarmModels = fetchAndGetSwarmUiModelsUseCase()
             .onErrorReturn { emptyList() }
             .toFlowable()
 
@@ -58,16 +64,17 @@ class EngineSelectionViewModel(
         !Flowable.combineLatest(
             configuration,
             a1111Models,
+            swarmModels,
             huggingFaceModels,
             stabilityAiEngines,
             localAiModels,
-            ::Quintuple,
+            ::Hexagonal,
         )
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = ::errorLog,
                 onComplete = EmptyLambda,
-                onNext = { (config, sdModels, hfModels, stEngines, localModels) ->
+                onNext = { (config, sdModels, swarmModels, hfModels, stEngines, localModels) ->
                     updateState { state ->
                         state.copy(
                             loading = false,
@@ -75,6 +82,9 @@ class EngineSelectionViewModel(
                             sdModels = sdModels.map { it.first.title },
                             selectedSdModel = sdModels.firstOrNull { it.second }?.first?.title
                                 ?: state.selectedSdModel,
+                            swarmModels = swarmModels.map { it.name },
+                            selectedSwarmModel = swarmModels.firstOrNull { it.name == config.swarmUiModel }?.name
+                                ?: state.selectedSwarmModel,
                             hfModels = hfModels.map { it.alias },
                             selectedHfModel = config.huggingFaceModel,
                             stEngines = stEngines.map { it.id },
@@ -110,6 +120,8 @@ class EngineSelectionViewModel(
                         )
                     }
                 }
+
+            ServerSource.SWARM_UI -> preferenceManager.swarmUiModel = intent.value
 
             ServerSource.HUGGING_FACE -> preferenceManager.huggingFaceModel = intent.value
 

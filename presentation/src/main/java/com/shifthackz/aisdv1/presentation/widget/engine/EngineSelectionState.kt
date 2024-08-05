@@ -11,6 +11,8 @@ data class EngineSelectionState(
     val mode: ServerSource = ServerSource.AUTOMATIC1111,
     val sdModels: List<String> = emptyList(),
     val selectedSdModel: String = "",
+    val swarmModels: List<String> = emptyList(),
+    val selectedSwarmModel: String = "",
     val hfModels: List<String> = emptyList(),
     val selectedHfModel: String = "",
     val stEngines: List<String> = emptyList(),

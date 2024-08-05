@@ -8,14 +8,14 @@ class SessionPreferenceImplTest {
     private val sessionPreference = SessionPreferenceImpl()
 
     @Test
-    fun `given user reads default coinsPerDay value, expected -1`() {
-        Assert.assertEquals(-1, sessionPreference.coinsPerDay)
+    fun `given user reads default swarmUiSessionId value, expected empty String`() {
+        Assert.assertEquals("", sessionPreference.swarmUiSessionId)
     }
 
     @Test
-    fun `given user reads default coinsPerDay value, then changes it, expected -1, then changed value`() {
-        Assert.assertEquals(-1, sessionPreference.coinsPerDay)
-        sessionPreference.coinsPerDay = 5598
-        Assert.assertEquals(5598, sessionPreference.coinsPerDay)
+    fun `given user reads default coinsPerDay value, then changes it, expected empty String, then changed value`() {
+        Assert.assertEquals("", sessionPreference.swarmUiSessionId)
+        sessionPreference.swarmUiSessionId = "5598"
+        Assert.assertEquals("5598", sessionPreference.swarmUiSessionId)
     }
 }

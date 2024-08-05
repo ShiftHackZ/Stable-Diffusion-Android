@@ -43,6 +43,7 @@ val databaseModule = module {
     single { get<CacheDatabase>().sdHyperNetworkDao() }
     single { get<CacheDatabase>().sdEmbeddingDao() }
     single { get<CacheDatabase>().serverConfigurationDao() }
+    single { get<CacheDatabase>().swarmUiModelDao() }
     //endregion
 
     //region PERSISTENT DB DAOs

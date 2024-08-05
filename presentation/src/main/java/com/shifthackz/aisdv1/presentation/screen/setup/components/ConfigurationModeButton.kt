@@ -34,6 +34,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
+import com.shifthackz.aisdv1.presentation.widget.source.getName
 
 @Composable
 fun ConfigurationModeButton(
@@ -65,7 +66,8 @@ fun ConfigurationModeButton(
                     .size(42.dp)
                     .padding(top = 8.dp, bottom = 8.dp),
                 imageVector = when (mode) {
-                    ServerSource.AUTOMATIC1111 -> Icons.Default.Computer
+                    ServerSource.AUTOMATIC1111,
+                    ServerSource.SWARM_UI -> Icons.Default.Computer
                     ServerSource.HORDE,
                     ServerSource.OPEN_AI,
                     ServerSource.STABILITY_AI,
@@ -79,25 +81,20 @@ fun ConfigurationModeButton(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(top = 8.dp, bottom = 8.dp),
-                text = stringResource(id = when (mode) {
-                    ServerSource.AUTOMATIC1111 -> R.string.srv_type_own
-                    ServerSource.HORDE -> R.string.srv_type_horde
-                    ServerSource.LOCAL -> R.string.srv_type_local
-                    ServerSource.HUGGING_FACE -> R.string.srv_type_hugging_face
-                    ServerSource.OPEN_AI -> R.string.srv_type_open_ai
-                    ServerSource.STABILITY_AI -> R.string.srv_type_stability_ai
-                }),
+                text = mode.getName(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
         val descriptionId = when (mode) {
-            ServerSource.AUTOMATIC1111 -> null
+            ServerSource.AUTOMATIC1111 -> R.string.hint_server_setup_sub_title
             ServerSource.HORDE -> R.string.hint_server_horde_sub_title
             ServerSource.HUGGING_FACE -> R.string.hint_hugging_face_sub_title
             ServerSource.OPEN_AI -> R.string.hint_open_ai_sub_title
             ServerSource.LOCAL -> R.string.hint_local_diffusion_sub_title
             ServerSource.STABILITY_AI -> R.string.hint_stability_ai_sub_title
+            ServerSource.SWARM_UI -> R.string.hint_swarm_ui_sub_title
+            else -> null
         }
         descriptionId?.let { resId ->
             Text(

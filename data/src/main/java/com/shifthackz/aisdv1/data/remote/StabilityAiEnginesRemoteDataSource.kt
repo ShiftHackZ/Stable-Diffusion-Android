@@ -1,6 +1,6 @@
 package com.shifthackz.aisdv1.data.remote
 
-import com.shifthackz.aisdv1.data.mappers.mapRawToDomain
+import com.shifthackz.aisdv1.data.mappers.mapRawToCheckpointDomain
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiEnginesDataSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiEngine
 import com.shifthackz.aisdv1.network.api.stabilityai.StabilityAiApi
@@ -13,5 +13,5 @@ internal class StabilityAiEnginesRemoteDataSource(
 
     override fun fetch(): Single<List<StabilityAiEngine>> = api
         .fetchEngines()
-        .map(List<StabilityAiEngineRaw>::mapRawToDomain)
+        .map(List<StabilityAiEngineRaw>::mapRawToCheckpointDomain)
 }

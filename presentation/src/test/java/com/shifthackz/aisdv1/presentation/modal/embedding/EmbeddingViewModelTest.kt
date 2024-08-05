@@ -1,8 +1,10 @@
 package com.shifthackz.aisdv1.presentation.modal.embedding
 
+import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.sdembedding.FetchAndGetEmbeddingsUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
-import com.shifthackz.aisdv1.presentation.mocks.mockStableDiffusionEmbeddings
+import com.shifthackz.aisdv1.presentation.mocks.mockEmbeddings
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
@@ -12,23 +14,35 @@ import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 
 class EmbeddingViewModelTest : CoreViewModelTest<EmbeddingViewModel>() {
 
     private val stubException = Throwable("Something went wrong.")
     private val stubFetchAndGetEmbeddingsUseCase = mockk<FetchAndGetEmbeddingsUseCase>()
+    private val stubPreferenceManager = mockk<PreferenceManager>()
 
     override fun initializeViewModel() = EmbeddingViewModel(
         fetchAndGetEmbeddingsUseCase = stubFetchAndGetEmbeddingsUseCase,
+        preferenceManager = stubPreferenceManager,
         schedulersProvider = stubSchedulersProvider,
     )
+
+    @Before
+    override fun initialize() {
+        super.initialize()
+
+        every {
+            stubPreferenceManager.source
+        } returns ServerSource.AUTOMATIC1111
+    }
 
     @Test
     fun `given update data, fetch embeddings successful, expected UI state with embeddings list`() {
         every {
             stubFetchAndGetEmbeddingsUseCase()
-        } returns Single.just(mockStableDiffusionEmbeddings)
+        } returns Single.just(mockEmbeddings)
 
         viewModel.updateData("prompt", "negative")
 
@@ -106,7 +120,7 @@ class EmbeddingViewModelTest : CoreViewModelTest<EmbeddingViewModel>() {
     fun `given received ToggleItem intent, expected item from intent isInNegativePrompt changed in UI state`() {
         every {
             stubFetchAndGetEmbeddingsUseCase()
-        } returns Single.just(mockStableDiffusionEmbeddings)
+        } returns Single.just(mockEmbeddings)
 
         viewModel.updateData("prompt", "negative")
 

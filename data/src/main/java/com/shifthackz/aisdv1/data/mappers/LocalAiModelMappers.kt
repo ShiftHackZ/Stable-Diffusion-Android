@@ -5,10 +5,10 @@ import com.shifthackz.aisdv1.network.response.DownloadableModelResponse
 import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
 
 //region RAW --> DOMAIN
-fun List<DownloadableModelResponse>.mapRawToDomain(): List<LocalAiModel> =
-    map(DownloadableModelResponse::mapRawToDomain)
+fun List<DownloadableModelResponse>.mapRawToCheckpointDomain(): List<LocalAiModel> =
+    map(DownloadableModelResponse::mapRawToCheckpointDomain)
 
-fun DownloadableModelResponse.mapRawToDomain(): LocalAiModel = with(this) {
+fun DownloadableModelResponse.mapRawToCheckpointDomain(): LocalAiModel = with(this) {
     LocalAiModel(
         id = id ?: "",
         name = name ?: "",

@@ -1,9 +1,9 @@
 package com.shifthackz.aisdv1.domain.mocks
 
-import com.shifthackz.aisdv1.domain.entity.StableDiffusionEmbedding
+import com.shifthackz.aisdv1.domain.entity.Embedding
 
-val mockStableDiffusionEmbeddings = listOf(
-    StableDiffusionEmbedding("embedding_1"),
-    StableDiffusionEmbedding("embedding_2"),
-    StableDiffusionEmbedding("embedding_3"),
+val mockEmbeddings = listOf(
+    Embedding("embedding_1"),
+    Embedding("embedding_2"),
+    Embedding("embedding_3"),
 )

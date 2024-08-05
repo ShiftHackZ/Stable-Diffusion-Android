@@ -25,8 +25,16 @@ class GetConfigurationUseCaseImplTest {
         } returns AuthorizationCredentials.None
 
         every {
-            stubPreferenceManager::serverUrl.get()
+            stubPreferenceManager::automatic1111ServerUrl.get()
         } returns mockConfiguration.serverUrl
+
+        every {
+            stubPreferenceManager::swarmUiServerUrl.get()
+        } returns mockConfiguration.swarmUiUrl
+
+        every {
+            stubPreferenceManager::swarmUiModel.get()
+        } returns mockConfiguration.swarmUiModel
 
         every {
             stubPreferenceManager::demoMode.get()

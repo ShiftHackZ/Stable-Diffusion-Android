@@ -4,6 +4,8 @@ import com.shifthackz.aisdv1.domain.entity.Configuration
 
 val mockConfiguration = Configuration(
     serverUrl = "http://5598.is.my.favorite.com",
+    swarmUiUrl = "http://5598.is.my.favorite.com",
+    swarmUiModel = "5598",
     hordeApiKey = "5598",
     openAiApiKey = "5598",
     huggingFaceApiKey = "5598",

@@ -13,6 +13,7 @@ import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepositor
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test
 
@@ -24,6 +25,7 @@ class TextToImageUseCaseImplTest {
     private val stubHuggingFaceGenerationRepository = mock<HuggingFaceGenerationRepository>()
     private val stubOpenAiGenerationRepository = mock<OpenAiGenerationRepository>()
     private val stubStabilityAiGenerationRepository = mock<StabilityAiGenerationRepository>()
+    private val stubSwarmUiGenerationRepository = mock<SwarmUiGenerationRepository>()
     private val stubLocalDiffusionGenerationRepository = mock<LocalDiffusionGenerationRepository>()
     private val stubPreferenceManager = mock<PreferenceManager>()
 
@@ -34,6 +36,7 @@ class TextToImageUseCaseImplTest {
         openAiGenerationRepository = stubOpenAiGenerationRepository,
         stabilityAiGenerationRepository = stubStabilityAiGenerationRepository,
         localDiffusionGenerationRepository = stubLocalDiffusionGenerationRepository,
+        swarmUiGenerationRepository = stubSwarmUiGenerationRepository,
         preferenceManager = stubPreferenceManager,
     )
 

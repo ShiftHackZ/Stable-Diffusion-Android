@@ -15,3 +15,8 @@ fun bitmapToBase64(bitmap: Bitmap): String {
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
     return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
 }
+
+fun base64DefaultToNoWrap(base64Default: String): String {
+    val byteArray = Base64.decode(base64Default, Base64.DEFAULT)
+    return Base64.encodeToString(byteArray, Base64.NO_WRAP)
+}

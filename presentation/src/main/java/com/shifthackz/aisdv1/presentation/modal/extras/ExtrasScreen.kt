@@ -44,10 +44,12 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.widget.error.ErrorComposable
+import com.shifthackz.aisdv1.presentation.widget.source.getName
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 import org.koin.androidx.compose.koinViewModel
 
@@ -164,7 +166,7 @@ private fun ScreenContent(
                         } else {
                             if (state.loras.isEmpty()) {
                                 item(key = "empty_state") {
-                                    ExtrasEmptyState(type = state.type)
+                                    ExtrasEmptyState(state.type, state.source)
                                 }
                             } else {
                                 items(
@@ -188,7 +190,7 @@ private fun ScreenContent(
 }
 
 @Composable
-private fun ExtrasEmptyState(type: ExtraType) {
+private fun ExtrasEmptyState(type: ExtraType, source: ServerSource) {
     Column(
         verticalArrangement = Arrangement.Center,
     ) {
@@ -197,16 +199,30 @@ private fun ExtrasEmptyState(type: ExtraType) {
             text = stringResource(id = R.string.extras_empty_title),
             fontSize = 20.sp,
         )
+        val path = when (type) {
+            ExtraType.Lora -> when (source) {
+                ServerSource.AUTOMATIC1111 -> "../models/Lora"
+                ServerSource.SWARM_UI -> "../Models/Lora"
+                else -> ""
+            }
+            ExtraType.HyperNet -> when (source) {
+                ServerSource.AUTOMATIC1111 -> "../models/hypernetworks"
+                ServerSource.SWARM_UI -> ""
+                else -> ""
+            }
+        }
         Text(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .padding(horizontal = 16.dp)
                 .align(Alignment.CenterHorizontally),
             text = stringResource(
-                id = when (type) {
+                when (type) {
                     ExtraType.Lora -> R.string.extras_empty_sub_title_lora
                     ExtraType.HyperNet -> R.string.extras_empty_sub_title_hypernet
-                }
+                },
+                source.getName(),
+                path,
             ),
             textAlign = TextAlign.Center,
         )

@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test
 
@@ -18,6 +19,7 @@ class ImageToImageUseCaseImplTest {
 
     private val stubException = Throwable("Unable to generate image.")
     private val stubStableDiffusionGenerationRepository = mock<StableDiffusionGenerationRepository>()
+    private val stubSwarmUiGenerationRepository = mock<SwarmUiGenerationRepository>()
     private val stubHordeGenerationRepository = mock<HordeGenerationRepository>()
     private val stubHuggingFaceGenerationRepository = mock<HuggingFaceGenerationRepository>()
     private val stubStabilityAiGenerationRepository = mock<StabilityAiGenerationRepository>()
@@ -25,6 +27,7 @@ class ImageToImageUseCaseImplTest {
 
     private val useCase = ImageToImageUseCaseImpl(
         stableDiffusionGenerationRepository = stubStableDiffusionGenerationRepository,
+        swarmUiGenerationRepository = stubSwarmUiGenerationRepository,
         hordeGenerationRepository = stubHordeGenerationRepository,
         huggingFaceGenerationRepository = stubHuggingFaceGenerationRepository,
         stabilityAiGenerationRepository = stubStabilityAiGenerationRepository,

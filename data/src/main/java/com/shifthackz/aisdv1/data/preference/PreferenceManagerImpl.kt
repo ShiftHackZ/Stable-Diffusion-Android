@@ -20,10 +20,25 @@ class PreferenceManagerImpl(
     private val preferencesChangedSubject: BehaviorSubject<Unit> =
         BehaviorSubject.createDefault(Unit)
 
-    override var serverUrl: String
+    override var automatic1111ServerUrl: String
         get() = (preferences.getString(KEY_SERVER_URL, "") ?: "").fixUrlSlashes()
         set(value) = preferences.edit()
             .putString(KEY_SERVER_URL, value.fixUrlSlashes())
+            .apply()
+            .also { onPreferencesChanged() }
+
+    override var swarmUiServerUrl: String
+        get() = (preferences.getString(KEY_SWARM_SERVER_URL, "") ?: "").fixUrlSlashes()
+        set(value) = preferences.edit()
+            .putString(KEY_SWARM_SERVER_URL, value.fixUrlSlashes())
+            .apply()
+            .also { onPreferencesChanged() }
+
+    override var swarmUiModel: String
+        get() = preferences.getString(KEY_SWARM_MODEL, "") ?: ""
+        set(value) = preferences
+            .edit()
+            .putString(KEY_SWARM_MODEL, value)
             .apply()
             .also { onPreferencesChanged() }
 
@@ -192,7 +207,7 @@ class PreferenceManagerImpl(
         .toFlowable(BackpressureStrategy.LATEST)
         .map {
             Settings(
-                serverUrl = serverUrl,
+                serverUrl = automatic1111ServerUrl,
                 sdModel = sdModel,
                 demoMode = demoMode,
                 monitorConnectivity = monitorConnectivity,
@@ -215,6 +230,8 @@ class PreferenceManagerImpl(
 
     companion object {
         const val KEY_SERVER_URL = "key_server_url"
+        const val KEY_SWARM_SERVER_URL = "key_swarm_server_url"
+        const val KEY_SWARM_MODEL = "key_swarm_model"
         const val KEY_DEMO_MODE = "key_demo_mode"
         const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
         const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"

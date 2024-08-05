@@ -12,7 +12,9 @@ internal class GetConfigurationUseCaseImpl(
 
     override fun invoke(): Single<Configuration> = Single.just(
         Configuration(
-            serverUrl = preferenceManager.serverUrl,
+            serverUrl = preferenceManager.automatic1111ServerUrl,
+            swarmUiUrl = preferenceManager.swarmUiServerUrl,
+            swarmUiModel = preferenceManager.swarmUiModel,
             demoMode = preferenceManager.demoMode,
             source = preferenceManager.source,
             hordeApiKey = preferenceManager.hordeApiKey,

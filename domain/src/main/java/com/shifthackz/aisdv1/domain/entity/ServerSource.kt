@@ -9,10 +9,23 @@ enum class ServerSource(
         featureTags = setOf(
             FeatureTag.Txt2Img,
             FeatureTag.Img2Img,
+            FeatureTag.OwnServer,
             FeatureTag.MultipleModels,
             FeatureTag.Lora,
             FeatureTag.TextualInversion,
             FeatureTag.HyperNetworks,
+            FeatureTag.Batch,
+        ),
+    ),
+    SWARM_UI(
+        key = "swarm_ui",
+        featureTags = setOf(
+            FeatureTag.Txt2Img,
+            FeatureTag.OwnServer,
+            FeatureTag.Img2Img,
+            FeatureTag.MultipleModels,
+            FeatureTag.Lora,
+            FeatureTag.TextualInversion,
             FeatureTag.Batch,
         ),
     ),

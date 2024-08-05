@@ -12,6 +12,8 @@ sealed interface ServerSetupIntent : MviIntent {
 
     data class UpdateServerUrl(val url: String) : ServerSetupIntent
 
+    data class UpdateSwarmUiUrl(val url: String) : ServerSetupIntent
+
     data class UpdateAuthType(val type: ServerSetupState.AuthType) : ServerSetupIntent
 
     data class UpdateLogin(val login: String) : ServerSetupIntent
@@ -56,7 +58,11 @@ sealed interface ServerSetupIntent : MviIntent {
         data object A1111Instructions : LaunchUrl() {
             override val url: String
                 get() = linksProvider.setupInstructionsUrl
+        }
 
+        data object SwarmUiInstructions : LaunchUrl() {
+            override val url: String
+                get() = linksProvider.swarmUiInfoUrl
         }
 
         data object HordeInfo : LaunchUrl() {

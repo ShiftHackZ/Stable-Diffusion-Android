@@ -1,20 +1,20 @@
 package com.shifthackz.aisdv1.data.mappers
 
-import com.shifthackz.aisdv1.domain.entity.StableDiffusionEmbedding
+import com.shifthackz.aisdv1.domain.entity.Embedding
 import com.shifthackz.aisdv1.network.response.SdEmbeddingsResponse
 import com.shifthackz.aisdv1.storage.db.cache.entity.StableDiffusionEmbeddingEntity
 
 //region RAW -> DOMAIN
-fun SdEmbeddingsResponse.mapRawToDomain(): List<StableDiffusionEmbedding> =
-    loaded?.keys?.map(::StableDiffusionEmbedding) ?: emptyList()
+fun SdEmbeddingsResponse.mapRawToCheckpointDomain(): List<Embedding> =
+    loaded?.keys?.map(::Embedding) ?: emptyList()
 
 //endregion
 
 //region DOMAIN -> ENTITY
-fun List<StableDiffusionEmbedding>.mapDomainToEntity(): List<StableDiffusionEmbeddingEntity> =
-    map(StableDiffusionEmbedding::mapDomainToEntity)
+fun List<Embedding>.mapDomainToEntity(): List<StableDiffusionEmbeddingEntity> =
+    map(Embedding::mapDomainToEntity)
 
-fun StableDiffusionEmbedding.mapDomainToEntity(): StableDiffusionEmbeddingEntity = with(this) {
+fun Embedding.mapDomainToEntity(): StableDiffusionEmbeddingEntity = with(this) {
     StableDiffusionEmbeddingEntity(
         id = keyword,
         keyword = keyword,
@@ -23,10 +23,10 @@ fun StableDiffusionEmbedding.mapDomainToEntity(): StableDiffusionEmbeddingEntity
 //endregion
 
 //region ENTITY -> DOMAIN
-fun List<StableDiffusionEmbeddingEntity>.mapEntityToDomain(): List<StableDiffusionEmbedding> =
+fun List<StableDiffusionEmbeddingEntity>.mapEntityToDomain(): List<Embedding> =
     map(StableDiffusionEmbeddingEntity::mapEntityToDomain)
 
-fun StableDiffusionEmbeddingEntity.mapEntityToDomain(): StableDiffusionEmbedding = with(this) {
-    StableDiffusionEmbedding(keyword)
+fun StableDiffusionEmbeddingEntity.mapEntityToDomain(): Embedding = with(this) {
+    Embedding(keyword)
 }
 //endregion

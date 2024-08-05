@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.data.remote
 import com.shifthackz.aisdv1.data.mocks.mockEmptySdEmbeddingsResponse
 import com.shifthackz.aisdv1.data.mocks.mockSdEmbeddingsResponse
 import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
-import com.shifthackz.aisdv1.domain.entity.StableDiffusionEmbedding
+import com.shifthackz.aisdv1.domain.entity.Embedding
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
 import io.mockk.every
 import io.mockk.mockk
@@ -39,7 +39,7 @@ class StableDiffusionEmbeddingsRemoteDataSourceTest {
             .fetchEmbeddings()
             .test()
             .assertNoErrors()
-            .assertValue(listOf(StableDiffusionEmbedding("1504")))
+            .assertValue(listOf(Embedding("1504")))
             .await()
             .assertComplete()
     }

@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.data.mappers
 
+import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
@@ -7,9 +8,11 @@ import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
 import com.shifthackz.aisdv1.network.request.ImageToImageRequest
+import com.shifthackz.aisdv1.network.request.SwarmUiGenerationRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import java.util.Date
 
+//region PAYLOAD --> REQUEST
 fun ImageToImagePayload.mapToRequest(): ImageToImageRequest = with(this) {
     ImageToImageRequest(
         initImages = listOf(base64Image),
@@ -93,6 +96,30 @@ fun ImageToImagePayload.mapToStabilityAiRequest() = with(this) {
     }
 }
 
+fun ImageToImagePayload.mapToSwarmUiRequest(
+    sessionId: String,
+    swarmUiModel: String,
+): SwarmUiGenerationRequest = with(this) {
+    SwarmUiGenerationRequest(
+        sessionId = sessionId,
+        model = swarmUiModel,
+        initImage = base64Image,
+        initImageCreativity = denoisingStrength.roundTo(2).toString(),
+        images = 1,
+        prompt = prompt,
+        negativePrompt = negativePrompt,
+        width = width,
+        height = height,
+        seed = seed.trim().ifEmpty { null },
+        variationSeed = subSeed.trim().ifEmpty { null },
+        variationSeedStrength = subSeedStrength.takeIf { it >= 0.1 }?.toString(),
+        cfgScale = cfgScale,
+        steps = samplingSteps,
+    )
+}
+//endregion
+
+//region RESPONSE --> RESULT
 fun Pair<ImageToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerationResult =
     let { (payload, response) ->
         AiGenerationResult(
@@ -140,3 +167,4 @@ fun Pair<ImageToImagePayload, String>.mapCloudToAiGenResult(): AiGenerationResul
             subSeedStrength = payload.subSeedStrength,
         )
     }
+//endregion

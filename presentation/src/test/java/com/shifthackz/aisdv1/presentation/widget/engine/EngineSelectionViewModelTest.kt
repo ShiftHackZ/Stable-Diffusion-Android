@@ -11,11 +11,13 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseC
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.stabilityai.FetchAndGetStabilityAiEnginesUseCase
+import com.shifthackz.aisdv1.domain.usecase.swarmmodel.FetchAndGetSwarmUiModelsUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.mocks.mockHuggingFaceModels
 import com.shifthackz.aisdv1.presentation.mocks.mockLocalAiModels
 import com.shifthackz.aisdv1.presentation.mocks.mockStabilityAiEngines
 import com.shifthackz.aisdv1.presentation.mocks.mockStableDiffusionModels
+import com.shifthackz.aisdv1.presentation.mocks.mockSwarmUiModels
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -42,10 +44,9 @@ class EngineSelectionViewModelTest : CoreViewModelTest<EngineSelectionViewModel>
     private val stubSelectStableDiffusionModelUseCase = mockk<SelectStableDiffusionModelUseCase>()
     private val stubGetStableDiffusionModelsUseCase = mockk<GetStableDiffusionModelsUseCase>()
     private val stubObserveLocalAiModelsUseCase = mockk<ObserveLocalAiModelsUseCase>()
-    private val stubFetchAndGetStabilityAiEnginesUseCase =
-        mockk<FetchAndGetStabilityAiEnginesUseCase>()
-    private val stubFetchAndGetHuggingFaceModelsUseCase =
-        mockk<FetchAndGetHuggingFaceModelsUseCase>()
+    private val stubFetchAndGetStabilityAiEnginesUseCase = mockk<FetchAndGetStabilityAiEnginesUseCase>()
+    private val stubFetchAndGetHuggingFaceModelsUseCase = mockk<FetchAndGetHuggingFaceModelsUseCase>()
+    private val stubFetchAndGetSwarmUiModelsUseCase = mockk<FetchAndGetSwarmUiModelsUseCase>()
 
     override fun initializeViewModel() = EngineSelectionViewModel(
         preferenceManager = stubPreferenceManager,
@@ -56,6 +57,7 @@ class EngineSelectionViewModelTest : CoreViewModelTest<EngineSelectionViewModel>
         observeLocalAiModelsUseCase = stubObserveLocalAiModelsUseCase,
         fetchAndGetStabilityAiEnginesUseCase = stubFetchAndGetStabilityAiEnginesUseCase,
         getHuggingFaceModelsUseCase = stubFetchAndGetHuggingFaceModelsUseCase,
+        fetchAndGetSwarmUiModelsUseCase = stubFetchAndGetSwarmUiModelsUseCase,
     )
 
     @Before
@@ -106,6 +108,8 @@ class EngineSelectionViewModelTest : CoreViewModelTest<EngineSelectionViewModel>
                 selectedStEngine = "5598",
                 localAiModels = listOf(LocalAiModel.CUSTOM),
                 selectedLocalAiModelId = "CUSTOM",
+                swarmModels = listOf("5598"),
+                selectedSwarmModel = "5598",
             )
             val actual = viewModel.state.value
             Assert.assertEquals(expected, actual)
@@ -177,6 +181,21 @@ class EngineSelectionViewModelTest : CoreViewModelTest<EngineSelectionViewModel>
     }
 
     @Test
+    fun `given received EngineSelectionIntent, source is SWARM_UI, expected swarmModel changed in preference`() {
+        mockInitialData(DataTestCase.Mock, ServerSource.SWARM_UI)
+
+        every {
+            stubPreferenceManager::swarmUiModel.set(any())
+        } returns Unit
+
+        viewModel.processIntent(EngineSelectionIntent("151297"))
+
+        verify {
+            stubPreferenceManager::swarmUiModel.set("151297")
+        }
+    }
+
+    @Test
     fun `given received EngineSelectionIntent, source is HUGGING_FACE, expected huggingFaceModel changed in preference`() {
         mockInitialData(DataTestCase.Mock, ServerSource.HUGGING_FACE)
 
@@ -240,6 +259,7 @@ class EngineSelectionViewModelTest : CoreViewModelTest<EngineSelectionViewModel>
                 Configuration(
                     huggingFaceModel = "prompthero/openjourney-v4",
                     stabilityAiEngineId = "5598",
+                    swarmUiModel = "5598",
                     localModelId = "CUSTOM",
                     source = source,
                 ),
@@ -269,6 +289,14 @@ class EngineSelectionViewModelTest : CoreViewModelTest<EngineSelectionViewModel>
             stubFetchAndGetStabilityAiEnginesUseCase()
         } returns when (testCase) {
             DataTestCase.Mock -> Single.just(mockStabilityAiEngines)
+            DataTestCase.Empty -> Single.just(emptyList())
+            DataTestCase.Exception -> Single.error(stubException)
+        }
+
+        every {
+            stubFetchAndGetSwarmUiModelsUseCase()
+        } returns when (testCase) {
+            DataTestCase.Mock -> Single.just(mockSwarmUiModels)
             DataTestCase.Empty -> Single.just(emptyList())
             DataTestCase.Exception -> Single.error(stubException)
         }

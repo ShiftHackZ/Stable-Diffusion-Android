@@ -31,7 +31,7 @@ fun NavGraphBuilder.mainNavGraph() {
         ComposeNavigator.Destination(provider[ComposeNavigator::class]) { entry ->
             val sourceKey = entry.arguments
                 ?.getInt(Constants.PARAM_SOURCE)
-                ?: ServerSetupLaunchSource.SPLASH.key
+                ?: ServerSetupLaunchSource.SPLASH.ordinal
             ServerSetupScreen(launchSourceKey = sourceKey)
         }.apply {
             route = Constants.ROUTE_SERVER_SETUP_FULL

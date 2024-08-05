@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.data.remote
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
-import com.shifthackz.aisdv1.data.mappers.mapRawToDomain
+import com.shifthackz.aisdv1.data.mappers.mapRawToCheckpointDomain
 import com.shifthackz.aisdv1.data.mocks.mockDownloadableModelsResponse
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApi
 import io.reactivex.rxjava3.core.Single
@@ -25,7 +25,7 @@ class DownloadableModelRemoteDataSourceTest {
         whenever(stubApi.fetchDownloadableModels())
             .thenReturn(Single.just(mockDownloadableModelsResponse))
 
-        val expected = mockDownloadableModelsResponse.mapRawToDomain()
+        val expected = mockDownloadableModelsResponse.mapRawToCheckpointDomain()
 
         remoteDataSource
             .fetch()

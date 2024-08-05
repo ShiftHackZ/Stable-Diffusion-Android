@@ -28,7 +28,15 @@ class SetServerConfigurationUseCaseImplTest {
         } returns Unit
 
         every {
-            stubPreferenceManager::serverUrl.set(any())
+            stubPreferenceManager::automatic1111ServerUrl.set(any())
+        } returns Unit
+
+        every {
+            stubPreferenceManager::swarmUiModel.set(any())
+        } returns Unit
+
+        every {
+            stubPreferenceManager::swarmUiServerUrl.set(any())
         } returns Unit
 
         every {

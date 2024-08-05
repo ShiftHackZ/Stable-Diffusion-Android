@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.core.imageprocessing.di
 
 import android.graphics.BitmapFactory
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.core.imageprocessing.Base64EncodingConverter
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.imageprocessing.R
@@ -19,5 +20,9 @@ val imageProcessingModule = module {
 
     factory {
         BitmapToBase64Converter(get<SchedulersProvider>().computation)
+    }
+
+    factory {
+        Base64EncodingConverter(get<SchedulersProvider>().computation)
     }
 }

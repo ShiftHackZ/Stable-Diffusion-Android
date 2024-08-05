@@ -2,7 +2,6 @@ package com.shifthackz.aisdv1.core.common.model
 
 import java.io.Serializable
 
-
 data class Quadruple<out A, out B, out C, out D>(
     val first: A,
     val second: B,

@@ -141,6 +141,7 @@ fun GenerationInputForm(
     Column(modifier = modifier) {
         when (state.mode) {
             ServerSource.AUTOMATIC1111,
+            ServerSource.SWARM_UI,
             ServerSource.STABILITY_AI,
             ServerSource.HUGGING_FACE,
             ServerSource.LOCAL -> EngineSelectionComponent(
@@ -195,6 +196,7 @@ fun GenerationInputForm(
         // Horde does not support "negative prompt"
         when (state.mode) {
             ServerSource.AUTOMATIC1111,
+            ServerSource.SWARM_UI,
             ServerSource.HUGGING_FACE,
             ServerSource.STABILITY_AI,
             ServerSource.LOCAL -> {
@@ -265,6 +267,7 @@ fun GenerationInputForm(
                 }
 
                 ServerSource.AUTOMATIC1111,
+                ServerSource.SWARM_UI,
                 ServerSource.HUGGING_FACE -> {
                     sizeTextFieldsComponent(localModifier)
                 }
@@ -285,7 +288,6 @@ fun GenerationInputForm(
                         displayDelegate = { it.key.asUiText() },
                     )
                 }
-
             }
         }
 
@@ -432,9 +434,10 @@ fun GenerationInputForm(
                         )
                     }
                 }
-                // Variation seed only supported for A1111
-                if (state.mode == ServerSource.AUTOMATIC1111) {
-                    TextField(
+                // Variation seed supported for A1111, SwarmUI
+                when (state.mode) {
+                    ServerSource.AUTOMATIC1111,
+                    ServerSource.SWARM_UI -> TextField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
@@ -458,10 +461,13 @@ fun GenerationInputForm(
                             }
                         },
                     )
+
+                    else -> Unit
                 }
                 // Sub-seed strength is not available for Local Diffusion
                 when (state.mode) {
                     ServerSource.AUTOMATIC1111,
+                    ServerSource.SWARM_UI,
                     ServerSource.HORDE -> {
                         Text(
                             modifier = Modifier.padding(top = 8.dp),
@@ -523,6 +529,7 @@ fun GenerationInputForm(
 
                 when (state.mode) {
                     ServerSource.AUTOMATIC1111,
+                    ServerSource.SWARM_UI,
                     ServerSource.STABILITY_AI,
                     ServerSource.HORDE -> afterSlidersSection()
 
@@ -558,7 +565,7 @@ fun GenerationInputForm(
     }
 }
 
-fun processTaggedPrompt(keywords: List<String>, event: ChipTextFieldEvent<String>): String {
+private fun processTaggedPrompt(keywords: List<String>, event: ChipTextFieldEvent<String>): String {
     val newKeywords = when (event) {
         is ChipTextFieldEvent.Add -> buildList {
             addAll(keywords)

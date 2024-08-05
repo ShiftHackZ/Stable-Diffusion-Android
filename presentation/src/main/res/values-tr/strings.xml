@@ -62,6 +62,7 @@
     <string name="hint_batch_tag">Toplu üretim</string>
     <string name="hint_multiple_models">Çoklu Modeller</string>
     <string name="hint_offline_generation">Çevrimdışı nesil</string>
+    <string name="hint_own_server">Kendi Sunucumuz</string>
     <string name="hint_cfg_scale">CFG Scale: %1$s</string>
     <string name="hint_sampler">Örneklerme Yöntemi</string>
     <string name="hint_style_preset">Stil ön ayarı</string>
@@ -94,9 +95,11 @@
     <string name="auth_http_basic">HTTP Temel</string>
 
     <string name="hint_server_setup_title">Lütfen Stable Diffusion WebUI(AUTOMATIC1111) URL adresinizi yazın.</string>
-    <string name="hint_valid_urls">Bazı sunucu örnekleri:\n• http://192.168.0.2:7860\n• http://alanadiniz.com:7860\n• https://alanadiniz.com</string>
-    <string name="hint_demo_mode">This mode allows you to test the application behavior, even if you don\'t have Stable Diffusion WebUI server.\n\nIn demo mode app ignores user prompt, does not use AI server, and returns some mock images.</string>
-    <string name="hint_args_warning" tools:ignore="TypographyDashes,Typos">Before connecting ensure that:\n• you are running AUTOMATIC1111 WebUI with flags --api --listen\n• your firewall is not blocking 7860 port\n• phone is on the same WiFi with your PC</string>
+    <string name="hint_server_setup_sub_title">Gradio kütüphanesi kullanılarak uygulanan Stable Diffusion için bir web arayüzü.</string>
+    <string name="hint_valid_urls">Bazı sunucu örnekleri:\n• http://192.168.0.2:%1$s\n• http://alanadiniz.com:%1$s\n• https://alanadiniz.com</string>
+    <string name="hint_demo_mode">Bu mod, Stable Diffusion WebUI sunucunuz olmasa bile uygulama davranışını test etmenize olanak tanır.\n\nDemo modunda uygulama kullanıcı istemini görmezden gelir, AI sunucusunu kullanmaz ve bazı sahte görüntüler döndürür.</string>
+    <string name="hint_args_warning" tools:ignore="TypographyDashes,Typos">Bağlanmadan önce şunlardan emin olun:\n• AUTOMATIC1111 WebUI\'yi --api --listen bayraklarıyla çalıştırıyorsunuz\n• Güvenlik duvarınız 7860 portunu engellemiyor\n• Telefon, bilgisayarınızla aynı WiFi\'da.</string>
+    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes,Typos">Bağlanmadan önce şunlardan emin olun:\n• Güvenlik duvarınız 7801 portunu engellemiyor\n• Telefon, bilgisayarınızla aynı WiFi\'da.</string>
 
     <string name="hint_server_horde_title">Horde AI bulutuna bağlanın</string>
     <string name="hint_server_horde_sub_title">Horde AI, Görüntü oluşturma çalışanları ve metin oluşturma çalışanlarından oluşan kitle kaynaklı dağıtılmış bir kümedir.</string>
@@ -120,6 +123,9 @@
     <string name="hint_stability_ai_about">Hakkında Stability AI</string>
     <string name="hint_stability_ai_engine">Stability AI motoru</string>
 
+    <string name="hint_swarm_ui_title">Swarm UI URL\'nizi sağlayın</string>
+    <string name="hint_swarm_ui_sub_title">Araçlara kolay erişim, yüksek performans ve genişletilebilirlik üzerine odaklanan Modüler, Kararlı Yaygın Web Kullanıcı Arayüzü.</string>
+
     <string name="hint_local_diffusion_sub_title">Bu yapılandırma, telefonunuzda uzak sunucuya/buluta bağlanmaya gerek kalmadan Stable Diffusion AI nesillerini çalıştırmanıza izin verir.</string>
     <string name="hint_local_diffusion_warning">Uyarı! Yerel Yayılma işlevi beta testindedir. Yerel modu kullanarak yüksek kaliteli görüntüler beklemeyin. \n\nBu uygulama, güçlü olmayan telefonlarda iyi çalışmayabilir. Oluşturma performansı ve hızı, telefonunuzun kaynaklarına (CPU, RAM) ve oluşturulan görüntünün boyutuna bağlıdır (görüntü boyutu ne kadar küçükse, oluşturma o kadar hızlı olur).</string>
 
@@ -141,7 +147,7 @@
     <string name="title_select_sd_model">SD Modeli seçin</string>
     <string name="title_clear_app_cache">Uygulama önbelleğini temizle</string>
     <string name="title_debug_menu">Hata Ayıklama Menüsü</string>
-    <string name="title_lora">Lora</string>
+    <string name="title_lora">LoRA</string>
     <string name="title_txt_inversion">Metin İnversiyon</string>
     <string name="title_txt_inversion_short">İnversiyon</string>
     <string name="title_tag_edit">Etiketi düzenle</string>
@@ -259,9 +265,9 @@
     <string name="debug_action_bad_base64">Kötü Base64\'ü DB\'ye yerleştirin</string>
 
     <string name="extras_empty_title">Burada hiçbir şey…</string>
-    <string name="extras_empty_sub_title_lora">AUTOMATIC1111 sunucusuna biraz içerik ekleyin: \n\n../models/Lora</string>
-    <string name="extras_empty_sub_title_hypernet">AUTOMATIC1111 sunucusuna biraz içerik ekleyin: \n\n../models/hypernetworks</string>
-    <string name="extras_empty_sub_title_embedding">AUTOMATIC1111 sunucusuna biraz içerik ekleyin: \n\n../embeddings</string>
+    <string name="extras_empty_sub_title_lora">%1$s sunucusuna biraz içerik ekleyin: \n\n%2$s</string>
+    <string name="extras_empty_sub_title_hypernet">%1$s sunucusuna biraz içerik ekleyin: \n\n%2$s</string>
+    <string name="extras_empty_sub_title_embedding">%1$s sunucusuna biraz içerik ekleyin: \n\n%2$s</string>
 
     <string name="in_paint_tab_1">Çizmek</string>
     <string name="in_paint_tab_2">Ayarlamak</string>
