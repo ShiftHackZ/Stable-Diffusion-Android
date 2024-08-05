@@ -50,6 +50,7 @@ class SwarmUiGenerationRemoteDataSource(
                 request = encodedPayload.mapToSwarmUiRequest(sessionId, model),
             )
         }
+        .map { (_, outBase64) -> payload to outBase64 }
         .map(Pair<ImageToImagePayload, String>::mapCloudToAiGenResult)
 
     private fun <T: Any> generate(
