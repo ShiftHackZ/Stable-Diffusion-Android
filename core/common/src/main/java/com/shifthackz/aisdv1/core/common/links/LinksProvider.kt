@@ -10,5 +10,6 @@ interface LinksProvider {
     val donateUrl: String
     val gitHubSourceUrl: String
     val setupInstructionsUrl: String
+    val swarmUiInfoUrl: String
     val demoModeUrl: String
 }

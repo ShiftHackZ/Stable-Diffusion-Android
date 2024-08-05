@@ -1,6 +1,5 @@
 package com.shifthackz.aisdv1.presentation.modal.embedding
 
-import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -61,7 +60,6 @@ class EmbeddingViewModel(
                 updateState { it.copy(loading = false, error = ErrorState.Generic) }
             },
             onSuccess = { embeddings ->
-                debugLog(embeddings)
                 updateState { state ->
                     state.copy(
                         loading = false,

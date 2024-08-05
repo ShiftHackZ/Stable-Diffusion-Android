@@ -112,9 +112,11 @@
     <string name="auth_http_basic">HTTP Basic</string>
 
     <string name="hint_server_setup_title">Provide your Stable Diffusion WebUI URL</string>
-    <string name="hint_valid_urls">Here are the examples of server URLs:\n• http://192.168.0.2:7860\n• http://yourdomain.com:7860\n• https://yourdomain.com</string>
+    <string name="hint_server_setup_sub_title">A web interface for Stable Diffusion, implemented using Gradio library.</string>
+    <string name="hint_valid_urls">Here are the examples of server URLs:\n• http://192.168.0.2:%1$s\n• http://yourdomain.com:%1$s\n• https://yourdomain.com</string>
     <string name="hint_demo_mode">This mode allows you to test the application behavior, even if you don\'t have Stable Diffusion WebUI server.\n\nIn demo mode app ignores user prompt, does not use AI server, and returns some mock images.</string>
     <string name="hint_args_warning" tools:ignore="TypographyDashes,Typos">Before connecting ensure that:\n• you are running AUTOMATIC1111 WebUI with flags --api --listen\n• your firewall is not blocking 7860 port\n• phone is on the same WiFi with your PC</string>
+    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes,Typos">Before connecting ensure that:\n• your firewall is not blocking 7801 port\n• phone is on the same WiFi with your PC</string>
 
     <string name="hint_server_horde_title">Connect to Horde AI cloud</string>
     <string name="hint_server_horde_sub_title">Horde AI is a crowdsourced distributed cluster of Image generation workers and text generation workers.</string>
@@ -138,8 +140,8 @@
     <string name="hint_stability_ai_about">About Stability AI</string>
     <string name="hint_stability_ai_engine">Stability AI Engine</string>
 
-    <string name="hint_swarm_ui_title">Connect to Swarm UI</string>
-    <string name="hint_swarm_ui_sub_title">Swarm UI ...</string>
+    <string name="hint_swarm_ui_title">Provide your Swarm UI URL</string>
+    <string name="hint_swarm_ui_sub_title">A Modular Stable Diffusion Web-User-Interface, with an emphasis on making tools easily accessible, high performance, and extensibility.</string>
 
     <string name="hint_local_diffusion_title" translatable="false">Local Diffusion</string>
     <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>

@@ -58,7 +58,11 @@ sealed interface ServerSetupIntent : MviIntent {
         data object A1111Instructions : LaunchUrl() {
             override val url: String
                 get() = linksProvider.setupInstructionsUrl
+        }
 
+        data object SwarmUiInstructions : LaunchUrl() {
+            override val url: String
+                get() = linksProvider.swarmUiInfoUrl
         }
 
         data object HordeInfo : LaunchUrl() {

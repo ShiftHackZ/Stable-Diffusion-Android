@@ -98,10 +98,11 @@ fun Automatic1111Form(
         )
         Text(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
-            text = stringResource(
-                if (state.demoMode) R.string.hint_demo_mode
-                else R.string.hint_valid_urls,
-            ),
+            text = if (state.demoMode) {
+                stringResource(R.string.hint_demo_mode)
+            } else {
+                stringResource(R.string.hint_valid_urls, "7860")
+            },
             style = MaterialTheme.typography.bodyMedium,
         )
     }

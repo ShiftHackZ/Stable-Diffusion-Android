@@ -94,13 +94,14 @@ fun ConfigurationModeButton(
             )
         }
         val descriptionId = when (mode) {
-            ServerSource.AUTOMATIC1111 -> null
+            ServerSource.AUTOMATIC1111 -> R.string.hint_server_setup_sub_title
             ServerSource.HORDE -> R.string.hint_server_horde_sub_title
             ServerSource.HUGGING_FACE -> R.string.hint_hugging_face_sub_title
             ServerSource.OPEN_AI -> R.string.hint_open_ai_sub_title
             ServerSource.LOCAL -> R.string.hint_local_diffusion_sub_title
             ServerSource.STABILITY_AI -> R.string.hint_stability_ai_sub_title
             ServerSource.SWARM_UI -> R.string.hint_swarm_ui_sub_title
+            else -> null
         }
         descriptionId?.let { resId ->
             Text(
