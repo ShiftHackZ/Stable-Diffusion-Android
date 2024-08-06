@@ -2,7 +2,6 @@ package com.shifthackz.aisdv1.presentation.core
 
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
@@ -35,7 +34,7 @@ abstract class CoreGenerationMviViewModelTest<V : GenerationMviViewModel<*, *, *
     CoreViewModelTest<V>() {
 
     protected val stubSettings = BehaviorSubject.createDefault(Settings())
-    protected val stubAiForm = BehaviorSubject.create<AiGenerationResult>()
+    protected val stubAiForm = BehaviorSubject.create<GenerationFormUpdateEvent.Payload>()
 
     protected val stubPreferenceManager = mockk<PreferenceManager>()
     protected val stubSaveLastResultToCacheUseCase = mockk<SaveLastResultToCacheUseCase>()

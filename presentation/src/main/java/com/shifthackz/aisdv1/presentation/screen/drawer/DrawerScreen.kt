@@ -21,7 +21,6 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -57,13 +56,16 @@ fun DrawerScreen(
         currentRootRoute
     }
 
-    val routes = remember { navItems.map(NavItem::route).take(4) }
     MviComponent(
         viewModel = koinViewModel<DrawerViewModel>(),
         applySystemUiColors = false,
     ) { _, intentHandler ->
         ModalNavigationDrawer(
-            gesturesEnabled = routes.contains(currentRoute),
+            gesturesEnabled = if (drawerState.isOpen) {
+                true
+            } else {
+                currentRootRoute == Constants.ROUTE_HOME
+            },
             drawerState = drawerState,
             drawerContent = {
                 ModalDrawerSheet {

@@ -74,7 +74,11 @@ class TextToImageViewModel(
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = ::errorLog,
-                onNext = ::updateFormPreviousAiGeneration,
+                onNext = { payload ->
+                    (payload as? GenerationFormUpdateEvent.Payload.T2IForm)
+                        ?.let(::updateFormPreviousAiGeneration)
+                        ?.also { generationFormUpdateEvent.clear() }
+                },
             )
     }
 

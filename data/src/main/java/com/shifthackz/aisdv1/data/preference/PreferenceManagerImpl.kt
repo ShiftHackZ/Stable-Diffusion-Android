@@ -247,7 +247,7 @@ class PreferenceManagerImpl(
         const val KEY_HUGGING_FACE_MODEL_KEY = "key_hugging_face_model_key"
         const val KEY_STABILITY_AI_API_KEY = "key_stability_ai_api_key"
         const val KEY_STABILITY_AI_ENGINE_ID_KEY = "key_stability_ai_engine_id_key"
-        const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.5.8"
+        const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.6.2"
         const val KEY_LOCAL_MODEL_ID = "key_local_model_id"
         const val KEY_LOCAL_NN_API = "key_local_nn_api"
         const val KEY_DESIGN_DYNAMIC_COLORS = "key_design_dynamic_colors"

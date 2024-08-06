@@ -8,7 +8,6 @@ import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -77,7 +76,11 @@ class ImageToImageViewModel(
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = ::errorLog,
-                onNext = ::updateFormPreviousAiGeneration,
+                onNext = { payload ->
+                    (payload as? GenerationFormUpdateEvent.Payload.I2IForm)
+                        ?.let(::updateFormPreviousAiGeneration)
+                        ?.also { generationFormUpdateEvent.clear() }
+                },
             )
 
         !inPaintStateProducer
@@ -220,8 +223,10 @@ class ImageToImageViewModel(
         }
     }
 
-    override fun updateFormPreviousAiGeneration(ai: AiGenerationResult): Result<Unit> {
-        !base64ToBitmapConverter(Base64ToBitmapConverter.Input(ai.image))
+    override fun updateFormPreviousAiGeneration(payload: GenerationFormUpdateEvent.Payload) {
+        if (payload !is GenerationFormUpdateEvent.Payload.I2IForm) return
+        val base64 = if (payload.inputImage) payload.ai.inputImage else payload.ai.image
+        !base64ToBitmapConverter(Base64ToBitmapConverter.Input(base64))
             .map(Base64ToBitmapConverter.Output::bitmap)
             .map(ImageToImageState.ImageState::Image)
             .subscribeOnMainThread(schedulersProvider)
@@ -237,6 +242,6 @@ class ImageToImageViewModel(
                 }
             )
 
-        return super.updateFormPreviousAiGeneration(ai)
+        return super.updateFormPreviousAiGeneration(payload)
     }
 }

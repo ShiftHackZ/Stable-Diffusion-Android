@@ -5,6 +5,8 @@ import com.shifthackz.aisdv1.presentation.navigation.router.Router
 
 interface HomeRouter : Router<NavigationEffect.Home> {
 
+    fun updateExternallyWithoutNavigation(route: String)
+
     fun navigateToRoute(route: String)
 
     fun navigateToTxt2Img()
