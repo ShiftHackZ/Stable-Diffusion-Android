@@ -218,7 +218,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     @Test
     fun `given received SendTo Txt2Img intent, expected router navigateBack() and form event update() methods called`() {
         every {
-            stubGenerationFormUpdateEvent.update(any(), any())
+            stubGenerationFormUpdateEvent.update(any(), any(), any())
         } returns Unit
 
         every {
@@ -232,8 +232,9 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
         }
         verify {
             stubGenerationFormUpdateEvent.update(
-                mockAiGenerationResult,
-                AiGenerationResult.Type.TEXT_TO_IMAGE,
+                generation = mockAiGenerationResult,
+                route = AiGenerationResult.Type.TEXT_TO_IMAGE,
+                inputImage = false,
             )
         }
     }
@@ -241,7 +242,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     @Test
     fun `given received SendTo Img2Img intent, expected router navigateBack() and form event update() methods called`() {
         every {
-            stubGenerationFormUpdateEvent.update(any(), any())
+            stubGenerationFormUpdateEvent.update(any(), any(), any())
         } returns Unit
 
         every {
@@ -255,8 +256,9 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
         }
         verify {
             stubGenerationFormUpdateEvent.update(
-                mockAiGenerationResult,
-                AiGenerationResult.Type.IMAGE_TO_IMAGE,
+                generation = mockAiGenerationResult,
+                route = AiGenerationResult.Type.IMAGE_TO_IMAGE,
+                inputImage = false,
             )
         }
     }
