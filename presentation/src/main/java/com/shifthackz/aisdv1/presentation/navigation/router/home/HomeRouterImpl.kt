@@ -9,8 +9,12 @@ class HomeRouterImpl : HomeRouter {
 
     private val effectSubject: PublishSubject<NavigationEffect.Home> = PublishSubject.create()
 
+    override fun updateExternallyWithoutNavigation(route: String) {
+        effectSubject.onNext(NavigationEffect.Home.Update(route))
+    }
+
     override fun navigateToRoute(route: String) {
-        effectSubject.onNext(NavigationEffect.Home(route))
+        effectSubject.onNext(NavigationEffect.Home.Route(route))
     }
 
     override fun navigateToTxt2Img() {

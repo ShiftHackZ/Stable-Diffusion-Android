@@ -14,6 +14,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -23,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.model.NavItem
+import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
 import com.shifthackz.aisdv1.presentation.widget.item.NavigationItemIcon
 import org.koin.androidx.compose.koinViewModel
@@ -33,18 +35,24 @@ fun HomeNavigationScreen(
 ) {
     require(navItems.isNotEmpty()) { "navItems collection must not be empty." }
 
+    val viewModel = koinViewModel<HomeNavigationViewModel>()
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry.value?.destination?.route
 
+    LaunchedEffect(currentRoute) {
+        if (currentRoute == Constants.ROUTE_TXT_TO_IMG) {
+            viewModel.processIntent(HomeNavigationIntent.Update(currentRoute))
+        }
+    }
+
     MviComponent(
-        viewModel = koinViewModel<HomeNavigationViewModel>(),
+        viewModel = viewModel,
         processEffect = { effect ->
             navController.navigate(effect.route) {
                 navController.graph.startDestinationRoute?.let { route ->
                     popUpTo(route) {
                         saveState = true
-                        navController.popBackStack()
                     }
                 }
                 launchSingleTop = true
@@ -72,7 +80,7 @@ fun HomeNavigationScreen(
                                     selectedIndicatorColor = MaterialTheme.colorScheme.primary,
                                 ),
                                 icon = { NavigationItemIcon(item.icon) },
-                                onClick = { processIntent(HomeNavigationIntent(item.route)) },
+                                onClick = { processIntent(HomeNavigationIntent.Route(item.route)) },
                             )
                         }
                     }
