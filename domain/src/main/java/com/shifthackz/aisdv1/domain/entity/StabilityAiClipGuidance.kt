@@ -1,6 +1,8 @@
 package com.shifthackz.aisdv1.domain.entity
 
-enum class StabilityAiClipGuidance {
+import java.io.Serializable
+
+enum class StabilityAiClipGuidance : Serializable {
     NONE,
     FAST_BLUE,
     FAST_GREEN,

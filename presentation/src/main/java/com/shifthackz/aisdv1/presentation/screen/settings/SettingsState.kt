@@ -16,6 +16,7 @@ data class SettingsState(
     val sdModelSelected: String = "",
     val stabilityAiCredits: Float = 0f,
     val localUseNNAPI: Boolean = false,
+    val backgroundGeneration: Boolean = false,
     val monitorConnectivity: Boolean = false,
     val autoSaveAiResults: Boolean = false,
     val saveToMediaStore: Boolean = false,

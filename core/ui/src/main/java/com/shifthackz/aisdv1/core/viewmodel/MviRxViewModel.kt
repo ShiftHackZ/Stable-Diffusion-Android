@@ -2,7 +2,7 @@
 
 package com.shifthackz.aisdv1.core.viewmodel
 
-import com.shifthackz.aisdv1.core.contract.RxDisposableContract
+import com.shifthackz.aisdv1.core.common.contract.RxDisposableContract
 import com.shifthackz.android.core.mvi.MviEffect
 import com.shifthackz.android.core.mvi.MviIntent
 import com.shifthackz.android.core.mvi.MviState

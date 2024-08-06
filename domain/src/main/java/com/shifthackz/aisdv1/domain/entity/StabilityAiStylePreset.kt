@@ -1,6 +1,8 @@
 package com.shifthackz.aisdv1.domain.entity
 
-enum class StabilityAiStylePreset(val key: String) {
+import java.io.Serializable
+
+enum class StabilityAiStylePreset(val key: String) : Serializable {
     NONE(""),
     MODEL_3D("3d-model"),
     ANALOG_FILM("analog-film"),

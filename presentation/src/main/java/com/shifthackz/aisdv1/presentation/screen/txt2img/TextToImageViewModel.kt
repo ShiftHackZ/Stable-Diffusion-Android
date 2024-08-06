@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
@@ -17,6 +18,7 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProc
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.notification.PushNotificationManager
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
@@ -24,7 +26,6 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
-import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import com.shifthackz.android.core.mvi.EmptyEffect
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
@@ -42,8 +43,9 @@ class TextToImageViewModel(
     private val textToImageUseCase: TextToImageUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
-    private val notificationManager: SdaiPushNotificationManager,
+    private val notificationManager: PushNotificationManager,
     private val wakeLockInterActor: WakeLockInterActor,
+    private val backgroundTaskManager: BackgroundTaskManager,
 ) : GenerationMviViewModel<TextToImageState, GenerationMviIntent, EmptyEffect>(
     preferenceManager = preferenceManager,
     getStableDiffusionSamplersUseCase = getStableDiffusionSamplersUseCase,
@@ -93,7 +95,7 @@ class TextToImageViewModel(
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
             onError = { t ->
-                notificationManager.show(
+                notificationManager.createAndShowInstant(
                     R.string.notification_fail_title.asUiText(),
                     R.string.notification_fail_sub_title.asUiText(),
                 )
@@ -105,7 +107,7 @@ class TextToImageViewModel(
                 errorLog(t)
             },
             onSuccess = { ai ->
-                notificationManager.show(
+                notificationManager.createAndShowInstant(
                     R.string.notification_finish_title.asUiText(),
                     R.string.notification_finish_sub_title.asUiText(),
                 )
@@ -114,6 +116,11 @@ class TextToImageViewModel(
                 )
             },
         )
+
+    override fun generateBackground() {
+        val pl = currentState.mapToPayload()
+        backgroundTaskManager.scheduleTextToImageTask(pl)
+    }
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {
         if (currentState.screenModal is Modal.Communicating) {

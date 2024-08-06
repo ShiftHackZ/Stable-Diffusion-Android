@@ -66,6 +66,7 @@ class SettingsViewModel(
                                 ?: "",
                             stabilityAiCredits = credits,
                             localUseNNAPI = settings.localUseNNAPI,
+                            backgroundGeneration = settings.backgroundGeneration,
                             monitorConnectivity = settings.monitorConnectivity,
                             autoSaveAiResults = settings.autoSaveAiResults,
                             saveToMediaStore = settings.saveToMediaStore,
@@ -172,6 +173,10 @@ class SettingsViewModel(
             }
 
             SettingsIntent.Action.Donate -> mainRouter.navigateToDonate()
+
+            is SettingsIntent.UpdateFlag.BackgroundGeneration -> {
+                preferenceManager.backgroundGeneration = intent.flag
+            }
         }
     }
 

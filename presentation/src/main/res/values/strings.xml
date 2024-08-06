@@ -203,6 +203,7 @@
     <string name="settings_item_language">Language</string>
     <string name="settings_item_demo">Demo mode</string>
     <string name="settings_item_monitor_connection">Monitor connection</string>
+    <string name="settings_item_background_generation">Background generation (Beta)</string>
     <string name="settings_item_auto_save">Auto save images</string>
     <string name="settings_item_auto_save_media_store">Save to Downloads</string>
     <string name="settings_item_tagged_input">Tagged input</string>

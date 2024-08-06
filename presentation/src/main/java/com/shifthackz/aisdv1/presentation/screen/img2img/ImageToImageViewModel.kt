@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatus
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.notification.PushNotificationManager
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
@@ -27,7 +28,6 @@ import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
-import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintStateProducer
 import com.shz.imagepicker.imagepicker.model.PickedResult
 import io.reactivex.rxjava3.core.Single
@@ -50,7 +50,7 @@ class ImageToImageViewModel(
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val preferenceManager: PreferenceManager,
     private val schedulersProvider: SchedulersProvider,
-    private val notificationManager: SdaiPushNotificationManager,
+    private val notificationManager: PushNotificationManager,
     private val wakeLockInterActor: WakeLockInterActor,
     private val inPaintStateProducer: InPaintStateProducer,
     private val mainRouter: MainRouter,
@@ -187,7 +187,7 @@ class ImageToImageViewModel(
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = { t ->
-                    notificationManager.show(
+                    notificationManager.createAndShowInstant(
                         R.string.notification_fail_title.asUiText(),
                         R.string.notification_fail_sub_title.asUiText(),
                     )
@@ -201,7 +201,7 @@ class ImageToImageViewModel(
                     errorLog(t)
                 },
                 onSuccess = { ai ->
-                    notificationManager.show(
+                    notificationManager.createAndShowInstant(
                         R.string.notification_finish_title.asUiText(),
                         R.string.notification_finish_sub_title.asUiText(),
                     )
@@ -215,6 +215,10 @@ class ImageToImageViewModel(
             )
 
         else -> Disposable.empty()
+    }
+
+    override fun generateBackground() {
+
     }
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {

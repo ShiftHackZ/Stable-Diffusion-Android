@@ -15,9 +15,9 @@ import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCa
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.domain.usecase.wakelock.AcquireWakelockUseCase
 import com.shifthackz.aisdv1.domain.usecase.wakelock.ReleaseWakeLockUseCase
+import com.shifthackz.aisdv1.notification.SdaiPushNotificationManager
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
-import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -46,7 +46,7 @@ abstract class CoreGenerationMviViewModelTest<V : GenerationMviViewModel<*, *, *
     protected val stubMainRouter = mockk<MainRouter>()
     protected val stubDrawerRouter = mockk<DrawerRouter>()
     protected val stubDimensionValidator = mockk<DimensionValidator>()
-    protected val stubSdaiPushNotificationManager = mockk<SdaiPushNotificationManager>()
+    protected val stubSdaiPushNotificationManager = mockk<com.shifthackz.aisdv1.notification.SdaiPushNotificationManager>()
 
     protected val stubAcquireWakelockUseCase = mockk<AcquireWakelockUseCase>()
     protected val stubReleaseWakelockUseCase = mockk<ReleaseWakeLockUseCase>()

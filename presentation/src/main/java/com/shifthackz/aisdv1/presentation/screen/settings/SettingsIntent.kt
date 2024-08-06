@@ -58,6 +58,8 @@ sealed interface SettingsIntent : MviIntent {
 
         data class AutoSaveResult(override val flag: Boolean) : UpdateFlag
 
+        data class BackgroundGeneration(override val flag: Boolean) : UpdateFlag
+
         data class SaveToMediaStore(override val flag: Boolean) : UpdateFlag
 
         data class TaggedInput(override val flag: Boolean) : UpdateFlag

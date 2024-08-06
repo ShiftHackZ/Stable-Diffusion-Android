@@ -32,6 +32,7 @@ import androidx.compose.material.icons.filled.FormatColorFill
 import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.InvertColors
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MiscellaneousServices
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Report
@@ -248,6 +249,24 @@ private fun ContentSettingsState(
             modifier = headerModifier,
             loading = state.loading,
             text = R.string.settings_header_app.asUiText(),
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            loading = state.loading,
+            startIcon = Icons.Default.MiscellaneousServices,
+            text = R.string.settings_item_background_generation.asUiText(),
+            onClick = {
+                processIntent(SettingsIntent.UpdateFlag.BackgroundGeneration(!state.backgroundGeneration))
+            },
+            endValueContent = {
+                Switch(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    checked = state.backgroundGeneration,
+                    onCheckedChange = {
+                        processIntent(SettingsIntent.UpdateFlag.BackgroundGeneration(it))
+                    },
+                )
+            }
         )
         if (state.showMonitorConnectionOption) SettingsItem(
             modifier = itemModifier,

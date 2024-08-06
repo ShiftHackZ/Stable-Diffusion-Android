@@ -30,6 +30,7 @@ interface PreferenceManager {
     var designDarkTheme: Boolean
     var designColorToken: String
     var designDarkThemeToken: String
+    var backgroundGeneration: Boolean
 
     fun observe(): Flowable<Settings>
 }

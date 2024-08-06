@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.core.contract
+package com.shifthackz.aisdv1.core.common.contract
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable

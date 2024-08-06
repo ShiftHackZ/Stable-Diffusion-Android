@@ -35,7 +35,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import java.util.concurrent.TimeUnit
 
 abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviIntent, E : MviEffect>(
-    preferenceManager: PreferenceManager,
+    private val preferenceManager: PreferenceManager,
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
@@ -112,6 +112,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
     }
 
     abstract fun generate(): Disposable
+
+    abstract fun generateBackground()
 
     open fun onReceivedHordeStatus(status: HordeProcessStatus) {}
 
@@ -244,7 +246,13 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
                 setActiveModal(Modal.None)
             }
 
-            GenerationMviIntent.Generate -> generate { generate() }
+            GenerationMviIntent.Generate -> {
+                if (preferenceManager.backgroundGeneration) {
+                    generateBackground()
+                } else {
+                    generate { generate() }
+                }
+            }
 
             GenerationMviIntent.Configuration -> mainRouter.navigateToServerSetup(
                 ServerSetupLaunchSource.SETTINGS
