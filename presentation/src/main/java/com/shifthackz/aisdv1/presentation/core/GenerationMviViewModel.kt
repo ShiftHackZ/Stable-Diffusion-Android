@@ -250,9 +250,17 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
                 ServerSetupLaunchSource.SETTINGS
             )
 
-            is GenerationMviIntent.UpdateFromGeneration -> updateFormPreviousAiGeneration(
-                intent.ai
-            )
+            is GenerationMviIntent.UpdateFromGeneration -> {
+                val payload = when (intent.ai.type) {
+                    AiGenerationResult.Type.TEXT_TO_IMAGE -> {
+                        GenerationFormUpdateEvent.Payload.T2IForm(intent.ai)
+                    }
+                    AiGenerationResult.Type.IMAGE_TO_IMAGE -> {
+                        GenerationFormUpdateEvent.Payload.I2IForm(intent.ai, false)
+                    }
+                }
+                updateFormPreviousAiGeneration(payload)
+            }
 
             is GenerationMviIntent.Drawer -> when (intent.intent) {
                 DrawerIntent.Close -> drawerRouter.closeDrawer()
@@ -261,9 +269,14 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
         }
     }
 
-    protected open fun updateFormPreviousAiGeneration(ai: AiGenerationResult) =
-        updateGenerationState {
-            it
+    protected open fun updateFormPreviousAiGeneration(payload: GenerationFormUpdateEvent.Payload) {
+        val ai = when (payload) {
+            is GenerationFormUpdateEvent.Payload.I2IForm -> payload.ai
+            is GenerationFormUpdateEvent.Payload.T2IForm -> payload.ai
+            else -> return
+        }
+        updateGenerationState { oldState ->
+            oldState
                 .copyState(
                     advancedOptionsVisible = true,
                     prompt = ai.prompt,
@@ -282,6 +295,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
                     else state.copyState(selectedSampler = ai.sampler)
                 }
         }
+    }
 
     protected fun setActiveModal(modal: Modal) = updateGenerationState {
         it.copyState(screenModal = modal)

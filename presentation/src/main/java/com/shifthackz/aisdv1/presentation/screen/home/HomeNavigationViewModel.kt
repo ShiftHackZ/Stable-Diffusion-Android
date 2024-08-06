@@ -24,17 +24,22 @@ class HomeNavigationViewModel(
         !homeRouter
             .observe()
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog, EmptyLambda, ::emitEffect)
+            .subscribeBy(::errorLog, EmptyLambda) { effect ->
+                (effect as? NavigationEffect.Home.Route)?.let(::emitEffect)
+            }
 
         !generationFormUpdateEvent
             .observeRoute()
             .map(AiGenerationResult.Type::mapToRoute)
-            .map(::HomeNavigationIntent)
+            .map(HomeNavigationIntent::Route)
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog, EmptyLambda, ::processIntent)
     }
 
     override fun processIntent(intent: HomeNavigationIntent) {
-        homeRouter.navigateToRoute(intent.route)
+        when (intent) {
+            is HomeNavigationIntent.Route -> homeRouter.navigateToRoute(intent.route)
+            is HomeNavigationIntent.Update -> homeRouter.updateExternallyWithoutNavigation(intent.route)
+        }
     }
 }

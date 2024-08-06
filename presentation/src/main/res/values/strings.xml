@@ -310,6 +310,6 @@
 
     <string name="donate_title_thanks">Thanks to this amazing people for the support ❤</string>
     <string name="donate_bs_title">SDAI is an Android application that:</string>
-    <string name="donate_bs_sub_title">• Brings you power of creating images with Stable Diffusion AI;\n• Gives you freedom to choose your generation provider;\n• Has not ADs, telemetry and does not spy on you;\n• Is an open source software;\n• You are welcome to use it for free.</string>
+    <string name="donate_bs_sub_title">• Brings you power of creating images with Stable Diffusion AI;\n• Gives you freedom to choose your generation provider;\n• Has no ADs, telemetry and does not spy on you;\n• Is an open source software;\n• You are welcome to use it for free.</string>
     <string name="donate_bs_ending">In case you find this software valuable, and you\'d like to say thanks and show a little support, here is the button below.</string>
 </resources>
