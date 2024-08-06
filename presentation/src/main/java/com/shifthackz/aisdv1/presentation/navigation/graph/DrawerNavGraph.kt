@@ -15,8 +15,8 @@ import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.source.getNameUiText
 
 fun mainDrawerNavItems(settings: Settings? = null): List<NavItem> = buildList {
-    add(txt2ImgTab())
-    add(img2imgTab())
+    add(txt2ImgTab().copy(name = R.string.title_text_to_image.asUiText()))
+    add(img2imgTab().copy(name = R.string.title_image_to_image.asUiText()))
     add(galleryTab())
     settings?.source?.takeIf { it.featureTags.contains(FeatureTag.OwnServer) }?.let {
         add(webUi(it))
@@ -30,7 +30,7 @@ private fun webUi(source: ServerSource) = NavItem(
         R.string.drawer_web_ui.asUiText(),
         " (".asUiText(),
         source.getNameUiText(),
-        ")".asUiText()
+        ")".asUiText(),
     ),
     route = Constants.ROUTE_WEB_UI,
     icon = NavItem.Icon.Vector(
