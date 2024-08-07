@@ -63,7 +63,6 @@ import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.theme.colorTokenPalette
@@ -75,8 +74,10 @@ import com.shifthackz.aisdv1.presentation.widget.color.DarkThemeColorSelector
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsHeader
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItemContent
+import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import com.shifthackz.android.compose.daynightswitch.DayNightSwitch
 import org.koin.androidx.compose.koinViewModel
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun SettingsScreen() {
@@ -120,24 +121,31 @@ private fun ScreenContent(
     Box(modifier) {
         Scaffold(
             topBar = {
-                CenterAlignedTopAppBar(
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            processIntent(SettingsIntent.Drawer(DrawerIntent.Open))
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "Menu",
+                Column {
+                    CenterAlignedTopAppBar(
+                        navigationIcon = {
+                            IconButton(onClick = {
+                                processIntent(SettingsIntent.Drawer(DrawerIntent.Open))
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = "Menu",
+                                )
+                            }
+                        },
+                        title = {
+                            Text(
+                                text = stringResource(id = LocalizationR.string.title_settings),
+                                style = MaterialTheme.typography.headlineMedium,
                             )
-                        }
-                    },
-                    title = {
-                        Text(
-                            text = stringResource(id = R.string.title_settings),
-                            style = MaterialTheme.typography.headlineMedium,
-                        )
-                    },
-                )
+                        },
+                    )
+                    BackgroundWorkWidget(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .padding(vertical = 4.dp),
+                    )
+                }
             },
             content = { paddingValues ->
                 ContentSettingsState(
@@ -187,21 +195,21 @@ private fun ContentSettingsState(
         SettingsHeader(
             modifier = headerModifier,
             loading = state.loading,
-            text = R.string.settings_header_server.asUiText(),
+            text = LocalizationR.string.settings_header_server.asUiText(),
         )
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.SettingsEthernet,
-            text = R.string.settings_item_config.asUiText(),
+            text = LocalizationR.string.settings_item_config.asUiText(),
             endValueText = when (state.serverSource) {
-                ServerSource.AUTOMATIC1111 -> R.string.srv_type_own_short
-                ServerSource.HORDE -> R.string.srv_type_horde_short
-                ServerSource.HUGGING_FACE -> R.string.srv_type_hugging_face_short
-                ServerSource.OPEN_AI -> R.string.srv_type_open_ai
-                ServerSource.STABILITY_AI -> R.string.srv_type_stability_ai
-                ServerSource.LOCAL -> R.string.srv_type_local_short
-                ServerSource.SWARM_UI -> R.string.srv_type_swarm_ui
+                ServerSource.AUTOMATIC1111 -> LocalizationR.string.srv_type_own_short
+                ServerSource.HORDE -> LocalizationR.string.srv_type_horde_short
+                ServerSource.HUGGING_FACE -> LocalizationR.string.srv_type_hugging_face_short
+                ServerSource.OPEN_AI -> LocalizationR.string.srv_type_open_ai
+                ServerSource.STABILITY_AI -> LocalizationR.string.srv_type_stability_ai
+                ServerSource.LOCAL -> LocalizationR.string.srv_type_local_short
+                ServerSource.SWARM_UI -> LocalizationR.string.srv_type_swarm_ui
             }.asUiText(),
             onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
         )
@@ -210,14 +218,14 @@ private fun ContentSettingsState(
             loading = state.loading,
             enabled = false,
             startIcon = Icons.Default.Circle,
-            text = R.string.settings_item_stability_ai_credits.asUiText(),
+            text = LocalizationR.string.settings_item_stability_ai_credits.asUiText(),
             endValueText = state.stabilityAiCredits.roundTo(4).toString().asUiText(),
         )
         if (state.showSdModelSelector) SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.AutoFixNormal,
-            text = R.string.settings_item_sd_model.asUiText(),
+            text = LocalizationR.string.settings_item_sd_model.asUiText(),
             endValueText = state.sdModelSelected.asUiText(),
             onClick = { processIntent(SettingsIntent.SdModel.OpenChooser) },
         )
@@ -226,7 +234,7 @@ private fun ContentSettingsState(
                 modifier = itemModifier,
                 loading = state.loading,
                 startIcon = Icons.Default.AccountTree,
-                text = R.string.settings_item_local_nnapi.asUiText(),
+                text = LocalizationR.string.settings_item_local_nnapi.asUiText(),
                 endValueText = state.sdModelSelected.asUiText(),
                 onClick = { processIntent(SettingsIntent.UpdateFlag.NNAPI(!state.localUseNNAPI)) },
                 endValueContent = {
@@ -238,7 +246,7 @@ private fun ContentSettingsState(
                 }
             )
             Text(
-                text = stringResource(id = R.string.settings_item_local_nnapi_warning),
+                text = stringResource(id = LocalizationR.string.settings_item_local_nnapi_warning),
                 style = MaterialTheme.typography.labelMedium,
             )
         }
@@ -248,13 +256,13 @@ private fun ContentSettingsState(
         SettingsHeader(
             modifier = headerModifier,
             loading = state.loading,
-            text = R.string.settings_header_app.asUiText(),
+            text = LocalizationR.string.settings_header_app.asUiText(),
         )
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.MiscellaneousServices,
-            text = R.string.settings_item_background_generation.asUiText(),
+            text = LocalizationR.string.settings_item_background_generation.asUiText(),
             onClick = {
                 processIntent(SettingsIntent.UpdateFlag.BackgroundGeneration(!state.backgroundGeneration))
             },
@@ -272,7 +280,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.Refresh,
-            text = R.string.settings_item_monitor_connection.asUiText(),
+            text = LocalizationR.string.settings_item_monitor_connection.asUiText(),
             onClick = {
                 processIntent(SettingsIntent.UpdateFlag.MonitorConnection(!state.monitorConnectivity))
             },
@@ -288,7 +296,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.Save,
-            text = R.string.settings_item_auto_save.asUiText(),
+            text = LocalizationR.string.settings_item_auto_save.asUiText(),
             onClick = {
                 processIntent(SettingsIntent.UpdateFlag.AutoSaveResult(!state.autoSaveAiResults))
             },
@@ -306,7 +314,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.Folder,
-            text = R.string.settings_item_auto_save_media_store.asUiText(),
+            text = LocalizationR.string.settings_item_auto_save_media_store.asUiText(),
             onClick = {
                 processIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(!state.saveToMediaStore))
             },
@@ -324,7 +332,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.Tag,
-            text = R.string.settings_item_tagged_input.asUiText(),
+            text = LocalizationR.string.settings_item_tagged_input.asUiText(),
             onClick = {
                 processIntent(SettingsIntent.UpdateFlag.TaggedInput(!state.formPromptTaggedInput))
             },
@@ -343,7 +351,7 @@ private fun ContentSettingsState(
                 modifier = itemModifier,
                 loading = state.loading,
                 startIcon = Icons.Default.DynamicForm,
-                text = R.string.settings_item_advanced_form_default.asUiText(),
+                text = LocalizationR.string.settings_item_advanced_form_default.asUiText(),
                 onClick = {
                     processIntent(SettingsIntent.UpdateFlag.AdvancedFormVisibility(!state.formAdvancedOptionsAlwaysShow))
                 },
@@ -362,7 +370,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.DeleteForever,
-            text = R.string.settings_item_clear_cache.asUiText(),
+            text = LocalizationR.string.settings_item_clear_cache.asUiText(),
             onClick = { processIntent(SettingsIntent.Action.ClearAppCache.Request)},
         )
         //endregion
@@ -371,14 +379,14 @@ private fun ContentSettingsState(
         SettingsHeader(
             modifier = headerModifier,
             loading = state.loading,
-            text = R.string.settings_header_look_and_feel.asUiText(),
+            text = LocalizationR.string.settings_header_look_and_feel.asUiText(),
         )
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.Translate,
-            text = R.string.settings_item_lf_lang.asUiText(),
-            endValueText = R.string.language.asUiText(),
+            text = LocalizationR.string.settings_item_lf_lang.asUiText(),
+            endValueText = LocalizationR.string.language.asUiText(),
             onClick = { processIntent(SettingsIntent.Action.PickLanguage) },
         )
         if (state.showUseSystemColorPalette) {
@@ -386,7 +394,7 @@ private fun ContentSettingsState(
                 modifier = itemModifier,
                 loading = state.loading,
                 startIcon = Icons.Default.Save,
-                text = R.string.settings_item_lf_dynamic_colors.asUiText(),
+                text = LocalizationR.string.settings_item_lf_dynamic_colors.asUiText(),
                 onClick = {
                     processIntent(SettingsIntent.UpdateFlag.DynamicColors(!state.useSystemColorPalette))
                 },
@@ -405,7 +413,7 @@ private fun ContentSettingsState(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.InvertColors,
-            text = R.string.settings_item_lf_system_dark_theme.asUiText(),
+            text = LocalizationR.string.settings_item_lf_system_dark_theme.asUiText(),
             onClick = {
                 processIntent(SettingsIntent.UpdateFlag.SystemDarkTheme(!state.useSystemDarkTheme))
             },
@@ -424,7 +432,7 @@ private fun ContentSettingsState(
                 modifier = itemModifier,
                 loading = state.loading,
                 startIcon = Icons.Default.DarkMode,
-                text = R.string.settings_item_lf_dark_theme.asUiText(),
+                text = LocalizationR.string.settings_item_lf_dark_theme.asUiText(),
                 onClick = {
                     processIntent(SettingsIntent.UpdateFlag.DarkTheme(!state.darkTheme))
                 },
@@ -449,7 +457,7 @@ private fun ContentSettingsState(
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
                 SettingsItemContent(
-                    text = R.string.settings_item_lf_dark_theme_color.asUiText(),
+                    text = LocalizationR.string.settings_item_lf_dark_theme_color.asUiText(),
                     icon = Icons.Default.FormatColorFill,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -473,7 +481,7 @@ private fun ContentSettingsState(
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
                 SettingsItemContent(
-                    text = R.string.settings_item_lf_accent_color.asUiText(),
+                    text = LocalizationR.string.settings_item_lf_accent_color.asUiText(),
                     icon = Icons.Default.ColorLens,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -494,34 +502,34 @@ private fun ContentSettingsState(
         SettingsHeader(
             modifier = headerModifier,
             loading = state.loading,
-            text = R.string.settings_header_info.asUiText(),
+            text = LocalizationR.string.settings_header_info.asUiText(),
         )
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.MonetizationOn,
-            text = R.string.settings_item_donate.asUiText(),
+            text = LocalizationR.string.settings_item_donate.asUiText(),
             onClick = { processIntent(SettingsIntent.Action.Donate) },
         )
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.Report,
-            text = R.string.settings_item_report_problem.asUiText(),
+            text = LocalizationR.string.settings_item_report_problem.asUiText(),
             onClick = { processIntent(SettingsIntent.Action.ReportProblem) },
         )
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.Gavel,
-            text = R.string.settings_item_policy.asUiText(),
+            text = LocalizationR.string.settings_item_policy.asUiText(),
             onClick = { processIntent(SettingsIntent.LaunchUrl.OpenPolicy) },
         )
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.Code,
-            text = R.string.settings_item_source.asUiText(),
+            text = LocalizationR.string.settings_item_source.asUiText(),
             onClick = { processIntent(SettingsIntent.LaunchUrl.OpenSourceCode) },
         )
         //endregion
@@ -536,7 +544,7 @@ private fun ContentSettingsState(
                         indication = null,
                         onClick = { processIntent(SettingsIntent.Action.AppVersion) },
                     ),
-                text = stringResource(id = R.string.version, state.appVersion),
+                text = stringResource(id = LocalizationR.string.version, state.appVersion),
                 style = MaterialTheme.typography.labelMedium,
                 textAlign = TextAlign.Center,
             )

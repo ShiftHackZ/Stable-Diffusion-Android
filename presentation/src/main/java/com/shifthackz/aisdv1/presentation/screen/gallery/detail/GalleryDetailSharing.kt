@@ -2,7 +2,7 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
 import android.content.Context
 import com.shifthackz.aisdv1.core.sharing.shareText
-import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class GalleryDetailSharing {
 
@@ -10,14 +10,14 @@ class GalleryDetailSharing {
         val data = when (state) {
             is GalleryDetailState.Content -> buildString {
                 appendLine(
-                    "${context.getString(R.string.gallery_info_field_type)}: " +
+                    "${context.getString(LocalizationR.string.gallery_info_field_type)}: " +
                             state.type.asString(context)
                 )
 
                 val prompt = state.prompt.asString(context)
                 if (prompt.isNotEmpty()) {
                     appendLine(
-                        "${context.getString(R.string.gallery_info_field_prompt)}: " +
+                        "${context.getString(LocalizationR.string.gallery_info_field_prompt)}: " +
                                 prompt
                     )
                 }
@@ -25,33 +25,33 @@ class GalleryDetailSharing {
                 val negativePrompt = state.negativePrompt.asString(context)
                 if (negativePrompt.isNotEmpty()) {
                     appendLine(
-                        "${context.getString(R.string.gallery_info_field_negative_prompt)}: " +
+                        "${context.getString(LocalizationR.string.gallery_info_field_negative_prompt)}: " +
                                 negativePrompt
                     )
                 }
 
                 appendLine(
-                    "${context.getString(R.string.gallery_info_field_size)}: " +
+                    "${context.getString(LocalizationR.string.gallery_info_field_size)}: " +
                             state.size.asString(context)
                 )
                 appendLine(
-                    "${context.getString(R.string.gallery_info_field_sampler)}: " +
+                    "${context.getString(LocalizationR.string.gallery_info_field_sampler)}: " +
                             state.sampler.asString(context)
                 )
                 appendLine(
-                    "${context.getString(R.string.gallery_info_field_sampling_steps)}: " +
+                    "${context.getString(LocalizationR.string.gallery_info_field_sampling_steps)}: " +
                             state.samplingSteps.asString(context)
                 )
                 appendLine(
-                    "${context.getString(R.string.gallery_info_field_cfg)}: " +
+                    "${context.getString(LocalizationR.string.gallery_info_field_cfg)}: " +
                             state.cfgScale.asString(context)
                 )
                 appendLine(
-                    "${context.getString(R.string.gallery_info_field_restore_faces)}: " +
+                    "${context.getString(LocalizationR.string.gallery_info_field_restore_faces)}: " +
                             state.restoreFaces.asString(context)
                 )
                 appendLine(
-                    "${context.getString(R.string.gallery_info_field_seed)}: " +
+                    "${context.getString(LocalizationR.string.gallery_info_field_seed)}: " +
                             state.seed.asString(context)
                 )
             }

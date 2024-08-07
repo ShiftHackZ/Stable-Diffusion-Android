@@ -8,6 +8,10 @@
         name="folder_logs"
         path="logs/" />
 
+    <cache-path
+        name="folder_work"
+        path="work/" />
+
     <external-path name="media" path="." />
     <external-path name="external_files" path="."/>
     <external-path name="external" path="."/>

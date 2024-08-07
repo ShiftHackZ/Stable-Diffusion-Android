@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.notification
+package com.shifthackz.aisdv1.core.notification
 
 import android.app.Notification
 import androidx.core.app.NotificationCompat
@@ -14,13 +14,15 @@ interface PushNotificationManager {
 
     fun createNotification(
         title: UiText,
-        body: UiText,
+        body: UiText?,
         block: NotificationCompat.Builder.() -> Unit = {},
     ): Notification
 
     fun createNotification(
         title: String,
-        body: String,
+        body: String?,
         block: NotificationCompat.Builder.() -> Unit = {},
     ): Notification
+
+    fun createNotificationChannel()
 }

@@ -4,20 +4,26 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.core.notification.PushNotificationManager
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
-import com.shifthackz.aisdv1.notification.PushNotificationManager
-import com.shifthackz.aisdv1.work.task.TestNotificationTask
+import com.shifthackz.aisdv1.work.task.ImageToImageTask
 import com.shifthackz.aisdv1.work.task.TextToImageTask
 
 class SdaiWorkerFactory(
+    private val backgroundWorkObserver: BackgroundWorkObserver,
     private val pushNotificationManager: PushNotificationManager,
     private val preferenceManager: PreferenceManager,
     private val textToImageUseCase: TextToImageUseCase,
+    private val imageToImageUseCase: ImageToImageUseCase,
     private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    private val fileProviderDescriptor: FileProviderDescriptor,
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -30,16 +36,24 @@ class SdaiWorkerFactory(
                 context = appContext,
                 workerParameters = workerParameters,
                 pushNotificationManager = pushNotificationManager,
+                backgroundWorkObserver = backgroundWorkObserver,
                 preferenceManager = preferenceManager,
                 textToImageUseCase = textToImageUseCase,
                 observeHordeProcessStatusUseCase = observeHordeProcessStatusUseCase,
                 observeLocalDiffusionProcessStatusUseCase = observeLocalDiffusionProcessStatusUseCase,
+                fileProviderDescriptor = fileProviderDescriptor,
             )
 
-            TestNotificationTask::class.java.name -> TestNotificationTask(
+            ImageToImageTask::class.java.name -> ImageToImageTask(
                 context = appContext,
                 workerParameters = workerParameters,
                 pushNotificationManager = pushNotificationManager,
+                backgroundWorkObserver = backgroundWorkObserver,
+                preferenceManager = preferenceManager,
+                imageToImageUseCase = imageToImageUseCase,
+                observeHordeProcessStatusUseCase = observeHordeProcessStatusUseCase,
+                observeLocalDiffusionProcessStatusUseCase = observeLocalDiffusionProcessStatusUseCase,
+                fileProviderDescriptor = fileProviderDescriptor,
             )
 
             else -> null

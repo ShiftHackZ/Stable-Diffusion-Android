@@ -15,6 +15,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiSampler
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
@@ -46,6 +47,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
     private val drawerRouter: DrawerRouter,
     private val dimensionValidator: DimensionValidator,
     private val schedulersProvider: SchedulersProvider,
+    private val backgroundWorkObserver: BackgroundWorkObserver,
 ) : MviRxViewModel<S, I, E>() {
 
     private var generationDisposable: Disposable? = null
@@ -111,7 +113,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
             )
     }
 
-    abstract fun generate(): Disposable
+    abstract fun generateDisposable(): Disposable
 
     abstract fun generateBackground()
 
@@ -247,15 +249,19 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
             }
 
             GenerationMviIntent.Generate -> {
-                if (preferenceManager.backgroundGeneration) {
-                    generateBackground()
+                if (backgroundWorkObserver.hasActiveTasks()) {
+                    setActiveModal(Modal.BackgroundGenerationRunning)
                 } else {
-                    generate { generate() }
+                    if (preferenceManager.backgroundGeneration) {
+                        generateBackground()
+                    } else {
+                        generateOnUi { generateDisposable() }
+                    }
                 }
             }
 
             GenerationMviIntent.Configuration -> mainRouter.navigateToServerSetup(
-                ServerSetupLaunchSource.SETTINGS
+                ServerSetupLaunchSource.SETTINGS,
             )
 
             is GenerationMviIntent.UpdateFromGeneration -> {
@@ -317,14 +323,13 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
         randomImageDisposable?.addToDisposable()
     }
 
-    private fun generate(fn: () -> Disposable) {
+    private fun generateOnUi(fn: () -> Disposable) {
         generationDisposable?.dispose()
         generationDisposable = null
         val newDisposable = fn()
         generationDisposable = newDisposable
         generationDisposable?.addToDisposable()
     }
-
 
     private fun updateGenerationState(mutation: (GenerationMviState) -> GenerationMviState) =
         runCatching {

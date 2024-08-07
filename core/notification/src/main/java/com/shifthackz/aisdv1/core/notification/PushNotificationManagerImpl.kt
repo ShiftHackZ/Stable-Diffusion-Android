@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.notification
+package com.shifthackz.aisdv1.core.notification
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -15,7 +15,6 @@ import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.extensions.isAppInForeground
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.feature.notification.R
 
 internal class PushNotificationManagerImpl(
     private val context: Context,
@@ -45,6 +44,7 @@ internal class PushNotificationManagerImpl(
         createAndShowInstant(title.asUiText(), body.asUiText())
     }
 
+    @SuppressLint("MissingPermission")
     override fun show(id: Int, notification: Notification) {
         createNotificationChannel()
         manager.notify(id, notification)
@@ -52,7 +52,7 @@ internal class PushNotificationManagerImpl(
 
     override fun createNotification(
         title: UiText,
-        body: UiText,
+        body: UiText?,
         block: NotificationCompat.Builder.() -> Unit
     ): Notification = with(
         NotificationCompat.Builder(context, SDAI_NOTIFICATION_CHANNEL_ID)
@@ -60,7 +60,9 @@ internal class PushNotificationManagerImpl(
 
         setSmallIcon(R.drawable.ic_notification)
         setContentTitle(title.asString(context))
-        setContentText(body.asString(context))
+        body?.asString(context)?.let {
+            setContentText(it)
+        }
 //        setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 //        setAutoCancel(true)
         apply(block)
@@ -79,24 +81,27 @@ internal class PushNotificationManagerImpl(
 
     override fun createNotification(
         title: String,
-        body: String,
+        body: String?,
         block: NotificationCompat.Builder.() -> Unit
     ): Notification {
-        return createNotification(title.asUiText(), body.asUiText(), block)
+        return createNotification(title.asUiText(), body?.asUiText(), block)
     }
 
-    private fun createNotificationChannel() {
-        if (manager.getNotificationChannel(SDAI_NOTIFICATION_CHANNEL_ID) == null) {
-            debugLog("Creating notification channel")
-            manager.createNotificationChannel(
-                NotificationChannel(
-                    SDAI_NOTIFICATION_CHANNEL_ID,
-                    "SDAI Notifications",
-                    NotificationManager.IMPORTANCE_HIGH,
-                ).also { channel ->
-                    channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-                }
-            )
+    override fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (manager.getNotificationChannel(SDAI_NOTIFICATION_CHANNEL_ID) == null) {
+                debugLog("Creating notification channel")
+
+                manager.createNotificationChannel(
+                    NotificationChannel(
+                        SDAI_NOTIFICATION_CHANNEL_ID,
+                        "SDAI Notifications",
+                        NotificationManager.IMPORTANCE_HIGH,
+                    ).also { channel ->
+                        channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                    }
+                )
+            }
         }
     }
 

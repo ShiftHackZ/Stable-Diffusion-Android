@@ -14,10 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.ui.MviComponent
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.theme.colors
 import com.shifthackz.catppuccin.palette.Catppuccin
 import org.koin.androidx.compose.koinViewModel
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ConnectivityComposable() {
@@ -52,9 +52,9 @@ private fun ConnectivityWidgetState(
                     .padding(vertical = 4.dp, horizontal = 16.dp),
                 text = stringResource(
                     id = when (state) {
-                        is ConnectivityState.Connected -> R.string.status_connected
-                        is ConnectivityState.Disconnected -> R.string.status_disconnected
-                        is ConnectivityState.Uninitialized -> R.string.status_communicating
+                        is ConnectivityState.Connected -> LocalizationR.string.status_connected
+                        is ConnectivityState.Disconnected -> LocalizationR.string.status_disconnected
+                        is ConnectivityState.Uninitialized -> LocalizationR.string.status_communicating
                     }
                 ),
                 color = colors(light = Catppuccin.Latte.Base, dark = Catppuccin.Frappe.Base)

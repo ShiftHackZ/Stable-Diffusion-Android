@@ -8,15 +8,15 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.FeatureTag
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.NavItem
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.source.getNameUiText
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 fun mainDrawerNavItems(settings: Settings? = null): List<NavItem> = buildList {
-    add(txt2ImgTab().copy(name = R.string.title_text_to_image.asUiText()))
-    add(img2imgTab().copy(name = R.string.title_image_to_image.asUiText()))
+    add(txt2ImgTab().copy(name = LocalizationR.string.title_text_to_image.asUiText()))
+    add(img2imgTab().copy(name = LocalizationR.string.title_image_to_image.asUiText()))
     add(galleryTab())
     settings?.source?.takeIf { it.featureTags.contains(FeatureTag.OwnServer) }?.let {
         add(webUi(it))
@@ -27,7 +27,7 @@ fun mainDrawerNavItems(settings: Settings? = null): List<NavItem> = buildList {
 
 private fun webUi(source: ServerSource) = NavItem(
     name = UiText.Concat(
-        R.string.drawer_web_ui.asUiText(),
+        LocalizationR.string.drawer_web_ui.asUiText(),
         " (".asUiText(),
         source.getNameUiText(),
         ")".asUiText(),
@@ -39,7 +39,7 @@ private fun webUi(source: ServerSource) = NavItem(
 )
 
 private fun configuration() = NavItem(
-    name = R.string.settings_item_config.asUiText(),
+    name = LocalizationR.string.settings_item_config.asUiText(),
     route = "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.ordinal}",
     icon = NavItem.Icon.Vector(
         vector = Icons.Default.SettingsEthernet,

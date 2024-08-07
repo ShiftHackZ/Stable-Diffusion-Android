@@ -18,10 +18,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun Automatic1111Form(
@@ -37,7 +37,7 @@ fun Automatic1111Form(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.hint_server_setup_title),
+            text = stringResource(id = LocalizationR.string.hint_server_setup_title),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
@@ -51,7 +51,7 @@ fun Automatic1111Form(
             onValueChange = {
                 processIntent(ServerSetupIntent.UpdateServerUrl(it))
             },
-            label = { Text(stringResource(id = R.string.hint_server_url)) },
+            label = { Text(stringResource(id = LocalizationR.string.hint_server_url)) },
             enabled = !state.demoMode,
             isError = state.serverUrlValidationError != null && !state.demoMode,
             supportingText = state.serverUrlValidationError
@@ -71,7 +71,7 @@ fun Automatic1111Form(
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
             startIcon = Icons.AutoMirrored.Filled.Help,
-            text = R.string.settings_item_instructions.asUiText(),
+            text = LocalizationR.string.settings_item_instructions.asUiText(),
             onClick = { processIntent(ServerSetupIntent.LaunchUrl.A1111Instructions) },
         )
         SettingsItem(
@@ -79,7 +79,7 @@ fun Automatic1111Form(
                 .padding(top = 8.dp)
                 .fillMaxWidth(),
             startIcon = Icons.Default.DeveloperMode,
-            text = R.string.settings_item_demo.asUiText(),
+            text = LocalizationR.string.settings_item_demo.asUiText(),
             onClick = { processIntent(ServerSetupIntent.UpdateDemoMode(!state.demoMode)) },
             endValueContent = {
                 Switch(
@@ -93,15 +93,15 @@ fun Automatic1111Form(
         )
         if (!state.demoMode) Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.hint_args_warning),
+            text = stringResource(id = LocalizationR.string.hint_args_warning),
             style = MaterialTheme.typography.bodyMedium,
         )
         Text(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
             text = if (state.demoMode) {
-                stringResource(R.string.hint_demo_mode)
+                stringResource(LocalizationR.string.hint_demo_mode)
             } else {
-                stringResource(R.string.hint_valid_urls, "7860")
+                stringResource(LocalizationR.string.hint_valid_urls, "7860")
             },
             style = MaterialTheme.typography.bodyMedium,
         )

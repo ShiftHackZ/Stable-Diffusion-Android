@@ -4,11 +4,13 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
@@ -18,8 +20,6 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProc
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
-import com.shifthackz.aisdv1.notification.PushNotificationManager
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
@@ -28,6 +28,7 @@ import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.android.core.mvi.EmptyEffect
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class TextToImageViewModel(
     generationFormUpdateEvent: GenerationFormUpdateEvent,
@@ -46,6 +47,7 @@ class TextToImageViewModel(
     private val notificationManager: PushNotificationManager,
     private val wakeLockInterActor: WakeLockInterActor,
     private val backgroundTaskManager: BackgroundTaskManager,
+    private val backgroundWorkObserver: BackgroundWorkObserver,
 ) : GenerationMviViewModel<TextToImageState, GenerationMviIntent, EmptyEffect>(
     preferenceManager = preferenceManager,
     getStableDiffusionSamplersUseCase = getStableDiffusionSamplersUseCase,
@@ -58,6 +60,7 @@ class TextToImageViewModel(
     drawerRouter = drawerRouter,
     dimensionValidator = dimensionValidator,
     schedulersProvider = schedulersProvider,
+    backgroundWorkObserver = backgroundWorkObserver,
 ) {
 
     private val progressModal: Modal
@@ -84,7 +87,7 @@ class TextToImageViewModel(
             )
     }
 
-    override fun generate() = currentState
+    override fun generateDisposable() = currentState
         .mapToPayload()
         .let(textToImageUseCase::invoke)
         .doOnSubscribe {
@@ -96,8 +99,8 @@ class TextToImageViewModel(
         .subscribeBy(
             onError = { t ->
                 notificationManager.createAndShowInstant(
-                    R.string.notification_fail_title.asUiText(),
-                    R.string.notification_fail_sub_title.asUiText(),
+                    LocalizationR.string.notification_fail_title.asUiText(),
+                    LocalizationR.string.notification_fail_sub_title.asUiText(),
                 )
                 setActiveModal(
                     Modal.Error(
@@ -108,8 +111,8 @@ class TextToImageViewModel(
             },
             onSuccess = { ai ->
                 notificationManager.createAndShowInstant(
-                    R.string.notification_finish_title.asUiText(),
-                    R.string.notification_finish_sub_title.asUiText(),
+                    LocalizationR.string.notification_finish_title.asUiText(),
+                    LocalizationR.string.notification_finish_sub_title.asUiText(),
                 )
                 setActiveModal(
                     Modal.Image.create(ai, preferenceManager.autoSaveAiResults)
@@ -118,8 +121,8 @@ class TextToImageViewModel(
         )
 
     override fun generateBackground() {
-        val pl = currentState.mapToPayload()
-        backgroundTaskManager.scheduleTextToImageTask(pl)
+        val payload = currentState.mapToPayload()
+        backgroundTaskManager.scheduleTextToImageTask(payload)
     }
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {

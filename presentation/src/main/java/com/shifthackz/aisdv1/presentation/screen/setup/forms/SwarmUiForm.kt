@@ -16,10 +16,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun SwarmUiForm(
@@ -35,7 +35,7 @@ fun SwarmUiForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.hint_swarm_ui_title),
+            text = stringResource(id = LocalizationR.string.hint_swarm_ui_title),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
@@ -49,7 +49,7 @@ fun SwarmUiForm(
             onValueChange = {
                 processIntent(ServerSetupIntent.UpdateSwarmUiUrl(it))
             },
-            label = { Text(stringResource(id = R.string.hint_server_url)) },
+            label = { Text(stringResource(id = LocalizationR.string.hint_server_url)) },
             isError = state.swarmUiUrlValidationError != null,
             supportingText = state.swarmUiUrlValidationError
                 ?.let { { Text(it.asString(), color = MaterialTheme.colorScheme.error) } },
@@ -65,17 +65,17 @@ fun SwarmUiForm(
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
             startIcon = Icons.AutoMirrored.Filled.Help,
-            text = R.string.settings_item_instructions.asUiText(),
+            text = LocalizationR.string.settings_item_instructions.asUiText(),
             onClick = { processIntent(ServerSetupIntent.LaunchUrl.SwarmUiInstructions) },
         )
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.hint_args_swarm_ui_warning),
+            text = stringResource(id = LocalizationR.string.hint_args_swarm_ui_warning),
             style = MaterialTheme.typography.bodyMedium,
         )
         Text(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
-            text = stringResource(R.string.hint_valid_urls, "7801"),
+            text = stringResource(LocalizationR.string.hint_valid_urls, "7801"),
             style = MaterialTheme.typography.bodyMedium,
         )
     }

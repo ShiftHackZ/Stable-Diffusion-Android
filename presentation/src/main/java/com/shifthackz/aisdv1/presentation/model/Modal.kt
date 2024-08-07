@@ -24,6 +24,7 @@ sealed interface Modal {
 
     data object ConnectLocalHost : Modal
 
+    data object BackgroundGenerationRunning : Modal
 
     @Immutable
     data class SelectSdModel(val models: List<String>, val selected: String) : Modal

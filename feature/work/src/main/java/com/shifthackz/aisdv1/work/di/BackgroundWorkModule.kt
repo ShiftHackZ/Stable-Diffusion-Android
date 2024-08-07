@@ -2,9 +2,12 @@ package com.shifthackz.aisdv1.work.di
 
 import androidx.work.WorkManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.work.BackgroundTaskManagerImpl
+import com.shifthackz.aisdv1.work.BackgroundWorkObserverImpl
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -14,5 +17,6 @@ val backgroundWorkModule = module {
     }
 
     factoryOf(::SdaiWorkerFactory)
+    singleOf(::BackgroundWorkObserverImpl) bind BackgroundWorkObserver::class
     factoryOf(::BackgroundTaskManagerImpl) bind BackgroundTaskManager::class
 }

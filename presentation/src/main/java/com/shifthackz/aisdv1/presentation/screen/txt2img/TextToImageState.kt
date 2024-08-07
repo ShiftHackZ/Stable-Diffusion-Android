@@ -13,9 +13,9 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Immutable
 data class TextToImageState(
@@ -146,15 +146,15 @@ fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
 fun ValidationResult<DimensionValidator.Error>.mapToUi(): UiText? {
     if (this.isValid) return null
     return when (validationError as DimensionValidator.Error) {
-        DimensionValidator.Error.Empty -> R.string.error_empty.asUiText()
+        DimensionValidator.Error.Empty -> LocalizationR.string.error_empty.asUiText()
         is DimensionValidator.Error.LessThanMinimum -> UiText.Resource(
-            R.string.error_min_size,
+            LocalizationR.string.error_min_size,
             (validationError as DimensionValidator.Error.LessThanMinimum).min,
         )
         is DimensionValidator.Error.BiggerThanMaximum -> UiText.Resource(
-            R.string.error_max_size,
+            LocalizationR.string.error_max_size,
             (validationError as DimensionValidator.Error.BiggerThanMaximum).max,
         )
-        else -> R.string.error_invalid.asUiText()
+        else -> LocalizationR.string.error_invalid.asUiText()
     }
 }

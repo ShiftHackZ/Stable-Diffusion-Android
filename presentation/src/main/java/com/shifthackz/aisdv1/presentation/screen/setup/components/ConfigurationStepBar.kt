@@ -25,8 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ConfigurationStepBar(
@@ -109,8 +109,8 @@ fun ConfigurationStepBar(
                         modifier = Modifier.padding(top = 8.dp),
                         text = stringResource(
                             id = when (step) {
-                                ServerSetupState.Step.SOURCE -> R.string.srv_step_1
-                                ServerSetupState.Step.CONFIGURE -> R.string.srv_step_2
+                                ServerSetupState.Step.SOURCE -> LocalizationR.string.srv_step_1
+                                ServerSetupState.Step.CONFIGURE -> LocalizationR.string.srv_step_2
                             }
                         ),
                         style = MaterialTheme.typography.labelSmall,

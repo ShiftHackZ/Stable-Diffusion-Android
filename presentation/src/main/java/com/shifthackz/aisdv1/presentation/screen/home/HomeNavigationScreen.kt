@@ -65,6 +65,11 @@ fun HomeNavigationScreen(
         Scaffold(
             bottomBar = {
                 Column {
+//                    BackgroundWorkWidget(
+//                        modifier = Modifier
+//                            .background(MaterialTheme.colorScheme.surface)
+//                            .padding(vertical = 4.dp),
+//                    )
                     NavigationBar {
                         navItems.forEach { item ->
                             val selected = item.route == currentRoute

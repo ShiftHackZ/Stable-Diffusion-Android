@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
-import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ErrorDialog(
@@ -23,12 +23,12 @@ fun ErrorDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(onClick = onDismissRequest) {
-                Text(text = stringResource(id = R.string.ok))
+                Text(text = stringResource(id = LocalizationR.string.ok))
             }
         },
         title = {
             Text(
-                text = stringResource(id = R.string.error_title),
+                text = stringResource(id = LocalizationR.string.error_title),
                 fontSize = 18.sp,
                 color = AlertDialogDefaults.titleContentColor,
             )

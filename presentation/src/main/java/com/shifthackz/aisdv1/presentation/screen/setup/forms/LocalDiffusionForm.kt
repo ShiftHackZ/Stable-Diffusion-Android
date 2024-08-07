@@ -41,9 +41,9 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun LocalDiffusionForm(
@@ -104,11 +104,11 @@ fun LocalDiffusionForm(
                         Text(
                             text = stringResource(
                                 id = when (model.downloadState) {
-                                    is DownloadState.Downloading -> R.string.cancel
-                                    is DownloadState.Error -> R.string.retry
+                                    is DownloadState.Downloading -> LocalizationR.string.cancel
+                                    is DownloadState.Error -> LocalizationR.string.retry
                                     else -> {
-                                        if (model.downloaded) R.string.delete
-                                        else R.string.download
+                                        if (model.downloaded) LocalizationR.string.delete
+                                        else LocalizationR.string.download
                                     }
                                 }
                             ),
@@ -122,12 +122,12 @@ fun LocalDiffusionForm(
                     modifier = Modifier.padding(8.dp),
                 ) {
                     Text(
-                        text = stringResource(id = R.string.model_local_custom_title),
+                        text = stringResource(id = LocalizationR.string.model_local_custom_title),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = stringResource(id = R.string.model_local_custom_sub_title),
+                        text = stringResource(id = LocalizationR.string.model_local_custom_sub_title),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
@@ -227,7 +227,7 @@ fun LocalDiffusionForm(
                         modifier = Modifier
                             .padding(horizontal = 8.dp)
                             .padding(bottom = 8.dp),
-                        text = stringResource(id = R.string.error_download_fail),
+                        text = stringResource(id = LocalizationR.string.error_download_fail),
                     )
                 }
 
@@ -243,14 +243,14 @@ fun LocalDiffusionForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.hint_local_diffusion_title),
+            text = stringResource(id = LocalizationR.string.hint_local_diffusion_title),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
         )
         Text(
             modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
-            text = stringResource(id = R.string.hint_local_diffusion_sub_title),
+            text = stringResource(id = LocalizationR.string.hint_local_diffusion_sub_title),
             style = MaterialTheme.typography.bodyMedium,
         )
         if (buildInfoProvider.type == BuildType.FOSS) {
@@ -265,14 +265,14 @@ fun LocalDiffusionForm(
                 )
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
-                    text = stringResource(id = R.string.model_local_custom_switch),
+                    text = stringResource(id = LocalizationR.string.model_local_custom_switch),
                 )
             }
         }
         if (state.localCustomModel && buildInfoProvider.type == BuildType.FOSS) {
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = stringResource(id = R.string.model_local_permission_title),
+                text = stringResource(id = LocalizationR.string.model_local_permission_title),
                 style = MaterialTheme.typography.bodyMedium,
             )
             OutlinedButton(
@@ -282,7 +282,7 @@ fun LocalDiffusionForm(
                 onClick = { processIntent(ServerSetupIntent.LaunchManageStoragePermission) },
             ) {
                 Text(
-                    text = stringResource(id = R.string.model_local_permission_button),
+                    text = stringResource(id = LocalizationR.string.model_local_permission_button),
                     color = LocalContentColor.current,
                 )
             }
@@ -295,7 +295,7 @@ fun LocalDiffusionForm(
             .forEach { localModel -> modelItemUi(localModel) }
         Text(
             modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.hint_local_diffusion_warning),
+            text = stringResource(id = LocalizationR.string.hint_local_diffusion_warning),
             style = MaterialTheme.typography.bodyMedium,
         )
     }

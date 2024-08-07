@@ -45,13 +45,13 @@ import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.widget.error.ErrorComposable
 import com.shifthackz.aisdv1.presentation.widget.source.getName
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 import org.koin.androidx.compose.koinViewModel
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ExtrasScreen(
@@ -117,8 +117,8 @@ private fun ScreenContent(
                             Text(
                                 modifier = Modifier.padding(horizontal = 8.dp),
                                 text = stringResource(
-                                    id = if (state.error != ErrorState.None) R.string.close
-                                    else R.string.apply
+                                    id = if (state.error != ErrorState.None) LocalizationR.string.close
+                                    else LocalizationR.string.apply
                                 ),
                                 color = LocalContentColor.current,
                             )
@@ -134,8 +134,8 @@ private fun ScreenContent(
                     ModalDialogToolbar(
                         text = stringResource(
                             id = when (state.type) {
-                                ExtraType.Lora -> R.string.title_lora
-                                ExtraType.HyperNet -> R.string.title_hyper_net
+                                ExtraType.Lora -> LocalizationR.string.title_lora
+                                ExtraType.HyperNet -> LocalizationR.string.title_hyper_net
                             }
                         ),
                         onClose = { processIntent(ExtrasIntent.Close) },
@@ -196,7 +196,7 @@ private fun ExtrasEmptyState(type: ExtraType, source: ServerSource) {
     ) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.extras_empty_title),
+            text = stringResource(id = LocalizationR.string.extras_empty_title),
             fontSize = 20.sp,
         )
         val path = when (type) {
@@ -218,8 +218,8 @@ private fun ExtrasEmptyState(type: ExtraType, source: ServerSource) {
                 .align(Alignment.CenterHorizontally),
             text = stringResource(
                 when (type) {
-                    ExtraType.Lora -> R.string.extras_empty_sub_title_lora
-                    ExtraType.HyperNet -> R.string.extras_empty_sub_title_hypernet
+                    ExtraType.Lora -> LocalizationR.string.extras_empty_sub_title_lora
+                    ExtraType.HyperNet -> LocalizationR.string.extras_empty_sub_title_hypernet
                 },
                 source.getName(),
                 path,

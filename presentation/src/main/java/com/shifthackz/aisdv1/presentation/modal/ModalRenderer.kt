@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.modal.crop.CropImageModal
@@ -33,10 +32,12 @@ import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialo
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageBatchResultModal
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageResultDialog
+import com.shifthackz.aisdv1.presentation.widget.dialog.InfoDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialogCancelButton
 import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
 import com.shifthackz.android.core.mvi.MviIntent
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ModalRenderer(
@@ -68,7 +69,7 @@ fun ModalRenderer(
         )
 
         Modal.LoadingRandomImage -> ProgressDialog(
-            titleResId = R.string.communicating_random_image_title,
+            titleResId = LocalizationR.string.communicating_random_image_title,
             canDismiss = false,
         ) {
             ProgressDialogCancelButton {
@@ -82,7 +83,7 @@ fun ModalRenderer(
         )
 
         is Modal.Generating -> ProgressDialog(
-            titleResId = R.string.communicating_local_title,
+            titleResId = LocalizationR.string.communicating_local_title,
             canDismiss = false,
             step = screenModal.pair,
         )
@@ -147,10 +148,10 @@ fun ModalRenderer(
         )
 
         is Modal.ClearAppCache -> DecisionInteractiveDialog(
-            title = R.string.title_clear_app_cache.asUiText(),
-            text = R.string.interaction_cache_sub_title.asUiText(),
-            confirmActionResId = R.string.yes,
-            dismissActionResId = R.string.no,
+            title = LocalizationR.string.title_clear_app_cache.asUiText(),
+            text = LocalizationR.string.interaction_cache_sub_title.asUiText(),
+            confirmActionResId = LocalizationR.string.yes,
+            dismissActionResId = LocalizationR.string.no,
             onDismissRequest = dismiss,
             onConfirmAction = { processIntent(SettingsIntent.Action.ClearAppCache.Confirm) },
         )
@@ -158,15 +159,15 @@ fun ModalRenderer(
         is Modal.SelectSdModel -> {
             var selectedItem by remember { mutableStateOf(screenModal.selected) }
             DecisionInteractiveDialog(
-                title = R.string.title_select_sd_model.asUiText(),
+                title = LocalizationR.string.title_select_sd_model.asUiText(),
                 text = UiText.empty,
-                confirmActionResId = R.string.action_select,
+                confirmActionResId = LocalizationR.string.action_select,
                 onConfirmAction = { processIntent(SettingsIntent.SdModel.Select(selectedItem)) },
                 onDismissRequest = dismiss,
                 content = {
                     DropdownTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        label = R.string.hint_sd_model.asUiText(),
+                        label = LocalizationR.string.hint_sd_model.asUiText(),
                         value = selectedItem,
                         items = screenModal.models,
                         onItemSelected = { selectedItem = it },
@@ -176,25 +177,25 @@ fun ModalRenderer(
         }
 
         Modal.DeleteImageConfirm -> DecisionInteractiveDialog(
-            title = R.string.interaction_delete_generation_title.asUiText(),
-            text = R.string.interaction_delete_generation_sub_title.asUiText(),
-            confirmActionResId = R.string.yes,
-            dismissActionResId = R.string.no,
+            title = LocalizationR.string.interaction_delete_generation_title.asUiText(),
+            text = LocalizationR.string.interaction_delete_generation_sub_title.asUiText(),
+            confirmActionResId = LocalizationR.string.yes,
+            dismissActionResId = LocalizationR.string.no,
             onConfirmAction = { processIntent(GalleryDetailIntent.Delete.Confirm) },
             onDismissRequest = dismiss,
         )
 
         Modal.ConfirmExport -> DecisionInteractiveDialog(
-            title = R.string.interaction_export_title.asUiText(),
-            text = R.string.interaction_export_sub_title.asUiText(),
-            confirmActionResId = R.string.action_export,
+            title = LocalizationR.string.interaction_export_title.asUiText(),
+            text = LocalizationR.string.interaction_export_sub_title.asUiText(),
+            confirmActionResId = LocalizationR.string.action_export,
             onConfirmAction = { processIntent(GalleryIntent.Export.Confirm) },
             onDismissRequest = dismiss,
         )
 
         Modal.ExportInProgress -> ProgressDialog(
-            titleResId = R.string.exporting_progress_title,
-            subTitleResId = R.string.exporting_progress_sub_title,
+            titleResId = LocalizationR.string.exporting_progress_title,
+            subTitleResId = LocalizationR.string.exporting_progress_sub_title,
             canDismiss = false,
         )
 
@@ -217,22 +218,22 @@ fun ModalRenderer(
         }
 
         is Modal.DeleteLocalModelConfirm -> DecisionInteractiveDialog(
-            title = R.string.interaction_delete_local_model_title.asUiText(),
+            title = LocalizationR.string.interaction_delete_local_model_title.asUiText(),
             text = UiText.Resource(
-                R.string.interaction_delete_local_model_sub_title,
+                LocalizationR.string.interaction_delete_local_model_sub_title,
                 screenModal.model.name,
             ),
-            confirmActionResId = R.string.yes,
-            dismissActionResId = R.string.no,
+            confirmActionResId = LocalizationR.string.yes,
+            dismissActionResId = LocalizationR.string.no,
             onConfirmAction = { processIntent(ServerSetupIntent.LocalModel.DeleteConfirm(screenModal.model)) },
             onDismissRequest = dismiss,
         )
 
         Modal.ClearInPaintConfirm -> DecisionInteractiveDialog(
-            title = R.string.interaction_in_paint_clear_title.asUiText(),
-            text = R.string.interaction_in_paint_clear_title.asUiText(),
-            confirmActionResId = R.string.yes,
-            dismissActionResId = R.string.no,
+            title = LocalizationR.string.interaction_in_paint_clear_title.asUiText(),
+            text = LocalizationR.string.interaction_in_paint_clear_title.asUiText(),
+            confirmActionResId = LocalizationR.string.yes,
+            dismissActionResId = LocalizationR.string.no,
             onConfirmAction = { processIntent(InPaintIntent.Action.Clear) },
             onDismissRequest = dismiss,
         )
@@ -244,11 +245,17 @@ fun ModalRenderer(
         )
 
         Modal.ConnectLocalHost -> DecisionInteractiveDialog(
-            title = R.string.interaction_warning_title.asUiText(),
-            text = R.string.interaction_warning_localhost_sub_title.asUiText(),
-            confirmActionResId = R.string.action_connect,
-            dismissActionResId = R.string.cancel,
+            title = LocalizationR.string.interaction_warning_title.asUiText(),
+            text = LocalizationR.string.interaction_warning_localhost_sub_title.asUiText(),
+            confirmActionResId = LocalizationR.string.action_connect,
+            dismissActionResId = LocalizationR.string.cancel,
             onConfirmAction = { processIntent(ServerSetupIntent.ConnectToLocalHost) },
+            onDismissRequest = dismiss,
+        )
+
+        Modal.BackgroundGenerationRunning -> InfoDialog(
+            title = LocalizationR.string.interaction_background_running_title.asUiText(),
+            subTitle = LocalizationR.string.interaction_background_running_sub_title.asUiText(),
             onDismissRequest = dismiss,
         )
     }

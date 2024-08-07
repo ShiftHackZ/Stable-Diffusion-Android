@@ -13,12 +13,12 @@ import com.shifthackz.aisdv1.app.di.providersModule
 import com.shifthackz.aisdv1.core.common.log.FileLoggingTree
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.imageprocessing.di.imageProcessingModule
+import com.shifthackz.aisdv1.core.notification.di.notificationModule
 import com.shifthackz.aisdv1.core.validation.di.validatorsModule
 import com.shifthackz.aisdv1.data.di.dataModule
 import com.shifthackz.aisdv1.demo.di.demoModule
 import com.shifthackz.aisdv1.domain.di.domainModule
 import com.shifthackz.aisdv1.network.di.networkModule
-import com.shifthackz.aisdv1.notification.di.notificationModule
 import com.shifthackz.aisdv1.presentation.di.presentationModule
 import com.shifthackz.aisdv1.storage.di.databaseModule
 import com.shifthackz.aisdv1.work.di.SdaiWorkerFactory

@@ -6,11 +6,11 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.android.core.mvi.EmptyEffect
 import com.shifthackz.android.core.mvi.EmptyIntent
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class ConfigurationLoaderViewModel(
     dataPreLoaderUseCase: DataPreLoaderUseCase,
@@ -19,7 +19,7 @@ class ConfigurationLoaderViewModel(
 ) : MviRxViewModel<ConfigurationLoaderState, EmptyIntent, EmptyEffect>() {
 
     override val initialState = ConfigurationLoaderState.StatusNotification(
-        R.string.splash_status_initializing.asUiText()
+        LocalizationR.string.splash_status_initializing.asUiText()
     )
 
     init {
@@ -27,7 +27,7 @@ class ConfigurationLoaderViewModel(
             .doOnSubscribe {
                 updateState {
                     ConfigurationLoaderState.StatusNotification(
-                        R.string.splash_status_fetching.asUiText()
+                        LocalizationR.string.splash_status_fetching.asUiText()
                     )
                 }
             }
@@ -43,7 +43,7 @@ class ConfigurationLoaderViewModel(
                 onComplete = {
                     updateState {
                         ConfigurationLoaderState.StatusNotification(
-                            R.string.splash_status_launching.asUiText()
+                            LocalizationR.string.splash_status_launching.asUiText()
                         )
                     }
                     mainRouter.navigateToHomeScreen()

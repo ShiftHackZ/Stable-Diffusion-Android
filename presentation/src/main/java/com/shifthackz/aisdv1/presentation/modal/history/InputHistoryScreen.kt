@@ -41,9 +41,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.presentation.R
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun InputHistoryScreen(
@@ -99,7 +99,7 @@ private fun InputHistoryItem(
             }
             if ("$value".isNotEmpty()) append("$value")
             else withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) {
-                append(stringResource(id = R.string.empty))
+                append(stringResource(id = LocalizationR.string.empty))
             }
         }
     }
@@ -128,7 +128,7 @@ private fun InputHistoryItem(
             val textModifier = Modifier.padding(horizontal = 4.dp)
             Text(
                 modifier = textModifier.padding(top = 2.dp),
-                text = itemPropertyText(R.string.hint_prompt, generation.prompt),
+                text = itemPropertyText(LocalizationR.string.hint_prompt, generation.prompt),
                 style = textStyle,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -136,7 +136,7 @@ private fun InputHistoryItem(
             )
             Text(
                 modifier = textModifier,
-                text = itemPropertyText(R.string.hint_prompt_negative, generation.negativePrompt),
+                text = itemPropertyText(LocalizationR.string.hint_prompt_negative, generation.negativePrompt),
                 style = textStyle,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -146,10 +146,10 @@ private fun InputHistoryItem(
                 add(generation.type.key)
                 add("${generation.width} X ${generation.height}")
                 add(generation.sampler)
-                add(stringResource(id = R.string.tag_steps, generation.samplingSteps))
-                add(stringResource(id = R.string.tag_cfg, "${generation.cfgScale}"))
+                add(stringResource(id = LocalizationR.string.tag_steps, generation.samplingSteps))
+                add(stringResource(id = LocalizationR.string.tag_cfg, "${generation.cfgScale}"))
                 if (generation.type == AiGenerationResult.Type.IMAGE_TO_IMAGE) {
-                    add(stringResource(id = R.string.tag_denoising, "${generation.denoisingStrength}"))
+                    add(stringResource(id = LocalizationR.string.tag_denoising, "${generation.denoisingStrength}"))
                 }
                 add(generation.seed)
                 add(generation.subSeed)

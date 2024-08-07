@@ -49,10 +49,11 @@ import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.Supporter
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.item.SupporterItem
 import org.koin.androidx.compose.koinViewModel
 import java.util.Date
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
+import com.shifthackz.aisdv1.presentation.R as PresentationR
 
 @Composable
 fun DonateScreen() {
@@ -81,7 +82,7 @@ private fun DonateScreenContent(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.settings_item_donate),
+                        text = stringResource(id = LocalizationR.string.settings_item_donate),
                         style = MaterialTheme.typography.headlineMedium,
                     )
                 },
@@ -117,24 +118,24 @@ private fun DonateScreenContent(
                 ) {
                     Image(
                         modifier = Modifier.size(36.dp),
-                        painter = painterResource(id = R.drawable.ic_sdai_logo),
+                        painter = painterResource(id = PresentationR.drawable.ic_sdai_logo),
                         contentDescription = "SDAI Android Branding",
                     )
                     Text(
-                        text = stringResource(id = R.string.donate_bs_title),
+                        text = stringResource(id = LocalizationR.string.donate_bs_title),
                         fontWeight = FontWeight.W500,
                         fontSize = 17.sp,
                     )
                 }
                 Text(
                     modifier = Modifier.padding(bottom = 8.dp),
-                    text = stringResource(id = R.string.donate_bs_sub_title),
+                    text = stringResource(id = LocalizationR.string.donate_bs_sub_title),
                     fontWeight = FontWeight.W300,
                     lineHeight = 17.sp,
                 )
                 Text(
                     modifier = Modifier.padding(bottom = 12.dp),
-                    text = stringResource(id = R.string.donate_bs_ending),
+                    text = stringResource(id = LocalizationR.string.donate_bs_ending),
                     fontWeight = FontWeight.W300,
                     lineHeight = 17.sp,
                 )
@@ -151,7 +152,7 @@ private fun DonateScreenContent(
                 ) {
                     Image(
                         modifier = Modifier.fillMaxWidth(),
-                        painter = painterResource(id = R.drawable.ic_bmc),
+                        painter = painterResource(id = PresentationR.drawable.ic_bmc),
                         contentDescription = "Buy me a coffee",
                         contentScale = ContentScale.FillHeight
                     )
@@ -183,7 +184,7 @@ private fun DonateScreenContent(
                                             top = 16.dp,
                                             bottom = 4.dp,
                                         ),
-                                    text = stringResource(id = R.string.donate_title_thanks),
+                                    text = stringResource(id = LocalizationR.string.donate_title_thanks),
                                     fontSize = 22.sp,
                                     fontWeight = FontWeight.W500,
                                 )

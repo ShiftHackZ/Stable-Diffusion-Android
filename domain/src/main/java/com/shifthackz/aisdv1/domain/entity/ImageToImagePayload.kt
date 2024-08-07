@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.domain.entity
 
+import java.io.Serializable
+
 data class ImageToImagePayload(
     val base64Image: String,
     val base64MaskImage: String,
@@ -24,4 +26,4 @@ data class ImageToImagePayload(
     val maskBlur: Int,
     val stabilityAiClipGuidance: StabilityAiClipGuidance?,
     val stabilityAiStylePreset: StabilityAiStylePreset?,
-)
+) : Serializable

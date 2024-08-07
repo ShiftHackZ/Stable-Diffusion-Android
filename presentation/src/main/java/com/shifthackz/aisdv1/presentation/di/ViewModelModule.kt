@@ -23,6 +23,7 @@ import com.shifthackz.aisdv1.presentation.screen.web.webui.WebUiViewModel
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppThemeViewModel
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityViewModel
 import com.shifthackz.aisdv1.presentation.widget.engine.EngineSelectionViewModel
+import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
@@ -48,6 +49,7 @@ val viewModelModule = module {
     viewModelOf(::EngineSelectionViewModel)
     viewModelOf(::WebUiViewModel)
     viewModelOf(::DonateViewModel)
+    viewModelOf(::BackgroundWorkViewModel)
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())

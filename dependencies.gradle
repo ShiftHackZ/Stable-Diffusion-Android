@@ -27,7 +27,7 @@ ext {
     accompanistSystemUiControllerVersion = '0.30.1'
     cryptoVersion = '1.0.0'
     exifinterfaceVersion = '1.3.6'
-    onnxruntimeVersion = '1.16.3'
+    onnxruntimeVersion = '1.18.0'
     catppuccinVersion = '0.1.1'
     composeGesturesVersion = '3.1'
     composeEasyCropVersion = '0.1.1'

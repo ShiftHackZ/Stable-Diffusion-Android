@@ -23,13 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.shifthackz.aisdv1.presentation.R
-import com.shifthackz.aisdv1.presentation.utils.formatDuration
+import com.shifthackz.aisdv1.core.localization.formatter.DurationFormatter
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ProgressDialog(
-    @StringRes titleResId: Int = R.string.communicating_progress_title,
-    @StringRes subTitleResId: Int = R.string.communicating_progress_sub_title,
+    @StringRes titleResId: Int = LocalizationR.string.communicating_progress_title,
+    @StringRes subTitleResId: Int = LocalizationR.string.communicating_progress_sub_title,
     canDismiss: Boolean = true,
     onDismissRequest: () -> Unit = {},
     waitTimeSeconds: Int? = null,
@@ -88,16 +88,19 @@ fun ProgressDialogStatus(
     Column(modifier.padding(vertical = 4.dp)) {
         Text(
             text = waitTimeSeconds?.let { seconds ->
-                stringResource(id = R.string.communicating_wait_time, formatDuration(seconds))
+                stringResource(
+                    LocalizationR.string.communicating_wait_time,
+                    DurationFormatter.formatDurationInSeconds(seconds)
+                )
             } ?: "",
             style = TextStyle(fontSize = 12.sp),
             color = AlertDialogDefaults.textContentColor,
         )
         Text(
             text = positionInQueue?.let { position ->
-                stringResource(id = R.string.communicating_status_queue, position)
+                stringResource(id = LocalizationR.string.communicating_status_queue, position)
             } ?: step?.let { (current, total) ->
-                stringResource(id = R.string.communicating_status_steps, current, total)
+                stringResource(id = LocalizationR.string.communicating_status_steps, current, total)
             } ?: "",
             style = TextStyle(fontSize = 12.sp),
             color = AlertDialogDefaults.textContentColor,
@@ -118,7 +121,7 @@ fun ProgressDialogCancelButton(onClick: () -> Unit) {
             onClick = onClick,
         ) {
             Text(
-                text = stringResource(id = R.string.cancel),
+                text = stringResource(id = LocalizationR.string.cancel),
                 color = LocalContentColor.current,
             )
         }

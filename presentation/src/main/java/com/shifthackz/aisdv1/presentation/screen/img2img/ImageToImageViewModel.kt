@@ -7,8 +7,12 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
+import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
@@ -19,8 +23,6 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatus
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
-import com.shifthackz.aisdv1.notification.PushNotificationManager
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviViewModel
@@ -33,6 +35,7 @@ import com.shz.imagepicker.imagepicker.model.PickedResult
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class ImageToImageViewModel(
     generationFormUpdateEvent: GenerationFormUpdateEvent,
@@ -54,6 +57,8 @@ class ImageToImageViewModel(
     private val wakeLockInterActor: WakeLockInterActor,
     private val inPaintStateProducer: InPaintStateProducer,
     private val mainRouter: MainRouter,
+    private val backgroundTaskManager: BackgroundTaskManager,
+    private val backgroundWorkObserver: BackgroundWorkObserver,
 ) : GenerationMviViewModel<ImageToImageState, GenerationMviIntent, ImageToImageEffect>(
     preferenceManager = preferenceManager,
     getStableDiffusionSamplersUseCase = getStableDiffusionSamplersUseCase,
@@ -66,6 +71,7 @@ class ImageToImageViewModel(
     drawerRouter = drawerRouter,
     dimensionValidator = dimensionValidator,
     schedulersProvider = schedulersProvider,
+    backgroundWorkObserver = backgroundWorkObserver,
 ) {
 
     override val initialState = ImageToImageState()
@@ -155,41 +161,20 @@ class ImageToImageViewModel(
         }
     }
 
-    override fun generate() = when (currentState.imageState) {
-        is ImageToImageState.ImageState.Image -> Single
-            .just(
-                Pair(
-                    (currentState.imageState as ImageToImageState.ImageState.Image).bitmap,
-                    currentState.inPaintModel.bitmap,
-                )
-            )
+    override fun generateDisposable() = when (currentState.imageState) {
+        is ImageToImageState.ImageState.Image -> generateImageToImagePayload()
             .doOnSubscribe {
                 wakeLockInterActor.acquireWakelockUseCase()
                 setActiveModal(Modal.Communicating())
             }
-            .flatMap { (bmp, maskBmp) ->
-                bitmapToBase64Converter(BitmapToBase64Converter.Input(bmp))
-                    .map(BitmapToBase64Converter.Output::base64ImageString)
-                    .flatMap { base64 ->
-                        maskBmp?.let {
-                            bitmapToBase64Converter(BitmapToBase64Converter.Input(maskBmp))
-                                .map(BitmapToBase64Converter.Output::base64ImageString)
-                                .map { maskBase64 -> base64 to maskBase64 }
-                        } ?: run {
-                            Single.just(base64 to "")
-                        }
-                    }
-            }
-            .map(currentState::preProcessed)
-            .map(ImageToImageState::mapToPayload)
             .flatMap(imageToImageUseCase::invoke)
             .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(
                 onError = { t ->
                     notificationManager.createAndShowInstant(
-                        R.string.notification_fail_title.asUiText(),
-                        R.string.notification_fail_sub_title.asUiText(),
+                        LocalizationR.string.notification_fail_title.asUiText(),
+                        LocalizationR.string.notification_fail_sub_title.asUiText(),
                     )
                     setActiveModal(
                         Modal.Error(
@@ -202,8 +187,8 @@ class ImageToImageViewModel(
                 },
                 onSuccess = { ai ->
                     notificationManager.createAndShowInstant(
-                        R.string.notification_finish_title.asUiText(),
-                        R.string.notification_finish_sub_title.asUiText(),
+                        LocalizationR.string.notification_finish_title.asUiText(),
+                        LocalizationR.string.notification_finish_sub_title.asUiText(),
                     )
                     setActiveModal(
                         Modal.Image.create(
@@ -218,7 +203,12 @@ class ImageToImageViewModel(
     }
 
     override fun generateBackground() {
-
+        if (currentState.imageState !is ImageToImageState.ImageState.Image) return
+        !generateImageToImagePayload()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog) { payload ->
+                backgroundTaskManager.scheduleImageToImageTask(payload)
+            }
     }
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {
@@ -248,4 +238,27 @@ class ImageToImageViewModel(
 
         return super.updateFormPreviousAiGeneration(payload)
     }
+
+    private fun generateImageToImagePayload(): Single<ImageToImagePayload> = Single
+        .just(
+            Pair(
+                (currentState.imageState as ImageToImageState.ImageState.Image).bitmap,
+                currentState.inPaintModel.bitmap,
+            )
+        )
+        .flatMap { (bmp, maskBmp) ->
+            bitmapToBase64Converter(BitmapToBase64Converter.Input(bmp))
+                .map(BitmapToBase64Converter.Output::base64ImageString)
+                .flatMap { base64 ->
+                    maskBmp?.let {
+                        bitmapToBase64Converter(BitmapToBase64Converter.Input(maskBmp))
+                            .map(BitmapToBase64Converter.Output::base64ImageString)
+                            .map { maskBase64 -> base64 to maskBase64 }
+                    } ?: run {
+                        Single.just(base64 to "")
+                    }
+                }
+        }
+        .map(currentState::preProcessed)
+        .map(ImageToImageState::mapToPayload)
 }

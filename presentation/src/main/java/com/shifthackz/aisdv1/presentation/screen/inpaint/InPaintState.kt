@@ -4,10 +4,11 @@ import android.graphics.Bitmap
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.android.core.mvi.MviState
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
+import com.shifthackz.aisdv1.presentation.R as PresentationR
 
 @Immutable
 data class InPaintState(
@@ -23,12 +24,12 @@ data class InPaintState(
         @DrawableRes val iconRes: Int,
     ) {
         IMAGE(
-            R.string.in_paint_tab_1,
-            R.drawable.ic_image,
+            LocalizationR.string.in_paint_tab_1,
+            PresentationR.drawable.ic_image,
         ),
         FORM(
-            R.string.in_paint_tab_2,
-            R.drawable.ic_image,
+            LocalizationR.string.in_paint_tab_2,
+            PresentationR.drawable.ic_image,
         );
     }
 }

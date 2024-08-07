@@ -12,8 +12,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.model.asString
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.ErrorState
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ErrorComposable(
@@ -27,7 +27,7 @@ fun ErrorComposable(
     ) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.error_title),
+            text = stringResource(id = LocalizationR.string.error_title),
             fontSize = 20.sp,
         )
         Text(
@@ -37,7 +37,7 @@ fun ErrorComposable(
                 .align(Alignment.CenterHorizontally),
             text = when (state) {
                 is ErrorState.WithMessage -> state.message.asString()
-                else -> stringResource(id = R.string.error_generic)
+                else -> stringResource(id = LocalizationR.string.error_generic)
             },
             textAlign = TextAlign.Center,
         )

@@ -48,13 +48,14 @@ import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.widget.error.ErrorComposable
 import com.shifthackz.aisdv1.presentation.widget.source.getName
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 import org.koin.androidx.compose.koinViewModel
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
+import com.shifthackz.aisdv1.presentation.R as PresentationR
 
 @Composable
 fun EmbeddingScreen(
@@ -119,8 +120,8 @@ private fun ScreenContent(
                             Text(
                                 modifier = Modifier.padding(horizontal = 8.dp),
                                 text = stringResource(
-                                    id = if (state.error != ErrorState.None) R.string.close
-                                    else R.string.apply
+                                    id = if (state.error != ErrorState.None) LocalizationR.string.close
+                                    else LocalizationR.string.apply
                                 ),
                                 color = LocalContentColor.current,
                             )
@@ -134,7 +135,7 @@ private fun ScreenContent(
                         .fillMaxSize(),
                 ) {
                     ModalDialogToolbar(
-                        text = stringResource(id = R.string.title_txt_inversion),
+                        text = stringResource(id = LocalizationR.string.title_txt_inversion),
                         onClose = { processIntent(EmbeddingIntent.Close) },
                     )
                     val bgColor = MaterialTheme.colorScheme.surface
@@ -165,7 +166,7 @@ private fun ScreenContent(
                             ) {
                                 Text(
                                     modifier = Modifier.padding(vertical = 8.dp),
-                                    text = stringResource(id = R.string.hint_prompt),
+                                    text = stringResource(id = LocalizationR.string.hint_prompt),
                                     color = if (state.selector) MaterialTheme.colorScheme.onPrimary else LocalContentColor.current,
                                     textAlign = TextAlign.Center,
                                 )
@@ -181,7 +182,7 @@ private fun ScreenContent(
                             ) {
                                 Text(
                                     modifier = Modifier.padding(vertical = 8.dp),
-                                    text = stringResource(id = R.string.hint_prompt_negative),
+                                    text = stringResource(id = LocalizationR.string.hint_prompt_negative),
                                     color = if (!state.selector) MaterialTheme.colorScheme.onPrimary else LocalContentColor.current,
                                     textAlign = TextAlign.Center,
                                 )
@@ -242,7 +243,7 @@ private fun EmbeddingEmptyState(source: ServerSource) {
     ) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.extras_empty_title),
+            text = stringResource(id = LocalizationR.string.extras_empty_title),
             fontSize = 20.sp,
         )
         val path = when (source) {
@@ -256,7 +257,7 @@ private fun EmbeddingEmptyState(source: ServerSource) {
                 .padding(horizontal = 16.dp)
                 .align(Alignment.CenterHorizontally),
             text = stringResource(
-                id = R.string.extras_empty_sub_title_embedding,
+                id = LocalizationR.string.extras_empty_sub_title_embedding,
                 source.getName(),
                 path,
             ),
@@ -289,7 +290,7 @@ private fun EmbeddingItemComposable(
     ) {
         Icon(
             modifier = Modifier.size(24.dp),
-            painter = painterResource(id = R.drawable.ic_text),
+            painter = painterResource(id = PresentationR.drawable.ic_text),
             contentDescription = null,
         )
         Text(

@@ -250,6 +250,9 @@
     <string name="interaction_in_paint_clear_title">Clear drawings</string>
     <string name="interaction_in_paint_clear_sub_title">Are you sure you want to clear drawings?</string>
 
+    <string name="interaction_background_running_title">Background generation running</string>
+    <string name="interaction_background_running_sub_title">Currently you already have a generation running in background, please wait until it\'s finished.</string>
+
     <string name="gallery_empty_title">There is nothing here yet…</string>
     <string name="gallery_empty_sub_title">Try to generate something, and you will see your image here!</string>
 
@@ -270,6 +273,9 @@
     <string name="error_max_size">Maximum size is %1$s</string>
     <string name="error_download_fail">Download failed</string>
     <string name="error_generic">Something wrong happened while processing your request, please try again later.</string>
+
+    <string name="notification_running_title">Generation running…</string>
+    <string name="notification_running_sub_title">Please wait until generation is complete.</string>
 
     <string name="notification_finish_title">Generation complete 🤩</string>
     <string name="notification_finish_sub_title">Click here to see the result.</string>

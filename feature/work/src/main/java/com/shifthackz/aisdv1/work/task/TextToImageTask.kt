@@ -2,98 +2,83 @@ package com.shifthackz.aisdv1.work.task
 
 import android.content.Context
 import androidx.work.WorkerParameters
-import com.shifthackz.aisdv1.core.common.contract.RxDisposableContract
-import com.shifthackz.aisdv1.core.common.log.debugLog
-import com.shifthackz.aisdv1.core.common.log.errorLog
-import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.core.notification.PushNotificationManager
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
-import com.shifthackz.aisdv1.notification.PushNotificationManager
 import com.shifthackz.aisdv1.work.Constants
-import com.shifthackz.aisdv1.work.core.NotificationWorker
+import com.shifthackz.aisdv1.work.Constants.NOTIFICATION_TEXT_TO_IMAGE_FOREGROUND
+import com.shifthackz.aisdv1.work.Constants.NOTIFICATION_TEXT_TO_IMAGE_GENERIC
+import com.shifthackz.aisdv1.work.core.CoreGenerationWorker
 import com.shifthackz.aisdv1.work.mappers.toTextToImagePayload
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.kotlin.subscribeBy
+import java.io.File
 
 internal class TextToImageTask(
     context: Context,
     workerParameters: WorkerParameters,
     pushNotificationManager: PushNotificationManager,
-    private val preferenceManager: PreferenceManager,
+    preferenceManager: PreferenceManager,
+    observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
+    observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    private val backgroundWorkObserver: BackgroundWorkObserver,
     private val textToImageUseCase: TextToImageUseCase,
-    private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
-    private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
-) : NotificationWorker(context, workerParameters, pushNotificationManager), RxDisposableContract {
+    private val fileProviderDescriptor: FileProviderDescriptor,
+) : CoreGenerationWorker(
+    context = context,
+    workerParameters = workerParameters,
+    pushNotificationManager = pushNotificationManager,
+    preferenceManager = preferenceManager,
+    backgroundWorkObserver = backgroundWorkObserver,
+    observeHordeProcessStatusUseCase = observeHordeProcessStatusUseCase,
+    observeLocalDiffusionProcessStatusUseCase = observeLocalDiffusionProcessStatusUseCase,
+) {
 
-    override val compositeDisposable = CompositeDisposable()
+    override val notificationId: Int = NOTIFICATION_TEXT_TO_IMAGE_FOREGROUND
 
-    override val notificationId: Int = 5598
-
-    override val genericNotificationId: Int = 5599
-
-    private val source = preferenceManager.source
-
-    override fun onStopped() {
-        super.onStopped()
-        compositeDisposable.clear()
-    }
+    override val genericNotificationId: Int = NOTIFICATION_TEXT_TO_IMAGE_GENERIC
 
     override fun createWork(): Single<Result> {
-        !observeHordeProcessStatusUseCase()
-            .subscribeBy(::errorLog) { status ->
-                debugLog("STUB", status)
-                setForegroundNotification(
-                    title = "Generating Text to Image ...",
-                    body = "Queue position: ${status.queuePosition}\nWait time: ${status.waitTimeSeconds}",
-                    silent = true,
-                    canCancel = false,
-                )
+        backgroundWorkObserver.refreshStatus()
+        backgroundWorkObserver.dismissResult()
+        return try {
+            val file = File(fileProviderDescriptor.workCacheDirPath, Constants.FILE_TEXT_TO_IMAGE)
+            if (!file.exists()) {
+                handleError(Throwable("File is null."))
+                compositeDisposable.clear()
+                return Single.just(Result.failure())
             }
 
-        !observeLocalDiffusionProcessStatusUseCase()
-            .subscribeBy(::errorLog) { status ->
-                status.total
-                debugLog("STUB", status)
-                setForegroundNotification(
-                    title = "Generating Text to Image ...",
-                    body = "Processing step ${status.current} / ${status.total}",
-                    silent = true,
-                    progress = status.current to status.total,
-                    canCancel = true,
-                )
+            val bytes = file.readBytes()
+            val payload = bytes.toTextToImagePayload()
+
+            if (payload == null) {
+                handleError(Throwable("Payload is null."))
+                compositeDisposable.clear()
+                return Single.just(Result.failure())
             }
 
-        try {
-            val payload = inputData.getByteArray(Constants.KEY_PAYLOAD)
-                ?.toTextToImagePayload()
-                ?: return Single.just(Result.failure())
+            listenHordeStatus()
+            listenLocalDiffusionStatus()
 
-            return textToImageUseCase(payload)
-                .doOnSubscribe {
-                    setForegroundNotification(
-                        title = "Generating Text to Image ...",
-                        body = "Please wait until generation is complete",
-                        canCancel = source != ServerSource.LOCAL,
-                    )
-                }
-                .map {
-                    gen("Generation complete!")
+            textToImageUseCase(payload)
+                .doOnSubscribe { handleProcess() }
+                .map { result ->
+                    handleSuccess(result)
                     Result.success()
                 }
-                .onErrorReturn { throwable ->
-                    errorLog(throwable)
-                    gen("Generation failed ;(")
+                .onErrorReturn { t ->
+                    handleError(t)
                     Result.failure()
                 }
-                .doFinally {
-                    compositeDisposable.clear()
-                }
+                .doFinally { compositeDisposable.clear() }
         } catch (e: Exception) {
+            handleError(e)
             compositeDisposable.clear()
-            return Single.just(Result.failure())
+            Single.just(Result.failure())
         }
     }
 }

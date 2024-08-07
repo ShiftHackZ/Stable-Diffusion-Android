@@ -7,7 +7,7 @@ import androidx.core.app.NotificationCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.shifthackz.aisdv1.notification.PushNotificationManager
+import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 
 internal abstract class NotificationWorker(
     context: Context,
@@ -19,13 +19,13 @@ internal abstract class NotificationWorker(
 
     abstract val genericNotificationId: Int
 
-    fun gen(text: String) {
-        val notification = pushNotificationManager.createNotification(text, text) {
+    fun showGenericNotification(text: String, body: String?) {
+        pushNotificationManager.createNotificationChannel()
+        val notification = pushNotificationManager.createNotification(text, body) {
             setVibrate(longArrayOf(1000L))
             setAutoCancel(true)
             setTicker(text)
         }
-
         pushNotificationManager.show(genericNotificationId, notification)
     }
 
@@ -37,6 +37,7 @@ internal abstract class NotificationWorker(
         silent: Boolean = false,
         canCancel: Boolean = false,
     ) {
+        pushNotificationManager.createNotificationChannel()
         val notification = pushNotificationManager.createNotification(title, body) {
             setSilent(silent)
             setTicker(title)

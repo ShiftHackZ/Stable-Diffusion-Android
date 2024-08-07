@@ -30,12 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.core.ui.MviComponent
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.input.chip.ChipTextFieldItem
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 import org.koin.androidx.compose.koinViewModel
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun EditTagDialog(
@@ -125,7 +125,7 @@ private fun ScreenContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     ModalDialogToolbar(
-                        text = stringResource(id = R.string.title_tag_edit),
+                        text = stringResource(id = LocalizationR.string.title_tag_edit),
                         onClose = { processIntent(EditTagIntent.Close) },
                     )
                     ChipTextFieldItem(
@@ -148,9 +148,9 @@ private fun ScreenContent(
                             Text(
                                 stringResource(
                                     id = when (state.extraType) {
-                                        ExtraType.Lora -> R.string.title_lora
-                                        ExtraType.HyperNet -> R.string.hint_hypernet
-                                        null -> R.string.hint_tag
+                                        ExtraType.Lora -> LocalizationR.string.title_lora
+                                        ExtraType.HyperNet -> LocalizationR.string.hint_hypernet
+                                        null -> LocalizationR.string.hint_tag
                                     }
                                 )
                             )
@@ -165,7 +165,7 @@ private fun ScreenContent(
                             onValueChange = {},
                             enabled = false,
                             singleLine = true,
-                            label = { Text(stringResource(id = R.string.hint_value)) },
+                            label = { Text(stringResource(id = LocalizationR.string.hint_value)) },
                             trailingIcon = {
                                 Row {
                                     val decEnabled = it > Constants.EXTRA_MINIMUM

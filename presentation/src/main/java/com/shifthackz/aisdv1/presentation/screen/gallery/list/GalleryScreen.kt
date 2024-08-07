@@ -50,7 +50,7 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
-import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.extensions.items
@@ -58,19 +58,22 @@ import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.sharing.shareFile
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import kotlinx.coroutines.flow.Flow
+import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
+import com.shifthackz.aisdv1.presentation.R as PresentationR
 
 @Composable
 fun GalleryScreen() {
     val viewModel = koinViewModel<GalleryViewModel>()
     val context = LocalContext.current
     val fileProviderDescriptor: FileProviderDescriptor = koinInject()
+    val pagingFlow = viewModel.pagingFlow
+    val lazyGalleryItems = pagingFlow.collectAsLazyPagingItems()
     MviComponent(
         viewModel = viewModel,
         processEffect = { effect ->
@@ -87,13 +90,17 @@ fun GalleryScreen() {
                     fileProviderPath = fileProviderDescriptor.providerPath,
                     fileMimeType = Constants.MIME_TYPE_ZIP,
                 )
+
+                GalleryEffect.Refresh -> {
+                    lazyGalleryItems.refresh()
+                }
             }
         },
         applySystemUiColors = false,
     ) { state, intentHandler ->
         ScreenContent(
             state = state,
-            pagingFlow = viewModel.pagingFlow,
+            lazyGalleryItems = lazyGalleryItems,
             processIntent = intentHandler,
         )
     }
@@ -103,12 +110,10 @@ fun GalleryScreen() {
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryState,
-    pagingFlow: Flow<PagingData<GalleryGridItemUi>>,
+    lazyGalleryItems: LazyPagingItems<GalleryGridItemUi>,
     processIntent: (GalleryIntent) -> Unit = {},
 ) {
     val listState = rememberLazyGridState()
-    val lazyGalleryItems = pagingFlow.collectAsLazyPagingItems()
-
     val emptyStatePredicate: () -> Boolean = {
         lazyGalleryItems.loadState.refresh is LoadState.NotLoading
                 && lazyGalleryItems.itemCount == 0
@@ -116,112 +121,126 @@ private fun ScreenContent(
     }
 
     Box(modifier) {
-        Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-            CenterAlignedTopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = {
-                        processIntent(GalleryIntent.Drawer(DrawerIntent.Open))
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = "Menu",
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.title_gallery),
-                        style = MaterialTheme.typography.headlineMedium,
-                    )
-                },
-                actions = {
-                    if (lazyGalleryItems.itemCount > 0) IconButton(
-                        onClick = { processIntent(GalleryIntent.Export.Request) },
-                        content = {
-                            Image(
-                                modifier = Modifier.size(24.dp),
-                                painter = painterResource(id = R.drawable.ic_share),
-                                contentDescription = "Export",
-                                colorFilter = ColorFilter.tint(LocalContentColor.current),
-                            )
-                        },
-                    )
-                },
-            )
-        }, bottomBar = {
-            state.mediaStoreInfo.takeIf(MediaStoreInfo::isNotEmpty)?.let { info ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surfaceTint)
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .padding(top = 4.dp, start = 16.dp)
-                            .fillMaxWidth(0.65f),
-                        text = stringResource(
-                            id = R.string.gallery_media_store_banner,
-                            "${info.count}",
-                        ),
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    TextButton(
-                        modifier = Modifier.padding(bottom = 4.dp, end = 16.dp),
-                        onClick = {
-                            state.mediaStoreInfo.folderUri?.let {
-                                processIntent(GalleryIntent.OpenMediaStoreFolder(it))
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                Column {
+                    CenterAlignedTopAppBar(
+                        navigationIcon = {
+                            IconButton(onClick = {
+                                processIntent(GalleryIntent.Drawer(DrawerIntent.Open))
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = "Menu",
+                                )
                             }
                         },
+                        title = {
+                            Text(
+                                text = stringResource(id = LocalizationR.string.title_gallery),
+                                style = MaterialTheme.typography.headlineMedium,
+                            )
+                        },
+                        actions = {
+                            if (lazyGalleryItems.itemCount > 0) IconButton(
+                                onClick = { processIntent(GalleryIntent.Export.Request) },
+                                content = {
+                                    Image(
+                                        modifier = Modifier.size(24.dp),
+                                        painter = painterResource(id = PresentationR.drawable.ic_share),
+                                        contentDescription = "Export",
+                                        colorFilter = ColorFilter.tint(LocalContentColor.current),
+                                    )
+                                },
+                            )
+                        },
+                    )
+                    BackgroundWorkWidget(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .padding(vertical = 4.dp),
+                    )
+                }
+            },
+            bottomBar = {
+                state.mediaStoreInfo.takeIf(MediaStoreInfo::isNotEmpty)?.let { info ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surfaceTint)
                     ) {
                         Text(
-                            text = stringResource(id = R.string.browse).toUpperCase(Locale.current),
-                            color = LocalContentColor.current,
+                            modifier = Modifier
+                                .padding(top = 4.dp, start = 16.dp)
+                                .fillMaxWidth(0.65f),
+                            text = stringResource(
+                                id = LocalizationR.string.gallery_media_store_banner,
+                                "${info.count}",
+                            ),
                         )
-                    }
-                }
-            }
-        }, content = { paddingValues ->
-            when {
-                emptyStatePredicate() -> GalleryEmptyState(Modifier.fillMaxSize())
-                lazyGalleryItems.itemCount == 0 -> LazyVerticalGrid(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    (1..6).map {
-                        item(it) {
-                            GalleryUiItemShimmer()
-                        }
-                    }
-                }
-
-                else -> LazyVerticalGrid(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    state = listState,
-                ) {
-                    items(lazyGalleryItems) { galleryItemUi ->
-                        if (galleryItemUi != null) {
-                            GalleryUiItem(
-                                item = galleryItemUi,
-                                onClick = { processIntent(GalleryIntent.OpenItem(it)) },
+                        Spacer(modifier = Modifier.weight(1f))
+                        TextButton(
+                            modifier = Modifier.padding(bottom = 4.dp, end = 16.dp),
+                            onClick = {
+                                state.mediaStoreInfo.folderUri?.let {
+                                    processIntent(GalleryIntent.OpenMediaStoreFolder(it))
+                                }
+                            },
+                        ) {
+                            Text(
+                                text = stringResource(id = LocalizationR.string.browse).toUpperCase(
+                                    Locale.current
+                                ),
+                                color = LocalContentColor.current,
                             )
-                        } else {
-                            GalleryUiItemShimmer()
                         }
                     }
                 }
-            }
-        })
+            },
+            content = { paddingValues ->
+                when {
+                    emptyStatePredicate() -> GalleryEmptyState(Modifier.fillMaxSize())
+                    lazyGalleryItems.itemCount == 0 -> LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        (1..6).map {
+                            item(it) {
+                                GalleryUiItemShimmer()
+                            }
+                        }
+                    }
+
+                    else -> LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        state = listState,
+                    ) {
+                        items(lazyGalleryItems) { galleryItemUi ->
+                            if (galleryItemUi != null) {
+                                GalleryUiItem(
+                                    item = galleryItemUi,
+                                    onClick = { processIntent(GalleryIntent.OpenItem(it)) },
+                                )
+                            } else {
+                                GalleryUiItemShimmer()
+                            }
+                        }
+                    }
+                }
+            },
+        )
         ModalRenderer(screenModal = state.screenModal) {
             (it as? GalleryIntent)?.let(processIntent::invoke)
         }
@@ -264,7 +283,7 @@ private fun GalleryEmptyState(modifier: Modifier = Modifier) {
     ) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.gallery_empty_title),
+            text = stringResource(id = LocalizationR.string.gallery_empty_title),
             fontSize = 20.sp,
         )
         Text(
@@ -272,7 +291,7 @@ private fun GalleryEmptyState(modifier: Modifier = Modifier) {
                 .padding(top = 16.dp)
                 .padding(horizontal = 16.dp)
                 .align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.gallery_empty_sub_title),
+            text = stringResource(id = LocalizationR.string.gallery_empty_sub_title),
             textAlign = TextAlign.Center,
         )
     }
