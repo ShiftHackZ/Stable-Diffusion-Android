@@ -1,6 +1,5 @@
 package com.shifthackz.aisdv1.presentation.navigation.graph
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -103,10 +102,5 @@ private fun HomeTabBase(
     LaunchedEffect(Unit) {
         homeRouter.updateExternallyWithoutNavigation(route)
     }
-    Column {
-//        BackgroundWorkWidget(
-//            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-//        )
-        content()
-    }
+    content()
 }

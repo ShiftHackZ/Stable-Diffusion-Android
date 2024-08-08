@@ -57,25 +57,12 @@ internal class PushNotificationManagerImpl(
     ): Notification = with(
         NotificationCompat.Builder(context, SDAI_NOTIFICATION_CHANNEL_ID)
     ) {
-
         setSmallIcon(R.drawable.ic_notification)
         setContentTitle(title.asString(context))
         body?.asString(context)?.let {
             setContentText(it)
         }
-//        setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-//        setAutoCancel(true)
         apply(block)
-//        setContentIntent(
-//            PendingIntent.getActivity(
-//                context,
-//                0,
-//                Intent(context, AiStableDiffusionActivity::class.java).also { intent ->
-//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-//                },
-//                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-//            ),
-//        )
         build()
     }
 
