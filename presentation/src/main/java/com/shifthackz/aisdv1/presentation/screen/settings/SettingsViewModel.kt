@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.model.Quadruple
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
+import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
@@ -22,6 +23,7 @@ import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class SettingsViewModel(
     getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
@@ -141,7 +143,25 @@ class SettingsViewModel(
 
             is SettingsIntent.LaunchUrl -> emitEffect(SettingsEffect.OpenUrl(intent.url))
 
-            SettingsIntent.StoragePermissionGranted -> preferenceManager.saveToMediaStore = true
+            is SettingsIntent.Permission.Storage -> if (intent.isGranted) {
+                preferenceManager.saveToMediaStore = true
+            } else updateState {
+                it.copy(
+                    screenModal = Modal.ManualPermission(
+                        permission = LocalizationR.string.permission_storage.asUiText(),
+                    ),
+                )
+            }
+
+            is SettingsIntent.Permission.Notification -> if (intent.isGranted) {
+                preferenceManager.backgroundGeneration = true
+            } else updateState {
+                it.copy(
+                    screenModal = Modal.ManualPermission(
+                        permission = LocalizationR.string.permission_notifications.asUiText(),
+                    ),
+                )
+            }
 
             is SettingsIntent.UpdateFlag.DynamicColors -> {
                 preferenceManager.designUseSystemColorPalette = intent.flag
@@ -175,7 +195,11 @@ class SettingsViewModel(
             SettingsIntent.Action.Donate -> mainRouter.navigateToDonate()
 
             is SettingsIntent.UpdateFlag.BackgroundGeneration -> {
-                preferenceManager.backgroundGeneration = intent.flag
+                if (intent.flag) {
+                    emitEffect(SettingsEffect.RequestPermission.Notifications)
+                } else {
+                    preferenceManager.backgroundGeneration = false
+                }
             }
         }
     }
@@ -199,7 +223,7 @@ class SettingsViewModel(
     private fun changeSaveToMediaStoreSetting(value: Boolean) {
         val oldImpl: () -> Unit = {
             if (value) {
-                emitEffect(SettingsEffect.RequestStoragePermission)
+                emitEffect(SettingsEffect.RequestPermission.Storage)
             } else {
                 preferenceManager.saveToMediaStore = false
                 updateState { it.copy(saveToMediaStore = false) }

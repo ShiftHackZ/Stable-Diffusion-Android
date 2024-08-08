@@ -203,8 +203,10 @@
     <string name="settings_item_language">Language</string>
     <string name="settings_item_demo">Demo mode</string>
     <string name="settings_item_monitor_connection">Monitor connection</string>
-    <string name="settings_item_background_generation">Background generation (Beta)</string>
+    <string name="settings_item_background_generation">Background generation (Beta)*</string>
+    <string name="settings_item_background_generation_warning">*Background generation may not work stable with Local Diffusion, please ensure that Local Diffusion works well on your Android device before enabling this.</string>
     <string name="settings_item_auto_save">Auto save images</string>
+    <string name="settings_item_auto_save_warning">*Images will always be saved to in-app gallery during background generation.</string>
     <string name="settings_item_auto_save_media_store">Save to Downloads</string>
     <string name="settings_item_tagged_input">Tagged input</string>
     <string name="settings_item_advanced_form_default">Always show advanced options</string>
@@ -250,6 +252,9 @@
     <string name="interaction_in_paint_clear_title">Clear drawings</string>
     <string name="interaction_in_paint_clear_sub_title">Are you sure you want to clear drawings?</string>
 
+    <string name="interaction_background_scheduled_title">Background generation scheduled</string>
+    <string name="interaction_background_scheduled_sub_title">The task for background AI generation has been created.\n\nIn some cases, Android may start background work with a delay.\n\nYou will receive push notifications about the start, progress and completion of generation.</string>
+
     <string name="interaction_background_running_title">Background generation running</string>
     <string name="interaction_background_running_sub_title">Currently you already have a generation running in background, please wait until it\'s finished.</string>
 
@@ -274,14 +279,16 @@
     <string name="error_download_fail">Download failed</string>
     <string name="error_generic">Something wrong happened while processing your request, please try again later.</string>
 
+    <string name="notification_pending_title">Generation pending…</string>
+
     <string name="notification_running_title">Generation running…</string>
     <string name="notification_running_sub_title">Please wait until generation is complete.</string>
 
     <string name="notification_finish_title">Generation complete 🤩</string>
-    <string name="notification_finish_sub_title">Click here to see the result.</string>
+    <string name="notification_finish_sub_title">Click here to open the application.</string>
 
     <string name="notification_fail_title">Generation failed 😞</string>
-    <string name="notification_fail_sub_title">Click here to see the details.</string>
+    <string name="notification_fail_sub_title">Click here to open the application.</string>
 
     <string name="model_local_diffusion" translatable="false">Local Diffusion</string>
 
@@ -319,4 +326,10 @@
     <string name="donate_bs_title">SDAI is an Android application that:</string>
     <string name="donate_bs_sub_title">• Brings you power of creating images with Stable Diffusion AI;\n• Gives you freedom to choose your generation provider;\n• Has no ADs, telemetry and does not spy on you;\n• Is an open source software;\n• You are welcome to use it for free.</string>
     <string name="donate_bs_ending">In case you find this software valuable, and you\'d like to say thanks and show a little support, here is the button below.</string>
+
+    <string name="permission_storage">Storage</string>
+    <string name="permission_notifications">Notifications</string>
+
+    <string name="premission_rationale_title">Missing permissions.</string>
+    <string name="premission_rationale_sub_title">Please allow %1$s permission in application settings.</string>
 </resources>

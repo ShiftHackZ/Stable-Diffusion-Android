@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
@@ -16,6 +17,7 @@ import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,9 +42,11 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
     private val stubGalleryExporter = mockk<GalleryExporter>()
     private val stubMainRouter = mockk<MainRouter>()
     private val stubDrawerRouter = mockk<DrawerRouter>()
+    private val backgroundWorkObserver = mockk<BackgroundWorkObserver>()
 
     override fun initializeViewModel() = GalleryViewModel(
         getMediaStoreInfoUseCase = stubGetMediaStoreInfoUseCase,
+        backgroundWorkObserver = backgroundWorkObserver,
         getGenerationResultPagedUseCase = stubGetGenerationResultPagedUseCase,
         base64ToBitmapConverter = stubBase64ToBitmapConverter,
         galleryExporter = stubGalleryExporter,
@@ -54,6 +58,10 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
     @Before
     override fun initialize() {
         super.initialize()
+
+        every {
+            backgroundWorkObserver.observeResult()
+        } returns Flowable.empty()
 
         every {
             stubGetMediaStoreInfoUseCase()

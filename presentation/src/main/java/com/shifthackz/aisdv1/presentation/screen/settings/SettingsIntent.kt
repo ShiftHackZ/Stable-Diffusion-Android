@@ -77,7 +77,13 @@ sealed interface SettingsIntent : MviIntent {
 
     data class NewDarkThemeToken(val token: DarkThemeToken) : SettingsIntent
 
-    data object StoragePermissionGranted : SettingsIntent
+    sealed interface Permission : SettingsIntent {
+        val isGranted: Boolean
+
+        data class Storage(override val isGranted: Boolean) : Permission
+
+        data class Notification(override val isGranted: Boolean) : Permission
+    }
 
     data object DismissDialog : SettingsIntent
 

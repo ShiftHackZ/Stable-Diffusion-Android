@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.work.task
 
 import android.content.Context
 import androidx.work.WorkerParameters
+import com.shifthackz.aisdv1.core.common.appbuild.ActivityIntentProvider
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
@@ -21,6 +22,7 @@ internal class ImageToImageTask(
     context: Context,
     workerParameters: WorkerParameters,
     pushNotificationManager: PushNotificationManager,
+    activityIntentProvider: ActivityIntentProvider,
     preferenceManager: PreferenceManager,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
@@ -31,11 +33,13 @@ internal class ImageToImageTask(
     context = context,
     workerParameters = workerParameters,
     pushNotificationManager = pushNotificationManager,
+    activityIntentProvider = activityIntentProvider,
     preferenceManager = preferenceManager,
     backgroundWorkObserver = backgroundWorkObserver,
     observeHordeProcessStatusUseCase = observeHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase = observeLocalDiffusionProcessStatusUseCase,
 ) {
+
     override val notificationId = NOTIFICATION_IMAGE_TO_IMAGE_FOREGROUND
 
     override val genericNotificationId = NOTIFICATION_IMAGE_TO_IMAGE_GENERIC

@@ -12,7 +12,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
+import com.shifthackz.aisdv1.core.extensions.openAppSettings
 import com.shifthackz.aisdv1.core.model.UiText
+import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
@@ -52,6 +55,7 @@ fun ModalRenderer(
         processIntent(GalleryDetailIntent.DismissDialog)
         processIntent(InPaintIntent.ScreenModal.Dismiss)
     }
+    val context = LocalContext.current
     when (screenModal) {
         Modal.None -> Unit
 
@@ -253,10 +257,28 @@ fun ModalRenderer(
             onDismissRequest = dismiss,
         )
 
-        Modal.BackgroundGenerationRunning -> InfoDialog(
+        Modal.Background.Running -> InfoDialog(
             title = LocalizationR.string.interaction_background_running_title.asUiText(),
             subTitle = LocalizationR.string.interaction_background_running_sub_title.asUiText(),
             onDismissRequest = dismiss,
+        )
+
+        Modal.Background.Scheduled -> InfoDialog(
+            title = LocalizationR.string.interaction_background_scheduled_title.asUiText(),
+            subTitle = LocalizationR.string.interaction_background_scheduled_sub_title.asUiText(),
+            onDismissRequest = dismiss,
+        )
+
+        is Modal.ManualPermission -> InfoDialog(
+            title = LocalizationR.string.premission_rationale_title.asUiText(),
+            subTitle = UiText.Resource(
+                LocalizationR.string.premission_rationale_sub_title,
+                screenModal.permission.asString(),
+            ),
+            onDismissRequest = {
+                dismiss()
+                context.openAppSettings()
+            },
         )
     }
 }

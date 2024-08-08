@@ -24,7 +24,10 @@ sealed interface Modal {
 
     data object ConnectLocalHost : Modal
 
-    data object BackgroundGenerationRunning : Modal
+    sealed interface Background : Modal {
+        data object Running : Background
+        data object Scheduled : Background
+    }
 
     @Immutable
     data class SelectSdModel(val models: List<String>, val selected: String) : Modal
@@ -87,6 +90,9 @@ sealed interface Modal {
 
     @Immutable
     data class Error(val error: UiText) : Modal
+
+    @Immutable
+    data class ManualPermission(val permission: UiText): Modal
 
     data object ClearInPaintConfirm : Modal
 

@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.data.mocks.mockAiGenerationResult
 import com.shifthackz.aisdv1.data.mocks.mockTextToImagePayload
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.OpenAiGenerationDataSource
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.mockk.every
@@ -21,6 +22,7 @@ class OpenAiGenerationRepositoryImplTest {
     private val stubLocalDataSource = mockk<GenerationResultDataSource.Local>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
     private val stubRemoteDataSource = mockk<OpenAiGenerationDataSource.Remote>()
+    private val stubBackgroundWorkObserver = mockk<BackgroundWorkObserver>()
 
     private val repository = OpenAiGenerationRepositoryImpl(
         mediaStoreGateway = stubMediaStoreGateway,
@@ -28,10 +30,15 @@ class OpenAiGenerationRepositoryImplTest {
         localDataSource = stubLocalDataSource,
         preferenceManager = stubPreferenceManager,
         remoteDataSource = stubRemoteDataSource,
+        backgroundWorkObserver = stubBackgroundWorkObserver,
     )
 
     @Before
     fun initialize() {
+        every {
+            stubBackgroundWorkObserver.hasActiveTasks()
+        } returns false
+
         every {
             stubPreferenceManager.autoSaveAiResults
         } returns false

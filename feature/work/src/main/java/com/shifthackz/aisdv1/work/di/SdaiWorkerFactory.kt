@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
+import com.shifthackz.aisdv1.core.common.appbuild.ActivityIntentProvider
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
@@ -24,6 +25,7 @@ class SdaiWorkerFactory(
     private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
     private val fileProviderDescriptor: FileProviderDescriptor,
+    private val activityIntentProvider: ActivityIntentProvider,
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -36,6 +38,7 @@ class SdaiWorkerFactory(
                 context = appContext,
                 workerParameters = workerParameters,
                 pushNotificationManager = pushNotificationManager,
+                activityIntentProvider = activityIntentProvider,
                 backgroundWorkObserver = backgroundWorkObserver,
                 preferenceManager = preferenceManager,
                 textToImageUseCase = textToImageUseCase,
@@ -48,6 +51,7 @@ class SdaiWorkerFactory(
                 context = appContext,
                 workerParameters = workerParameters,
                 pushNotificationManager = pushNotificationManager,
+                activityIntentProvider = activityIntentProvider,
                 backgroundWorkObserver = backgroundWorkObserver,
                 preferenceManager = preferenceManager,
                 imageToImageUseCase = imageToImageUseCase,

@@ -4,6 +4,7 @@ package com.shifthackz.aisdv1.work.core
 
 import android.content.Context
 import androidx.work.WorkerParameters
+import com.shifthackz.aisdv1.core.common.appbuild.ActivityIntentProvider
 import com.shifthackz.aisdv1.core.common.contract.RxDisposableContract
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.localization.formatter.DurationFormatter
@@ -22,11 +23,17 @@ internal abstract class CoreGenerationWorker(
     context: Context,
     workerParameters: WorkerParameters,
     pushNotificationManager: PushNotificationManager,
+    activityIntentProvider: ActivityIntentProvider,
     preferenceManager: PreferenceManager,
     private val backgroundWorkObserver: BackgroundWorkObserver,
     private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
-) : NotificationWorker(context, workerParameters, pushNotificationManager), RxDisposableContract {
+) : NotificationWorker(
+    context = context,
+    workerParameters = workerParameters,
+    pushNotificationManager = pushNotificationManager,
+    activityIntentProvider = activityIntentProvider,
+), RxDisposableContract {
 
     override val compositeDisposable = CompositeDisposable()
 
@@ -79,8 +86,7 @@ internal abstract class CoreGenerationWorker(
                     body = subTitle,
                     silent = true,
                     progress = status.current to status.total,
-//                    canCancel = false,
-                    canCancel = true,
+                    canCancel = false,
                 )
             }
     }
@@ -105,6 +111,7 @@ internal abstract class CoreGenerationWorker(
     }
 
     protected fun handleError(t: Throwable) {
+        errorLog(t)
         backgroundWorkObserver.postFailedSignal(t)
         val title = applicationContext.getString(LocalizationR.string.notification_fail_title)
         val subTitle = applicationContext.getString(LocalizationR.string.notification_fail_sub_title)

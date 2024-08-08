@@ -69,6 +69,8 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
         wakeLockInterActor = stubWakeLockInterActor,
         inPaintStateProducer = stubInPaintStateProducer,
         mainRouter = stubMainRouter,
+        backgroundWorkObserver = stubBackgroundWorkObserver,
+        backgroundTaskManager = stubBackgroundTaskManager,
     )
 
     @Before

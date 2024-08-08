@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.data.mocks.mockTextToImagePayload
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.mockk.every
@@ -29,6 +30,7 @@ class HordeGenerationRepositoryImplTest {
     private val stubPreferenceManager = mockk<PreferenceManager>()
     private val stubRemoteDataSource = mockk<HordeGenerationDataSource.Remote>()
     private val stubStatusSource = mockk<HordeGenerationDataSource.StatusSource>()
+    private val stubBackgroundWorkObserver = mockk<BackgroundWorkObserver>()
 
     private val repository = HordeGenerationRepositoryImpl(
         mediaStoreGateway = stubMediaStoreGateway,
@@ -37,10 +39,15 @@ class HordeGenerationRepositoryImplTest {
         preferenceManager = stubPreferenceManager,
         remoteDataSource = stubRemoteDataSource,
         statusSource = stubStatusSource,
+        backgroundWorkObserver = stubBackgroundWorkObserver,
     )
 
     @Before
     fun initialize() {
+        every {
+            stubBackgroundWorkObserver.hasActiveTasks()
+        } returns false
+
         every {
             stubStatusSource.observe()
         } returns stubStatus.toFlowable(BackpressureStrategy.LATEST)

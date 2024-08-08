@@ -120,7 +120,8 @@ private fun BackgroundWorkWidgetContent(
                 }
                 Column {
                     Text(
-                        text = state.title.asString(),
+                        text = state.title.asString().takeIf(String::isNotBlank)
+                            ?: stringResource(id = LocalizationR.string.notification_pending_title),
                         style = MaterialTheme.typography.titleMedium,
                     )
                     state.subTitle.asString().takeIf(String::isNotBlank)?.let { subTitle ->

@@ -60,6 +60,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
 import com.shifthackz.aisdv1.core.common.math.roundTo
+import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
@@ -83,20 +84,31 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 fun SettingsScreen() {
     val viewModel = koinViewModel<SettingsViewModel>()
     val context = LocalContext.current
+
     val storagePermission = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
-        if (!result.values.any { !it }) {
-            viewModel.processIntent(SettingsIntent.StoragePermissionGranted)
-        }
+        viewModel.processIntent(SettingsIntent.Permission.Storage(!result.values.any { !it }))
     }
+
+    val notificationPermission = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        viewModel.processIntent(SettingsIntent.Permission.Notification(granted))
+    }
+
     MviComponent(
         viewModel = viewModel,
         processEffect = { effect ->
             when (effect) {
-                SettingsEffect.RequestStoragePermission -> {
+                SettingsEffect.RequestPermission.Storage -> {
                     if (PermissionUtil.checkStoragePermission(context, storagePermission::launch)) {
-                        viewModel.processIntent(SettingsIntent.StoragePermissionGranted)
+                        viewModel.processIntent(SettingsIntent.Permission.Storage(true))
+                    }
+                }
+                SettingsEffect.RequestPermission.Notifications -> {
+                    if (PermissionUtil.checkNotificationPermission(context, notificationPermission::launch)) {
+                        viewModel.processIntent(SettingsIntent.Permission.Notification(true))
                     }
                 }
                 SettingsEffect.ShareLogFile -> ReportProblemEmailComposer().invoke(context)
@@ -186,10 +198,15 @@ private fun ContentSettingsState(
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
-        val headerModifier = Modifier.padding(vertical = 16.dp)
+        val headerModifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+
         val itemModifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp)
+            .padding(top = 8.dp)
+
+        val warningModifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp, start = 4.dp)
 
         //region MAIN SETTINGS
         SettingsHeader(
@@ -246,18 +263,11 @@ private fun ContentSettingsState(
                 }
             )
             Text(
+                modifier = warningModifier,
                 text = stringResource(id = LocalizationR.string.settings_item_local_nnapi_warning),
                 style = MaterialTheme.typography.labelMedium,
             )
         }
-        //endregion
-
-        //region APP SETTINGS
-        SettingsHeader(
-            modifier = headerModifier,
-            loading = state.loading,
-            text = LocalizationR.string.settings_header_app.asUiText(),
-        )
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
@@ -274,7 +284,20 @@ private fun ContentSettingsState(
                         processIntent(SettingsIntent.UpdateFlag.BackgroundGeneration(it))
                     },
                 )
-            }
+            },
+        )
+        Text(
+            modifier = warningModifier,
+            text = stringResource(id = LocalizationR.string.settings_item_background_generation_warning),
+            style = MaterialTheme.typography.labelMedium,
+        )
+        //endregion
+
+        //region APP SETTINGS
+        SettingsHeader(
+            modifier = headerModifier,
+            loading = state.loading,
+            text = LocalizationR.string.settings_header_app.asUiText(),
         )
         if (state.showMonitorConnectionOption) SettingsItem(
             modifier = itemModifier,
@@ -290,13 +313,16 @@ private fun ContentSettingsState(
                     checked = state.monitorConnectivity,
                     onCheckedChange = { processIntent(SettingsIntent.UpdateFlag.MonitorConnection(it)) },
                 )
-            }
+            },
         )
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
             startIcon = Icons.Default.Save,
-            text = LocalizationR.string.settings_item_auto_save.asUiText(),
+            text = UiText.Concat(
+                LocalizationR.string.settings_item_auto_save.asUiText(),
+                if (state.backgroundGeneration) "*" else "",
+            ),
             onClick = {
                 processIntent(SettingsIntent.UpdateFlag.AutoSaveResult(!state.autoSaveAiResults))
             },
@@ -308,8 +334,17 @@ private fun ContentSettingsState(
                         processIntent(SettingsIntent.UpdateFlag.AutoSaveResult(it))
                     },
                 )
-            }
+            },
         )
+        AnimatedVisibility(
+            visible = !state.loading && state.backgroundGeneration,
+        ) {
+            Text(
+                modifier = warningModifier,
+                text = stringResource(id = LocalizationR.string.settings_item_auto_save_warning),
+                style = MaterialTheme.typography.labelMedium,
+            )
+        }
         SettingsItem(
             modifier = itemModifier,
             loading = state.loading,
@@ -326,7 +361,7 @@ private fun ContentSettingsState(
                         processIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(it))
                     },
                 )
-            }
+            },
         )
         SettingsItem(
             modifier = itemModifier,
@@ -363,7 +398,7 @@ private fun ContentSettingsState(
                             processIntent(SettingsIntent.UpdateFlag.AdvancedFormVisibility(it))
                         },
                     )
-                }
+                },
             )
         }
         SettingsItem(
@@ -491,7 +526,7 @@ private fun ContentSettingsState(
                     selectedToken = state.colorToken,
                     onSelected = { _, token ->
                         processIntent(SettingsIntent.NewColorToken(token))
-                    }
+                    },
                 )
                 Spacer(modifier = Modifier.height(14.dp))
             }

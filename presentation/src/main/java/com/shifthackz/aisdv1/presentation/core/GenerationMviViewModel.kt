@@ -250,10 +250,12 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
 
             GenerationMviIntent.Generate -> {
                 if (backgroundWorkObserver.hasActiveTasks()) {
-                    setActiveModal(Modal.BackgroundGenerationRunning)
+                    setActiveModal(Modal.Background.Running)
                 } else {
                     if (preferenceManager.backgroundGeneration) {
                         generateBackground()
+                        backgroundWorkObserver.refreshStatus()
+                        setActiveModal(Modal.Background.Scheduled)
                     } else {
                         generateOnUi { generateDisposable() }
                     }

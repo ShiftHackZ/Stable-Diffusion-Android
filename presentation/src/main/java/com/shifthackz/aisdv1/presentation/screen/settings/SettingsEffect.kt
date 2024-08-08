@@ -4,7 +4,10 @@ import com.shifthackz.android.core.mvi.MviEffect
 
 sealed interface SettingsEffect : MviEffect {
 
-    data object RequestStoragePermission : SettingsEffect
+    sealed interface RequestPermission : SettingsEffect {
+        data object Storage : SettingsEffect
+        data object Notifications : SettingsEffect
+    }
 
     data object ShareLogFile : SettingsEffect
 

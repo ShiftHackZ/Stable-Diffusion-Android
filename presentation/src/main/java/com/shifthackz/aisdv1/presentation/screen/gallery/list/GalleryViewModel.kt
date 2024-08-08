@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GalleryViewModel(
     getMediaStoreInfoUseCase: GetMediaStoreInfoUseCase,
-    private val backgroundWorkObserver: BackgroundWorkObserver,
+    backgroundWorkObserver: BackgroundWorkObserver,
     private val getGenerationResultPagedUseCase: GetGenerationResultPagedUseCase,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val galleryExporter: GalleryExporter,

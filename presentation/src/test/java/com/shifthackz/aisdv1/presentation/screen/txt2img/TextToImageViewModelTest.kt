@@ -51,6 +51,8 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
         preferenceManager = stubPreferenceManager,
         notificationManager = stubSdaiPushNotificationManager,
         wakeLockInterActor = stubWakeLockInterActor,
+        backgroundWorkObserver = stubBackgroundWorkObserver,
+        backgroundTaskManager = stubBackgroundTaskManager,
     )
 
     @Before
@@ -414,6 +416,14 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
 
     @Test
     fun `given received Generate intent, expected textToImageUseCase() called`() {
+        every {
+            stubBackgroundWorkObserver.hasActiveTasks()
+        } returns false
+
+        every {
+            stubPreferenceManager::backgroundGeneration.get()
+        } returns false
+
         every {
             stubPreferenceManager::autoSaveAiResults.get()
         } returns true

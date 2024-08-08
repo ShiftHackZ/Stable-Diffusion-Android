@@ -170,7 +170,7 @@
     <string name="gallery_info_field_denoising_strength">Коэффициент шумоподавления</string>
 
     <string name="settings_header_server">Параметры AI</string>
-    <string name="settings_header_app">Параметры приложения</string>
+    <string name="settings_header_app">Настройки</string>
     <string name="settings_header_info">Информация</string>
     <string name="settings_header_look_and_feel">Персонализация</string>
 
@@ -183,7 +183,10 @@
     <string name="settings_item_language">Язык</string>
     <string name="settings_item_demo">Демо режим</string>
     <string name="settings_item_monitor_connection">Мониторинг сервера</string>
+    <string name="settings_item_background_generation">Фоновая генерация (Beta)*</string>
+    <string name="settings_item_background_generation_warning">*Фоновая генерация может работать нестабильно с Local Diffusion. Перед включением убедитесь, что Local Diffusion работает на вашем устройстве Android.</string>
     <string name="settings_item_auto_save">Авто-сохранение фото</string>
+    <string name="settings_item_auto_save_warning">*Изображения всегда будут сохраняться в галерее приложения во время фоновой генерации.</string>
     <string name="settings_item_auto_save_media_store">Сохранять в Загрузках</string>
     <string name="settings_item_tagged_input">Ввод с тегами</string>
     <string name="settings_item_advanced_form_default">Всегда показывать все опции</string>
@@ -229,6 +232,12 @@
     <string name="interaction_in_paint_clear_title">Очистить зарисовки</string>
     <string name="interaction_in_paint_clear_sub_title">Вы уверены что хотите очистить зарисовки?</string>
 
+    <string name="interaction_background_scheduled_title">Фоновая генерация запланирована</string>
+    <string name="interaction_background_scheduled_sub_title">Задача по фоновой генерации создана.\n\nВ некоторых случаях Android может начинать фоновую работу с задержкой.\n\nВы будете получать push-уведомления о начале, ходе и завершении генерации.</string>
+
+    <string name="interaction_background_running_title">Фоновая генерация запущена</string>
+    <string name="interaction_background_running_sub_title">В настоящее время у вас уже запущена генерация в фоновом режиме, пожалуйста, дождитесь ее завершения.</string>
+
     <string name="gallery_empty_title">Здесь еще ничего нет…</string>
     <string name="gallery_empty_sub_title">Попытайтесь создать что-то, и вы увидите свое изображение здесь!</string>
 
@@ -250,11 +259,16 @@
     <string name="error_download_fail">Ошибка при загрузке</string>
     <string name="error_generic">При обработке вашего запроса произошла ошибка. Повторите попытку позже.</string>
 
+    <string name="notification_pending_title">Ожидается генерация…</string>
+
+    <string name="notification_running_title">Идет процесс генерации…</string>
+    <string name="notification_running_sub_title">Пожалуйста, дождитесь завершения генерации.</string>
+
     <string name="notification_finish_title">Генерирование завершено 🤩</string>
-    <string name="notification_finish_sub_title">Нажмите, чтобы увидеть результат.</string>
+    <string name="notification_finish_sub_title">Нажмите, чтобы открыть приложение.</string>
 
     <string name="notification_fail_title">Генерирование не удалось 😞</string>
-    <string name="notification_fail_sub_title">Нажмите, чтобы увидеть подробности.</string>
+    <string name="notification_fail_sub_title">Нажмите, чтобы открыть приложение.</string>
 
     <string name="model_local_custom_switch">Загрузка кастом модели</string>
     <string name="model_local_permission_title">Чтобы иметь возможность загружать пользовательскую модель, вам необходимо разрешить приложению SDAI управлять разрешениями на хранилище, поскольку, начиная с Android 11, оно необходимо для доступа к файлам хранилища без области действия.</string>
@@ -289,4 +303,10 @@
     <string name="donate_bs_title">SDAI — это приложение для Android, которое:</string>
     <string name="donate_bs_sub_title">• Предоставляет Вам возможность создавать изображения с помощью Stable Diffusion;\n• Предоставляет Вам свободу выбора провайдера генерации;\n• Нет рекламы, телеметрии, не шпионит за Вами;\n• ПО с открытым исходным кодом;\n• Вы можете использовать его бесплатно.</string>
     <string name="donate_bs_ending">Если программа стала Вам полезной и Вы хотите выразить благодарность и оказать небольшую поддержку, вот кнопка ниже.</string>
+
+    <string name="permission_storage">Хранилище</string>
+    <string name="permission_notifications">Push уведомления</string>
+
+    <string name="premission_rationale_title">Отсутствует разрешение.</string>
+    <string name="premission_rationale_sub_title">Разрешите права на %1$s в настройках.</string>
 </resources>

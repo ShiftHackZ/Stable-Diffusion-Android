@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.domain.demo.TextToImageDemo
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
@@ -16,6 +17,7 @@ import io.reactivex.rxjava3.core.Single
 
 internal class StableDiffusionGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
+    backgroundWorkObserver: BackgroundWorkObserver,
     base64ToBitmapConverter: Base64ToBitmapConverter,
     localDataSource: GenerationResultDataSource.Local,
     private val remoteDataSource: StableDiffusionGenerationDataSource.Remote,
@@ -23,10 +25,11 @@ internal class StableDiffusionGenerationRepositoryImpl(
     private val textToImageDemo: TextToImageDemo,
     private val imageToImageDemo: ImageToImageDemo,
 ) : CoreGenerationRepository(
-    mediaStoreGateway,
-    base64ToBitmapConverter,
-    localDataSource,
-    preferenceManager,
+    mediaStoreGateway = mediaStoreGateway,
+    base64ToBitmapConverter = base64ToBitmapConverter,
+    localDataSource = localDataSource,
+    preferenceManager = preferenceManager,
+    backgroundWorkObserver = backgroundWorkObserver,
 ), StableDiffusionGenerationRepository {
 
     override fun checkApiAvailability() = remoteDataSource.checkAvailability()

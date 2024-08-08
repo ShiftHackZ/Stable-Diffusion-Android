@@ -227,7 +227,10 @@
     <string name="settings_item_language">语言</string>
     <string name="settings_item_demo">演示模式</string>
     <string name="settings_item_monitor_connection">监控连接</string>
+    <string name="settings_item_background_generation">背景生成（测试版）*</string>
+    <string name="settings_item_background_generation_warning">*背景生成可能无法与局部扩散稳定配合使用，在启用此功能之前，请确保局部扩散在您的 Android 设备上运行良好。</string>
     <string name="settings_item_auto_save">自动保存图像</string>
+    <string name="settings_item_auto_save_warning">*在后台生成期间，图像将始终保存到应用程序内图库。</string>
     <string name="settings_item_auto_save_media_store">保存到媒体存储</string>
     <string name="settings_item_tagged_input">标记输入</string>
     <string name="settings_item_advanced_form_default">始终显示高级选项</string>
@@ -282,6 +285,12 @@
     <string name="interaction_in_paint_clear_title">清除绘画</string>
     <string name="interaction_in_paint_clear_sub_title">您确定要清除绘画吗？</string>
 
+    <string name="interaction_background_scheduled_title">后台生成已安排</string>
+    <string name="interaction_background_scheduled_sub_title">后台 AI 生成任务已创建。\n\n在某些情况下，Android 可能会延迟启动后台工作。\n\n您将收到有关生成的开始、进度和完成的推送通知。</string>
+
+    <string name="interaction_background_running_title">后台生成运行</string>
+    <string name="interaction_background_running_sub_title">目前您已有一个生成过程在后台运行，请等待其完成。</string>
+
     <!-- 画廊提示 -->
     <string name="gallery_empty_title">这里还没有什么…</string>
     <string name="gallery_empty_sub_title">尝试生成一些内容，您将在这里看到您的图像！</string>
@@ -307,11 +316,16 @@
     <string name="error_generic">处理您的请求时发生错误，请稍后再试。</string>
 
     <!-- 通知 -->
+    <string name="notification_pending_title">生成待定…</string>
+
+    <string name="notification_running_title">生成过程正在运行…</string>
+    <string name="notification_running_sub_title">请等待，直至生成完成。</string>
+
     <string name="notification_finish_title">生成完成 🤩</string>
-    <string name="notification_finish_sub_title">点击此处查看结果。</string>
+    <string name="notification_finish_sub_title">单击此处打开应用程序。</string>
 
     <string name="notification_fail_title">生成失败 😞</string>
-    <string name="notification_fail_sub_title">点击此处查看详情。</string>
+    <string name="notification_fail_sub_title">单击此处打开应用程序。</string>
 
     <!-- 本地扩散模型 -->
     <string name="model_local_diffusion" translatable="false">本地扩散</string>
@@ -355,4 +369,10 @@
     <string name="donate_bs_title">SDAI 是一款 Android 应用程序，它：</string>
     <string name="donate_bs_sub_title">• 通过稳定的扩散 AI 为您提供创建图像的能力；\n• 让您自由选择生成提供商；\n• 没有广告、遥测并且不会监视您；\n• 是一个开源软件；\n• 欢迎您免费使用。</string>
     <string name="donate_bs_ending">如果您发现该软件有价值，并且想要表示感谢并表示一点支持，请点击此处的按钮。</string>
+
+    <string name="permission_storage">贮存</string>
+    <string name="permission_notifications">通知</string>
+
+    <string name="premission_rationale_title">缺少权限。</string>
+    <string name="premission_rationale_sub_title">请在应用程序设置中允许 %1$s 权限。</string>
 </resources>

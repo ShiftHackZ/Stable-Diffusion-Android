@@ -1,18 +1,22 @@
 package com.shifthackz.aisdv1.work.core
 
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.shifthackz.aisdv1.core.common.appbuild.ActivityIntentProvider
 import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 
 internal abstract class NotificationWorker(
     context: Context,
     workerParameters: WorkerParameters,
     private val pushNotificationManager: PushNotificationManager,
+    private val activityIntentProvider: ActivityIntentProvider,
 ) : Rx3Worker(context, workerParameters) {
 
     abstract val notificationId: Int
@@ -22,6 +26,16 @@ internal abstract class NotificationWorker(
     fun showGenericNotification(text: String, body: String?) {
         pushNotificationManager.createNotificationChannel()
         val notification = pushNotificationManager.createNotification(text, body) {
+            setContentIntent(
+                PendingIntent.getActivity(
+                    applicationContext,
+                    0,
+                    activityIntentProvider().also { intent ->
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    },
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                ),
+            )
             setVibrate(longArrayOf(1000L))
             setAutoCancel(true)
             setTicker(text)
@@ -59,6 +73,17 @@ internal abstract class NotificationWorker(
 
             setAutoCancel(false)
             setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+
+            setContentIntent(
+                PendingIntent.getActivity(
+                    applicationContext,
+                    0,
+                    activityIntentProvider().also { intent ->
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    },
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                ),
+            )
         }
 
         val info = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

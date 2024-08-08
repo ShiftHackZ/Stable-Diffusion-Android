@@ -183,7 +183,10 @@
     <string name="settings_item_language">Dil</string>
     <string name="settings_item_demo">Demo modu</string>
     <string name="settings_item_monitor_connection">Bağlantıyı incele</string>
+    <string name="settings_item_background_generation">Arkaplan oluşturma (Beta)*</string>
+    <string name="settings_item_background_generation_warning">*Arka plan oluşturma işlemi Yerel Yayılım ile stabil çalışmayabilir, lütfen bunu etkinleştirmeden önce Yerel Yayılımın Android cihazınızda düzgün çalıştığından emin olun.</string>
     <string name="settings_item_auto_save">Resimeleri otomatik kaydet</string>
+    <string name="settings_item_auto_save_warning">*Arka planda oluşturma sırasında görseller her zaman uygulama içi galeriye kaydedilecektir.</string>
     <string name="settings_item_auto_save_media_store">İndirilenlere Kaydet</string>
     <string name="settings_item_tagged_input">Etiketli giriş</string>
     <string name="settings_item_advanced_form_default">Her zaman gelişmiş seçenekleri göster</string>
@@ -229,6 +232,12 @@
     <string name="interaction_in_paint_clear_title">Çizimleri temizle</string>
     <string name="interaction_in_paint_clear_sub_title">Çizimleri temizlemek istediğinizden emin misiniz?</string>
 
+    <string name="interaction_background_scheduled_title">Arkaplan üretimi planlandı</string>
+    <string name="interaction_background_scheduled_sub_title">Arkaplanda yapay zeka üretimi için görev oluşturuldu.\n\nBazı durumlarda Android arkaplanda çalışmaya gecikmeli olarak başlayabilir.\n\nÜretimi başlatma, ilerleme ve tamamlama hakkında anında bildirimler alacaksınız.</string>
+
+    <string name="interaction_background_running_title">Arkaplan oluşturma çalışıyor</string>
+    <string name="interaction_background_running_sub_title">Şu anda arka planda çalışan bir nesil var, lütfen bitene kadar bekleyin.</string>
+
     <string name="gallery_empty_title">Burada henüz bir şey yok…</string>
     <string name="gallery_empty_sub_title">Bir şeyler üretmeyi deneyin! Ürettiğiniz resimler burada gözükecektir.</string>
 
@@ -250,11 +259,16 @@
     <string name="error_download_fail">Yükleme başarısız</string>
     <string name="error_generic">İsteğiniz işlenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.</string>
 
+    <string name="notification_pending_title">Nesil bekleniyor…</string>
+
+    <string name="notification_running_title">Üretim süreci çalışıyor…</string>
+    <string name="notification_running_sub_title">Lütfen üretim tamamlanana kadar bekleyin.</string>
+
     <string name="notification_finish_title">Nesil tamamlandı 🤩</string>
-    <string name="notification_finish_sub_title">Sonucu görmek için buraya tıklayın.</string>
+    <string name="notification_finish_sub_title">Uygulamayı açmak için buraya tıklayın.</string>
 
     <string name="notification_fail_title">Üretim başarısız oldu 😞</string>
-    <string name="notification_fail_sub_title">Ayrıntıları görmek için buraya tıklayın.</string>
+    <string name="notification_fail_sub_title">Uygulamayı açmak için buraya tıklayın.</string>
 
     <string name="model_local_custom_switch">Özel modeli yükle</string>
     <string name="model_local_permission_title">Özel modeli yükleyebilmek için SDAI uygulamasının depolama izinlerini yönetmesine izin vermeniz gerekir; çünkü Android 11\'den itibaren kapsamlı olmayan depolama dosyalarına erişmek gerekir.</string>
@@ -289,4 +303,10 @@
     <string name="donate_bs_title">SDAI, şu özelliklere sahip bir Android uygulamasıdır:</string>
     <string name="donate_bs_sub_title">• Stable Diffusion AI ile görüntü oluşturma gücü sunar;\n• Üretim sağlayıcınızı seçme özgürlüğü verir;\n• AD, telemetri içermez ve sizi gözetlemez;\n• Açık kaynaklı bir yazılımdır;\n• Ücretsiz olarak kullanabilirsiniz.</string>
     <string name="donate_bs_ending">Bu yazılımı değerli bulursanız ve teşekkür etmek ve biraz destek göstermek isterseniz, aşağıdaki düğmeyi kullanabilirsiniz.</string>
+
+    <string name="permission_storage">Depolamak</string>
+    <string name="permission_notifications">Bildirimler</string>
+
+    <string name="premission_rationale_title">Eksik izinler.</string>
+    <string name="premission_rationale_sub_title">Lütfen uygulama ayarlarında %1$s iznini verin.</string>
 </resources>
