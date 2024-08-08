@@ -70,18 +70,11 @@ internal class BackgroundWorkObserverImpl : BackgroundWorkObserver {
     override fun hasActiveTasks(): Boolean {
         val workManager: WorkManagerProvider by inject(WorkManagerProvider::class.java)
         val workInfos = workManager().getWorkInfosByTag(Constants.TAG_GENERATION).get()
-//        debugLog("----------------------------------------------------------")
-//        workInfos.forEachIndexed { i, w ->
-//            debugLog("- [$i] ---")
-//            debugLog("$w")
-//        }
-//        debugLog("----------------------------------------------------------")
         val isRunning = workInfos.any { workInfo ->
             workInfo.state == WorkInfo.State.BLOCKED
                     || workInfo.state == WorkInfo.State.ENQUEUED
                     || workInfo.state == WorkInfo.State.RUNNING
         }
-//        debugLog("getTaskStatus() - [$isRunning]")
         return isRunning
     }
 }

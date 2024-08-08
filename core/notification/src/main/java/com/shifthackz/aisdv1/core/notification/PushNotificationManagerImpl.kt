@@ -11,8 +11,8 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.shifthackz.aisdv1.core.common.extensions.isAppInForeground
 import com.shifthackz.aisdv1.core.common.log.debugLog
-import com.shifthackz.aisdv1.core.extensions.isAppInForeground
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 

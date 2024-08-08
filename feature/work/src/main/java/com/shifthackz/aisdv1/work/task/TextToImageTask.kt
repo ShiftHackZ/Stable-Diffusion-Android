@@ -45,6 +45,7 @@ internal class TextToImageTask(
     override val genericNotificationId: Int = NOTIFICATION_TEXT_TO_IMAGE_GENERIC
 
     override fun createWork(): Single<Result> {
+        handleStart()
         backgroundWorkObserver.refreshStatus()
         backgroundWorkObserver.dismissResult()
         return try {

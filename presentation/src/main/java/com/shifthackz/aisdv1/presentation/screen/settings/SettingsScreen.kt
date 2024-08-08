@@ -198,7 +198,7 @@ private fun ContentSettingsState(
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
-        val headerModifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+        val headerModifier = Modifier.padding(top = 28.dp, bottom = 8.dp)
 
         val itemModifier = Modifier
             .fillMaxWidth()

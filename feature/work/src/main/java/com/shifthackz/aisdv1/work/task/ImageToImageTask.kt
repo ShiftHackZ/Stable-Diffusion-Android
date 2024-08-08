@@ -45,6 +45,7 @@ internal class ImageToImageTask(
     override val genericNotificationId = NOTIFICATION_IMAGE_TO_IMAGE_GENERIC
 
     override fun createWork(): Single<Result> {
+        handleStart()
         backgroundWorkObserver.refreshStatus()
         backgroundWorkObserver.dismissResult()
         listenHordeStatus()

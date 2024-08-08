@@ -91,6 +91,13 @@ internal abstract class CoreGenerationWorker(
             }
     }
 
+    protected fun handleStart() {
+        val title = applicationContext.getString(LocalizationR.string.notification_started_title)
+        val subTitle = applicationContext.getString(LocalizationR.string.notification_running_sub_title)
+        showGenericNotification(title, subTitle)
+        handleProcess()
+    }
+
     protected fun handleProcess() {
         val title = applicationContext.getString(LocalizationR.string.notification_running_title)
         val subTitle = applicationContext.getString(LocalizationR.string.notification_running_sub_title)

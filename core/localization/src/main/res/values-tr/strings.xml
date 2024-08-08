@@ -261,6 +261,8 @@
 
     <string name="notification_pending_title">Nesil bekleniyor…</string>
 
+    <string name="notification_started_title">Arkaplan oluşturma başladı!</string>
+
     <string name="notification_running_title">Üretim süreci çalışıyor…</string>
     <string name="notification_running_sub_title">Lütfen üretim tamamlanana kadar bekleyin.</string>
 

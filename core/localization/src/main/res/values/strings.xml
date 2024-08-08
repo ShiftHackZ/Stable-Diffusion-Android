@@ -281,6 +281,8 @@
 
     <string name="notification_pending_title">Generation pending…</string>
 
+    <string name="notification_started_title">Background generation started!</string>
+
     <string name="notification_running_title">Generation running…</string>
     <string name="notification_running_sub_title">Please wait until generation is complete.</string>
 

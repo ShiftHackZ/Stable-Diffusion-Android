@@ -261,6 +261,8 @@
 
     <string name="notification_pending_title">Ожидается генерация…</string>
 
+    <string name="notification_started_title">Процесс генерации запущен!</string>
+
     <string name="notification_running_title">Идет процесс генерации…</string>
     <string name="notification_running_sub_title">Пожалуйста, дождитесь завершения генерации.</string>
 

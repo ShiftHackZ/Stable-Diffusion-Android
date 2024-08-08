@@ -318,6 +318,8 @@
     <!-- 通知 -->
     <string name="notification_pending_title">生成待定…</string>
 
+    <string name="notification_started_title">背景生成已开始！</string>
+
     <string name="notification_running_title">生成过程正在运行…</string>
     <string name="notification_running_sub_title">请等待，直至生成完成。</string>
 

@@ -10,6 +10,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.shifthackz.aisdv1.core.common.appbuild.ActivityIntentProvider
+import com.shifthackz.aisdv1.core.common.extensions.isAppInForeground
 import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 
 internal abstract class NotificationWorker(
@@ -36,9 +37,10 @@ internal abstract class NotificationWorker(
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                 ),
             )
-            setVibrate(longArrayOf(1000L))
+            setVibrate(longArrayOf(10000L, 2000L, 1000L))
             setAutoCancel(true)
             setTicker(text)
+            setSilent(applicationContext.isAppInForeground())
         }
         pushNotificationManager.show(genericNotificationId, notification)
     }
