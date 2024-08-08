@@ -10,6 +10,10 @@ sealed interface GalleryIntent : MviIntent {
         Request, Confirm;
     }
 
+    enum class DeleteSelection : GalleryIntent {
+        Request, Confirm;
+    }
+
     data object DismissDialog : GalleryIntent
 
     data class OpenItem(val item: GalleryGridItemUi) : GalleryIntent
@@ -17,4 +21,10 @@ sealed interface GalleryIntent : MviIntent {
     data class OpenMediaStoreFolder(val uri: Uri) : GalleryIntent
 
     data class Drawer(val intent: DrawerIntent) : GalleryIntent
+
+    data class ChangeSelectionMode(val flag: Boolean) : GalleryIntent
+
+    data object UnselectAll : GalleryIntent
+
+    data class ToggleItemSelection(val id: Long) : GalleryIntent
 }

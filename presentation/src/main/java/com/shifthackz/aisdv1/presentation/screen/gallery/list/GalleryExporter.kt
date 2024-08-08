@@ -6,7 +6,7 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Output
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemsUseCase
 import com.shifthackz.aisdv1.presentation.utils.FileSavableExporter
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -14,12 +14,12 @@ import java.io.File
 
 class GalleryExporter(
     override val fileProviderDescriptor: FileProviderDescriptor,
-    private val getAllGalleryUseCase: GetAllGalleryUseCase,
+    private val getGalleryItemsUseCase: GetGalleryItemsUseCase,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val schedulersProvider: SchedulersProvider,
 ) : FileSavableExporter.BmpToFile, FileSavableExporter.FilesToZip {
 
-    operator fun invoke(): Single<File> = getAllGalleryUseCase()
+    operator fun invoke(ids: List<Long>): Single<File> = getGalleryItemsUseCase(ids)//getAllGalleryUseCase()
         .subscribeOn(schedulersProvider.io)
         .flatMapObservable { Observable.fromIterable(it) }
         .map { aiDomain -> aiDomain to Input(aiDomain.image) }

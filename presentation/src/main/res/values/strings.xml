@@ -243,6 +243,9 @@
     <string name="interaction_delete_generation_title">Delete image</string>
     <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently delete this image?</string>
 
+    <string name="interaction_delete_selection_title">Delete images.</string>
+    <string name="interaction_delete_selection_sub_title">Are you sure you want to permanently delete selected images?</string>
+
     <string name="interaction_delete_local_model_title">Delete model</string>
     <string name="interaction_delete_local_model_sub_title">Are you sure you want to delete model "%1$s"?</string>
 

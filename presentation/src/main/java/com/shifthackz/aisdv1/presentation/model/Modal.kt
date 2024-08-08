@@ -18,6 +18,8 @@ sealed interface Modal {
 
     data object DeleteImageConfirm : Modal
 
+    data object DeleteImagesConfirm : Modal
+
     data object ConfirmExport : Modal
 
     data object ExportInProgress : Modal

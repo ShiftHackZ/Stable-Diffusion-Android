@@ -184,6 +184,15 @@ fun ModalRenderer(
             onDismissRequest = dismiss,
         )
 
+        Modal.DeleteImagesConfirm -> DecisionInteractiveDialog(
+            title = R.string.interaction_delete_generation_title.asUiText(),
+            text = R.string.interaction_delete_generation_sub_title.asUiText(),
+            confirmActionResId = R.string.yes,
+            dismissActionResId = R.string.no,
+            onConfirmAction = { processIntent(GalleryIntent.DeleteSelection.Confirm) },
+            onDismissRequest = dismiss,
+        )
+
         Modal.ConfirmExport -> DecisionInteractiveDialog(
             title = R.string.interaction_export_title.asUiText(),
             text = R.string.interaction_export_sub_title.asUiText(),

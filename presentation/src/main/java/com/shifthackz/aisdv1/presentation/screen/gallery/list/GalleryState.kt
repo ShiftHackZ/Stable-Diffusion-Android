@@ -10,6 +10,8 @@ import com.shifthackz.android.core.mvi.MviState
 data class GalleryState(
     val screenModal: Modal = Modal.None,
     val mediaStoreInfo: MediaStoreInfo = MediaStoreInfo(),
+    val selectionMode: Boolean = false,
+    val selection: List<Long> = emptyList(),
 ) : MviState
 
 data class GalleryGridItemUi(
