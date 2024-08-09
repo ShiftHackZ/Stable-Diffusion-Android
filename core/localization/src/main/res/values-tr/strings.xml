@@ -17,6 +17,11 @@
     <string name="close">Kapalı</string>
     <string name="next">Sonraki</string>
 
+    <string name="two">İki</string>
+    <string name="three">Üç</string>
+    <string name="four">Dört</string>
+    <string name="five">Beş</string>
+
     <string name="version">Versiyon %1$s</string>
 
     <string name="splash_status_initializing">Başlatılıyor…</string>
@@ -199,6 +204,7 @@
     <string name="settings_item_clear_cache">Uygulama ve galeri önbelleğini temizleyin</string>
 
     <string name="settings_item_lf_lang">Dil</string>
+    <string name="settings_item_lf_gallery_grid">Galeri ızgara boyutu</string>
     <string name="settings_item_lf_dynamic_colors">Dinamik renkler</string>
     <string name="settings_item_lf_system_dark_theme">Sistemin koyu teması</string>
     <string name="settings_item_lf_dark_theme">Koyu tema</string>

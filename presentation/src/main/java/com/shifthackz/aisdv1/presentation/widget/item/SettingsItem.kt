@@ -47,12 +47,13 @@ fun SettingsItem(
     loading: Boolean = false,
     enabled: Boolean = true,
     selected: Boolean = false,
-    startIcon: ImageVector,
+    startIcon: ImageVector? = null,
     text: UiText,
     animateBackground: Boolean = false,
     showChevron: Boolean = true,
     endValueText: UiText = UiText.empty,
     endValueContent: (@Composable () -> Unit)? = null,
+    startIconContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit = {},
 ) {
     val primary = MaterialTheme.colorScheme.primaryContainer
@@ -109,6 +110,7 @@ fun SettingsItem(
                     ?: Modifier,
                 icon = startIcon,
                 text = text,
+                iconContent = startIconContent,
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -139,19 +141,23 @@ fun SettingsItem(
 @Composable
 fun SettingsItemContent(
     modifier: Modifier = Modifier,
-    icon: ImageVector,
+    icon: ImageVector? = null,
     text: UiText,
+    iconContent: (@Composable () -> Unit)? = null
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(modifier = Modifier.width(8.dp))
-        Icon(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            imageVector = icon,
-            contentDescription = null,
-        )
+        icon?.let {
+            Icon(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                imageVector = it,
+                contentDescription = null,
+            )
+        }
+        iconContent?.invoke()
         Text(
             text = text.asString(),
             style = MaterialTheme.typography.bodyLarge,

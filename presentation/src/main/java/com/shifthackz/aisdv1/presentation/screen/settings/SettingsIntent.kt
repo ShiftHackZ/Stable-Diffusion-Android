@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.settings
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
+import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.android.core.mvi.MviIntent
 import org.koin.core.component.KoinComponent
@@ -28,6 +29,13 @@ sealed interface SettingsIntent : MviIntent {
         data object AppVersion : Action
 
         data object PickLanguage : Action
+
+        sealed interface GalleryGrid : Action {
+
+            data object Pick : GalleryGrid
+
+            data class Set(val grid: Grid) : GalleryGrid
+        }
 
         data object Donate : Action
     }

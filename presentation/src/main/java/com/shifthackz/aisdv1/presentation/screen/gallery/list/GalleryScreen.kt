@@ -86,6 +86,7 @@ import com.shifthackz.aisdv1.core.extensions.shake
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.sharing.shareFile
 import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
@@ -339,7 +340,7 @@ private fun ScreenContent(
                 }
             },
             bottomBar = {
-            AnimatedVisibility(
+                AnimatedVisibility(
                     visible = state.selectionMode,
                     enter = fadeIn(),
                     exit = fadeOut(),
@@ -434,57 +435,61 @@ private fun ScreenContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
-                    columns = GridCells.Fixed(2),
+                    columns = GridCells.Fixed(state.grid.size),
                     contentPadding = PaddingValues(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    (1..6).map {
+                    val max = when (state.grid) {
+                        Grid.Fixed2 -> 6
+                        Grid.Fixed3 -> 12
+                        Grid.Fixed4 -> 20
+                        Grid.Fixed5 -> 30
+                    }
+                    repeat(max) {
                         item(it) {
                             GalleryUiItemShimmer()
                         }
                     }
                 }
 
-                else -> {
-                    LazyVerticalGrid(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues),
-                        columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        state = listState,
-                    ) {
-                        items(lazyGalleryItems) { item ->
-                            if (item != null) {
-                                val selected = state.selection.contains(item.id)
-                                GalleryUiItem(
-                                    modifier = Modifier
-                                        .animateItemPlacement(tween(500))
-                                        .shake(
-                                            enabled = state.selectionMode && !selected,
-                                            animationDurationMillis = 188,
-                                            animationStartOffset = Random.nextInt(0, 320),
-                                        ),
-                                    item = item,
-                                    selectionMode = state.selectionMode,
-                                    checked = selected,
-                                    onCheckedChange = {
-                                        processIntent(GalleryIntent.ToggleItemSelection(item.id))
-                                    },
-                                    onLongClick = {
-                                        processIntent(GalleryIntent.ChangeSelectionMode(true))
-                                        processIntent(GalleryIntent.ToggleItemSelection(item.id))
-                                    },
-                                    onClick = {
-                                        processIntent(GalleryIntent.OpenItem(it))
-                                    },
-                                )
-                            } else {
-                                GalleryUiItemShimmer()
-                            }
+                else -> LazyVerticalGrid(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    columns = GridCells.Fixed(state.grid.size),
+                    contentPadding = PaddingValues(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    state = listState,
+                ) {
+                    items(lazyGalleryItems) { item ->
+                        if (item != null) {
+                            val selected = state.selection.contains(item.id)
+                            GalleryUiItem(
+                                modifier = Modifier
+                                    .animateItemPlacement(tween(500))
+                                    .shake(
+                                        enabled = state.selectionMode && !selected,
+                                        animationDurationMillis = 188,
+                                        animationStartOffset = Random.nextInt(0, 320),
+                                    ),
+                                item = item,
+                                selectionMode = state.selectionMode,
+                                checked = selected,
+                                onCheckedChange = {
+                                    processIntent(GalleryIntent.ToggleItemSelection(item.id))
+                                },
+                                onLongClick = {
+                                    processIntent(GalleryIntent.ChangeSelectionMode(true))
+                                    processIntent(GalleryIntent.ToggleItemSelection(item.id))
+                                },
+                                onClick = {
+                                    processIntent(GalleryIntent.OpenItem(it))
+                                },
+                            )
+                        } else {
+                            GalleryUiItemShimmer()
                         }
                     }
                 }

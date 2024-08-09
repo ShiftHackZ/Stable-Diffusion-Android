@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.settings
 import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
+import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.android.core.mvi.MviState
@@ -27,6 +28,7 @@ data class SettingsState(
     val darkTheme: Boolean = false,
     val colorToken: ColorToken = ColorToken.MAUVE,
     val darkThemeToken: DarkThemeToken = DarkThemeToken.FRAPPE,
+    val galleryGrid: Grid = Grid.Fixed2,
     val appVersion: String = "",
 ) : MviState {
 

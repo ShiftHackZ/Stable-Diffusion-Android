@@ -21,6 +21,11 @@
     <string name="close">Close</string>
     <string name="next">Next</string>
 
+    <string name="two">Two</string>
+    <string name="three">Three</string>
+    <string name="four">Four</string>
+    <string name="five">Five</string>
+
     <string name="version">Version %1$s</string>
 
     <string name="splash_status_initializing">Initializing…</string>
@@ -219,6 +224,7 @@
     <string name="settings_item_clear_cache">Clear app &amp; gallery cache</string>
 
     <string name="settings_item_lf_lang">Language</string>
+    <string name="settings_item_lf_gallery_grid">Gallery grid size</string>
     <string name="settings_item_lf_dynamic_colors">Dynamic colors</string>
     <string name="settings_item_lf_system_dark_theme">System dark theme</string>
     <string name="settings_item_lf_dark_theme">Dark theme</string>

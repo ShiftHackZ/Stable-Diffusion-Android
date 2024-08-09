@@ -22,6 +22,11 @@
     <string name="close">关闭</string>
     <string name="next">下一步</string>
 
+    <string name="two">二</string>
+    <string name="three">三</string>
+    <string name="four">四</string>
+    <string name="five">五</string>
+
     <!-- 设置和配置 -->
     <string name="version">版本 %1$s</string>
 
@@ -244,6 +249,7 @@
 
     <!-- 外观和感觉设置 -->
     <string name="settings_item_lf_lang">语言</string>
+    <string name="settings_item_lf_gallery_grid">图库网格大小</string>
     <string name="settings_item_lf_dynamic_colors">动态颜色</string>
     <string name="settings_item_lf_system_dark_theme">系统暗主题</string>
     <string name="settings_item_lf_dark_theme">暗主题</string>

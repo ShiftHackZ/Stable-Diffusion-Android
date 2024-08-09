@@ -18,4 +18,5 @@ data class Settings(
     val designDarkTheme: Boolean = false,
     val designColorToken: String = "",
     val designDarkThemeToken: String = "",
+    val galleryGrid: Grid = Grid.Fixed2,
 )

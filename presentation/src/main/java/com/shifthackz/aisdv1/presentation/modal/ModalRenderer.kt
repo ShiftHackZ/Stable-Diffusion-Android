@@ -24,6 +24,7 @@ import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.modal.crop.CropImageModal
 import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingScreen
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
+import com.shifthackz.aisdv1.presentation.modal.grid.GridBottomSheet
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.modal.language.LanguageBottomSheet
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagDialog
@@ -318,5 +319,18 @@ fun ModalRenderer(
                 context.openAppSettings()
             },
         )
+
+        is Modal.GalleryGrid -> ModalBottomSheet(
+            onDismissRequest = dismiss,
+            shape = RectangleShape,
+        ) {
+            GridBottomSheet(
+                currentGrid = screenModal.grid,
+                onSelected = {
+                    processIntent(SettingsIntent.Action.GalleryGrid.Set(it))
+                    dismiss()
+                }
+            )
+        }
     }
 }

@@ -10,10 +10,11 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
-import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
-import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCase
 import com.shifthackz.aisdv1.domain.entity.BackgroundWorkResult
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.model.Modal
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.Flow
 class GalleryViewModel(
     getMediaStoreInfoUseCase: GetMediaStoreInfoUseCase,
     backgroundWorkObserver: BackgroundWorkObserver,
+    preferenceManager: PreferenceManager,
     private val deleteAllGalleryUseCase: DeleteAllGalleryUseCase,
     private val deleteGalleryItemsUseCase: DeleteGalleryItemsUseCase,
     private val getGenerationResultPagedUseCase: GetGenerationResultPagedUseCase,
@@ -60,6 +62,13 @@ class GalleryViewModel(
     val pagingFlow: Flow<PagingData<GalleryGridItemUi>> = pager.flow
 
     init {
+        !preferenceManager
+            .observe()
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog) { settings ->
+                updateState { it.copy(grid = settings.galleryGrid) }
+            }
+
         !getMediaStoreInfoUseCase()
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { info ->

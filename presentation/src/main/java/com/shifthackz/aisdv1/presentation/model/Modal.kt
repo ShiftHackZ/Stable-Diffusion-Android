@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
@@ -102,4 +103,6 @@ sealed interface Modal {
     data object ClearInPaintConfirm : Modal
 
     data object Language : Modal
+
+    data class GalleryGrid(val grid: Grid) : Modal
 }
