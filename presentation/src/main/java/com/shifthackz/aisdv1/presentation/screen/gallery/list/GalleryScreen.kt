@@ -476,6 +476,7 @@ private fun ScreenContent(
                                     },
                                     onLongClick = {
                                         processIntent(GalleryIntent.ChangeSelectionMode(true))
+                                        processIntent(GalleryIntent.ToggleItemSelection(item.id))
                                     },
                                     onClick = {
                                         processIntent(GalleryIntent.OpenItem(it))
