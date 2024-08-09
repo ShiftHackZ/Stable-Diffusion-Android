@@ -167,6 +167,34 @@ class GenerationResultLocalDataSourceTest {
     }
 
     @Test
+    fun `given attempt to delete by id list, dao deleted successfully, expected complete value`() {
+        every {
+            stubDao.deleteByIdList(any())
+        } returns Completable.complete()
+
+        localDataSource
+            .deleteByIdList(listOf(5598L))
+            .test()
+            .assertNoErrors()
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to delete by id list, dao delete failure, expected error value`() {
+        every {
+            stubDao.deleteByIdList(any())
+        } returns Completable.error(stubException)
+
+        localDataSource
+            .deleteByIdList(listOf(5598L))
+            .test()
+            .assertError(stubException)
+            .await()
+            .assertNotComplete()
+    }
+
+    @Test
     fun `given attempt to delete by id, dao deleted successfully, expected complete value`() {
         every {
             stubDao.deleteById(any())

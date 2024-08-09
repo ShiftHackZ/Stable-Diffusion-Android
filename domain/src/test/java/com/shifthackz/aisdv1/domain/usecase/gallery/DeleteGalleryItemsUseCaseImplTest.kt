@@ -7,18 +7,18 @@ import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 import io.reactivex.rxjava3.core.Completable
 import org.junit.Test
 
-class DeleteGalleryItemUseCaseImplTest {
+class DeleteGalleryItemsUseCaseImplTest {
 
     private val stubRepository = mock<GenerationResultRepository>()
 
-    private val useCase = DeleteGalleryItemUseCaseImpl(stubRepository)
+    private val useCase = DeleteGalleryItemsUseCaseImpl(stubRepository)
 
     @Test
     fun `given repository deleted data successfully, expected complete`() {
-        whenever(stubRepository.deleteById(any()))
+        whenever(stubRepository.deleteByIdList(any()))
             .thenReturn(Completable.complete())
 
-        useCase(5598L)
+        useCase(listOf(5598L, 151297L))
             .test()
             .assertNoErrors()
             .await()
@@ -29,10 +29,10 @@ class DeleteGalleryItemUseCaseImplTest {
     fun `given repository deleted data with fail, expected error`() {
         val stubException = Throwable("Database communication error.")
 
-        whenever(stubRepository.deleteById(any()))
+        whenever(stubRepository.deleteByIdList(any()))
             .thenReturn(Completable.error(stubException))
 
-        useCase(5598L)
+        useCase(listOf(5598L, 151297L))
             .test()
             .assertError(stubException)
             .await()
