@@ -6,12 +6,23 @@ import com.shifthackz.android.core.mvi.MviIntent
 
 sealed interface GalleryIntent : MviIntent {
 
-    enum class Export : GalleryIntent {
-        Request, Confirm;
+    sealed interface Export : GalleryIntent {
+
+        enum class All : Export {
+            Request, Confirm;
+        }
+
+        enum class Selection : Export {
+            Request, Confirm;
+        }
     }
 
     enum class DeleteSelection : GalleryIntent {
         Request, Confirm;
+    }
+
+    enum class Dropdown : GalleryIntent {
+        Toggle, Show, Close;
     }
 
     data object DismissDialog : GalleryIntent

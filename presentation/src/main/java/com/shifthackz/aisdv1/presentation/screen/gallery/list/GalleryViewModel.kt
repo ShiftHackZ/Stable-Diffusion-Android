@@ -63,20 +63,31 @@ class GalleryViewModel(
     override fun processIntent(intent: GalleryIntent) {
         when (intent) {
             GalleryIntent.DismissDialog -> setActiveModal(Modal.None)
-            GalleryIntent.Export.Request -> setActiveModal(Modal.ConfirmExport)
-            GalleryIntent.Export.Confirm -> launchGalleryExport()
+
+            GalleryIntent.Export.All.Request -> setActiveModal(Modal.ConfirmExport(true))
+
+            GalleryIntent.Export.All.Confirm -> launchGalleryExport(true)
+
+            GalleryIntent.Export.Selection.Request -> setActiveModal(Modal.ConfirmExport(false))
+
+            GalleryIntent.Export.Selection.Confirm -> launchGalleryExport(false)
+
             is GalleryIntent.OpenItem -> mainRouter.navigateToGalleryDetails(intent.item.id)
+
             is GalleryIntent.OpenMediaStoreFolder -> emitEffect(GalleryEffect.OpenUri(intent.uri))
+
             is GalleryIntent.Drawer -> when (intent.intent) {
                 DrawerIntent.Close -> drawerRouter.closeDrawer()
                 DrawerIntent.Open -> drawerRouter.openDrawer()
             }
+
             is GalleryIntent.ChangeSelectionMode -> updateState {
                 it.copy(
                     selectionMode = intent.flag,
                     selection = if (!intent.flag) emptyList() else it.selection,
                 )
             }
+
             is GalleryIntent.ToggleItemSelection -> updateState {
                 val selectionIndex = it.selection.indexOf(intent.id)
                 val newSelection = it.selection.toMutableList()
@@ -88,12 +99,26 @@ class GalleryViewModel(
                 it.copy(selection = newSelection)
             }
 
-            GalleryIntent.DeleteSelection.Request -> setActiveModal(Modal.DeleteImagesConfirm)
+            GalleryIntent.DeleteSelection.Request -> setActiveModal(
+                Modal.DeleteImageConfirm(true)
+            )
 
             GalleryIntent.DeleteSelection.Confirm -> deleteItems()
 
             GalleryIntent.UnselectAll -> updateState {
                 it.copy(selection = emptyList())
+            }
+
+            GalleryIntent.Dropdown.Toggle -> updateState {
+                it.copy(dropdownMenuShow = !it.dropdownMenuShow)
+            }
+
+            GalleryIntent.Dropdown.Show -> updateState {
+                it.copy(dropdownMenuShow = true)
+            }
+
+            GalleryIntent.Dropdown.Close -> updateState {
+                it.copy(dropdownMenuShow = false)
             }
         }
     }
@@ -111,7 +136,8 @@ class GalleryViewModel(
             emitEffect(GalleryEffect.Refresh)
         }
 
-    private fun launchGalleryExport() = !galleryExporter(currentState.selection)
+    private fun launchGalleryExport(exportAll: Boolean) = !galleryExporter
+        .invoke(if (exportAll) null else currentState.selection)
         .doOnSubscribe { setActiveModal(Modal.ExportInProgress) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(
@@ -130,6 +156,6 @@ class GalleryViewModel(
         )
 
     private fun setActiveModal(dialog: Modal) = updateState {
-        it.copy(screenModal = dialog)
+        it.copy(screenModal = dialog, dropdownMenuShow = false)
     }
 }

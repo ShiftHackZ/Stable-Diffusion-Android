@@ -8,6 +8,7 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import android.content.Intent
 import android.provider.DocumentsContract
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -37,12 +38,16 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -118,6 +123,9 @@ fun GalleryScreen() {
         },
         applySystemUiColors = false,
     ) { state, intentHandler ->
+        BackHandler(state.selectionMode) {
+            intentHandler(GalleryIntent.ChangeSelectionMode(false))
+        }
         ScreenContent(
             state = state,
             lazyGalleryItems = lazyGalleryItems,
@@ -204,7 +212,7 @@ private fun ScreenContent(
                                         }
                                         IconButton(
                                             onClick = {
-                                                processIntent(GalleryIntent.Export.Request)
+                                                processIntent(GalleryIntent.Export.Selection.Request)
                                             },
                                         ) {
                                             Image(
@@ -216,7 +224,58 @@ private fun ScreenContent(
                                         }
                                     }
                                 }
+                            } else {
+                                IconButton(
+                                    onClick = {
+                                        processIntent(GalleryIntent.Dropdown.Toggle)
+                                    },
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.MoreVert,
+                                        contentDescription = "Dropdown",
+                                    )
+                                }
                             }
+                        }
+                        DropdownMenu(
+                            expanded = state.dropdownMenuShow,
+                            onDismissRequest = { processIntent(GalleryIntent.Dropdown.Close) },
+                        ) {
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Checklist,
+                                        contentDescription = "Dropdown",
+                                        tint = LocalContentColor.current,
+                                    )
+                                },
+                                text = {
+                                    Text(
+                                        text = "Selection mode"
+                                    )
+                                },
+                                onClick = {
+                                    processIntent(GalleryIntent.Dropdown.Close)
+                                    processIntent(GalleryIntent.ChangeSelectionMode(true))
+                                },
+                            )
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    Image(
+                                        modifier = Modifier.size(24.dp),
+                                        painter = painterResource(id = R.drawable.ic_share),
+                                        contentDescription = "Export",
+                                        colorFilter = ColorFilter.tint(LocalContentColor.current),
+                                    )
+                                },
+                                text = {
+                                    Text("Export all")
+                                },
+                                onClick = {
+                                    processIntent(GalleryIntent.Dropdown.Close)
+                                    processIntent(GalleryIntent.Export.All.Request)
+                                },
+                            )
                         }
                     },
                 )
