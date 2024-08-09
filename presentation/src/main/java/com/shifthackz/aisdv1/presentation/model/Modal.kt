@@ -47,7 +47,9 @@ sealed interface Modal {
         val hordeProcessStatus: HordeProcessStatus? = null,
     ) : Modal
 
-    data object PromptBottomSheet : Modal
+    data class PromptBottomSheet(
+        val source: AiGenerationResult.Type,
+    ) : Modal
 
     @Immutable
     data class ExtraBottomSheet(

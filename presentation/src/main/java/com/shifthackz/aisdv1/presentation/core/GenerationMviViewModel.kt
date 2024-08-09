@@ -8,7 +8,6 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.ServerSource
@@ -267,15 +266,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
             )
 
             is GenerationMviIntent.UpdateFromGeneration -> {
-                val payload = when (intent.ai.type) {
-                    AiGenerationResult.Type.TEXT_TO_IMAGE -> {
-                        GenerationFormUpdateEvent.Payload.T2IForm(intent.ai)
-                    }
-                    AiGenerationResult.Type.IMAGE_TO_IMAGE -> {
-                        GenerationFormUpdateEvent.Payload.I2IForm(intent.ai, false)
-                    }
-                }
-                updateFormPreviousAiGeneration(payload)
+                updateFormPreviousAiGeneration(intent.payload)
             }
 
             is GenerationMviIntent.Drawer -> when (intent.intent) {

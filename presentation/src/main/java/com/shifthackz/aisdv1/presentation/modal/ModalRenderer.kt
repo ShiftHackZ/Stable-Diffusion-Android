@@ -17,6 +17,8 @@ import com.shifthackz.aisdv1.core.common.extensions.openAppSettings
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.modal.crop.CropImageModal
@@ -126,7 +128,15 @@ fun ModalRenderer(
         ) {
             InputHistoryScreen(
                 onGenerationSelected = { ai ->
-                    processIntent(GenerationMviIntent.UpdateFromGeneration(ai))
+                    val payload = when (screenModal.source) {
+                        AiGenerationResult.Type.TEXT_TO_IMAGE -> {
+                            GenerationFormUpdateEvent.Payload.T2IForm(ai)
+                        }
+                        AiGenerationResult.Type.IMAGE_TO_IMAGE -> {
+                            GenerationFormUpdateEvent.Payload.I2IForm(ai, false)
+                        }
+                    }
+                    processIntent(GenerationMviIntent.UpdateFromGeneration(payload))
                     processIntent(GenerationMviIntent.SetModal(Modal.None))
                 },
             )

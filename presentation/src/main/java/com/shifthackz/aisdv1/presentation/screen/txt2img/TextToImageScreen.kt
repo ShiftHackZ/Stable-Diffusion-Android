@@ -35,6 +35,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.model.Modal
@@ -91,7 +92,13 @@ private fun ScreenContent(
                         },
                         actions = {
                             IconButton(onClick = {
-                                processIntent(GenerationMviIntent.SetModal(Modal.PromptBottomSheet))
+                                processIntent(
+                                    GenerationMviIntent.SetModal(
+                                        Modal.PromptBottomSheet(
+                                            AiGenerationResult.Type.TEXT_TO_IMAGE,
+                                        ),
+                                    ),
+                                )
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Edit,

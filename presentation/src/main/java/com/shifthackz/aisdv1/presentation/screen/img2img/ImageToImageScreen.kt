@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
@@ -137,7 +138,13 @@ private fun ScreenContent(
                             if (state.mode != ServerSource.LOCAL) {
                                 IconButton(
                                     onClick = {
-                                        processIntent(GenerationMviIntent.SetModal(Modal.PromptBottomSheet))
+                                        processIntent(
+                                            GenerationMviIntent.SetModal(
+                                                Modal.PromptBottomSheet(
+                                                    AiGenerationResult.Type.IMAGE_TO_IMAGE,
+                                                ),
+                                            ),
+                                        )
                                     },
                                 ) {
                                     Icon(
