@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Translate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import com.shifthackz.aisdv1.core.localization.Localization
@@ -18,6 +19,7 @@ import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
+@Preview
 fun LanguageBottomSheet(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},

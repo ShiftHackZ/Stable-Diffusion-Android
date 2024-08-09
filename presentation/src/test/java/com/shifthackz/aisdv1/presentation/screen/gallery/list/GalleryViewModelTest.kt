@@ -6,9 +6,11 @@ import android.graphics.Bitmap
 import android.net.Uri
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
+import com.shifthackz.aisdv1.domain.entity.Settings
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCase
-import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
@@ -46,11 +48,13 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
     private val stubDrawerRouter = mockk<DrawerRouter>()
     private val stubDeleteAllGalleryUseCase = mockk<DeleteAllGalleryUseCase>()
     private val stubDeleteGalleryItemsUseCase = mockk<DeleteGalleryItemsUseCase>()
-    private val backgroundWorkObserver = mockk<BackgroundWorkObserver>()
+    private val stubBackgroundWorkObserver = mockk<BackgroundWorkObserver>()
+    private val stubPreferenceManager = mockk<PreferenceManager>()
 
     override fun initializeViewModel() = GalleryViewModel(
         getMediaStoreInfoUseCase = stubGetMediaStoreInfoUseCase,
-        backgroundWorkObserver = backgroundWorkObserver,
+        backgroundWorkObserver = stubBackgroundWorkObserver,
+        preferenceManager = stubPreferenceManager,
         getGenerationResultPagedUseCase = stubGetGenerationResultPagedUseCase,
         base64ToBitmapConverter = stubBase64ToBitmapConverter,
         galleryExporter = stubGalleryExporter,
@@ -66,7 +70,11 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
         super.initialize()
 
         every {
-            backgroundWorkObserver.observeResult()
+            stubPreferenceManager.observe()
+        } returns Flowable.just(Settings())
+
+        every {
+            stubBackgroundWorkObserver.observeResult()
         } returns Flowable.empty()
 
         every {

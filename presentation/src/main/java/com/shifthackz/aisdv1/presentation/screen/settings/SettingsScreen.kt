@@ -44,6 +44,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
@@ -72,6 +73,7 @@ import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import com.shifthackz.aisdv1.presentation.utils.ReportProblemEmailComposer
 import com.shifthackz.aisdv1.presentation.widget.color.AccentColorSelector
 import com.shifthackz.aisdv1.presentation.widget.color.DarkThemeColorSelector
+import com.shifthackz.aisdv1.presentation.widget.item.GridIcon
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsHeader
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItemContent
@@ -262,11 +264,13 @@ private fun ContentSettingsState(
                     )
                 }
             )
-            Text(
-                modifier = warningModifier,
-                text = stringResource(id = LocalizationR.string.settings_item_local_nnapi_warning),
-                style = MaterialTheme.typography.labelMedium,
-            )
+            AnimatedVisibility(visible = !state.loading) {
+                Text(
+                    modifier = warningModifier,
+                    text = stringResource(id = LocalizationR.string.settings_item_local_nnapi_warning),
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
         }
         SettingsItem(
             modifier = itemModifier,
@@ -286,11 +290,13 @@ private fun ContentSettingsState(
                 )
             },
         )
-        Text(
-            modifier = warningModifier,
-            text = stringResource(id = LocalizationR.string.settings_item_background_generation_warning),
-            style = MaterialTheme.typography.labelMedium,
-        )
+        AnimatedVisibility(visible = !state.loading) {
+            Text(
+                modifier = warningModifier,
+                text = stringResource(id = LocalizationR.string.settings_item_background_generation_warning),
+                style = MaterialTheme.typography.labelMedium,
+            )
+        }
         //endregion
 
         //region APP SETTINGS
@@ -423,6 +429,20 @@ private fun ContentSettingsState(
             text = LocalizationR.string.settings_item_lf_lang.asUiText(),
             endValueText = LocalizationR.string.language.asUiText(),
             onClick = { processIntent(SettingsIntent.Action.PickLanguage) },
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            loading = state.loading,
+            text = LocalizationR.string.settings_item_lf_gallery_grid.asUiText(),
+            endValueText = state.galleryGrid.size.toString().asUiText(),
+            startIconContent = {
+                GridIcon(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    grid = state.galleryGrid,
+                    color = LocalContentColor.current,
+                )
+            },
+            onClick = { processIntent(SettingsIntent.Action.GalleryGrid.Pick) },
         )
         if (state.showUseSystemColorPalette) {
             SettingsItem(

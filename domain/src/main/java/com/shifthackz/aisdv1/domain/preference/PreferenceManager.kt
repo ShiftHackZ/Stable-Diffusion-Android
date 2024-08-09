@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.domain.preference
 
+import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import io.reactivex.rxjava3.core.Flowable
@@ -31,6 +32,7 @@ interface PreferenceManager {
     var designColorToken: String
     var designDarkThemeToken: String
     var backgroundGeneration: Boolean
+    var galleryGrid: Grid
 
     fun observe(): Flowable<Settings>
 }

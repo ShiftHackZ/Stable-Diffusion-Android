@@ -79,6 +79,7 @@ class SettingsViewModel(
                             darkTheme = settings.designDarkTheme,
                             colorToken = ColorToken.parse(settings.designColorToken),
                             darkThemeToken = DarkThemeToken.parse(settings.designDarkThemeToken),
+                            galleryGrid = settings.galleryGrid,
                             appVersion = version,
                         )
                     }
@@ -185,6 +186,14 @@ class SettingsViewModel(
 
             SettingsIntent.Action.PickLanguage -> updateState {
                 it.copy(screenModal = Modal.Language)
+            }
+
+            SettingsIntent.Action.GalleryGrid.Pick -> updateState {
+                it.copy(screenModal = Modal.GalleryGrid(it.galleryGrid))
+            }
+
+            is SettingsIntent.Action.GalleryGrid.Set -> {
+                preferenceManager.galleryGrid = intent.grid
             }
 
             is SettingsIntent.Drawer -> when (intent.intent) {

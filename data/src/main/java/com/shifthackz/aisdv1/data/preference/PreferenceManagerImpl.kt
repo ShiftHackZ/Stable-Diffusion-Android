@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.domain.entity.FeatureTag
+import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
@@ -211,6 +212,13 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
+    override var galleryGrid: Grid
+        get() = preferences.getInt(KEY_GALLERY_GRID, 0).let { Grid.entries[it] }
+        set(value) = preferences.edit()
+            .putInt(KEY_GALLERY_GRID, value.ordinal)
+            .apply()
+            .also { onPreferencesChanged() }
+
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
         .map {
@@ -232,6 +240,7 @@ class PreferenceManagerImpl(
                 designDarkTheme = designDarkTheme,
                 designColorToken = designColorToken,
                 designDarkThemeToken = designDarkThemeToken,
+                galleryGrid = galleryGrid,
             )
         }
 
@@ -264,5 +273,6 @@ class PreferenceManagerImpl(
         const val KEY_DESIGN_COLOR_TOKEN = "key_design_color_token_theme"
         const val KEY_DESIGN_DARK_TOKEN = "key_design_dark_color_token_theme"
         const val KEY_BACKGROUND_GENERATION = "key_background_generation"
+        const val KEY_GALLERY_GRID = "key_gallery_grid"
     }
 }
