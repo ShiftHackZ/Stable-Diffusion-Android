@@ -120,7 +120,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     fun `given received Delete Request intent, expected modal field in UI state is DeleteImageConfirm`() {
         viewModel.processIntent(GalleryDetailIntent.Delete.Request)
         runTest {
-            val expected = Modal.DeleteImageConfirm
+            val expected = Modal.DeleteImageConfirm(isAll = false, isMultiple = false)
             val actual = (viewModel.state.value as? GalleryDetailState.Content)?.screenModal
             Assert.assertEquals(expected, actual)
         }

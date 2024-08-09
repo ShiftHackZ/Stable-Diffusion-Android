@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
@@ -17,11 +18,13 @@ import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.utils.Constants
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import kotlinx.coroutines.flow.Flow
 
 class GalleryViewModel(
     getMediaStoreInfoUseCase: GetMediaStoreInfoUseCase,
+    private val deleteAllGalleryUseCase: DeleteAllGalleryUseCase,
     private val deleteGalleryItemsUseCase: DeleteGalleryItemsUseCase,
     private val getGenerationResultPagedUseCase: GetGenerationResultPagedUseCase,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
@@ -99,11 +102,20 @@ class GalleryViewModel(
                 it.copy(selection = newSelection)
             }
 
-            GalleryIntent.DeleteSelection.Request -> setActiveModal(
-                Modal.DeleteImageConfirm(true)
+            GalleryIntent.Delete.Selection.Request -> setActiveModal(
+                Modal.DeleteImageConfirm(isAll = false, isMultiple = true)
             )
 
-            GalleryIntent.DeleteSelection.Confirm -> deleteItems()
+            GalleryIntent.Delete.Selection.Confirm -> !deleteGalleryItemsUseCase
+                .invoke(currentState.selection)
+                .processDeletion()
+
+            GalleryIntent.Delete.All.Request -> setActiveModal(
+                Modal.DeleteImageConfirm(isAll = true, isMultiple = false)
+            )
+
+            GalleryIntent.Delete.All.Confirm -> !deleteAllGalleryUseCase()
+                .processDeletion()
 
             GalleryIntent.UnselectAll -> updateState {
                 it.copy(selection = emptyList())
@@ -123,7 +135,7 @@ class GalleryViewModel(
         }
     }
 
-    private fun deleteItems() = !deleteGalleryItemsUseCase(currentState.selection)
+    private fun Completable.processDeletion() = this
         .doOnSubscribe { setActiveModal(Modal.None) }
         .subscribeOnMainThread(schedulersProvider)
         .subscribeBy(::errorLog) {

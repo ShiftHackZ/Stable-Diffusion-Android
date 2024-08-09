@@ -13,7 +13,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
@@ -41,6 +41,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -62,7 +63,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -82,6 +82,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.extensions.items
+import com.shifthackz.aisdv1.core.extensions.shake
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.sharing.shareFile
 import com.shifthackz.aisdv1.core.ui.MviComponent
@@ -91,6 +92,7 @@ import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import kotlin.random.Random
 
 @Composable
 fun GalleryScreen() {
@@ -202,7 +204,7 @@ private fun ScreenContent(
                                     Row {
                                         IconButton(
                                             onClick = {
-                                                processIntent(GalleryIntent.DeleteSelection.Request)
+                                                processIntent(GalleryIntent.Delete.Selection.Request)
                                             },
                                         ) {
                                             Icon(
@@ -225,15 +227,21 @@ private fun ScreenContent(
                                     }
                                 }
                             } else {
-                                IconButton(
-                                    onClick = {
-                                        processIntent(GalleryIntent.Dropdown.Toggle)
-                                    },
+                                AnimatedVisibility(
+                                    visible = lazyGalleryItems.itemCount != 0,
+                                    enter = fadeIn(),
+                                    exit = fadeOut(),
                                 ) {
-                                    Icon(
-                                        imageVector = Icons.Default.MoreVert,
-                                        contentDescription = "Dropdown",
-                                    )
+                                    IconButton(
+                                        onClick = {
+                                            processIntent(GalleryIntent.Dropdown.Toggle)
+                                        },
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.MoreVert,
+                                            contentDescription = "Dropdown",
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -251,12 +259,34 @@ private fun ScreenContent(
                                 },
                                 text = {
                                     Text(
-                                        text = "Selection mode"
+                                        text = stringResource(
+                                            id = R.string.gallery_menu_selection_mode,
+                                        ),
                                     )
                                 },
                                 onClick = {
                                     processIntent(GalleryIntent.Dropdown.Close)
                                     processIntent(GalleryIntent.ChangeSelectionMode(true))
+                                },
+                            )
+                            if (state.mediaStoreInfo.isNotEmpty) DropdownMenuItem(
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.FileOpen,
+                                        contentDescription = "Browse",
+                                        tint = LocalContentColor.current,
+                                    )
+                                },
+                                text = {
+                                    Text(
+                                        text = stringResource(id = R.string.browse)
+                                    )
+                                },
+                                onClick = {
+                                    processIntent(GalleryIntent.Dropdown.Close)
+                                    state.mediaStoreInfo.folderUri?.let {
+                                        processIntent(GalleryIntent.OpenMediaStoreFolder(it))
+                                    }
                                 },
                             )
                             DropdownMenuItem(
@@ -269,11 +299,30 @@ private fun ScreenContent(
                                     )
                                 },
                                 text = {
-                                    Text("Export all")
+                                    Text(
+                                        text = stringResource(id = R.string.gallery_menu_export_all)
+                                    )
                                 },
                                 onClick = {
                                     processIntent(GalleryIntent.Dropdown.Close)
                                     processIntent(GalleryIntent.Export.All.Request)
+                                },
+                            )
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = "Delete",
+                                    )
+                                },
+                                text = {
+                                    Text(
+                                        text = stringResource(id = R.string.gallery_menu_delete_all),
+                                    )
+                                },
+                                onClick = {
+                                    processIntent(GalleryIntent.Dropdown.Close)
+                                    processIntent(GalleryIntent.Delete.All.Request)
                                 },
                             )
                         }
@@ -294,30 +343,34 @@ private fun ScreenContent(
                     ) {
                         Text(
                             modifier = Modifier
-                                .padding(start = 16.dp)
-                                .fillMaxWidth(0.65f),
-                            text = "Selected images: ${state.selection.size}",
+                                .padding(start = 16.dp),
+                            text = stringResource(
+                                id = R.string.gallery_menu_selected,
+                                "${state.selection.size}",
+                            ),
                             style = MaterialTheme.typography.bodyLarge,
                             lineHeight = 17.sp,
                             fontWeight = FontWeight.W400,
                         )
                         Spacer(modifier = Modifier.weight(1f))
-                        val unselectAlpha by animateFloatAsState(
-                            targetValue = if (state.selection.isEmpty()) 0f else 1f,
-                            label = "unselect"
-                        )
                         TextButton(
-                            modifier = Modifier
-                                .alpha(unselectAlpha)
-                                .padding(end = 16.dp),
+                            modifier = Modifier.padding(end = 16.dp),
                             onClick = {
                                 if (state.selection.isNotEmpty()) {
                                     processIntent(GalleryIntent.UnselectAll)
+                                } else {
+                                    processIntent(GalleryIntent.ChangeSelectionMode(false))
                                 }
                             },
                         ) {
+                            val resId = if (state.selection.isNotEmpty()) {
+                                R.string.gallery_menu_unselect_all
+                            } else {
+                                R.string.cancel
+                            }
                             Text(
-                                text = "Unselect all".toUpperCase(Locale.current),
+                                text = stringResource(resId).toUpperCase(Locale.current),
+                                textAlign = TextAlign.Center,
                                 color = LocalContentColor.current,
                             )
                         }
@@ -383,35 +436,44 @@ private fun ScreenContent(
                     }
                 }
 
-                else -> LazyVerticalGrid(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    state = listState,
-                ) {
-                    items(lazyGalleryItems) { item ->
-                        if (item != null) {
-                            GalleryUiItem(
-                                modifier = Modifier.animateItemPlacement(),
-                                item = item,
-                                selectionMode = state.selectionMode,
-                                checked = state.selection.contains(item.id),
-                                onCheckedChange = {
-                                    processIntent(GalleryIntent.ToggleItemSelection(item.id))
-                                },
-                                onLongClick = {
-                                    processIntent(GalleryIntent.ChangeSelectionMode(true))
-                                },
-                                onClick = {
-                                    processIntent(GalleryIntent.OpenItem(it))
-                                },
-                            )
-                        } else {
-                            GalleryUiItemShimmer()
+                else -> {
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        state = listState,
+                    ) {
+                        items(lazyGalleryItems) { item ->
+                            if (item != null) {
+                                val selected = state.selection.contains(item.id)
+                                GalleryUiItem(
+                                    modifier = Modifier
+                                        .animateItemPlacement(tween(500))
+                                        .shake(
+                                            enabled = state.selectionMode && !selected,
+                                            animationDurationMillis = 188,
+                                            animationStartOffset = Random.nextInt(0, 320),
+                                        ),
+                                    item = item,
+                                    selectionMode = state.selectionMode,
+                                    checked = selected,
+                                    onCheckedChange = {
+                                        processIntent(GalleryIntent.ToggleItemSelection(item.id))
+                                    },
+                                    onLongClick = {
+                                        processIntent(GalleryIntent.ChangeSelectionMode(true))
+                                    },
+                                    onClick = {
+                                        processIntent(GalleryIntent.OpenItem(it))
+                                    },
+                                )
+                            } else {
+                                GalleryUiItemShimmer()
+                            }
                         }
                     }
                 }
@@ -443,7 +505,7 @@ fun GalleryUiItem(
         label = "border_color",
     )
     Box(
-        modifier = Modifier.clip(shape),
+        modifier = modifier.clip(shape),
     ) {
         Image(
             modifier = Modifier

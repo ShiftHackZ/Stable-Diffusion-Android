@@ -176,13 +176,23 @@ fun ModalRenderer(
         }
 
         is Modal.DeleteImageConfirm -> DecisionInteractiveDialog(
-            title = R.string.interaction_delete_generation_title.asUiText(),
-            text = R.string.interaction_delete_generation_sub_title.asUiText(),
+            title = when {
+                screenModal.isAll -> R.string.interaction_delete_all_title
+                screenModal.isMultiple ->  R.string.interaction_delete_selection_title
+                else -> R.string.interaction_delete_generation_title
+            }.asUiText(),
+            text = when {
+                screenModal.isAll -> R.string.interaction_delete_all_sub_title
+                screenModal.isMultiple ->  R.string.interaction_delete_selection_sub_title
+                else -> R.string.interaction_delete_generation_sub_title
+            }.asUiText(),
             confirmActionResId = R.string.yes,
             dismissActionResId = R.string.no,
             onConfirmAction = {
-                val intent = if (screenModal.isMultiple) {
-                    GalleryIntent.DeleteSelection.Confirm
+                val intent = if (screenModal.isAll) {
+                    GalleryIntent.Delete.All.Confirm
+                } else if (screenModal.isMultiple) {
+                    GalleryIntent.Delete.Selection.Confirm
                 } else {
                     GalleryDetailIntent.Delete.Confirm
                 }
@@ -193,7 +203,11 @@ fun ModalRenderer(
 
         is Modal.ConfirmExport -> DecisionInteractiveDialog(
             title = R.string.interaction_export_title.asUiText(),
-            text = R.string.interaction_export_sub_title.asUiText(),
+            text = if (screenModal.exportAll) {
+                R.string.interaction_export_sub_title
+            } else {
+                R.string.interaction_export_sub_title_selection
+            }.asUiText(),
             confirmActionResId = R.string.action_export,
             onConfirmAction = {
                 val intent = if (screenModal.exportAll) {

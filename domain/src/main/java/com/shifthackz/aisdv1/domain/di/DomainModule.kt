@@ -40,6 +40,8 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalAiModelsUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCase
@@ -131,6 +133,7 @@ internal val useCasesModule = module {
     factoryOf(::GetGenerationResultUseCaseImpl) bind GetGenerationResultUseCase::class
     factoryOf(::DeleteGalleryItemUseCaseImpl) bind DeleteGalleryItemUseCase::class
     factoryOf(::DeleteGalleryItemsUseCaseImpl) bind DeleteGalleryItemsUseCase::class
+    factoryOf(::DeleteAllGalleryUseCaseImpl) bind DeleteAllGalleryUseCase::class
     factoryOf(::GetStableDiffusionSamplersUseCaseImpl) bind GetStableDiffusionSamplersUseCase::class
     factoryOf(::FetchAndGetLorasUseCaseImpl) bind FetchAndGetLorasUseCase::class
     factoryOf(::FetchAndGetHyperNetworksUseCaseImpl) bind FetchAndGetHyperNetworksUseCase::class

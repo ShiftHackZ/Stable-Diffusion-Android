@@ -17,8 +17,15 @@ sealed interface GalleryIntent : MviIntent {
         }
     }
 
-    enum class DeleteSelection : GalleryIntent {
-        Request, Confirm;
+    sealed interface Delete : GalleryIntent {
+
+        enum class All : Export {
+            Request, Confirm;
+        }
+
+        enum class Selection : Delete {
+            Request, Confirm;
+        }
     }
 
     enum class Dropdown : GalleryIntent {
