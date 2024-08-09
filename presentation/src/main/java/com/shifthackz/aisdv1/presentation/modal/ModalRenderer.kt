@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import com.shifthackz.aisdv1.core.common.extensions.openAppSettings
 import com.shifthackz.aisdv1.core.model.UiText
+import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
@@ -206,13 +207,13 @@ fun ModalRenderer(
         )
 
         is Modal.ConfirmExport -> DecisionInteractiveDialog(
-            title = R.string.interaction_export_title.asUiText(),
+            title = LocalizationR.string.interaction_export_title.asUiText(),
             text = if (screenModal.exportAll) {
-                R.string.interaction_export_sub_title
+                LocalizationR.string.interaction_export_sub_title
             } else {
-                R.string.interaction_export_sub_title_selection
+                LocalizationR.string.interaction_export_sub_title_selection
             }.asUiText(),
-            confirmActionResId = R.string.action_export,
+            confirmActionResId = LocalizationR.string.action_export,
             onConfirmAction = {
                 val intent = if (screenModal.exportAll) {
                     GalleryIntent.Export.All.Confirm
