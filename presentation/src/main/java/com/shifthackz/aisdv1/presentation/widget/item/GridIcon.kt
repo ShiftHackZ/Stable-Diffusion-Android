@@ -58,7 +58,6 @@ private fun GridIconsPreview3() {
     GridIcon(Grid.Fixed3)
 }
 
-
 @Composable
 @Preview
 private fun GridIconsPreview4() {
