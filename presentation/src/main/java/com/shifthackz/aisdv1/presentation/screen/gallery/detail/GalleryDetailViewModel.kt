@@ -47,7 +47,9 @@ class GalleryDetailViewModel(
                 emitEffect(GalleryDetailEffect.ShareClipBoard(intent.content.toString()))
             }
 
-            GalleryDetailIntent.Delete.Request -> setActiveModal(Modal.DeleteImageConfirm)
+            GalleryDetailIntent.Delete.Request -> setActiveModal(
+                Modal.DeleteImageConfirm(false, isMultiple = false)
+            )
 
             GalleryDetailIntent.Delete.Confirm -> {
                 setActiveModal(Modal.None)

@@ -169,6 +169,12 @@
     <string name="gallery_info_field_sub_seed_strength">Коэффициент вариации</string>
     <string name="gallery_info_field_denoising_strength">Коэффициент шумоподавления</string>
 
+    <string name="gallery_menu_unselect_all">Отменить выбор</string>
+    <string name="gallery_menu_selected">Выбранно: %1$s</string>
+    <string name="gallery_menu_delete_all">Удалить все</string>
+    <string name="gallery_menu_export_all">Экспортировать все</string>
+    <string name="gallery_menu_selection_mode">Режим выбора</string>
+
     <string name="settings_header_server">Параметры AI</string>
     <string name="settings_header_app">Настройки</string>
     <string name="settings_header_info">Информация</string>
@@ -217,14 +223,21 @@
     <string name="exporting_progress_sub_title">Это может занять некоторое время в зависимости от количества фотографий</string>
 
     <string name="interaction_export_title">Экспорт галереи</string>
-    <string name="interaction_export_sub_title">Эта функция экспортирует все изображения галереи в архив *.zip. Этот процесс может длиться долго, если у вас много изображений. Хотите продолжить?</string>
+    <string name="interaction_export_sub_title">Эта функция экспортирует все изображения галереи в архив *.zip. Этот процесс может длиться долго, если у вас много изображений. Желаете продолжить?</string>
+    <string name="interaction_export_sub_title_selection">Эта функция экспортирует выбранные изображения галереи в архив *.zip. Желаете продолжить?</string>
     <string name="interaction_cache_sub_title">Это приведет к сбросу настроек программы и удалению всех созданных изображений. Вы хотите продолжить?</string>
 
     <string name="interaction_warning_title">Предупреждение</string>
     <string name="interaction_warning_localhost_sub_title">Вы пытаетесь подключиться к локальному серверу localhost (127.0.0.1).\n\nЭто может не сработать, если на вашем Android-устройстве не настроено туннелирование ssh или другой механизм переадресации портов.</string>
 
     <string name="interaction_delete_generation_title">Удалить изображение</string>
-    <string name="interaction_delete_generation_sub_title">Вы уверены, что хотите окончательно удалить это изображение?</string>
+    <string name="interaction_delete_generation_sub_title">Вы уверены, что хотите безвозвратно удалить это изображение?</string>
+
+    <string name="interaction_delete_all_title">Удалить все изображения</string>
+    <string name="interaction_delete_all_sub_title">Вы уверены, что хотите безвозвратно удалить все изображения?</string>
+
+    <string name="interaction_delete_selection_title">Удалить изображения</string>
+    <string name="interaction_delete_selection_sub_title">Вы уверены, что хотите безвозвратно удалить выбранные изображения?</string>
 
     <string name="interaction_delete_local_model_title">Удалить модель</string>
     <string name="interaction_delete_local_model_sub_title">Вы уверены, что хотите удалить модель "%1$s"?</string>

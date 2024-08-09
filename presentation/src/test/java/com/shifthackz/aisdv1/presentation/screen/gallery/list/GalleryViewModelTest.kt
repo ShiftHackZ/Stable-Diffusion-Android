@@ -6,6 +6,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCase
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
@@ -42,6 +44,8 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
     private val stubGalleryExporter = mockk<GalleryExporter>()
     private val stubMainRouter = mockk<MainRouter>()
     private val stubDrawerRouter = mockk<DrawerRouter>()
+    private val stubDeleteAllGalleryUseCase = mockk<DeleteAllGalleryUseCase>()
+    private val stubDeleteGalleryItemsUseCase = mockk<DeleteGalleryItemsUseCase>()
     private val backgroundWorkObserver = mockk<BackgroundWorkObserver>()
 
     override fun initializeViewModel() = GalleryViewModel(
@@ -53,6 +57,8 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
         schedulersProvider = stubSchedulersProvider,
         mainRouter = stubMainRouter,
         drawerRouter = stubDrawerRouter,
+        deleteAllGalleryUseCase = stubDeleteAllGalleryUseCase,
+        deleteGalleryItemsUseCase = stubDeleteGalleryItemsUseCase,
     )
 
     @Before
@@ -89,9 +95,9 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
 
     @Test
     fun `given received Export Request intent, expected screenModal field in UI state is ConfirmExport`() {
-        viewModel.processIntent(GalleryIntent.Export.Request)
+        viewModel.processIntent(GalleryIntent.Export.All.Request)
         runTest {
-            val expected = Modal.ConfirmExport
+            val expected = Modal.ConfirmExport(true)
             val actual = viewModel.state.value.screenModal
             Assert.assertEquals(expected, actual)
         }
@@ -105,7 +111,7 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
 
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
-        viewModel.processIntent(GalleryIntent.Export.Confirm)
+        viewModel.processIntent(GalleryIntent.Export.All.Confirm)
 
         runTest {
             val expectedUiState = Modal.None

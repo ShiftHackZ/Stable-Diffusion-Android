@@ -189,6 +189,12 @@
     <string name="gallery_info_field_sub_seed_strength">Variation strength</string>
     <string name="gallery_info_field_denoising_strength">Denoising strength</string>
 
+    <string name="gallery_menu_unselect_all">Unselect all</string>
+    <string name="gallery_menu_selected">Selected images: %1$s</string>
+    <string name="gallery_menu_delete_all">Delete all</string>
+    <string name="gallery_menu_export_all">Export all</string>
+    <string name="gallery_menu_selection_mode">Selection mode</string>
+
     <string name="settings_header_server">AI settings</string>
     <string name="settings_header_app">App settings</string>
     <string name="settings_header_info">Info</string>
@@ -238,6 +244,7 @@
 
     <string name="interaction_export_title">Gallery Export</string>
     <string name="interaction_export_sub_title">This will export all the gallery images as *.zip archive. This process may be long if you have many images, would you like to proceed?</string>
+    <string name="interaction_export_sub_title_selection">This will export selected gallery images as *.zip archive. Would you like to proceed?</string>
     <string name="interaction_cache_sub_title">This will reset app settings and delete all the generated images. Do you want to proceed?</string>
 
     <string name="interaction_warning_title">Warning</string>
@@ -245,6 +252,12 @@
 
     <string name="interaction_delete_generation_title">Delete image</string>
     <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently delete this image?</string>
+
+    <string name="interaction_delete_all_title">Delete all images</string>
+    <string name="interaction_delete_all_sub_title">Are you sure you want to permanently delete all images?</string>
+
+    <string name="interaction_delete_selection_title">Delete images</string>
+    <string name="interaction_delete_selection_sub_title">Are you sure you want to permanently delete selected images?</string>
 
     <string name="interaction_delete_local_model_title">Delete model</string>
     <string name="interaction_delete_local_model_sub_title">Are you sure you want to delete model "%1$s"?</string>

@@ -16,9 +16,12 @@ sealed interface Modal {
 
     data object ClearAppCache : Modal
 
-    data object DeleteImageConfirm : Modal
+    data class DeleteImageConfirm(
+        val isAll: Boolean,
+        val isMultiple: Boolean,
+    ) : Modal
 
-    data object ConfirmExport : Modal
+    data class ConfirmExport(val exportAll: Boolean) : Modal
 
     data object ExportInProgress : Modal
 

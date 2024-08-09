@@ -210,6 +210,12 @@
     <string name="gallery_info_field_sub_seed_strength">变体强度</string>
     <string name="gallery_info_field_denoising_strength">降噪强度</string>
 
+    <string name="gallery_menu_unselect_all">取消全部选择</string>
+    <string name="gallery_menu_selected">已选图片：%1$s</string>
+    <string name="gallery_menu_delete_all">全部删除</string>
+    <string name="gallery_menu_export_all">全部导出</string>
+    <string name="gallery_menu_selection_mode">选择模式</string>
+
     <!-- 设置标题 -->
     <string name="settings_header_server">AI设置</string>
     <string name="settings_header_app">应用设置</string>
@@ -267,6 +273,7 @@
     <!-- 交互提示 -->
     <string name="interaction_export_title">图库导出</string>
     <string name="interaction_export_sub_title">这将把所有图库图像导出为*.zip压缩包。此过程可能很长，如果您有很多图片，您想继续吗？</string>
+    <string name="interaction_export_sub_title_selection">这会将选定的图库图像导出为 *.zip 存档。您要继续吗？</string>
     <string name="interaction_cache_sub_title">这将重置应用设置并删除所有生成的图像。您想继续吗？</string>
 
     <!-- 警告互动 -->
@@ -276,6 +283,12 @@
     <!-- 删除图像提示 -->
     <string name="interaction_delete_generation_title">删除图像</string>
     <string name="interaction_delete_generation_sub_title">您确定要永久删除此图像吗？</string>
+
+    <string name="interaction_delete_all_title">删除所有图像</string>
+    <string name="interaction_delete_all_sub_title">您确定要永久删除所有图像吗？</string>
+
+    <string name="interaction_delete_selection_title">删除图像</string>
+    <string name="interaction_delete_selection_sub_title">您确实要永久删除选定的图像吗？</string>
 
     <!-- 删除本地模型提示 -->
     <string name="interaction_delete_local_model_title">删除模型</string>

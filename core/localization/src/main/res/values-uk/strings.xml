@@ -169,6 +169,12 @@
     <string name="gallery_info_field_sub_seed_strength">Коефіцієнт варіації</string>
     <string name="gallery_info_field_denoising_strength">Коефіцієнт шумозаглушення</string>
 
+    <string name="gallery_menu_unselect_all">Скасувати вибір</string>
+    <string name="gallery_menu_selected">Обрано: %1$s</string>
+    <string name="gallery_menu_delete_all">Видалити все</string>
+    <string name="gallery_menu_export_all">Експортувати все</string>
+    <string name="gallery_menu_selection_mode">Режим вибору</string>
+
     <string name="settings_header_server">Параметри AI</string>
     <string name="settings_header_app">Налаштування</string>
     <string name="settings_header_info">Інформація</string>
@@ -218,6 +224,7 @@
 
     <string name="interaction_export_title">Експорт галереї</string>
     <string name="interaction_export_sub_title">Ця функція експортує всі зображення галереї у архів *.zip. Цей процес може тривати довго, якщо у вас багато зображень. Бажаєте продовжити?</string>
+    <string name="interaction_export_sub_title_selection">Ця функція експортує обрані зображення галереї у архів *.zip. Бажаєте продовжити?</string>
     <string name="interaction_cache_sub_title">Це призведе до скидання налаштувань програми та видалення всіх створених зображень. Ви бажаєте продовжити?</string>
 
     <string name="interaction_warning_title">Попередження</string>
@@ -225,6 +232,12 @@
 
     <string name="interaction_delete_generation_title">Видалити зображення</string>
     <string name="interaction_delete_generation_sub_title">Ви впевнені, що хочете остаточно видалити це зображення?</string>
+
+    <string name="interaction_delete_all_title">Видалити всі зображення</string>
+    <string name="interaction_delete_all_sub_title">Ви впевнені, що хочете остаточно видалити всі зображення?</string>
+
+    <string name="interaction_delete_selection_title">Видалити зображення</string>
+    <string name="interaction_delete_selection_sub_title">Ви впевнені, що хочете остаточно видалити обрані зображення?</string>
 
     <string name="interaction_delete_local_model_title">Видалити модель</string>
     <string name="interaction_delete_local_model_sub_title">Ви впевнені, що хочете видалити модель "%1$s"?</string>

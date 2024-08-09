@@ -40,10 +40,16 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalAiModelsUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemsUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
@@ -123,8 +129,11 @@ internal val useCasesModule = module {
     factoryOf(::SelectStableDiffusionModelUseCaseImpl) bind SelectStableDiffusionModelUseCase::class
     factoryOf(::GetGenerationResultPagedUseCaseImpl) bind GetGenerationResultPagedUseCase::class
     factoryOf(::GetAllGalleryUseCaseImpl) bind GetAllGalleryUseCase::class
+    factoryOf(::GetGalleryItemsUseCaseImpl) bind GetGalleryItemsUseCase::class
     factoryOf(::GetGenerationResultUseCaseImpl) bind GetGenerationResultUseCase::class
     factoryOf(::DeleteGalleryItemUseCaseImpl) bind DeleteGalleryItemUseCase::class
+    factoryOf(::DeleteGalleryItemsUseCaseImpl) bind DeleteGalleryItemsUseCase::class
+    factoryOf(::DeleteAllGalleryUseCaseImpl) bind DeleteAllGalleryUseCase::class
     factoryOf(::GetStableDiffusionSamplersUseCaseImpl) bind GetStableDiffusionSamplersUseCase::class
     factoryOf(::FetchAndGetLorasUseCaseImpl) bind FetchAndGetLorasUseCase::class
     factoryOf(::FetchAndGetHyperNetworksUseCaseImpl) bind FetchAndGetHyperNetworksUseCase::class

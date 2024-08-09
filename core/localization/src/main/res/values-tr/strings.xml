@@ -169,6 +169,12 @@
     <string name="gallery_info_field_sub_seed_strength">Varyasyon oranı</string>
     <string name="gallery_info_field_denoising_strength">Gürültü Azaltma oranı</string>
 
+    <string name="gallery_menu_unselect_all">Tümünü seç</string>
+    <string name="gallery_menu_selected">Seçili resimler: %1$s</string>
+    <string name="gallery_menu_delete_all">Tümünü sil</string>
+    <string name="gallery_menu_export_all">Tümünü dışa aktar</string>
+    <string name="gallery_menu_selection_mode">Seçim modu</string>
+
     <string name="settings_header_server">AI ayarları</string>
     <string name="settings_header_app">Uygulama ayarları</string>
     <string name="settings_header_info">Bilgi</string>
@@ -218,6 +224,7 @@
 
     <string name="interaction_export_title">Galeriyi Dışa Aktar</string>
     <string name="interaction_export_sub_title">Bu işlem bütün galerideki resimleri tek bir .zip arşivi dosyası olarak dışa aktaracaktır. Galerinizin boyutuna göre bu işlem uzun bir zaman alabailir. Devam etmek istiyor musunuz?</string>
+    <string name="interaction_export_sub_title_selection">Bu, seçili galeri resimlerini *.zip arşivi olarak dışa aktaracaktır. Devam etmek istiyor musunuz?</string>
     <string name="interaction_cache_sub_title">Bu işlem bütün uygulama ayarlarını ve oluşturulan resimleri silecektir. Devam etmek istiyor musunuz?</string>
 
     <string name="interaction_warning_title">Uyarı</string>
@@ -225,6 +232,12 @@
 
     <string name="interaction_delete_generation_title">Resmi sil</string>
     <string name="interaction_delete_generation_sub_title">Kalıcı olarak bu resmi silmek istediğinize emin misiniz?</string>
+
+    <string name="interaction_delete_all_title">Tüm resimleri sil</string>
+    <string name="interaction_delete_all_sub_title">Tüm görselleri kalıcı olarak silmek istediğinizden emin misiniz?</string>
+
+    <string name="interaction_delete_selection_title">Resimleri sil</string>
+    <string name="interaction_delete_selection_sub_title">Seçili görselleri kalıcı olarak silmek istediğinizden emin misiniz?</string>
 
     <string name="interaction_delete_local_model_title">Modeli sil</string>
     <string name="interaction_delete_local_model_sub_title">Modeli silmek istediğinizden emin misiniz "%1$s"?</string>

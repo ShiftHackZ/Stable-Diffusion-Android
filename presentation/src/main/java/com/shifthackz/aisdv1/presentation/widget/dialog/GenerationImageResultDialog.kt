@@ -156,7 +156,10 @@ fun ColumnScope.GenerationImageBatchResultModal(
             val result = results[index]
             val bmp = base64ToBitmap(result.image)
             val item = GalleryGridItemUi(result.id, bmp)
-            GalleryUiItem(item) { onViewDetailRequest(result) }
+            GalleryUiItem(
+                item = item,
+                onClick = { onViewDetailRequest(result) }
+            )
         }
     }
     Box(
