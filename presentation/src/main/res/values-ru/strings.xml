@@ -20,7 +20,7 @@
     <string name="version">Версия %1$s</string>
 
     <string name="splash_status_initializing">Инициализация…</string>
-    <string name="splash_status_fetching">Загрузка занных…</string>
+    <string name="splash_status_fetching">Загрузка данных…</string>
     <string name="splash_status_launching">Запуск приложения!</string>
 
     <string name="local_no_img2img_support_title">Не доступно</string>

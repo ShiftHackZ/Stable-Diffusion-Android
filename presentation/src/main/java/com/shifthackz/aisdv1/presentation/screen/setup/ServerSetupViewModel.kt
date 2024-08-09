@@ -62,7 +62,7 @@ class ServerSetupViewModel(
             else -> AuthorizationCredentials.None
         }
 
-    private var downloadDisposable: Disposable? = null
+    private val downloadDisposables: MutableList<Pair<String, Disposable>> = mutableListOf()
 
     init {
         !Single.zip(
@@ -92,6 +92,13 @@ class ServerSetupViewModel(
                         .withHordeApiKey(configuration.hordeApiKey)
                 }
             }
+    }
+
+    override fun onCleared() {
+        downloadDisposables.forEach { (_, disposable) ->
+            disposable.dispose()
+        }
+        super.onCleared()
     }
 
     override fun processIntent(intent: ServerSetupIntent) = when (intent) {
@@ -383,8 +390,14 @@ class ServerSetupViewModel(
         when {
             // User cancels download
             localModel.downloadState is DownloadState.Downloading -> {
-                downloadDisposable?.dispose()
-                downloadDisposable = null
+                val index = downloadDisposables.indexOfFirst { it.first == localModel.id }
+                if (index != -1) {
+                    downloadDisposables[index].second.dispose()
+                    downloadDisposables.removeAt(index)
+                }
+                !deleteModelUseCase(localModel.id)
+                    .subscribeOnMainThread(schedulersProvider)
+                    .subscribeBy(::errorLog)
                 updateState {
                     it.copy(
                         localModels = currentState.localModels.withNewState(
@@ -408,14 +421,13 @@ class ServerSetupViewModel(
                         ),
                     )
                 }
-                downloadDisposable?.dispose()
-                downloadDisposable = null
-                downloadDisposable = downloadModelUseCase(localModel.id)
+                !downloadModelUseCase(localModel.id)
                     .distinctUntilChanged()
                     .doOnSubscribe { wakeLockInterActor.acquireWakelockUseCase() }
                     .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
                     .subscribeOnMainThread(schedulersProvider).subscribeBy(
                         onError = { t ->
+                            errorLog(t)
                             val message = t.localizedMessage ?: "Error"
                             updateState {
                                 it.copy(
@@ -448,7 +460,8 @@ class ServerSetupViewModel(
                                 }
                             }
                         },
-                    ).addToDisposable()
+                    )
+                    .also { downloadDisposables.add(localModel.id to it) }
             }
         }
     }
