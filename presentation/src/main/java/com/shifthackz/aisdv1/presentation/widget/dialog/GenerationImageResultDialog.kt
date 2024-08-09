@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -23,7 +22,6 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -158,7 +156,10 @@ fun ColumnScope.GenerationImageBatchResultModal(
             val result = results[index]
             val bmp = base64ToBitmap(result.image)
             val item = GalleryGridItemUi(result.id, bmp)
-            GalleryUiItem(item) { onViewDetailRequest(result) }
+            GalleryUiItem(
+                item = item,
+                onClick = { onViewDetailRequest(result) }
+            )
         }
     }
     Box(

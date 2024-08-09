@@ -21,11 +21,17 @@ interface GenerationResultDao {
     @Query("SELECT * FROM ${GenerationResultContract.TABLE} WHERE ${GenerationResultContract.ID} = :id LIMIT 1")
     fun queryById(id: Long): Single<GenerationResultEntity>
 
+    @Query("SELECT * FROM ${GenerationResultContract.TABLE} WHERE ${GenerationResultContract.ID} IN (:idList)")
+    fun queryByIdList(idList: List<Long>): Single<List<GenerationResultEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: GenerationResultEntity): Single<Long>
 
     @Query("DELETE FROM ${GenerationResultContract.TABLE} WHERE ${GenerationResultContract.ID} = :id")
     fun deleteById(id: Long): Completable
+
+    @Query("DELETE FROM ${GenerationResultContract.TABLE} WHERE ${GenerationResultContract.ID} IN (:idList)")
+    fun deleteByIdList(idList: List<Long>): Completable
 
     @Query("DELETE FROM ${GenerationResultContract.TABLE}")
     fun deleteAll(): Completable

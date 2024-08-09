@@ -175,20 +175,48 @@ fun ModalRenderer(
             )
         }
 
-        Modal.DeleteImageConfirm -> DecisionInteractiveDialog(
-            title = R.string.interaction_delete_generation_title.asUiText(),
-            text = R.string.interaction_delete_generation_sub_title.asUiText(),
+        is Modal.DeleteImageConfirm -> DecisionInteractiveDialog(
+            title = when {
+                screenModal.isAll -> R.string.interaction_delete_all_title
+                screenModal.isMultiple ->  R.string.interaction_delete_selection_title
+                else -> R.string.interaction_delete_generation_title
+            }.asUiText(),
+            text = when {
+                screenModal.isAll -> R.string.interaction_delete_all_sub_title
+                screenModal.isMultiple ->  R.string.interaction_delete_selection_sub_title
+                else -> R.string.interaction_delete_generation_sub_title
+            }.asUiText(),
             confirmActionResId = R.string.yes,
             dismissActionResId = R.string.no,
-            onConfirmAction = { processIntent(GalleryDetailIntent.Delete.Confirm) },
+            onConfirmAction = {
+                val intent = if (screenModal.isAll) {
+                    GalleryIntent.Delete.All.Confirm
+                } else if (screenModal.isMultiple) {
+                    GalleryIntent.Delete.Selection.Confirm
+                } else {
+                    GalleryDetailIntent.Delete.Confirm
+                }
+                processIntent(intent)
+            },
             onDismissRequest = dismiss,
         )
 
-        Modal.ConfirmExport -> DecisionInteractiveDialog(
+        is Modal.ConfirmExport -> DecisionInteractiveDialog(
             title = R.string.interaction_export_title.asUiText(),
-            text = R.string.interaction_export_sub_title.asUiText(),
+            text = if (screenModal.exportAll) {
+                R.string.interaction_export_sub_title
+            } else {
+                R.string.interaction_export_sub_title_selection
+            }.asUiText(),
             confirmActionResId = R.string.action_export,
-            onConfirmAction = { processIntent(GalleryIntent.Export.Confirm) },
+            onConfirmAction = {
+                val intent = if (screenModal.exportAll) {
+                    GalleryIntent.Export.All.Confirm
+                } else {
+                    GalleryIntent.Export.Selection.Confirm
+                }
+                processIntent(intent)
+            },
             onDismissRequest = dismiss,
         )
 
