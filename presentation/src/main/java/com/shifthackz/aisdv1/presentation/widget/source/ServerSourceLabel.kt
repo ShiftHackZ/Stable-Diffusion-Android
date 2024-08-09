@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ServerSource.getName(): String {
@@ -13,11 +13,11 @@ fun ServerSource.getName(): String {
 }
 
 fun ServerSource.getNameUiText(): UiText = when (this) {
-    ServerSource.AUTOMATIC1111 -> R.string.srv_type_own
-    ServerSource.HORDE -> R.string.srv_type_horde
-    ServerSource.LOCAL -> R.string.srv_type_local
-    ServerSource.HUGGING_FACE -> R.string.srv_type_hugging_face
-    ServerSource.OPEN_AI -> R.string.srv_type_open_ai
-    ServerSource.STABILITY_AI -> R.string.srv_type_stability_ai
-    ServerSource.SWARM_UI -> R.string.srv_type_swarm_ui
+    ServerSource.AUTOMATIC1111 -> LocalizationR.string.srv_type_own
+    ServerSource.HORDE -> LocalizationR.string.srv_type_horde
+    ServerSource.LOCAL -> LocalizationR.string.srv_type_local
+    ServerSource.HUGGING_FACE -> LocalizationR.string.srv_type_hugging_face
+    ServerSource.OPEN_AI -> LocalizationR.string.srv_type_open_ai
+    ServerSource.STABILITY_AI -> LocalizationR.string.srv_type_stability_ai
+    ServerSource.SWARM_UI -> LocalizationR.string.srv_type_swarm_ui
 }.asUiText()

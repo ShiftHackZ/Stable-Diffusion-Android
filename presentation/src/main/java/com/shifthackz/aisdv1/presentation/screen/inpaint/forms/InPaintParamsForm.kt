@@ -17,13 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintIntent
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 @Preview
@@ -40,7 +40,7 @@ fun InPaintParamsForm(
         Text(
             modifier = Modifier.padding(top = 8.dp),
             text = stringResource(
-                id = R.string.hint_mask_blur,
+                id = LocalizationR.string.hint_mask_blur,
                 "${model.maskBlur}",
             ),
         )
@@ -54,7 +54,7 @@ fun InPaintParamsForm(
 
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.hint_mask_mode),
+            text = stringResource(id = LocalizationR.string.hint_mask_mode),
         )
         InPaintModel.MaskMode.entries.forEach { maskMode ->
             val click: () -> Unit = {
@@ -73,8 +73,8 @@ fun InPaintParamsForm(
                 Text(
                     text = stringResource(
                         id = when (maskMode) {
-                            InPaintModel.MaskMode.InPaintMasked -> R.string.in_paint_mode_masked
-                            InPaintModel.MaskMode.InPaintNotMasked -> R.string.in_paint_mode_not_masked
+                            InPaintModel.MaskMode.InPaintMasked -> LocalizationR.string.in_paint_mode_masked
+                            InPaintModel.MaskMode.InPaintNotMasked -> LocalizationR.string.in_paint_mode_not_masked
                         }
                     ),
                 )
@@ -83,7 +83,7 @@ fun InPaintParamsForm(
 
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.hint_mask_content),
+            text = stringResource(id = LocalizationR.string.hint_mask_content),
         )
         InPaintModel.MaskContent.entries.forEach { maskContent ->
             val click: () -> Unit = {
@@ -102,10 +102,10 @@ fun InPaintParamsForm(
                 Text(
                     text = stringResource(
                         id = when (maskContent) {
-                            InPaintModel.MaskContent.Fill -> R.string.in_paint_mask_content_fill
-                            InPaintModel.MaskContent.Original -> R.string.in_paint_mask_content_original
-                            InPaintModel.MaskContent.LatentNoise -> R.string.in_paint_mask_content_latent_noise
-                            InPaintModel.MaskContent.LatentNothing -> R.string.in_paint_mask_content_latent_nothing
+                            InPaintModel.MaskContent.Fill -> LocalizationR.string.in_paint_mask_content_fill
+                            InPaintModel.MaskContent.Original -> LocalizationR.string.in_paint_mask_content_original
+                            InPaintModel.MaskContent.LatentNoise -> LocalizationR.string.in_paint_mask_content_latent_noise
+                            InPaintModel.MaskContent.LatentNothing -> LocalizationR.string.in_paint_mask_content_latent_nothing
                         }
                     ),
                 )
@@ -114,7 +114,7 @@ fun InPaintParamsForm(
 
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.hint_in_paint_area),
+            text = stringResource(id = LocalizationR.string.hint_in_paint_area),
         )
         InPaintModel.Area.entries.forEach { area ->
             val click: () -> Unit = {
@@ -133,8 +133,8 @@ fun InPaintParamsForm(
                 Text(
                     text = stringResource(
                         id = when (area) {
-                            InPaintModel.Area.WholePicture -> R.string.in_paint_area_whole
-                            InPaintModel.Area.OnlyMasked -> R.string.in_paint_area_only_masked
+                            InPaintModel.Area.WholePicture -> LocalizationR.string.in_paint_area_whole
+                            InPaintModel.Area.OnlyMasked -> LocalizationR.string.in_paint_area_only_masked
                         }
                     ),
                 )
@@ -145,7 +145,7 @@ fun InPaintParamsForm(
         Text(
             modifier = Modifier.padding(top = 8.dp),
             text = stringResource(
-                id = R.string.hint_only_masked_padding,
+                id = LocalizationR.string.hint_only_masked_padding,
                 "${model.onlyMaskedPaddingPx}",
             ),
         )

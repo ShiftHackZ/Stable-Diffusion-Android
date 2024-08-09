@@ -204,6 +204,13 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
+    override var backgroundGeneration: Boolean
+        get() = preferences.getBoolean(KEY_BACKGROUND_GENERATION, false)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_BACKGROUND_GENERATION, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
     override fun observe(): Flowable<Settings> = preferencesChangedSubject
         .toFlowable(BackpressureStrategy.LATEST)
         .map {
@@ -212,6 +219,7 @@ class PreferenceManagerImpl(
                 sdModel = sdModel,
                 demoMode = demoMode,
                 monitorConnectivity = monitorConnectivity,
+                backgroundGeneration = backgroundGeneration,
                 autoSaveAiResults = autoSaveAiResults,
                 saveToMediaStore = saveToMediaStore,
                 formAdvancedOptionsAlwaysShow = formAdvancedOptionsAlwaysShow,
@@ -255,5 +263,6 @@ class PreferenceManagerImpl(
         const val KEY_DESIGN_DARK_THEME = "key_design_dark_theme"
         const val KEY_DESIGN_COLOR_TOKEN = "key_design_color_token_theme"
         const val KEY_DESIGN_DARK_TOKEN = "key_design_dark_color_token_theme"
+        const val KEY_BACKGROUND_GENERATION = "key_background_generation"
     }
 }

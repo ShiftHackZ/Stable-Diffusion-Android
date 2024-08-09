@@ -23,11 +23,11 @@ import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.splitTensor
 import com.shifthackz.aisdv1.feature.diffusion.ai.scheduler.EulerAncestralDiscreteLocalDiffusionScheduler
 import com.shifthackz.aisdv1.feature.diffusion.ai.vae.VaeDecoder
 import com.shifthackz.aisdv1.feature.diffusion.entity.Array3D
-import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionTensor
-import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
+import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionTensor
 import com.shifthackz.aisdv1.feature.diffusion.environment.DeviceNNAPIFlagProvider
 import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
+import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
 import com.shifthackz.aisdv1.feature.diffusion.extensions.modelPathPrefix
 import java.nio.IntBuffer
 import java.util.EnumSet
@@ -43,13 +43,7 @@ internal class UNet(
     private val localModelIdProvider: LocalModelIdProvider,
 ) {
 
-    private val decoder: VaeDecoder
-        get() = VaeDecoder(
-            ortEnvironmentProvider,
-            fileProviderDescriptor,
-            localModelIdProvider,
-            deviceNNAPIFlagProvider.get(),
-        )
+    private var decoder: VaeDecoder? = null
 
     private val random = Random()
 
@@ -61,6 +55,12 @@ internal class UNet(
 
     fun initialize() {
         if (session != null) return
+        decoder = VaeDecoder(
+            ortEnvironmentProvider,
+            fileProviderDescriptor,
+            localModelIdProvider,
+            deviceNNAPIFlagProvider.get(),
+        )
         val options = SessionOptions()
         options.addConfigEntry(ORT_KEY_MODEL_FORMAT, ORT)
         if (deviceNNAPIFlagProvider.get() == LocalDiffusionFlag.NN_API.value) {
@@ -208,11 +208,11 @@ internal class UNet(
                 latents,
             )
         }
-        close()
         callback?.also { clb ->
             callback?.onStep(timeSteps.size, timeSteps.size)
             val bitmap = decode(latents)
             clb.onBuildImage(0, bitmap)
+            close()
         }
     }
 
@@ -224,8 +224,8 @@ internal class UNet(
         )
         val decoderInput: MutableMap<String, OnnxTensor> = HashMap()
         decoderInput[KEY_LATENT_SAMPLE] = tensor.tensor
-        val value: Any = decoder.decode(decoderInput.toMap())
-        return decoder.convertToImage(
+        val value: Any = decoder!!.decode(decoderInput.toMap())
+        return decoder!!.convertToImage(
             value as Array3D<FloatArray>,
             width,
             height,
@@ -234,8 +234,9 @@ internal class UNet(
 
     fun close() {
         session?.close()
-        decoder.close()
+        decoder?.close()
         session = null
+        decoder = null
     }
 
     fun setCallback(callback: Callback?) {

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="tag_steps" translatable="false">Steps: %1$s</string>
+    <string name="tag_cfg" translatable="false">CFG: %1$s</string>
+    <string name="tag_denoising" translatable="false">Denoising: %1$s</string>
+
+    <string name="empty">Empty</string>
+    <string name="language">English</string>
+    <string name="locale">en</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="retry">Retry</string>
+    <string name="delete">Delete</string>
+    <string name="download">Download</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
+    <string name="browse">Browse</string>
+    <string name="apply">Apply</string>
+    <string name="close">Close</string>
+    <string name="next">Next</string>
+
+    <string name="version">Version %1$s</string>
+
+    <string name="splash_status_initializing">Initializing…</string>
+    <string name="splash_status_fetching">Fetching data…</string>
+    <string name="splash_status_launching">Launching application!</string>
+
+    <string name="local_no_img2img_support_title">Not available</string>
+    <string name="local_no_img2img_support_sub_title">Image to Image mode is not available in case you are using your local phone resources to generate images.</string>
+    <string name="local_no_img2img_support_sub_title_2">You can switch to server based generation in Configuration settings to use Image to Image mode.</string>
+
+    <string name="dalle_no_img2img_support_sub_title">Image to Image mode is not yet supported by DALL·E.</string>
+    <string name="dalle_no_img2img_support_sub_title_2">You can switch to any another server based generation in Configuration settings to use Image to Image mode.</string>
+
+    <string name="action_generate">Imagine</string>
+    <string name="action_export">Export</string>
+    <string name="action_delete_image">Delete image</string>
+    <string name="action_select">Select</string>
+    <string name="action_connect">Connect</string>
+    <string name="action_setup">Setup</string>
+    <string name="action_share_prompt">Share</string>
+    <string name="action_send_to_txt2img">Use in txt2img</string>
+    <string name="action_send_to_img2img">Use in img2img</string>
+    <string name="action_close">Close</string>
+    <string name="action_save">Save</string>
+    <string name="action_update">Update</string>
+    <string name="action_skip">Skip</string>
+    <string name="action_undo">Undo</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_options_show">Show advanced options</string>
+    <string name="action_options_hide">Hide advanced options</string>
+    <string name="action_image_picker_gallery">Choose photo</string>
+    <string name="action_image_picker_camera">Take new photo</string>
+    <string name="action_image_picker_random">Random image</string>
+    <string name="action_change_configuration">Change configuration</string>
+
+    <string name="srv_step_1">Set provider</string>
+    <string name="srv_step_2">Configure</string>
+
+    <string name="srv_type_own" translatable="false">Automatic 1111</string>
+    <string name="srv_type_own_short" translatable="false">A1111</string>
+    <string name="srv_type_horde" translatable="false">Horde AI Cloud</string>
+    <string name="srv_type_horde_short" translatable="false">Horde</string>
+    <string name="srv_type_local" translatable="false">Local Diffusion (Beta)</string>
+    <string name="srv_type_local_short" translatable="false">Local</string>
+    <string name="srv_type_hugging_face" translatable="false">Hugging Face Inference</string>
+    <string name="srv_type_hugging_face_short" translatable="false">HuggingFace</string>
+    <string name="srv_type_open_ai" translatable="false">Open AI</string>
+    <string name="srv_type_stability_ai" translatable="false">Stability AI</string>
+    <string name="srv_type_swarm_ui" translatable="false">Swarm UI</string>
+
+    <string name="hint_prompt">Prompt</string>
+    <string name="hint_prompt_negative">Negative prompt</string>
+    <string name="hint_sampling_steps">Sampling steps: %1$s</string>
+    <string name="hint_batch">Batch: %1$s</string>
+    <string name="hint_batch_tag">Batch</string>
+    <string name="hint_multiple_models">Multiple Models</string>
+    <string name="hint_offline_generation">Offline generation</string>
+    <string name="hint_own_server">Own Server</string>
+    <string name="hint_cfg_scale">CFG Scale: %1$s</string>
+    <string name="hint_sampler">Sampling method</string>
+    <string name="hint_style_preset">Style preset</string>
+    <string name="hint_clip_guidance_preset">Clip guidance preset</string>
+    <string name="hint_restore_faces">Restore faces</string>
+    <string name="hint_seed">Seed</string>
+    <string name="hint_sub_seed">Variation seed</string>
+    <string name="hint_nsfw">Allow NSFW</string>
+    <string name="hint_sub_seed_strength">Variation strength: %1$s</string>
+    <string name="hint_denoising_strength">Denoising Strength: %1$s</string>
+    <string name="hint_server_url">Server URL</string>
+    <string name="hint_sd_model">SD Model</string>
+    <string name="hint_login">Login</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_model_open_ai">Open AI model</string>
+    <string name="hint_image_size">Image size</string>
+    <string name="hint_quality">Quality</string>
+    <string name="hint_style">Style</string>
+    <string name="hint_tag">Tag</string>
+    <string name="hint_hypernet" translatable="false">Nypernetwork</string>
+    <string name="hint_value">Value</string>
+    <string name="hint_mask_blur">Mask blur: %1$s</string>
+    <string name="hint_only_masked_padding">Only masked padding: %1$s px</string>
+    <string name="hint_mask_mode">Mask mode</string>
+    <string name="hint_mask_content">Masked content</string>
+    <string name="hint_in_paint_area">Inpaint area</string>
+    <string name="hint_autodetect">Detect automatically</string>
+
+    <string name="auth_title">Authorization</string>
+    <string name="auth_anonymous">Anonymous</string>
+    <string name="auth_http_basic">HTTP Basic</string>
+
+    <string name="hint_server_setup_title">Provide your Stable Diffusion WebUI URL</string>
+    <string name="hint_server_setup_sub_title">A web interface for Stable Diffusion, implemented using Gradio library.</string>
+    <string name="hint_valid_urls">Here are the examples of server URLs:\n• http://192.168.0.2:%1$s\n• http://yourdomain.com:%1$s\n• https://yourdomain.com</string>
+    <string name="hint_demo_mode">This mode allows you to test the application behavior, even if you don\'t have Stable Diffusion WebUI server.\n\nIn demo mode app ignores user prompt, does not use AI server, and returns some mock images.</string>
+    <string name="hint_args_warning" tools:ignore="TypographyDashes,Typos">Before connecting ensure that:\n• you are running AUTOMATIC1111 WebUI with flags --api --listen\n• your firewall is not blocking 7860 port\n• phone is on the same WiFi with your PC</string>
+    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes,Typos">Before connecting ensure that:\n• your firewall is not blocking 7801 port\n• phone is on the same WiFi with your PC</string>
+
+    <string name="hint_server_horde_title">Connect to Horde AI cloud</string>
+    <string name="hint_server_horde_sub_title">Horde AI is a crowdsourced distributed cluster of Image generation workers and text generation workers.</string>
+    <string name="hint_server_horde_usage">You can use default API Key to connect anonymously. However anonymous accounts have the lowest priority when there\'s too many concurrent requests.</string>
+    <string name="hint_server_horde_api_key">API Key</string>
+    <string name="hint_server_horde_use_default_api_key">Use default API key</string>
+    <string name="hint_server_horde_about">About Horde AI</string>
+    <string name="hint_server_horde_get_api_key">Get your API Key</string>
+
+    <string name="hint_hugging_face_title">Connect to Hugging Face</string>
+    <string name="hint_hugging_face_sub_title">Hugging Face inference cloud provides a service that allows to test and evaluate publicly accessible machine learning models, or your own private models, for free.</string>
+    <string name="hint_hugging_face_about">About Hugging Face</string>
+    <string name="hint_hugging_face_model">Hugging Face model</string>
+
+    <string name="hint_open_ai_title">Connect to Open AI</string>
+    <string name="hint_open_ai_sub_title">Open AI service allows to generate images with DALL·E models.</string>
+    <string name="hint_open_ai_about">About Open AI</string>
+
+    <string name="hint_stability_ai_title">Connect to Stability AI</string>
+    <string name="hint_stability_ai_sub_title">StabilityAI is the image generation service provided by DreamStudio.</string>
+    <string name="hint_stability_ai_about">About Stability AI</string>
+    <string name="hint_stability_ai_engine">Stability AI Engine</string>
+
+    <string name="hint_swarm_ui_title">Provide your Swarm UI URL</string>
+    <string name="hint_swarm_ui_sub_title">A Modular Stable Diffusion Web-User-Interface, with an emphasis on making tools easily accessible, high performance, and extensibility.</string>
+
+    <string name="hint_local_diffusion_title" translatable="false">Local Diffusion</string>
+    <string name="hint_local_diffusion_sub_title">This configuration allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud. </string>
+    <string name="hint_local_diffusion_warning">Warning! Local Diffusion functionality is in beta-test. Don\'t expect for high quality images using local mode. \n\nThis implementation may not work well on non-powerful phones. Generation performance and speed depends on your phone resources (CPU, RAM) and the size of generated image (the smaller the image size, the faster the generation).</string>
+
+    <string name="drawer_web_ui">Web UI</string>
+
+    <string name="home_tab_txt_to_img">Txt2Img</string>
+    <string name="home_tab_img_to_img">Img2Img</string>
+    <string name="home_tab_gallery">Gallery</string>
+    <string name="home_tab_settings">Settings</string>
+
+    <string name="gallery_tab_image">Image</string>
+    <string name="gallery_tab_original">Original</string>
+    <string name="gallery_tab_info">Info</string>
+
+    <string name="title_text_to_image">Text to Image</string>
+    <string name="title_image_to_image">Image to Image</string>
+    <string name="title_gallery">Gallery</string>
+    <string name="title_gallery_details">Details</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_server_setup">Configuration</string>
+    <string name="title_select_sd_model">Select SD ML Model</string>
+    <string name="title_clear_app_cache">Clear app cache</string>
+    <string name="title_debug_menu">Debug Menu</string>
+    <string name="title_lora">LoRA</string>
+    <string name="title_hyper_net" translatable="false">Hypernetworks</string>
+    <string name="title_hyper_net_short" translatable="false">H-Net</string>
+    <string name="title_txt_inversion">Textual Inversion</string>
+    <string name="title_txt_inversion_short">Inversion</string>
+    <string name="title_tag_edit">Edit tag</string>
+
+    <string name="gallery_media_store_banner">You have %1$s photos saved in Download/SDAI</string>
+    <string name="gallery_info_field_date">Created</string>
+    <string name="gallery_info_field_type">Type</string>
+    <string name="gallery_info_field_prompt">Prompt</string>
+    <string name="gallery_info_field_negative_prompt">Negative prompt</string>
+    <string name="gallery_info_field_size">Size</string>
+    <string name="gallery_info_field_sampling_steps">Sampling steps</string>
+    <string name="gallery_info_field_cfg">CFG Scale</string>
+    <string name="gallery_info_field_restore_faces">Restore faces</string>
+    <string name="gallery_info_field_sampler">Sampling method</string>
+    <string name="gallery_info_field_seed">Seed</string>
+    <string name="gallery_info_field_sub_seed">Variation seed</string>
+    <string name="gallery_info_field_sub_seed_strength">Variation strength</string>
+    <string name="gallery_info_field_denoising_strength">Denoising strength</string>
+
+    <string name="gallery_menu_unselect_all">Unselect all</string>
+    <string name="gallery_menu_selected">Selected images: %1$s</string>
+    <string name="gallery_menu_delete_all">Delete all</string>
+    <string name="gallery_menu_export_all">Export all</string>
+    <string name="gallery_menu_selection_mode">Selection mode</string>
+
+    <string name="settings_header_server">AI settings</string>
+    <string name="settings_header_app">App settings</string>
+    <string name="settings_header_info">Info</string>
+    <string name="settings_header_look_and_feel">Look and feel</string>
+
+    <string name="settings_item_config">Configuration</string>
+    <string name="settings_item_sd_model">SD Model</string>
+    <string name="settings_item_stability_ai_credits">Stability AI Credits</string>
+    <string name="settings_item_local_nnapi">Use NNAPI (Beta)*</string>
+    <string name="settings_item_local_nnapi_warning">*NNAPI may not work stable, if you experience errors, crashes or bad performance disable this.</string>
+
+    <string name="settings_item_language">Language</string>
+    <string name="settings_item_demo">Demo mode</string>
+    <string name="settings_item_monitor_connection">Monitor connection</string>
+    <string name="settings_item_background_generation">Background generation (Beta)*</string>
+    <string name="settings_item_background_generation_warning">*Background generation may not work stable with Local Diffusion, please ensure that Local Diffusion works well on your Android device before enabling this.</string>
+    <string name="settings_item_auto_save">Auto save images</string>
+    <string name="settings_item_auto_save_warning">*Images will always be saved to in-app gallery during background generation.</string>
+    <string name="settings_item_auto_save_media_store">Save to Downloads</string>
+    <string name="settings_item_tagged_input">Tagged input</string>
+    <string name="settings_item_advanced_form_default">Always show advanced options</string>
+    <string name="settings_item_clear_cache">Clear app &amp; gallery cache</string>
+
+    <string name="settings_item_lf_lang">Language</string>
+    <string name="settings_item_lf_dynamic_colors">Dynamic colors</string>
+    <string name="settings_item_lf_system_dark_theme">System dark theme</string>
+    <string name="settings_item_lf_dark_theme">Dark theme</string>
+    <string name="settings_item_lf_dark_theme_color">Background color</string>
+    <string name="settings_item_lf_accent_color">Accent color</string>
+
+    <string name="settings_item_report_problem">Report a problem</string>
+    <string name="settings_item_policy">Privacy and legal policy</string>
+    <string name="settings_item_instructions">Server setup instructions</string>
+    <string name="settings_item_donate">Donate</string>
+    <string name="settings_item_source">Get source code</string>
+
+    <string name="communicating_progress_title">Hang tight, communicating with server…</string>
+    <string name="communicating_progress_sub_title">This could take some time</string>
+    <string name="communicating_random_image_title">Fetching random image…</string>
+    <string name="communicating_local_title">Running Local Diffusion generation</string>
+    <string name="communicating_wait_time">Wait time: %1$s</string>
+    <string name="communicating_status_queue">Position in queue: %1$s</string>
+    <string name="communicating_status_steps">Processing step: %1$s/%2$s</string>
+
+    <string name="exporting_progress_title">Exporting your gallery…</string>
+    <string name="exporting_progress_sub_title">It can take some time, depending on photos amount</string>
+
+    <string name="interaction_export_title">Gallery Export</string>
+    <string name="interaction_export_sub_title">This will export all the gallery images as *.zip archive. This process may be long if you have many images, would you like to proceed?</string>
+    <string name="interaction_export_sub_title_selection">This will export selected gallery images as *.zip archive. Would you like to proceed?</string>
+    <string name="interaction_cache_sub_title">This will reset app settings and delete all the generated images. Do you want to proceed?</string>
+
+    <string name="interaction_warning_title">Warning</string>
+    <string name="interaction_warning_localhost_sub_title">You are trying to connect to localhost (127.0.0.1) server.\n\nIt may not work unless you have ssh tunneling or another port forwarding mechanism set up on your Android device.</string>
+
+    <string name="interaction_delete_generation_title">Delete image</string>
+    <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently delete this image?</string>
+
+    <string name="interaction_delete_all_title">Delete all images</string>
+    <string name="interaction_delete_all_sub_title">Are you sure you want to permanently delete all images?</string>
+
+    <string name="interaction_delete_selection_title">Delete images</string>
+    <string name="interaction_delete_selection_sub_title">Are you sure you want to permanently delete selected images?</string>
+
+    <string name="interaction_delete_local_model_title">Delete model</string>
+    <string name="interaction_delete_local_model_sub_title">Are you sure you want to delete model "%1$s"?</string>
+
+    <string name="interaction_in_paint_clear_title">Clear drawings</string>
+    <string name="interaction_in_paint_clear_sub_title">Are you sure you want to clear drawings?</string>
+
+    <string name="interaction_background_scheduled_title">Background generation scheduled</string>
+    <string name="interaction_background_scheduled_sub_title">The task for background AI generation has been created.\n\nIn some cases, Android may start background work with a delay.\n\nYou will receive push notifications about the start, progress and completion of generation.</string>
+
+    <string name="interaction_background_running_title">Background generation running</string>
+    <string name="interaction_background_running_sub_title">Currently you already have a generation running in background, please wait until it\'s finished.</string>
+
+    <string name="gallery_empty_title">There is nothing here yet…</string>
+    <string name="gallery_empty_sub_title">Try to generate something, and you will see your image here!</string>
+
+    <string name="status_connected">⚡️ Connected</string>
+    <string name="status_disconnected">️❌ Disconnected</string>
+    <string name="status_communicating">️Communicating…</string>
+
+    <string name="error_title">Error</string>
+    <string name="error_empty">Field can\'t be empty</string>
+    <string name="error_empty_url">Server URL should not be empty</string>
+    <string name="error_empty_field">Field should not be empty</string>
+    <string name="error_invalid">Invalid input</string>
+    <string name="error_invalid_scheme">Server URL should start with <b>http://</b> or <b>https://</b></string>
+    <string name="error_invalid_port">Port should be in range from 0 to 65535</string>
+    <string name="error_invalid_url">Invalid Server URL</string>
+    <string name="error_localhost_url">You can not use localhost (127.0.0.1) URL to connect to server.</string>
+    <string name="error_min_size">Minimum size is %1$s</string>
+    <string name="error_max_size">Maximum size is %1$s</string>
+    <string name="error_download_fail">Download failed</string>
+    <string name="error_generic">Something wrong happened while processing your request, please try again later.</string>
+
+    <string name="notification_pending_title">Generation pending…</string>
+
+    <string name="notification_started_title">Background generation started!</string>
+
+    <string name="notification_running_title">Generation running…</string>
+    <string name="notification_running_sub_title">Please wait until generation is complete.</string>
+
+    <string name="notification_finish_title">Generation complete 🤩</string>
+    <string name="notification_finish_sub_title">Click here to open the application.</string>
+
+    <string name="notification_fail_title">Generation failed 😞</string>
+    <string name="notification_fail_sub_title">Click here to open the application.</string>
+
+    <string name="model_local_diffusion" translatable="false">Local Diffusion</string>
+
+    <string name="model_local_custom_switch">Load custom model</string>
+    <string name="model_local_permission_title">To be able to load custom model, you need to allow SDAI app manage storage permissions, because starting from Android 11 it is needed to access non-scoped storage files.</string>
+    <string name="model_local_permission_button">Setup permission</string>
+
+    <string name="model_local_custom_title">To use local custom model, place it to local folder in your phone storage: Download/SDAi/model</string>
+    <string name="model_local_custom_sub_title">The final folder structure should be:</string>
+
+    <string name="debug_section_qa">QA actions</string>
+    <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>
+
+    <string name="extras_empty_title">Nothing here…</string>
+    <string name="extras_empty_sub_title_lora">Add some content on %1$s server to: \n\n%2$s</string>
+    <string name="extras_empty_sub_title_hypernet">Add some content on %1$s server to: \n\n%2$s</string>
+    <string name="extras_empty_sub_title_embedding">Add some content on %1$s server to: \n\n.%2$s</string>
+
+    <string name="in_paint_title" translatable="false">Inpaint</string>
+    <string name="in_paint_tab_1">Draw</string>
+    <string name="in_paint_tab_2">Adjust</string>
+
+    <string name="in_paint_mode_masked">Inpaint masked</string>
+    <string name="in_paint_mode_not_masked">Inpaint not masked</string>
+
+    <string name="in_paint_mask_content_fill">Fill</string>
+    <string name="in_paint_mask_content_original">Original</string>
+    <string name="in_paint_mask_content_latent_noise">Latent noise</string>
+    <string name="in_paint_mask_content_latent_nothing">Latent nothing</string>
+
+    <string name="in_paint_area_whole">Whole picture</string>
+    <string name="in_paint_area_only_masked">Only masked</string>
+
+    <string name="donate_title_thanks">Thanks to this amazing people for the support ❤</string>
+    <string name="donate_bs_title">SDAI is an Android application that:</string>
+    <string name="donate_bs_sub_title">• Brings you power of creating images with Stable Diffusion AI;\n• Gives you freedom to choose your generation provider;\n• Has no ADs, telemetry and does not spy on you;\n• Is an open source software;\n• You are welcome to use it for free.</string>
+    <string name="donate_bs_ending">In case you find this software valuable, and you\'d like to say thanks and show a little support, here is the button below.</string>
+
+    <string name="permission_storage">Storage</string>
+    <string name="permission_notifications">Notifications</string>
+
+    <string name="premission_rationale_title">Missing permissions.</string>
+    <string name="premission_rationale_sub_title">Please allow %1$s permission in application settings.</string>
+</resources>

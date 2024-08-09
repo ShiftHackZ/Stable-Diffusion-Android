@@ -294,13 +294,13 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
     }
 
     @Test
-    fun `given received UpdateFlag SaveToMediaStore intent with true value, app running on Android SDK 26, expected oldImpl() called, RequestStoragePermission effect delivered to effect collector`() {
+    fun `given received UpdateFlag SaveToMediaStore intent with true value, app running on Android SDK 26, expected oldImpl() called, RequestPermission Storage effect delivered to effect collector`() {
         mockSdkInt(Build.VERSION_CODES.O)
 
         viewModel.processIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(true))
 
         runTest {
-            val expected = SettingsEffect.RequestStoragePermission
+            val expected = SettingsEffect.RequestPermission.Storage
             val actual = viewModel.effect.firstOrNull()
             Assert.assertEquals(expected, actual)
         }
@@ -332,7 +332,7 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
             stubPreferenceManager::saveToMediaStore.set(any())
         } returns Unit
 
-        viewModel.processIntent(SettingsIntent.StoragePermissionGranted)
+        viewModel.processIntent(SettingsIntent.Permission.Storage(true))
 
         verify {
             stubPreferenceManager::saveToMediaStore.set(true)

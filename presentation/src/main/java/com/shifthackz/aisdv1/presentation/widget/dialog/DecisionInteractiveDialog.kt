@@ -12,14 +12,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
-import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun DecisionInteractiveDialog(
     title: UiText,
     text: UiText,
-    @StringRes confirmActionResId: Int = R.string.ok,
-    @StringRes dismissActionResId: Int = R.string.cancel,
+    @StringRes confirmActionResId: Int = LocalizationR.string.ok,
+    @StringRes dismissActionResId: Int = LocalizationR.string.cancel,
     onConfirmAction: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
     content: @Composable () -> Unit = {},

@@ -179,6 +179,34 @@ class GenerationResultRepositoryImplTest {
     }
 
     @Test
+    fun `given attempt to delete by id list, local delete success, expected complete value`() {
+        every {
+            stubLocalDataSource.deleteByIdList(any())
+        } returns Completable.complete()
+
+        repository
+            .deleteByIdList(listOf(5598L, 151297L))
+            .test()
+            .assertNoErrors()
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to delete by id list, local delete fails, expected error value`() {
+        every {
+            stubLocalDataSource.deleteByIdList(any())
+        } returns Completable.error(stubException)
+
+        repository
+            .deleteByIdList(listOf(5598L, 151297L))
+            .test()
+            .assertError(stubException)
+            .await()
+            .assertNotComplete()
+    }
+
+    @Test
     fun `given attempt to delete by id, local delete success, expected complete value`() {
         every {
             stubLocalDataSource.deleteById(any())

@@ -25,9 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import org.koin.androidx.compose.koinViewModel
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun DebugMenuScreen() {
@@ -52,7 +52,7 @@ private fun ScreenContent(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.title_debug_menu),
+                        text = stringResource(id = LocalizationR.string.title_debug_menu),
                         style = MaterialTheme.typography.headlineMedium,
                     )
                 },
@@ -83,13 +83,13 @@ private fun ScreenContent(
 
             Text(
                 modifier = headerModifier,
-                text = stringResource(id = R.string.debug_section_qa),
+                text = stringResource(id = LocalizationR.string.debug_section_qa),
                 style = MaterialTheme.typography.headlineSmall,
             )
             SettingsItem(
                 modifier = itemModifier,
                 startIcon = Icons.Default.SettingsEthernet,
-                text = R.string.debug_action_bad_base64.asUiText(),
+                text = LocalizationR.string.debug_action_bad_base64.asUiText(),
                 onClick = { processIntent(DebugMenuIntent.InsertBadBase64) },
             )
         }

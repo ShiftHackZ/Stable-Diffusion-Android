@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.data.mocks.mockImageToImagePayload
 import com.shifthackz.aisdv1.data.mocks.mockTextToImagePayload
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceGenerationDataSource
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.mockk.every
@@ -22,6 +23,7 @@ class HuggingFaceGenerationRepositoryImplTest {
     private val stubLocalDataSource = mockk<GenerationResultDataSource.Local>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
     private val stubRemoteDataSource = mockk<HuggingFaceGenerationDataSource.Remote>()
+    private val stubBackgroundWorkObserver = mockk<BackgroundWorkObserver>()
 
     private val repository = HuggingFaceGenerationRepositoryImpl(
         mediaStoreGateway = stubMediaStoreGateway,
@@ -29,10 +31,15 @@ class HuggingFaceGenerationRepositoryImplTest {
         localDataSource = stubLocalDataSource,
         preferenceManager = stubPreferenceManager,
         remoteDataSource = stubRemoteDataSource,
+        backgroundWorkObserver = stubBackgroundWorkObserver,
     )
 
     @Before
     fun initialize() {
+        every {
+            stubBackgroundWorkObserver.hasActiveTasks()
+        } returns false
+
         every {
             stubPreferenceManager.autoSaveAiResults
         } returns false

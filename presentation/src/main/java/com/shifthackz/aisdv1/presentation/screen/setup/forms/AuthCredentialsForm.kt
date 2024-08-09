@@ -18,10 +18,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ColumnScope.AuthCredentialsForm(
@@ -31,7 +31,7 @@ fun ColumnScope.AuthCredentialsForm(
 ) {
     DropdownTextField(
         modifier = modifier,
-        label = R.string.auth_title.asUiText(),
+        label = LocalizationR.string.auth_title.asUiText(),
         items = ServerSetupState.AuthType.entries,
         value = state.authType,
         onItemSelected = {
@@ -39,8 +39,8 @@ fun ColumnScope.AuthCredentialsForm(
         },
         displayDelegate = { type ->
             when (type) {
-                ServerSetupState.AuthType.ANONYMOUS -> R.string.auth_anonymous
-                ServerSetupState.AuthType.HTTP_BASIC -> R.string.auth_http_basic
+                ServerSetupState.AuthType.ANONYMOUS -> LocalizationR.string.auth_anonymous
+                ServerSetupState.AuthType.HTTP_BASIC -> LocalizationR.string.auth_http_basic
             }.asUiText()
         }
     )
@@ -52,7 +52,7 @@ fun ColumnScope.AuthCredentialsForm(
                 onValueChange = {
                     processIntent(ServerSetupIntent.UpdateLogin(it))
                 },
-                label = { Text(stringResource(id = R.string.hint_login)) },
+                label = { Text(stringResource(id = LocalizationR.string.hint_login)) },
                 isError = state.loginValidationError != null,
                 supportingText = state.loginValidationError?.let {
                     { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
@@ -65,7 +65,7 @@ fun ColumnScope.AuthCredentialsForm(
                 onValueChange = {
                     processIntent(ServerSetupIntent.UpdatePassword(it))
                 },
-                label = { Text(stringResource(id = R.string.hint_password)) },
+                label = { Text(stringResource(id = LocalizationR.string.hint_password)) },
                 isError = state.passwordValidationError != null,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 visualTransformation = if (state.passwordVisible) {

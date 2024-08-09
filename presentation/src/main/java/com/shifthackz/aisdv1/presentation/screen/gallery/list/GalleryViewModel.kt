@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.list
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -11,6 +12,8 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCase
+import com.shifthackz.aisdv1.domain.entity.BackgroundWorkResult
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.model.Modal
@@ -24,6 +27,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GalleryViewModel(
     getMediaStoreInfoUseCase: GetMediaStoreInfoUseCase,
+    backgroundWorkObserver: BackgroundWorkObserver,
     private val deleteAllGalleryUseCase: DeleteAllGalleryUseCase,
     private val deleteGalleryItemsUseCase: DeleteGalleryItemsUseCase,
     private val getGenerationResultPagedUseCase: GetGenerationResultPagedUseCase,
@@ -61,6 +65,13 @@ class GalleryViewModel(
             .subscribeBy(::errorLog) { info ->
                 updateState { it.copy(mediaStoreInfo = info) }
             }
+
+        !backgroundWorkObserver
+            .observeResult()
+            .ofType(BackgroundWorkResult.Success::class.java)
+            .map { GalleryEffect.Refresh }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog, EmptyLambda, ::emitEffect)
     }
 
     override fun processIntent(intent: GalleryIntent) {

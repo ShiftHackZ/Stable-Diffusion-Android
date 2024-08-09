@@ -8,10 +8,11 @@ import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.extensions.mapToUi
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.android.core.mvi.MviState
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
+import com.shifthackz.aisdv1.presentation.R as PresentationR
 
 sealed interface GalleryDetailState : MviState {
     val tabs: List<Tab>
@@ -63,9 +64,9 @@ sealed interface GalleryDetailState : MviState {
         @StringRes val label: Int,
         @DrawableRes val iconRes: Int,
     ) {
-        IMAGE(R.string.gallery_tab_image, R.drawable.ic_image),
-        ORIGINAL(R.string.gallery_tab_original, R.drawable.ic_image),
-        INFO(R.string.gallery_tab_info, R.drawable.ic_text);
+        IMAGE(LocalizationR.string.gallery_tab_image, PresentationR.drawable.ic_image),
+        ORIGINAL(LocalizationR.string.gallery_tab_original, PresentationR.drawable.ic_image),
+        INFO(LocalizationR.string.gallery_tab_info, PresentationR.drawable.ic_text);
 
         companion object {
             fun consume(type: AiGenerationResult.Type): List<Tab> = when (type) {

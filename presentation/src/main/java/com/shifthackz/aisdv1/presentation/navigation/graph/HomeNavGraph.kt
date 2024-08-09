@@ -11,7 +11,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.NavItem
 import com.shifthackz.aisdv1.presentation.navigation.router.home.HomeRouter
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryScreen
@@ -21,6 +20,8 @@ import com.shifthackz.aisdv1.presentation.screen.settings.SettingsScreen
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreen
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import org.koin.compose.koinInject
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
+import com.shifthackz.aisdv1.presentation.R as PresentationR
 
 fun NavGraphBuilder.homeScreenNavGraph(route: String = Constants.ROUTE_HOME) {
     addDestination(
@@ -38,10 +39,10 @@ fun NavGraphBuilder.homeScreenNavGraph(route: String = Constants.ROUTE_HOME) {
 }
 
 fun txt2ImgTab() = NavItem(
-    name = R.string.home_tab_txt_to_img.asUiText(),
+    name = LocalizationR.string.home_tab_txt_to_img.asUiText(),
     route = Constants.ROUTE_TXT_TO_IMG,
     icon = NavItem.Icon.Resource(
-        resId = R.drawable.ic_text,
+        resId = PresentationR.drawable.ic_text,
         modifier = Modifier.size(24.dp),
     ),
     content = {
@@ -52,10 +53,10 @@ fun txt2ImgTab() = NavItem(
 )
 
 fun img2imgTab() = NavItem(
-    name = R.string.home_tab_img_to_img.asUiText(),
+    name = LocalizationR.string.home_tab_img_to_img.asUiText(),
     route = Constants.ROUTE_IMG_TO_IMG,
     icon = NavItem.Icon.Resource(
-        resId = R.drawable.ic_image,
+        resId = PresentationR.drawable.ic_image,
         modifier = Modifier.size(24.dp),
     ),
     content = {
@@ -66,10 +67,10 @@ fun img2imgTab() = NavItem(
 )
 
 fun galleryTab() = NavItem(
-    name = R.string.home_tab_gallery.asUiText(),
+    name = LocalizationR.string.home_tab_gallery.asUiText(),
     route = Constants.ROUTE_GALLERY,
     icon = NavItem.Icon.Resource(
-        resId = R.drawable.ic_gallery,
+        resId = PresentationR.drawable.ic_gallery,
         modifier = Modifier.size(24.dp),
     ),
     content = {
@@ -80,7 +81,7 @@ fun galleryTab() = NavItem(
 )
 
 fun settingsTab() = NavItem(
-    name = R.string.home_tab_settings.asUiText(),
+    name = LocalizationR.string.home_tab_settings.asUiText(),
     route = Constants.ROUTE_SETTINGS,
     icon = NavItem.Icon.Vector(
         vector = Icons.Default.Settings,

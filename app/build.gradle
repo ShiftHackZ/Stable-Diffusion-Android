@@ -90,6 +90,7 @@ android {
 dependencies {
     implementation project(":core:common")
     implementation project(":core:imageprocessing")
+    implementation project(":core:notification")
     implementation project(":core:validation")
     implementation project(":presentation")
     implementation project(":network")
@@ -97,6 +98,7 @@ dependencies {
     implementation project(":domain")
     implementation project(":feature:auth")
     implementation project(":feature:diffusion")
+    implementation project(":feature:work")
     implementation project(":data")
     implementation project(":demo")
     implementation di.koinCore
@@ -107,6 +109,7 @@ dependencies {
     implementation log.timber
     implementation ui.catppuccinSplashscreen
     implementation ui.catppuccinLegacy
+    implementation androidx.workManager
 }
 
 kapt {

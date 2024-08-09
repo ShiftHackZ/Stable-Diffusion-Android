@@ -90,9 +90,11 @@ import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.utils.Constants
+import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import kotlin.random.Random
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun GalleryScreen() {
@@ -155,182 +157,189 @@ private fun ScreenContent(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                CenterAlignedTopAppBar(
-                    navigationIcon = {
-                        AnimatedContent(
-                            targetState = state.selectionMode,
-                            transitionSpec = { fadeIn() togetherWith fadeOut() },
-                            label = "main_nav_icon_animation",
-                        ) { isInSelectionMode ->
-                            IconButton(
-                                onClick = {
-                                    val intent = if (isInSelectionMode) {
-                                        GalleryIntent.ChangeSelectionMode(false)
-                                    } else {
-                                        GalleryIntent.Drawer(DrawerIntent.Open)
-                                    }
-                                    processIntent(intent)
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = if (isInSelectionMode) {
-                                        Icons.Default.Close
-                                    } else {
-                                        Icons.Default.Menu
+                Column {
+                    CenterAlignedTopAppBar(
+                        navigationIcon = {
+                            AnimatedContent(
+                                targetState = state.selectionMode,
+                                transitionSpec = { fadeIn() togetherWith fadeOut() },
+                                label = "main_nav_icon_animation",
+                            ) { isInSelectionMode ->
+                                IconButton(
+                                    onClick = {
+                                        val intent = if (isInSelectionMode) {
+                                            GalleryIntent.ChangeSelectionMode(false)
+                                        } else {
+                                            GalleryIntent.Drawer(DrawerIntent.Open)
+                                        }
+                                        processIntent(intent)
                                     },
-                                    contentDescription = if (isInSelectionMode) "Close" else "Menu",
-                                )
-                            }
-                        }
-                    },
-                    title = {
-                        Text(
-                            text = stringResource(id = R.string.title_gallery),
-                            style = MaterialTheme.typography.headlineMedium,
-                        )
-                    },
-                    actions = {
-                        AnimatedContent(
-                            targetState = state.selectionMode,
-                            transitionSpec = { fadeIn() togetherWith fadeOut() },
-                            label = "action_nav_icon_animation",
-                        ) { isInSelectionMode ->
-                            if (isInSelectionMode) {
-                                AnimatedVisibility(
-                                    visible = state.selection.isNotEmpty(),
-                                    enter = fadeIn(),
-                                    exit = fadeOut(),
                                 ) {
-                                    Row {
+                                    Icon(
+                                        imageVector = if (isInSelectionMode) {
+                                            Icons.Default.Close
+                                        } else {
+                                            Icons.Default.Menu
+                                        },
+                                        contentDescription = if (isInSelectionMode) "Close" else "Menu",
+                                    )
+                                }
+                            }
+                        },
+                        title = {
+                            Text(
+                                text = stringResource(id = LocalizationR.string.title_gallery),
+                                style = MaterialTheme.typography.headlineMedium,
+                            )
+                        },
+                        actions = {
+                            AnimatedContent(
+                                targetState = state.selectionMode,
+                                transitionSpec = { fadeIn() togetherWith fadeOut() },
+                                label = "action_nav_icon_animation",
+                            ) { isInSelectionMode ->
+                                if (isInSelectionMode) {
+                                    AnimatedVisibility(
+                                        visible = state.selection.isNotEmpty(),
+                                        enter = fadeIn(),
+                                        exit = fadeOut(),
+                                    ) {
+                                        Row {
+                                            IconButton(
+                                                onClick = {
+                                                    processIntent(GalleryIntent.Delete.Selection.Request)
+                                                },
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Delete,
+                                                    contentDescription = "Delete",
+                                                )
+                                            }
+                                            IconButton(
+                                                onClick = {
+                                                    processIntent(GalleryIntent.Export.Selection.Request)
+                                                },
+                                            ) {
+                                                Image(
+                                                    modifier = Modifier.size(24.dp),
+                                                    painter = painterResource(id = R.drawable.ic_share),
+                                                    contentDescription = "Export",
+                                                    colorFilter = ColorFilter.tint(LocalContentColor.current),
+                                                )
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    AnimatedVisibility(
+                                        visible = lazyGalleryItems.itemCount != 0,
+                                        enter = fadeIn(),
+                                        exit = fadeOut(),
+                                    ) {
                                         IconButton(
                                             onClick = {
-                                                processIntent(GalleryIntent.Delete.Selection.Request)
+                                                processIntent(GalleryIntent.Dropdown.Toggle)
                                             },
                                         ) {
                                             Icon(
-                                                imageVector = Icons.Default.Delete,
-                                                contentDescription = "Delete",
+                                                imageVector = Icons.Default.MoreVert,
+                                                contentDescription = "Dropdown",
                                             )
                                         }
-                                        IconButton(
-                                            onClick = {
-                                                processIntent(GalleryIntent.Export.Selection.Request)
-                                            },
-                                        ) {
-                                            Image(
-                                                modifier = Modifier.size(24.dp),
-                                                painter = painterResource(id = R.drawable.ic_share),
-                                                contentDescription = "Export",
-                                                colorFilter = ColorFilter.tint(LocalContentColor.current),
-                                            )
-                                        }
-                                    }
-                                }
-                            } else {
-                                AnimatedVisibility(
-                                    visible = lazyGalleryItems.itemCount != 0,
-                                    enter = fadeIn(),
-                                    exit = fadeOut(),
-                                ) {
-                                    IconButton(
-                                        onClick = {
-                                            processIntent(GalleryIntent.Dropdown.Toggle)
-                                        },
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.MoreVert,
-                                            contentDescription = "Dropdown",
-                                        )
                                     }
                                 }
                             }
-                        }
-                        DropdownMenu(
-                            expanded = state.dropdownMenuShow,
-                            onDismissRequest = { processIntent(GalleryIntent.Dropdown.Close) },
-                        ) {
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Default.Checklist,
-                                        contentDescription = "Dropdown",
-                                        tint = LocalContentColor.current,
-                                    )
-                                },
-                                text = {
-                                    Text(
-                                        text = stringResource(
-                                            id = R.string.gallery_menu_selection_mode,
-                                        ),
-                                    )
-                                },
-                                onClick = {
-                                    processIntent(GalleryIntent.Dropdown.Close)
-                                    processIntent(GalleryIntent.ChangeSelectionMode(true))
-                                },
-                            )
-                            if (state.mediaStoreInfo.isNotEmpty) DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Default.FileOpen,
-                                        contentDescription = "Browse",
-                                        tint = LocalContentColor.current,
-                                    )
-                                },
-                                text = {
-                                    Text(
-                                        text = stringResource(id = R.string.browse)
-                                    )
-                                },
-                                onClick = {
-                                    processIntent(GalleryIntent.Dropdown.Close)
-                                    state.mediaStoreInfo.folderUri?.let {
-                                        processIntent(GalleryIntent.OpenMediaStoreFolder(it))
-                                    }
-                                },
-                            )
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Image(
-                                        modifier = Modifier.size(24.dp),
-                                        painter = painterResource(id = R.drawable.ic_share),
-                                        contentDescription = "Export",
-                                        colorFilter = ColorFilter.tint(LocalContentColor.current),
-                                    )
-                                },
-                                text = {
-                                    Text(
-                                        text = stringResource(id = R.string.gallery_menu_export_all)
-                                    )
-                                },
-                                onClick = {
-                                    processIntent(GalleryIntent.Dropdown.Close)
-                                    processIntent(GalleryIntent.Export.All.Request)
-                                },
-                            )
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Default.Delete,
-                                        contentDescription = "Delete",
-                                    )
-                                },
-                                text = {
-                                    Text(
-                                        text = stringResource(id = R.string.gallery_menu_delete_all),
-                                    )
-                                },
-                                onClick = {
-                                    processIntent(GalleryIntent.Dropdown.Close)
-                                    processIntent(GalleryIntent.Delete.All.Request)
-                                },
-                            )
-                        }
-                    },
-                )
+                            DropdownMenu(
+                                expanded = state.dropdownMenuShow,
+                                onDismissRequest = { processIntent(GalleryIntent.Dropdown.Close) },
+                            ) {
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Default.Checklist,
+                                            contentDescription = "Dropdown",
+                                            tint = LocalContentColor.current,
+                                        )
+                                    },
+                                    text = {
+                                        Text(
+                                            text = stringResource(
+                                                id = LocalizationR.string.gallery_menu_selection_mode,
+                                            ),
+                                        )
+                                    },
+                                    onClick = {
+                                        processIntent(GalleryIntent.Dropdown.Close)
+                                        processIntent(GalleryIntent.ChangeSelectionMode(true))
+                                    },
+                                )
+                                if (state.mediaStoreInfo.isNotEmpty) DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Default.FileOpen,
+                                            contentDescription = "Browse",
+                                            tint = LocalContentColor.current,
+                                        )
+                                    },
+                                    text = {
+                                        Text(
+                                            text = stringResource(id = LocalizationR.string.browse)
+                                        )
+                                    },
+                                    onClick = {
+                                        processIntent(GalleryIntent.Dropdown.Close)
+                                        state.mediaStoreInfo.folderUri?.let {
+                                            processIntent(GalleryIntent.OpenMediaStoreFolder(it))
+                                        }
+                                    },
+                                )
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Image(
+                                            modifier = Modifier.size(24.dp),
+                                            painter = painterResource(id = R.drawable.ic_share),
+                                            contentDescription = "Export",
+                                            colorFilter = ColorFilter.tint(LocalContentColor.current),
+                                        )
+                                    },
+                                    text = {
+                                        Text(
+                                            text = stringResource(id = LocalizationR.string.gallery_menu_export_all)
+                                        )
+                                    },
+                                    onClick = {
+                                        processIntent(GalleryIntent.Dropdown.Close)
+                                        processIntent(GalleryIntent.Export.All.Request)
+                                    },
+                                )
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Default.Delete,
+                                            contentDescription = "Delete",
+                                        )
+                                    },
+                                    text = {
+                                        Text(
+                                            text = stringResource(id = LocalizationR.string.gallery_menu_delete_all),
+                                        )
+                                    },
+                                    onClick = {
+                                        processIntent(GalleryIntent.Dropdown.Close)
+                                        processIntent(GalleryIntent.Delete.All.Request)
+                                    },
+                                )
+                            }
+                        },
+                    )
+                    BackgroundWorkWidget(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .padding(vertical = 4.dp),
+                    )
+                }
             },
             bottomBar = {
-                AnimatedVisibility(
+            AnimatedVisibility(
                     visible = state.selectionMode,
                     enter = fadeIn(),
                     exit = fadeOut(),
@@ -345,7 +354,7 @@ private fun ScreenContent(
                             modifier = Modifier
                                 .padding(start = 16.dp),
                             text = stringResource(
-                                id = R.string.gallery_menu_selected,
+                                id = LocalizationR.string.gallery_menu_selected,
                                 "${state.selection.size}",
                             ),
                             style = MaterialTheme.typography.bodyLarge,
@@ -364,9 +373,9 @@ private fun ScreenContent(
                             },
                         ) {
                             val resId = if (state.selection.isNotEmpty()) {
-                                R.string.gallery_menu_unselect_all
+                                LocalizationR.string.gallery_menu_unselect_all
                             } else {
-                                R.string.cancel
+                                LocalizationR.string.cancel
                             }
                             Text(
                                 text = stringResource(resId).toUpperCase(Locale.current),
@@ -392,7 +401,7 @@ private fun ScreenContent(
                                 .padding(start = 16.dp)
                                 .fillMaxWidth(0.65f),
                             text = stringResource(
-                                id = R.string.gallery_media_store_banner,
+                                id = LocalizationR.string.gallery_media_store_banner,
                                 "${state.mediaStoreInfo.count}",
                             ),
                             style = MaterialTheme.typography.bodyLarge,
@@ -409,7 +418,8 @@ private fun ScreenContent(
                             },
                         ) {
                             Text(
-                                text = stringResource(id = R.string.browse).toUpperCase(Locale.current),
+                                text = stringResource(id = LocalizationR.string.browse)
+                                    .toUpperCase(Locale.current),
                                 color = LocalContentColor.current,
                             )
                         }
@@ -466,6 +476,7 @@ private fun ScreenContent(
                                     },
                                     onLongClick = {
                                         processIntent(GalleryIntent.ChangeSelectionMode(true))
+                                        processIntent(GalleryIntent.ToggleItemSelection(item.id))
                                     },
                                     onClick = {
                                         processIntent(GalleryIntent.OpenItem(it))
@@ -576,7 +587,7 @@ private fun GalleryEmptyState(modifier: Modifier = Modifier) {
     ) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.gallery_empty_title),
+            text = stringResource(id = LocalizationR.string.gallery_empty_title),
             fontSize = 20.sp,
         )
         Text(
@@ -584,7 +595,7 @@ private fun GalleryEmptyState(modifier: Modifier = Modifier) {
                 .padding(top = 16.dp)
                 .padding(horizontal = 16.dp)
                 .align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.gallery_empty_sub_title),
+            text = stringResource(id = LocalizationR.string.gallery_empty_sub_title),
             textAlign = TextAlign.Center,
         )
     }

@@ -69,6 +69,8 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
         wakeLockInterActor = stubWakeLockInterActor,
         inPaintStateProducer = stubInPaintStateProducer,
         mainRouter = stubMainRouter,
+        backgroundWorkObserver = stubBackgroundWorkObserver,
+        backgroundTaskManager = stubBackgroundTaskManager,
     )
 
     @Before
@@ -454,7 +456,9 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
             stubBase64ToBitmapConverter.invoke(any())
         } returns Single.just(Base64ToBitmapConverter.Output(stubBitmap))
 
-        val intent = GenerationMviIntent.UpdateFromGeneration(mockAiGenerationResult)
+        val intent = GenerationMviIntent.UpdateFromGeneration(
+            GenerationFormUpdateEvent.Payload.I2IForm(mockAiGenerationResult, false)
+        )
         viewModel.processIntent(intent)
 
         runTest {

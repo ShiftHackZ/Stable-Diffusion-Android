@@ -2,6 +2,7 @@
 
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,19 +29,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.ui.MviComponent
-import com.shifthackz.aisdv1.presentation.R
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
+import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import org.koin.androidx.compose.koinViewModel
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun TextToImageScreen() {
@@ -64,37 +68,51 @@ private fun ScreenContent(
 ) {
     val promptChipTextFieldState = remember { mutableStateOf(TextFieldValue()) }
     val negativePromptChipTextFieldState = remember { mutableStateOf(TextFieldValue()) }
+    val keyboardController = LocalSoftwareKeyboardController.current
     Box(modifier) {
         Scaffold(
             topBar = {
-                CenterAlignedTopAppBar(
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            processIntent(GenerationMviIntent.Drawer(DrawerIntent.Open))
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "Menu",
+                Column {
+                    CenterAlignedTopAppBar(
+                        navigationIcon = {
+                            IconButton(onClick = {
+                                processIntent(GenerationMviIntent.Drawer(DrawerIntent.Open))
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = "Menu",
+                                )
+                            }
+                        },
+                        title = {
+                            Text(
+                                text = stringResource(id = LocalizationR.string.title_text_to_image),
+                                style = MaterialTheme.typography.headlineMedium,
                             )
-                        }
-                    },
-                    title = {
-                        Text(
-                            text = stringResource(id = R.string.title_text_to_image),
-                            style = MaterialTheme.typography.headlineMedium,
-                        )
-                    },
-                    actions = {
-                        IconButton(onClick = {
-                            processIntent(GenerationMviIntent.SetModal(Modal.PromptBottomSheet))
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = null,
-                            )
-                        }
-                    },
-                )
+                        },
+                        actions = {
+                            IconButton(onClick = {
+                                processIntent(
+                                    GenerationMviIntent.SetModal(
+                                        Modal.PromptBottomSheet(
+                                            AiGenerationResult.Type.TEXT_TO_IMAGE,
+                                        ),
+                                    ),
+                                )
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Edit,
+                                    contentDescription = null,
+                                )
+                            }
+                        },
+                    )
+                    BackgroundWorkWidget(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .padding(vertical = 4.dp),
+                    )
+                }
             },
             content = { paddingValues ->
                 val scrollState = rememberScrollState()
@@ -125,6 +143,7 @@ private fun ScreenContent(
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp),
                         onClick = {
+                            keyboardController?.hide()
                             promptChipTextFieldState.value.text.takeIf(String::isNotBlank)
                                 ?.let { "${state.prompt}, ${it.trim()}" }
                                 ?.let(GenerationMviIntent.Update::Prompt)
@@ -148,7 +167,7 @@ private fun ScreenContent(
                         )
                         Text(
                             modifier = Modifier.padding(start = 8.dp),
-                            text = stringResource(id = R.string.action_generate),
+                            text = stringResource(id = LocalizationR.string.action_generate),
                             color = LocalContentColor.current,
                         )
                     }

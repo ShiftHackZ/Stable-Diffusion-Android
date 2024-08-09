@@ -21,11 +21,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun HordeForm(
@@ -40,14 +40,14 @@ fun HordeForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.hint_server_horde_title),
+            text = stringResource(id = LocalizationR.string.hint_server_horde_title),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
         )
         Text(
             modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.hint_server_horde_sub_title),
+            text = stringResource(id = LocalizationR.string.hint_server_horde_sub_title),
             style = MaterialTheme.typography.bodyMedium,
         )
         TextField(
@@ -58,7 +58,7 @@ fun HordeForm(
             onValueChange = {
                 processIntent(ServerSetupIntent.UpdateHordeApiKey(it))
             },
-            label = { Text(stringResource(id = R.string.hint_server_horde_api_key)) },
+            label = { Text(stringResource(id = LocalizationR.string.hint_server_horde_api_key)) },
             enabled = !state.hordeDefaultApiKey,
             isError = state.hordeApiKeyValidationError != null && !state.hordeDefaultApiKey,
             supportingText = {
@@ -79,7 +79,7 @@ fun HordeForm(
             )
             Text(
                 modifier = Modifier.padding(start = 8.dp),
-                text = stringResource(id = R.string.hint_server_horde_use_default_api_key),
+                text = stringResource(id = LocalizationR.string.hint_server_horde_use_default_api_key),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -89,7 +89,7 @@ fun HordeForm(
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
             startIcon = Icons.AutoMirrored.Filled.Help,
-            text = R.string.hint_server_horde_about.asUiText(),
+            text = LocalizationR.string.hint_server_horde_about.asUiText(),
             onClick = { processIntent(ServerSetupIntent.LaunchUrl.HordeInfo) },
         )
         SettingsItem(
@@ -97,12 +97,12 @@ fun HordeForm(
                 .padding(top = 8.dp)
                 .fillMaxWidth(),
             startIcon = Icons.Default.Api,
-            text = R.string.hint_server_horde_get_api_key.asUiText(),
+            text = LocalizationR.string.hint_server_horde_get_api_key.asUiText(),
             onClick = { processIntent(ServerSetupIntent.LaunchUrl.HordeSignUp) },
         )
         Text(
             modifier = Modifier.padding(bottom = 16.dp, top = 8.dp),
-            text = stringResource(id = R.string.hint_server_horde_usage),
+            text = stringResource(id = LocalizationR.string.hint_server_horde_usage),
             style = MaterialTheme.typography.bodyMedium,
         )
     }

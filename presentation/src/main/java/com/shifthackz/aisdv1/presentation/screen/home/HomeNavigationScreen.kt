@@ -64,25 +64,23 @@ fun HomeNavigationScreen(
     ) { _, processIntent ->
         Scaffold(
             bottomBar = {
-                Column {
-                    NavigationBar {
-                        navItems.forEach { item ->
-                            val selected = item.route == currentRoute
-                            NavigationBarItem(
-                                selected = selected,
-                                label = {
-                                    Text(
-                                        text = item.name.asString(),
-                                        color = LocalContentColor.current,
-                                    )
-                                },
-                                colors = NavigationBarItemDefaults.colors().copy(
-                                    selectedIndicatorColor = MaterialTheme.colorScheme.primary,
-                                ),
-                                icon = { NavigationItemIcon(item.icon) },
-                                onClick = { processIntent(HomeNavigationIntent.Route(item.route)) },
-                            )
-                        }
+                NavigationBar {
+                    navItems.forEach { item ->
+                        val selected = item.route == currentRoute
+                        NavigationBarItem(
+                            selected = selected,
+                            label = {
+                                Text(
+                                    text = item.name.asString(),
+                                    color = LocalContentColor.current,
+                                )
+                            },
+                            colors = NavigationBarItemDefaults.colors().copy(
+                                selectedIndicatorColor = MaterialTheme.colorScheme.primary,
+                            ),
+                            icon = { NavigationItemIcon(item.icon) },
+                            onClick = { processIntent(HomeNavigationIntent.Route(item.route)) },
+                        )
                     }
                 }
             },

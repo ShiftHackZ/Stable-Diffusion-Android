@@ -1,10 +1,13 @@
 package com.shifthackz.aisdv1.presentation.core
 
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
@@ -17,7 +20,6 @@ import com.shifthackz.aisdv1.domain.usecase.wakelock.AcquireWakelockUseCase
 import com.shifthackz.aisdv1.domain.usecase.wakelock.ReleaseWakeLockUseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
-import com.shifthackz.aisdv1.presentation.notification.SdaiPushNotificationManager
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -46,14 +48,17 @@ abstract class CoreGenerationMviViewModelTest<V : GenerationMviViewModel<*, *, *
     protected val stubMainRouter = mockk<MainRouter>()
     protected val stubDrawerRouter = mockk<DrawerRouter>()
     protected val stubDimensionValidator = mockk<DimensionValidator>()
-    protected val stubSdaiPushNotificationManager = mockk<SdaiPushNotificationManager>()
+    protected val stubSdaiPushNotificationManager = mockk<PushNotificationManager>()
 
     protected val stubAcquireWakelockUseCase = mockk<AcquireWakelockUseCase>()
     protected val stubReleaseWakelockUseCase = mockk<ReleaseWakeLockUseCase>()
     protected val stubWakeLockInterActor = mockk<WakeLockInterActor>()
+    protected val stubBackgroundWorkObserver = mockk<BackgroundWorkObserver>()
+    protected val stubBackgroundTaskManager = mockk<BackgroundTaskManager>()
 
     private val stubHordeProcessStatus = BehaviorSubject.create<HordeProcessStatus>()
     private val stubLdStatus = BehaviorSubject.create<LocalDiffusion.Status>()
+
 
     protected val stubCustomSchedulers = object : SchedulersProvider {
         override val io: Scheduler = Schedulers.io()

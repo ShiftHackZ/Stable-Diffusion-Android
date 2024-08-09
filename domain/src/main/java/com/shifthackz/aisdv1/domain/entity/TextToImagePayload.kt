@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.domain.entity
 
+import java.io.Serializable
+
 data class TextToImagePayload(
     val prompt: String,
     val negativePrompt: String,
@@ -19,4 +21,4 @@ data class TextToImagePayload(
     val openAiModel: OpenAiModel?,
     val stabilityAiClipGuidance: StabilityAiClipGuidance?,
     val stabilityAiStylePreset: StabilityAiStylePreset?,
-)
+) : Serializable

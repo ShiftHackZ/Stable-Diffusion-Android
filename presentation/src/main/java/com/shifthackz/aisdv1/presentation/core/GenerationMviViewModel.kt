@@ -8,13 +8,13 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiSampler
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
@@ -35,7 +35,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import java.util.concurrent.TimeUnit
 
 abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviIntent, E : MviEffect>(
-    preferenceManager: PreferenceManager,
+    private val preferenceManager: PreferenceManager,
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
@@ -46,6 +46,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
     private val drawerRouter: DrawerRouter,
     private val dimensionValidator: DimensionValidator,
     private val schedulersProvider: SchedulersProvider,
+    private val backgroundWorkObserver: BackgroundWorkObserver,
 ) : MviRxViewModel<S, I, E>() {
 
     private var generationDisposable: Disposable? = null
@@ -111,7 +112,9 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
             )
     }
 
-    abstract fun generate(): Disposable
+    abstract fun generateDisposable(): Disposable
+
+    abstract fun generateBackground()
 
     open fun onReceivedHordeStatus(status: HordeProcessStatus) {}
 
@@ -244,22 +247,26 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
                 setActiveModal(Modal.None)
             }
 
-            GenerationMviIntent.Generate -> generate { generate() }
+            GenerationMviIntent.Generate -> {
+                if (backgroundWorkObserver.hasActiveTasks()) {
+                    setActiveModal(Modal.Background.Running)
+                } else {
+                    if (preferenceManager.backgroundGeneration) {
+                        generateBackground()
+                        backgroundWorkObserver.refreshStatus()
+                        setActiveModal(Modal.Background.Scheduled)
+                    } else {
+                        generateOnUi { generateDisposable() }
+                    }
+                }
+            }
 
             GenerationMviIntent.Configuration -> mainRouter.navigateToServerSetup(
-                ServerSetupLaunchSource.SETTINGS
+                ServerSetupLaunchSource.SETTINGS,
             )
 
             is GenerationMviIntent.UpdateFromGeneration -> {
-                val payload = when (intent.ai.type) {
-                    AiGenerationResult.Type.TEXT_TO_IMAGE -> {
-                        GenerationFormUpdateEvent.Payload.T2IForm(intent.ai)
-                    }
-                    AiGenerationResult.Type.IMAGE_TO_IMAGE -> {
-                        GenerationFormUpdateEvent.Payload.I2IForm(intent.ai, false)
-                    }
-                }
-                updateFormPreviousAiGeneration(payload)
+                updateFormPreviousAiGeneration(intent.payload)
             }
 
             is GenerationMviIntent.Drawer -> when (intent.intent) {
@@ -309,14 +316,13 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
         randomImageDisposable?.addToDisposable()
     }
 
-    private fun generate(fn: () -> Disposable) {
+    private fun generateOnUi(fn: () -> Disposable) {
         generationDisposable?.dispose()
         generationDisposable = null
         val newDisposable = fn()
         generationDisposable = newDisposable
         generationDisposable?.addToDisposable()
     }
-
 
     private fun updateGenerationState(mutation: (GenerationMviState) -> GenerationMviState) =
         runCatching {

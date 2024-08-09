@@ -81,28 +81,32 @@ internal class MediaStoreGatewayImpl(
     }
 
     override fun getInfo(): MediaStoreInfo {
-        val extVolumeUri: Uri = MediaStore.Files.getContentUri("external")
-        val cursor = context.contentResolver.query(
-            extVolumeUri,
-            arrayOf(MediaStore.MediaColumns.DATA),
-            null,
-            null,
-            null,
-        )
-        if (cursor != null && cursor.count > 0 && cursor.moveToFirst()) {
-            val path = cursor.getString(0)
-            val file = File(path)
-            cursor.close()
-            return file.parentFile
-                ?.takeIf(File::exists)
-                ?.takeIf(File::isDirectory)
-                ?.let { dir ->
-                    val uri = context.uriFromFile(dir, fileProviderDescriptor.providerPath)
-                    MediaStoreInfo(dir.listFiles()?.size ?: 0, uri)
-                }
-                ?: MediaStoreInfo()
+        try {
+            val extVolumeUri: Uri = MediaStore.Files.getContentUri("external")
+            val cursor = context.contentResolver.query(
+                extVolumeUri,
+                arrayOf(MediaStore.MediaColumns.DATA),
+                null,
+                null,
+                null,
+            )
+            if (cursor != null && cursor.count > 0 && cursor.moveToFirst()) {
+                val path = cursor.getString(0)
+                val file = File(path)
+                cursor.close()
+                return file.parentFile
+                    ?.takeIf(File::exists)
+                    ?.takeIf(File::isDirectory)
+                    ?.let { dir ->
+                        val uri = context.uriFromFile(dir, fileProviderDescriptor.providerPath)
+                        MediaStoreInfo(dir.listFiles()?.size ?: 0, uri)
+                    }
+                    ?: MediaStoreInfo()
 
+            }
+            return MediaStoreInfo()
+        } catch (e: Exception) {
+            return MediaStoreInfo()
         }
-        return MediaStoreInfo()
     }
 }

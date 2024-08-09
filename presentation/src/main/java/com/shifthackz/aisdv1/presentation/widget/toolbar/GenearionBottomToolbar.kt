@@ -28,11 +28,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun GenerationBottomToolbar(
@@ -136,7 +136,7 @@ private fun GenerationBottomToolbarBottomLayer(
                     ),
                 )
             },
-            text = stringResource(id = R.string.title_lora),
+            text = stringResource(id = LocalizationR.string.title_lora),
             textAlign = TextAlign.Center,
             color = localColor,
             style = localStyle,
@@ -158,7 +158,7 @@ private fun GenerationBottomToolbarBottomLayer(
                     )
                 )
             },
-            text = stringResource(id = R.string.title_txt_inversion_short),
+            text = stringResource(id = LocalizationR.string.title_txt_inversion_short),
             textAlign = TextAlign.Center,
             color = localColor,
             style = localStyle,
@@ -182,7 +182,7 @@ private fun GenerationBottomToolbarBottomLayer(
                         ),
                     )
                 },
-                text = stringResource(id = R.string.title_hyper_net_short),
+                text = stringResource(id = LocalizationR.string.title_hyper_net_short),
                 textAlign = TextAlign.Center,
                 color = localColor,
                 style = localStyle,

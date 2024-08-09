@@ -51,6 +51,8 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
         preferenceManager = stubPreferenceManager,
         notificationManager = stubSdaiPushNotificationManager,
         wakeLockInterActor = stubWakeLockInterActor,
+        backgroundWorkObserver = stubBackgroundWorkObserver,
+        backgroundTaskManager = stubBackgroundTaskManager,
     )
 
     @Before
@@ -415,6 +417,14 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
     @Test
     fun `given received Generate intent, expected textToImageUseCase() called`() {
         every {
+            stubBackgroundWorkObserver.hasActiveTasks()
+        } returns false
+
+        every {
+            stubPreferenceManager::backgroundGeneration.get()
+        } returns false
+
+        every {
             stubPreferenceManager::autoSaveAiResults.get()
         } returns true
 
@@ -451,7 +461,9 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
 
     @Test
     fun `given received UpdateFromGeneration intent, expected UI state fields are same as intent model`() {
-        val intent = GenerationMviIntent.UpdateFromGeneration(mockAiGenerationResult)
+        val intent = GenerationMviIntent.UpdateFromGeneration(
+            GenerationFormUpdateEvent.Payload.T2IForm(mockAiGenerationResult)
+        )
         viewModel.processIntent(intent)
         runTest {
             val state = viewModel.state.value

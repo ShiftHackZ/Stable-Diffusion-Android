@@ -16,7 +16,7 @@ import com.mr0xf00.easycrop.RectCropShape
 import com.mr0xf00.easycrop.crop
 import com.mr0xf00.easycrop.rememberImageCropper
 import com.mr0xf00.easycrop.ui.ImageCropperDialog
-import com.shifthackz.aisdv1.core.extensions.showToast
+import com.shifthackz.aisdv1.core.common.extensions.showToast
 
 @Composable
 fun CropImageModal(

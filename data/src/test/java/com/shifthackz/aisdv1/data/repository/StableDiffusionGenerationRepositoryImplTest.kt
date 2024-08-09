@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
 import com.shifthackz.aisdv1.domain.demo.ImageToImageDemo
 import com.shifthackz.aisdv1.domain.demo.TextToImageDemo
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.mockk.every
@@ -27,6 +28,7 @@ class StableDiffusionGenerationRepositoryImplTest {
     private val stubPreferenceManager = mockk<PreferenceManager>()
     private val stubTextToImageDemo = mockk<TextToImageDemo>()
     private val stubImageToImageDemo = mockk<ImageToImageDemo>()
+    private val stubBackgroundWorkObserver = mockk<BackgroundWorkObserver>()
 
     private val repository = StableDiffusionGenerationRepositoryImpl(
         mediaStoreGateway = stubMediaStoreGateway,
@@ -36,10 +38,15 @@ class StableDiffusionGenerationRepositoryImplTest {
         preferenceManager = stubPreferenceManager,
         textToImageDemo = stubTextToImageDemo,
         imageToImageDemo = stubImageToImageDemo,
+        backgroundWorkObserver = stubBackgroundWorkObserver,
     )
 
     @Before
     fun initialize() {
+        every {
+            stubBackgroundWorkObserver.hasActiveTasks()
+        } returns false
+
         every {
             stubPreferenceManager.autoSaveAiResults
         } returns false

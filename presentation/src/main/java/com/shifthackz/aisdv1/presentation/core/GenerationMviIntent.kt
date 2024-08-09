@@ -88,7 +88,9 @@ sealed interface GenerationMviIntent : MviIntent {
 
     data object Generate : GenerationMviIntent
 
-    data class UpdateFromGeneration(val ai: AiGenerationResult) : GenerationMviIntent
+    data class UpdateFromGeneration(
+        val payload: GenerationFormUpdateEvent.Payload,
+    ) : GenerationMviIntent
 
     data class Drawer(val intent: DrawerIntent) : GenerationMviIntent
 }

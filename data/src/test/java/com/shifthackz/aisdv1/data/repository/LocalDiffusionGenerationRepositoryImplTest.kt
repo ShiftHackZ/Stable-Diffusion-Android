@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.mockk.every
@@ -37,6 +38,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     private val stubPreferenceManager = mockk<PreferenceManager>()
     private val stubLocalDiffusion = mockk<LocalDiffusion>()
     private val stubDownloadableLocalDataSource = mockk<DownloadableModelDataSource.Local>()
+    private val stubBackgroundWorkObserver = mockk<BackgroundWorkObserver>()
 
     private val stubSchedulersProvider = object : SchedulersProvider {
         override val io: Scheduler = Schedulers.trampoline()
@@ -54,10 +56,15 @@ class LocalDiffusionGenerationRepositoryImplTest {
         downloadableLocalDataSource = stubDownloadableLocalDataSource,
         bitmapToBase64Converter = stubBitmapToBase64Converter,
         schedulersProvider = stubSchedulersProvider,
+        backgroundWorkObserver = stubBackgroundWorkObserver,
     )
 
     @Before
     fun initialize() {
+        every {
+            stubBackgroundWorkObserver.hasActiveTasks()
+        } returns false
+
         every {
             stubLocalDiffusion.observeStatus()
         } returns stubStatus

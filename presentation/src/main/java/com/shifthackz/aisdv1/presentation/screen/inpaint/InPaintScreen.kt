@@ -46,13 +46,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.ui.MviComponent
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.inpaint.components.CapSizeSlider
 import com.shifthackz.aisdv1.presentation.screen.inpaint.forms.ImageDrawForm
 import com.shifthackz.aisdv1.presentation.screen.inpaint.forms.InPaintParamsForm
 import org.koin.androidx.compose.koinViewModel
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun InPaintScreen(
@@ -87,7 +87,7 @@ private fun ScreenContent(
                 CenterAlignedTopAppBar(
                     title = {
                         Text(
-                            text = stringResource(id = R.string.in_paint_title),
+                            text = stringResource(id = LocalizationR.string.in_paint_title),
                         )
                     },
                     navigationIcon = {
@@ -138,7 +138,7 @@ private fun ScreenContent(
                                     )
                                     Text(
                                         modifier = Modifier.padding(horizontal = 8.dp),
-                                        text = stringResource(id = R.string.action_undo),
+                                        text = stringResource(id = LocalizationR.string.action_undo),
                                         color = LocalContentColor.current,
                                     )
                                 }
@@ -154,7 +154,7 @@ private fun ScreenContent(
                                     )
                                     Text(
                                         modifier = Modifier.padding(horizontal = 8.dp),
-                                        text = stringResource(id = R.string.action_clear),
+                                        text = stringResource(id = LocalizationR.string.action_clear),
                                         color = LocalContentColor.current,
                                     )
                                 }
@@ -185,7 +185,7 @@ private fun ScreenContent(
                                     Image(
                                         modifier = Modifier.size(24.dp),
                                         painter = painterResource(tab.iconRes),
-                                        contentDescription = stringResource(id = R.string.gallery_tab_image),
+                                        contentDescription = stringResource(id = LocalizationR.string.gallery_tab_image),
                                         colorFilter = ColorFilter.tint(LocalContentColor.current),
                                     )
                                 },

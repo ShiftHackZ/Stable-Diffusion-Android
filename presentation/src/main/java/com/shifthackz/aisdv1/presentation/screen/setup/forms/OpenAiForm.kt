@@ -24,12 +24,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 
 @Composable
@@ -47,14 +47,14 @@ fun OpenAiForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 32.dp, bottom = 8.dp),
-            text = stringResource(id = R.string.hint_open_ai_title),
+            text = stringResource(id = LocalizationR.string.hint_open_ai_title),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
         )
         Text(
             modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.hint_open_ai_sub_title),
+            text = stringResource(id = LocalizationR.string.hint_open_ai_sub_title),
             style = MaterialTheme.typography.bodyMedium,
         )
         TextField(
@@ -77,7 +77,7 @@ fun OpenAiForm(
                     bringIntoViewRequester.bringIntoView()
                 }
             },
-            label = { Text(stringResource(id = R.string.hint_server_horde_api_key)) },
+            label = { Text(stringResource(id = LocalizationR.string.hint_server_horde_api_key)) },
             isError = state.openAiApiKeyValidationError != null,
             supportingText = {
                 state.openAiApiKeyValidationError
@@ -89,7 +89,7 @@ fun OpenAiForm(
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
             startIcon = Icons.AutoMirrored.Filled.Help,
-            text = R.string.hint_open_ai_about.asUiText(),
+            text = LocalizationR.string.hint_open_ai_about.asUiText(),
             onClick = { processIntent(ServerSetupIntent.LaunchUrl.OpenAiInfo) },
         )
     }

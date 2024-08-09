@@ -5,6 +5,7 @@ data class Settings(
     val sdModel: String = "",
     val demoMode: Boolean = false,
     val monitorConnectivity: Boolean = false,
+    val backgroundGeneration: Boolean = false,
     val autoSaveAiResults: Boolean = false,
     val saveToMediaStore: Boolean = false,
     val formAdvancedOptionsAlwaysShow: Boolean = false,

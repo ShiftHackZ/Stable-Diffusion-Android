@@ -14,7 +14,7 @@ class DeleteGalleryItemUseCaseImplTest {
     private val useCase = DeleteGalleryItemUseCaseImpl(stubRepository)
 
     @Test
-    fun `given repository deleted date successfully, expected complete`() {
+    fun `given repository deleted data successfully, expected complete`() {
         whenever(stubRepository.deleteById(any()))
             .thenReturn(Completable.complete())
 
@@ -26,7 +26,7 @@ class DeleteGalleryItemUseCaseImplTest {
     }
 
     @Test
-    fun `given repository deleted date failed, expected error`() {
+    fun `given repository deleted data with fail, expected error`() {
         val stubException = Throwable("Database communication error.")
 
         whenever(stubRepository.deleteById(any()))
