@@ -182,6 +182,10 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
     @Test
     fun `given received LocalModel ClickReduce intent, model is downloading, expected UI state is Unknown`() {
+        every {
+            stubDeleteModelUseCase.invoke(any())
+        } returns Completable.complete()
+
         val localModel = mockServerSetupStateLocalModel.copy(
             downloadState = DownloadState.Downloading(22),
         )
