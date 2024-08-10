@@ -10,7 +10,16 @@
 [![F-Droid](docs/assets/fdroid.png)](https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss)
 [![4pda](docs/assets/4pda.png)](https://4pda.to/forum/index.php?showtopic=1082639)
 
-Stable Diffusion AI is an easy-to-use app that lets you quickly generate images from text or other images with just a few clicks. With this app, you can communicate with your own server and generate high-quality images in seconds.
+Stable Diffusion AI (SDAI) is an easy-to-use app that:
+
+- Brings you the power of creating images with Stable Diffusion AI
+- Gives you freedom to choose your AI generation provider
+- Has no ADs, telemetry and does not spy on you
+
+## Screenshots
+
+![](docs/assets/scr_group_1.png)
+![](docs/assets/scr_group_2.png)
 
 ## Features
 
