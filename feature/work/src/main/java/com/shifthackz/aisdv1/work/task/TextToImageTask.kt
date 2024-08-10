@@ -53,6 +53,7 @@ internal class TextToImageTask(
             handleProcess()
             handleError(Throwable("Background process count > 0"))
             compositeDisposable.clear()
+            preferenceManager.backgroundProcessCount = 0
             return Single.just(Result.failure())
         }
 
