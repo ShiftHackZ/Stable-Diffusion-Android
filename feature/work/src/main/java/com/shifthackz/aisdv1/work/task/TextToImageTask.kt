@@ -23,9 +23,9 @@ internal class TextToImageTask(
     workerParameters: WorkerParameters,
     pushNotificationManager: PushNotificationManager,
     activityIntentProvider: ActivityIntentProvider,
-    preferenceManager: PreferenceManager,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    private val preferenceManager: PreferenceManager,
     private val backgroundWorkObserver: BackgroundWorkObserver,
     private val textToImageUseCase: TextToImageUseCase,
     private val fileProviderDescriptor: FileProviderDescriptor,
@@ -45,12 +45,26 @@ internal class TextToImageTask(
     override val genericNotificationId: Int = NOTIFICATION_TEXT_TO_IMAGE_GENERIC
 
     override fun createWork(): Single<Result> {
+        // Workaround for LocalDiffusion provider:
+        //
+        // If LocalDiffusion process previously died, prevent WorkManager to go to infinite
+        // task repeat loop.
+        if (preferenceManager.backgroundProcessCount > 0) {
+            handleProcess()
+            handleError(Throwable("Background process count > 0"))
+            compositeDisposable.clear()
+            return Single.just(Result.failure())
+        }
+
+        preferenceManager.backgroundProcessCount++
         handleStart()
         backgroundWorkObserver.refreshStatus()
         backgroundWorkObserver.dismissResult()
+
         return try {
             val file = File(fileProviderDescriptor.workCacheDirPath, Constants.FILE_TEXT_TO_IMAGE)
             if (!file.exists()) {
+                preferenceManager.backgroundProcessCount--
                 handleError(Throwable("File is null."))
                 compositeDisposable.clear()
                 return Single.just(Result.failure())
@@ -60,6 +74,7 @@ internal class TextToImageTask(
             val payload = bytes.toTextToImagePayload()
 
             if (payload == null) {
+                preferenceManager.backgroundProcessCount--
                 handleError(Throwable("Payload is null."))
                 compositeDisposable.clear()
                 return Single.just(Result.failure())
@@ -71,15 +86,18 @@ internal class TextToImageTask(
             textToImageUseCase(payload)
                 .doOnSubscribe { handleProcess() }
                 .map { result ->
+                    preferenceManager.backgroundProcessCount--
                     handleSuccess(result)
                     Result.success()
                 }
                 .onErrorReturn { t ->
+                    preferenceManager.backgroundProcessCount--
                     handleError(t)
                     Result.failure()
                 }
                 .doFinally { compositeDisposable.clear() }
         } catch (e: Exception) {
+            preferenceManager.backgroundProcessCount--
             handleError(e)
             compositeDisposable.clear()
             Single.just(Result.failure())
