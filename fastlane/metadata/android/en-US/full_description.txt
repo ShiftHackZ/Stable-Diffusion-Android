@@ -1,9 +1,21 @@
-Generate Stable Diffusion AI assets on your own WebUI server instance.
+Unleash Your Creativity with SDAI - The Ultimate AI Art Generator for Android
 
-Stable Diffusion AI is an easy-to-use app that lets you quickly generate images from text or other images with just a few clicks. With Stable Diffusion AI, you can communicate with your own server and generate high-quality images in seconds.
+Discover the power of AI-driven art creation with SDAI (Stable Diffusion Android), the open-source app that puts the magic of artificial intelligence at your fingertips. Whether you're a digital artist, a hobbyist, or simply curious about the possibilities of AI, SDAI offers a unique and flexible platform to create stunning, high-quality images with ease.
 
-Stable Diffusion AI comes with a simple and intuitive user interface that allows you to select the type of image you want to generate, enter the necessary parameters, and generate your image in just a few clicks. Whether you want to convert text to an image or transform one image into another, Stable Diffusion AI makes it easy and efficient.
+Why Choose SDAI?
 
-Stable Diffusion AI is highly customizable and adaptable, allowing you to connect to any user-defined automatic WebUI server and adjust the settings to meet your specific needs. With its fast and reliable image generation capabilities, Stable Diffusion AI is the perfect tool for developers, designers, and anyone who needs to quickly generate images on the go.
+SDAI isn't just another AI art app—it's a tool that empowers you to create without limits. With the freedom to choose your generation provider and the ability to work offline, you can bring your most ambitious ideas to life, anytime, anywhere. Plus, as an open-source project, you're not just a user—you can be a part of the evolution of SDAI.
 
-Try Stable Diffusion AI today and experience the power and convenience of mobile image generation at your fingertips!
+Key Features:
+
+- Choose Your AI Generation Provider: SDAI lets you pick the AI model that best suits your needs, giving you complete control over your creative process. Whether you prefer cloud-based solutions or local setups, SDAI has you covered.
+
+- Offline Image Creation with Local Diffusion: No internet? No problem! SDAI enables offline image generation using Local Diffusion, ensuring that your creativity is never interrupted.
+
+- Open Source & Community-Driven: Built with transparency and collaboration in mind, SDAI is fully open source. Join our community of developers and artists, contribute to the project, or simply explore the code to see how it all works.
+
+- User-Friendly Interface: Designed with both beginners and experts in mind, SDAI's intuitive interface makes it easy to dive into the world of AI art without any steep learning curve.
+
+Get Started Today!
+
+Download SDAI now and start exploring the endless possibilities of AI-generated art. Whether you're looking to create intricate digital masterpieces or simply have fun with AI, SDAI is your gateway to a new world of creativity.

@@ -1,1 +1,1 @@
-Generate Stable Diffusion AI assets on your own Automatic1111 instance.
+Generate Stable Diffusion assets with AI provider of your choice.
