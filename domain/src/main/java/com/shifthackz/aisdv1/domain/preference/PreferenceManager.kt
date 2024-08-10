@@ -32,6 +32,7 @@ interface PreferenceManager {
     var designColorToken: String
     var designDarkThemeToken: String
     var backgroundGeneration: Boolean
+    var backgroundProcessCount: Int
     var galleryGrid: Grid
 
     fun observe(): Flowable<Settings>

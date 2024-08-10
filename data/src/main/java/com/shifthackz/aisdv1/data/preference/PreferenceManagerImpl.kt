@@ -212,6 +212,12 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
+    override var backgroundProcessCount: Int
+        get() = preferences.getInt(KEY_BACKGROUND_PROCESS_COUNT, 0)
+        set(value) = preferences.edit()
+            .putInt(KEY_BACKGROUND_PROCESS_COUNT, value)
+            .apply()
+
     override var galleryGrid: Grid
         get() = preferences.getInt(KEY_GALLERY_GRID, 0).let { Grid.entries[it] }
         set(value) = preferences.edit()
@@ -273,6 +279,7 @@ class PreferenceManagerImpl(
         const val KEY_DESIGN_COLOR_TOKEN = "key_design_color_token_theme"
         const val KEY_DESIGN_DARK_TOKEN = "key_design_dark_color_token_theme"
         const val KEY_BACKGROUND_GENERATION = "key_background_generation"
+        const val KEY_BACKGROUND_PROCESS_COUNT = "key_background_process_count"
         const val KEY_GALLERY_GRID = "key_gallery_grid"
     }
 }
