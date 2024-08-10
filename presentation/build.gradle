@@ -62,6 +62,8 @@ dependencies {
     implementation ui.composeEasyCrop
 
     testImplementation test.junit
+    testImplementation test.koin
+    testImplementation test.koinJunit
     testImplementation test.mockk
     testImplementation test.coroutines
     testImplementation test.turbine

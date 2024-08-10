@@ -123,5 +123,7 @@ ext {
             robolectric      : "org.robolectric:robolectric:$testRobolectricVersion",
             composeUiJunit   : "androidx.compose.ui:ui-test-junit4:$testCopmoseUiVersion",
             composeUiManifest: "androidx.compose.ui:ui-test-manifest:$testCopmoseUiVersion",
+            koin             : "io.insert-koin:koin-test:$koinVersion",
+            koinJunit        : "io.insert-koin:koin-test-junit4:$koinVersion",
     ]
 }

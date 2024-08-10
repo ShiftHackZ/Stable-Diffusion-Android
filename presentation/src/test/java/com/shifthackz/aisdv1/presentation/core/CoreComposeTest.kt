@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.utils
+package com.shifthackz.aisdv1.presentation.core
 
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
@@ -13,7 +13,7 @@ import androidx.compose.ui.test.printToLog
 import org.junit.Before
 import org.robolectric.shadows.ShadowLog
 
-interface ComposeTestUtils {
+interface CoreComposeTest {
 
     val composeTestRule: ComposeContentTestRule
 

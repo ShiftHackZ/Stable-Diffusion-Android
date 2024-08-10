@@ -50,15 +50,13 @@ import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationS
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.ConfigurationStep
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.SourceSelectionStep
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
-import org.koin.androidx.compose.getViewModel
 import org.koin.compose.koinInject
-import org.koin.core.parameter.parametersOf
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ServerSetupScreen(
     modifier: Modifier = Modifier,
-    launchSourceKey: Int,
+    viewModel: ServerSetupViewModel,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
@@ -70,9 +68,7 @@ fun ServerSetupScreen(
     }
 
     MviComponent(
-        viewModel = getViewModel<ServerSetupViewModel>(
-            parameters = { parametersOf(launchSourceKey) }
-        ),
+        viewModel = viewModel,
         processEffect = { effect ->
             when (effect) {
                 ServerSetupEffect.LaunchManageStoragePermission -> {
