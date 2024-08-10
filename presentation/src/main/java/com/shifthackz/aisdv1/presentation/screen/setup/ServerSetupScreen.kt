@@ -144,7 +144,7 @@ fun ServerSetupScreenContent(
             bottomBar = {
                 Button(
                     modifier = Modifier
-                        .testTag("ServerSetupActionButton")
+                        .testTag(ServerSetupScreenTags.MAIN_BUTTON)
                         .height(height = 68.dp)
                         .background(MaterialTheme.colorScheme.background)
                         .fillMaxWidth()

@@ -81,16 +81,16 @@ class ServerSetupScreenTest : CoreComposeTest {
         composeTestRule.setContent {
             ServerSetupScreenContent(state = ServerSetupState())
         }
-        val setupButton = onNodeWithTestTag(SETUP_BUTTON_TAG)
-        val setupButtonInitialText = retrieveTextFromNodeWithTestTag(SETUP_BUTTON_TAG)
+        val setupButton = onNodeWithTestTag(ServerSetupScreenTags.MAIN_BUTTON)
+        val setupButtonInitialText = retrieveTextFromNodeWithTestTag(ServerSetupScreenTags.MAIN_BUTTON)
         println("TEST | setupButtonInitialText=$setupButtonInitialText")
-        printComposeUiTreeToLog(TAG, SETUP_BUTTON_TAG)
+        printComposeUiTreeToLog(TAG, ServerSetupScreenTags.MAIN_BUTTON)
         setupButton.assertIsDisplayed().assertIsEnabled()
 
         setupButton.performClick()
-        val setupButtonNewText = retrieveTextFromNodeWithTestTag(SETUP_BUTTON_TAG)
+        val setupButtonNewText = retrieveTextFromNodeWithTestTag(ServerSetupScreenTags.MAIN_BUTTON)
         println("TEST | setupButtonNewText=$setupButtonNewText")
-        printComposeUiTreeToLog(TAG, SETUP_BUTTON_TAG)
+        printComposeUiTreeToLog(TAG, ServerSetupScreenTags.MAIN_BUTTON)
         setupButton.assertIsDisplayed().assertIsEnabled()
     }
 
@@ -99,7 +99,7 @@ class ServerSetupScreenTest : CoreComposeTest {
         composeTestRule.setContent {
             ServerSetupScreen(viewModel = stubViewModel)
         }
-        val setupButton = onNodeWithTestTag(SETUP_BUTTON_TAG)
+        val setupButton = onNodeWithTestTag(ServerSetupScreenTags.MAIN_BUTTON)
 
         setupButton.performClick()
         stubUiState.update {
@@ -115,6 +115,5 @@ class ServerSetupScreenTest : CoreComposeTest {
 
     companion object {
         const val TAG = "ServerSetupScreenTest"
-        const val SETUP_BUTTON_TAG = "ServerSetupActionButton"
     }
 }
