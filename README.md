@@ -12,7 +12,7 @@
 
 Stable Diffusion AI (SDAI) is an easy-to-use app that:
 
-- Brings you the power of creating images with Stable Diffusion AI
+- Brings you the power of digital art creativity with Stable Diffusion AI
 - Gives you freedom to choose your AI generation provider
 - Has no ADs, telemetry and does not spy on you
 
