@@ -37,6 +37,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
@@ -89,7 +90,7 @@ fun ServerSetupScreen(
             }
         },
     ) { state, intentHandler ->
-        ScreenContent(
+        ServerSetupScreenContent(
             modifier = modifier.fillMaxSize(),
             state = state,
             buildInfoProvider = koinInject(),
@@ -99,7 +100,7 @@ fun ServerSetupScreen(
 }
 
 @Composable
-private fun ScreenContent(
+fun ServerSetupScreenContent(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
     buildInfoProvider: BuildInfoProvider = BuildInfoProvider.stub,
@@ -147,6 +148,7 @@ private fun ScreenContent(
             bottomBar = {
                 Button(
                     modifier = Modifier
+                        .testTag("ServerSetupActionButton")
                         .height(height = 68.dp)
                         .background(MaterialTheme.colorScheme.background)
                         .fillMaxWidth()

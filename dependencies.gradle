@@ -38,6 +38,8 @@ ext {
     testMockkVersion = '1.13.11'
     testCoroutinesVersion = '1.8.1'
     testTurbibeVersion = '1.1.0'
+    testRobolectricVersion = '4.13'
+    testCopmoseUiVersion = '1.6.8'
 
     androidx = [
             core                        : "androidx.core:core-ktx:$coreKtxVersion",
@@ -110,13 +112,16 @@ ext {
             timber: "com.jakewharton.timber:timber:$timberVersion",
     ]
     apache = [
-            stringutils: "org.apache.commons:commons-lang3:$apacheLangVersion"
+            stringutils: "org.apache.commons:commons-lang3:$apacheLangVersion",
     ]
     test = [
-            junit     : "junit:junit:$testJunitVersion",
-            mockito   : "com.nhaarman.mockitokotlin2:mockito-kotlin:$testMockitoVersion",
-            mockk     : "io.mockk:mockk:$testMockkVersion",
-            coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-test:$testCoroutinesVersion",
-            turbine   : "app.cash.turbine:turbine:$testTurbibeVersion",
+            junit            : "junit:junit:$testJunitVersion",
+            mockito          : "com.nhaarman.mockitokotlin2:mockito-kotlin:$testMockitoVersion",
+            mockk            : "io.mockk:mockk:$testMockkVersion",
+            coroutines       : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$testCoroutinesVersion",
+            turbine          : "app.cash.turbine:turbine:$testTurbibeVersion",
+            robolectric      : "org.robolectric:robolectric:$testRobolectricVersion",
+            composeUiJunit   : "androidx.compose.ui:ui-test-junit4:$testCopmoseUiVersion",
+            composeUiManifest: "androidx.compose.ui:ui-test-manifest:$testCopmoseUiVersion",
     ]
 }
