@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.domain.usecase.stabilityai.ObserveStabilityAiCredit
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import io.reactivex.rxjava3.core.Flowable
@@ -32,6 +33,7 @@ class SettingsViewModel(
     private val clearAppCacheUseCase: ClearAppCacheUseCase,
     private val schedulersProvider: SchedulersProvider,
     private val preferenceManager: PreferenceManager,
+    private val debugMenuAccessor: DebugMenuAccessor,
     private val buildInfoProvider: BuildInfoProvider,
     private val mainRouter: MainRouter,
     private val drawerRouter: DrawerRouter,
@@ -80,6 +82,7 @@ class SettingsViewModel(
                             colorToken = ColorToken.parse(settings.designColorToken),
                             darkThemeToken = DarkThemeToken.parse(settings.designDarkThemeToken),
                             galleryGrid = settings.galleryGrid,
+                            developerMode = settings.developerMode,
                             appVersion = version,
                         )
                     }
@@ -89,7 +92,9 @@ class SettingsViewModel(
 
     override fun processIntent(intent: SettingsIntent) {
         when (intent) {
-            SettingsIntent.Action.AppVersion -> mainRouter.navigateToDebugMenu()
+            SettingsIntent.Action.AppVersion -> if (debugMenuAccessor()) {
+                emitEffect(SettingsEffect.DeveloperModeUnlocked)
+            }
 
             SettingsIntent.Action.ClearAppCache.Request -> updateState {
                 it.copy(screenModal = Modal.ClearAppCache)
@@ -106,6 +111,8 @@ class SettingsViewModel(
             SettingsIntent.NavigateConfiguration -> mainRouter.navigateToServerSetup(
                 ServerSetupLaunchSource.SETTINGS
             )
+
+            SettingsIntent.NavigateDeveloperMode -> mainRouter.navigateToDebugMenu()
 
             SettingsIntent.SdModel.OpenChooser -> updateState {
                 it.copy(

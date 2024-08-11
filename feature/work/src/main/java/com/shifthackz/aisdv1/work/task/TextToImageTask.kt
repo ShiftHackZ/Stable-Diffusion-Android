@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import com.shifthackz.aisdv1.core.common.appbuild.ActivityIntentProvider
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.core.common.log.debugLog
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -54,6 +56,7 @@ internal class TextToImageTask(
             handleError(Throwable("Background process count > 0"))
             compositeDisposable.clear()
             preferenceManager.backgroundProcessCount = 0
+            debugLog("Background process count > 0! Skipping task.")
             return Single.just(Result.failure())
         }
 
@@ -61,13 +64,16 @@ internal class TextToImageTask(
         handleStart()
         backgroundWorkObserver.refreshStatus()
         backgroundWorkObserver.dismissResult()
+        debugLog("Starting TextToImageTask!")
 
         return try {
             val file = File(fileProviderDescriptor.workCacheDirPath, Constants.FILE_TEXT_TO_IMAGE)
             if (!file.exists()) {
                 preferenceManager.backgroundProcessCount--
-                handleError(Throwable("File is null."))
+                val t = Throwable("File is null.")
+                handleError(t)
                 compositeDisposable.clear()
+                errorLog(t, "Payload file does not exist.")
                 return Single.just(Result.failure())
             }
 
@@ -76,8 +82,10 @@ internal class TextToImageTask(
 
             if (payload == null) {
                 preferenceManager.backgroundProcessCount--
-                handleError(Throwable("Payload is null."))
+                val t = Throwable("Payload is null.")
+                handleError(t)
                 compositeDisposable.clear()
+                errorLog(t, "Payload was failed to read/parse.")
                 return Single.just(Result.failure())
             }
 
@@ -89,11 +97,13 @@ internal class TextToImageTask(
                 .map { result ->
                     preferenceManager.backgroundProcessCount--
                     handleSuccess(result)
+                    debugLog("Generation finished successfully!")
                     Result.success()
                 }
                 .onErrorReturn { t ->
                     preferenceManager.backgroundProcessCount--
                     handleError(t)
+                    errorLog(t, "Caught exception from TextToImageUseCase!")
                     Result.failure()
                 }
                 .doFinally { compositeDisposable.clear() }
@@ -101,6 +111,7 @@ internal class TextToImageTask(
             preferenceManager.backgroundProcessCount--
             handleError(e)
             compositeDisposable.clear()
+            errorLog(e, "Caught exception from TextToImageTask worker!")
             Single.just(Result.failure())
         }
     }

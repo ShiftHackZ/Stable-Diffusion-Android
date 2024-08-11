@@ -51,6 +51,13 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
+    override var developerMode: Boolean
+        get() = preferences.getBoolean(KEY_DEVELOPER_MODE, false)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_DEVELOPER_MODE, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
     override var monitorConnectivity: Boolean
         get() = if (!source.featureTags.contains(FeatureTag.OwnServer)) false
         else preferences.getBoolean(KEY_MONITOR_CONNECTIVITY, true)
@@ -232,6 +239,7 @@ class PreferenceManagerImpl(
                 serverUrl = automatic1111ServerUrl,
                 sdModel = sdModel,
                 demoMode = demoMode,
+                developerMode = developerMode,
                 monitorConnectivity = monitorConnectivity,
                 backgroundGeneration = backgroundGeneration,
                 autoSaveAiResults = autoSaveAiResults,
@@ -257,6 +265,7 @@ class PreferenceManagerImpl(
         const val KEY_SWARM_SERVER_URL = "key_swarm_server_url"
         const val KEY_SWARM_MODEL = "key_swarm_model"
         const val KEY_DEMO_MODE = "key_demo_mode"
+        const val KEY_DEVELOPER_MODE = "key_developer_mode"
         const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
         const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
         const val KEY_SAVE_TO_MEDIA_STORE = "key_save_to_media_store"

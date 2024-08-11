@@ -4,6 +4,7 @@ data class Settings(
     val serverUrl: String = "",
     val sdModel: String = "",
     val demoMode: Boolean = false,
+    val developerMode: Boolean = false,
     val monitorConnectivity: Boolean = false,
     val backgroundGeneration: Boolean = false,
     val autoSaveAiResults: Boolean = false,

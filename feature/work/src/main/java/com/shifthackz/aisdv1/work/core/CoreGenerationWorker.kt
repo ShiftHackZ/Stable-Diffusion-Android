@@ -118,7 +118,6 @@ internal abstract class CoreGenerationWorker(
     }
 
     protected fun handleError(t: Throwable) {
-        errorLog(t)
         backgroundWorkObserver.postFailedSignal(t)
         val title = applicationContext.getString(LocalizationR.string.notification_fail_title)
         val subTitle = applicationContext.getString(LocalizationR.string.notification_fail_sub_title)

@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.debug
 
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
@@ -12,10 +13,12 @@ import org.junit.Test
 
 class DebugMenuViewModelTest : CoreViewModelTest<DebugMenuViewModel>() {
 
+    private val stubFileProviderDescriptor = mockk<FileProviderDescriptor>()
     private val stubDebugInsertBadBase64UseCase = mockk<DebugInsertBadBase64UseCase>()
     private val stubMainRouter = mockk<MainRouter>()
 
     override fun initializeViewModel() = DebugMenuViewModel(
+        fileProviderDescriptor = stubFileProviderDescriptor,
         debugInsertBadBase64UseCase = stubDebugInsertBadBase64UseCase,
         schedulersProvider = stubSchedulersProvider,
         mainRouter = stubMainRouter,

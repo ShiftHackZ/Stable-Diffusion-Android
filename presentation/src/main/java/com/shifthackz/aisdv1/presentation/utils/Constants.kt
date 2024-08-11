@@ -20,6 +20,7 @@ object Constants {
     const val ROUTE_GALLERY_DETAIL_FULL = "$ROUTE_GALLERY_DETAIL/{$PARAM_ITEM_ID}"
     const val ROUTE_SETTINGS = "settings"
     const val ROUTE_DEBUG = "debug"
+    const val ROUTE_LOGGER = "logger"
     const val ROUTE_IN_PAINT = "in_paint"
     const val ROUTE_DONATE = "donate"
 

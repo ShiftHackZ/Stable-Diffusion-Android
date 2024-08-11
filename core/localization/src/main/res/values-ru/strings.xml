@@ -153,7 +153,8 @@
     <string name="title_server_setup">Конфигурация</string>
     <string name="title_select_sd_model">Выберите SD ML модель</string>
     <string name="title_clear_app_cache">Очистить кэш приложения</string>
-    <string name="title_debug_menu">Дебаг Меню</string>
+    <string name="title_debug_menu">Режим разработчика</string>
+    <string name="title_debug_logger">Логи</string>
     <string name="title_lora">ЛоРА</string>
     <string name="title_txt_inversion">Инверсия текста</string>
     <string name="title_txt_inversion_short">Инверсия</string>
@@ -298,8 +299,13 @@
     <string name="model_local_custom_title">Чтобы использовать локальную пользовательскую модель, поместите ее в локальную папку в памяти телефона: Download/SDAi/model</string>
     <string name="model_local_custom_sub_title">Окончательная структура папок должна быть такой:</string>
 
+    <string name="debug_section_main">Отладка</string>
     <string name="debug_section_qa">QA тест-кейсы</string>
+    <string name="debug_action_unlock">Режим разработчика разблокирован!</string>
+    <string name="debug_action_logger">Посмотреть логи</string>
+    <string name="debug_action_logger_clear">Очистить все логи</string>
     <string name="debug_action_bad_base64">Внести битый Base64 в БД</string>
+    <string name="debug_logger_empty">Лог файл пуст.</string>
 
     <string name="extras_empty_title">Здесь пусто…</string>
     <string name="extras_empty_sub_title_lora">Добавьте что-нибуть на %1$s сервере в: \n\n%2$s</string>

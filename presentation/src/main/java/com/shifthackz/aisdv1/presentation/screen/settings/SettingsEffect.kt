@@ -11,5 +11,7 @@ sealed interface SettingsEffect : MviEffect {
 
     data object ShareLogFile : SettingsEffect
 
+    data object DeveloperModeUnlocked : SettingsEffect
+
     data class OpenUrl(val url: String) : SettingsEffect
 }

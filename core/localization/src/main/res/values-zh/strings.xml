@@ -191,7 +191,8 @@
     <string name="title_server_setup">配置</string>
     <string name="title_select_sd_model">选择SD ML模型</string>
     <string name="title_clear_app_cache">清除应用缓存</string>
-    <string name="title_debug_menu">调试菜单</string>
+    <string name="title_debug_menu">开发者模式</string>
+    <string name="title_debug_logger">日志</string>
     <string name="title_lora">LoRA</string>
     <string name="title_hyper_net" translatable="false">超网络</string>
     <string name="title_hyper_net_short" translatable="false">H-Net</string>
@@ -360,8 +361,13 @@
     <string name="model_local_custom_sub_title">最终的文件夹结构应该是：</string>
 
     <!-- 调试菜单 -->
+    <string name="debug_section_main">调试</string>
     <string name="debug_section_qa">QA操作</string>
+    <string name="debug_action_unlock">开发者模式已解锁！</string>
+    <string name="debug_action_logger">查看日志</string>
+    <string name="debug_action_logger_clear">清除所有日志</string>
     <string name="debug_action_bad_base64">在数据库中插入错误的Base64</string>
+    <string name="debug_logger_empty">未找到日志。</string>
 
     <!-- 附加内容提示 -->
     <string name="extras_empty_title">这里什么都没有…</string>

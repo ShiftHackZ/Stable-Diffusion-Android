@@ -9,6 +9,7 @@ import ai.onnxruntime.providers.NNAPIFlags
 import android.graphics.Bitmap
 import android.util.Pair
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_ENCODER_HIDDEN_STATES
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_LATENT_SAMPLE
@@ -16,6 +17,7 @@ import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_SAMPLE
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_TIME_STEP
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT_KEY_MODEL_FORMAT
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.TAG
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.duplicate
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.getSizes
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.multipleTensorsByFloat
@@ -155,9 +157,17 @@ internal class UNet(
         width: Int,
         height: Int,
     ) {
+        debugLog("{$TAG} {inference} Trying to start inference:")
+        debugLog("{$TAG} {inference} - seed: $seedNum")
+        debugLog("{$TAG} {inference} - numInferenceSteps: $numInferenceSteps")
+        debugLog("{$TAG} {inference} - textEmbeddings: $textEmbeddings")
+        debugLog("{$TAG} {inference} - guidanceScale: $guidanceScale")
+        debugLog("{$TAG} {inference} - batchSize: $batchSize")
+        debugLog("{$TAG} {inference} - size: ${width}x${height}")
         this.width = width
         this.height = height
         val localDiffusionScheduler = EulerAncestralDiscreteLocalDiffusionScheduler()
+        debugLog("{$TAG} {inference} Initialized scheduler: $localDiffusionScheduler")
         val timeSteps: IntArray = localDiffusionScheduler.setTimeSteps(numInferenceSteps)
         val seed = if (seedNum <= 0) random.nextLong() else seedNum
         var latents: LocalDiffusionTensor<*> = generateLatentSample(
@@ -167,13 +177,19 @@ internal class UNet(
             seed,
             localDiffusionScheduler.initNoiseSigma.toFloat()
         )
+        debugLog("{$TAG} {inference} Got latents: ${latents.hashCode()}")
         val shape = longArrayOf(2, 4, (height / 8).toLong(), (width / 8).toLong())
+        debugLog("{$TAG} {inference} Got shape: $shape")
+        debugLog("{$TAG} {inference} Starting steps processing! Total : ${timeSteps.size}")
         for (i in timeSteps.indices) {
             var latentModelInput: LocalDiffusionTensor<*> = duplicate(
                 latents.tensor.floatBuffer.array(),
                 shape,
             )
             latentModelInput = localDiffusionScheduler.scaleModelInput(latentModelInput, i)
+            debugLog("{$TAG} {inference} {Step_$i} ------------------")
+            debugLog("{$TAG} {inference} {Step_$i} Latent model input: $latentModelInput")
+            debugLog("{$TAG} {inference} {Step_$i} Notifying callback about step.")
             callback?.onStep(timeSteps.size, i)
             val input = createUNetModelInput(
                 textEmbeddings,
@@ -184,8 +200,11 @@ internal class UNet(
                     longArrayOf(1)
                 )
             )
+            debugLog("{$TAG} {inference} {Step_$i} Got uNet model input: $input")
             val result = session!!.run(input)
+            debugLog("{$TAG} {inference} {Step_$i} Got result from uNet session: $result")
             val dataSet = result[0].value as Array3D<FloatArray>
+            debugLog("{$TAG} {inference} {Step_$i} Trying to close ORT session in: $result")
             result.close()
             val splitTensors: Pair<Array3D<FloatArray>, Array3D<FloatArray>> =
                 splitTensor(
@@ -194,7 +213,13 @@ internal class UNet(
                 )
             val noisePrediction = splitTensors.first
             val noisePredictionText = splitTensors.second
+            debugLog("{$TAG} {inference} {Step_$i} Got split tensors with prediction:")
+            debugLog("{$TAG} {inference} {Step_$i} - splitTensors: $splitTensors")
+            debugLog("{$TAG} {inference} {Step_$i} - noisePrediction: $noisePrediction")
+            debugLog("{$TAG} {inference} {Step_$i} - noisePredictionText: $noisePredictionText")
+            debugLog("{$TAG} {inference} {Step_$i} Trying to preform guidance...")
             performGuidance(noisePrediction, noisePredictionText, guidanceScale)
+            debugLog("{$TAG} {inference} {Step_$i} Guidance performed successfully!")
             latents = localDiffusionScheduler.step(
                 LocalDiffusionTensor(
                     OnnxTensor.createTensor(
@@ -207,16 +232,22 @@ internal class UNet(
                 i,
                 latents,
             )
+            debugLog("{$TAG} {inference} {Step_$i} Finalized latents: $latents")
+            debugLog("{$TAG} {inference} {Step_$i} ------------------")
         }
         callback?.also { clb ->
+            debugLog("{$TAG} {inference} Finalization / Flushing image...")
             callback?.onStep(timeSteps.size, timeSteps.size)
             val bitmap = decode(latents)
+            debugLog("{$TAG} {inference} Finalization / Decoded bitmap: ${bitmap.hashCode()}")
             clb.onBuildImage(0, bitmap)
+            debugLog("{$TAG} {inference} Finalization / Notifying callback and closing session.")
             close()
         }
     }
 
     fun decode(latents: LocalDiffusionTensor<*>): Bitmap {
+        debugLog("{$TAG} {decode} Trying to decode latents: ${latents.hashCode()}")
         val tensor: LocalDiffusionTensor<*> = multipleTensorsByFloat(
             latents.tensor.floatBuffer.array(),
             1.0f / 0.18215f,
@@ -225,21 +256,26 @@ internal class UNet(
         val decoderInput: MutableMap<String, OnnxTensor> = HashMap()
         decoderInput[KEY_LATENT_SAMPLE] = tensor.tensor
         val value: Any = decoder!!.decode(decoderInput.toMap())
-        return decoder!!.convertToImage(
+        val bitmap = decoder!!.convertToImage(
             value as Array3D<FloatArray>,
             width,
             height,
         )
+        debugLog("{$TAG} {decode} Bitmap generated successfully: ${bitmap.hashCode()}")
+        return bitmap
     }
 
     fun close() {
+        debugLog("{$TAG} Closing session...")
         session?.close()
         decoder?.close()
         session = null
         decoder = null
+        debugLog("{$TAG} Session closed successfully!")
     }
 
     fun setCallback(callback: Callback?) {
+        debugLog("{$TAG} Setting new result callback ${callback.hashCode()}")
         this.callback = callback
     }
 

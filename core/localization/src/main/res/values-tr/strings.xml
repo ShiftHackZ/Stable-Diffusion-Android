@@ -153,7 +153,8 @@
     <string name="title_server_setup">Sunucu Kurulumu</string>
     <string name="title_select_sd_model">SD Modeli seçin</string>
     <string name="title_clear_app_cache">Uygulama önbelleğini temizle</string>
-    <string name="title_debug_menu">Hata Ayıklama Menüsü</string>
+    <string name="title_debug_menu">Geliştirici modu</string>
+    <string name="title_debug_logger">Günlükler</string>
     <string name="title_lora">LoRA</string>
     <string name="title_txt_inversion">Metin İnversiyon</string>
     <string name="title_txt_inversion_short">İnversiyon</string>
@@ -298,8 +299,13 @@
     <string name="model_local_custom_title">Yerel özel modeli kullanmak için telefonunuzun depolama alanındaki yerel klasöre yerleştirin: Download/SDAi/model</string>
     <string name="model_local_custom_sub_title">Son klasör yapısı şu şekilde olmalıdır::</string>
 
+    <string name="debug_section_main">Hata ayıklama</string>
     <string name="debug_section_qa">QA işlemleri</string>
+    <string name="debug_action_unlock">Geliştirici modu kilidi açıldı!</string>
+    <string name="debug_action_logger">Günlükleri görüntüle</string>
+    <string name="debug_action_logger_clear">Tüm günlükleri temizle</string>
     <string name="debug_action_bad_base64">Kötü Base64\'ü DB\'ye yerleştirin</string>
+    <string name="debug_logger_empty">Herhangi bir günlük bulunamadı.</string>
 
     <string name="extras_empty_title">Burada hiçbir şey…</string>
     <string name="extras_empty_sub_title_lora">%1$s sunucusuna biraz içerik ekleyin: \n\n%2$s</string>

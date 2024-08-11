@@ -10,6 +10,7 @@ interface PreferenceManager {
     var swarmUiServerUrl: String
     var swarmUiModel: String
     var demoMode: Boolean
+    var developerMode: Boolean
     var monitorConnectivity: Boolean
     var autoSaveAiResults: Boolean
     var saveToMediaStore: Boolean

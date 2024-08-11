@@ -3,6 +3,10 @@
 package com.shifthackz.aisdv1.feature.diffusion
 
 internal object LocalDiffusionContract {
+    //region LOGGING
+    const val TAG = "LocalDiffusion"
+    //endregion
+
     //region MODELS PATHS
     const val UNET_MODEL = "unet/model.ort"
     const val VAE_MODEL = "vae_decoder/model.ort"
