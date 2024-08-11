@@ -50,13 +50,13 @@ import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationS
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.ConfigurationStep
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.SourceSelectionStep
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
-import org.koin.compose.koinInject
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ServerSetupScreen(
     modifier: Modifier = Modifier,
     viewModel: ServerSetupViewModel,
+    buildInfoProvider: BuildInfoProvider = BuildInfoProvider.stub,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
@@ -86,17 +86,17 @@ fun ServerSetupScreen(
             }
         },
     ) { state, intentHandler ->
-        ServerSetupScreenContent(
+        ScreenContent(
             modifier = modifier.fillMaxSize(),
             state = state,
-            buildInfoProvider = koinInject(),
+            buildInfoProvider = buildInfoProvider,
             processIntent = intentHandler,
         )
     }
 }
 
 @Composable
-fun ServerSetupScreenContent(
+private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
     buildInfoProvider: BuildInfoProvider = BuildInfoProvider.stub,

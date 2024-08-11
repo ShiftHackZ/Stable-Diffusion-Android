@@ -18,6 +18,7 @@ import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreen
 import com.shifthackz.aisdv1.presentation.screen.web.webui.WebUiScreen
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import org.koin.androidx.compose.getViewModel
+import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
 fun NavGraphBuilder.mainNavGraph() {
@@ -37,6 +38,7 @@ fun NavGraphBuilder.mainNavGraph() {
                 viewModel = getViewModel<ServerSetupViewModel>(
                     parameters = { parametersOf(sourceKey) }
                 ),
+                buildInfoProvider = koinInject()
             )
         }.apply {
             route = Constants.ROUTE_SERVER_SETUP_FULL

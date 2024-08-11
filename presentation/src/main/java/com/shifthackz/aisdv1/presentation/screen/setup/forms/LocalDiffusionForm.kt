@@ -32,9 +32,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
@@ -42,6 +44,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
+import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreenTags.CUSTOM_MODEL_SWITCH
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
@@ -68,8 +71,10 @@ fun LocalDiffusionForm(
                 .clickable { processIntent(ServerSetupIntent.SelectLocalModel(model)) },
         ) {
             Row(
-                modifier = Modifier.padding(vertical = 4.dp),
-                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 val icon = when (model.downloadState) {
@@ -82,20 +87,28 @@ fun LocalDiffusionForm(
                 }
                 Icon(
                     modifier = modifier
-                        .padding(horizontal = 8.dp)
+                        .padding(start = 8.dp)
                         .size(48.dp),
                     imageVector = icon,
                     contentDescription = "Download state",
                 )
                 Column(
-                    modifier = Modifier.padding(start = 4.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .weight(1f)
                 ) {
-                    Text(text = model.name)
+                    Text(
+                        text = model.name,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2
+                    )
                     if (model.id != LocalAiModel.CUSTOM.id) {
-                        Text(model.size)
+                        Text(
+                            text = model.size,
+                            maxLines = 1
+                        )
                     }
                 }
-                Spacer(modifier = Modifier.weight(1f))
                 if (model.id != LocalAiModel.CUSTOM.id) {
                     Button(
                         modifier = Modifier.padding(end = 8.dp),
@@ -113,6 +126,7 @@ fun LocalDiffusionForm(
                                 }
                             ),
                             color = LocalContentColor.current,
+                            maxLines = 1
                         )
                     }
                 }
@@ -258,6 +272,7 @@ fun LocalDiffusionForm(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Switch(
+                    modifier = Modifier.testTag(CUSTOM_MODEL_SWITCH),
                     checked = state.localCustomModel,
                     onCheckedChange = {
                         processIntent(ServerSetupIntent.AllowLocalCustomModel(it))

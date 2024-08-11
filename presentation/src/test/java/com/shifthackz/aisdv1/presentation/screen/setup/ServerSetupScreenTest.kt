@@ -2,6 +2,9 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsOff
+import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.performClick
@@ -9,7 +12,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.core.CoreComposeTest
+import com.shifthackz.aisdv1.presentation.mocks.mockLocalAiModels
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -77,21 +85,95 @@ class ServerSetupScreenTest : CoreComposeTest {
     }
 
     @Test
-    fun `server setup action button displayed and enabled before and after click`() {
+    fun `given user is on SOURCE tab with LOCAL server source, clicks Next, expected button is disabled, text changed to Setup`() {
         composeTestRule.setContent {
-            ServerSetupScreenContent(state = ServerSetupState())
+            ServerSetupScreen(viewModel = stubViewModel)
         }
         val setupButton = onNodeWithTestTag(ServerSetupScreenTags.MAIN_BUTTON)
-        val setupButtonInitialText = retrieveTextFromNodeWithTestTag(ServerSetupScreenTags.MAIN_BUTTON)
-        println("TEST | setupButtonInitialText=$setupButtonInitialText")
+        setupButton
+            .assertIsDisplayed()
+            .assertIsEnabled()
+            .assertTextEquals("Next")
         printComposeUiTreeToLog(TAG, ServerSetupScreenTags.MAIN_BUTTON)
-        setupButton.assertIsDisplayed().assertIsEnabled()
-
         setupButton.performClick()
-        val setupButtonNewText = retrieveTextFromNodeWithTestTag(ServerSetupScreenTags.MAIN_BUTTON)
-        println("TEST | setupButtonNewText=$setupButtonNewText")
-        printComposeUiTreeToLog(TAG, ServerSetupScreenTags.MAIN_BUTTON)
-        setupButton.assertIsDisplayed().assertIsEnabled()
+        stubUiState.update {
+            it.copy(
+                step = ServerSetupState.Step.CONFIGURE,
+                mode = ServerSource.LOCAL
+            )
+        }
+
+        setupButton
+            .assertIsDisplayed()
+            .assertIsNotEnabled()
+            .assertTextEquals("Setup")
+    }
+
+    @Test
+    fun `given user is on CONFIGURE tab with LOCAL server source, clicks Switch, expected main button with Setup text becomes enabled then clicks Switch again, expected main button with Setup text becomes disabled`() {
+        composeTestRule.setContent {
+            ServerSetupScreen(viewModel = stubViewModel)
+        }
+        stubUiState.update {
+            it.copy(
+                step = ServerSetupState.Step.CONFIGURE,
+                mode = ServerSource.LOCAL,
+                localModels = mockLocalAiModels.mapToUi()
+            )
+        }
+        val setupButton = onNodeWithTestTag(ServerSetupScreenTags.MAIN_BUTTON)
+        val switch = onNodeWithTestTag(ServerSetupScreenTags.CUSTOM_MODEL_SWITCH)
+        setupButton
+            .assertIsDisplayed()
+            .assertIsNotEnabled()
+            .assertTextEquals("Setup")
+        switch
+            .assertIsDisplayed()
+            .assertIsOff()
+            .assertIsEnabled()
+
+        switch.performClick()
+        stubUiState.update {
+            it.copy(
+                localCustomModel = true,
+                localModels = it.localModels.withNewState(
+                    it.localModels.find { m -> m.id == LocalAiModel.CUSTOM.id }!!.copy(
+                        selected = true,
+                        downloaded = true
+                    ),
+                ),
+            )
+        }
+
+        setupButton
+            .assertIsDisplayed()
+            .assertIsEnabled()
+            .assertTextEquals("Setup")
+        switch
+            .assertIsDisplayed()
+            .assertIsOn()
+            .assertIsEnabled()
+
+        switch.performClick()
+        stubUiState.update {
+            it.copy(
+                localCustomModel = false,
+                localModels = it.localModels.withNewState(
+                    it.localModels.find { m -> m.id == LocalAiModel.CUSTOM.id }!!.copy(
+                        selected = false,
+                    ),
+                ),
+            )
+        }
+
+        setupButton
+            .assertIsDisplayed()
+            .assertIsNotEnabled()
+            .assertTextEquals("Setup")
+        switch
+            .assertIsDisplayed()
+            .assertIsOff()
+            .assertIsEnabled()
     }
 
     @Test
