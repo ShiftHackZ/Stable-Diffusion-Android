@@ -304,6 +304,7 @@
     <string name="debug_action_unlock">Geliştirici modu kilidi açıldı!</string>
     <string name="debug_action_logger">Günlükleri görüntüle</string>
     <string name="debug_action_logger_clear">Tüm günlükleri temizle</string>
+    <string name="debug_action_ld_allow_cancel">Oluşturmayı kesmeye izin ver</string>
     <string name="debug_action_bad_base64">Kötü Base64\'ü DB\'ye yerleştirin</string>
     <string name="debug_logger_empty">Herhangi bir günlük bulunamadı.</string>
 

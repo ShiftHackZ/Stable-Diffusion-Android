@@ -366,6 +366,7 @@
     <string name="debug_action_unlock">开发者模式已解锁！</string>
     <string name="debug_action_logger">查看日志</string>
     <string name="debug_action_logger_clear">清除所有日志</string>
+    <string name="debug_action_ld_allow_cancel">允许中断生成</string>
     <string name="debug_action_bad_base64">在数据库中插入错误的Base64</string>
     <string name="debug_logger_empty">未找到日志。</string>
 

@@ -304,6 +304,7 @@
     <string name="debug_action_unlock">Режим разработчика разблокирован!</string>
     <string name="debug_action_logger">Посмотреть логи</string>
     <string name="debug_action_logger_clear">Очистить все логи</string>
+    <string name="debug_action_ld_allow_cancel">Разрешить прерывание генерации</string>
     <string name="debug_action_bad_base64">Внести битый Base64 в БД</string>
     <string name="debug_logger_empty">Лог файл пуст.</string>
 
