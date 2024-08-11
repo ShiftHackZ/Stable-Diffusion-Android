@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.TextSnippet
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.filled.CancelScheduleSend
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.SettingsEthernet
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -19,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,9 +38,10 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 fun DebugMenuScreen() {
     MviComponent(
         viewModel = koinViewModel<DebugMenuViewModel>(),
-    ) { _, intentHandler ->
+    ) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
+            state = state,
             processIntent = intentHandler,
         )
     }
@@ -47,6 +50,7 @@ fun DebugMenuScreen() {
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
+    state: DebugMenuState = DebugMenuState(),
     processIntent: (DebugMenuIntent) -> Unit = {},
 ) {
     Scaffold(
@@ -99,6 +103,24 @@ private fun ScreenContent(
                 startIcon = Icons.Default.CleaningServices,
                 text = LocalizationR.string.debug_action_logger_clear.asUiText(),
                 onClick = { processIntent(DebugMenuIntent.ClearLogs) },
+            )
+
+            SettingsHeader(
+                modifier = headerModifier,
+                text = LocalizationR.string.debug_section_ld.asUiText(),
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                startIcon = Icons.Default.CancelScheduleSend,
+                text = LocalizationR.string.debug_action_ld_allow_cancel.asUiText(),
+                onClick = { processIntent(DebugMenuIntent.AllowLocalDiffusionCancel) },
+                endValueContent = {
+                    Switch(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        checked = state.allowLocalDiffusionCancel,
+                        onCheckedChange = { processIntent(DebugMenuIntent.AllowLocalDiffusionCancel) },
+                    )
+                }
             )
 
             SettingsHeader(

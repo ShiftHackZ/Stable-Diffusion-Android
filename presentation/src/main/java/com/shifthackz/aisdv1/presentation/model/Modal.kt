@@ -37,7 +37,10 @@ sealed interface Modal {
     data class SelectSdModel(val models: List<String>, val selected: String) : Modal
 
     @Immutable
-    data class Generating(val status: LocalDiffusion.Status? = null) : Modal {
+    data class Generating(
+        val canCancel: Boolean = false,
+        val status: LocalDiffusion.Status? = null,
+    ) : Modal {
         val pair: Pair<Int, Int>?
             get() = status?.let { (current, total) -> current to total }
     }

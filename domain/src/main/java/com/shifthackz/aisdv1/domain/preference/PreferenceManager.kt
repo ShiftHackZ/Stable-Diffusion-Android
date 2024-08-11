@@ -11,6 +11,7 @@ interface PreferenceManager {
     var swarmUiModel: String
     var demoMode: Boolean
     var developerMode: Boolean
+    var allowLocalDiffusionCancel: Boolean
     var monitorConnectivity: Boolean
     var autoSaveAiResults: Boolean
     var saveToMediaStore: Boolean

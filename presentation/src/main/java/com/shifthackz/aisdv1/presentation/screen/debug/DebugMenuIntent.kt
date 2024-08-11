@@ -6,5 +6,6 @@ enum class DebugMenuIntent : MviIntent {
     NavigateBack,
     ViewLogs,
     ClearLogs,
+    AllowLocalDiffusionCancel,
     InsertBadBase64;
 }

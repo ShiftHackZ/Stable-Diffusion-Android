@@ -85,6 +85,7 @@ internal class LocalDiffusionImpl(
             )
         } catch (e: Exception) {
             errorLog(e, "{$TAG} Caught exception while Local Diffusion process.")
+            interruptGeneration()
             emitter.onError(e)
         }
     }
@@ -100,5 +101,6 @@ internal class LocalDiffusionImpl(
         debugLog("{$TAG} Trying to interrupt generation.")
         tokenizer.close()
         uNet.close()
+        debugLog("{$TAG} Generation interrupt successful!")
     }
 }

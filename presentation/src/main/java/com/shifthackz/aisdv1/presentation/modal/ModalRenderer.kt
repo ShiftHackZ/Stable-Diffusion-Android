@@ -93,6 +93,13 @@ fun ModalRenderer(
             titleResId = LocalizationR.string.communicating_local_title,
             canDismiss = false,
             step = screenModal.pair,
+            content = screenModal.canCancel.takeIf { it }?.let {
+                {
+                    ProgressDialogCancelButton {
+                        processIntent(GenerationMviIntent.Cancel.Generation)
+                    }
+                }
+            },
         )
 
         is Modal.Image.Single -> GenerationImageResultDialog(

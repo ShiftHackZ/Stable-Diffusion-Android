@@ -322,10 +322,12 @@
     <string name="model_local_custom_sub_title">The final folder structure should be:</string>
 
     <string name="debug_section_main">Debugging</string>
+    <string name="debug_section_ld" translatable="false">Local Diffusion</string>
     <string name="debug_section_qa">QA actions</string>
     <string name="debug_action_unlock">Developer mode unlocked!</string>
     <string name="debug_action_logger">View logs</string>
     <string name="debug_action_logger_clear">Clear all logs</string>
+    <string name="debug_action_ld_allow_cancel">Allow to interrupt generation</string>
     <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>
     <string name="debug_logger_empty">No logs found.</string>
 

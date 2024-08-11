@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
@@ -27,6 +28,7 @@ internal class TextToImageTask(
     activityIntentProvider: ActivityIntentProvider,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    interruptGenerationUseCase: InterruptGenerationUseCase,
     private val preferenceManager: PreferenceManager,
     private val backgroundWorkObserver: BackgroundWorkObserver,
     private val textToImageUseCase: TextToImageUseCase,
@@ -40,6 +42,7 @@ internal class TextToImageTask(
     backgroundWorkObserver = backgroundWorkObserver,
     observeHordeProcessStatusUseCase = observeHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase = observeLocalDiffusionProcessStatusUseCase,
+    interruptGenerationUseCase = interruptGenerationUseCase,
 ) {
 
     override val notificationId: Int = NOTIFICATION_TEXT_TO_IMAGE_FOREGROUND
