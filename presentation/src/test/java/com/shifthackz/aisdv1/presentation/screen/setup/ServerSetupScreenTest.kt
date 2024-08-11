@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.shifthackz.aisdv1.presentation.screen.setup
 
 import androidx.compose.ui.test.assertIsDisplayed
@@ -20,9 +22,14 @@ import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -46,7 +53,7 @@ class ServerSetupScreenTest : CoreComposeTest {
 
     @Before
     fun initialize() {
-
+        Dispatchers.setMain(UnconfinedTestDispatcher())
         every {
             stubViewModel.state
         } returns stubUiState
@@ -82,6 +89,7 @@ class ServerSetupScreenTest : CoreComposeTest {
     @After
     fun finalize() {
         stopKoin()
+        Dispatchers.resetMain()
     }
 
     @Test
