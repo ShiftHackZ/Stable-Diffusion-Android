@@ -31,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -147,7 +148,8 @@ private fun LoggerScreenContent(
 
         }
     ) { paddingValues ->
-        val scrollState2 = rememberScrollState()
+        val text = if (!state.loading) state.text else ""
+        val scrollStateHorizontal = rememberScrollState()
         if (!state.loading && state.text.isBlank()) {
             Box(
                 modifier = Modifier
@@ -183,16 +185,18 @@ private fun LoggerScreenContent(
                     )
                 }
             }
-
             Text(
-                modifier = Modifier
-                    .horizontalScroll(scrollState2)
-                    ,
-                text = if (!state.loading) state.text else "",
+                modifier = Modifier.horizontalScroll(scrollStateHorizontal),
+                text = text,
                 fontFamily = FontFamily.Monospace,
                 fontSize = 11.sp,
                 lineHeight = 12.sp,
             )
+        }
+        LaunchedEffect(state.text) {
+            if (!state.loading) {
+                scrollState.scrollTo(scrollState.maxValue)
+            }
         }
     }
 }
