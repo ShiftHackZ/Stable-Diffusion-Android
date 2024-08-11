@@ -47,7 +47,7 @@ internal class EnglishTextTokenizer(
 
     override fun initialize() {
         if (session != null) {
-            debugLog("{$TAG} {initialize} Session already initialized, skipping...")
+            debugLog("{$TAG} {TOKENIZER} {initialize} Session already initialized, skipping...")
             return
         }
         val options = OrtSession.SessionOptions()
@@ -56,20 +56,20 @@ internal class EnglishTextTokenizer(
             "${modelPathPrefix(fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.TOKENIZER_MODEL}",
             options
         )
-        debugLog("{$TAG} {initialize} Session created successfully!")
+        debugLog("{$TAG} {TOKENIZER} {initialize} Session created successfully!")
         if (!isInitMap) {
             encoder.putAll(loadEncoder())
             decoder.putAll(loadDecoder(encoder))
             bpeRanks.putAll(loadBpeRanks())
         }
         isInitMap = true
-        debugLog("{$TAG} {initialize} Tokenizer map initialized successfully!")
+        debugLog("{$TAG} {TOKENIZER} {initialize} Tokenizer map initialized successfully!")
     }
 
     override fun decode(ids: IntArray?): String {
-        debugLog("{$TAG} {decode} Trying to decode ${ids?.size ?: "null"} int array...")
+        debugLog("{$TAG} {TOKENIZER} {decode} Trying to decode ${ids?.size ?: "null"} int array...")
         if (ids == null) {
-            debugLog("{$TAG} {decode} Input ids array is null, skipping.")
+            debugLog("{$TAG} {TOKENIZER} {decode} Input ids array is null, skipping.")
             return ""
         }
         val stringBuilder = StringBuilder()
@@ -86,12 +86,12 @@ internal class EnglishTextTokenizer(
         val ints = IntArray(result.size)
         for (i in result.indices) ints[i] = result[i]
         val resultString =  String(ints, 0, ints.size)
-        debugLog("{$TAG} {decode} Decode was successful!")
+        debugLog("{$TAG} {TOKENIZER} {decode} Decode was successful!")
         return resultString
     }
 
     override fun encode(text: String?): IntArray {
-        debugLog("{$TAG} {encode} Trying to encode ${text ?: "null"}...")
+        debugLog("{$TAG} {TOKENIZER} {encode} Trying to encode ${text ?: "null"}...")
         var input = text
         input = input.toString().lowercase(Locale.getDefault()).halfCorner()
         val stringList: MutableList<String> = ArrayList()
@@ -127,14 +127,14 @@ internal class EnglishTextTokenizer(
         Arrays.fill(copy, 49407)
         System.arraycopy(ids, 0, copy, 0, if (ids.size < copy.size) ids.size else copy.size)
         copy[copy.size - 1] = 49407
-        debugLog("{$TAG} {encode} Encode was successful!")
+        debugLog("{$TAG} {TOKENIZER} {encode} Encode was successful!")
         return copy
     }
 
     override fun tensor(ids: IntArray?): OnnxTensor? {
-        debugLog("{$TAG} {tensor} Trying to tensor ${ids?.size ?: "null"} int array...")
+        debugLog("{$TAG} {TOKENIZER} {tensor} Trying to tensor ${ids?.size ?: "null"} int array...")
         if (ids == null) {
-            debugLog("{$TAG} {tensor} Input ids array is null, skipping.")
+            debugLog("{$TAG} {TOKENIZER} {tensor} Input ids array is null, skipping.")
             return null
         }
         val inputIds = OnnxTensor.createTensor(
@@ -148,17 +148,17 @@ internal class EnglishTextTokenizer(
         val lastHiddenState = result[0].value
         result.close()
         val tensor = OnnxTensor.createTensor(ortEnvironmentProvider.get(), lastHiddenState)
-        debugLog("{$TAG} {tensor} Tensor formation was successful!")
+        debugLog("{$TAG} {TOKENIZER} {tensor} Tensor formation was successful!")
         return tensor
     }
 
     override fun createUnconditionalInput(text: String?): IntArray = encode(text)
 
     override fun close() {
-        debugLog("{$TAG} {close} Closing session...")
+        debugLog("{$TAG} {TOKENIZER} {close} Closing session...")
         session?.close()
         session = null
-        debugLog("{$TAG} Session closed successfully!")
+        debugLog("{$TAG} {TOKENIZER} {close} Session closed successfully!")
     }
 
     private fun bpe(token: String): List<String> {
