@@ -19,9 +19,10 @@ fun LocalAiModel.mapToUi(): ServerSetupState.LocalModel = with(this) {
 }
 
 fun List<ServerSetupState.LocalModel>.withNewState(
-    model: ServerSetupState.LocalModel,
+    model: ServerSetupState.LocalModel?,
 ): List<ServerSetupState.LocalModel> =
     map {
+        if (model == null) return@map it
         if (it.id == model.id) model
         else {
             if (model.selected) it.copy(selected = false)

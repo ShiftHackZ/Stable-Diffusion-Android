@@ -106,7 +106,7 @@ class ServerSetupViewModel(
             it.copy(
                 localCustomModel = intent.allow,
                 localModels = currentState.localModels.withNewState(
-                    currentState.localModels.find { m -> m.id == LocalAiModel.CUSTOM.id }!!.copy(
+                    currentState.localModels.find { m -> m.id == LocalAiModel.CUSTOM.id }?.copy(
                         selected = intent.allow,
                     ),
                 ),
