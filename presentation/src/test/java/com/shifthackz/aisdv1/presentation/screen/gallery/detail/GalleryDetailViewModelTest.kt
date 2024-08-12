@@ -119,11 +119,9 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     @Test
     fun `given received Delete Request intent, expected modal field in UI state is DeleteImageConfirm`() {
         viewModel.processIntent(GalleryDetailIntent.Delete.Request)
-        runTest {
-            val expected = Modal.DeleteImageConfirm(isAll = false, isMultiple = false)
-            val actual = (viewModel.state.value as? GalleryDetailState.Content)?.screenModal
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = Modal.DeleteImageConfirm(isAll = false, isMultiple = false)
+        val actual = (viewModel.state.value as? GalleryDetailState.Content)?.screenModal
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
@@ -138,11 +136,10 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
 
         viewModel.processIntent(GalleryDetailIntent.Delete.Confirm)
 
-        runTest {
-            val expected = Modal.None
-            val actual = (viewModel.state.value as? GalleryDetailState.Content)?.screenModal
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = Modal.None
+        val actual = (viewModel.state.value as? GalleryDetailState.Content)?.screenModal
+        Assert.assertEquals(expected, actual)
+
         verify {
             stubDeleteGalleryItemUseCase(5598L)
         }
@@ -188,31 +185,25 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     @Test
     fun `given received SelectTab intent with IMAGE tab, expected expected selectedTab field in UI state is IMAGE`() {
         viewModel.processIntent(GalleryDetailIntent.SelectTab(GalleryDetailState.Tab.IMAGE))
-        runTest {
-            val expected = GalleryDetailState.Tab.IMAGE
-            val actual = viewModel.state.value.selectedTab
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = GalleryDetailState.Tab.IMAGE
+        val actual = viewModel.state.value.selectedTab
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
     fun `given received SelectTab intent with INFO tab, expected expected selectedTab field in UI state is INFO`() {
         viewModel.processIntent(GalleryDetailIntent.SelectTab(GalleryDetailState.Tab.INFO))
-        runTest {
-            val expected = GalleryDetailState.Tab.INFO
-            val actual = viewModel.state.value.selectedTab
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = GalleryDetailState.Tab.INFO
+        val actual = viewModel.state.value.selectedTab
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
     fun `given received SelectTab intent with ORIGINAL tab, expected expected selectedTab field in UI state is ORIGINAL`() {
         viewModel.processIntent(GalleryDetailIntent.SelectTab(GalleryDetailState.Tab.ORIGINAL))
-        runTest {
-            val expected = GalleryDetailState.Tab.ORIGINAL
-            val actual = viewModel.state.value.selectedTab
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = GalleryDetailState.Tab.ORIGINAL
+        val actual = viewModel.state.value.selectedTab
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
@@ -266,10 +257,8 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     @Test
     fun `given received DismissDialog intent, expected screenModal field in UI state is None`() {
         viewModel.processIntent(GalleryDetailIntent.DismissDialog)
-        runTest {
-            val expected = Modal.None
-            val actual = viewModel.state.value.screenModal
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = Modal.None
+        val actual = viewModel.state.value.screenModal
+        Assert.assertEquals(expected, actual)
     }
 }

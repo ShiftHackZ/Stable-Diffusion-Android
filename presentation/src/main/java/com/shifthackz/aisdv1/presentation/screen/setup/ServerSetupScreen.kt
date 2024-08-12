@@ -37,6 +37,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
@@ -49,15 +50,13 @@ import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationS
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.ConfigurationStep
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.SourceSelectionStep
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
-import org.koin.androidx.compose.getViewModel
-import org.koin.compose.koinInject
-import org.koin.core.parameter.parametersOf
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ServerSetupScreen(
     modifier: Modifier = Modifier,
-    launchSourceKey: Int,
+    viewModel: ServerSetupViewModel,
+    buildInfoProvider: BuildInfoProvider = BuildInfoProvider.stub,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
@@ -69,9 +68,7 @@ fun ServerSetupScreen(
     }
 
     MviComponent(
-        viewModel = getViewModel<ServerSetupViewModel>(
-            parameters = { parametersOf(launchSourceKey) }
-        ),
+        viewModel = viewModel,
         processEffect = { effect ->
             when (effect) {
                 ServerSetupEffect.LaunchManageStoragePermission -> {
@@ -92,7 +89,7 @@ fun ServerSetupScreen(
         ScreenContent(
             modifier = modifier.fillMaxSize(),
             state = state,
-            buildInfoProvider = koinInject(),
+            buildInfoProvider = buildInfoProvider,
             processIntent = intentHandler,
         )
     }
@@ -147,6 +144,7 @@ private fun ScreenContent(
             bottomBar = {
                 Button(
                     modifier = Modifier
+                        .testTag(ServerSetupScreenTags.MAIN_BUTTON)
                         .height(height = 68.dp)
                         .background(MaterialTheme.colorScheme.background)
                         .fillMaxWidth()

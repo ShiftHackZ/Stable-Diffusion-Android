@@ -13,9 +13,13 @@ import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScree
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerScreen
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreen
+import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreen
 import com.shifthackz.aisdv1.presentation.screen.web.webui.WebUiScreen
 import com.shifthackz.aisdv1.presentation.utils.Constants
+import org.koin.androidx.compose.getViewModel
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 
 fun NavGraphBuilder.mainNavGraph() {
     addDestination(
@@ -30,7 +34,12 @@ fun NavGraphBuilder.mainNavGraph() {
             val sourceKey = entry.arguments
                 ?.getInt(Constants.PARAM_SOURCE)
                 ?: ServerSetupLaunchSource.SPLASH.ordinal
-            ServerSetupScreen(launchSourceKey = sourceKey)
+            ServerSetupScreen(
+                viewModel = getViewModel<ServerSetupViewModel>(
+                    parameters = { parametersOf(sourceKey) }
+                ),
+                buildInfoProvider = koinInject()
+            )
         }.apply {
             route = Constants.ROUTE_SERVER_SETUP_FULL
             addArgument(
