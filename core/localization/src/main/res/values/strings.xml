@@ -20,6 +20,8 @@
     <string name="apply">Apply</string>
     <string name="close">Close</string>
     <string name="next">Next</string>
+    <string name="success">✅ Success</string>
+    <string name="failure">❌ Failure</string>
 
     <string name="two">Two</string>
     <string name="three">Three</string>
@@ -328,6 +330,7 @@
     <string name="debug_action_logger">View logs</string>
     <string name="debug_action_logger_clear">Clear all logs</string>
     <string name="debug_action_ld_allow_cancel">Allow to interrupt generation</string>
+    <string name="debug_action_ld_scheduler">Process scheduler</string>
     <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>
     <string name="debug_logger_empty">No logs found.</string>
 
@@ -361,4 +364,9 @@
 
     <string name="premission_rationale_title">Missing permissions.</string>
     <string name="premission_rationale_sub_title">Please allow %1$s permission in application settings.</string>
+
+    <string name="scheduler_main">Main Thread</string>
+    <string name="scheduler_io">I/O Thread</string>
+    <string name="scheduler_computation">Computation</string>
+    <string name="scheduler_single_thread">Single Thread</string>
 </resources>

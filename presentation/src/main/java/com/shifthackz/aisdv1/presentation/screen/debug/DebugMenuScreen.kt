@@ -13,6 +13,7 @@ import androidx.compose.material.icons.automirrored.filled.TextSnippet
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.CancelScheduleSend
 import androidx.compose.material.icons.filled.CleaningServices
+import androidx.compose.material.icons.filled.Construction
 import androidx.compose.material.icons.filled.SettingsEthernet
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsHeader
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import org.koin.androidx.compose.koinViewModel
@@ -117,10 +119,17 @@ private fun ScreenContent(
                 endValueContent = {
                     Switch(
                         modifier = Modifier.padding(horizontal = 8.dp),
-                        checked = state.allowLocalDiffusionCancel,
+                        checked = state.localDiffusionAllowCancel,
                         onCheckedChange = { processIntent(DebugMenuIntent.AllowLocalDiffusionCancel) },
                     )
                 }
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                startIcon = Icons.Default.Construction,
+                text = LocalizationR.string.debug_action_ld_scheduler.asUiText(),
+                onClick = { processIntent(DebugMenuIntent.LocalDiffusionScheduler.Request) },
+                endValueText = state.localDiffusionSchedulerThread.mapToUi(),
             )
 
             SettingsHeader(
@@ -133,6 +142,9 @@ private fun ScreenContent(
                 text = LocalizationR.string.debug_action_bad_base64.asUiText(),
                 onClick = { processIntent(DebugMenuIntent.InsertBadBase64) },
             )
+        }
+        ModalRenderer(screenModal = state.screenModal) {
+            (it as? DebugMenuIntent)?.let(processIntent::invoke)
         }
     }
 }

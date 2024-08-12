@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.data.preference
 import android.content.SharedPreferences
 import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
 import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
+import com.shifthackz.aisdv1.core.common.schedulers.SchedulersToken
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.domain.entity.FeatureTag
@@ -58,10 +59,19 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
-    override var allowLocalDiffusionCancel: Boolean
+    override var localDiffusionAllowCancel: Boolean
         get() = preferences.getBoolean(KEY_ALLOW_LOCAL_DIFFUSION_CANCEL, false)
         set(value) = preferences.edit()
             .putBoolean(KEY_ALLOW_LOCAL_DIFFUSION_CANCEL, value)
+            .apply()
+            .also { onPreferencesChanged() }
+
+    override var localDiffusionSchedulerThread: SchedulersToken
+        get() = preferences
+            .getInt(KEY_LOCAL_DIFFUSION_SCHEDULER_THREAD, SchedulersToken.COMPUTATION.ordinal)
+            .let { SchedulersToken.entries[it] }
+        set(value) = preferences.edit()
+            .putInt(KEY_LOCAL_DIFFUSION_SCHEDULER_THREAD, value.ordinal)
             .apply()
             .also { onPreferencesChanged() }
 
@@ -247,7 +257,8 @@ class PreferenceManagerImpl(
                 sdModel = sdModel,
                 demoMode = demoMode,
                 developerMode = developerMode,
-                allowLocalDiffusionCancel = allowLocalDiffusionCancel,
+                localDiffusionAllowCancel = localDiffusionAllowCancel,
+                localDiffusionSchedulerThread = localDiffusionSchedulerThread,
                 monitorConnectivity = monitorConnectivity,
                 backgroundGeneration = backgroundGeneration,
                 autoSaveAiResults = autoSaveAiResults,
@@ -275,6 +286,7 @@ class PreferenceManagerImpl(
         const val KEY_DEMO_MODE = "key_demo_mode"
         const val KEY_DEVELOPER_MODE = "key_developer_mode"
         const val KEY_ALLOW_LOCAL_DIFFUSION_CANCEL = "key_allow_local_diffusion_cancel"
+        const val KEY_LOCAL_DIFFUSION_SCHEDULER_THREAD = "key_local_diffusion_scheduler_thread"
         const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
         const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
         const val KEY_SAVE_TO_MEDIA_STORE = "key_save_to_media_store"

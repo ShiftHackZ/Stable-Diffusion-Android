@@ -5,12 +5,14 @@ import com.shifthackz.aisdv1.core.common.log.FileLoggingTree
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
+import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
+import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
-import com.shifthackz.android.core.mvi.EmptyEffect
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class DebugMenuViewModel(
     private val preferenceManager: PreferenceManager,
@@ -18,7 +20,7 @@ class DebugMenuViewModel(
     private val debugInsertBadBase64UseCase: DebugInsertBadBase64UseCase,
     private val schedulersProvider: SchedulersProvider,
     private val mainRouter: MainRouter,
-) : MviRxViewModel<DebugMenuState, DebugMenuIntent, EmptyEffect>() {
+) : MviRxViewModel<DebugMenuState, DebugMenuIntent, DebugMenuEffect>() {
 
     override val initialState = DebugMenuState()
 
@@ -27,8 +29,11 @@ class DebugMenuViewModel(
             .observe()
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog) { settings ->
-                updateState {
-                    it.copy(allowLocalDiffusionCancel = settings.allowLocalDiffusionCancel)
+                updateState { state ->
+                    state.copy(
+                        localDiffusionAllowCancel = settings.localDiffusionAllowCancel,
+                        localDiffusionSchedulerThread = settings.localDiffusionSchedulerThread,
+                    )
                 }
             }
     }
@@ -39,17 +44,43 @@ class DebugMenuViewModel(
 
             DebugMenuIntent.InsertBadBase64 -> !debugInsertBadBase64UseCase()
                 .subscribeOnMainThread(schedulersProvider)
-                .subscribeBy(::errorLog)
+                .subscribeBy(::onError, ::onSuccess)
 
             DebugMenuIntent.ClearLogs -> {
-                FileLoggingTree.clearLog(fileProviderDescriptor)
+                try {
+                    FileLoggingTree.clearLog(fileProviderDescriptor)
+                    onSuccess()
+                } catch (e: Exception) {
+                    onError(e)
+                }
             }
 
             DebugMenuIntent.ViewLogs -> mainRouter.navigateToLogger()
 
             DebugMenuIntent.AllowLocalDiffusionCancel -> {
-                preferenceManager.allowLocalDiffusionCancel = !currentState.allowLocalDiffusionCancel
+                preferenceManager.localDiffusionAllowCancel = !currentState.localDiffusionAllowCancel
+            }
+
+            DebugMenuIntent.LocalDiffusionScheduler.Request -> updateState {
+                it.copy(screenModal = Modal.LDScheduler(it.localDiffusionSchedulerThread))
+            }
+
+            is DebugMenuIntent.LocalDiffusionScheduler.Confirm -> {
+                preferenceManager.localDiffusionSchedulerThread = intent.token
+            }
+
+            DebugMenuIntent.DismissModal -> updateState {
+                it.copy(screenModal = Modal.None)
             }
         }
+    }
+
+    private fun onSuccess() {
+        emitEffect(DebugMenuEffect.Message(LocalizationR.string.success.asUiText()))
+    }
+
+    private fun onError(t: Throwable) {
+        errorLog(t)
+        emitEffect(DebugMenuEffect.Message(LocalizationR.string.failure.asUiText()))
     }
 }

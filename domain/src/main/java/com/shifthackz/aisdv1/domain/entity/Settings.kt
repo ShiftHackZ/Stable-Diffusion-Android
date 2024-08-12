@@ -1,11 +1,14 @@
 package com.shifthackz.aisdv1.domain.entity
 
+import com.shifthackz.aisdv1.core.common.schedulers.SchedulersToken
+
 data class Settings(
     val serverUrl: String = "",
     val sdModel: String = "",
     val demoMode: Boolean = false,
     val developerMode: Boolean = false,
-    val allowLocalDiffusionCancel: Boolean = false,
+    val localDiffusionAllowCancel: Boolean = false,
+    val localDiffusionSchedulerThread: SchedulersToken = SchedulersToken.COMPUTATION,
     val monitorConnectivity: Boolean = false,
     val backgroundGeneration: Boolean = false,
     val autoSaveAiResults: Boolean = false,

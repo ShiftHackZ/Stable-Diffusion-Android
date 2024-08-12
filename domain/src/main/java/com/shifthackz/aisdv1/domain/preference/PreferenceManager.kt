@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.domain.preference
 
+import com.shifthackz.aisdv1.core.common.schedulers.SchedulersToken
 import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
@@ -11,7 +12,8 @@ interface PreferenceManager {
     var swarmUiModel: String
     var demoMode: Boolean
     var developerMode: Boolean
-    var allowLocalDiffusionCancel: Boolean
+    var localDiffusionAllowCancel: Boolean
+    var localDiffusionSchedulerThread: SchedulersToken
     var monitorConnectivity: Boolean
     var autoSaveAiResults: Boolean
     var saveToMediaStore: Boolean
