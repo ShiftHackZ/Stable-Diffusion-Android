@@ -16,6 +16,8 @@
     <string name="apply">Применить</string>
     <string name="close">Закрыть</string>
     <string name="next">Далее</string>
+    <string name="success">✅ Успешно</string>
+    <string name="failure">❌ Ошибка</string>
 
     <string name="two">Два</string>
     <string name="three">Три</string>
@@ -301,10 +303,15 @@
 
     <string name="debug_section_main">Отладка</string>
     <string name="debug_section_qa">QA тест-кейсы</string>
+    <string name="debug_section_work_manager">Work Manager API</string>
     <string name="debug_action_unlock">Режим разработчика разблокирован!</string>
     <string name="debug_action_logger">Посмотреть логи</string>
     <string name="debug_action_logger_clear">Очистить все логи</string>
+    <string name="debug_action_work_restart_txt2img">Перезапустить последнюю txt2img задачу</string>
+    <string name="debug_action_work_restart_img2img">Перезапустить последнюю img2img задачу</string>
+    <string name="debug_action_work_cancel_all">Отменить все задачи</string>
     <string name="debug_action_ld_allow_cancel">Разрешить прерывание генерации</string>
+    <string name="debug_action_ld_scheduler">Поток</string>
     <string name="debug_action_bad_base64">Внести битый Base64 в БД</string>
     <string name="debug_logger_empty">Лог файл пуст.</string>
 
@@ -337,4 +344,9 @@
 
     <string name="premission_rationale_title">Отсутствует разрешение.</string>
     <string name="premission_rationale_sub_title">Разрешите права на %1$s в настройках.</string>
+
+    <string name="scheduler_main">UI поток</string>
+    <string name="scheduler_io">I/O Поток</string>
+    <string name="scheduler_computation">Вычислительный</string>
+    <string name="scheduler_single_thread">Однопоточность</string>
 </resources>

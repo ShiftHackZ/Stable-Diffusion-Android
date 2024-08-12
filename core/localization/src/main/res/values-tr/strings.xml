@@ -16,6 +16,8 @@
     <string name="apply">Uygula</string>
     <string name="close">Kapalı</string>
     <string name="next">Sonraki</string>
+    <string name="success">✅ Başarılı</string>
+    <string name="failure">❌ Başarısızlık</string>
 
     <string name="two">İki</string>
     <string name="three">Üç</string>
@@ -300,11 +302,16 @@
     <string name="model_local_custom_sub_title">Son klasör yapısı şu şekilde olmalıdır::</string>
 
     <string name="debug_section_main">Hata ayıklama</string>
+    <string name="debug_section_work_manager">Work Manager API</string>
     <string name="debug_section_qa">QA işlemleri</string>
     <string name="debug_action_unlock">Geliştirici modu kilidi açıldı!</string>
     <string name="debug_action_logger">Günlükleri görüntüle</string>
     <string name="debug_action_logger_clear">Tüm günlükleri temizle</string>
+    <string name="debug_action_work_restart_txt2img">Son txt2img görevini yeniden başlat</string>
+    <string name="debug_action_work_restart_img2img">Son img2img görevini yeniden başlat</string>
+    <string name="debug_action_work_cancel_all">Tüm çalışanları iptal et</string>
     <string name="debug_action_ld_allow_cancel">Oluşturmayı kesmeye izin ver</string>
+    <string name="debug_action_ld_scheduler">İşlem zamanlayıcısı</string>
     <string name="debug_action_bad_base64">Kötü Base64\'ü DB\'ye yerleştirin</string>
     <string name="debug_logger_empty">Herhangi bir günlük bulunamadı.</string>
 
@@ -337,4 +344,9 @@
 
     <string name="premission_rationale_title">Eksik izinler.</string>
     <string name="premission_rationale_sub_title">Lütfen uygulama ayarlarında %1$s iznini verin.</string>
+
+    <string name="scheduler_main">Ana İş Parçacığı</string>
+    <string name="scheduler_io">G/Ç İş Parçacığı</string>
+    <string name="scheduler_computation">Hesaplama</string>
+    <string name="scheduler_single_thread">Tek İş Parçacığı</string>
 </resources>

@@ -16,6 +16,8 @@
     <string name="apply">Застосувати</string>
     <string name="close">Закрити</string>
     <string name="next">Далі</string>
+    <string name="success">✅ Успіх</string>
+    <string name="failure">❌ Помилка</string>
 
     <string name="two">Два</string>
     <string name="three">Три</string>
@@ -300,11 +302,16 @@
     <string name="model_local_custom_sub_title">Остаточна структура папок має бути такою:</string>
 
     <string name="debug_section_main">Відладка</string>
+    <string name="debug_section_work_manager">Work Manager API</string>
     <string name="debug_section_qa">QA тест-кейси</string>
     <string name="debug_action_unlock">Режим розробника розблоковано!</string>
     <string name="debug_action_logger">Дивитися логи</string>
     <string name="debug_action_logger_clear">Видалити всі логи</string>
+    <string name="debug_action_work_restart_txt2img">Перезапуск останнього txt2img завдання</string>
+    <string name="debug_action_work_restart_img2img">Перезапуск останнього img2img завдання</string>
+    <string name="debug_action_work_cancel_all">Скасувати всі завдання</string>
     <string name="debug_action_ld_allow_cancel">Дозволити переривання генерації</string>
+    <string name="debug_action_ld_scheduler">Потік</string>
     <string name="debug_action_bad_base64">Внести битий Base64 в БД</string>
     <string name="debug_logger_empty">Лог файл пустий.</string>
 
@@ -337,4 +344,9 @@
 
     <string name="premission_rationale_title">Додаток не має дозволів.</string>
     <string name="premission_rationale_sub_title">Довольте права на %1$s в налаштуваннях.</string>
+
+    <string name="scheduler_main">UI Потік</string>
+    <string name="scheduler_io">I/O Потік</string>
+    <string name="scheduler_computation">Обчислення</string>
+    <string name="scheduler_single_thread">Один потік</string>
 </resources>

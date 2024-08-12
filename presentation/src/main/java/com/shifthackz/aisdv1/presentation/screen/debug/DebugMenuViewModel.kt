@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
 import com.shifthackz.aisdv1.presentation.model.Modal
@@ -20,6 +21,7 @@ class DebugMenuViewModel(
     private val debugInsertBadBase64UseCase: DebugInsertBadBase64UseCase,
     private val schedulersProvider: SchedulersProvider,
     private val mainRouter: MainRouter,
+    private val backgroundTaskManager: BackgroundTaskManager,
 ) : MviRxViewModel<DebugMenuState, DebugMenuIntent, DebugMenuEffect>() {
 
     override val initialState = DebugMenuState()
@@ -72,8 +74,25 @@ class DebugMenuViewModel(
             DebugMenuIntent.DismissModal -> updateState {
                 it.copy(screenModal = Modal.None)
             }
+
+            DebugMenuIntent.WorkManager.CancelAll -> backgroundTaskManager
+                .cancelAll()
+                .handleState()
+
+            DebugMenuIntent.WorkManager.RestartTxt2Img -> backgroundTaskManager
+                .retryLastTextToImageTask()
+                .handleState()
+
+            DebugMenuIntent.WorkManager.RestartImg2Img -> backgroundTaskManager
+                .retryLastImageToImageTask()
+                .handleState()
         }
     }
+
+    private fun Result<Unit>.handleState() = this.fold(
+        onSuccess = { onSuccess() },
+        onFailure = ::onError,
+    )
 
     private fun onSuccess() {
         emitEffect(DebugMenuEffect.Message(LocalizationR.string.success.asUiText()))

@@ -9,7 +9,6 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.annotation.StringRes
 
-
 fun Context.isAppInForeground(): Boolean {
     val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     val processes = activityManager.runningAppProcesses ?: return false

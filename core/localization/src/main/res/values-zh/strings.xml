@@ -21,6 +21,8 @@
     <string name="apply">应用</string>
     <string name="close">关闭</string>
     <string name="next">下一步</string>
+    <string name="success">✅ 成功</string>
+    <string name="failure">❌ 失败</string>
 
     <string name="two">二</string>
     <string name="three">三</string>
@@ -362,11 +364,16 @@
 
     <!-- 调试菜单 -->
     <string name="debug_section_main">调试</string>
+    <string name="debug_section_work_manager">工作管理器 API</string>
     <string name="debug_section_qa">QA操作</string>
     <string name="debug_action_unlock">开发者模式已解锁！</string>
     <string name="debug_action_logger">查看日志</string>
     <string name="debug_action_logger_clear">清除所有日志</string>
+    <string name="debug_action_work_restart_txt2img">重新启动最后一个 txt2img 任务</string>
+    <string name="debug_action_work_restart_img2img">重新启动最后一个 img2img 任务</string>
+    <string name="debug_action_work_cancel_all">取消所有工作程序</string>
     <string name="debug_action_ld_allow_cancel">允许中断生成</string>
+    <string name="debug_action_ld_scheduler">进程调度程序</string>
     <string name="debug_action_bad_base64">在数据库中插入错误的Base64</string>
     <string name="debug_logger_empty">未找到日志。</string>
 
@@ -403,4 +410,9 @@
 
     <string name="premission_rationale_title">缺少权限。</string>
     <string name="premission_rationale_sub_title">请在应用程序设置中允许 %1$s 权限。</string>
+
+    <string name="scheduler_main">主线程</string>
+    <string name="scheduler_io">I/O 线程</string>
+    <string name="scheduler_computation">计算</string>
+    <string name="scheduler_single_thread">单线程</string>
 </resources>

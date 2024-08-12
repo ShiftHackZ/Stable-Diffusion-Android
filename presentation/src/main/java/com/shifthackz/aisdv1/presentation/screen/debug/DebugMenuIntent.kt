@@ -22,5 +22,9 @@ sealed interface DebugMenuIntent : MviIntent {
         data object Request : DebugMenuIntent
     }
 
+    enum class WorkManager : DebugMenuIntent {
+        CancelAll, RestartTxt2Img, RestartImg2Img;
+    }
+
     data object DismissModal : DebugMenuIntent
 }

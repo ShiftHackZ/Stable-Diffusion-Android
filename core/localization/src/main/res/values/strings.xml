@@ -325,10 +325,14 @@
 
     <string name="debug_section_main">Debugging</string>
     <string name="debug_section_ld" translatable="false">Local Diffusion</string>
+    <string name="debug_section_work_manager">Work Manager API</string>
     <string name="debug_section_qa">QA actions</string>
     <string name="debug_action_unlock">Developer mode unlocked!</string>
     <string name="debug_action_logger">View logs</string>
     <string name="debug_action_logger_clear">Clear all logs</string>
+    <string name="debug_action_work_restart_txt2img">Restart last txt2img task</string>
+    <string name="debug_action_work_restart_img2img">Restart last img2img task</string>
+    <string name="debug_action_work_cancel_all">Cancel all workers</string>
     <string name="debug_action_ld_allow_cancel">Allow to interrupt generation</string>
     <string name="debug_action_ld_scheduler">Process scheduler</string>
     <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>

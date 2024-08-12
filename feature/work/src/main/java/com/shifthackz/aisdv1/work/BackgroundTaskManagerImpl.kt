@@ -25,6 +25,33 @@ internal class BackgroundTaskManagerImpl : BackgroundTaskManager {
         runWork<ImageToImageTask>(payload.toByteArray(), Constants.FILE_IMAGE_TO_IMAGE)
     }
 
+    override fun retryLastTextToImageTask(): Result<Unit> {
+        try {
+            val bytes = readPayload(Constants.FILE_TEXT_TO_IMAGE)
+                ?: return Result.failure(Throwable("Payload is null."))
+            runWork<TextToImageTask>(bytes, Constants.FILE_TEXT_TO_IMAGE)
+            return Result.success(Unit)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
+
+    override fun retryLastImageToImageTask(): Result<Unit> {
+        try {
+            val bytes = readPayload(Constants.FILE_IMAGE_TO_IMAGE)
+                ?: return Result.failure(Throwable("Payload is null."))
+            runWork<ImageToImageTask>(bytes, Constants.FILE_IMAGE_TO_IMAGE)
+            return Result.success(Unit)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
+
+    override fun cancelAll(): Result<Unit> = runCatching {
+        val workManager: WorkManagerProvider by inject(WorkManagerProvider::class.java)
+        workManager().cancelAllWork()
+    }
+
     private inline fun <reified W : ListenableWorker> runWork(bytes: ByteArray, fileName: String) {
         val workManager: WorkManagerProvider by inject(WorkManagerProvider::class.java)
         val workRequest = OneTimeWorkRequestBuilder<W>()
@@ -33,12 +60,22 @@ internal class BackgroundTaskManagerImpl : BackgroundTaskManager {
             .build()
 
         writePayload(bytes, fileName)
-        workManager().cancelAllWork()
+        workManager().cancelUniqueWork(Constants.TAG_GENERATION)
         workManager().enqueueUniqueWork(
             Constants.TAG_GENERATION,
             ExistingWorkPolicy.REPLACE,
             workRequest,
         )
+    }
+
+    private fun readPayload(fileName: String): ByteArray? {
+        val fileProviderDescriptor: FileProviderDescriptor by inject(FileProviderDescriptor::class.java)
+        val cacheDirectory = File(fileProviderDescriptor.workCacheDirPath)
+        if (!cacheDirectory.exists()) {
+            return null
+        }
+        val outFile = File(cacheDirectory, fileName)
+        return outFile.readBytes()
     }
 
     private fun writePayload(bytes: ByteArray, fileName: String) {

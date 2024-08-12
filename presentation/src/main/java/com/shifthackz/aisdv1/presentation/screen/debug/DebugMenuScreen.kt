@@ -11,9 +11,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.TextSnippet
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CancelScheduleSend
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.Construction
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.SettingsEthernet
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,9 +27,11 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.common.extensions.showToast
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
@@ -38,8 +42,16 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun DebugMenuScreen() {
+    val context = LocalContext.current
     MviComponent(
         viewModel = koinViewModel<DebugMenuViewModel>(),
+        processEffect = { effect ->
+            when (effect) {
+                is DebugMenuEffect.Message -> context.showToast(
+                    effect.message.asString(context)
+                )
+            }
+        }
     ) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
@@ -105,6 +117,29 @@ private fun ScreenContent(
                 startIcon = Icons.Default.CleaningServices,
                 text = LocalizationR.string.debug_action_logger_clear.asUiText(),
                 onClick = { processIntent(DebugMenuIntent.ClearLogs) },
+            )
+
+            SettingsHeader(
+                modifier = headerModifier,
+                text = LocalizationR.string.debug_section_work_manager.asUiText(),
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                startIcon = Icons.Default.Refresh,
+                text = LocalizationR.string.debug_action_work_restart_txt2img.asUiText(),
+                onClick = { processIntent(DebugMenuIntent.WorkManager.RestartTxt2Img) },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                startIcon = Icons.Default.Refresh,
+                text = LocalizationR.string.debug_action_work_restart_img2img.asUiText(),
+                onClick = { processIntent(DebugMenuIntent.WorkManager.RestartImg2Img) },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                startIcon = Icons.Default.Cancel,
+                text = LocalizationR.string.debug_action_work_cancel_all.asUiText(),
+                onClick = { processIntent(DebugMenuIntent.WorkManager.CancelAll) },
             )
 
             SettingsHeader(

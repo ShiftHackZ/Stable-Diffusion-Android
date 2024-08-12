@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.screen.debug
 
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.domain.entity.Settings
+import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
@@ -21,6 +22,7 @@ class DebugMenuViewModelTest : CoreViewModelTest<DebugMenuViewModel>() {
     private val stubDebugInsertBadBase64UseCase = mockk<DebugInsertBadBase64UseCase>()
     private val stubMainRouter = mockk<MainRouter>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
+    private val stubBackgroundTaskManager = mockk<BackgroundTaskManager>()
 
     override fun initializeViewModel() = DebugMenuViewModel(
         preferenceManager = stubPreferenceManager,
@@ -28,6 +30,7 @@ class DebugMenuViewModelTest : CoreViewModelTest<DebugMenuViewModel>() {
         debugInsertBadBase64UseCase = stubDebugInsertBadBase64UseCase,
         schedulersProvider = stubSchedulersProvider,
         mainRouter = stubMainRouter,
+        backgroundTaskManager = stubBackgroundTaskManager,
     )
 
     @Before
