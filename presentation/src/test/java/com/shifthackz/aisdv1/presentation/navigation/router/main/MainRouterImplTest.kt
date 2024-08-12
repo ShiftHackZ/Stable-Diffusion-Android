@@ -1,20 +1,25 @@
 package com.shifthackz.aisdv1.presentation.navigation.router.main
 
-import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import io.mockk.every
 import io.mockk.mockk
+import org.junit.Before
 import org.junit.Test
 
 class MainRouterImplTest {
 
-    private val stubBuildInfoProvider = mockk<BuildInfoProvider>()
-    private val stubDebugMenuAccessor = DebugMenuAccessor(stubBuildInfoProvider)
+    private val stubPreferenceManager = mockk<PreferenceManager>()
+    private val stubDebugMenuAccessor = DebugMenuAccessor(stubPreferenceManager)
 
     private val router = MainRouterImpl(stubDebugMenuAccessor)
+
+    @Before
+    fun initialize() {
+
+    }
 
     @Test
     fun `given user navigates back, expected router emits Back event`() {
@@ -106,62 +111,13 @@ class MainRouterImplTest {
     }
 
     @Test
-    fun `given user tapped hidden menu 6 times, build is debuggable, expected router emits no events`() {
-        every {
-            stubBuildInfoProvider.isDebug
-        } returns true
-
-        val stubObserver = router.observe().test()
-
-        repeat(6) { router.navigateToDebugMenu() }
-
-        stubObserver
-            .assertNoErrors()
-            .assertNoValues()
-    }
-
-    @Test
     fun `given user tapped hidden menu 7 times, build is debuggable, expected router emits Route event with ROUTE_DEBUG route`() {
-        every {
-            stubBuildInfoProvider.isDebug
-        } returns true
-
         val stubObserver = router.observe().test()
 
-        repeat(7) { router.navigateToDebugMenu() }
+        router.navigateToDebugMenu()
 
         stubObserver
             .assertNoErrors()
             .assertValueAt(0, NavigationEffect.Navigate.Route(Constants.ROUTE_DEBUG))
-    }
-
-    @Test
-    fun `given user tapped hidden menu 6 times, build is NOT debuggable, expected router emits no events`() {
-        every {
-            stubBuildInfoProvider.isDebug
-        } returns false
-
-        val stubObserver = router.observe().test()
-
-        repeat(6) { router.navigateToDebugMenu() }
-
-        stubObserver
-            .assertNoErrors()
-            .assertNoValues()
-    }
-
-    @Test
-    fun `given user tapped hidden menu 7 times, build is NOT debuggable, expected router emits no events`() {
-        every {
-            stubBuildInfoProvider.isDebug
-        } returns false
-
-        val stubObserver = router.observe().test()
-
-        repeat(7) { router.navigateToDebugMenu() }
-
-        stubObserver
-            .assertNoErrors()
-            .assertNoValues()
     }
 }

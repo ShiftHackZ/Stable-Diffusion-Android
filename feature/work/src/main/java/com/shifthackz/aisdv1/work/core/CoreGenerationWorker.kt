@@ -13,6 +13,7 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -24,10 +25,11 @@ internal abstract class CoreGenerationWorker(
     workerParameters: WorkerParameters,
     pushNotificationManager: PushNotificationManager,
     activityIntentProvider: ActivityIntentProvider,
-    preferenceManager: PreferenceManager,
+    private val preferenceManager: PreferenceManager,
     private val backgroundWorkObserver: BackgroundWorkObserver,
     private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    private val interruptGenerationUseCase: InterruptGenerationUseCase,
 ) : NotificationWorker(
     context = context,
     workerParameters = workerParameters,
@@ -41,6 +43,11 @@ internal abstract class CoreGenerationWorker(
 
     override fun onStopped() {
         super.onStopped()
+        runCatching {
+            interruptGenerationUseCase()
+                .onErrorComplete()
+                .blockingAwait()
+        }
         compositeDisposable.clear()
         backgroundWorkObserver.postCancelSignal()
     }
@@ -86,7 +93,7 @@ internal abstract class CoreGenerationWorker(
                     body = subTitle,
                     silent = true,
                     progress = status.current to status.total,
-                    canCancel = false,
+                    canCancel = preferenceManager.localDiffusionAllowCancel,
                 )
             }
     }
@@ -118,7 +125,6 @@ internal abstract class CoreGenerationWorker(
     }
 
     protected fun handleError(t: Throwable) {
-        errorLog(t)
         backgroundWorkObserver.postFailedSignal(t)
         val title = applicationContext.getString(LocalizationR.string.notification_fail_title)
         val subTitle = applicationContext.getString(LocalizationR.string.notification_fail_sub_title)

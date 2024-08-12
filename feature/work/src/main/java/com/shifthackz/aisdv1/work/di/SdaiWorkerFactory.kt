@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
@@ -24,6 +25,7 @@ class SdaiWorkerFactory(
     private val imageToImageUseCase: ImageToImageUseCase,
     private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    private val interruptGenerationUseCase: InterruptGenerationUseCase,
     private val fileProviderDescriptor: FileProviderDescriptor,
     private val activityIntentProvider: ActivityIntentProvider,
 ) : WorkerFactory() {
@@ -44,6 +46,7 @@ class SdaiWorkerFactory(
                 textToImageUseCase = textToImageUseCase,
                 observeHordeProcessStatusUseCase = observeHordeProcessStatusUseCase,
                 observeLocalDiffusionProcessStatusUseCase = observeLocalDiffusionProcessStatusUseCase,
+                interruptGenerationUseCase = interruptGenerationUseCase,
                 fileProviderDescriptor = fileProviderDescriptor,
             )
 
@@ -57,6 +60,7 @@ class SdaiWorkerFactory(
                 imageToImageUseCase = imageToImageUseCase,
                 observeHordeProcessStatusUseCase = observeHordeProcessStatusUseCase,
                 observeLocalDiffusionProcessStatusUseCase = observeLocalDiffusionProcessStatusUseCase,
+                interruptGenerationUseCase = interruptGenerationUseCase,
                 fileProviderDescriptor = fileProviderDescriptor,
             )
 

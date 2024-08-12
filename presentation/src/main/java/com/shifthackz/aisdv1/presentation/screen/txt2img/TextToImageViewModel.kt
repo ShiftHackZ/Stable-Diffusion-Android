@@ -66,7 +66,7 @@ class TextToImageViewModel(
     private val progressModal: Modal
         get() {
             if (currentState.mode == ServerSource.LOCAL) {
-                return Modal.Generating()
+                return Modal.Generating(canCancel = preferenceManager.localDiffusionAllowCancel)
             }
             return Modal.Communicating()
         }
@@ -126,14 +126,14 @@ class TextToImageViewModel(
     }
 
     override fun onReceivedHordeStatus(status: HordeProcessStatus) {
-        if (currentState.screenModal is Modal.Communicating) {
-            setActiveModal(Modal.Communicating(hordeProcessStatus = status))
-        }
+        (currentState.screenModal as? Modal.Communicating)
+            ?.copy(hordeProcessStatus = status)
+            ?.let(::setActiveModal)
     }
 
     override fun onReceivedLocalDiffusionStatus(status: LocalDiffusion.Status) {
-        if (currentState.screenModal is Modal.Generating) {
-            setActiveModal(Modal.Generating(status))
-        }
+        (currentState.screenModal as? Modal.Generating)
+            ?.copy(status = status)
+            ?.let(::setActiveModal)
     }
 }

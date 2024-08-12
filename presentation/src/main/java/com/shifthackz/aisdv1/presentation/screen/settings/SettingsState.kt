@@ -29,6 +29,7 @@ data class SettingsState(
     val colorToken: ColorToken = ColorToken.MAUVE,
     val darkThemeToken: DarkThemeToken = DarkThemeToken.FRAPPE,
     val galleryGrid: Grid = Grid.Fixed2,
+    val developerMode: Boolean = false,
     val appVersion: String = "",
 ) : MviState {
 

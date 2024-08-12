@@ -20,6 +20,8 @@
     <string name="apply">Apply</string>
     <string name="close">Close</string>
     <string name="next">Next</string>
+    <string name="success">✅ Success</string>
+    <string name="failure">❌ Failure</string>
 
     <string name="two">Two</string>
     <string name="three">Three</string>
@@ -171,7 +173,8 @@
     <string name="title_server_setup">Configuration</string>
     <string name="title_select_sd_model">Select SD ML Model</string>
     <string name="title_clear_app_cache">Clear app cache</string>
-    <string name="title_debug_menu">Debug Menu</string>
+    <string name="title_debug_menu">Developer mode</string>
+    <string name="title_debug_logger">Logs</string>
     <string name="title_lora">LoRA</string>
     <string name="title_hyper_net" translatable="false">Hypernetworks</string>
     <string name="title_hyper_net_short" translatable="false">H-Net</string>
@@ -320,8 +323,20 @@
     <string name="model_local_custom_title">To use local custom model, place it to local folder in your phone storage: Download/SDAi/model</string>
     <string name="model_local_custom_sub_title">The final folder structure should be:</string>
 
+    <string name="debug_section_main">Debugging</string>
+    <string name="debug_section_ld" translatable="false">Local Diffusion</string>
+    <string name="debug_section_work_manager">Work Manager API</string>
     <string name="debug_section_qa">QA actions</string>
+    <string name="debug_action_unlock">Developer mode unlocked!</string>
+    <string name="debug_action_logger">View logs</string>
+    <string name="debug_action_logger_clear">Clear all logs</string>
+    <string name="debug_action_work_restart_txt2img">Restart last txt2img task</string>
+    <string name="debug_action_work_restart_img2img">Restart last img2img task</string>
+    <string name="debug_action_work_cancel_all">Cancel all workers</string>
+    <string name="debug_action_ld_allow_cancel">Allow to interrupt generation</string>
+    <string name="debug_action_ld_scheduler">Process scheduler</string>
     <string name="debug_action_bad_base64">Insert bad Base64 in DB</string>
+    <string name="debug_logger_empty">No logs found.</string>
 
     <string name="extras_empty_title">Nothing here…</string>
     <string name="extras_empty_sub_title_lora">Add some content on %1$s server to: \n\n%2$s</string>
@@ -353,4 +368,9 @@
 
     <string name="premission_rationale_title">Missing permissions.</string>
     <string name="premission_rationale_sub_title">Please allow %1$s permission in application settings.</string>
+
+    <string name="scheduler_main">Main Thread</string>
+    <string name="scheduler_io">I/O Thread</string>
+    <string name="scheduler_computation">Computation</string>
+    <string name="scheduler_single_thread">Single Thread</string>
 </resources>

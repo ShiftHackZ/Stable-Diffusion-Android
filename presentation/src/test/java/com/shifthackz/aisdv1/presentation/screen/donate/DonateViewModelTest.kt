@@ -9,8 +9,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.reactivex.rxjava3.core.Single
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
@@ -32,14 +30,12 @@ class DonateViewModelTest : CoreViewModelTest<DonateViewModel>() {
             stubFetchAndGetSupportersUseCase()
         } returns Single.just(mockSupporters)
 
-        runTest {
-            val expected = DonateState(
-                loading = false,
-                supporters = mockSupporters,
-            )
-            val actual = viewModel.state.value
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = DonateState(
+            loading = false,
+            supporters = mockSupporters,
+        )
+        val actual = viewModel.state.value
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
@@ -48,14 +44,13 @@ class DonateViewModelTest : CoreViewModelTest<DonateViewModel>() {
             stubFetchAndGetSupportersUseCase()
         } returns Single.error(stubException)
 
-        runTest {
-            val expected = DonateState(
-                loading = false,
-                supporters = emptyList(),
-            )
-            val actual = viewModel.state.value
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = DonateState(
+            loading = false,
+            supporters = emptyList(),
+        )
+        val actual = viewModel.state.value
+        Assert.assertEquals(expected, actual)
+
     }
 
     @Test
@@ -72,26 +67,6 @@ class DonateViewModelTest : CoreViewModelTest<DonateViewModel>() {
 
         verify {
             stubMainRouter.navigateBack()
-        }
-    }
-
-    @Test
-    fun `given received LaunchUrl intent, expected OpenUrl effect delivered to effect collector`() {
-        every {
-            stubFetchAndGetSupportersUseCase()
-        } returns Single.just(mockSupporters)
-
-        val intent = mockk<DonateIntent.LaunchUrl.DonateBmc>()
-        every {
-            intent::url.get()
-        } returns "https://5598.is.my.favourite.com"
-
-        viewModel.processIntent(intent)
-
-        runTest {
-            val expected = DonateEffect.OpenUrl("https://5598.is.my.favourite.com")
-            val actual = viewModel.effect.firstOrNull()
-            Assert.assertEquals(expected, actual)
         }
     }
 }

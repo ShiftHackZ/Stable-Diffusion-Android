@@ -2,8 +2,11 @@ package com.shifthackz.aisdv1.feature.diffusion
 
 import ai.onnxruntime.OnnxTensor
 import android.graphics.Bitmap
+import com.shifthackz.aisdv1.core.common.log.debugLog
+import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.TAG
 import com.shifthackz.aisdv1.feature.diffusion.ai.tokenizer.LocalDiffusionTextTokenizer
 import com.shifthackz.aisdv1.feature.diffusion.ai.unet.UNet
 import com.shifthackz.aisdv1.feature.diffusion.environment.OrtEnvironmentProvider
@@ -21,15 +24,25 @@ internal class LocalDiffusionImpl(
 
     override fun process(payload: TextToImagePayload): Single<Bitmap> = Single.create { emitter ->
         try {
+            emitter.setCancellable {
+                debugLog(TAG, "{$TAG} Received cancelable signal.")
+                interruptGeneration()
+            }
             uNet.setCallback(object : UNet.Callback {
                 override fun onStep(maxStep: Int, step: Int) {
+                    debugLog(TAG, "Received step update: ${maxStep}/${step}")
                     statusSubject.onNext(LocalDiffusion.Status(step, maxStep))
                 }
 
                 override fun onBuildImage(status: Int, bitmap: Bitmap?) {
-                    if (!emitter.isDisposed) {
-                        bitmap?.let(emitter::onSuccess) ?: emitter.onError(Throwable("Bitmap is null"))
-                    }
+                    bitmap
+                        ?.let(emitter::onSuccess)
+                        ?.also { debugLog("{$TAG} Bitmap built successfully!") }
+                        ?: run {
+                            val t = Throwable("Bitmap is null")
+                            errorLog(t, "{$TAG} Bitmap is null.")
+                            emitter.onError(t)
+                        }
                 }
             })
 
@@ -71,15 +84,23 @@ internal class LocalDiffusionImpl(
                 height = payload.height,
             )
         } catch (e: Exception) {
-            if (!emitter.isDisposed) emitter.onError(e)
+            errorLog(e, "{$TAG} Caught exception while Local Diffusion process.")
+            interruptGeneration()
+            emitter.onError(e)
         }
     }
 
     // ToDo review method of LocalDiffusion cancellation, now next generation crashes using this approach
     override fun interrupt() = Completable.fromAction {
-        tokenizer.close()
-        uNet.close()
+        interruptGeneration()
     }
 
     override fun observeStatus() = statusSubject
+
+    private fun interruptGeneration() {
+        debugLog("{$TAG} Trying to interrupt generation.")
+        tokenizer.close()
+        uNet.close()
+        debugLog("{$TAG} Generation interrupt successful!")
+    }
 }

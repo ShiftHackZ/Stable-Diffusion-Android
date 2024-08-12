@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.FormatColorFill
@@ -60,6 +61,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
+import com.shifthackz.aisdv1.core.common.extensions.showToast
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -115,6 +117,9 @@ fun SettingsScreen() {
                 }
                 SettingsEffect.ShareLogFile -> ReportProblemEmailComposer().invoke(context)
                 is SettingsEffect.OpenUrl -> context.openUrl(effect.url)
+                SettingsEffect.DeveloperModeUnlocked -> context.showToast(
+                    LocalizationR.string.debug_action_unlock,
+                )
             }
         },
         applySystemUiColors = false,
@@ -295,6 +300,15 @@ private fun ContentSettingsState(
                 modifier = warningModifier,
                 text = stringResource(id = LocalizationR.string.settings_item_background_generation_warning),
                 style = MaterialTheme.typography.labelMedium,
+            )
+        }
+        AnimatedVisibility(visible = !state.loading && state.developerMode) {
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.DeveloperMode,
+                text = LocalizationR.string.title_debug_menu.asUiText(),
+                onClick = { processIntent(SettingsIntent.NavigateDeveloperMode) },
             )
         }
         //endregion

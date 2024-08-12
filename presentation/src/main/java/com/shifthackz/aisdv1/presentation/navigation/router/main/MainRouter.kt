@@ -21,4 +21,6 @@ interface MainRouter : Router<NavigationEffect> {
     fun navigateToDonate()
 
     fun navigateToDebugMenu()
+
+    fun navigateToLogger()
 }

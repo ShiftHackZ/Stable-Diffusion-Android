@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.data.repository
 
 import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
+import com.shifthackz.aisdv1.core.common.schedulers.SchedulersToken
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.data.mocks.mockLocalAiModel
@@ -61,6 +62,10 @@ class LocalDiffusionGenerationRepositoryImplTest {
 
     @Before
     fun initialize() {
+        every {
+            stubPreferenceManager::localDiffusionSchedulerThread.get()
+        } returns SchedulersToken.COMPUTATION
+
         every {
             stubBackgroundWorkObserver.hasActiveTasks()
         } returns false

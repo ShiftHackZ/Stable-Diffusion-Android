@@ -16,6 +16,7 @@ import com.shifthackz.aisdv1.presentation.mocks.mockStableDiffusionModels
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
@@ -46,6 +47,7 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
     private val stubBuildInfoProvider = mockk<BuildInfoProvider>()
     private val stubMainRouter = mockk<MainRouter>()
     private val stubDrawerRouter = mockk<DrawerRouter>()
+    private val stubDebugMenuAccessor = mockk<DebugMenuAccessor>()
 
     override fun initializeViewModel() = SettingsViewModel(
         getStableDiffusionModelsUseCase = stubGetStableDiffusionModelsUseCase,
@@ -57,6 +59,7 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
         buildInfoProvider = stubBuildInfoProvider,
         mainRouter = stubMainRouter,
         drawerRouter = stubDrawerRouter,
+        debugMenuAccessor = stubDebugMenuAccessor,
     )
 
     @Before
@@ -90,15 +93,17 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
     }
 
     @Test
-    fun `given received Action AppVersion intent, expected router navigateToDebugMenu() method called`() {
+    fun `given received Action AppVersion intent, expected DeveloperModeUnlocked effect delivered to effect collector`() {
         every {
-            stubMainRouter.navigateToDebugMenu()
-        } returns Unit
+            stubDebugMenuAccessor.invoke()
+        } returns true
 
         viewModel.processIntent(SettingsIntent.Action.AppVersion)
 
-        verify {
-            stubMainRouter.navigateToDebugMenu()
+        runTest {
+            viewModel.effect.test {
+                Assert.assertEquals(SettingsEffect.DeveloperModeUnlocked, awaitItem())
+            }
         }
     }
 

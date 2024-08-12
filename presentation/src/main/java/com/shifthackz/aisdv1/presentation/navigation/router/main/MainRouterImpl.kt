@@ -56,8 +56,10 @@ internal class MainRouterImpl(
     }
 
     override fun navigateToDebugMenu() {
-        if (debugMenuAccessor()) {
-            effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_DEBUG))
-        }
+        effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_DEBUG))
+    }
+
+    override fun navigateToLogger() {
+        effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_LOGGER))
     }
 }

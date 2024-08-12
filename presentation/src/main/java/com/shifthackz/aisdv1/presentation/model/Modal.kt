@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.model
 
 import android.graphics.Bitmap
 import androidx.compose.runtime.Immutable
+import com.shifthackz.aisdv1.core.common.schedulers.SchedulersToken
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.Grid
@@ -37,7 +38,10 @@ sealed interface Modal {
     data class SelectSdModel(val models: List<String>, val selected: String) : Modal
 
     @Immutable
-    data class Generating(val status: LocalDiffusion.Status? = null) : Modal {
+    data class Generating(
+        val canCancel: Boolean = false,
+        val status: LocalDiffusion.Status? = null,
+    ) : Modal {
         val pair: Pair<Int, Int>?
             get() = status?.let { (current, total) -> current to total }
     }
@@ -103,6 +107,8 @@ sealed interface Modal {
     data object ClearInPaintConfirm : Modal
 
     data object Language : Modal
+
+    data class LDScheduler(val scheduler: SchedulersToken) : Modal
 
     data class GalleryGrid(val grid: Grid) : Modal
 }

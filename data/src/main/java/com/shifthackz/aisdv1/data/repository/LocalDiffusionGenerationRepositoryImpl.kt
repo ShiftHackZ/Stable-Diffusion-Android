@@ -19,8 +19,8 @@ internal class LocalDiffusionGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     base64ToBitmapConverter: Base64ToBitmapConverter,
     localDataSource: GenerationResultDataSource.Local,
-    preferenceManager: PreferenceManager,
     backgroundWorkObserver: BackgroundWorkObserver,
+    private val preferenceManager: PreferenceManager,
     private val localDiffusion: LocalDiffusion,
     private val downloadableLocalDataSource: DownloadableModelDataSource.Local,
     private val bitmapToBase64Converter: BitmapToBase64Converter,
@@ -46,7 +46,7 @@ internal class LocalDiffusionGenerationRepositoryImpl(
 
     private fun generate(payload: TextToImagePayload) = localDiffusion
         .process(payload)
-        .subscribeOn(schedulersProvider.computation)
+        .subscribeOn(schedulersProvider.byToken(preferenceManager.localDiffusionSchedulerThread))
         .map(BitmapToBase64Converter::Input)
         .flatMap(bitmapToBase64Converter::invoke)
         .map(BitmapToBase64Converter.Output::base64ImageString)

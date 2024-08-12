@@ -27,8 +27,10 @@ import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.grid.GridBottomSheet
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryScreen
 import com.shifthackz.aisdv1.presentation.modal.language.LanguageBottomSheet
+import com.shifthackz.aisdv1.presentation.modal.ldscheduler.LDSchedulerBottomSheet
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagDialog
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuIntent
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailIntent
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryIntent
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintIntent
@@ -57,6 +59,7 @@ fun ModalRenderer(
         processIntent(GalleryIntent.DismissDialog)
         processIntent(GalleryDetailIntent.DismissDialog)
         processIntent(InPaintIntent.ScreenModal.Dismiss)
+        processIntent(DebugMenuIntent.DismissModal)
     }
     val context = LocalContext.current
     when (screenModal) {
@@ -93,6 +96,13 @@ fun ModalRenderer(
             titleResId = LocalizationR.string.communicating_local_title,
             canDismiss = false,
             step = screenModal.pair,
+            content = screenModal.canCancel.takeIf { it }?.let {
+                {
+                    ProgressDialogCancelButton {
+                        processIntent(GenerationMviIntent.Cancel.Generation)
+                    }
+                }
+            },
         )
 
         is Modal.Image.Single -> GenerationImageResultDialog(
@@ -328,6 +338,19 @@ fun ModalRenderer(
                 currentGrid = screenModal.grid,
                 onSelected = {
                     processIntent(SettingsIntent.Action.GalleryGrid.Set(it))
+                    dismiss()
+                }
+            )
+        }
+
+        is Modal.LDScheduler -> ModalBottomSheet(
+            onDismissRequest = dismiss,
+            shape = RectangleShape,
+        ) {
+            LDSchedulerBottomSheet(
+                currentScheduler = screenModal.scheduler,
+                onSelected = {
+                    processIntent(DebugMenuIntent.LocalDiffusionScheduler.Confirm(it))
                     dismiss()
                 }
             )

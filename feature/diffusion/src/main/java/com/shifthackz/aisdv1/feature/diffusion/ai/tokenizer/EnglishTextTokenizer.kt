@@ -8,11 +8,13 @@ import android.text.TextUtils
 import android.util.JsonReader
 import android.util.Pair
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_INPUT_IDS
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT_KEY_MODEL_FORMAT
+import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.TAG
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.halfCorner
 import com.shifthackz.aisdv1.feature.diffusion.ai.extensions.toArrays
 import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
@@ -44,23 +46,32 @@ internal class EnglishTextTokenizer(
     override val maxLength = 77
 
     override fun initialize() {
-        if (session != null) return
+        if (session != null) {
+            debugLog("{$TAG} {TOKENIZER} {initialize} Session already initialized, skipping...")
+            return
+        }
         val options = OrtSession.SessionOptions()
         options.addConfigEntry(ORT_KEY_MODEL_FORMAT, ORT)
         session = ortEnvironmentProvider.get().createSession(
             "${modelPathPrefix(fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.TOKENIZER_MODEL}",
             options
         )
+        debugLog("{$TAG} {TOKENIZER} {initialize} Session created successfully!")
         if (!isInitMap) {
             encoder.putAll(loadEncoder())
             decoder.putAll(loadDecoder(encoder))
             bpeRanks.putAll(loadBpeRanks())
         }
         isInitMap = true
+        debugLog("{$TAG} {TOKENIZER} {initialize} Tokenizer map initialized successfully!")
     }
 
     override fun decode(ids: IntArray?): String {
-        if (ids == null) return  ""
+        debugLog("{$TAG} {TOKENIZER} {decode} Trying to decode ${ids?.size ?: "null"} int array...")
+        if (ids == null) {
+            debugLog("{$TAG} {TOKENIZER} {decode} Input ids array is null, skipping.")
+            return ""
+        }
         val stringBuilder = StringBuilder()
         for (value in ids) {
             if (decoder.containsKey(value)) stringBuilder.append(decoder[value])
@@ -74,10 +85,13 @@ internal class EnglishTextTokenizer(
         }
         val ints = IntArray(result.size)
         for (i in result.indices) ints[i] = result[i]
-        return String(ints, 0, ints.size)
+        val resultString =  String(ints, 0, ints.size)
+        debugLog("{$TAG} {TOKENIZER} {decode} Decode was successful!")
+        return resultString
     }
 
     override fun encode(text: String?): IntArray {
+        debugLog("{$TAG} {TOKENIZER} {encode} Trying to encode ${text ?: "null"}...")
         var input = text
         input = input.toString().lowercase(Locale.getDefault()).halfCorner()
         val stringList: MutableList<String> = ArrayList()
@@ -113,11 +127,16 @@ internal class EnglishTextTokenizer(
         Arrays.fill(copy, 49407)
         System.arraycopy(ids, 0, copy, 0, if (ids.size < copy.size) ids.size else copy.size)
         copy[copy.size - 1] = 49407
+        debugLog("{$TAG} {TOKENIZER} {encode} Encode was successful!")
         return copy
     }
 
     override fun tensor(ids: IntArray?): OnnxTensor? {
-        if (ids == null) return null
+        debugLog("{$TAG} {TOKENIZER} {tensor} Trying to tensor ${ids?.size ?: "null"} int array...")
+        if (ids == null) {
+            debugLog("{$TAG} {TOKENIZER} {tensor} Input ids array is null, skipping.")
+            return null
+        }
         val inputIds = OnnxTensor.createTensor(
             ortEnvironmentProvider.get(),
             IntBuffer.wrap(ids),
@@ -128,14 +147,18 @@ internal class EnglishTextTokenizer(
         val result = session!!.run(input)
         val lastHiddenState = result[0].value
         result.close()
-        return OnnxTensor.createTensor(ortEnvironmentProvider.get(), lastHiddenState)
+        val tensor = OnnxTensor.createTensor(ortEnvironmentProvider.get(), lastHiddenState)
+        debugLog("{$TAG} {TOKENIZER} {tensor} Tensor formation was successful!")
+        return tensor
     }
 
     override fun createUnconditionalInput(text: String?): IntArray = encode(text)
 
     override fun close() {
+        debugLog("{$TAG} {TOKENIZER} {close} Closing session...")
         session?.close()
         session = null
+        debugLog("{$TAG} {TOKENIZER} {close} Session closed successfully!")
     }
 
     private fun bpe(token: String): List<String> {
