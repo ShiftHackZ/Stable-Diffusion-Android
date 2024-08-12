@@ -32,14 +32,12 @@ class DonateViewModelTest : CoreViewModelTest<DonateViewModel>() {
             stubFetchAndGetSupportersUseCase()
         } returns Single.just(mockSupporters)
 
-        runTest {
-            val expected = DonateState(
-                loading = false,
-                supporters = mockSupporters,
-            )
-            val actual = viewModel.state.value
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = DonateState(
+            loading = false,
+            supporters = mockSupporters,
+        )
+        val actual = viewModel.state.value
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
@@ -48,14 +46,13 @@ class DonateViewModelTest : CoreViewModelTest<DonateViewModel>() {
             stubFetchAndGetSupportersUseCase()
         } returns Single.error(stubException)
 
-        runTest {
-            val expected = DonateState(
-                loading = false,
-                supporters = emptyList(),
-            )
-            val actual = viewModel.state.value
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = DonateState(
+            loading = false,
+            supporters = emptyList(),
+        )
+        val actual = viewModel.state.value
+        Assert.assertEquals(expected, actual)
+
     }
 
     @Test
