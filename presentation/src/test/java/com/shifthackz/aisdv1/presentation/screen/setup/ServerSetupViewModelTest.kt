@@ -80,49 +80,43 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
     @Test
     fun `initialized, expected UI state updated with correct stub values`() {
-        runTest {
-            val state = viewModel.state.value
-            Assert.assertEquals(true, state.huggingFaceModels.isNotEmpty())
-            Assert.assertEquals(true, state.localModels.isNotEmpty())
-            Assert.assertEquals("https://5598.is.my.favorite.com", state.serverUrl)
-            Assert.assertEquals(ServerSetupState.AuthType.ANONYMOUS, state.authType)
-        }
+        val state = viewModel.state.value
+        Assert.assertEquals(true, state.huggingFaceModels.isNotEmpty())
+        Assert.assertEquals(true, state.localModels.isNotEmpty())
+        Assert.assertEquals("https://5598.is.my.favorite.com", state.serverUrl)
+        Assert.assertEquals(ServerSetupState.AuthType.ANONYMOUS, state.authType)
     }
 
     @Test
     fun `given received AllowLocalCustomModel intent, expected Custom local model selected in UI state`() {
         viewModel.processIntent(ServerSetupIntent.AllowLocalCustomModel(true))
-        runTest {
-            val state = viewModel.state.value
-            val expectedLocalModels = listOf(
-                ServerSetupState.LocalModel(
-                    id = "CUSTOM",
-                    name = "Custom",
-                    size = "NaN",
-                    downloaded = false,
-                    selected = true,
-                ),
-                ServerSetupState.LocalModel(
-                    id = "1",
-                    name = "Model 1",
-                    size = "5 Gb",
-                    downloaded = false,
-                    selected = false,
-                )
+        val state = viewModel.state.value
+        val expectedLocalModels = listOf(
+            ServerSetupState.LocalModel(
+                id = "CUSTOM",
+                name = "Custom",
+                size = "NaN",
+                downloaded = false,
+                selected = true,
+            ),
+            ServerSetupState.LocalModel(
+                id = "1",
+                name = "Model 1",
+                size = "5 Gb",
+                downloaded = false,
+                selected = false,
             )
-            Assert.assertEquals(true, state.localCustomModel)
-            Assert.assertEquals(expectedLocalModels, state.localModels)
-        }
+        )
+        Assert.assertEquals(true, state.localCustomModel)
+        Assert.assertEquals(expectedLocalModels, state.localModels)
     }
 
     @Test
     fun `given received DismissDialog intent, expected screenModal field in UI state is None`() {
         viewModel.processIntent(ServerSetupIntent.DismissDialog)
-        runTest {
-            val expected = Modal.None
-            val actual = viewModel.state.value.screenModal
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = Modal.None
+        val actual = viewModel.state.value.screenModal
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
@@ -145,14 +139,13 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         val intent = ServerSetupIntent.LocalModel.ClickReduce(localModel)
         viewModel.processIntent(intent)
 
-        runTest {
-            val state = viewModel.state.value
-            val expected = true
-            val actual = state.localModels.any {
-                it.downloadState == DownloadState.Downloading(22)
-            }
-            Assert.assertEquals(expected, actual)
+        val state = viewModel.state.value
+        val expected = true
+        val actual = state.localModels.any {
+            it.downloadState == DownloadState.Downloading(22)
         }
+        Assert.assertEquals(expected, actual)
+
         verify {
             stubWakeLockInterActor.acquireWakelockUseCase()
         }
@@ -173,11 +166,9 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         val intent = ServerSetupIntent.LocalModel.ClickReduce(localModel)
         viewModel.processIntent(intent)
 
-        runTest {
-            val expected = Modal.DeleteLocalModelConfirm(localModel)
-            val actual = viewModel.state.value.screenModal
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = Modal.DeleteLocalModelConfirm(localModel)
+        val actual = viewModel.state.value.screenModal
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
@@ -192,14 +183,12 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         val intent = ServerSetupIntent.LocalModel.ClickReduce(localModel)
         viewModel.processIntent(intent)
 
-        runTest {
-            val state = viewModel.state.value
-            val expected = false
-            val actual = state.localModels.any {
-                it.downloadState == DownloadState.Downloading(22)
-            }
-            Assert.assertEquals(expected, actual)
+        val state = viewModel.state.value
+        val expected = false
+        val actual = state.localModels.any {
+            it.downloadState == DownloadState.Downloading(22)
         }
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
@@ -228,120 +217,96 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     @Test
     fun `given received SelectLocalModel intent, expected passed LocalModel is selected in UI state`() {
         viewModel.processIntent(ServerSetupIntent.SelectLocalModel(mockServerSetupStateLocalModel))
-        runTest {
-            val state = viewModel.state.value
-            Assert.assertEquals(true, state.localModels.find { it.id == "1" }!!.selected)
-        }
+        val state = viewModel.state.value
+        Assert.assertEquals(true, state.localModels.find { it.id == "1" }!!.selected)
     }
 
     @Test
     fun `given received MainButtonClick intent, expected step field in UI state is CONFIGURE`() {
         viewModel.processIntent(ServerSetupIntent.MainButtonClick)
-        runTest {
-            val expected = ServerSetupState.Step.CONFIGURE
-            val actual = viewModel.state.value.step
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = ServerSetupState.Step.CONFIGURE
+        val actual = viewModel.state.value.step
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
     fun `given received UpdateDemoMode intent, expected demoMode field in UI state is true`() {
         viewModel.processIntent(ServerSetupIntent.UpdateDemoMode(true))
-        runTest {
-            val expected = true
-            val actual = viewModel.state.value.demoMode
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = true
+        val actual = viewModel.state.value.demoMode
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
     fun `given received UpdateHordeApiKey intent, expected hordeApiKey field in UI state is 5598`() {
         viewModel.processIntent(ServerSetupIntent.UpdateHordeApiKey("5598"))
-        runTest {
-            val expected = "5598"
-            val actual = viewModel.state.value.hordeApiKey
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = "5598"
+        val actual = viewModel.state.value.hordeApiKey
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
     fun `given received UpdateHordeDefaultApiKey intent, expected hordeDefaultApiKey field in UI state is true`() {
         viewModel.processIntent(ServerSetupIntent.UpdateHordeDefaultApiKey(true))
-        runTest {
-            val expected = true
-            val actual = viewModel.state.value.hordeDefaultApiKey
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = true
+        val actual = viewModel.state.value.hordeDefaultApiKey
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
     fun `given received UpdateHuggingFaceApiKey intent, expected huggingFaceApiKey field in UI state is 5598`() {
         viewModel.processIntent(ServerSetupIntent.UpdateHuggingFaceApiKey("5598"))
-        runTest {
-            val expected = "5598"
-            val actual = viewModel.state.value.huggingFaceApiKey
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = "5598"
+        val actual = viewModel.state.value.huggingFaceApiKey
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
     fun `given received UpdateHuggingFaceModel intent, expected huggingFaceModel field in UI state is 5598`() {
         viewModel.processIntent(ServerSetupIntent.UpdateHuggingFaceModel("5598"))
-        runTest {
-            val expected = "5598"
-            val actual = viewModel.state.value.huggingFaceModel
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = "5598"
+        val actual = viewModel.state.value.huggingFaceModel
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
     fun `given received UpdateLogin intent, expected login field is 5598, loginValidationError is null in UI state`() {
         viewModel.processIntent(ServerSetupIntent.UpdateLogin("5598"))
-        runTest {
-            val state = viewModel.state.value
-            Assert.assertEquals("5598", state.login)
-            Assert.assertEquals(null, state.loginValidationError)
-        }
+        val state = viewModel.state.value
+        Assert.assertEquals("5598", state.login)
+        Assert.assertEquals(null, state.loginValidationError)
     }
 
     @Test
     fun `given received UpdatePassword intent, expected password field is 5598, passwordValidationError is null in UI state`() {
         viewModel.processIntent(ServerSetupIntent.UpdatePassword("5598"))
-        runTest {
-            val state = viewModel.state.value
-            Assert.assertEquals("5598", state.password)
-            Assert.assertEquals(null, state.passwordValidationError)
-        }
+        val state = viewModel.state.value
+        Assert.assertEquals("5598", state.password)
+        Assert.assertEquals(null, state.passwordValidationError)
     }
 
     @Test
     fun `given received UpdateOpenAiApiKey intent, expected openAiApiKey field in UI state is 5598`() {
         viewModel.processIntent(ServerSetupIntent.UpdateOpenAiApiKey("5598"))
-        runTest {
-            val expected = "5598"
-            val actual = viewModel.state.value.openAiApiKey
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = "5598"
+        val actual = viewModel.state.value.openAiApiKey
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
     fun `given received UpdatePasswordVisibility intent, expected passwordVisible field in UI state is false`() {
         viewModel.processIntent(ServerSetupIntent.UpdatePasswordVisibility(true))
-        runTest {
-            val expected = false
-            val actual = viewModel.state.value.passwordVisible
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = false
+        val actual = viewModel.state.value.passwordVisible
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
     fun `given received UpdateServerMode intent, expected mode field in UI state is LOCAL`() {
         viewModel.processIntent(ServerSetupIntent.UpdateServerMode(ServerSource.LOCAL))
-        runTest {
-            val expected = ServerSource.LOCAL
-            val actual = viewModel.state.value.mode
-            Assert.assertEquals(expected, actual)
-        }
+        val expected = ServerSource.LOCAL
+        val actual = viewModel.state.value.mode
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
