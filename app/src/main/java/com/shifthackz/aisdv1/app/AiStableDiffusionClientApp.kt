@@ -18,6 +18,7 @@ import com.shifthackz.aisdv1.core.validation.di.validatorsModule
 import com.shifthackz.aisdv1.data.di.dataModule
 import com.shifthackz.aisdv1.demo.di.demoModule
 import com.shifthackz.aisdv1.domain.di.domainModule
+import com.shifthackz.aisdv1.feature.sdxl.TmuxStub
 import com.shifthackz.aisdv1.network.di.networkModule
 import com.shifthackz.aisdv1.presentation.di.presentationModule
 import com.shifthackz.aisdv1.storage.di.databaseModule
@@ -38,6 +39,7 @@ class AiStableDiffusionClientApp : Application() {
         initializeLogging()
         initializeCursorSize()
         initializeWorkManager()
+        TmuxStub().stub1(this)
     }
 
     /**

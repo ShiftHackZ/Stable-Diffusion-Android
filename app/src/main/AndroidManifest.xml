@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <queries>
+        <package android:name="com.termux" />
+    </queries>
+
     <application
         android:name=".AiStableDiffusionClientApp"
         android:icon="@mipmap/ic_launcher"
@@ -28,8 +32,7 @@
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
-            tools:node="remove">
-        </provider>
+            tools:node="remove"></provider>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -54,5 +57,7 @@
                 android:name="autoStoreLocales"
                 android:value="true" />
         </service>
+
+        <service android:name="com.shifthackz.aisdv1.feature.sdxl.PluginResultsService" />
     </application>
 </manifest>

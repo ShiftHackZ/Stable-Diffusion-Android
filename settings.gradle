@@ -29,6 +29,7 @@ def libraries = [
         ':domain',
         ':feature:auth',
         ':feature:diffusion',
+        ':feature:sdxl',
         ':feature:work',
         ':network',
         ':presentation',

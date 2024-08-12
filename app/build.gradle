@@ -98,6 +98,7 @@ dependencies {
     implementation project(":domain")
     implementation project(":feature:auth")
     implementation project(":feature:diffusion")
+    implementation project(":feature:sdxl")
     implementation project(":feature:work")
     implementation project(":data")
     implementation project(":demo")
@@ -110,6 +111,7 @@ dependencies {
     implementation ui.catppuccinSplashscreen
     implementation ui.catppuccinLegacy
     implementation androidx.workManager
+    implementation "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava"
 }
 
 kapt {

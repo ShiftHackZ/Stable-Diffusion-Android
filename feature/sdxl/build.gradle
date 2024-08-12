@@ -1,0 +1,15 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: "$project.rootDir/gradle/common.gradle"
+
+android {
+    namespace 'com.shifthackz.aisdv1.feature.sdxl'
+}
+
+dependencies {
+    implementation project(":core:common")
+    implementation "com.github.termux:termux-app:v0.118.0"
+}
