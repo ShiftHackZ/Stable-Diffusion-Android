@@ -18,6 +18,8 @@ fun getRealPath(context: Context, uri: Uri): String? {
 
             if ("primary".equals(type, ignoreCase = true)) {
                 return Environment.getExternalStorageDirectory().toString() + "/" + split[1]
+            } else {
+                return "/storage/$type/${split[1]}"
             }
 
         } else if (isDownloadsDocument(uri)) {
