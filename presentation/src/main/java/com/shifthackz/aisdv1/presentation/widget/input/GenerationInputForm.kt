@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Casino
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -47,6 +46,7 @@ import com.shifthackz.aisdv1.presentation.utils.Constants.BATCH_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.BATCH_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.CFG_SCALE_RANGE_MIN
+import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.utils.Constants.SAMPLING_STEPS_RANGE_STABILITY_AI_MAX
@@ -80,11 +80,13 @@ fun GenerationInputForm(
                 "${state.batchCount}",
             ),
         )
-        Slider(
+        SliderTextInputField(
             value = state.batchCount * 1f,
             valueRange = (BATCH_RANGE_MIN * 1f)..(BATCH_RANGE_MAX * 1f),
+            valueDiff = 1f,
+            fractionDigits = 0,
             steps = abs(BATCH_RANGE_MIN - BATCH_RANGE_MAX) - 1,
-            colors = sliderColors,
+            sliderColors = sliderColors,
             onValueChange = { processIntent(GenerationMviIntent.Update.Batch(it.roundToInt())) },
         )
     }
@@ -477,10 +479,11 @@ fun GenerationInputForm(
                                 "${state.subSeedStrength.roundTo(2)}",
                             ),
                         )
-                        Slider(
+                        SliderTextInputField(
                             value = state.subSeedStrength,
                             valueRange = SUB_SEED_STRENGTH_MIN..SUB_SEED_STRENGTH_MAX,
-                            colors = sliderColors,
+                            valueDiff = 0.01f,
+                            sliderColors = sliderColors,
                             onValueChange = {
                                 processIntent(GenerationMviIntent.Update.SubSeedStrength(it))
                             },
@@ -492,6 +495,7 @@ fun GenerationInputForm(
 
                 if (state.mode != ServerSource.OPEN_AI) {
                     val stepsMax = when (state.mode) {
+                        ServerSource.LOCAL -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
                         ServerSource.STABILITY_AI -> SAMPLING_STEPS_RANGE_STABILITY_AI_MAX
                         else -> SAMPLING_STEPS_RANGE_MAX
                     }
@@ -500,11 +504,13 @@ fun GenerationInputForm(
                         modifier = Modifier.padding(top = 8.dp),
                         text = stringResource(id = LocalizationR.string.hint_sampling_steps, "$steps"),
                     )
-                    Slider(
+                    SliderTextInputField(
                         value = steps * 1f,
                         valueRange = (SAMPLING_STEPS_RANGE_MIN * 1f)..(stepsMax * 1f),
+                        valueDiff = 1f,
                         steps = abs(stepsMax - SAMPLING_STEPS_RANGE_MIN) - 1,
-                        colors = sliderColors,
+                        sliderColors = sliderColors,
+                        fractionDigits = 0,
                         onValueChange = {
                             processIntent(GenerationMviIntent.Update.SamplingSteps(it.roundToInt()))
                         },
@@ -517,11 +523,12 @@ fun GenerationInputForm(
                             "${state.cfgScale.roundTo(2)}",
                         ),
                     )
-                    Slider(
+                    SliderTextInputField(
                         value = state.cfgScale,
                         valueRange = (CFG_SCALE_RANGE_MIN * 1f)..(CFG_SCALE_RANGE_MAX * 1f),
+                        valueDiff = 0.5f,
                         steps = abs(CFG_SCALE_RANGE_MAX - CFG_SCALE_RANGE_MIN) * 2 - 1,
-                        colors = sliderColors,
+                        sliderColors = sliderColors,
                         onValueChange = {
                             processIntent(GenerationMviIntent.Update.CfgScale(it))
                         },

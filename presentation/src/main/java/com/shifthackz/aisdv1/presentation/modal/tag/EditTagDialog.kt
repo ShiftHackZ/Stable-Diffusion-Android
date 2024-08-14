@@ -10,12 +10,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,10 +28,15 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.model.ExtraType
-import com.shifthackz.aisdv1.presentation.utils.Constants
+import com.shifthackz.aisdv1.presentation.theme.sliderColors
+import com.shifthackz.aisdv1.presentation.utils.Constants.EXTRA_MAXIMUM
+import com.shifthackz.aisdv1.presentation.utils.Constants.EXTRA_MINIMUM
+import com.shifthackz.aisdv1.presentation.utils.Constants.EXTRA_STEP
+import com.shifthackz.aisdv1.presentation.widget.input.SliderTextInputField
 import com.shifthackz.aisdv1.presentation.widget.input.chip.ChipTextFieldItem
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 import org.koin.androidx.compose.koinViewModel
+import kotlin.math.abs
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
@@ -84,7 +86,7 @@ private fun ScreenContent(
         ),
     ) {
         Surface(
-            modifier = modifier.fillMaxHeight(0.36f),
+            modifier = modifier.fillMaxHeight(0.38f),
             shape = RoundedCornerShape(16.dp),
             color = AlertDialogDefaults.containerColor,
         ) {
@@ -156,50 +158,17 @@ private fun ScreenContent(
                             )
                         },
                     )
-                    state.currentValue?.let {
-                        TextField(
+                    state.currentValue?.let { value ->
+                        SliderTextInputField(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 8.dp),
-                            value = "$it",
-                            onValueChange = {},
-                            enabled = false,
-                            singleLine = true,
-                            label = { Text(stringResource(id = LocalizationR.string.hint_value)) },
-                            trailingIcon = {
-                                Row {
-                                    val decEnabled = it > Constants.EXTRA_MINIMUM
-                                    val incEnabled = it < Constants.EXTRA_MAXIMUM
-                                    IconButton(
-                                        enabled = decEnabled,
-                                        onClick = {
-                                            processIntent(EditTagIntent.Value.Decrement)
-                                        },
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.KeyboardArrowDown,
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.onBackground.copy(
-                                                alpha = if (decEnabled) 1f else 0.5f,
-                                            ),
-                                        )
-                                    }
-                                    IconButton(
-                                        enabled = incEnabled,
-                                        onClick = {
-                                            processIntent(EditTagIntent.Value.Increment)
-                                        },
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.KeyboardArrowUp,
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.onBackground.copy(
-                                                alpha = if (incEnabled) 1f else 0.5f,
-                                            ),
-                                        )
-                                    }
-                                }
-                            }
+                            value = value,
+                            onValueChange = { processIntent(EditTagIntent.UpdateValue(it))},
+                            valueRange = EXTRA_MINIMUM .. EXTRA_MAXIMUM,
+                            valueDiff = EXTRA_STEP,
+                            steps = abs(EXTRA_MAXIMUM.toInt() - EXTRA_MINIMUM.toInt()) * 4 - 1,
+                            sliderColors = sliderColors,
                         )
                     }
                 }
