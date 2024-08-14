@@ -131,7 +131,7 @@ fun GalleryScreen() {
         BackHandler(state.selectionMode) {
             intentHandler(GalleryIntent.ChangeSelectionMode(false))
         }
-        ScreenContent(
+        GalleryScreenContent(
             state = state,
             lazyGalleryItems = lazyGalleryItems,
             processIntent = intentHandler,
@@ -140,7 +140,7 @@ fun GalleryScreen() {
 }
 
 @Composable
-private fun ScreenContent(
+fun GalleryScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryState,
     lazyGalleryItems: LazyPagingItems<GalleryGridItemUi>,

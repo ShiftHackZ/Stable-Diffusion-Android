@@ -8,6 +8,8 @@ interface MainRouter : Router<NavigationEffect> {
 
     fun navigateBack()
 
+    fun navigateToOnBoarding()
+
     fun navigateToPostSplashConfigLoader()
 
     fun navigateToHomeScreen()

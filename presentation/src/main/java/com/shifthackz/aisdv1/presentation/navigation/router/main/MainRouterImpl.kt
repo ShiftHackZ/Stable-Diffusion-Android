@@ -1,15 +1,12 @@
 package com.shifthackz.aisdv1.presentation.navigation.router.main
 
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
-import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
-internal class MainRouterImpl(
-    private val debugMenuAccessor: DebugMenuAccessor,
-) : MainRouter {
+internal class MainRouterImpl : MainRouter {
 
     private val effectSubject: PublishSubject<NavigationEffect> = PublishSubject.create()
 
@@ -19,6 +16,10 @@ internal class MainRouterImpl(
 
     override fun navigateBack() {
         effectSubject.onNext(NavigationEffect.Back)
+    }
+
+    override fun navigateToOnBoarding() {
+        effectSubject.onNext(NavigationEffect.Navigate.RoutePopUp(Constants.ROUTE_ONBOARDING))
     }
 
     override fun navigateToPostSplashConfigLoader() {

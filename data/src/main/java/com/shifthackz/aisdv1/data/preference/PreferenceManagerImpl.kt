@@ -183,6 +183,12 @@ class PreferenceManagerImpl(
             .apply()
             .also { onPreferencesChanged() }
 
+    override var onBoardingComplete: Boolean
+        get() = preferences.getBoolean(KEY_ON_BOARDING_COMPLETE, false)
+        set(value) = preferences.edit()
+            .putBoolean(KEY_ON_BOARDING_COMPLETE, value)
+            .apply()
+
     override var forceSetupAfterUpdate: Boolean
         get() = preferences.getBoolean(KEY_FORCE_SETUP_AFTER_UPDATE, true)
         set(value) = preferences.edit()
@@ -311,6 +317,7 @@ class PreferenceManagerImpl(
         const val KEY_HUGGING_FACE_MODEL_KEY = "key_hugging_face_model_key"
         const val KEY_STABILITY_AI_API_KEY = "key_stability_ai_api_key"
         const val KEY_STABILITY_AI_ENGINE_ID_KEY = "key_stability_ai_engine_id_key"
+        const val KEY_ON_BOARDING_COMPLETE = "key_on_boarding_complete"
         const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.6.2"
         const val KEY_LOCAL_MODEL_ID = "key_local_model_id"
         const val KEY_LOCAL_NN_API = "key_local_nn_api"

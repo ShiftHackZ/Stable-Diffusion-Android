@@ -15,6 +15,7 @@ import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageViewModel
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintViewModel
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderViewModel
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerViewModel
+import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingViewModel
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsViewModel
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
@@ -52,6 +53,7 @@ val viewModelModule = module {
     viewModelOf(::DonateViewModel)
     viewModelOf(::BackgroundWorkViewModel)
     viewModelOf(::LoggerViewModel)
+    viewModelOf(::OnBoardingViewModel)
 
     viewModel { parameters ->
         val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())

@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScr
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintScreen
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerScreen
+import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingScreen
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreen
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
@@ -101,6 +102,13 @@ fun NavGraphBuilder.mainNavGraph() {
             DonateScreen()
         }.apply {
             route = Constants.ROUTE_DONATE
+        }
+    )
+    addDestination(
+        ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
+            OnBoardingScreen()
+        }.apply {
+            route = Constants.ROUTE_ONBOARDING
         }
     )
 }
