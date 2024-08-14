@@ -12,6 +12,7 @@ interface PreferenceManager {
     var swarmUiModel: String
     var demoMode: Boolean
     var developerMode: Boolean
+    var localDiffusionCustomModelPath: String
     var localDiffusionAllowCancel: Boolean
     var localDiffusionSchedulerThread: SchedulersToken
     var monitorConnectivity: Boolean

@@ -4,6 +4,8 @@ import com.shifthackz.aisdv1.core.validation.common.CommonStringValidator
 import com.shifthackz.aisdv1.core.validation.common.CommonStringValidatorImpl
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidatorImpl
+import com.shifthackz.aisdv1.core.validation.path.FilePathValidator
+import com.shifthackz.aisdv1.core.validation.path.FilePathValidatorImpl
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidatorImpl
 import org.koin.core.module.dsl.factoryOf
@@ -16,4 +18,5 @@ val validatorsModule = module {
     factory<UrlValidator> { UrlValidatorImpl() }
 
     factoryOf(::CommonStringValidatorImpl) bind CommonStringValidator::class
+    factoryOf(::FilePathValidatorImpl) bind FilePathValidator::class
 }

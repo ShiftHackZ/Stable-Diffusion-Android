@@ -36,6 +36,8 @@ sealed interface ServerSetupIntent : MviIntent {
 
     data class UpdateHordeDefaultApiKey(val value: Boolean) : ServerSetupIntent
 
+    data class SelectLocalModelPath(val value: String) : ServerSetupIntent
+
     data class SelectLocalModel(val model: ServerSetupState.LocalModel) : ServerSetupIntent
 
     data class AllowLocalCustomModel(val allow: Boolean) : ServerSetupIntent

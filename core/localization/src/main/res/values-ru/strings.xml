@@ -295,10 +295,14 @@
     <string name="notification_fail_sub_title">Нажмите, чтобы открыть приложение.</string>
 
     <string name="model_local_custom_switch">Загрузка кастом модели</string>
+    <string name="model_local_permission_header">Разрешения</string>
     <string name="model_local_permission_title">Чтобы иметь возможность загружать пользовательскую модель, вам необходимо разрешить приложению SDAI управлять разрешениями на хранилище, поскольку, начиная с Android 11, оно необходимо для доступа к файлам хранилища без области действия.</string>
     <string name="model_local_permission_button">Настроить доступ</string>
+    <string name="model_local_path_header">Путь к модели</string>
+    <string name="model_local_path_title">Путь к папке локальной модели</string>
+    <string name="model_local_path_button">Выбрать папку</string>
 
-    <string name="model_local_custom_title">Чтобы использовать локальную пользовательскую модель, поместите ее в локальную папку в памяти телефона: Download/SDAi/model</string>
+    <string name="model_local_custom_title">Чтобы использовать локальную пользовательскую модель, поместите ее в локальную папку в памяти телефона.</string>
     <string name="model_local_custom_sub_title">Окончательная структура папок должна быть такой:</string>
 
     <string name="debug_section_main">Отладка</string>

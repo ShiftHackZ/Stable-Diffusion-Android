@@ -16,4 +16,5 @@ data class Configuration(
     val stabilityAiEngineId: String = "",
     val authCredentials: AuthorizationCredentials = AuthorizationCredentials.None,
     val localModelId: String = "",
+    val localModelPath: String = "",
 )

@@ -10,6 +10,7 @@ import android.graphics.Bitmap
 import android.util.Pair
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.log.debugLog
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_ENCODER_HIDDEN_STATES
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_LATENT_SAMPLE
@@ -43,6 +44,7 @@ internal class UNet(
     private val ortEnvironmentProvider: OrtEnvironmentProvider,
     private val fileProviderDescriptor: FileProviderDescriptor,
     private val localModelIdProvider: LocalModelIdProvider,
+    private val preferenceManager: PreferenceManager,
 ) {
 
     private var decoder: VaeDecoder? = null
@@ -61,6 +63,7 @@ internal class UNet(
             ortEnvironmentProvider,
             fileProviderDescriptor,
             localModelIdProvider,
+            preferenceManager,
             deviceNNAPIFlagProvider.get(),
         )
         val options = SessionOptions()
@@ -69,7 +72,7 @@ internal class UNet(
             options.addNnapi(EnumSet.of(NNAPIFlags.CPU_DISABLED))
         }
         session = ortEnvironmentProvider.get().createSession(
-            "${modelPathPrefix(fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.UNET_MODEL}",
+            "${modelPathPrefix(preferenceManager, fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.UNET_MODEL}",
             options
         )
     }

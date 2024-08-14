@@ -71,6 +71,10 @@ class SetServerConfigurationUseCaseImplTest {
             stubPreferenceManager::localModelId.set(any())
         } returns Unit
 
+        every {
+            stubPreferenceManager::localDiffusionCustomModelPath.set(any())
+        } returns Unit
+
         useCase
             .invoke(mockConfiguration)
             .test()

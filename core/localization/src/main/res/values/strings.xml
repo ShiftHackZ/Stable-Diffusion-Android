@@ -317,10 +317,14 @@
     <string name="model_local_diffusion" translatable="false">Local Diffusion</string>
 
     <string name="model_local_custom_switch">Load custom model</string>
+    <string name="model_local_permission_header">Permissions</string>
     <string name="model_local_permission_title">To be able to load custom model, you need to allow SDAI app manage storage permissions, because starting from Android 11 it is needed to access non-scoped storage files.</string>
     <string name="model_local_permission_button">Setup permission</string>
+    <string name="model_local_path_header">Model path</string>
+    <string name="model_local_path_title">Local model folder path</string>
+    <string name="model_local_path_button">Select folder</string>
 
-    <string name="model_local_custom_title">To use local custom model, place it to local folder in your phone storage: Download/SDAi/model</string>
+    <string name="model_local_custom_title">To use local custom model, place it to local folder in your phone storage.</string>
     <string name="model_local_custom_sub_title">The final folder structure should be:</string>
 
     <string name="debug_section_main">Debugging</string>

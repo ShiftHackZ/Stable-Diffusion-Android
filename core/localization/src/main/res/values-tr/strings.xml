@@ -298,8 +298,12 @@
     <string name="model_local_permission_title">Özel modeli yükleyebilmek için SDAI uygulamasının depolama izinlerini yönetmesine izin vermeniz gerekir; çünkü Android 11\'den itibaren kapsamlı olmayan depolama dosyalarına erişmek gerekir.</string>
     <string name="model_local_permission_button">Kurulum izni</string>
 
-    <string name="model_local_custom_title">Yerel özel modeli kullanmak için telefonunuzun depolama alanındaki yerel klasöre yerleştirin: Download/SDAi/model</string>
+    <string name="model_local_custom_title">Yerel özel modeli kullanmak için telefonunuzun depolama alanındaki yerel klasöre yerleştirin.</string>
+    <string name="model_local_permission_header">İzinler</string>
     <string name="model_local_custom_sub_title">Son klasör yapısı şu şekilde olmalıdır::</string>
+    <string name="model_local_path_header">Model yolu</string>
+    <string name="model_local_path_title">Yerel model klasör yolu</string>
+    <string name="model_local_path_button">Klasör seç</string>
 
     <string name="debug_section_main">Hata ayıklama</string>
     <string name="debug_section_work_manager">Work Manager API</string>

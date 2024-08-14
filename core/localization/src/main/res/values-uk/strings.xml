@@ -298,8 +298,12 @@
     <string name="model_local_permission_title">Щоб мати можливість завантажити спеціальну модель, вам потрібно дозволити додатку SDAI керувати дозволами на зберігання, оскільки, починаючи з Android 11, це потрібно для доступу до файлів зберігання без обмежень.</string>
     <string name="model_local_permission_button">Налаштувати доступ</string>
 
-    <string name="model_local_custom_title">Щоб використовувати локальну спеціальну модель, помістіть її в локальну папку в пам’яті телефону: Download/SDAi/model</string>
+    <string name="model_local_custom_title">Щоб використовувати локальну спеціальну модель, помістіть її в локальну папку в пам’яті телефону.</string>
+    <string name="model_local_permission_header">Дозволи</string>
     <string name="model_local_custom_sub_title">Остаточна структура папок має бути такою:</string>
+    <string name="model_local_path_header">Шлях моделі</string>
+    <string name="model_local_path_title">Шлях папки локальної моделі</string>
+    <string name="model_local_path_button">Виберіть папку</string>
 
     <string name="debug_section_main">Відладка</string>
     <string name="debug_section_work_manager">Work Manager API</string>
