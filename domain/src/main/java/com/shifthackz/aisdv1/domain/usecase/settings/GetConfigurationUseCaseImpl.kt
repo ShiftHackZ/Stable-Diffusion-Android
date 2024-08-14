@@ -25,6 +25,7 @@ internal class GetConfigurationUseCaseImpl(
             stabilityAiEngineId = preferenceManager.stabilityAiEngineId,
             authCredentials = authorizationStore.getAuthorizationCredentials(),
             localModelId = preferenceManager.localModelId,
+            localModelPath = preferenceManager.localDiffusionCustomModelPath,
         )
     )
 }

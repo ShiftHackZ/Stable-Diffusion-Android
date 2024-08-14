@@ -358,8 +358,12 @@
     <string name="model_local_custom_switch">加载自定义模型</string>
     <string name="model_local_permission_title">为了能够加载自定义模型，您需要允许SDAI应用管理存储权限，因为从Android 11开始，它需要访问非范围存储文件。</string>
     <string name="model_local_permission_button">设置权限</string>
+    <string name="model_local_path_header">模型路径</string>
+    <string name="model_local_path_title">本地模型文件夹路径</string>
+    <string name="model_local_path_button">选择文件夹</string>
 
-    <string name="model_local_custom_title">要使用本地自定义模型，请将其放置在手机存储中的本地文件夹：Download/SDAi/model</string>
+    <string name="model_local_custom_title">要使用本地自定义模型，请将其放置在手机存储中的本地文件夹。</string>
+    <string name="model_local_permission_header">权限</string>
     <string name="model_local_custom_sub_title">最终的文件夹结构应该是：</string>
 
     <!-- 调试菜单 -->

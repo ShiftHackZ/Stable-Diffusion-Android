@@ -10,6 +10,7 @@ import android.util.Pair
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.KEY_INPUT_IDS
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.ORT
@@ -32,6 +33,7 @@ internal class EnglishTextTokenizer(
     private val ortEnvironmentProvider: OrtEnvironmentProvider,
     private val fileProviderDescriptor: FileProviderDescriptor,
     private val localModelIdProvider: LocalModelIdProvider,
+    private val preferenceManager: PreferenceManager,
 ) : LocalDiffusionTextTokenizer {
 
     private val pattern = Pattern.compile(TOKENIZER_REGEX)
@@ -53,7 +55,7 @@ internal class EnglishTextTokenizer(
         val options = OrtSession.SessionOptions()
         options.addConfigEntry(ORT_KEY_MODEL_FORMAT, ORT)
         session = ortEnvironmentProvider.get().createSession(
-            "${modelPathPrefix(fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.TOKENIZER_MODEL}",
+            "${modelPathPrefix(preferenceManager, fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.TOKENIZER_MODEL}",
             options
         )
         debugLog("{$TAG} {TOKENIZER} {initialize} Session created successfully!")
@@ -229,7 +231,7 @@ internal class EnglishTextTokenizer(
     private fun loadEncoder(): Map<String, Int> {
         val map: MutableMap<String, Int> = HashMap()
         try {
-            val path = "${modelPathPrefix(fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.TOKENIZER_VOCABULARY}"
+            val path = "${modelPathPrefix(preferenceManager, fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.TOKENIZER_VOCABULARY}"
             val jsonReader = JsonReader(InputStreamReader(FileInputStream(path)))
             jsonReader.beginObject()
             while (jsonReader.hasNext()) {
@@ -255,7 +257,7 @@ internal class EnglishTextTokenizer(
     private fun loadBpeRanks(): Map<Pair<String, String>, Int?> {
         val result: MutableMap<Pair<String, String>, Int?> = HashMap()
         try {
-            val path = "${modelPathPrefix(fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.TOKENIZER_MERGES}"
+            val path = "${modelPathPrefix(preferenceManager, fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.TOKENIZER_MERGES}"
             val reader = BufferedReader(InputStreamReader(FileInputStream(path)))
             var line: String
             var startLine = 1

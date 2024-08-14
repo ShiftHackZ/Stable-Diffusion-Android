@@ -35,6 +35,7 @@ data class ServerSetupState(
     val huggingFaceModel: String = "",
     val localModels: List<LocalModel> = emptyList(),
     val localCustomModel: Boolean = false,
+    val localCustomModelPath: String = "",
     val passwordVisible: Boolean = false,
     val serverUrlValidationError: UiText? = null,
     val swarmUiUrlValidationError: UiText? = null,
@@ -44,6 +45,7 @@ data class ServerSetupState(
     val huggingFaceApiKeyValidationError: UiText? = null,
     val openAiApiKeyValidationError: UiText? = null,
     val stabilityAiApiKeyValidationError: UiText? = null,
+    val localCustomModelPathValidationError: UiText? = null,
 ) : MviState, KoinComponent {
 
     val demoModeUrl: String

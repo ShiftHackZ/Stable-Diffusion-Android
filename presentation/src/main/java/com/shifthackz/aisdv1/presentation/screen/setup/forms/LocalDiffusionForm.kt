@@ -1,5 +1,9 @@
 package com.shifthackz.aisdv1.presentation.screen.setup.forms
 
+import android.content.Intent
+import android.provider.DocumentsContract
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,23 +19,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.FileDownloadDone
 import androidx.compose.material.icons.outlined.FileDownloadOff
 import androidx.compose.material.icons.outlined.Landslide
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +49,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
+import com.shifthackz.aisdv1.core.common.file.LOCAL_DIFFUSION_CUSTOM_PATH
+import com.shifthackz.aisdv1.core.extensions.getRealPath
+import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
@@ -151,76 +162,66 @@ fun LocalDiffusionForm(
 
                     val folderStyle = MaterialTheme.typography.bodySmall
                     Text(
-                        modifier = folderModifier(1),
-                        text = "Download",
-                        style = folderStyle,
-                    )
-                    Text(
                         modifier = Modifier.padding(start = 12.dp),
-                        text = "SDAI",
-                        style = folderStyle,
-                    )
-                    Text(
-                        modifier = folderModifier(3),
-                        text = "model",
+                        text = state.localCustomModelPath,
                         style = folderStyle,
                     )
 
                     Text(
-                        modifier = folderModifier(4),
+                        modifier = folderModifier(3),
                         text = "text_encoder",
                         style = folderStyle,
                     )
                     Text(
-                        modifier = folderModifier(5),
+                        modifier = folderModifier(4),
                         text = "model.ort",
                         style = folderStyle,
                     )
 
                     Text(
-                        modifier = folderModifier(4),
+                        modifier = folderModifier(3),
                         text = "tokenizer",
                         style = folderStyle,
                     )
                     Text(
-                        modifier = folderModifier(5),
+                        modifier = folderModifier(4),
                         text = "merges.txt",
                         style = folderStyle,
                     )
                     Text(
-                        modifier = folderModifier(5),
+                        modifier = folderModifier(3),
                         text = "special_tokens_map.json",
                         style = folderStyle,
                     )
                     Text(
-                        modifier = folderModifier(5),
+                        modifier = folderModifier(4),
                         text = "tokenizer_config.json",
                         style = folderStyle,
                     )
                     Text(
-                        modifier = folderModifier(5),
+                        modifier = folderModifier(4),
                         text = "vocab.json",
                         style = folderStyle,
                     )
 
                     Text(
-                        modifier = folderModifier(4),
+                        modifier = folderModifier(3),
                         text = "unet",
                         style = folderStyle,
                     )
                     Text(
-                        modifier = folderModifier(5),
+                        modifier = folderModifier(4),
                         text = "model.ort",
                         style = folderStyle,
                     )
 
                     Text(
-                        modifier = folderModifier(4),
+                        modifier = folderModifier(3),
                         text = "vae_decoder",
                         style = folderStyle,
                     )
                     Text(
-                        modifier = folderModifier(5),
+                        modifier = folderModifier(4),
                         text = "model.ort",
                         style = folderStyle,
                     )
@@ -286,6 +287,15 @@ fun LocalDiffusionForm(
         }
         if (state.localCustomModel && buildInfoProvider.type == BuildType.FOSS) {
             Text(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 8.dp),
+                text = stringResource(id = LocalizationR.string.model_local_permission_header),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(id = LocalizationR.string.model_local_permission_title),
                 style = MaterialTheme.typography.bodyMedium,
@@ -301,6 +311,79 @@ fun LocalDiffusionForm(
                     color = LocalContentColor.current,
                 )
             }
+            Text(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 8.dp),
+                text = stringResource(id = LocalizationR.string.model_local_path_header),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+            )
+            val context = LocalContext.current
+            val uriFlags =
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartActivityForResult()
+            ) { result ->
+                result.data?.data?.let { uri ->
+                    context.contentResolver.takePersistableUriPermission(uri, uriFlags)
+                    val docUri = DocumentsContract.buildDocumentUriUsingTree(
+                        uri,
+                        DocumentsContract.getTreeDocumentId(uri)
+                    )
+                    getRealPath(context, docUri)
+                        ?.let(ServerSetupIntent::SelectLocalModelPath)
+                        ?.let(processIntent::invoke)
+                }
+            }
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 14.dp),
+                value = state.localCustomModelPath,
+                onValueChange = { processIntent(ServerSetupIntent.SelectLocalModelPath(it)) },
+                enabled = true,
+                singleLine = true,
+                label = { Text(stringResource(LocalizationR.string.model_local_path_title)) },
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            processIntent(
+                                ServerSetupIntent.SelectLocalModelPath(LOCAL_DIFFUSION_CUSTOM_PATH)
+                            )
+                        },
+                        content = {
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = "Reset",
+                            )
+                        },
+                    )
+                },
+                isError = state.localCustomModelPathValidationError != null,
+                supportingText = {
+                    state.localCustomModelPathValidationError
+                        ?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
+                },
+            )
+            OutlinedButton(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 4.dp, bottom = 8.dp),
+                onClick = {
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
+                        addFlags(uriFlags)
+                    }
+                    launcher.launch(intent)
+                },
+            ) {
+                Text(
+                    text = stringResource(id = LocalizationR.string.model_local_path_button),
+                    color = LocalContentColor.current,
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
         }
         state.localModels
             .filter {

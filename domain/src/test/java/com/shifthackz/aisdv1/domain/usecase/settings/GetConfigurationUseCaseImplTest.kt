@@ -72,6 +72,10 @@ class GetConfigurationUseCaseImplTest {
             stubPreferenceManager::localModelId.get()
         } returns mockConfiguration.localModelId
 
+        every {
+            stubPreferenceManager::localDiffusionCustomModelPath.get()
+        } returns mockConfiguration.localModelPath
+
         useCase
             .invoke()
             .test()

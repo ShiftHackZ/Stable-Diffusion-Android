@@ -62,6 +62,7 @@ val viewModelModule = module {
             fetchAndGetHuggingFaceModelsUseCase = get(),
             urlValidator = get(),
             stringValidator = get(),
+            filePathValidator = get(),
             setupConnectionInterActor = get(),
             downloadModelUseCase = get(),
             deleteModelUseCase = get(),

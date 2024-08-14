@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
 import com.shifthackz.aisdv1.core.validation.common.CommonStringValidator
+import com.shifthackz.aisdv1.core.validation.path.FilePathValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.DownloadState
@@ -38,6 +39,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     private val stubFetchAndGetHuggingFaceModelsUseCase = mockk<FetchAndGetHuggingFaceModelsUseCase>()
     private val stubUrlValidator = mockk<UrlValidator>()
     private val stubCommonStringValidator = mockk<CommonStringValidator>()
+    private val stubFilePathValidator = mockk<FilePathValidator>()
     private val stubSetupConnectionInterActor = mockk<SetupConnectionInterActor>()
     private val stubDownloadModelUseCase = mockk<DownloadModelUseCase>()
     private val stubDeleteModelUseCase = mockk<DeleteModelUseCase>()
@@ -52,6 +54,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         fetchAndGetHuggingFaceModelsUseCase = stubFetchAndGetHuggingFaceModelsUseCase,
         urlValidator = stubUrlValidator,
         stringValidator = stubCommonStringValidator,
+        filePathValidator = stubFilePathValidator,
         setupConnectionInterActor = stubSetupConnectionInterActor,
         downloadModelUseCase = stubDownloadModelUseCase,
         deleteModelUseCase = stubDeleteModelUseCase,

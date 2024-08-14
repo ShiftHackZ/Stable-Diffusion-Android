@@ -25,5 +25,6 @@ internal class SetServerConfigurationUseCaseImpl(
             preferenceManager.stabilityAiApiKey = configuration.stabilityAiApiKey
             preferenceManager.stabilityAiEngineId = configuration.stabilityAiEngineId
             preferenceManager.localModelId = configuration.localModelId
+            preferenceManager.localDiffusionCustomModelPath = configuration.localModelPath
         }
 }
