@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.modal.tag
 
 import androidx.compose.runtime.Immutable
+import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.android.core.mvi.MviState
 
@@ -42,7 +43,7 @@ fun String.replaceExtraValue(value: Double): String {
     val result = buildString {
         append("<")
         append(parts.take(2).joinToString(":"))
-        append(":$value")
+        append(":${value.roundTo(2)}")
         append(">")
     }
     return result

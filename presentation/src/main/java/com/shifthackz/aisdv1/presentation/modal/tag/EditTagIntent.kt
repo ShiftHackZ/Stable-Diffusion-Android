@@ -15,6 +15,8 @@ sealed interface EditTagIntent : MviIntent {
 
     data class UpdateTag(val tag: String) : EditTagIntent
 
+    data class UpdateValue(val value: Double) : EditTagIntent
+
     enum class Value : EditTagIntent {
         Increment, Decrement;
     }

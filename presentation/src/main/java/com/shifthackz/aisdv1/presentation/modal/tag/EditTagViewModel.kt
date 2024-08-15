@@ -41,6 +41,13 @@ class EditTagViewModel : MviRxViewModel<EditTagState, EditTagIntent, EditTagEffe
                     ?: state
             }
 
+            is EditTagIntent.UpdateValue -> updateState { state ->
+                state.currentValue
+                    ?.let { state.currentTag.replaceExtraValue(intent.value) }
+                    ?.let { state.copy(currentTag = it) }
+                    ?: state
+            }
+
             is EditTagIntent.Action -> {
                 val newTag = when (intent) {
                     EditTagIntent.Action.Apply -> currentState.currentTag
