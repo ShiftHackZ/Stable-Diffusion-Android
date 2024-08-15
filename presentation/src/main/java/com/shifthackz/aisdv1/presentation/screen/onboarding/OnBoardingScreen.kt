@@ -53,9 +53,10 @@ fun OnBoardingScreen(
         viewModel = viewModel,
         navigationBarColor = MaterialTheme.colorScheme.surface,
         applySystemUiColors = true,
-    ) { _, processIntent ->
+    ) { state, processIntent ->
         OnBoardingScreenContent(
             launchSource = viewModel.launchSource,
+            state = state,
             processIntent = processIntent,
         )
     }
@@ -64,6 +65,7 @@ fun OnBoardingScreen(
 @Composable
 private fun OnBoardingScreenContent(
     launchSource: LaunchSource,
+    state: OnBoardingState,
     processIntent: (OnBoardingIntent) -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
@@ -191,13 +193,16 @@ private fun OnBoardingScreenContent(
             HorizontalPager(
                 modifier = Modifier.fillMaxSize(),
                 state = pagerState,
+                beyondBoundsPageCount = OnBoardingPage.entries.size,
                 userScrollEnabled = false,
             ) { index ->
                 when (OnBoardingPage.entries[index]) {
                     OnBoardingPage.Form -> FormPageContent()
                     OnBoardingPage.Providers -> ProviderPageContent()
                     OnBoardingPage.LocalDiffusion -> LocalDiffusionPageContent()
-                    OnBoardingPage.LookAndFeel -> LookAndFeelPageContent()
+                    OnBoardingPage.LookAndFeel -> LookAndFeelPageContent(
+                        darkThemeToken = state.darkThemeToken,
+                    )
                 }
             }
         }

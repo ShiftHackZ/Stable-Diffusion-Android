@@ -57,6 +57,7 @@ fun LocalDiffusionPageContent(
                 TextToImageScreenContent(
                     modifier = localModifier,
                     state = TextToImageState(
+                        onBoardingDemo = true,
                         mode = ServerSource.LOCAL,
                         advancedToggleButtonVisible = false,
                         advancedOptionsVisible = true,

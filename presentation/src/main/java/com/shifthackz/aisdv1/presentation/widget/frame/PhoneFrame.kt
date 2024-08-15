@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -51,6 +52,7 @@ fun PhoneFrame(
         ) {
             Box(
                 modifier = Modifier
+                    .alpha(0.5f)
                     .padding(top = 8.dp)
                     .width(54.dp)
                     .height(8.dp)

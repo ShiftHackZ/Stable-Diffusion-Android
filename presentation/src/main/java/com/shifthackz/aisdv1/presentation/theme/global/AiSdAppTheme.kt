@@ -49,7 +49,7 @@ fun AiSdAppTheme(
             palette = colorTokenPalette(
                 token = state.colorToken,
                 darkThemeToken = state.darkThemeToken,
-                isDark = isDark
+                isDark = isDark,
             ),
             content = content,
         )

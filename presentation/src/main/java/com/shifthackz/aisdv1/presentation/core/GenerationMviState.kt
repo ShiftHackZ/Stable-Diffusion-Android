@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.android.core.mvi.MviState
 
 abstract class GenerationMviState : MviState {
+    abstract val onBoardingDemo: Boolean
     abstract val screenModal: Modal
     abstract val mode: ServerSource
     abstract val advancedToggleButtonVisible: Boolean
@@ -55,6 +56,7 @@ abstract class GenerationMviState : MviState {
         get() = widthValidationError != null || heightValidationError != null
 
     open fun copyState(
+        onBoardingDemo: Boolean = this.onBoardingDemo,
         screenModal: Modal = this.screenModal,
         mode: ServerSource = this.mode,
         advancedToggleButtonVisible: Boolean = this.advancedToggleButtonVisible,

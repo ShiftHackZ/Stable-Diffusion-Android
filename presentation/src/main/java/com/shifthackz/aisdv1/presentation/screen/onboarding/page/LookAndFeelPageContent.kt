@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.extensions.gesturesDisabled
 import com.shifthackz.aisdv1.domain.entity.ColorToken
+import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.presentation.screen.onboarding.buildOnBoardingText
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
@@ -30,6 +31,7 @@ import com.shifthackz.aisdv1.presentation.screen.settings.SettingsScreenContent
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsState
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppTheme
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppThemeState
+import com.shifthackz.aisdv1.presentation.theme.isSdAppInDarkTheme
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -38,13 +40,22 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 @Composable
 fun LookAndFeelPageContent(
     modifier: Modifier = Modifier,
+    darkThemeToken: DarkThemeToken,
 ) = Column(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     val scope = rememberCoroutineScope()
+    val darkTheme = isSdAppInDarkTheme()
     var themeState by remember {
-        mutableStateOf(AiSdAppThemeState())
+        mutableStateOf(
+            AiSdAppThemeState(
+                systemColorPalette = false,
+                systemDarkTheme = false,
+                darkTheme = darkTheme,
+                darkThemeToken = darkThemeToken,
+            ),
+        )
     }
     Spacer(modifier = Modifier.weight(1f))
     Text(
@@ -67,6 +78,8 @@ fun LookAndFeelPageContent(
                         loading = false,
                         onBoardingDemo = true,
                         colorToken = themeState.colorToken,
+                        darkThemeToken = darkThemeToken,
+                        darkTheme = darkTheme,
                     ),
                 )
             }

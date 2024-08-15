@@ -46,6 +46,7 @@ fun FormPageContent(
                     .gesturesDisabled()
                     .aspectRatio(onBoardingPhoneAspectRatio),
                 state = TextToImageState(
+                    onBoardingDemo = true,
                     advancedToggleButtonVisible = false,
                     advancedOptionsVisible = true,
                     formPromptTaggedInput = true,

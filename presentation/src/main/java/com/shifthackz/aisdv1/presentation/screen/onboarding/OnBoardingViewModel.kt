@@ -4,13 +4,13 @@ import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
+import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.postSplashNavigation
 import com.shifthackz.android.core.mvi.EmptyEffect
-import com.shifthackz.android.core.mvi.EmptyState
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class OnBoardingViewModel(
@@ -19,9 +19,16 @@ class OnBoardingViewModel(
     private val splashNavigationUseCase: SplashNavigationUseCase,
     private val preferenceManager: PreferenceManager,
     private val schedulersProvider: SchedulersProvider,
-) : MviRxViewModel<EmptyState, OnBoardingIntent, EmptyEffect>() {
+) : MviRxViewModel<OnBoardingState, OnBoardingIntent, EmptyEffect>() {
 
-    override val initialState = EmptyState
+    override val initialState = OnBoardingState()
+
+    init {
+        updateState {
+            val token = DarkThemeToken.parse(preferenceManager.designDarkThemeToken)
+            it.copy(darkThemeToken = token)
+        }
+    }
 
     override fun processIntent(intent: OnBoardingIntent) {
         when (intent) {

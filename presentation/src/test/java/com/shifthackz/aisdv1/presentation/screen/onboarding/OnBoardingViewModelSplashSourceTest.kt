@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.onboarding
 
+import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelInitializeStrategy
@@ -35,6 +36,10 @@ class OnBoardingViewModelSplashSourceTest : CoreViewModelTest<OnBoardingViewMode
     @Before
     override fun initialize() {
         super.initialize()
+
+        every {
+            stubPreferenceManager::designDarkThemeToken.get()
+        } returns DarkThemeToken.FRAPPE.toString()
 
         every {
             stubPreferenceManager::onBoardingComplete.set(any())
