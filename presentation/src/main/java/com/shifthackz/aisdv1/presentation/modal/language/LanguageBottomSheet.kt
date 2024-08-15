@@ -1,14 +1,14 @@
 package com.shifthackz.aisdv1.presentation.modal.language
 
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Translate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,10 +37,18 @@ fun LanguageBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
-                startIcon = Icons.Default.Translate,
                 selected = locale == currentLocale,
                 text = display.asUiText(),
                 showChevron = false,
+                startIconContent = {
+                    Localization.getCountryFlagDrawableResId(locale)?.let {
+                        Image(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            painter = painterResource(id = it),
+                            contentDescription = locale,
+                        )
+                    }
+                },
                 onClick = {
                     LocaleListCompat
                         .forLanguageTags(locale)
