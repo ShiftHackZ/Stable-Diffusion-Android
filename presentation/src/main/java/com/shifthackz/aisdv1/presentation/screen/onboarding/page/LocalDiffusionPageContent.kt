@@ -16,11 +16,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.extensions.gesturesDisabled
 import com.shifthackz.aisdv1.core.localization.R
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
+import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
+import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneWidthFraction
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreenContent
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageState
 import com.shifthackz.aisdv1.presentation.widget.dialog.GeneratingProgressDialogContent
@@ -33,24 +35,21 @@ fun LocalDiffusionPageContent(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
-    Spacer(modifier = Modifier.weight(2f))
+    Spacer(modifier = Modifier.weight(1f))
     Text(
         text = "Offline Local Diffusion\nAI generation.",
         fontSize = 24.sp,
         textAlign = TextAlign.Center,
         fontWeight = FontWeight(450),
     )
-    Spacer(modifier = Modifier.weight(2f))
+    Spacer(modifier = Modifier.weight(1f))
     PhoneFrame(
-        modifier = Modifier
-            .fillMaxWidth(0.74f),
+        modifier = Modifier.fillMaxWidth(onBoardingPhoneWidthFraction),
     ) {
-        CompositionLocalProvider(
-            LocalDensity provides Density(2.15f, 1f),
-        ) {
+        CompositionLocalProvider(LocalDensity provides onBoardingDensity) {
             val localModifier = Modifier
                 .gesturesDisabled()
-                .aspectRatio(9 / 16f)
+                .aspectRatio(onBoardingPhoneAspectRatio)
             Box(
                 contentAlignment = Alignment.Center,
             ) {
@@ -73,11 +72,11 @@ fun LocalDiffusionPageContent(
                     contentAlignment = Alignment.Center,
                 ) {
                     Box(
-                        modifier = Modifier.fillMaxWidth(0.7f),
+                        modifier = Modifier.fillMaxWidth(0.85f),
                         contentAlignment = Alignment.Center,
                     ) {
                         GeneratingProgressDialogContent(
-                            titleResId = R.string.communicating_progress_title,
+                            titleResId = R.string.communicating_local_title,
                             step = 3 to 20,
                         )
                     }

@@ -24,7 +24,7 @@ class OnBoardingViewModel(
     override fun processIntent(intent: OnBoardingIntent) {
         when (intent) {
             OnBoardingIntent.Navigate -> {
-//                preferenceManager.onBoardingComplete = true
+                preferenceManager.onBoardingComplete = true
                 !splashNavigationUseCase()
                     .subscribeOnMainThread(schedulersProvider)
                     .subscribeBy(::errorLog) { action -> mainRouter.postSplashNavigation(action) }

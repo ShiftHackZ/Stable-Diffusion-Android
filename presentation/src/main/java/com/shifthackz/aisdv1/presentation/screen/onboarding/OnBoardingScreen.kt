@@ -2,6 +2,7 @@
 
 package com.shifthackz.aisdv1.presentation.screen.onboarding
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,7 +41,7 @@ fun OnBoardingScreen() {
         viewModel = koinViewModel<OnBoardingViewModel>(),
         navigationBarColor = MaterialTheme.colorScheme.surface,
         applySystemUiColors = true,
-    ) { state, processIntent ->
+    ) { _, processIntent ->
         OnBoardingScreenContent(
             processIntent = processIntent,
         )
@@ -56,6 +57,14 @@ private fun OnBoardingScreenContent(
         initialPage = OnBoardingPage.entries.first().ordinal,
         pageCount = { OnBoardingPage.entries.size },
     )
+    BackHandler(pagerState.currentPage > 0) {
+        scope.launch {
+            pagerState.animateScrollToPage(
+                page = pagerState.currentPage - 1,
+                animationSpec = onBoardingPageAnimation,
+            )
+        }
+    }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -69,25 +78,6 @@ private fun OnBoardingScreenContent(
                     .padding(horizontal = 32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-//                Row(
-//                    modifier = Modifier.padding(vertical = 12.dp),
-//                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-//                ) {
-//                    repeat(OnBoardingPage.entries.size) { index ->
-//                        val selected = pagerState.currentPage == index
-//                        Box(
-//                            modifier = Modifier
-//                                .size(12.dp)
-//                                .background(
-//                                    MaterialTheme.colorScheme.primary.copy(
-//                                        alpha = if (selected) 1f else 0.5f,
-//                                    ),
-//                                    CircleShape,
-//                                )
-//                                .clip(CircleShape)
-//                        )
-//                    }
-//                }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -96,7 +86,7 @@ private fun OnBoardingScreenContent(
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     Button(
-                        modifier = Modifier.size(48.dp),
+                        modifier = Modifier.size(56.dp),
                         shape = RoundedCornerShape(12.dp),
                         contentPadding = PaddingValues(0.dp),
                         onClick = {
@@ -104,7 +94,10 @@ private fun OnBoardingScreenContent(
                                 processIntent(OnBoardingIntent.Navigate)
                             } else {
                                 scope.launch {
-                                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                                    pagerState.animateScrollToPage(
+                                        page = pagerState.currentPage + 1,
+                                        animationSpec = onBoardingPageAnimation,
+                                    )
                                 }
                             }
                         },
@@ -128,7 +121,7 @@ private fun OnBoardingScreenContent(
             HorizontalPager(
                 modifier = Modifier.fillMaxSize(),
                 state = pagerState,
-                userScrollEnabled = true,
+                userScrollEnabled = false,
             ) { index ->
                 when (OnBoardingPage.entries[index]) {
                     OnBoardingPage.Form -> FormPageContent()

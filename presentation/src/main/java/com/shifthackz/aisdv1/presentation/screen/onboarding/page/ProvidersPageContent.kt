@@ -19,10 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.extensions.gesturesDisabled
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
+import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
+import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneWidthFraction
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreenContent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
@@ -44,25 +46,22 @@ fun ProviderPageContent(
             )
         )
     }
-    Spacer(modifier = Modifier.weight(2f))
+    Spacer(modifier = Modifier.weight(1f))
     Text(
         text = "Freedom to choose your AI generation provider.",
         fontSize = 24.sp,
         textAlign = TextAlign.Center,
         fontWeight = FontWeight(450),
     )
-    Spacer(modifier = Modifier.weight(2f))
+    Spacer(modifier = Modifier.weight(1f))
     PhoneFrame(
-        modifier = Modifier
-            .fillMaxWidth(0.74f),
+        modifier = Modifier.fillMaxWidth(onBoardingPhoneWidthFraction),
     ) {
-        CompositionLocalProvider(
-            LocalDensity provides Density(2.15f, 1f),
-        ) {
+        CompositionLocalProvider(LocalDensity provides onBoardingDensity) {
             ServerSetupScreenContent(
                 modifier = Modifier
                     .gesturesDisabled()
-                    .aspectRatio(9 / 16f),
+                    .aspectRatio(onBoardingPhoneAspectRatio),
                 state = serverState,
             )
         }
@@ -71,7 +70,7 @@ fun ProviderPageContent(
     DisposableEffect(Unit) {
         val job = scope.launch {
             while (true) {
-                delay(700)
+                delay(1200)
                 serverState = serverState.copy(
                     mode = ServerSource.entries.random(),
                 )

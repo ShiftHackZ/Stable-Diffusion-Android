@@ -19,7 +19,11 @@ internal class MainRouterImpl : MainRouter {
     }
 
     override fun navigateToOnBoarding() {
-        effectSubject.onNext(NavigationEffect.Navigate.RoutePopUp(Constants.ROUTE_ONBOARDING))
+        effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder(Constants.ROUTE_ONBOARDING) {
+            popUpTo(Constants.ROUTE_SPLASH) {
+                inclusive = true
+            }
+        })
     }
 
     override fun navigateToPostSplashConfigLoader() {
@@ -31,13 +35,17 @@ internal class MainRouterImpl : MainRouter {
     }
 
     override fun navigateToHomeScreen() {
-        effectSubject.onNext(NavigationEffect.Navigate.RoutePopUp(Constants.ROUTE_HOME))
+        effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder(Constants.ROUTE_HOME) {
+            popUpTo(0) {
+                inclusive = true
+            }
+        })
     }
 
     override fun navigateToServerSetup(source: ServerSetupLaunchSource) {
         effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder("${Constants.ROUTE_SERVER_SETUP}/${source.ordinal}") {
             if (source == ServerSetupLaunchSource.SPLASH) {
-                popUpTo(Constants.ROUTE_SPLASH) {
+                popUpTo(Constants.ROUTE_ONBOARDING) {
                     inclusive = true
                 }
             }
