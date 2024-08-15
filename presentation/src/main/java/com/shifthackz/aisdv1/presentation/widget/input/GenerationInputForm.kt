@@ -142,24 +142,28 @@ fun GenerationInputForm(
     }
 
     Column(modifier = modifier) {
-        when (state.mode) {
-            ServerSource.AUTOMATIC1111,
-            ServerSource.SWARM_UI,
-            ServerSource.STABILITY_AI,
-            ServerSource.HUGGING_FACE,
-            ServerSource.LOCAL -> EngineSelectionComponent(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-            )
-            ServerSource.OPEN_AI -> DropdownTextField(
-                modifier = Modifier.padding(top = 8.dp),
-                label = LocalizationR.string.hint_model_open_ai.asUiText(),
-                value = state.openAiModel,
-                items = OpenAiModel.entries,
-                onItemSelected = { processIntent(GenerationMviIntent.Update.OpenAi.Model(it)) },
-            )
-            else -> Unit
+        if (!state.onBoardingDemo) {
+            when (state.mode) {
+                ServerSource.AUTOMATIC1111,
+                ServerSource.SWARM_UI,
+                ServerSource.STABILITY_AI,
+                ServerSource.HUGGING_FACE,
+                ServerSource.LOCAL -> EngineSelectionComponent(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                )
+
+                ServerSource.OPEN_AI -> DropdownTextField(
+                    modifier = Modifier.padding(top = 8.dp),
+                    label = LocalizationR.string.hint_model_open_ai.asUiText(),
+                    value = state.openAiModel,
+                    items = OpenAiModel.entries,
+                    onItemSelected = { processIntent(GenerationMviIntent.Update.OpenAi.Model(it)) },
+                )
+
+                else -> Unit
+            }
         }
         if (state.formPromptTaggedInput) {
             ChipTextFieldWithItem(

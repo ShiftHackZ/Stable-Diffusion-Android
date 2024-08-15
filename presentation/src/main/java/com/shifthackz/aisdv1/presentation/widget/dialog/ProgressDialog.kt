@@ -44,37 +44,14 @@ fun ProgressDialog(
             dismissOnBackPress = canDismiss,
         ),
     ) {
-        Surface(
-            shape = RoundedCornerShape(16.dp),
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-                Text(
-                    text = stringResource(id = titleResId),
-                    style = TextStyle(fontSize = 16.sp),
-                    fontWeight = FontWeight.Bold,
-                    color = AlertDialogDefaults.titleContentColor,
-                )
-                Text(
-                    modifier = Modifier.padding(top = 14.dp),
-                    text = stringResource(id = subTitleResId),
-                    style = TextStyle(fontSize = 14.sp),
-                    color = AlertDialogDefaults.textContentColor,
-                )
-                ProgressDialogStatus(
-                    waitTimeSeconds = waitTimeSeconds,
-                    positionInQueue = positionInQueue,
-                    step = step,
-                )
-                LinearProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    color = AlertDialogDefaults.iconContentColor,
-                )
-                content?.invoke()
-            }
-        }
+        GeneratingProgressDialogContent(
+            titleResId = titleResId,
+            subTitleResId = subTitleResId,
+            waitTimeSeconds = waitTimeSeconds,
+            positionInQueue = positionInQueue,
+            step = step,
+            content = content,
+        )
     }
 }
 
@@ -124,6 +101,48 @@ fun ProgressDialogCancelButton(onClick: () -> Unit) {
                 text = stringResource(id = LocalizationR.string.cancel),
                 color = LocalContentColor.current,
             )
+        }
+    }
+}
+
+@Composable
+fun GeneratingProgressDialogContent(
+    @StringRes titleResId: Int = LocalizationR.string.communicating_progress_title,
+    @StringRes subTitleResId: Int = LocalizationR.string.communicating_progress_sub_title,
+    waitTimeSeconds: Int? = null,
+    positionInQueue: Int? = null,
+    step: Pair<Int, Int>? = null,
+    content: (@Composable () -> Unit)? = null,
+) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = AlertDialogDefaults.containerColor,
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
+            Text(
+                text = stringResource(id = titleResId),
+                style = TextStyle(fontSize = 16.sp),
+                fontWeight = FontWeight.Bold,
+                color = AlertDialogDefaults.titleContentColor,
+            )
+            Text(
+                modifier = Modifier.padding(top = 14.dp),
+                text = stringResource(id = subTitleResId),
+                style = TextStyle(fontSize = 14.sp),
+                color = AlertDialogDefaults.textContentColor,
+            )
+            ProgressDialogStatus(
+                waitTimeSeconds = waitTimeSeconds,
+                positionInQueue = positionInQueue,
+                step = step,
+            )
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                color = AlertDialogDefaults.iconContentColor,
+            )
+            content?.invoke()
         }
     }
 }

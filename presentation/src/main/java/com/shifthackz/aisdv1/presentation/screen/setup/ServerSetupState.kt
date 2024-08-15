@@ -87,15 +87,6 @@ data class ServerSetupState(
     )
 }
 
-enum class ServerSetupLaunchSource {
-    SPLASH,
-    SETTINGS;
-
-    companion object {
-        fun fromKey(key: Int) = entries.firstOrNull { it.ordinal == key } ?: SPLASH
-    }
-}
-
 val Configuration.authType: ServerSetupState.AuthType
     get() {
         val noCredentials = ServerSetupState.AuthType.ANONYMOUS

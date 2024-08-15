@@ -16,12 +16,12 @@ import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.stabilityai.ObserveStabilityAiCreditsUseCase
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
@@ -109,7 +109,7 @@ class SettingsViewModel(
             }
 
             SettingsIntent.NavigateConfiguration -> mainRouter.navigateToServerSetup(
-                ServerSetupLaunchSource.SETTINGS
+                LaunchSource.SETTINGS
             )
 
             SettingsIntent.NavigateDeveloperMode -> mainRouter.navigateToDebugMenu()
@@ -209,6 +209,10 @@ class SettingsViewModel(
             }
 
             SettingsIntent.Action.Donate -> mainRouter.navigateToDonate()
+
+            SettingsIntent.Action.OnBoarding -> mainRouter.navigateToOnBoarding(
+                source = LaunchSource.SETTINGS,
+            )
 
             is SettingsIntent.UpdateFlag.BackgroundGeneration -> {
                 if (intent.flag) {

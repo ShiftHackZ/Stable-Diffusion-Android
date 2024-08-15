@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountTree
+import androidx.compose.material.icons.filled.AllInclusive
 import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Code
@@ -124,7 +125,7 @@ fun SettingsScreen() {
         },
         applySystemUiColors = false,
     ) { state, intentHandler ->
-        ScreenContent(
+        SettingsScreenContent(
             state = state,
             processIntent = intentHandler,
         )
@@ -132,10 +133,10 @@ fun SettingsScreen() {
 }
 
 @Composable
-private fun ScreenContent(
+fun SettingsScreenContent(
     modifier: Modifier = Modifier,
     state: SettingsState,
-    processIntent: (SettingsIntent) -> Unit,
+    processIntent: (SettingsIntent) -> Unit = {},
 ) {
     Box(modifier) {
         Scaffold(
@@ -202,8 +203,9 @@ private fun ContentSettingsState(
     ) {
         systemUiController.setNavigationBarColor(navBarColor)
     }
+    val scrollState = rememberScrollState()
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState()),
+        modifier = modifier.verticalScroll(scrollState),
     ) {
         val headerModifier = Modifier.padding(top = 28.dp, bottom = 8.dp)
 
@@ -215,220 +217,228 @@ private fun ContentSettingsState(
             .fillMaxWidth()
             .padding(top = 4.dp, start = 4.dp)
 
-        //region MAIN SETTINGS
-        SettingsHeader(
-            modifier = headerModifier,
-            loading = state.loading,
-            text = LocalizationR.string.settings_header_server.asUiText(),
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.SettingsEthernet,
-            text = LocalizationR.string.settings_item_config.asUiText(),
-            endValueText = when (state.serverSource) {
-                ServerSource.AUTOMATIC1111 -> LocalizationR.string.srv_type_own_short
-                ServerSource.HORDE -> LocalizationR.string.srv_type_horde_short
-                ServerSource.HUGGING_FACE -> LocalizationR.string.srv_type_hugging_face_short
-                ServerSource.OPEN_AI -> LocalizationR.string.srv_type_open_ai
-                ServerSource.STABILITY_AI -> LocalizationR.string.srv_type_stability_ai
-                ServerSource.LOCAL -> LocalizationR.string.srv_type_local_short
-                ServerSource.SWARM_UI -> LocalizationR.string.srv_type_swarm_ui
-            }.asUiText(),
-            onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
-        )
-        if (state.showStabilityAiCredits) SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            enabled = false,
-            startIcon = Icons.Default.Circle,
-            text = LocalizationR.string.settings_item_stability_ai_credits.asUiText(),
-            endValueText = state.stabilityAiCredits.roundTo(4).toString().asUiText(),
-        )
-        if (state.showSdModelSelector) SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.AutoFixNormal,
-            text = LocalizationR.string.settings_item_sd_model.asUiText(),
-            endValueText = state.sdModelSelected.asUiText(),
-            onClick = { processIntent(SettingsIntent.SdModel.OpenChooser) },
-        )
-        if (state.showLocalUseNNAPI) {
+        if (!state.onBoardingDemo) {
+            //region MAIN SETTINGS
+            SettingsHeader(
+                modifier = headerModifier,
+                loading = state.loading,
+                text = LocalizationR.string.settings_header_server.asUiText(),
+            )
             SettingsItem(
                 modifier = itemModifier,
                 loading = state.loading,
-                startIcon = Icons.Default.AccountTree,
-                text = LocalizationR.string.settings_item_local_nnapi.asUiText(),
+                startIcon = Icons.Default.SettingsEthernet,
+                text = LocalizationR.string.settings_item_config.asUiText(),
+                endValueText = when (state.serverSource) {
+                    ServerSource.AUTOMATIC1111 -> LocalizationR.string.srv_type_own_short
+                    ServerSource.HORDE -> LocalizationR.string.srv_type_horde_short
+                    ServerSource.HUGGING_FACE -> LocalizationR.string.srv_type_hugging_face_short
+                    ServerSource.OPEN_AI -> LocalizationR.string.srv_type_open_ai
+                    ServerSource.STABILITY_AI -> LocalizationR.string.srv_type_stability_ai
+                    ServerSource.LOCAL -> LocalizationR.string.srv_type_local_short
+                    ServerSource.SWARM_UI -> LocalizationR.string.srv_type_swarm_ui
+                }.asUiText(),
+                onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
+            )
+            if (state.showStabilityAiCredits) SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                enabled = false,
+                startIcon = Icons.Default.Circle,
+                text = LocalizationR.string.settings_item_stability_ai_credits.asUiText(),
+                endValueText = state.stabilityAiCredits.roundTo(4).toString().asUiText(),
+            )
+            if (state.showSdModelSelector) SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.AutoFixNormal,
+                text = LocalizationR.string.settings_item_sd_model.asUiText(),
                 endValueText = state.sdModelSelected.asUiText(),
-                onClick = { processIntent(SettingsIntent.UpdateFlag.NNAPI(!state.localUseNNAPI)) },
-                endValueContent = {
-                    Switch(
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        checked = state.localUseNNAPI,
-                        onCheckedChange = { processIntent(SettingsIntent.UpdateFlag.NNAPI(it)) },
+                onClick = { processIntent(SettingsIntent.SdModel.OpenChooser) },
+            )
+            if (state.showLocalUseNNAPI) {
+                SettingsItem(
+                    modifier = itemModifier,
+                    loading = state.loading,
+                    startIcon = Icons.Default.AccountTree,
+                    text = LocalizationR.string.settings_item_local_nnapi.asUiText(),
+                    endValueText = state.sdModelSelected.asUiText(),
+                    onClick = { processIntent(SettingsIntent.UpdateFlag.NNAPI(!state.localUseNNAPI)) },
+                    endValueContent = {
+                        Switch(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            checked = state.localUseNNAPI,
+                            onCheckedChange = { processIntent(SettingsIntent.UpdateFlag.NNAPI(it)) },
+                        )
+                    }
+                )
+                AnimatedVisibility(visible = !state.loading) {
+                    Text(
+                        modifier = warningModifier,
+                        text = stringResource(id = LocalizationR.string.settings_item_local_nnapi_warning),
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
-            )
-            AnimatedVisibility(visible = !state.loading) {
-                Text(
-                    modifier = warningModifier,
-                    text = stringResource(id = LocalizationR.string.settings_item_local_nnapi_warning),
-                    style = MaterialTheme.typography.labelMedium,
-                )
             }
-        }
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.MiscellaneousServices,
-            text = LocalizationR.string.settings_item_background_generation.asUiText(),
-            onClick = {
-                processIntent(SettingsIntent.UpdateFlag.BackgroundGeneration(!state.backgroundGeneration))
-            },
-            endValueContent = {
-                Switch(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    checked = state.backgroundGeneration,
-                    onCheckedChange = {
-                        processIntent(SettingsIntent.UpdateFlag.BackgroundGeneration(it))
-                    },
-                )
-            },
-        )
-        AnimatedVisibility(visible = !state.loading) {
-            Text(
-                modifier = warningModifier,
-                text = stringResource(id = LocalizationR.string.settings_item_background_generation_warning),
-                style = MaterialTheme.typography.labelMedium,
-            )
-        }
-        AnimatedVisibility(visible = !state.loading && state.developerMode) {
             SettingsItem(
                 modifier = itemModifier,
                 loading = state.loading,
-                startIcon = Icons.Default.DeveloperMode,
-                text = LocalizationR.string.title_debug_menu.asUiText(),
-                onClick = { processIntent(SettingsIntent.NavigateDeveloperMode) },
-            )
-        }
-        //endregion
-
-        //region APP SETTINGS
-        SettingsHeader(
-            modifier = headerModifier,
-            loading = state.loading,
-            text = LocalizationR.string.settings_header_app.asUiText(),
-        )
-        if (state.showMonitorConnectionOption) SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.Refresh,
-            text = LocalizationR.string.settings_item_monitor_connection.asUiText(),
-            onClick = {
-                processIntent(SettingsIntent.UpdateFlag.MonitorConnection(!state.monitorConnectivity))
-            },
-            endValueContent = {
-                Switch(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    checked = state.monitorConnectivity,
-                    onCheckedChange = { processIntent(SettingsIntent.UpdateFlag.MonitorConnection(it)) },
-                )
-            },
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.Save,
-            text = UiText.Concat(
-                LocalizationR.string.settings_item_auto_save.asUiText(),
-                if (state.backgroundGeneration) "*" else "",
-            ),
-            onClick = {
-                processIntent(SettingsIntent.UpdateFlag.AutoSaveResult(!state.autoSaveAiResults))
-            },
-            endValueContent = {
-                Switch(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    checked = state.autoSaveAiResults,
-                    onCheckedChange = {
-                        processIntent(SettingsIntent.UpdateFlag.AutoSaveResult(it))
-                    },
-                )
-            },
-        )
-        AnimatedVisibility(
-            visible = !state.loading && state.backgroundGeneration,
-        ) {
-            Text(
-                modifier = warningModifier,
-                text = stringResource(id = LocalizationR.string.settings_item_auto_save_warning),
-                style = MaterialTheme.typography.labelMedium,
-            )
-        }
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.Folder,
-            text = LocalizationR.string.settings_item_auto_save_media_store.asUiText(),
-            onClick = {
-                processIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(!state.saveToMediaStore))
-            },
-            endValueContent = {
-                Switch(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    checked = state.saveToMediaStore,
-                    onCheckedChange = {
-                        processIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(it))
-                    },
-                )
-            },
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.Tag,
-            text = LocalizationR.string.settings_item_tagged_input.asUiText(),
-            onClick = {
-                processIntent(SettingsIntent.UpdateFlag.TaggedInput(!state.formPromptTaggedInput))
-            },
-            endValueContent = {
-                Switch(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    checked = state.formPromptTaggedInput,
-                    onCheckedChange = {
-                        processIntent(SettingsIntent.UpdateFlag.TaggedInput(it))
-                    },
-                )
-            },
-        )
-        if (state.showFormAdvancedOption) {
-            SettingsItem(
-                modifier = itemModifier,
-                loading = state.loading,
-                startIcon = Icons.Default.DynamicForm,
-                text = LocalizationR.string.settings_item_advanced_form_default.asUiText(),
+                startIcon = Icons.Default.MiscellaneousServices,
+                text = LocalizationR.string.settings_item_background_generation.asUiText(),
                 onClick = {
-                    processIntent(SettingsIntent.UpdateFlag.AdvancedFormVisibility(!state.formAdvancedOptionsAlwaysShow))
+                    processIntent(SettingsIntent.UpdateFlag.BackgroundGeneration(!state.backgroundGeneration))
                 },
                 endValueContent = {
                     Switch(
                         modifier = Modifier.padding(horizontal = 8.dp),
-                        checked = state.formAdvancedOptionsAlwaysShow,
+                        checked = state.backgroundGeneration,
                         onCheckedChange = {
-                            processIntent(SettingsIntent.UpdateFlag.AdvancedFormVisibility(it))
+                            processIntent(SettingsIntent.UpdateFlag.BackgroundGeneration(it))
                         },
                     )
                 },
             )
+            AnimatedVisibility(visible = !state.loading) {
+                Text(
+                    modifier = warningModifier,
+                    text = stringResource(id = LocalizationR.string.settings_item_background_generation_warning),
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
+            AnimatedVisibility(visible = !state.loading && state.developerMode) {
+                SettingsItem(
+                    modifier = itemModifier,
+                    loading = state.loading,
+                    startIcon = Icons.Default.DeveloperMode,
+                    text = LocalizationR.string.title_debug_menu.asUiText(),
+                    onClick = { processIntent(SettingsIntent.NavigateDeveloperMode) },
+                )
+            }
+            //endregion
+
+            //region APP SETTINGS
+            SettingsHeader(
+                modifier = headerModifier,
+                loading = state.loading,
+                text = LocalizationR.string.settings_header_app.asUiText(),
+            )
+            if (state.showMonitorConnectionOption) SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.Refresh,
+                text = LocalizationR.string.settings_item_monitor_connection.asUiText(),
+                onClick = {
+                    processIntent(SettingsIntent.UpdateFlag.MonitorConnection(!state.monitorConnectivity))
+                },
+                endValueContent = {
+                    Switch(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        checked = state.monitorConnectivity,
+                        onCheckedChange = {
+                            processIntent(
+                                SettingsIntent.UpdateFlag.MonitorConnection(
+                                    it
+                                )
+                            )
+                        },
+                    )
+                },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.Save,
+                text = UiText.Concat(
+                    LocalizationR.string.settings_item_auto_save.asUiText(),
+                    if (state.backgroundGeneration) "*" else "",
+                ),
+                onClick = {
+                    processIntent(SettingsIntent.UpdateFlag.AutoSaveResult(!state.autoSaveAiResults))
+                },
+                endValueContent = {
+                    Switch(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        checked = state.autoSaveAiResults,
+                        onCheckedChange = {
+                            processIntent(SettingsIntent.UpdateFlag.AutoSaveResult(it))
+                        },
+                    )
+                },
+            )
+            AnimatedVisibility(
+                visible = !state.loading && state.backgroundGeneration,
+            ) {
+                Text(
+                    modifier = warningModifier,
+                    text = stringResource(id = LocalizationR.string.settings_item_auto_save_warning),
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.Folder,
+                text = LocalizationR.string.settings_item_auto_save_media_store.asUiText(),
+                onClick = {
+                    processIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(!state.saveToMediaStore))
+                },
+                endValueContent = {
+                    Switch(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        checked = state.saveToMediaStore,
+                        onCheckedChange = {
+                            processIntent(SettingsIntent.UpdateFlag.SaveToMediaStore(it))
+                        },
+                    )
+                },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.Tag,
+                text = LocalizationR.string.settings_item_tagged_input.asUiText(),
+                onClick = {
+                    processIntent(SettingsIntent.UpdateFlag.TaggedInput(!state.formPromptTaggedInput))
+                },
+                endValueContent = {
+                    Switch(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        checked = state.formPromptTaggedInput,
+                        onCheckedChange = {
+                            processIntent(SettingsIntent.UpdateFlag.TaggedInput(it))
+                        },
+                    )
+                },
+            )
+            if (state.showFormAdvancedOption) {
+                SettingsItem(
+                    modifier = itemModifier,
+                    loading = state.loading,
+                    startIcon = Icons.Default.DynamicForm,
+                    text = LocalizationR.string.settings_item_advanced_form_default.asUiText(),
+                    onClick = {
+                        processIntent(SettingsIntent.UpdateFlag.AdvancedFormVisibility(!state.formAdvancedOptionsAlwaysShow))
+                    },
+                    endValueContent = {
+                        Switch(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            checked = state.formAdvancedOptionsAlwaysShow,
+                            onCheckedChange = {
+                                processIntent(SettingsIntent.UpdateFlag.AdvancedFormVisibility(it))
+                            },
+                        )
+                    },
+                )
+            }
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.DeleteForever,
+                text = LocalizationR.string.settings_item_clear_cache.asUiText(),
+                onClick = { processIntent(SettingsIntent.Action.ClearAppCache.Request) },
+            )
+            //endregion
         }
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.DeleteForever,
-            text = LocalizationR.string.settings_item_clear_cache.asUiText(),
-            onClick = { processIntent(SettingsIntent.Action.ClearAppCache.Request)},
-        )
-        //endregion
 
         //region LOOK AND FEEL
         SettingsHeader(
@@ -579,6 +589,13 @@ private fun ContentSettingsState(
             startIcon = Icons.Default.MonetizationOn,
             text = LocalizationR.string.settings_item_donate.asUiText(),
             onClick = { processIntent(SettingsIntent.Action.Donate) },
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            loading = state.loading,
+            startIcon = Icons.Default.AllInclusive,
+            text = LocalizationR.string.settings_item_on_boarding.asUiText(),
+            onClick = { processIntent(SettingsIntent.Action.OnBoarding) },
         )
         SettingsItem(
             modifier = itemModifier,

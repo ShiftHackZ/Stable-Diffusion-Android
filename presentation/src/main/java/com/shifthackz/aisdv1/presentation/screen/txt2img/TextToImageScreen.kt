@@ -52,7 +52,7 @@ fun TextToImageScreen() {
         viewModel = koinViewModel<TextToImageViewModel>(),
         applySystemUiColors = false,
     ) { state, intentHandler ->
-        ScreenContent(
+        TextToImageScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
             processIntent = intentHandler,
@@ -61,7 +61,7 @@ fun TextToImageScreen() {
 }
 
 @Composable
-private fun ScreenContent(
+fun TextToImageScreenContent(
     modifier: Modifier = Modifier,
     state: TextToImageState,
     processIntent: (GenerationMviIntent) -> Unit = {},
@@ -185,7 +185,7 @@ private fun ScreenContent(
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
 fun PreviewStateContent() {
-    ScreenContent(
+    TextToImageScreenContent(
         modifier = Modifier.fillMaxSize(),
         state = TextToImageState(
             prompt = "Opel Astra H OPC",

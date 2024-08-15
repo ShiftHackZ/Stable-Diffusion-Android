@@ -1,18 +1,20 @@
 package com.shifthackz.aisdv1.presentation.navigation.router.main
 
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
 import com.shifthackz.aisdv1.presentation.navigation.router.Router
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 
 interface MainRouter : Router<NavigationEffect> {
 
     fun navigateBack()
 
+    fun navigateToOnBoarding(source: LaunchSource)
+
     fun navigateToPostSplashConfigLoader()
 
     fun navigateToHomeScreen()
 
-    fun navigateToServerSetup(source: ServerSetupLaunchSource)
+    fun navigateToServerSetup(source: LaunchSource)
 
     fun navigateToGalleryDetails(itemId: Long)
 

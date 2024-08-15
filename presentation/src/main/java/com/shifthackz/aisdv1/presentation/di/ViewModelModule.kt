@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingViewModel
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryViewModel
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagViewModel
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuViewModel
 import com.shifthackz.aisdv1.presentation.screen.donate.DonateViewModel
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerViewModel
@@ -15,8 +16,8 @@ import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageViewModel
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintViewModel
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderViewModel
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerViewModel
+import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingViewModel
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsViewModel
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashViewModel
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageViewModel
@@ -54,7 +55,17 @@ val viewModelModule = module {
     viewModelOf(::LoggerViewModel)
 
     viewModel { parameters ->
-        val launchSource = ServerSetupLaunchSource.fromKey(parameters.get())
+        OnBoardingViewModel(
+            launchSource = LaunchSource.fromKey(parameters.get()),
+            mainRouter = get(),
+            splashNavigationUseCase = get(),
+            preferenceManager = get(),
+            schedulersProvider = get(),
+        )
+    }
+
+    viewModel { parameters ->
+        val launchSource = LaunchSource.fromKey(parameters.get())
         ServerSetupViewModel(
             launchSource = launchSource,
             getConfigurationUseCase = get(),

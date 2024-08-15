@@ -86,7 +86,7 @@ fun ServerSetupScreen(
             }
         },
     ) { state, intentHandler ->
-        ScreenContent(
+        ServerSetupScreenContent(
             modifier = modifier.fillMaxSize(),
             state = state,
             buildInfoProvider = buildInfoProvider,
@@ -96,7 +96,7 @@ fun ServerSetupScreen(
 }
 
 @Composable
-private fun ScreenContent(
+fun ServerSetupScreenContent(
     modifier: Modifier = Modifier,
     state: ServerSetupState,
     buildInfoProvider: BuildInfoProvider = BuildInfoProvider.stub,

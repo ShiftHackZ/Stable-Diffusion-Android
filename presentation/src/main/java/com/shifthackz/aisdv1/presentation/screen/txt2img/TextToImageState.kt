@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Immutable
 data class TextToImageState(
+    override val onBoardingDemo: Boolean = false,
     override val screenModal: Modal = Modal.None,
     override val mode: ServerSource = ServerSource.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,
@@ -50,6 +51,7 @@ data class TextToImageState(
 ) : GenerationMviState() {
 
     override fun copyState(
+        onBoardingDemo: Boolean,
         screenModal: Modal,
         mode: ServerSource,
         advancedToggleButtonVisible: Boolean,
@@ -79,6 +81,7 @@ data class TextToImageState(
         batchCount: Int,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
+        onBoardingDemo = onBoardingDemo,
         screenModal = screenModal,
         mode = mode,
         advancedToggleButtonVisible = advancedToggleButtonVisible,

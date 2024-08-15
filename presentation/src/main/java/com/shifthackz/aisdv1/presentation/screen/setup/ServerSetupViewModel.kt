@@ -21,6 +21,7 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomModelSwitchState
@@ -32,7 +33,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ServerSetupViewModel(
-    launchSource: ServerSetupLaunchSource,
+    launchSource: LaunchSource,
     getConfigurationUseCase: GetConfigurationUseCase,
     getLocalAiModelsUseCase: GetLocalAiModelsUseCase,
     fetchAndGetHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
@@ -49,7 +50,7 @@ class ServerSetupViewModel(
 ) : MviRxViewModel<ServerSetupState, ServerSetupIntent, ServerSetupEffect>() {
 
     override val initialState = ServerSetupState(
-        showBackNavArrow = launchSource == ServerSetupLaunchSource.SETTINGS,
+        showBackNavArrow = launchSource == LaunchSource.SETTINGS,
     )
 
     private val credentials: AuthorizationCredentials

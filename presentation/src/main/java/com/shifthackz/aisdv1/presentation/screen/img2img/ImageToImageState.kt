@@ -21,6 +21,7 @@ data class ImageToImageState(
     val imageBase64: String = "",
     val denoisingStrength: Float = 0.75f,
     val inPaintModel: InPaintModel = InPaintModel(),
+    override val onBoardingDemo: Boolean = false,
     override val screenModal: Modal = Modal.None,
     override val mode: ServerSource = ServerSource.AUTOMATIC1111,
     override val advancedToggleButtonVisible: Boolean = true,
@@ -61,6 +62,7 @@ data class ImageToImageState(
     }
 
     override fun copyState(
+        onBoardingDemo: Boolean,
         screenModal: Modal,
         mode: ServerSource,
         advancedToggleButtonVisible: Boolean,
@@ -90,6 +92,7 @@ data class ImageToImageState(
         batchCount: Int,
         generateButtonEnabled: Boolean
     ): GenerationMviState = copy(
+        onBoardingDemo = onBoardingDemo,
         screenModal = screenModal,
         mode = mode,
         advancedToggleButtonVisible = advancedToggleButtonVisible,

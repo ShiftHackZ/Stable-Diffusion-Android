@@ -18,6 +18,7 @@ import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.mocks.mockHuggingFaceModels
 import com.shifthackz.aisdv1.presentation.mocks.mockLocalAiModels
 import com.shifthackz.aisdv1.presentation.mocks.mockServerSetupStateLocalModel
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
@@ -48,7 +49,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     private val stubMainRouter = mockk<MainRouter>()
 
     override fun initializeViewModel() = ServerSetupViewModel(
-        launchSource = ServerSetupLaunchSource.SETTINGS,
+        launchSource = LaunchSource.SETTINGS,
         getConfigurationUseCase = stubGetConfigurationUseCase,
         getLocalAiModelsUseCase = stubGetLocalAiModelsUseCase,
         fetchAndGetHuggingFaceModelsUseCase = stubFetchAndGetHuggingFaceModelsUseCase,

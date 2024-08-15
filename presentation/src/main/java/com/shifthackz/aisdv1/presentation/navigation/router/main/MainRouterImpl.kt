@@ -1,15 +1,12 @@
 package com.shifthackz.aisdv1.presentation.navigation.router.main
 
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
-import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
-internal class MainRouterImpl(
-    private val debugMenuAccessor: DebugMenuAccessor,
-) : MainRouter {
+internal class MainRouterImpl : MainRouter {
 
     private val effectSubject: PublishSubject<NavigationEffect> = PublishSubject.create()
 
@@ -21,6 +18,16 @@ internal class MainRouterImpl(
         effectSubject.onNext(NavigationEffect.Back)
     }
 
+    override fun navigateToOnBoarding(source: LaunchSource) {
+        effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder("${Constants.ROUTE_ONBOARDING}/${source.ordinal}") {
+            if (source == LaunchSource.SPLASH) {
+                popUpTo(Constants.ROUTE_SPLASH) {
+                    inclusive = true
+                }
+            }
+        })
+    }
+
     override fun navigateToPostSplashConfigLoader() {
         effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder(Constants.ROUTE_CONFIG_LOADER) {
             popUpTo(Constants.ROUTE_SPLASH) {
@@ -30,13 +37,17 @@ internal class MainRouterImpl(
     }
 
     override fun navigateToHomeScreen() {
-        effectSubject.onNext(NavigationEffect.Navigate.RoutePopUp(Constants.ROUTE_HOME))
+        effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder(Constants.ROUTE_HOME) {
+            popUpTo(0) {
+                inclusive = true
+            }
+        })
     }
 
-    override fun navigateToServerSetup(source: ServerSetupLaunchSource) {
+    override fun navigateToServerSetup(source: LaunchSource) {
         effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder("${Constants.ROUTE_SERVER_SETUP}/${source.ordinal}") {
-            if (source == ServerSetupLaunchSource.SPLASH) {
-                popUpTo(Constants.ROUTE_SPLASH) {
+            if (source == LaunchSource.SPLASH) {
+                popUpTo(Constants.ROUTE_ONBOARDING) {
                     inclusive = true
                 }
             }

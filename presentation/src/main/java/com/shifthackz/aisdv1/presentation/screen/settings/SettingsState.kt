@@ -11,6 +11,7 @@ import com.shifthackz.android.core.mvi.MviState
 @Immutable
 data class SettingsState(
     val loading: Boolean = true,
+    val onBoardingDemo: Boolean = false,
     val screenModal: Modal = Modal.None,
     val serverSource: ServerSource = ServerSource.AUTOMATIC1111,
     val sdModels: List<String> = emptyList(),

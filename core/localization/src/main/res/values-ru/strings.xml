@@ -218,6 +218,7 @@
     <string name="settings_item_policy">Политика конфиденциальности</string>
     <string name="settings_item_instructions">Как настроить сервер</string>
     <string name="settings_item_donate">Поддержать проект</string>
+    <string name="settings_item_on_boarding">Просмотреть руководство</string>
     <string name="settings_item_source">Исходный код</string>
 
     <string name="communicating_progress_title">Подождите, коммуницируем с сервером…</string>
@@ -353,4 +354,9 @@
     <string name="scheduler_io">I/O Поток</string>
     <string name="scheduler_computation">Вычислительный</string>
     <string name="scheduler_single_thread">Однопоточность</string>
+
+    <string name="on_boarding_page_form_title">Расширенные функции\n[Stable Diffusion].</string>
+    <string name="on_boarding_page_local_title">[Офлайн] генерация\nLocal Diffusion.</string>
+    <string name="on_boarding_page_ui_title">Настройте приложение,\nсделайте его [своим]!</string>
+    <string name="on_boarding_page_provider_title">[Свобода] выбора\nпровайедра генерации.</string>
 </resources>

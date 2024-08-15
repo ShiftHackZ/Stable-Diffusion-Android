@@ -13,7 +13,21 @@ class SplashNavigationUseCaseImplTest {
     private val useCase = SplashNavigationUseCaseImpl(stubPreferenceManager)
 
     @Test
+    fun `given onBoardingComplete is false, expected LAUNCH_ONBOARDING`() {
+        whenever(stubPreferenceManager.onBoardingComplete)
+            .thenReturn(false)
+
+        useCase()
+            .test()
+            .assertNoErrors()
+            .assertValue(SplashNavigationUseCase.Action.LAUNCH_ONBOARDING)
+    }
+
+    @Test
     fun `given forceSetupAfterUpdate is true, expected LAUNCH_SERVER_SETUP`() {
+        whenever(stubPreferenceManager.onBoardingComplete)
+            .thenReturn(true)
+
         whenever(stubPreferenceManager.forceSetupAfterUpdate)
             .thenReturn(true)
 
@@ -25,6 +39,9 @@ class SplashNavigationUseCaseImplTest {
 
     @Test
     fun `given source is AUTOMATIC1111 and server url empty, expected LAUNCH_SERVER_SETUP`() {
+        whenever(stubPreferenceManager.onBoardingComplete)
+            .thenReturn(true)
+
         whenever(stubPreferenceManager.forceSetupAfterUpdate)
             .thenReturn(false)
 
@@ -42,6 +59,9 @@ class SplashNavigationUseCaseImplTest {
 
     @Test
     fun `given source is AUTOMATIC1111 and server url not empty, expected LAUNCH_HOME`() {
+        whenever(stubPreferenceManager.onBoardingComplete)
+            .thenReturn(true)
+
         whenever(stubPreferenceManager.forceSetupAfterUpdate)
             .thenReturn(false)
 
@@ -59,6 +79,9 @@ class SplashNavigationUseCaseImplTest {
 
     @Test
     fun `given source is LOCAL, and server url is empty, expected LAUNCH_HOME`() {
+        whenever(stubPreferenceManager.onBoardingComplete)
+            .thenReturn(true)
+
         whenever(stubPreferenceManager.forceSetupAfterUpdate)
             .thenReturn(false)
 
@@ -76,6 +99,9 @@ class SplashNavigationUseCaseImplTest {
 
     @Test
     fun `given source is LOCAL, and server url is not empty, expected LAUNCH_HOME`() {
+        whenever(stubPreferenceManager.onBoardingComplete)
+            .thenReturn(true)
+
         whenever(stubPreferenceManager.forceSetupAfterUpdate)
             .thenReturn(false)
 

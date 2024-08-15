@@ -20,30 +20,38 @@ fun AiSdAppTheme(
         viewModel = koinViewModel<AiSdAppThemeViewModel>(),
         applySystemUiColors = false,
     ) { state, _ ->
-        val context = LocalContext.current
-        val isDark = if (state.systemDarkTheme) {
-            isSystemInDarkTheme()
-        } else {
-            state.darkTheme
-        }
-        if (state.systemColorPalette && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            MaterialTheme(
-                colorScheme = if (isDark) {
-                    dynamicDarkColorScheme(context)
-                } else {
-                    dynamicLightColorScheme(context)
-                },
-                content = content,
-            )
-        } else {
-            CatppuccinTheme.Palette(
-                palette = colorTokenPalette(
-                    token = state.colorToken,
-                    darkThemeToken = state.darkThemeToken,
-                    isDark = isDark
-                ),
-                content = content,
-            )
-        }
+        AiSdAppTheme(state, content)
+    }
+}
+
+@Composable
+fun AiSdAppTheme(
+    state: AiSdAppThemeState,
+    content: @Composable () -> Unit,
+) {
+    val context = LocalContext.current
+    val isDark = if (state.systemDarkTheme) {
+        isSystemInDarkTheme()
+    } else {
+        state.darkTheme
+    }
+    if (state.systemColorPalette && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        MaterialTheme(
+            colorScheme = if (isDark) {
+                dynamicDarkColorScheme(context)
+            } else {
+                dynamicLightColorScheme(context)
+            },
+            content = content,
+        )
+    } else {
+        CatppuccinTheme.Palette(
+            palette = colorTokenPalette(
+                token = state.colorToken,
+                darkThemeToken = state.darkThemeToken,
+                isDark = isDark,
+            ),
+            content = content,
+        )
     }
 }
