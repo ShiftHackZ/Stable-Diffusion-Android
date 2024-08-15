@@ -353,4 +353,9 @@
     <string name="scheduler_io">G/Ç İş Parçacığı</string>
     <string name="scheduler_computation">Hesaplama</string>
     <string name="scheduler_single_thread">Tek İş Parçacığı</string>
+
+    <string name="on_boarding_page_form_title">Gelişmiş Özellikler\n[Kararlı Dağıtım].</string>
+    <string name="on_boarding_page_local_title">[Çevrimdışı] nesil\nYerel Dağıtım.</string>
+    <string name="on_boarding_page_ui_title">Uygulamayı özelleştirin,\n[kendinizin] yapın!</string>
+    <string name="on_boarding_page_provider_title">Nesil sağlayıcıyı\nseçme [Özgürlüğü].</string>
 </resources>

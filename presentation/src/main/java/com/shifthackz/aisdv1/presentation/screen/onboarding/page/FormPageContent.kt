@@ -11,16 +11,17 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.extensions.gesturesDisabled
+import com.shifthackz.aisdv1.presentation.screen.onboarding.buildOnBoardingText
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneWidthFraction
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreenContent
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageState
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun FormPageContent(
@@ -31,10 +32,9 @@ fun FormPageContent(
 ) {
     Spacer(modifier = Modifier.weight(1f))
     Text(
-        text = "Advanced Stable Diffusion AI generation features.",
+        text = buildOnBoardingText(LocalizationR.string.on_boarding_page_form_title),
         fontSize = 24.sp,
         textAlign = TextAlign.Center,
-        fontWeight = FontWeight(450),
     )
     Spacer(modifier = Modifier.weight(1f))
     PhoneFrame(

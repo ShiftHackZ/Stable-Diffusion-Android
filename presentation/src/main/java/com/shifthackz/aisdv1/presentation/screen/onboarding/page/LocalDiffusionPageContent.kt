@@ -18,8 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.extensions.gesturesDisabled
-import com.shifthackz.aisdv1.core.localization.R
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.presentation.screen.onboarding.buildOnBoardingText
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneWidthFraction
@@ -27,6 +27,7 @@ import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageScreenConten
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageState
 import com.shifthackz.aisdv1.presentation.widget.dialog.GeneratingProgressDialogContent
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun LocalDiffusionPageContent(
@@ -37,11 +38,13 @@ fun LocalDiffusionPageContent(
 ) {
     Spacer(modifier = Modifier.weight(1f))
     Text(
-        text = "Offline Local Diffusion\nAI generation.",
+        text = buildOnBoardingText(LocalizationR.string.on_boarding_page_local_title),
         fontSize = 24.sp,
         textAlign = TextAlign.Center,
         fontWeight = FontWeight(450),
     )
+//    Text(text = "", textAlign = )
+
     Spacer(modifier = Modifier.weight(1f))
     PhoneFrame(
         modifier = Modifier.fillMaxWidth(onBoardingPhoneWidthFraction),
@@ -76,7 +79,7 @@ fun LocalDiffusionPageContent(
                         contentAlignment = Alignment.Center,
                     ) {
                         GeneratingProgressDialogContent(
-                            titleResId = R.string.communicating_local_title,
+                            titleResId = LocalizationR.string.communicating_local_title,
                             step = 3 to 20,
                         )
                     }

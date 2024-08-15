@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.extensions.gesturesDisabled
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.presentation.screen.onboarding.buildOnBoardingText
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneWidthFraction
@@ -30,6 +31,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
 fun ProviderPageContent(
@@ -48,7 +50,7 @@ fun ProviderPageContent(
     }
     Spacer(modifier = Modifier.weight(1f))
     Text(
-        text = "Freedom to choose your AI generation provider.",
+        text = buildOnBoardingText(LocalizationR.string.on_boarding_page_provider_title),
         fontSize = 24.sp,
         textAlign = TextAlign.Center,
         fontWeight = FontWeight(450),

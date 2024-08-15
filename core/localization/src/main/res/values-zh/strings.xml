@@ -419,4 +419,9 @@
     <string name="scheduler_io">I/O 线程</string>
     <string name="scheduler_computation">计算</string>
     <string name="scheduler_single_thread">单线程</string>
+
+    <string name="on_boarding_page_form_title">高级功能\n[稳定扩散]。</string>
+    <string name="on_boarding_page_local_title">[离线]生成\n本地扩散。</string>
+    <string name="on_boarding_page_ui_title">自定义应用程序，\n让它成为[您的]！</string>
+    <string name="on_boarding_page_provider_title">[自由]选择\n代提供商。</string>
 </resources>

@@ -353,4 +353,9 @@
     <string name="scheduler_io">I/O Потік</string>
     <string name="scheduler_computation">Обчислення</string>
     <string name="scheduler_single_thread">Один потік</string>
+
+    <string name="on_boarding_page_form_title">Розширені можливості\n[Stable Diffusion].</string>
+    <string name="on_boarding_page_local_title">[Офлайн] генерація\nLocal Diffusion.</string>
+    <string name="on_boarding_page_ui_title">Налаштуйте додаток,\nзробіть його [своїм]!</string>
+    <string name="on_boarding_page_provider_title">[Свобода] вибору\nпостачальника генерації.</string>
 </resources>
