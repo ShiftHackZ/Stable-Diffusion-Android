@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -34,7 +34,7 @@ abstract class CoreViewModelTest<V : ViewModel> {
         get() = CoreViewModelInitializeStrategy.InitializeOnce
 
     open val testDispatcher: CoroutineDispatcher
-        get() = UnconfinedTestDispatcher()
+        get() = StandardTestDispatcher()
 
     @Before
     open fun initialize() {
