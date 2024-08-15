@@ -9,4 +9,13 @@ object Localization {
         "ru" to "Русский",
         "zh" to "中文简体",
     )
+
+    fun getCountryFlagDrawableResId(code: String): Int? = when (code) {
+        "en" -> R.drawable.gb
+        "uk" -> R.drawable.ua
+        "tr" -> R.drawable.tr
+        "ru" -> R.drawable.ru
+        "zh" -> R.drawable.cn
+        else -> null
+    }
 }

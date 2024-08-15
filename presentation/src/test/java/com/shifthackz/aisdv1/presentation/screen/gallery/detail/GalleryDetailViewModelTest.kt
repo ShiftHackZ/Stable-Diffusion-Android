@@ -3,6 +3,7 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
 import android.graphics.Bitmap
+import app.cash.turbine.test
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
@@ -150,14 +151,16 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
         every {
             stubGalleryDetailBitmapExporter(any())
         } returns Single.just(stubFile)
+
         viewModel.processIntent(GalleryDetailIntent.Export.Image)
+
+        runTest {
+            viewModel.effect.test {
+                Assert.assertEquals(GalleryDetailEffect.ShareImageFile(stubFile), awaitItem())
+            }
+        }
         verify {
             stubGalleryDetailBitmapExporter(stubBitmap)
-        }
-        runTest {
-            val expected = GalleryDetailEffect.ShareImageFile(stubFile)
-            val actual = viewModel.effect.firstOrNull()
-            Assert.assertEquals(expected, actual)
         }
     }
 
