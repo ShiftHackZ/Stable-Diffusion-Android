@@ -170,6 +170,7 @@
     <string name="gallery_tab_original">Original</string>
     <string name="gallery_tab_info">Info</string>
 
+    <string name="title_backup">Backup</string>
     <string name="title_text_to_image">Text to Image</string>
     <string name="title_image_to_image">Image to Image</string>
     <string name="title_gallery">Gallery</string>
