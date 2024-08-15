@@ -218,6 +218,7 @@
     <string name="settings_item_policy">Політика конфіденційності</string>
     <string name="settings_item_instructions">Як налаштувати сервер</string>
     <string name="settings_item_donate">Підтримати проект</string>
+    <string name="settings_item_on_boarding">Переглянути туторіал</string>
     <string name="settings_item_source">Вихідний код</string>
 
     <string name="communicating_progress_title">Зачекайте, йде коммунікація із сервером…</string>

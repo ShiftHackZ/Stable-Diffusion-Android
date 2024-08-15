@@ -3,8 +3,8 @@ package com.shifthackz.aisdv1.presentation.screen.splash
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelInitializeStrategy
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -34,7 +34,7 @@ class SplashViewModelTest : CoreViewModelTest<SplashViewModel>() {
         viewModel.hashCode()
 
         verify(inverse = true) {
-            stubMainRouter.navigateToServerSetup(ServerSetupLaunchSource.SPLASH)
+            stubMainRouter.navigateToServerSetup(LaunchSource.SPLASH)
         }
         verify(inverse = true) {
             stubMainRouter.navigateToPostSplashConfigLoader()
@@ -55,7 +55,7 @@ class SplashViewModelTest : CoreViewModelTest<SplashViewModel>() {
 
         verify {
             stubMainRouter.navigateToServerSetup(
-                ServerSetupLaunchSource.SPLASH
+                LaunchSource.SPLASH
             )
         }
     }

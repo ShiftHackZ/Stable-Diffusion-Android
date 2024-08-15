@@ -19,10 +19,10 @@ import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.mocks.mockAiGenerationResult
 import com.shifthackz.aisdv1.presentation.model.InPaintModel
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintStateProducer
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -446,7 +446,7 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
         viewModel.processIntent(intent)
 
         verify {
-            stubMainRouter.navigateToServerSetup(ServerSetupLaunchSource.SETTINGS)
+            stubMainRouter.navigateToServerSetup(LaunchSource.SETTINGS)
         }
     }
 

@@ -1,25 +1,13 @@
 package com.shifthackz.aisdv1.presentation.navigation.router.main
 
-import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
-import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import io.mockk.mockk
-import org.junit.Before
 import org.junit.Test
 
 class MainRouterImplTest {
 
-    private val stubPreferenceManager = mockk<PreferenceManager>()
-    private val stubDebugMenuAccessor = DebugMenuAccessor(stubPreferenceManager)
-
-    private val router = MainRouterImpl(stubDebugMenuAccessor)
-
-    @Before
-    fun initialize() {
-
-    }
+    private val router = MainRouterImpl()
 
     @Test
     fun `given user navigates back, expected router emits Back event`() {
@@ -51,7 +39,11 @@ class MainRouterImplTest {
             .test()
             .also { router.navigateToHomeScreen() }
             .assertNoErrors()
-            .assertValueAt(0, NavigationEffect.Navigate.RoutePopUp(Constants.ROUTE_HOME))
+            .assertValueAt(0) { actual ->
+                val expectedRoute = Constants.ROUTE_HOME
+                actual is NavigationEffect.Navigate.RouteBuilder
+                        && actual.route == expectedRoute
+            }
     }
 
     @Test
@@ -59,11 +51,11 @@ class MainRouterImplTest {
         router
             .observe()
             .test()
-            .also { router.navigateToServerSetup(ServerSetupLaunchSource.SPLASH) }
+            .also { router.navigateToServerSetup(LaunchSource.SPLASH) }
             .assertNoErrors()
             .assertValueAt(0) { actual ->
                 val expectedRoute =
-                    "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SPLASH.ordinal}"
+                    "${Constants.ROUTE_SERVER_SETUP}/${LaunchSource.SPLASH.ordinal}"
                 actual is NavigationEffect.Navigate.RouteBuilder
                         && actual.route == expectedRoute
             }
@@ -74,11 +66,11 @@ class MainRouterImplTest {
         router
             .observe()
             .test()
-            .also { router.navigateToServerSetup(ServerSetupLaunchSource.SETTINGS) }
+            .also { router.navigateToServerSetup(LaunchSource.SETTINGS) }
             .assertNoErrors()
             .assertValueAt(0) { actual ->
                 val expectedRoute =
-                    "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.ordinal}"
+                    "${Constants.ROUTE_SERVER_SETUP}/${LaunchSource.SETTINGS.ordinal}"
                 actual is NavigationEffect.Navigate.RouteBuilder
                         && actual.route == expectedRoute
             }

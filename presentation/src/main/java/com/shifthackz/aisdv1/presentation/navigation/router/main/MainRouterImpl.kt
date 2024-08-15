@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.presentation.navigation.router.main
 
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -18,10 +18,12 @@ internal class MainRouterImpl : MainRouter {
         effectSubject.onNext(NavigationEffect.Back)
     }
 
-    override fun navigateToOnBoarding() {
-        effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder(Constants.ROUTE_ONBOARDING) {
-            popUpTo(Constants.ROUTE_SPLASH) {
-                inclusive = true
+    override fun navigateToOnBoarding(source: LaunchSource) {
+        effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder("${Constants.ROUTE_ONBOARDING}/${source.ordinal}") {
+            if (source == LaunchSource.SPLASH) {
+                popUpTo(Constants.ROUTE_SPLASH) {
+                    inclusive = true
+                }
             }
         })
     }
@@ -42,9 +44,9 @@ internal class MainRouterImpl : MainRouter {
         })
     }
 
-    override fun navigateToServerSetup(source: ServerSetupLaunchSource) {
+    override fun navigateToServerSetup(source: LaunchSource) {
         effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder("${Constants.ROUTE_SERVER_SETUP}/${source.ordinal}") {
-            if (source == ServerSetupLaunchSource.SPLASH) {
+            if (source == LaunchSource.SPLASH) {
                 popUpTo(Constants.ROUTE_ONBOARDING) {
                     inclusive = true
                 }

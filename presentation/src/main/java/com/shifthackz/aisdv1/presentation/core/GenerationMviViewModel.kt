@@ -22,11 +22,11 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatus
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.screen.txt2img.mapToUi
 import com.shifthackz.android.core.mvi.MviEffect
 import io.reactivex.rxjava3.core.Observable
@@ -262,7 +262,7 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
             }
 
             GenerationMviIntent.Configuration -> mainRouter.navigateToServerSetup(
-                ServerSetupLaunchSource.SETTINGS,
+                LaunchSource.SETTINGS,
             )
 
             is GenerationMviIntent.UpdateFromGeneration -> {

@@ -264,6 +264,7 @@
     <string name="settings_item_policy">隐私和法律政策</string>
     <string name="settings_item_instructions">服务器设置说明</string>
     <string name="settings_item_donate">捐赠</string>
+    <string name="settings_item_on_boarding">查看教程</string>
     <string name="settings_item_source">获取源代码</string>
 
     <!-- 通信状态 -->

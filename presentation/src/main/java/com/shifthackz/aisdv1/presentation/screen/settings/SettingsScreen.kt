@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountTree
+import androidx.compose.material.icons.filled.AllInclusive
 import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Code
@@ -588,6 +589,13 @@ private fun ContentSettingsState(
             startIcon = Icons.Default.MonetizationOn,
             text = LocalizationR.string.settings_item_donate.asUiText(),
             onClick = { processIntent(SettingsIntent.Action.Donate) },
+        )
+        SettingsItem(
+            modifier = itemModifier,
+            loading = state.loading,
+            startIcon = Icons.Default.AllInclusive,
+            text = LocalizationR.string.settings_item_on_boarding.asUiText(),
+            onClick = { processIntent(SettingsIntent.Action.OnBoarding) },
         )
         SettingsItem(
             modifier = itemModifier,

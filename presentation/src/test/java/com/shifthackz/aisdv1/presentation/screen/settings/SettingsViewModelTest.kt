@@ -13,11 +13,11 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUs
 import com.shifthackz.aisdv1.domain.usecase.stabilityai.ObserveStabilityAiCreditsUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.mocks.mockStableDiffusionModels
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -161,7 +161,7 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
         viewModel.processIntent(SettingsIntent.NavigateConfiguration)
 
         verify {
-            stubMainRouter.navigateToServerSetup(ServerSetupLaunchSource.SETTINGS)
+            stubMainRouter.navigateToServerSetup(LaunchSource.SETTINGS)
         }
     }
 

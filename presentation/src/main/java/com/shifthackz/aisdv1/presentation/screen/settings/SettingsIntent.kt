@@ -40,6 +40,8 @@ sealed interface SettingsIntent : MviIntent {
         }
 
         data object Donate : Action
+
+        data object OnBoarding : Action
     }
 
     sealed class LaunchUrl : SettingsIntent, KoinComponent {

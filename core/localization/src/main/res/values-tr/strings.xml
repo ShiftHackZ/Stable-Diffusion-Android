@@ -218,6 +218,7 @@
     <string name="settings_item_policy">Gizlilik ve Hukuksal Politikalar</string>
     <string name="settings_item_instructions">Sunucu kurulum talimatları</string>
     <string name="settings_item_donate">Bağış yapmak</string>
+    <string name="settings_item_on_boarding">Eğitimi görüntüle</string>
     <string name="settings_item_source">Kaynak kodunu alın</string>
 
     <string name="communicating_progress_title">Lütfen bekleyin, sunucu ile iletişime geçiliyor…</string>

@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.donate.DonateScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
@@ -12,7 +13,7 @@ import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintScreen
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScreen
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerScreen
 import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingScreen
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
+import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingViewModel
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreen
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreen
@@ -34,7 +35,7 @@ fun NavGraphBuilder.mainNavGraph() {
         ComposeNavigator.Destination(provider[ComposeNavigator::class]) { entry ->
             val sourceKey = entry.arguments
                 ?.getInt(Constants.PARAM_SOURCE)
-                ?: ServerSetupLaunchSource.SPLASH.ordinal
+                ?: LaunchSource.SPLASH.ordinal
             ServerSetupScreen(
                 viewModel = getViewModel<ServerSetupViewModel>(
                     parameters = { parametersOf(sourceKey) }
@@ -105,10 +106,21 @@ fun NavGraphBuilder.mainNavGraph() {
         }
     )
     addDestination(
-        ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
-            OnBoardingScreen()
+        ComposeNavigator.Destination(provider[ComposeNavigator::class]) { entry ->
+            val sourceKey = entry.arguments
+                ?.getInt(Constants.PARAM_SOURCE)
+                ?: LaunchSource.SPLASH.ordinal
+            OnBoardingScreen(
+                viewModel = getViewModel<OnBoardingViewModel>(
+                    parameters = { parametersOf(sourceKey) }
+                ),
+            )
         }.apply {
-            route = Constants.ROUTE_ONBOARDING
+            route = Constants.ROUTE_ONBOARDING_FULL
+            addArgument(
+                Constants.PARAM_SOURCE,
+                NavArgument.Builder().setType(NavType.IntType).build(),
+            )
         }
     )
 }

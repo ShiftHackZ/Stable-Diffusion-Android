@@ -9,8 +9,8 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.FeatureTag
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.NavItem
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupLaunchSource
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.source.getNameUiText
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
@@ -44,7 +44,7 @@ private fun webUi(source: ServerSource) = NavItem(
 
 private fun configuration() = NavItem(
     name = LocalizationR.string.settings_item_config.asUiText(),
-    route = "${Constants.ROUTE_SERVER_SETUP}/${ServerSetupLaunchSource.SETTINGS.ordinal}",
+    route = "${Constants.ROUTE_SERVER_SETUP}/${LaunchSource.SETTINGS.ordinal}",
     icon = NavItem.Icon.Vector(
         vector = Icons.Default.SettingsEthernet,
     ),

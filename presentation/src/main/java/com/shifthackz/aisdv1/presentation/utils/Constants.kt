@@ -24,6 +24,7 @@ object Constants {
     const val ROUTE_IN_PAINT = "in_paint"
     const val ROUTE_DONATE = "donate"
     const val ROUTE_ONBOARDING = "onboarding"
+    const val ROUTE_ONBOARDING_FULL = "$ROUTE_ONBOARDING/{$PARAM_SOURCE}"
 
     const val SUB_SEED_STRENGTH_MIN = 0f
     const val SUB_SEED_STRENGTH_MAX = 1f

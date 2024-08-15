@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.postSplashNavigation
 import com.shifthackz.android.core.mvi.EmptyEffect
@@ -13,6 +14,7 @@ import com.shifthackz.android.core.mvi.EmptyState
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class OnBoardingViewModel(
+    val launchSource: LaunchSource,
     private val mainRouter: MainRouter,
     private val splashNavigationUseCase: SplashNavigationUseCase,
     private val preferenceManager: PreferenceManager,
@@ -25,9 +27,15 @@ class OnBoardingViewModel(
         when (intent) {
             OnBoardingIntent.Navigate -> {
                 preferenceManager.onBoardingComplete = true
-                !splashNavigationUseCase()
-                    .subscribeOnMainThread(schedulersProvider)
-                    .subscribeBy(::errorLog) { action -> mainRouter.postSplashNavigation(action) }
+                when (launchSource) {
+                    LaunchSource.SPLASH -> !splashNavigationUseCase()
+                        .subscribeOnMainThread(schedulersProvider)
+                        .subscribeBy(::errorLog) { action ->
+                            mainRouter.postSplashNavigation(action)
+                        }
+
+                    LaunchSource.SETTINGS -> mainRouter.navigateBack()
+                }
             }
         }
     }

@@ -43,8 +43,6 @@ fun LocalDiffusionPageContent(
         textAlign = TextAlign.Center,
         fontWeight = FontWeight(450),
     )
-//    Text(text = "", textAlign = )
-
     Spacer(modifier = Modifier.weight(1f))
     PhoneFrame(
         modifier = Modifier.fillMaxWidth(onBoardingPhoneWidthFraction),
