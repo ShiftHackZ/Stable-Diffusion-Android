@@ -24,11 +24,13 @@ import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import io.mockk.verify
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -80,6 +82,12 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         every {
             stubFetchAndGetHuggingFaceModelsUseCase()
         } returns Single.just(mockHuggingFaceModels)
+    }
+
+    @After
+    override fun finalize() {
+        super.finalize()
+        unmockkAll()
     }
 
     @Test
