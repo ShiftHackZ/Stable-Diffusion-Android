@@ -2,6 +2,7 @@
 
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,6 +65,7 @@ fun TextToImageScreen() {
 fun TextToImageScreenContent(
     modifier: Modifier = Modifier,
     state: TextToImageState,
+    scrollState: ScrollState = rememberScrollState(),
     processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
     val promptChipTextFieldState = remember { mutableStateOf(TextFieldValue()) }
@@ -115,7 +117,6 @@ fun TextToImageScreenContent(
                 }
             },
             content = { paddingValues ->
-                val scrollState = rememberScrollState()
                 Column(
                     modifier = Modifier
                         .padding(paddingValues)

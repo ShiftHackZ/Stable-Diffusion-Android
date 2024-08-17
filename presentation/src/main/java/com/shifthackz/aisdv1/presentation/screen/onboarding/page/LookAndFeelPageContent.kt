@@ -41,7 +41,8 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 fun LookAndFeelPageContent(
     modifier: Modifier = Modifier,
     darkThemeToken: DarkThemeToken,
-) = Column(
+    isPageVisible: Boolean = false,
+    ) = Column(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
@@ -85,9 +86,9 @@ fun LookAndFeelPageContent(
             }
         }
     }
-    DisposableEffect(Unit) {
+    DisposableEffect(isPageVisible) {
         val job = scope.launch {
-            while (true) {
+            while (isPageVisible) {
                 delay(700)
                 themeState = themeState.copy(
                     colorToken = ColorToken.entries.random(),

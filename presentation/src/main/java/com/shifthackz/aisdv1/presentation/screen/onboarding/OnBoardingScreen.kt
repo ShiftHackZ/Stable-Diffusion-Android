@@ -197,11 +197,16 @@ private fun OnBoardingScreenContent(
                 userScrollEnabled = false,
             ) { index ->
                 when (OnBoardingPage.entries[index]) {
-                    OnBoardingPage.Form -> FormPageContent()
-                    OnBoardingPage.Providers -> ProviderPageContent()
+                    OnBoardingPage.Providers -> ProviderPageContent(
+                        isPageVisible = pagerState.currentPage == OnBoardingPage.Providers.ordinal
+                    )
+                    OnBoardingPage.Form -> FormPageContent(
+                        isPageVisible = pagerState.currentPage == OnBoardingPage.Form.ordinal
+                    )
                     OnBoardingPage.LocalDiffusion -> LocalDiffusionPageContent()
                     OnBoardingPage.LookAndFeel -> LookAndFeelPageContent(
                         darkThemeToken = state.darkThemeToken,
+                        isPageVisible = pagerState.currentPage == OnBoardingPage.LookAndFeel.ordinal
                     )
                 }
             }

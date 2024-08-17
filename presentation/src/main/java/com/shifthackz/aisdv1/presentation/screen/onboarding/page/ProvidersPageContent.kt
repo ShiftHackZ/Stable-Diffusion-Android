@@ -36,7 +36,8 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 @Composable
 fun ProviderPageContent(
     modifier: Modifier = Modifier,
-) = Column(
+    isPageVisible: Boolean = false,
+    ) = Column(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
@@ -69,9 +70,9 @@ fun ProviderPageContent(
         }
     }
     Spacer(modifier = Modifier.weight(1f))
-    DisposableEffect(Unit) {
+    DisposableEffect(isPageVisible) {
         val job = scope.launch {
-            while (true) {
+            while (isPageVisible) {
                 delay(1200)
                 serverState = serverState.copy(
                     mode = ServerSource.entries.random(),
