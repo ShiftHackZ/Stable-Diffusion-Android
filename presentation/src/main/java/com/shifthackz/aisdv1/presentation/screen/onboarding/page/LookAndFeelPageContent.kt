@@ -1,5 +1,8 @@
 package com.shifthackz.aisdv1.presentation.screen.onboarding.page
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -20,9 +23,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import com.shifthackz.aisdv1.core.extensions.gesturesDisabled
+import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
+import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.presentation.screen.onboarding.buildOnBoardingText
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
@@ -41,8 +45,9 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 fun LookAndFeelPageContent(
     modifier: Modifier = Modifier,
     darkThemeToken: DarkThemeToken,
+    appVersion: String,
     isPageVisible: Boolean = false,
-    ) = Column(
+) = Column(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
@@ -55,6 +60,18 @@ fun LookAndFeelPageContent(
                 systemDarkTheme = false,
                 darkTheme = darkTheme,
                 darkThemeToken = darkThemeToken,
+            ),
+        )
+    }
+    var settingsState by remember {
+        mutableStateOf(
+            SettingsState(
+                loading = false,
+                onBoardingDemo = true,
+                colorToken = themeState.colorToken,
+                darkThemeToken = themeState.darkThemeToken,
+                darkTheme = darkTheme,
+                appVersion = appVersion
             ),
         )
     }
@@ -72,16 +89,17 @@ fun LookAndFeelPageContent(
         CompositionLocalProvider(LocalDensity provides onBoardingDensity) {
             AiSdAppTheme(themeState) {
                 SettingsScreenContent(
+                    modifier = Modifier.aspectRatio(onBoardingPhoneAspectRatio),
+                    state = settingsState,
+                )
+                Box(
                     modifier = Modifier
-                        .gesturesDisabled()
-                        .aspectRatio(onBoardingPhoneAspectRatio),
-                    state = SettingsState(
-                        loading = false,
-                        onBoardingDemo = true,
-                        colorToken = themeState.colorToken,
-                        darkThemeToken = darkThemeToken,
-                        darkTheme = darkTheme,
-                    ),
+                        .aspectRatio(onBoardingPhoneAspectRatio)
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                            onClick = EmptyLambda
+                        ),
                 )
             }
         }
@@ -90,8 +108,16 @@ fun LookAndFeelPageContent(
         val job = scope.launch {
             while (isPageVisible) {
                 delay(700)
+                val darkThemeTokenRnd = DarkThemeToken.entries.random()
+                val colorTokenRnd = ColorToken.entries.random()
+                settingsState = settingsState.copy(
+                    galleryGrid = Grid.entries.random(),
+                    darkThemeToken = darkThemeTokenRnd,
+                    colorToken = colorTokenRnd,
+                )
                 themeState = themeState.copy(
-                    colorToken = ColorToken.entries.random(),
+                    darkThemeToken = darkThemeTokenRnd,
+                    colorToken = colorTokenRnd,
                 )
             }
         }

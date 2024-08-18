@@ -1,6 +1,8 @@
 package com.shifthackz.aisdv1.presentation.screen.onboarding.page
 
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,13 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import com.shifthackz.aisdv1.core.extensions.gesturesDisabled
+import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.presentation.screen.onboarding.buildOnBoardingText
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
@@ -70,8 +73,12 @@ fun FormPageContent(
             )
             Box(
                 modifier = Modifier
-                    .gesturesDisabled()
-                    .aspectRatio(onBoardingPhoneAspectRatio),
+                    .aspectRatio(onBoardingPhoneAspectRatio)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = EmptyLambda
+                    ),
             )
         }
     }
@@ -82,9 +89,9 @@ fun FormPageContent(
                 scrollState.scrollTo(0)
                 delay(2000)
                 scrollState.animateScrollTo(scrollState.maxValue / 2 + 60, tween(2000))
-                delay(2000)
+                delay(1000)
                 scrollState.animateScrollTo(scrollState.maxValue, tween(2000))
-                delay(2000)
+                delay(1000)
             }
         }
         onDispose {

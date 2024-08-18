@@ -61,6 +61,7 @@ val viewModelModule = module {
             splashNavigationUseCase = get(),
             preferenceManager = get(),
             schedulersProvider = get(),
+            buildInfoProvider = get(),
         )
     }
 

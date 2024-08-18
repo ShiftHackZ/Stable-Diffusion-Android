@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.onboarding
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -19,6 +20,7 @@ class OnBoardingViewModel(
     private val splashNavigationUseCase: SplashNavigationUseCase,
     private val preferenceManager: PreferenceManager,
     private val schedulersProvider: SchedulersProvider,
+    private val buildInfoProvider: BuildInfoProvider,
 ) : MviRxViewModel<OnBoardingState, OnBoardingIntent, EmptyEffect>() {
 
     override val initialState = OnBoardingState()
@@ -26,7 +28,11 @@ class OnBoardingViewModel(
     init {
         updateState {
             val token = DarkThemeToken.parse(preferenceManager.designDarkThemeToken)
-            it.copy(darkThemeToken = token)
+            val version = buildInfoProvider.toString()
+            it.copy(
+                darkThemeToken = token,
+                appVersion = version
+            )
         }
     }
 
