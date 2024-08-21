@@ -402,4 +402,14 @@
     <string name="report_reason_intellectual">Intellectual property infringement</string>
     <string name="report_reason_adult">Adult content</string>
     <string name="report_reason_other">Other</string>
+
+    <string name="backup_step_operation">Select operation</string>
+    <string name="backup_step_process">Proceed</string>
+    <string name="backup_action_restore">Restore</string>
+    <string name="backup_action_create">Create</string>
+    <string name="backup_operation_create">Create a new backup</string>
+    <string name="backup_operation_restore">Restore from the backup</string>
+    <string name="backup_entry_config">Generation provider configuration</string>
+    <string name="backup_entry_prefs">Appication settings</string>
+    <string name="backup_entry_gallery">Gallery</string>
 </resources>
