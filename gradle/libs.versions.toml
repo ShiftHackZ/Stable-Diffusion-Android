@@ -1,0 +1,121 @@
+[versions]
+versionName = "0.6.4"
+versionCode = "184"
+targetSdk = "34"
+compileSdk = "34"
+minSdk = "24"
+agp = "8.3.2"
+kotlin = "1.9.21"
+appcompat = "1.7.0"
+composeCompiler = "1.5.7"
+composeBom = "2024.08.00"
+composeActivity = "1.9.1"
+composeJunit = "1.6.8"
+lifecycleViewModel = "2.8.4"
+navigation = "2.7.7"
+paging = "3.1.1"
+pagingCompose = "1.0.0-alpha18"
+gson = "2.10.1"
+accompanistSystemUi = "0.30.1"
+retrofit = "2.9.0"
+okhttp = "5.0.0-alpha.11"
+koin = "3.4.3"
+koinCompose = "3.4.6"
+rxAndroidVersion = "3.0.2"
+rxJavaVersion = "3.1.6"
+rxKotlinVersion = "3.0.1"
+rxNetworkVersion = "4.0.0"
+material = "1.12.0"
+junit = "4.13.2"
+mockk = "1.13.11"
+mockito = "2.2.0"
+coreKtx = "1.13.1"
+crypto = "1.0.0"
+onnx = "1.18.0"
+workManager = "2.9.1"
+room = "2.6.1"
+timber = "5.0.1"
+exif = "1.3.7"
+apacheStringUtils = "3.14.0"
+composeGestures = "3.1"
+crop = "0.1.1"
+mvi = "1.0.1"
+dayNightSwitch = "1.0.0"
+imagepicker = "v2.0.3"
+catppuccin = "0.1.1"
+turbine = "1.1.0"
+roboelectric = "4.13"
+testCoroutines = "1.8.1"
+
+[libraries]
+android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp"}
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+apache-stringutils = { group = "org.apache.commons", name = "commons-lang3", version.ref = "apacheStringUtils" }
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat"}
+androidx-compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "composeActivity" }
+androidx-compose-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewModel" }
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewModel" }
+androidx-lifecycle-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleViewModel" }
+androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-exif = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exif" }
+androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+androidx-paging-rx = { group = "androidx.paging", name = "paging-rxjava3", version.ref = "paging" }
+androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingCompose" }
+androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "crypto" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-rx = { group = "androidx.room", name = "room-rxjava3", version.ref = "room" }
+androidx-work-runtime = { group = "androidx.work", name = "work-runtime", version.ref = "workManager" }
+google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+google-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanistSystemUi" }
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+retrofit-adapter-rxjava3 = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit" }
+okhttp-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp"}
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp"}
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinCompose" }
+microsoft-onnx-runtime-android = { group = "com.microsoft.onnxruntime", name = "onnxruntime-android", version.ref = "onnx" }
+rx-android = { group = "io.reactivex.rxjava3", name = "rxandroid", version.ref = "rxAndroidVersion" }
+rx-java = { group = "io.reactivex.rxjava3", name = "rxjava", version.ref = "rxJavaVersion" }
+rx-kotlin = { group = "io.reactivex.rxjava3", name = "rxkotlin", version.ref = "rxKotlinVersion" }
+rx-network = { group = "io.github.softartdev", name = "reactivenetwork-rx3", version.ref = "rxNetworkVersion" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+test-junit = { group = "junit", name = "junit", version.ref = "junit"}
+test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk"}
+test-mockito = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockito"}
+test-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "testCoroutines" }
+test-koin = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+test-koin-junit = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
+test-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+test-roboelectric = { group = "org.robolectric", name = "robolectric", version.ref = "roboelectric"}
+test-compose-junit = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "composeJunit"}
+test-compose-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "composeJunit"}
+compose-gestures = { group = "com.github.SmartToolFactory", name = "Compose-Extended-Gestures", version.ref = "composeGestures" }
+compose-crop = { group = "io.github.mr0xf00", name = "easycrop", version.ref = "crop" }
+shifthackz-mvi = { group = "com.github.ShiftHackZ", name = "AndroidCoreMVI", version.ref = "mvi" }
+shifthackz-imagepicker = { group = "com.github.ShiftHackZ", name = "ImagePicker", version.ref = "imagepicker" }
+shifthackz-daynightswitch = { group = "com.github.ShiftHackZ", name = "DayNightSwitch", version.ref = "dayNightSwitch" }
+shifthackz-catppuccin-legacy = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "palette-legacy", version.ref = "catppuccin" }
+shifthackz-catppuccin-compose = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "compose", version.ref = "catppuccin" }
+shifthackz-catppuccin-splash = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "splashscreen", version.ref = "catppuccin" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version="unspecified" }
+generic-library = { id = "generic.library", version = "unspecified" }
+generic-jacoco = { id = "generic.jacoco", version = "unspecified" }
+generic-compose = { id = "generic.compose", version = "unspecified" }
+generic-application = { id = "generic.application", version = "unspecified" }
