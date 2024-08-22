@@ -19,14 +19,13 @@ import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.unmockkAll
 import io.mockk.verify
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -73,12 +72,6 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
         } returns Single.just(Base64ToBitmapConverter.Output(stubBitmap))
     }
 
-    @After
-    override fun finalize() {
-        super.finalize()
-        unmockkAll()
-    }
-
     @Test
     fun `initialized, loaded ai generation result, expected UI state is Content`() {
         val expected = GalleryDetailState.Content(
@@ -109,6 +102,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     fun `given received CopyToClipboard intent, expected ShareClipBoard effect delivered to effect collector`() {
         viewModel.processIntent(GalleryDetailIntent.CopyToClipboard("text"))
         runTest {
+            advanceUntilIdle()
             val expected = GalleryDetailEffect.ShareClipBoard("text")
             val actual = viewModel.effect.firstOrNull()
             Assert.assertEquals(expected, actual)
@@ -153,6 +147,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
         viewModel.processIntent(GalleryDetailIntent.Export.Image)
 
         runTest {
+            advanceUntilIdle()
             viewModel.effect.test {
                 Assert.assertEquals(GalleryDetailEffect.ShareImageFile(stubFile), awaitItem())
             }
@@ -166,6 +161,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     fun `given received Export Params intent, expected ShareGenerationParams effect delivered to effect collector`() {
         viewModel.processIntent(GalleryDetailIntent.Export.Params)
         runTest {
+            advanceUntilIdle()
             val expected = GalleryDetailEffect.ShareGenerationParams(viewModel.state.value)
             val actual = viewModel.effect.firstOrNull()
             Assert.assertEquals(expected, actual)
