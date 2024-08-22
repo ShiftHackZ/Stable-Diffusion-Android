@@ -1,5 +1,18 @@
+apply plugin: 'jacoco'
+
 apply from: "$project.rootDir/gradle/ci.gradle"
 apply from: "$project.rootDir/dependencies.gradle"
+
+tasks.withType(Test).configureEach {
+    jacoco {
+        includeNoLocationClasses = true
+        excludes = ['jdk.internal.*']
+    }
+}
+
+afterEvaluate {
+    jacocoCodeCoverageReporting()
+}
 
 android {
     compileSdk rootProject.ext.targetSdk
@@ -12,16 +25,90 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = false
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = '17'
+    }
+}
+
+def jacocoCodeCoverageReporting() {
+    def exclusions = [
+            '**/R.class',
+            '**/R\$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*'
+    ]
+
+    def buildTypes = android.buildTypes.collect { type ->
+        type.name
+    }
+    def productFlavors = android.productFlavors.collect { flavor ->
+        flavor.name
+    }
+
+    if (!productFlavors) productFlavors.add('')
+
+    productFlavors.each { productFlavorName ->
+        buildTypes.each { buildTypeName ->
+            def sourceName, sourcePath
+            if (!productFlavorName) {
+                sourceName = sourcePath = "${buildTypeName}"
+            } else {
+                sourceName = "${productFlavorName}${buildTypeName.capitalize()}"
+                sourcePath = "${productFlavorName}/${buildTypeName}"
+            }
+
+            def testTaskName = "test${sourceName.capitalize()}UnitTest"
+            def jacocoTaskName = "jacoco${testTaskName.capitalize()}Coverage"
+
+            System.out.println("[Jacoco] Task -> ${project.displayName.replace('\'', '')}:${jacocoTaskName}")
+
+            tasks.register(jacocoTaskName, JacocoReport) {
+                dependsOn([testTaskName])
+
+                group = "Reporting"
+                description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
+
+                reports {
+                    xml.required = false
+                    csv.required = false
+                    html.required = true
+                }
+
+                sourceDirectories.setFrom(layout.projectDirectory.dir("src/main"))
+
+                classDirectories.setFrom(
+                        files(
+                                fileTree(layout.buildDirectory.dir("intermediates/javac/")) {
+                                    exclude(exclusions)
+                                },
+                                fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) {
+                                    exclude(exclusions)
+                                }
+                        )
+                )
+
+                executionData.setFrom(
+                        files(
+                                fileTree(layout.buildDirectory) { include("**/*.exec", "**/*.ec") }
+                        )
+                )
+            }
+        }
     }
 }
