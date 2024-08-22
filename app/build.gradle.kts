@@ -1,16 +1,9 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
-import com.android.tools.profgen.ArtProfile
-import com.android.tools.profgen.ArtProfileSerializer
-import com.android.tools.profgen.DexFile
-import com.android.tools.profgen.DexFileData
 import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.util.Collections
 import java.util.Properties
 
 plugins {
     alias(libs.plugins.generic.application)
+    alias(libs.plugins.generic.baseline.profm)
 }
 
 android {
@@ -108,42 +101,4 @@ dependencies {
 
 kapt {
     correctErrorTypes = true
-}
-
-/**
- * Workaround for "Bug: baseline.profm not deterministic"
- *
- * Reference     : https://f-droid.org/docs/Reproducible_Builds/#bug-baselineprofm-not-deterministic
- * Fix snippet   : https://gist.github.com/obfusk/61046e09cee352ae6dd109911534b12e
- * Issue tracker : https://issuetracker.google.com/issues/231837768
- */
-project.afterEvaluate {
-    tasks.forEach { task ->
-        if (task.name.startsWith("compile") && task.name.endsWith("ReleaseArtProfile")) {
-            task.doLast {
-                outputs.files.forEach { file ->
-                    if (file.name.endsWith(".profm")) {
-                        println("Sorting $file ...")
-                        val version = ArtProfileSerializer.valueOf("METADATA_0_0_2")
-                        val profile = ArtProfile(file)
-                        val keys = ArrayList(profile?.profileData?.keys ?: setOf())
-                        val sortedData = LinkedHashMap<DexFile, DexFileData>()
-                        Collections.sort(keys, DexFile.Companion)
-
-                        keys.forEach { key ->
-                            profile?.profileData?.get(key)?.let { value ->
-                                sortedData[key] = value
-                            }
-                        }
-
-                        FileOutputStream(file).use { stream ->
-                            stream.write(version.magicBytes)
-                            stream.write(version.versionBytes)
-                            version.write(stream, sortedData, "")
-                        }
-                    }
-                }
-            }
-        }
-    }
 }

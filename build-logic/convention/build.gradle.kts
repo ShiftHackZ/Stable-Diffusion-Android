@@ -36,5 +36,9 @@ gradlePlugin {
             id = "generic.application"
             implementationClass = "ApplicationConventionPlugin"
         }
+        register("BaselineProFm") {
+            id = "generic.baseline.profm"
+            implementationClass = "BaselineProFmConventionPlugin"
+        }
     }
 }

@@ -116,6 +116,6 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version="unspecified" }
 generic-library = { id = "generic.library", version = "unspecified" }
-generic-jacoco = { id = "generic.jacoco", version = "unspecified" }
+generic-baseline-profm = { id = "generic.baseline.profm", version = "unspecified" }
 generic-compose = { id = "generic.compose", version = "unspecified" }
 generic-application = { id = "generic.application", version = "unspecified" }
