@@ -85,7 +85,8 @@ def jacocoCodeCoverageReporting() {
                 description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
 
                 reports {
-                    xml.required = true
+                    xml.required = false
+                    csv.required = false
                     html.required = true
                 }
 
