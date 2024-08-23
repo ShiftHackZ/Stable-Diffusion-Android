@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.generic.library)
-    kotlin("kapt")
 }
 
 android {

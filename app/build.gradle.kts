@@ -44,7 +44,7 @@ android {
             create("release") {
                 storeFile = file(props["keystore"] as String)
                 storePassword = props["keystore.password"] as String
-                keyAlias = props["keystore.alias"] as String
+                keyAlias = alias
                 keyPassword = props["keystore.password"] as String
             }
         }
