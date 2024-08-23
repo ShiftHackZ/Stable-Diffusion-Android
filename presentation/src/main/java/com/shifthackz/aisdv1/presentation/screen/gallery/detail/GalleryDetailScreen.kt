@@ -57,7 +57,7 @@ import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
 import com.shifthackz.catppuccin.palette.Catppuccin
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
@@ -70,7 +70,7 @@ fun GalleryDetailScreen(itemId: Long) {
     val fileProviderDescriptor: FileProviderDescriptor = koinInject()
     val galleryDetailSharing: GalleryDetailSharing = koinInject()
     MviComponent(
-        viewModel = getViewModel<GalleryDetailViewModel>(
+        viewModel = koinViewModel<GalleryDetailViewModel>(
             parameters = { parametersOf(itemId) },
         ),
         processEffect = { effect ->

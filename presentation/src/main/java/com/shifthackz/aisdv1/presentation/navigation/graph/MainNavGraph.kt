@@ -19,7 +19,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreen
 import com.shifthackz.aisdv1.presentation.screen.web.webui.WebUiScreen
 import com.shifthackz.aisdv1.presentation.utils.Constants
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
@@ -37,7 +37,7 @@ fun NavGraphBuilder.mainNavGraph() {
                 ?.getInt(Constants.PARAM_SOURCE)
                 ?: LaunchSource.SPLASH.ordinal
             ServerSetupScreen(
-                viewModel = getViewModel<ServerSetupViewModel>(
+                viewModel = koinViewModel<ServerSetupViewModel>(
                     parameters = { parametersOf(sourceKey) }
                 ),
                 buildInfoProvider = koinInject()
@@ -111,7 +111,7 @@ fun NavGraphBuilder.mainNavGraph() {
                 ?.getInt(Constants.PARAM_SOURCE)
                 ?: LaunchSource.SPLASH.ordinal
             OnBoardingScreen(
-                viewModel = getViewModel<OnBoardingViewModel>(
+                viewModel = koinViewModel<OnBoardingViewModel>(
                     parameters = { parametersOf(sourceKey) }
                 ),
             )
