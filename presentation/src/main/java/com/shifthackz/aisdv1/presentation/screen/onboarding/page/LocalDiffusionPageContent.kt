@@ -35,7 +35,7 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 @Composable
 fun LocalDiffusionPageContent(
     modifier: Modifier = Modifier,
-    ) = Column(
+) = Column(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {

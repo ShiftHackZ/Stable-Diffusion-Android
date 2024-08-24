@@ -37,7 +37,7 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 fun FormPageContent(
     modifier: Modifier = Modifier,
     isPageVisible: Boolean = false,
-    ) = Column(
+) = Column(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {

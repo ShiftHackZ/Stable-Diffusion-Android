@@ -577,7 +577,7 @@ private fun ContentSettingsState(
         }
         //endregion
 
-        if(!state.onBoardingDemo){
+        if (!state.onBoardingDemo) {
             //region LINKS & OTHERS
             SettingsHeader(
                 modifier = headerModifier,

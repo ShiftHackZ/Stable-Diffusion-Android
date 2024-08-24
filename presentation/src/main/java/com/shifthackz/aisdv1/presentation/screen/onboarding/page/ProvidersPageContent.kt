@@ -40,9 +40,8 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 fun ProviderPageContent(
     modifier: Modifier = Modifier,
     isPageVisible: Boolean = false,
-    ) = Column(
-    modifier = modifier
-        .fillMaxSize(),
+) = Column(
+    modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     val scope = rememberCoroutineScope()
