@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.data.repository.HuggingFaceGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HuggingFaceModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.LocalDiffusionGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.LorasRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.MediaPipeGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.OpenAiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.RandomImageRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.ServerConfigurationRepositoryImpl
@@ -33,6 +34,7 @@ import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceModelsRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LorasRepository
+import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.RandomImageRepository
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
@@ -63,6 +65,7 @@ val repositoryModule = module {
 
     singleOf(::TemporaryGenerationResultRepositoryImpl) bind TemporaryGenerationResultRepository::class
     factoryOf(::LocalDiffusionGenerationRepositoryImpl) bind LocalDiffusionGenerationRepository::class
+    factoryOf(::MediaPipeGenerationRepositoryImpl) bind MediaPipeGenerationRepository::class
     factoryOf(::HordeGenerationRepositoryImpl) bind HordeGenerationRepository::class
     factoryOf(::HuggingFaceGenerationRepositoryImpl) bind HuggingFaceGenerationRepository::class
     factoryOf(::OpenAiGenerationRepositoryImpl) bind OpenAiGenerationRepository::class

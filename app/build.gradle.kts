@@ -85,6 +85,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:diffusion"))
+    implementation(project(":feature:mediapipe"))
     implementation(project(":feature:work"))
     implementation(project(":data"))
     implementation(project(":demo"))

@@ -92,6 +92,8 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToMediaPipeUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToMediaPipeUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToOpenAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToOpenAiUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToStabilityAiUseCase
@@ -164,6 +166,7 @@ internal val useCasesModule = module {
     factoryOf(::InterruptGenerationUseCaseImpl) bind InterruptGenerationUseCase::class
     factoryOf(::ConnectToHordeUseCaseImpl) bind ConnectToHordeUseCase::class
     factoryOf(::ConnectToLocalDiffusionUseCaseImpl) bind ConnectToLocalDiffusionUseCase::class
+    factoryOf(::ConnectToMediaPipeUseCaseImpl) bind ConnectToMediaPipeUseCase::class
     factoryOf(::ConnectToA1111UseCaseImpl) bind ConnectToA1111UseCase::class
     factoryOf(::ConnectToSwarmUiUseCaseImpl) bind ConnectToSwarmUiUseCase::class
     factoryOf(::ConnectToHuggingFaceUseCaseImpl) bind ConnectToHuggingFaceUseCase::class

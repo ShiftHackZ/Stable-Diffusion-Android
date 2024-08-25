@@ -12,6 +12,10 @@
         android:theme="@style/Theme.AiSdCompose.Splash"
         android:usesCleartextTraffic="true">
 
+        <uses-native-library android:name="libOpenCL.so" android:required="false" />
+        <uses-native-library android:name="libOpenCL-car.so" android:required="false"/>
+        <uses-native-library android:name="libOpenCL-pixel.so" android:required="false" />
+
         <activity
             android:name="com.shifthackz.aisdv1.presentation.activity.AiStableDiffusionActivity"
             android:exported="true"

@@ -58,6 +58,8 @@ fun ConfigurationStep(
                 state = state,
                 processIntent = processIntent,
             )
+
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Unit
         }
     }
 }

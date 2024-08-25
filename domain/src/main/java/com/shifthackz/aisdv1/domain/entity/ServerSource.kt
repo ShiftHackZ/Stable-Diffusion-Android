@@ -69,6 +69,14 @@ enum class ServerSource(
             FeatureTag.Txt2Img,
             FeatureTag.MultipleModels,
         ),
+    ),
+    LOCAL_GOOGLE_MEDIA_PIPE(
+        key = "local_google_media_pipe",
+        featureTags = setOf(
+            FeatureTag.Offline,
+            FeatureTag.Txt2Img,
+            FeatureTag.MultipleModels,
+        ),
     );
 
     companion object {

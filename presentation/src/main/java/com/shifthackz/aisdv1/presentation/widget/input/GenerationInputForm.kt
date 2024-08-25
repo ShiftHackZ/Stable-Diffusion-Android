@@ -295,6 +295,7 @@ fun GenerationInputForm(
                         displayDelegate = { it.key.asUiText() },
                     )
                 }
+                else -> Unit
             }
         }
 

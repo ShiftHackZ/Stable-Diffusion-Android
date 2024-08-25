@@ -236,6 +236,7 @@ private fun ContentSettingsState(
                     ServerSource.OPEN_AI -> LocalizationR.string.srv_type_open_ai
                     ServerSource.STABILITY_AI -> LocalizationR.string.srv_type_stability_ai
                     ServerSource.LOCAL -> LocalizationR.string.srv_type_local_short
+                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LocalizationR.string.srv_type_media_pipe_short
                     ServerSource.SWARM_UI -> LocalizationR.string.srv_type_swarm_ui
                 }.asUiText(),
                 onClick = { processIntent(SettingsIntent.NavigateConfiguration) },

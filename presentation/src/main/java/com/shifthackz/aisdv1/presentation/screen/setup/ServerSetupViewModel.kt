@@ -259,6 +259,7 @@ class ServerSetupViewModel(
             ServerSource.OPEN_AI -> connectToOpenAi()
             ServerSource.STABILITY_AI -> connectToStabilityAi()
             ServerSource.SWARM_UI -> connectToSwarmUi()
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> connectToMediaPipe()
         }
             .doOnSubscribe { setScreenModal(Modal.Communicating(canCancel = false)) }
             .subscribeOnMainThread(schedulersProvider)
@@ -302,6 +303,10 @@ class ServerSetupViewModel(
             } else {
                 currentState.localModels.find { it.selected && it.downloaded } != null
             }
+        }
+
+        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> {
+            true
         }
 
         ServerSource.HUGGING_FACE -> {
@@ -408,6 +413,10 @@ class ServerSetupViewModel(
         preferenceManager.localDiffusionCustomModelPath = currentState.localCustomModelPath
         val localModelId = currentState.localModels.find { it.selected }?.id ?: ""
         return setupConnectionInterActor.connectToLocal(localModelId)
+    }
+
+    private fun connectToMediaPipe(): Single<Result<Unit>> {
+        return setupConnectionInterActor.connectToMediaPipe()
     }
 
     private fun localModelDownloadClickReducer(localModel: ServerSetupState.LocalModel) {

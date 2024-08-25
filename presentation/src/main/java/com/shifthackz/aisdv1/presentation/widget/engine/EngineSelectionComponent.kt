@@ -64,6 +64,7 @@ fun EngineSelectionComponent(
                 displayDelegate = { it.name.asUiText() },
             )
 
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Unit
             ServerSource.HORDE -> Unit
             ServerSource.OPEN_AI -> Unit
         }
