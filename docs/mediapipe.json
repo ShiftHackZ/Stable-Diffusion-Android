@@ -1,0 +1,13 @@
+[
+  {
+    "id": "b6aad916-4e86-4a37-a982-98accc746465",
+    "name": "stable-diffusion-v1-5",
+    "size": "4.2 Gb",
+    "sources": [
+      "https://github.com/ShiftHackZ/Local-Diffusion-Models-SDAI-MediaPipe/releases/download/patch-26082024/stable-diffusion-v1-5.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned-emaonly.ckpt"
+    }
+  }
+]
