@@ -27,6 +27,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.allowedModes
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomModelSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
@@ -94,6 +95,7 @@ class ServerSetupViewModel(
                         localCustomModel = localModels.mapLocalCustomModelSwitchState(),
                         localCustomModelPath = configuration.localModelPath,
                         mode = configuration.source,
+                        allowedModes = buildInfoProvider.allowedModes,
                         demoMode = configuration.demoMode,
                         serverUrl = configuration.serverUrl,
                         swarmUiUrl = configuration.swarmUiUrl,

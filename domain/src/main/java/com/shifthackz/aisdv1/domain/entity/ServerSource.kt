@@ -1,8 +1,11 @@
 package com.shifthackz.aisdv1.domain.entity
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
+
 enum class ServerSource(
     val key: String,
     val featureTags: Set<FeatureTag>,
+    val allowedInBuilds: Set<BuildType> = setOf(BuildType.FOSS, BuildType.PLAY, BuildType.FULL),
 ) {
     AUTOMATIC1111(
         key = "custom",
@@ -77,6 +80,7 @@ enum class ServerSource(
             FeatureTag.Txt2Img,
             FeatureTag.MultipleModels,
         ),
+        allowedInBuilds = setOf(BuildType.PLAY, BuildType.FULL),
     );
 
     companion object {
