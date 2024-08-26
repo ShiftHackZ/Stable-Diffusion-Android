@@ -72,7 +72,8 @@ fun ConfigurationModeButton(
                     ServerSource.OPEN_AI,
                     ServerSource.STABILITY_AI,
                     ServerSource.HUGGING_FACE -> Icons.Default.Cloud
-                    ServerSource.LOCAL -> Icons.Default.Android
+                    ServerSource.LOCAL_MICROSOFT_ONNX,
+                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Icons.Default.Android
                     else -> Icons.Default.QuestionMark
                 },
                 contentDescription = null,
@@ -91,9 +92,10 @@ fun ConfigurationModeButton(
             ServerSource.HORDE -> LocalizationR.string.hint_server_horde_sub_title
             ServerSource.HUGGING_FACE -> LocalizationR.string.hint_hugging_face_sub_title
             ServerSource.OPEN_AI -> LocalizationR.string.hint_open_ai_sub_title
-            ServerSource.LOCAL -> LocalizationR.string.hint_local_diffusion_sub_title
+            ServerSource.LOCAL_MICROSOFT_ONNX -> LocalizationR.string.hint_local_diffusion_sub_title
             ServerSource.STABILITY_AI -> LocalizationR.string.hint_stability_ai_sub_title
             ServerSource.SWARM_UI -> LocalizationR.string.hint_swarm_ui_sub_title
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LocalizationR.string.hint_mediapipe_sub_title
             else -> null
         }
         descriptionId?.let { resId ->

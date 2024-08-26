@@ -135,7 +135,7 @@ private fun ScreenContent(
                             )
                         },
                         actions = {
-                            if (state.mode != ServerSource.LOCAL) {
+                            if (state.mode != ServerSource.LOCAL_MICROSOFT_ONNX) {
                                 IconButton(
                                     onClick = {
                                         processIntent(
@@ -234,14 +234,14 @@ private fun ScreenContent(
                             Text(
                                 modifier = Modifier.padding(top = 14.dp),
                                 text = stringResource(
-                                    if (state.mode == ServerSource.LOCAL) LocalizationR.string.local_no_img2img_support_sub_title
+                                    if (state.mode == ServerSource.LOCAL_MICROSOFT_ONNX) LocalizationR.string.local_no_img2img_support_sub_title
                                     else LocalizationR.string.dalle_no_img2img_support_sub_title
                                 ),
                             )
                             Text(
                                 modifier = Modifier.padding(top = 14.dp),
                                 text = stringResource(
-                                    if (state.mode == ServerSource.LOCAL) LocalizationR.string.local_no_img2img_support_sub_title_2
+                                    if (state.mode == ServerSource.LOCAL_MICROSOFT_ONNX) LocalizationR.string.local_no_img2img_support_sub_title_2
                                     else LocalizationR.string.dalle_no_img2img_support_sub_title_2
                                 ),
                             )
@@ -251,7 +251,7 @@ private fun ScreenContent(
             },
             bottomBar = {
                 val isEnabled = when (state.mode) {
-                    ServerSource.LOCAL,
+                    ServerSource.LOCAL_MICROSOFT_ONNX,
                     ServerSource.OPEN_AI -> true
 
                     else -> !state.hasValidationErrors && !state.imageState.isEmpty
@@ -271,7 +271,7 @@ private fun ScreenContent(
                             keyboardController?.hide()
                             when (state.mode) {
                                 ServerSource.OPEN_AI,
-                                ServerSource.LOCAL -> processIntent(GenerationMviIntent.Configuration)
+                                ServerSource.LOCAL_MICROSOFT_ONNX -> processIntent(GenerationMviIntent.Configuration)
 
                                 else -> {
                                     promptChipTextFieldState.value.text.takeIf(String::isNotBlank)
@@ -292,7 +292,7 @@ private fun ScreenContent(
                         },
                         enabled = isEnabled,
                     ) {
-                        if (state.mode != ServerSource.LOCAL) {
+                        if (state.mode != ServerSource.LOCAL_MICROSOFT_ONNX) {
                             Icon(
                                 modifier = Modifier.size(18.dp),
                                 imageVector = Icons.Default.AutoFixNormal,
@@ -303,7 +303,7 @@ private fun ScreenContent(
                             modifier = Modifier.padding(start = 8.dp),
                             text = stringResource(
                                 id = when (state.mode) {
-                                    ServerSource.LOCAL,
+                                    ServerSource.LOCAL_MICROSOFT_ONNX,
                                     ServerSource.OPEN_AI -> LocalizationR.string.action_change_configuration
 
                                     else -> LocalizationR.string.action_generate

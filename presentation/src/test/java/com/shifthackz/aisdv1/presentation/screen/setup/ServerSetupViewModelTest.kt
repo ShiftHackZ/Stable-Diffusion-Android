@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.validation.common.CommonStringValidator
 import com.shifthackz.aisdv1.core.validation.path.FilePathValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
@@ -67,6 +68,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         preferenceManager = stubPreferenceManager,
         wakeLockInterActor = stubWakeLockInterActor,
         mainRouter = stubMainRouter,
+        buildInfoProvider = BuildInfoProvider.stub,
     )
 
     @Before
@@ -317,8 +319,8 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
     @Test
     fun `given received UpdateServerMode intent, expected mode field in UI state is LOCAL`() {
-        viewModel.processIntent(ServerSetupIntent.UpdateServerMode(ServerSource.LOCAL))
-        val expected = ServerSource.LOCAL
+        viewModel.processIntent(ServerSetupIntent.UpdateServerMode(ServerSource.LOCAL_MICROSOFT_ONNX))
+        val expected = ServerSource.LOCAL_MICROSOFT_ONNX
         val actual = viewModel.state.value.mode
         Assert.assertEquals(expected, actual)
     }

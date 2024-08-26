@@ -112,7 +112,7 @@ internal abstract class CoreGenerationWorker(
         setForegroundNotification(
             title = title,
             body = subTitle,
-            canCancel = source != ServerSource.LOCAL,
+            canCancel = source != ServerSource.LOCAL_MICROSOFT_ONNX,
         )
     }
 

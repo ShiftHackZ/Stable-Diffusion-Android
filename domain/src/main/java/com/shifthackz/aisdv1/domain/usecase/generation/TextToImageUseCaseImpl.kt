@@ -36,7 +36,7 @@ internal class TextToImageUseCaseImpl(
 
     private fun generate(payload: TextToImagePayload) = when (preferenceManager.source) {
         ServerSource.HORDE -> hordeGenerationRepository.generateFromText(payload)
-        ServerSource.LOCAL -> localDiffusionGenerationRepository.generateFromText(payload)
+        ServerSource.LOCAL_MICROSOFT_ONNX -> localDiffusionGenerationRepository.generateFromText(payload)
         ServerSource.HUGGING_FACE -> huggingFaceGenerationRepository.generateFromText(payload)
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.generateFromText(payload)
         ServerSource.OPEN_AI -> openAiGenerationRepository.generateFromText(payload)

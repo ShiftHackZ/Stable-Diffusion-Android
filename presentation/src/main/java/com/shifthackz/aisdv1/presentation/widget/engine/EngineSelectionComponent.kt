@@ -54,7 +54,7 @@ fun EngineSelectionComponent(
                 onItemSelected = { intentHandler(EngineSelectionIntent(it)) },
             )
 
-            ServerSource.LOCAL -> DropdownTextField(
+            ServerSource.LOCAL_MICROSOFT_ONNX -> DropdownTextField(
                 label = LocalizationR.string.hint_sd_model.asUiText(),
                 loading = state.loading,
                 modifier = modifier,

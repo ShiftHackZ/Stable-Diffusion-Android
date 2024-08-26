@@ -67,7 +67,7 @@ class TextToImageViewModel(
 
     private val progressModal: Modal
         get() {
-            if (currentState.mode == ServerSource.LOCAL) {
+            if (currentState.mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
                 return Modal.Generating(canCancel = preferenceManager.localDiffusionAllowCancel)
             }
             return Modal.Communicating()

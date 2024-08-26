@@ -153,7 +153,7 @@ fun ServerSetupScreenContent(
                     onClick = { processIntent(ServerSetupIntent.MainButtonClick) },
                     enabled = when (state.step) {
                         ServerSetupState.Step.CONFIGURE -> when (state.mode) {
-                            ServerSource.LOCAL -> state.localModels.any {
+                            ServerSource.LOCAL_MICROSOFT_ONNX -> state.localModels.any {
                                 it.downloaded && it.selected
                             }
 
@@ -168,7 +168,7 @@ fun ServerSetupScreenContent(
                             id = when (state.step) {
                                 ServerSetupState.Step.SOURCE -> LocalizationR.string.next
                                 else -> when (state.mode) {
-                                    ServerSource.LOCAL -> LocalizationR.string.action_setup
+                                    ServerSource.LOCAL_MICROSOFT_ONNX -> LocalizationR.string.action_setup
                                     else -> LocalizationR.string.action_connect
                                 }
                             },

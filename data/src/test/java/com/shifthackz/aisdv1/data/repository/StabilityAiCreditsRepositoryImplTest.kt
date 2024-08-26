@@ -40,7 +40,7 @@ class StabilityAiCreditsRepositoryImplTest {
     fun `given server source is not STABILITY_AI, attempt to fetch, expected IllegalStateException error value`() {
         every {
             stubPreferenceManager.source
-        } returns ServerSource.LOCAL
+        } returns ServerSource.LOCAL_MICROSOFT_ONNX
 
         every {
             stubRemoteDataSource.fetch()
@@ -62,7 +62,7 @@ class StabilityAiCreditsRepositoryImplTest {
     fun `given server source is not STABILITY_AI, attempt to fetch and get, expected IllegalStateException error value`() {
         every {
             stubPreferenceManager.source
-        } returns ServerSource.LOCAL
+        } returns ServerSource.LOCAL_MICROSOFT_ONNX
 
         every {
             stubRemoteDataSource.fetch()
@@ -88,7 +88,7 @@ class StabilityAiCreditsRepositoryImplTest {
     fun `given server source is not STABILITY_AI, attempt to fetch and observe, expected IllegalStateException error value`() {
         every {
             stubPreferenceManager.source
-        } returns ServerSource.LOCAL
+        } returns ServerSource.LOCAL_MICROSOFT_ONNX
 
         every {
             stubRemoteDataSource.fetch()
@@ -110,7 +110,7 @@ class StabilityAiCreditsRepositoryImplTest {
     fun `given server source is not STABILITY_AI, attempt to get, expected IllegalStateException error value`() {
         every {
             stubPreferenceManager.source
-        } returns ServerSource.LOCAL
+        } returns ServerSource.LOCAL_MICROSOFT_ONNX
 
         every {
             stubLocalDataSource.get()
@@ -128,7 +128,7 @@ class StabilityAiCreditsRepositoryImplTest {
     fun `given server source is not STABILITY_AI, attempt to observe, expected IllegalStateException error value`() {
         every {
             stubPreferenceManager.source
-        } returns ServerSource.LOCAL
+        } returns ServerSource.LOCAL_MICROSOFT_ONNX
 
         repository
             .observe()

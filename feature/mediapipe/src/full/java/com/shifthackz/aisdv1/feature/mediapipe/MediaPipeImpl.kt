@@ -18,23 +18,23 @@ internal class MediaPipeImpl(
     private var imageGenerator: ImageGenerator? = null
 
     override fun process(payload: TextToImagePayload): Single<Bitmap> = Single.create { emitter ->
-            try {
-                initialize()
-                println("Generating...")
-                val result = imageGenerator?.generate(
-                    payload.prompt,
-                    payload.samplingSteps,
-                    payload.seed.toIntOrNull() ?: 0,
-                )
-                println("Extracting bitmap...")
-                val bitmap = BitmapExtractor.extract(result?.generatedImage())
-                println("bitmap = $bitmap, ${bitmap.width}X${bitmap.height}")
-                close()
-                if (!emitter.isDisposed) emitter.onSuccess(bitmap)
-            } catch (e: Exception) {
-                close()
-                if (!emitter.isDisposed) emitter.onError(e)
-            }
+        try {
+            initialize()
+            println("Generating...")
+            val result = imageGenerator?.generate(
+                payload.prompt,
+                payload.samplingSteps,
+                payload.seed.toIntOrNull() ?: 0,
+            )
+            println("Extracting bitmap...")
+            val bitmap = BitmapExtractor.extract(result?.generatedImage())
+            println("bitmap = $bitmap, ${bitmap.width}X${bitmap.height}")
+            close()
+            if (!emitter.isDisposed) emitter.onSuccess(bitmap)
+        } catch (e: Exception) {
+            close()
+            if (!emitter.isDisposed) emitter.onError(e)
+        }
     }
 
     private fun initialize(): ImageGenerator {

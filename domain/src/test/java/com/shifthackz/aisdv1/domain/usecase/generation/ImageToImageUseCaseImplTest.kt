@@ -293,7 +293,7 @@ class ImageToImageUseCaseImplTest {
     @Test
     fun `given source is LOCAL, expected Img2Img not yet supported error`() {
         whenever(stubPreferenceManager.source)
-            .thenReturn(ServerSource.LOCAL)
+            .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
         useCase(mockImageToImagePayload)
             .test()

@@ -133,7 +133,7 @@ fun TextToImageState.mapToPayload(): TextToImagePayload = with(this) {
         subSeedStrength = subSeedStrength,
         sampler = selectedSampler,
         nsfw = if (mode == ServerSource.HORDE) nsfw else false,
-        batchCount = if (mode == ServerSource.LOCAL) 1 else batchCount,
+        batchCount = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) 1 else batchCount,
         style = openAiStyle.key.takeIf {
             mode == ServerSource.OPEN_AI && openAiModel == OpenAiModel.DALL_E_3
         },

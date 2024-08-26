@@ -130,7 +130,11 @@ val providersModule = module {
                 append("$version")
                 if (BuildConfig.DEBUG) append("-dev")
                 append(" ($buildNumber)")
-                if (type == BuildType.FOSS) append(" FOSS")
+                when (type) {
+                    BuildType.FULL -> append(" FULL")
+                    BuildType.FOSS -> append(" FOSS")
+                    BuildType.PLAY -> Unit
+                }
             }
         }
     }

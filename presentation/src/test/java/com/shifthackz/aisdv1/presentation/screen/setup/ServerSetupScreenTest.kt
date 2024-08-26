@@ -107,7 +107,7 @@ class ServerSetupScreenTest : CoreComposeTest {
         stubUiState.update {
             it.copy(
                 step = ServerSetupState.Step.CONFIGURE,
-                mode = ServerSource.LOCAL
+                mode = ServerSource.LOCAL_MICROSOFT_ONNX
             )
         }
 
@@ -125,7 +125,7 @@ class ServerSetupScreenTest : CoreComposeTest {
         stubUiState.update {
             it.copy(
                 step = ServerSetupState.Step.CONFIGURE,
-                mode = ServerSource.LOCAL,
+                mode = ServerSource.LOCAL_MICROSOFT_ONNX,
                 localModels = mockLocalAiModels.mapToUi()
             )
         }

@@ -84,6 +84,7 @@ val viewModelModule = module {
             preferenceManager = get(),
             wakeLockInterActor = get(),
             mainRouter = get(),
+            buildInfoProvider = get(),
         )
     }
 

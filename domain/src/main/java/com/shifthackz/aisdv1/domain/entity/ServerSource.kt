@@ -62,7 +62,7 @@ enum class ServerSource(
             FeatureTag.Batch,
         ),
     ),
-    LOCAL(
+    LOCAL_MICROSOFT_ONNX(
         key = "local",
         featureTags = setOf(
             FeatureTag.Offline,

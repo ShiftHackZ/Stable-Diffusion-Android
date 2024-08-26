@@ -223,17 +223,17 @@ class PreferenceManagerImplTest {
         Assert.assertEquals(ServerSource.AUTOMATIC1111, preferenceManager.source)
 
         whenever(stubPreference.getString(eq(KEY_SERVER_SOURCE), any()))
-            .thenReturn(ServerSource.LOCAL.key)
+            .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX.key)
 
-        preferenceManager.source =  ServerSource.LOCAL
+        preferenceManager.source =  ServerSource.LOCAL_MICROSOFT_ONNX
 
-        Assert.assertEquals(ServerSource.LOCAL, preferenceManager.source)
+        Assert.assertEquals(ServerSource.LOCAL_MICROSOFT_ONNX, preferenceManager.source)
 
         preferenceManager
             .observe()
             .test()
             .assertNoErrors()
-            .assertValueAt(0) { settings -> settings.source == ServerSource.LOCAL }
+            .assertValueAt(0) { settings -> settings.source == ServerSource.LOCAL_MICROSOFT_ONNX }
     }
 
     @Test

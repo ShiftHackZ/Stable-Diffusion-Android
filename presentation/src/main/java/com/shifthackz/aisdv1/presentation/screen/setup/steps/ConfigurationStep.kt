@@ -33,7 +33,7 @@ fun ConfigurationStep(
                 processIntent = processIntent,
             )
 
-            ServerSource.LOCAL -> LocalDiffusionForm(
+            ServerSource.LOCAL_MICROSOFT_ONNX -> LocalDiffusionForm(
                 state = state,
                 buildInfoProvider = buildInfoProvider,
                 processIntent = processIntent,

@@ -363,7 +363,7 @@ class TextToImageUseCaseImplTest {
     @Test
     fun `given source is LOCAL, batch count is 1, generated successfully, expected generations list with size 1`() {
         whenever(stubPreferenceManager.source)
-            .thenReturn(ServerSource.LOCAL)
+            .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
         whenever(stubLocalDiffusionGenerationRepository.generateFromText(any()))
             .thenReturn(Single.just(mockAiGenerationResult))
@@ -386,7 +386,7 @@ class TextToImageUseCaseImplTest {
     @Test
     fun `given source is LOCAL, batch count is 10, generated successfully, expected generations list with size 10`() {
         whenever(stubPreferenceManager.source)
-            .thenReturn(ServerSource.LOCAL)
+            .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
         whenever(stubLocalDiffusionGenerationRepository.generateFromText(any()))
             .thenReturn(Single.just(mockAiGenerationResult))
@@ -409,7 +409,7 @@ class TextToImageUseCaseImplTest {
     @Test
     fun `given source is LOCAL, batch count is 1, generate failed, expected error`() {
         whenever(stubPreferenceManager.source)
-            .thenReturn(ServerSource.LOCAL)
+            .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
         whenever(stubLocalDiffusionGenerationRepository.generateFromText(any()))
             .thenReturn(Single.error(stubException))

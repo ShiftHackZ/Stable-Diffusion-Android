@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
@@ -49,6 +51,7 @@ class ServerSetupViewModel(
     private val preferenceManager: PreferenceManager,
     private val wakeLockInterActor: WakeLockInterActor,
     private val mainRouter: MainRouter,
+    private val buildInfoProvider: BuildInfoProvider,
 ) : MviRxViewModel<ServerSetupState, ServerSetupIntent, ServerSetupEffect>() {
 
     override val initialState = ServerSetupState(
@@ -253,7 +256,7 @@ class ServerSetupViewModel(
         emitEffect(ServerSetupEffect.HideKeyboard)
         !when (currentState.mode) {
             ServerSource.HORDE -> connectToHorde()
-            ServerSource.LOCAL -> connectToLocalDiffusion()
+            ServerSource.LOCAL_MICROSOFT_ONNX -> connectToLocalDiffusion()
             ServerSource.AUTOMATIC1111 -> connectToAutomaticInstance()
             ServerSource.HUGGING_FACE -> connectToHuggingFace()
             ServerSource.OPEN_AI -> connectToOpenAi()
@@ -293,7 +296,7 @@ class ServerSetupViewModel(
             }
         }
 
-        ServerSource.LOCAL -> {
+        ServerSource.LOCAL_MICROSOFT_ONNX -> {
             if (currentState.localCustomModel) {
                 val validation = filePathValidator(currentState.localCustomModelPath)
                 updateState {
@@ -305,7 +308,9 @@ class ServerSetupViewModel(
             }
         }
 
-        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> {
+        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> if (buildInfoProvider.type == BuildType.FOSS) {
+            false
+        } else {
             true
         }
 

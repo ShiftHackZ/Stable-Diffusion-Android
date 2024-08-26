@@ -229,7 +229,7 @@ class EngineSelectionViewModelTest : CoreViewModelTest<EngineSelectionViewModel>
 
     @Test
     fun `given received EngineSelectionIntent, source is LOCAL, expected localModelId changed in preference`() {
-        mockInitialData(DataTestCase.Mock, ServerSource.LOCAL)
+        mockInitialData(DataTestCase.Mock, ServerSource.LOCAL_MICROSOFT_ONNX)
 
         every {
             stubPreferenceManager::localModelId.set(any())

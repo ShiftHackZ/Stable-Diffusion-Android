@@ -131,7 +131,7 @@ class EngineSelectionViewModel(
 
             ServerSource.STABILITY_AI -> preferenceManager.stabilityAiEngineId = intent.value
 
-            ServerSource.LOCAL -> preferenceManager.localModelId = intent.value
+            ServerSource.LOCAL_MICROSOFT_ONNX -> preferenceManager.localModelId = intent.value
 
             else -> Unit
         }
