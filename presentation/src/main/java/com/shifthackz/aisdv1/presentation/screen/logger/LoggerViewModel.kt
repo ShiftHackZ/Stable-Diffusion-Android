@@ -2,17 +2,21 @@ package com.shifthackz.aisdv1.presentation.screen.logger
 
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.log.FileLoggingTree
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.android.core.mvi.EmptyEffect
 import java.io.File
 
 class LoggerViewModel(
+    dispatchersProvider: DispatchersProvider,
     private val fileProviderDescriptor: FileProviderDescriptor,
     private val mainRouter: MainRouter,
 ) : MviRxViewModel<LoggerState, LoggerIntent, EmptyEffect>() {
 
     override val initialState = LoggerState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         readLogs()

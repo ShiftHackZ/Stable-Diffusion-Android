@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.connectivity.ObserveSeverConnectivityUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -24,6 +25,7 @@ class ConnectivityViewModelTest : CoreViewModelTest<ConnectivityViewModel>() {
     override fun initializeViewModel() = ConnectivityViewModel(
         preferenceManager = stubPreferenceManager,
         observeServerConnectivityUseCase = stubObserveSeverConnectivityUseCase,
+        dispatchersProvider = stubDispatchersProvider,
         schedulersProvider = stubSchedulersProvider,
     )
 

@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.splash
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
@@ -15,10 +16,13 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 class SplashViewModel(
     mainRouter: MainRouter,
     splashNavigationUseCase: SplashNavigationUseCase,
+    dispatchersProvider: DispatchersProvider,
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<EmptyState, EmptyIntent, EmptyEffect>() {
 
     override val initialState = EmptyState
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !splashNavigationUseCase()

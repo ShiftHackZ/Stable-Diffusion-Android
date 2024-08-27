@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -25,6 +26,7 @@ class DebugMenuViewModelTest : CoreViewModelTest<DebugMenuViewModel>() {
     private val stubBackgroundTaskManager = mockk<BackgroundTaskManager>()
 
     override fun initializeViewModel() = DebugMenuViewModel(
+        dispatchersProvider = stubDispatchersProvider,
         preferenceManager = stubPreferenceManager,
         fileProviderDescriptor = stubFileProviderDescriptor,
         debugInsertBadBase64UseCase = stubDebugInsertBadBase64UseCase,

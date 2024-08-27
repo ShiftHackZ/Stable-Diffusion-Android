@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.screen.drawer
 
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -11,7 +12,10 @@ class DrawerViewModelTest : CoreViewModelTest<DrawerViewModel>() {
 
     private val stubDrawerRouter = mockk<DrawerRouter>()
 
-    override fun initializeViewModel() = DrawerViewModel(stubDrawerRouter)
+    override fun initializeViewModel() = DrawerViewModel(
+        dispatchersProvider = stubDispatchersProvider,
+        drawerRouter = stubDrawerRouter,
+    )
 
     @Test
     fun `given received Close intent, expected router closeDrawer() method called`() {

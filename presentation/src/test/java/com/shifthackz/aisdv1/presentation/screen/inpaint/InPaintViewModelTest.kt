@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.model.InPaintModel
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -27,6 +28,7 @@ class InPaintViewModelTest : CoreViewModelTest<InPaintViewModel>() {
     private val stubMainRouter = mockk<MainRouter>()
 
     override fun initializeViewModel() = InPaintViewModel(
+        dispatchersProvider = stubDispatchersProvider,
         schedulersProvider = stubSchedulersProvider,
         stateProducer = stubInPaintStateProducer,
         mainRouter = stubMainRouter,

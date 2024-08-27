@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.activity
 
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
@@ -14,6 +15,7 @@ import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class AiStableDiffusionViewModel(
+    dispatchersProvider: DispatchersProvider,
     schedulersProvider: SchedulersProvider,
     mainRouter: MainRouter,
     drawerRouter: DrawerRouter,
@@ -22,6 +24,8 @@ class AiStableDiffusionViewModel(
 ) : MviRxViewModel<AppState, AppIntent, NavigationEffect>() {
 
     override val initialState = AppState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !mainRouter.observe()

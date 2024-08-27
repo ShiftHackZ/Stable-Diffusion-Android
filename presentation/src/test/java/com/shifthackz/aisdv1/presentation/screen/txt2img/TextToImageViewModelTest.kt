@@ -17,6 +17,7 @@ import com.shifthackz.aisdv1.presentation.mocks.mockAiGenerationResult
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -36,6 +37,7 @@ class TextToImageViewModelTest : CoreGenerationMviViewModelTest<TextToImageViewM
     private val stubTextToImageUseCase = mockk<TextToImageUseCase>()
 
     override fun initializeViewModel() = TextToImageViewModel(
+        dispatchersProvider = stubDispatchersProvider,
         generationFormUpdateEvent = stubGenerationFormUpdateEvent,
         getStableDiffusionSamplersUseCase = stubGetStableDiffusionSamplersUseCase,
         observeHordeProcessStatusUseCase = stubObserveHordeProcessStatusUseCase,

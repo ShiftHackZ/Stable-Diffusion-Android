@@ -57,6 +57,7 @@ val viewModelModule = module {
     viewModel { parameters ->
         OnBoardingViewModel(
             launchSource = LaunchSource.fromKey(parameters.get()),
+            dispatchersProvider = get(),
             mainRouter = get(),
             splashNavigationUseCase = get(),
             preferenceManager = get(),
@@ -69,6 +70,7 @@ val viewModelModule = module {
         val launchSource = LaunchSource.fromKey(parameters.get())
         ServerSetupViewModel(
             launchSource = launchSource,
+            dispatchersProvider = get(),
             getConfigurationUseCase = get(),
             getLocalAiModelsUseCase = get(),
             fetchAndGetHuggingFaceModelsUseCase = get(),
@@ -88,6 +90,7 @@ val viewModelModule = module {
     viewModel { parameters ->
         GalleryDetailViewModel(
             itemId = parameters.get(),
+            dispatchersProvider = get(),
             getGenerationResultUseCase = get(),
             getLastResultFromCacheUseCase = get(),
             deleteGalleryItemUseCase = get(),

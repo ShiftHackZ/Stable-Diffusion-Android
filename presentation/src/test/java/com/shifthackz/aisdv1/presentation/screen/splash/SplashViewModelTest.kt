@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.presentation.core.CoreViewModelInitializeStrategy
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -22,6 +23,7 @@ class SplashViewModelTest : CoreViewModelTest<SplashViewModel>() {
     override fun initializeViewModel() = SplashViewModel(
         mainRouter = stubMainRouter,
         splashNavigationUseCase = stubSplashNavigationUseCase,
+        dispatchersProvider = stubDispatchersProvider,
         schedulersProvider = stubSchedulersProvider,
     )
 

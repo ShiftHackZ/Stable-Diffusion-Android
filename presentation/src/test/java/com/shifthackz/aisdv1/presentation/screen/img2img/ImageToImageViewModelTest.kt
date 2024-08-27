@@ -23,6 +23,7 @@ import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintStateProducer
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -50,6 +51,7 @@ class ImageToImageViewModelTest : CoreGenerationMviViewModelTest<ImageToImageVie
     private val stubInPaintStateProducer = mockk<InPaintStateProducer>()
 
     override fun initializeViewModel() = ImageToImageViewModel(
+        dispatchersProvider = stubDispatchersProvider,
         generationFormUpdateEvent = stubGenerationFormUpdateEvent,
         getStableDiffusionSamplersUseCase = stubGetStableDiffusionSamplersUseCase,
         observeHordeProcessStatusUseCase = stubObserveHordeProcessStatusUseCase,

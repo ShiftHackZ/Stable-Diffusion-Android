@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
@@ -38,6 +39,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class ImageToImageViewModel(
+    dispatchersProvider: DispatchersProvider,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
@@ -75,6 +77,8 @@ class ImageToImageViewModel(
 ) {
 
     override val initialState = ImageToImageState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !generationFormUpdateEvent

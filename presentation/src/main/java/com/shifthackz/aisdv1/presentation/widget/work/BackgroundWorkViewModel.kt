@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.widget.work
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
@@ -15,12 +16,15 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class BackgroundWorkViewModel(
+    dispatchersProvider: DispatchersProvider,
     private val backgroundWorkObserver: BackgroundWorkObserver,
     private val schedulersProvider: SchedulersProvider,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
 ) : MviRxViewModel<BackgroundWorkState, BackgroundWorkIntent, EmptyEffect>() {
 
     override val initialState = BackgroundWorkState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !Flowable.combineLatest(

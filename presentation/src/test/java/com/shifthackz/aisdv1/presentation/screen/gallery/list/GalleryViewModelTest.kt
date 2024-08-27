@@ -17,6 +17,7 @@ import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -52,6 +53,7 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
     private val stubPreferenceManager = mockk<PreferenceManager>()
 
     override fun initializeViewModel() = GalleryViewModel(
+        dispatchersProvider = stubDispatchersProvider,
         getMediaStoreInfoUseCase = stubGetMediaStoreInfoUseCase,
         backgroundWorkObserver = stubBackgroundWorkObserver,
         preferenceManager = stubPreferenceManager,

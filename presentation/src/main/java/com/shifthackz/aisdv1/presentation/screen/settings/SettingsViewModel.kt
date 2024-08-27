@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.model.Quadruple
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -27,6 +28,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class SettingsViewModel(
+    dispatchersProvider: DispatchersProvider,
     getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
     observeStabilityAiCreditsUseCase: ObserveStabilityAiCreditsUseCase,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
@@ -40,6 +42,8 @@ class SettingsViewModel(
 ) : MviRxViewModel<SettingsState, SettingsIntent, SettingsEffect>() {
 
     override val initialState = SettingsState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     private val appVersionProducer = Flowable.fromCallable { buildInfoProvider.toString() }
 

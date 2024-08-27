@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.time.TimeProvider
 import com.shifthackz.aisdv1.domain.entity.ServerSource
@@ -26,6 +27,8 @@ import com.shifthackz.aisdv1.presentation.activity.AiStableDiffusionActivity
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -129,6 +132,14 @@ val providersModule = module {
                 append(" ($buildNumber)")
                 if (type == BuildType.FOSS) append(" FOSS")
             }
+        }
+    }
+
+    single<DispatchersProvider> {
+        object : DispatchersProvider {
+            override val io: CoroutineDispatcher = Dispatchers.IO
+            override val ui: CoroutineDispatcher = Dispatchers.Main
+            override val immediate: CoroutineDispatcher = Dispatchers.Main.immediate
         }
     }
 

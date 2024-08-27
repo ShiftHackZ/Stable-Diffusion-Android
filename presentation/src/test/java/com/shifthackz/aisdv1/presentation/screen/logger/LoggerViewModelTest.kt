@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.logger
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -17,6 +18,7 @@ class LoggerViewModelTest : CoreViewModelTest<LoggerViewModel>() {
     private val stubMainRouter = mockk<MainRouter>()
 
     override fun initializeViewModel() = LoggerViewModel(
+        dispatchersProvider = stubDispatchersProvider,
         fileProviderDescriptor = stubFileProviderDescriptor,
         mainRouter = stubMainRouter,
     )
