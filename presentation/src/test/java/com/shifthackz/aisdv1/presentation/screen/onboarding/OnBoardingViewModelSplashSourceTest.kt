@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.presentation.core.CoreViewModelInitializeStrategy
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -28,12 +29,13 @@ class OnBoardingViewModelSplashSourceTest : CoreViewModelTest<OnBoardingViewMode
     override val testViewModelStrategy = CoreViewModelInitializeStrategy.InitializeEveryTime
 
     override fun initializeViewModel() = OnBoardingViewModel(
-        source,
-        stubMainRouter,
-        stubSplashNavigationUseCase,
-        stubPreferenceManager,
-        stubSchedulersProvider,
-        stubBuildInfoProvider,
+        launchSource = source,
+        dispatchersProvider = stubDispatchersProvider,
+        mainRouter = stubMainRouter,
+        splashNavigationUseCase = stubSplashNavigationUseCase,
+        preferenceManager = stubPreferenceManager,
+        schedulersProvider = stubSchedulersProvider,
+        buildInfoProvider = stubBuildInfoProvider,
     )
 
     @Before

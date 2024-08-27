@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
@@ -27,6 +28,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import kotlinx.coroutines.flow.Flow
 
 class GalleryViewModel(
+    dispatchersProvider: DispatchersProvider,
     getMediaStoreInfoUseCase: GetMediaStoreInfoUseCase,
     backgroundWorkObserver: BackgroundWorkObserver,
     preferenceManager: PreferenceManager,
@@ -41,6 +43,8 @@ class GalleryViewModel(
 ) : MviRxViewModel<GalleryState, GalleryIntent, GalleryEffect>() {
 
     override val initialState = GalleryState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     private val config = PagingConfig(
         pageSize = Constants.PAGINATION_PAYLOAD_SIZE,

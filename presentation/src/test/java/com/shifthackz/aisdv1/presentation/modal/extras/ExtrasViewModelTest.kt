@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.mocks.mockStableDiffusionLoras
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -28,11 +29,12 @@ class ExtrasViewModelTest : CoreViewModelTest<ExtrasViewModel>() {
     private val stubTimeProvider = mockk<TimeProvider>()
 
     override fun initializeViewModel() = ExtrasViewModel(
-        stubFetchAndGetLorasUseCase,
-        stubFetchAndGetHyperNetworksUseCase,
-        stubSchedulersProvider,
-        stubPreferenceManager,
-        stubTimeProvider,
+        dispatchersProvider = stubDispatchersProvider,
+        fetchAndGetLorasUseCase = stubFetchAndGetLorasUseCase,
+        fetchAndGetHyperNetworksUseCase = stubFetchAndGetHyperNetworksUseCase,
+        schedulersProvider = stubSchedulersProvider,
+        preferenceManager = stubPreferenceManager,
+        timeProvider = stubTimeProvider,
     )
 
     @Before

@@ -1,12 +1,17 @@
 package com.shifthackz.aisdv1.presentation.modal.tag
 
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 
-class EditTagViewModel : MviRxViewModel<EditTagState, EditTagIntent, EditTagEffect>() {
+class EditTagViewModel(
+    dispatchersProvider: DispatchersProvider,
+) : MviRxViewModel<EditTagState, EditTagIntent, EditTagEffect>() {
 
     override val initialState = EditTagState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     override fun processIntent(intent: EditTagIntent) {
         when (intent) {

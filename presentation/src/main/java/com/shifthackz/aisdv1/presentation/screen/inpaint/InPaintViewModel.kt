@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.inpaint
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
@@ -11,12 +12,15 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class InPaintViewModel(
+    dispatchersProvider: DispatchersProvider,
     schedulersProvider: SchedulersProvider,
     private val stateProducer: InPaintStateProducer,
     private val mainRouter: MainRouter,
 ) : MviRxViewModel<InPaintState, InPaintIntent, EmptyEffect>() {
 
     override val initialState = InPaintState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !Flowable.combineLatest(

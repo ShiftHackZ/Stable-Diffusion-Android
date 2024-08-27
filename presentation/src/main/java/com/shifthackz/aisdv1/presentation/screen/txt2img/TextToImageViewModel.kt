@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -31,6 +32,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class TextToImageViewModel(
+    dispatchersProvider: DispatchersProvider,
     generationFormUpdateEvent: GenerationFormUpdateEvent,
     getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
@@ -72,6 +74,8 @@ class TextToImageViewModel(
         }
 
     override val initialState = TextToImageState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !generationFormUpdateEvent

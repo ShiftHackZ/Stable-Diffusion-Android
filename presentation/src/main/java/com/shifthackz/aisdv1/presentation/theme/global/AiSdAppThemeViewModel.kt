@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.theme.global
 
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
@@ -14,10 +15,13 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class AiSdAppThemeViewModel(
     preferenceManager: PreferenceManager,
+    dispatchersProvider: DispatchersProvider,
     schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<AiSdAppThemeState, EmptyIntent, EmptyEffect>() {
 
     override val initialState = AiSdAppThemeState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !preferenceManager.observe()

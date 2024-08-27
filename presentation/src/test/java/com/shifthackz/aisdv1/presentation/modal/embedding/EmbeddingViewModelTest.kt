@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.mocks.mockEmbeddings
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasEffect
 import com.shifthackz.aisdv1.presentation.model.ErrorState
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -26,6 +27,7 @@ class EmbeddingViewModelTest : CoreViewModelTest<EmbeddingViewModel>() {
     override fun initializeViewModel() = EmbeddingViewModel(
         fetchAndGetEmbeddingsUseCase = stubFetchAndGetEmbeddingsUseCase,
         preferenceManager = stubPreferenceManager,
+        dispatchersProvider = stubDispatchersProvider,
         schedulersProvider = stubSchedulersProvider,
     )
 

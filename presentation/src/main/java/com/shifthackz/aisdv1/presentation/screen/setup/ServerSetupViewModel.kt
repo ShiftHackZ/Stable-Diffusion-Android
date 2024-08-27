@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -34,6 +35,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ServerSetupViewModel(
     launchSource: LaunchSource,
+    dispatchersProvider: DispatchersProvider,
     getConfigurationUseCase: GetConfigurationUseCase,
     getLocalAiModelsUseCase: GetLocalAiModelsUseCase,
     fetchAndGetHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
@@ -52,6 +54,8 @@ class ServerSetupViewModel(
     override val initialState = ServerSetupState(
         showBackNavArrow = launchSource == LaunchSource.SETTINGS,
     )
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     private val credentials: AuthorizationCredentials
         get() = when (currentState.mode) {

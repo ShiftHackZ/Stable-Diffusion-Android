@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.modal.tag
 
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -9,7 +10,9 @@ import org.junit.Test
 
 class EditTagViewModelTest : CoreViewModelTest<EditTagViewModel>() {
 
-    override fun initializeViewModel() = EditTagViewModel()
+    override fun initializeViewModel() = EditTagViewModel(
+        dispatchersProvider = stubDispatchersProvider,
+    )
 
     @Test
     fun `given received InitialData intent, expected UI state updated witch correct stub values`() {

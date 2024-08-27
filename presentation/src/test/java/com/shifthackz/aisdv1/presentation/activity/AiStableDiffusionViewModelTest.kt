@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.home.HomeRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -45,6 +46,7 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
     override val testViewModelStrategy = CoreViewModelInitializeStrategy.InitializeEveryTime
 
     override fun initializeViewModel() = AiStableDiffusionViewModel(
+        dispatchersProvider = stubDispatchersProvider,
         schedulersProvider = stubSchedulersProvider,
         mainRouter = stubMainRouter,
         drawerRouter = stubDrawerRouter,

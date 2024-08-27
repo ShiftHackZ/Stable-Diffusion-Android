@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.modal.extras
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.common.time.TimeProvider
@@ -16,6 +17,7 @@ import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class ExtrasViewModel(
+    dispatchersProvider: DispatchersProvider,
     private val fetchAndGetLorasUseCase: FetchAndGetLorasUseCase,
     private val fetchAndGetHyperNetworksUseCase: FetchAndGetHyperNetworksUseCase,
     private val schedulersProvider: SchedulersProvider,
@@ -24,6 +26,8 @@ class ExtrasViewModel(
 ) : MviRxViewModel<ExtrasState, ExtrasIntent, ExtrasEffect>() {
 
     override val initialState = ExtrasState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         updateState {

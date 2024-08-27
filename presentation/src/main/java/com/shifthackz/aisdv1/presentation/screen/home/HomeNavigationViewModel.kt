@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.screen.home
 
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
@@ -14,11 +15,14 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class HomeNavigationViewModel(
     generationFormUpdateEvent: GenerationFormUpdateEvent,
+    dispatchersProvider: DispatchersProvider,
     schedulersProvider: SchedulersProvider,
     private val homeRouter: HomeRouter,
 ) : MviRxViewModel<EmptyState, HomeNavigationIntent, NavigationEffect.Home>() {
 
     override val initialState = EmptyState
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !homeRouter

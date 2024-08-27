@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.domain.usecase.donate.FetchAndGetSupportersUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.mocks.mockSupporters
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -19,6 +20,7 @@ class DonateViewModelTest : CoreViewModelTest<DonateViewModel>() {
     private val stubMainRouter = mockk<MainRouter>()
 
     override fun initializeViewModel() = DonateViewModel(
+        dispatchersProvider = stubDispatchersProvider,
         fetchAndGetSupportersUseCase = stubFetchAndGetSupportersUseCase,
         schedulersProvider = stubSchedulersProvider,
         mainRouter = stubMainRouter,

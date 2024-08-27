@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.modal.embedding
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
@@ -12,12 +13,15 @@ import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class EmbeddingViewModel(
+    dispatchersProvider: DispatchersProvider,
     private val fetchAndGetEmbeddingsUseCase: FetchAndGetEmbeddingsUseCase,
     private val preferenceManager: PreferenceManager,
     private val schedulersProvider: SchedulersProvider,
 ) : MviRxViewModel<EmbeddingState, EmbeddingIntent, ExtrasEffect>() {
 
     override val initialState = EmbeddingState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         updateState {

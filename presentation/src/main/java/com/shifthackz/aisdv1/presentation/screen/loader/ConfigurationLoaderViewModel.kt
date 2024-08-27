@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.loader
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -14,6 +15,7 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class ConfigurationLoaderViewModel(
     dataPreLoaderUseCase: DataPreLoaderUseCase,
+    dispatchersProvider: DispatchersProvider,
     schedulersProvider: SchedulersProvider,
     mainRouter: MainRouter,
 ) : MviRxViewModel<ConfigurationLoaderState, EmptyIntent, EmptyEffect>() {
@@ -21,6 +23,8 @@ class ConfigurationLoaderViewModel(
     override val initialState = ConfigurationLoaderState.StatusNotification(
         LocalizationR.string.splash_status_initializing.asUiText()
     )
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !dataPreLoaderUseCase()

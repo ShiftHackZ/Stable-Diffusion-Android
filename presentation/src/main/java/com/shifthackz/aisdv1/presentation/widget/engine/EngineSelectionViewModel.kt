@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.widget.engine
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.model.Hexagonal
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
@@ -22,18 +23,21 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class EngineSelectionViewModel(
+    dispatchersProvider: DispatchersProvider,
+    fetchAndGetSwarmUiModelsUseCase: FetchAndGetSwarmUiModelsUseCase,
+    observeLocalAiModelsUseCase: ObserveLocalAiModelsUseCase,
+    fetchAndGetStabilityAiEnginesUseCase: FetchAndGetStabilityAiEnginesUseCase,
+    getHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
     private val preferenceManager: PreferenceManager,
     private val schedulersProvider: SchedulersProvider,
     private val getConfigurationUseCase: GetConfigurationUseCase,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
     private val getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
-    fetchAndGetSwarmUiModelsUseCase: FetchAndGetSwarmUiModelsUseCase,
-    observeLocalAiModelsUseCase: ObserveLocalAiModelsUseCase,
-    fetchAndGetStabilityAiEnginesUseCase: FetchAndGetStabilityAiEnginesUseCase,
-    getHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
 ) : MviRxViewModel<EngineSelectionState, EngineSelectionIntent, EmptyEffect>() {
 
     override val initialState = EngineSelectionState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         val configuration = preferenceManager

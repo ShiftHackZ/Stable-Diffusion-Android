@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -18,6 +19,7 @@ class WebUiViewModelTest : CoreViewModelTest<WebUiViewModel>() {
     private val stubPreferenceManager = mockk<PreferenceManager>()
 
     override fun initializeViewModel() = WebUiViewModel(
+        dispatchersProvider = stubDispatchersProvider,
         mainRouter = stubMainRouter,
         preferenceManager = stubPreferenceManager,
     )

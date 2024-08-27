@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter
@@ -18,6 +19,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class GalleryDetailViewModel(
     private val itemId: Long,
+    dispatchersProvider: DispatchersProvider,
     private val getGenerationResultUseCase: GetGenerationResultUseCase,
     private val getLastResultFromCacheUseCase: GetLastResultFromCacheUseCase,
     private val deleteGalleryItemUseCase: DeleteGalleryItemUseCase,
@@ -29,6 +31,8 @@ class GalleryDetailViewModel(
 ) : MviRxViewModel<GalleryDetailState, GalleryDetailIntent, GalleryDetailEffect>() {
 
     override val initialState = GalleryDetailState.Loading()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !getGenerationResult(itemId)

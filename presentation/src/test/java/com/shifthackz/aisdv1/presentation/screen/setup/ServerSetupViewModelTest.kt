@@ -21,6 +21,7 @@ import com.shifthackz.aisdv1.presentation.mocks.mockServerSetupStateLocalModel
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -52,6 +53,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
     override fun initializeViewModel() = ServerSetupViewModel(
         launchSource = LaunchSource.SETTINGS,
+        dispatchersProvider = stubDispatchersProvider,
         getConfigurationUseCase = stubGetConfigurationUseCase,
         getLocalAiModelsUseCase = stubGetLocalAiModelsUseCase,
         fetchAndGetHuggingFaceModelsUseCase = stubFetchAndGetHuggingFaceModelsUseCase,

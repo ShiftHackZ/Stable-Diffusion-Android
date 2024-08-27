@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.web.webui
 
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -7,11 +8,14 @@ import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.android.core.mvi.EmptyEffect
 
 class WebUiViewModel(
+    dispatchersProvider: DispatchersProvider,
     private val mainRouter: MainRouter,
     private val preferenceManager: PreferenceManager,
 ) : MviRxViewModel<WebUiState, WebUiIntent, EmptyEffect>() {
 
     override val initialState: WebUiState = WebUiState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         updateState { state ->

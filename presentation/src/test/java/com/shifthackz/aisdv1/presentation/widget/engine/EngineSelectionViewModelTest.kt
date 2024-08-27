@@ -18,6 +18,7 @@ import com.shifthackz.aisdv1.presentation.mocks.mockLocalAiModels
 import com.shifthackz.aisdv1.presentation.mocks.mockStabilityAiEngines
 import com.shifthackz.aisdv1.presentation.mocks.mockStableDiffusionModels
 import com.shifthackz.aisdv1.presentation.mocks.mockSwarmUiModels
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -49,6 +50,7 @@ class EngineSelectionViewModelTest : CoreViewModelTest<EngineSelectionViewModel>
     private val stubFetchAndGetSwarmUiModelsUseCase = mockk<FetchAndGetSwarmUiModelsUseCase>()
 
     override fun initializeViewModel() = EngineSelectionViewModel(
+        dispatchersProvider = stubDispatchersProvider,
         preferenceManager = stubPreferenceManager,
         schedulersProvider = stubSchedulersProvider,
         getConfigurationUseCase = stubGetConfigurationUseCase,

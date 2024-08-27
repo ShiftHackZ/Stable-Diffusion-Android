@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.debug
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.log.FileLoggingTree
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -16,6 +17,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class DebugMenuViewModel(
+    dispatchersProvider: DispatchersProvider,
     private val preferenceManager: PreferenceManager,
     private val fileProviderDescriptor: FileProviderDescriptor,
     private val debugInsertBadBase64UseCase: DebugInsertBadBase64UseCase,
@@ -25,6 +27,8 @@ class DebugMenuViewModel(
 ) : MviRxViewModel<DebugMenuState, DebugMenuIntent, DebugMenuEffect>() {
 
     override val initialState = DebugMenuState()
+
+    override val effectDispatcher = dispatchersProvider.immediate
 
     init {
         !preferenceManager

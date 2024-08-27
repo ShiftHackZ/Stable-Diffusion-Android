@@ -16,6 +16,7 @@ import com.shifthackz.aisdv1.presentation.extensions.mapToUi
 import com.shifthackz.aisdv1.presentation.mocks.mockAiGenerationResult
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
+import com.shifthackz.aisdv1.presentation.stub.stubDispatchersProvider
 import com.shifthackz.aisdv1.presentation.stub.stubSchedulersProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -45,6 +46,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
 
     override fun initializeViewModel() = GalleryDetailViewModel(
         itemId = 5598L,
+        dispatchersProvider = stubDispatchersProvider,
         getGenerationResultUseCase = stubGetGenerationResultUseCase,
         getLastResultFromCacheUseCase = stubGetLastResultFromCacheUseCase,
         deleteGalleryItemUseCase = stubDeleteGalleryItemUseCase,
