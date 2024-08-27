@@ -134,13 +134,11 @@ User interface of the app is translated for languages listed in this table:
 
 Any contributions to the translations are welcome.
 
-## Difference between builds from Google Play and F-Droid/GitHub releases
+## Difference between build flavors (Google Play, F-Droid, GitHub releases)
 
-As Google Play has some policies that app needs to be compliant with in order to be allowed to publish on Google Play there are some differences between builds distributed via Google Play and F-Droid/GitHub releases, listed in this table:
+There are some reasons that some of the SDAI app features can not be distributed through different sources (Google Play, F-Droid) because of rules and compliance policies.
 
-| Feature | Google Play build | F-Droid/GitHub build | Reason |
-| --- |:---:|:---:| --- |
-| Sideloading LocalDiffusion custom model | ❌ | ✅ | Google Play does not allow publishing apps with `android.permission.MANAGE_EXTERNAL_STORAGE` permission, which is required to read custom model files from external storage directly. |
+The difference between SDAI app flavors are described at the project witi page [Build flavor difference](https://github.com/ShiftHackZ/Stable-Diffusion-Android/wiki/Build-flavor-difference).
 
 ## Donate
 
