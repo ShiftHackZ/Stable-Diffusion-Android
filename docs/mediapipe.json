@@ -2,12 +2,34 @@
   {
     "id": "b6aad916-4e86-4a37-a982-98accc746465",
     "name": "stable-diffusion-v1-5",
-    "size": "4.2 Gb",
+    "size": "1.9 Gb",
     "sources": [
       "https://github.com/ShiftHackZ/Local-Diffusion-Models-SDAI-MediaPipe/releases/download/patch-26082024/stable-diffusion-v1-5.zip"
     ],
     "metadata": {
       "src": "https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned-emaonly.ckpt"
     }
-  }
+  },
+  {
+    "id": "495b8e0f-8ae8-4ff2-a7e9-92d8b0e8d463",
+    "name": "miniSD",
+    "size": "1.82 Gb",
+    "sources": [
+      "https://github.com/ShiftHackZ/Local-Diffusion-Models-SDAI-MediaPipe/releases/download/patch-28082024/minisd.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/justinpinkney/miniSD/blob/main/miniSD.ckpt"
+    }
+  },
+  {
+    "id": "047c8e33-5b70-4c44-a0ed-cd9cdb440ba0",
+    "name": "waifu-diffusion-v1-4",
+    "size": "1.82 Gb",
+    "sources": [
+      "https://github.com/ShiftHackZ/Local-Diffusion-Models-SDAI-MediaPipe/releases/download/patch-28082024/waifu-diffusion-v1-4.zip"
+    ],
+    "metadata": {
+      "src": "https://huggingface.co/hakurei/waifu-diffusion-v1-4/blob/main/models/wd-1-3-penultimate-ucg-cont.ckpt"
+    }
+  },
 ]
