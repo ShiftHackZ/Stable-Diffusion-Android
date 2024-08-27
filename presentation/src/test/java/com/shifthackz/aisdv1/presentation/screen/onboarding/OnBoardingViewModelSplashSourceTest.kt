@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.onboarding
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
@@ -22,6 +23,7 @@ class OnBoardingViewModelSplashSourceTest : CoreViewModelTest<OnBoardingViewMode
     private val stubMainRouter = mockk<MainRouter>()
     private val stubSplashNavigationUseCase = mockk<SplashNavigationUseCase>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
+    private val stubBuildInfoProvider = mockk<BuildInfoProvider>()
 
     override val testViewModelStrategy = CoreViewModelInitializeStrategy.InitializeEveryTime
 
@@ -31,6 +33,7 @@ class OnBoardingViewModelSplashSourceTest : CoreViewModelTest<OnBoardingViewMode
         stubSplashNavigationUseCase,
         stubPreferenceManager,
         stubSchedulersProvider,
+        stubBuildInfoProvider,
     )
 
     @Before
@@ -44,6 +47,10 @@ class OnBoardingViewModelSplashSourceTest : CoreViewModelTest<OnBoardingViewMode
         every {
             stubPreferenceManager::onBoardingComplete.set(any())
         } returns Unit
+
+        every {
+            stubBuildInfoProvider.toString()
+        } returns ""
 
         every {
             stubPreferenceManager::onBoardingComplete.get()

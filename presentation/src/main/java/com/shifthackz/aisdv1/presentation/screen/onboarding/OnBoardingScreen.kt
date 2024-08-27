@@ -194,14 +194,22 @@ private fun OnBoardingScreenContent(
                 modifier = Modifier.fillMaxSize(),
                 state = pagerState,
                 beyondBoundsPageCount = OnBoardingPage.entries.size,
-                userScrollEnabled = false,
+                userScrollEnabled = true,
             ) { index ->
                 when (OnBoardingPage.entries[index]) {
-                    OnBoardingPage.Form -> FormPageContent()
-                    OnBoardingPage.Providers -> ProviderPageContent()
+                    OnBoardingPage.Providers -> ProviderPageContent(
+                        isPageVisible = pagerState.currentPage == OnBoardingPage.Providers.ordinal
+                    )
+
+                    OnBoardingPage.Form -> FormPageContent(
+                        isPageVisible = pagerState.currentPage == OnBoardingPage.Form.ordinal
+                    )
+
                     OnBoardingPage.LocalDiffusion -> LocalDiffusionPageContent()
                     OnBoardingPage.LookAndFeel -> LookAndFeelPageContent(
                         darkThemeToken = state.darkThemeToken,
+                        appVersion = state.appVersion,
+                        isPageVisible = pagerState.currentPage == OnBoardingPage.LookAndFeel.ordinal
                     )
                 }
             }

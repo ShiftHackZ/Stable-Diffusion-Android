@@ -5,4 +5,5 @@ import com.shifthackz.android.core.mvi.MviState
 
 data class OnBoardingState(
     val darkThemeToken: DarkThemeToken = DarkThemeToken.FRAPPE,
+    val appVersion: String = "",
 ) : MviState

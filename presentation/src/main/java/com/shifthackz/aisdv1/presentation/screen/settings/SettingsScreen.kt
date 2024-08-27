@@ -577,48 +577,50 @@ private fun ContentSettingsState(
         }
         //endregion
 
-        //region LINKS & OTHERS
-        SettingsHeader(
-            modifier = headerModifier,
-            loading = state.loading,
-            text = LocalizationR.string.settings_header_info.asUiText(),
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.MonetizationOn,
-            text = LocalizationR.string.settings_item_donate.asUiText(),
-            onClick = { processIntent(SettingsIntent.Action.Donate) },
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.AllInclusive,
-            text = LocalizationR.string.settings_item_on_boarding.asUiText(),
-            onClick = { processIntent(SettingsIntent.Action.OnBoarding) },
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.Report,
-            text = LocalizationR.string.settings_item_report_problem.asUiText(),
-            onClick = { processIntent(SettingsIntent.Action.ReportProblem) },
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.Gavel,
-            text = LocalizationR.string.settings_item_policy.asUiText(),
-            onClick = { processIntent(SettingsIntent.LaunchUrl.OpenPolicy) },
-        )
-        SettingsItem(
-            modifier = itemModifier,
-            loading = state.loading,
-            startIcon = Icons.Default.Code,
-            text = LocalizationR.string.settings_item_source.asUiText(),
-            onClick = { processIntent(SettingsIntent.LaunchUrl.OpenSourceCode) },
-        )
-        //endregion
+        if (!state.onBoardingDemo) {
+            //region LINKS & OTHERS
+            SettingsHeader(
+                modifier = headerModifier,
+                loading = state.loading,
+                text = LocalizationR.string.settings_header_info.asUiText(),
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.MonetizationOn,
+                text = LocalizationR.string.settings_item_donate.asUiText(),
+                onClick = { processIntent(SettingsIntent.Action.Donate) },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.AllInclusive,
+                text = LocalizationR.string.settings_item_on_boarding.asUiText(),
+                onClick = { processIntent(SettingsIntent.Action.OnBoarding) },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.Report,
+                text = LocalizationR.string.settings_item_report_problem.asUiText(),
+                onClick = { processIntent(SettingsIntent.Action.ReportProblem) },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.Gavel,
+                text = LocalizationR.string.settings_item_policy.asUiText(),
+                onClick = { processIntent(SettingsIntent.LaunchUrl.OpenPolicy) },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.Code,
+                text = LocalizationR.string.settings_item_source.asUiText(),
+                onClick = { processIntent(SettingsIntent.LaunchUrl.OpenSourceCode) },
+            )
+            //endregion
+        }
 
         AnimatedVisibility(visible = state.appVersion.isNotEmpty()) {
             Text(

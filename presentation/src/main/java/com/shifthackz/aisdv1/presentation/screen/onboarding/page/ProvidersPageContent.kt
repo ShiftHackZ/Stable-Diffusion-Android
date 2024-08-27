@@ -1,5 +1,8 @@
 package com.shifthackz.aisdv1.presentation.screen.onboarding.page
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -20,7 +23,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import com.shifthackz.aisdv1.core.extensions.gesturesDisabled
+import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.screen.onboarding.buildOnBoardingText
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
@@ -36,6 +39,7 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 @Composable
 fun ProviderPageContent(
     modifier: Modifier = Modifier,
+    isPageVisible: Boolean = false,
 ) = Column(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,17 +65,24 @@ fun ProviderPageContent(
     ) {
         CompositionLocalProvider(LocalDensity provides onBoardingDensity) {
             ServerSetupScreenContent(
-                modifier = Modifier
-                    .gesturesDisabled()
-                    .aspectRatio(onBoardingPhoneAspectRatio),
+                modifier = Modifier.aspectRatio(onBoardingPhoneAspectRatio),
                 state = serverState,
+            )
+            Box(
+                modifier = Modifier
+                    .aspectRatio(onBoardingPhoneAspectRatio)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = EmptyLambda
+                    ),
             )
         }
     }
     Spacer(modifier = Modifier.weight(1f))
-    DisposableEffect(Unit) {
+    DisposableEffect(isPageVisible) {
         val job = scope.launch {
-            while (true) {
+            while (isPageVisible) {
                 delay(1200)
                 serverState = serverState.copy(
                     mode = ServerSource.entries.random(),

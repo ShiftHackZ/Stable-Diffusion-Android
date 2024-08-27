@@ -26,6 +26,8 @@ import org.koin.androidx.compose.koinViewModel
 fun ConfigurationLoaderScreen() {
     MviComponent(
         viewModel = koinViewModel<ConfigurationLoaderViewModel>(),
+        navigationBarColor = MaterialTheme.colorScheme.surface,
+        applySystemUiColors = true,
     ) { state, _ ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
@@ -40,7 +42,7 @@ private fun ScreenContent(
     state: ConfigurationLoaderState,
 ) {
     Box(
-        modifier = modifier.background(MaterialTheme.colorScheme.background),
+        modifier = modifier.background(MaterialTheme.colorScheme.surface),
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
