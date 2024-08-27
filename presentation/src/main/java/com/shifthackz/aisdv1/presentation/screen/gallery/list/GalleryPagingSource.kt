@@ -32,7 +32,7 @@ class GalleryPagingSource(
             limit = pageSize,
             offset = pageNext * Constants.PAGINATION_PAYLOAD_SIZE,
         )
-            .subscribeOn(schedulersProvider.io)
+            .subscribeOn(schedulersProvider.computation)
             .flatMapObservable { Observable.fromIterable(it) }
             .map { ai -> ai.id to ai.image }
             .map { (id, base64) -> id to Input(base64) }

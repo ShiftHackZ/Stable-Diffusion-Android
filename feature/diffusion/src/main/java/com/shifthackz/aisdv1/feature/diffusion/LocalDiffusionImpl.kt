@@ -4,6 +4,7 @@ import ai.onnxruntime.OnnxTensor
 import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.common.log.errorLog
+import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.feature.diffusion.LocalDiffusionContract.TAG
@@ -20,7 +21,7 @@ internal class LocalDiffusionImpl(
     private val ortEnvironmentProvider: OrtEnvironmentProvider,
 ) : LocalDiffusion {
 
-    private val statusSubject: PublishSubject<LocalDiffusion.Status> = PublishSubject.create()
+    private val statusSubject: PublishSubject<LocalDiffusionStatus> = PublishSubject.create()
 
     override fun process(payload: TextToImagePayload): Single<Bitmap> = Single.create { emitter ->
         try {
@@ -31,7 +32,7 @@ internal class LocalDiffusionImpl(
             uNet.setCallback(object : UNet.Callback {
                 override fun onStep(maxStep: Int, step: Int) {
                     debugLog(TAG, "Received step update: ${maxStep}/${step}")
-                    statusSubject.onNext(LocalDiffusion.Status(step, maxStep))
+                    statusSubject.onNext(LocalDiffusionStatus(step, maxStep))
                 }
 
                 override fun onBuildImage(status: Int, bitmap: Bitmap?) {

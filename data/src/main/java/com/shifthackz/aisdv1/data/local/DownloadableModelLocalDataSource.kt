@@ -92,13 +92,15 @@ internal class DownloadableModelLocalDataSource(
                 LocalAiModel.CustomMediaPipe.id -> emitter.onSuccess(true)
 
                 else -> {
-                    val files = getLocalModelFiles(model.id)
+
                     when (model.type) {
                         LocalAiModel.Type.ONNX -> {
+                            val files = getLocalModelFiles(model.id).filter { it.isDirectory }
                             emitter.onSuccess(files.size == 4)
                         }
 
                         LocalAiModel.Type.MediaPipe -> {
+                            val files = getLocalModelFiles(model.id)
                             emitter.onSuccess(files.isNotEmpty())
                         }
                     }
@@ -116,7 +118,7 @@ internal class DownloadableModelLocalDataSource(
     private fun getLocalModelFiles(id: String): List<File> {
         val localModelDir = getLocalModelDirectory(id)
         if (!localModelDir.exists()) return emptyList()
-        return localModelDir.listFiles()?.filter { it.isDirectory } ?: emptyList()
+        return localModelDir.listFiles()?.toList() ?: emptyList()
     }
 
     private fun List<LocalAiModel>.withLocalData() = Observable

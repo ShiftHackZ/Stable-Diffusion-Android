@@ -5,9 +5,11 @@ import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.DownloadState
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.android.core.mvi.MviState
 import org.koin.core.component.KoinComponent
@@ -59,6 +61,13 @@ data class ServerSetupState(
             localMediaPipeCustomModel
         }
 
+    val localCustomModelPath: String
+        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
+            localOnnxCustomModelPath
+        } else {
+            localMediaPipeCustomModelPath
+        }
+
     val localModels: List<LocalModel>
         get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
             localOnnxModels
@@ -85,11 +94,99 @@ data class ServerSetupState(
     )
 
     fun withCredentials(value: AuthorizationCredentials) = when (value) {
-        is AuthorizationCredentials.HttpBasic -> this.copy(
+        is AuthorizationCredentials.HttpBasic -> copy(
             login = value.login,
             password = value.password,
         )
+
         AuthorizationCredentials.None -> this
+    }
+
+    fun withLocalCustomModelPath(value: String): ServerSetupState = when (mode) {
+        ServerSource.LOCAL_MICROSOFT_ONNX -> copy(
+            localOnnxCustomModelPath = value,
+            localCustomOnnxPathValidationError = null,
+        )
+
+        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
+            localMediaPipeCustomModelPath = value,
+            localCustomMediaPipePathValidationError = null,
+        )
+
+        else -> this
+    }
+
+    fun withUpdatedLocalModel(value: LocalModel): ServerSetupState = when (mode) {
+        ServerSource.LOCAL_MICROSOFT_ONNX -> copy(
+            localOnnxModels = localOnnxModels.withNewState(value)
+        )
+        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
+            localMediaPipeModels = localMediaPipeModels.withNewState(value)
+        )
+        else -> this
+    }
+
+    fun withDeletedLocalModel(value: LocalModel): ServerSetupState = when (mode) {
+        ServerSource.LOCAL_MICROSOFT_ONNX -> copy(
+            screenModal = Modal.None,
+            localOnnxModels = localOnnxModels.withNewState(
+                value.copy(
+                    downloadState = DownloadState.Unknown,
+                    downloaded = false,
+                ),
+            )
+        )
+
+        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
+            screenModal = Modal.None,
+            localMediaPipeModels = localMediaPipeModels.withNewState(
+                value.copy(
+                    downloadState = DownloadState.Unknown,
+                    downloaded = false,
+                ),
+            )
+        )
+
+        else -> copy(screenModal = Modal.None)
+    }
+
+    fun withSelectedLocalModel(value: LocalModel): ServerSetupState = when (mode) {
+        ServerSource.LOCAL_MICROSOFT_ONNX -> copy(
+            localOnnxModels = localOnnxModels.withNewState(
+                value.copy(selected = true),
+            ),
+        )
+
+        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
+            localMediaPipeModels = localMediaPipeModels.withNewState(
+                value.copy(selected = true),
+            ),
+        )
+
+        else -> this
+    }
+
+    fun withAllowCustomModel(value: Boolean): ServerSetupState {
+        fun List<LocalModel>.updateCustomModelSelection(id: String) = withNewState(
+            find { m -> m.id == id }?.copy(selected = value)
+        )
+        return when (mode) {
+            ServerSource.LOCAL_MICROSOFT_ONNX -> this.copy(
+                localOnnxCustomModel = value,
+                localOnnxModels = localOnnxModels.updateCustomModelSelection(
+                    id = LocalAiModel.CustomOnnx.id,
+                ),
+            )
+
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> this.copy(
+                localMediaPipeCustomModel = value,
+                localMediaPipeModels = localMediaPipeModels.updateCustomModelSelection(
+                    id = LocalAiModel.CustomMediaPipe.id,
+                ),
+            )
+
+            else -> this
+        }
     }
 
     enum class Step {

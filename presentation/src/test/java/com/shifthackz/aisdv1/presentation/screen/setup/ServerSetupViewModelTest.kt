@@ -157,6 +157,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
             stubWakeLockInterActor.releaseWakeLockUseCase()
         } returns Result.success(Unit)
 
+        viewModel.processIntent(ServerSetupIntent.UpdateServerMode(ServerSource.LOCAL_MICROSOFT_ONNX))
         val localModel = mockServerSetupStateLocalModel.copy(
             downloadState = DownloadState.Unknown,
         )
@@ -165,7 +166,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
         val state = viewModel.state.value
         val expected = true
-        val actual = state.localOnnxModels.any {
+        val actual = state.localModels.any {
             it.downloadState == DownloadState.Downloading(22)
         }
         Assert.assertEquals(expected, actual)

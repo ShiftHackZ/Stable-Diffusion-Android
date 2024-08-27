@@ -54,6 +54,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.math.roundTo
+import com.shifthackz.aisdv1.core.model.UiText
+import com.shifthackz.aisdv1.core.model.asString
+import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ServerSource
@@ -233,17 +236,33 @@ private fun ScreenContent(
                             )
                             Text(
                                 modifier = Modifier.padding(top = 14.dp),
-                                text = stringResource(
-                                    if (state.mode == ServerSource.LOCAL_MICROSOFT_ONNX) LocalizationR.string.local_no_img2img_support_sub_title
-                                    else LocalizationR.string.dalle_no_img2img_support_sub_title
-                                ),
+                                text = when (state.mode) {
+                                    ServerSource.OPEN_AI -> LocalizationR.string
+                                        .dalle_no_img2img_support_sub_title
+                                        .asUiText()
+
+                                    ServerSource.LOCAL_MICROSOFT_ONNX,
+                                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LocalizationR.string
+                                        .local_no_img2img_support_sub_title
+                                        .asUiText()
+
+                                    else -> UiText.empty
+                                }.asString(),
                             )
                             Text(
                                 modifier = Modifier.padding(top = 14.dp),
-                                text = stringResource(
-                                    if (state.mode == ServerSource.LOCAL_MICROSOFT_ONNX) LocalizationR.string.local_no_img2img_support_sub_title_2
-                                    else LocalizationR.string.dalle_no_img2img_support_sub_title_2
-                                ),
+                                text = when (state.mode) {
+                                    ServerSource.OPEN_AI -> LocalizationR.string
+                                        .dalle_no_img2img_support_sub_title_2
+                                        .asUiText()
+
+                                    ServerSource.LOCAL_MICROSOFT_ONNX,
+                                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LocalizationR.string
+                                        .local_no_img2img_support_sub_title_2
+                                        .asUiText()
+
+                                    else -> UiText.empty
+                                }.asString(),
                             )
                         }
                     }
@@ -252,6 +271,7 @@ private fun ScreenContent(
             bottomBar = {
                 val isEnabled = when (state.mode) {
                     ServerSource.LOCAL_MICROSOFT_ONNX,
+                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
                     ServerSource.OPEN_AI -> true
 
                     else -> !state.hasValidationErrors && !state.imageState.isEmpty
@@ -271,20 +291,28 @@ private fun ScreenContent(
                             keyboardController?.hide()
                             when (state.mode) {
                                 ServerSource.OPEN_AI,
-                                ServerSource.LOCAL_MICROSOFT_ONNX -> processIntent(GenerationMviIntent.Configuration)
+                                ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+                                ServerSource.LOCAL_MICROSOFT_ONNX -> processIntent(
+                                    GenerationMviIntent.Configuration
+                                )
 
                                 else -> {
                                     promptChipTextFieldState.value.text.takeIf(String::isNotBlank)
                                         ?.let { "${state.prompt}, ${it.trim()}" }
                                         ?.let(GenerationMviIntent.Update::Prompt)
                                         ?.let(processIntent::invoke)
-                                        ?.also { promptChipTextFieldState.value = TextFieldValue("") }
+                                        ?.also {
+                                            promptChipTextFieldState.value = TextFieldValue("")
+                                        }
 
                                     negativePromptChipTextFieldState.value.text.takeIf(String::isNotBlank)
                                         ?.let { "${state.negativePrompt}, ${it.trim()}" }
                                         ?.let(GenerationMviIntent.Update::NegativePrompt)
                                         ?.let(processIntent::invoke)
-                                        ?.also { negativePromptChipTextFieldState.value = TextFieldValue("") }
+                                        ?.also {
+                                            negativePromptChipTextFieldState.value =
+                                                TextFieldValue("")
+                                        }
 
                                     processIntent(GenerationMviIntent.Generate)
                                 }
@@ -292,8 +320,11 @@ private fun ScreenContent(
                         },
                         enabled = isEnabled,
                     ) {
-                        if (state.mode != ServerSource.LOCAL_MICROSOFT_ONNX) {
-                            Icon(
+                        when (state.mode) {
+                            ServerSource.LOCAL_MICROSOFT_ONNX,
+                            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Unit
+
+                            else -> Icon(
                                 modifier = Modifier.size(18.dp),
                                 imageVector = Icons.Default.AutoFixNormal,
                                 contentDescription = "Imagine",
@@ -304,6 +335,7 @@ private fun ScreenContent(
                             text = stringResource(
                                 id = when (state.mode) {
                                     ServerSource.LOCAL_MICROSOFT_ONNX,
+                                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
                                     ServerSource.OPEN_AI -> LocalizationR.string.action_change_configuration
 
                                     else -> LocalizationR.string.action_generate

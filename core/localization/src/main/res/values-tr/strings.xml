@@ -133,8 +133,10 @@
     <string name="hint_swarm_ui_title">Swarm UI URL\'nizi sağlayın</string>
     <string name="hint_swarm_ui_sub_title">Araçlara kolay erişim, yüksek performans ve genişletilebilirlik üzerine odaklanan Modüler, Kararlı Yaygın Web Kullanıcı Arayüzü.</string>
 
-    <string name="hint_local_diffusion_sub_title">Bu yapılandırma, telefonunuzda uzak sunucuya/buluta bağlanmaya gerek kalmadan Stable Diffusion AI nesillerini çalıştırmanıza izin verir.</string>
+    <string name="hint_local_diffusion_sub_title">Bu yapılandırma Microsoft ONNX çalışma zamanını kullanır ve uzak bir sunucuya/buluta bağlanmaya gerek kalmadan telefonunuzda Stable Diffusion AI nesillerini çalıştırmanıza olanak tanır.</string>
     <string name="hint_local_diffusion_warning">Uyarı! Yerel Yayılma işlevi beta testindedir. Yerel modu kullanarak yüksek kaliteli görüntüler beklemeyin. \n\nBu uygulama, güçlü olmayan telefonlarda iyi çalışmayabilir. Oluşturma performansı ve hızı, telefonunuzun kaynaklarına (CPU, RAM) ve oluşturulan görüntünün boyutuna bağlıdır (görüntü boyutu ne kadar küçükse, oluşturma o kadar hızlı olur).</string>
+
+    <string name="hint_mediapipe_sub_title">Bu yapılandırma Google AI MediaPipe çalışma zamanını kullanır ve uzak bir sunucuya/buluta bağlanmaya gerek kalmadan telefonunuzda Stable Diffusion AI nesillerini çalıştırmanıza olanak tanır.</string>
 
     <string name="drawer_web_ui">Web arayüzü</string>
 

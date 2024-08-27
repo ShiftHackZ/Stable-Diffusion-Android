@@ -90,7 +90,7 @@ data class ImageToImageState(
         heightValidationError: UiText?,
         nsfw: Boolean,
         batchCount: Int,
-        generateButtonEnabled: Boolean
+        generateButtonEnabled: Boolean,
     ): GenerationMviState = copy(
         onBoardingDemo = onBoardingDemo,
         screenModal = screenModal,

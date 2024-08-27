@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.android.core.mvi.EmptyEffect
 import com.shifthackz.android.core.mvi.EmptyIntent
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import java.util.concurrent.TimeUnit
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 class ConfigurationLoaderViewModel(
@@ -28,6 +29,7 @@ class ConfigurationLoaderViewModel(
 
     init {
         !dataPreLoaderUseCase()
+            .timeout(15L, TimeUnit.SECONDS)
             .doOnSubscribe {
                 updateState {
                     ConfigurationLoaderState.StatusNotification(

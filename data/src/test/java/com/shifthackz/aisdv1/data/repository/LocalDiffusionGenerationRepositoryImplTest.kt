@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.data.mocks.mockTextToImagePayload
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
@@ -31,7 +32,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
 
     private val stubBitmap = mockk<Bitmap>()
     private val stubException = Throwable("Something went wrong.")
-    private val stubStatus = BehaviorSubject.create<LocalDiffusion.Status>()
+    private val stubStatus = BehaviorSubject.create<LocalDiffusionStatus>()
     private val stubMediaStoreGateway = mockk<MediaStoreGateway>()
     private val stubBase64ToBitmapConverter = mockk<Base64ToBitmapConverter>()
     private val stubBitmapToBase64Converter = mockk<BitmapToBase64Converter>()
@@ -83,17 +84,17 @@ class LocalDiffusionGenerationRepositoryImplTest {
     fun `given attempt to observe status, local emits two values, expected same values with same order`() {
         val stubObserver = repository.observeStatus().test()
 
-        stubStatus.onNext(LocalDiffusion.Status(1, 2))
+        stubStatus.onNext(LocalDiffusionStatus(1, 2))
 
         stubObserver
             .assertNoErrors()
-            .assertValueAt(0, LocalDiffusion.Status(1, 2))
+            .assertValueAt(0, LocalDiffusionStatus(1, 2))
 
-        stubStatus.onNext(LocalDiffusion.Status(2, 2))
+        stubStatus.onNext(LocalDiffusionStatus(2, 2))
 
         stubObserver
             .assertNoErrors()
-            .assertValueAt(1, LocalDiffusion.Status(2, 2))
+            .assertValueAt(1, LocalDiffusionStatus(2, 2))
     }
 
     @Test
