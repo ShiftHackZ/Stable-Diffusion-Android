@@ -26,7 +26,13 @@ class DownloadableModelRemoteDataSourceTest {
         whenever(stubApi.fetchOnnxModels())
             .thenReturn(Single.just(mockDownloadableModelsResponse))
 
-        val expected = mockDownloadableModelsResponse.mapRawToCheckpointDomain(LocalAiModel.Type.ONNX)
+        whenever(stubApi.fetchMediaPipeModels())
+            .thenReturn(Single.just(mockDownloadableModelsResponse))
+
+        val expected = listOf(
+            mockDownloadableModelsResponse.mapRawToCheckpointDomain(LocalAiModel.Type.ONNX),
+            mockDownloadableModelsResponse.mapRawToCheckpointDomain(LocalAiModel.Type.MediaPipe),
+        ).flatten()
 
         remoteDataSource
             .fetch()
@@ -42,6 +48,9 @@ class DownloadableModelRemoteDataSourceTest {
         whenever(stubApi.fetchOnnxModels())
             .thenReturn(Single.just(emptyList()))
 
+        whenever(stubApi.fetchMediaPipeModels())
+            .thenReturn(Single.just(emptyList()))
+
         remoteDataSource
             .fetch()
             .test()
@@ -54,6 +63,9 @@ class DownloadableModelRemoteDataSourceTest {
     @Test
     fun `given attempt to fetch models list, api returns error, expected error value`() {
         whenever(stubApi.fetchOnnxModels())
+            .thenReturn(Single.error(stubException))
+
+        whenever(stubApi.fetchMediaPipeModels())
             .thenReturn(Single.error(stubException))
 
         remoteDataSource

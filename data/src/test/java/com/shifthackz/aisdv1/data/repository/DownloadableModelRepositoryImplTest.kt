@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.data.repository
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.data.mocks.mockLocalAiModel
 import com.shifthackz.aisdv1.data.mocks.mockLocalAiModels
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
@@ -25,14 +27,20 @@ class DownloadableModelRepositoryImplTest {
     private val stubDownloadState = BehaviorSubject.create<DownloadState>()
     private val stubRemoteDataSource = mockk<DownloadableModelDataSource.Remote>()
     private val stubLocalDataSource = mockk<DownloadableModelDataSource.Local>()
+    private val stubBuildInfoProvider = mockk<BuildInfoProvider>()
 
     private val repository = DownloadableModelRepositoryImpl(
         remoteDataSource = stubRemoteDataSource,
         localDataSource = stubLocalDataSource,
+        buildInfoProvider = stubBuildInfoProvider,
     )
 
     @Before
     fun initialize() {
+        every {
+            stubBuildInfoProvider.type
+        } returns BuildType.FULL
+
         every {
             stubLocalDataSource.observeAllOnnx()
         } returns stubLocalModels.toFlowable(BackpressureStrategy.LATEST)

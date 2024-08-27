@@ -75,6 +75,14 @@ class SetServerConfigurationUseCaseImplTest {
             stubPreferenceManager::localOnnxCustomModelPath.set(any())
         } returns Unit
 
+        every {
+            stubPreferenceManager::localMediaPipeModelId.set(any())
+        } returns Unit
+
+        every {
+            stubPreferenceManager::localMediaPipeCustomModelPath.set(any())
+        } returns Unit
+
         useCase
             .invoke(mockConfiguration)
             .test()

@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
@@ -27,6 +28,7 @@ class TextToImageUseCaseImplTest {
     private val stubStabilityAiGenerationRepository = mock<StabilityAiGenerationRepository>()
     private val stubSwarmUiGenerationRepository = mock<SwarmUiGenerationRepository>()
     private val stubLocalDiffusionGenerationRepository = mock<LocalDiffusionGenerationRepository>()
+    private val stubMediaPipeGenerationRepository = mock<MediaPipeGenerationRepository>()
     private val stubPreferenceManager = mock<PreferenceManager>()
 
     private val useCase = TextToImageUseCaseImpl(
@@ -37,6 +39,7 @@ class TextToImageUseCaseImplTest {
         stabilityAiGenerationRepository = stubStabilityAiGenerationRepository,
         localDiffusionGenerationRepository = stubLocalDiffusionGenerationRepository,
         swarmUiGenerationRepository = stubSwarmUiGenerationRepository,
+        mediaPipeGenerationRepository = stubMediaPipeGenerationRepository,
         preferenceManager = stubPreferenceManager,
     )
 

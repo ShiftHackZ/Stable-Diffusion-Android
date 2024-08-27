@@ -76,6 +76,14 @@ class GetConfigurationUseCaseImplTest {
             stubPreferenceManager::localOnnxCustomModelPath.get()
         } returns mockConfiguration.localOnnxModelPath
 
+        every {
+            stubPreferenceManager::localMediaPipeModelId.get()
+        } returns mockConfiguration.localMediaPipeModelId
+
+        every {
+            stubPreferenceManager::localMediaPipeCustomModelPath.get()
+        } returns mockConfiguration.localMediaPipeModelPath
+
         useCase
             .invoke()
             .test()

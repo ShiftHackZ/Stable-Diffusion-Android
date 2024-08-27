@@ -40,7 +40,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get all models, dao returns models list, app build type is PLAY, expected valid domain models list`() {
         every {
-            stubDao.query()
+            stubDao.queryByType(any())
         } returns Single.just(mockLocalModelEntities)
 
         every {
@@ -71,7 +71,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get all models, dao returns empty models list, app build type is PLAY, expected empty domain models list`() {
         every {
-            stubDao.query()
+            stubDao.queryByType(any())
         } returns Single.just(emptyList())
 
         every {
@@ -94,7 +94,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get all models, dao returns models list, app build type is FOSS, expected valid domain models list with CUSTOM model included`() {
         every {
-            stubDao.query()
+            stubDao.queryByType(any())
         } returns Single.just(mockLocalModelEntities)
 
         every {
@@ -128,7 +128,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get all models, dao returns empty models list, app build type is FOSS, expected domain models list with only CUSTOM model included`() {
         every {
-            stubDao.query()
+            stubDao.queryByType(any())
         } returns Single.just(emptyList())
 
         every {
@@ -151,7 +151,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get all models, dao throws exception, expected error value`() {
         every {
-            stubDao.query()
+            stubDao.queryByType(any())
         } returns Single.error(stubException)
 
         localDataSource
@@ -273,7 +273,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to observe all models, dao emits empty list, then list with two items, app build type is PLAY, expected empty list, then domain list with two items`() {
         every {
-            stubDao.observe()
+            stubDao.observeByType(any())
         } returns stubLocalModels.toFlowable(BackpressureStrategy.LATEST)
 
         every {
@@ -308,7 +308,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to observe all models, dao emits empty list, then list with two items, app build type is FOSS, expected list with only CUSTOM model included, then domain list with two items and CUSTOM`() {
         every {
-            stubDao.observe()
+            stubDao.observeByType(any())
         } returns stubLocalModels.toFlowable(BackpressureStrategy.LATEST)
 
         every {
@@ -346,7 +346,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to observe all models, dao throws exception, expected error value`() {
         every {
-            stubDao.observe()
+            stubDao.observeByType(any())
         } returns Flowable.error(stubException)
 
         localDataSource
