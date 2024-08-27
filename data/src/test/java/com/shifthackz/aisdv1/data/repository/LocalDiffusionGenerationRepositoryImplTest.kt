@@ -63,7 +63,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     @Before
     fun initialize() {
         every {
-            stubPreferenceManager::localDiffusionSchedulerThread.get()
+            stubPreferenceManager::localOnnxSchedulerThread.get()
         } returns SchedulersToken.COMPUTATION
 
         every {
@@ -142,7 +142,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     @Test
     fun `given attempt to generate from text, no selected model, expected error value`() {
         every {
-            stubDownloadableLocalDataSource.getSelected()
+            stubDownloadableLocalDataSource.getSelectedOnnx()
         } returns Single.error(stubException)
 
         repository
@@ -157,7 +157,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     @Test
     fun `given attempt to generate from text, has selected not downloaded model, expected IllegalStateException error value`() {
         every {
-            stubDownloadableLocalDataSource.getSelected()
+            stubDownloadableLocalDataSource.getSelectedOnnx()
         } returns Single.just(mockLocalAiModel.copy(downloaded = false))
 
         every {
@@ -182,7 +182,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     @Test
     fun `given attempt to generate from text, has selected downloaded model, local process success, expected valid domain model value`() {
         every {
-            stubDownloadableLocalDataSource.getSelected()
+            stubDownloadableLocalDataSource.getSelectedOnnx()
         } returns Single.just(mockLocalAiModel.copy(downloaded = true))
 
         every {
@@ -205,7 +205,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     @Test
     fun `given attempt to generate from text, has selected downloaded model, local process fails, expected error value`() {
         every {
-            stubDownloadableLocalDataSource.getSelected()
+            stubDownloadableLocalDataSource.getSelectedOnnx()
         } returns Single.just(mockLocalAiModel.copy(downloaded = true))
 
         every {

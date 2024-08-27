@@ -7,6 +7,5 @@ interface FileProviderDescriptor {
     val imagesCacheDirPath: String
     val logsCacheDirPath: String
     val localModelDirPath: String
-    val mediaPipeDirPath: String
     val workCacheDirPath: String
 }

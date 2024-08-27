@@ -93,7 +93,7 @@ internal abstract class CoreGenerationWorker(
                     body = subTitle,
                     silent = true,
                     progress = status.current to status.total,
-                    canCancel = preferenceManager.localDiffusionAllowCancel,
+                    canCancel = preferenceManager.localOnnxAllowCancel,
                 )
             }
     }

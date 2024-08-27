@@ -16,8 +16,14 @@ interface LocalModelDao {
     @Query("SELECT * FROM ${LocalModelContract.TABLE}")
     fun query(): Single<List<LocalModelEntity>>
 
+    @Query("SELECT * FROM ${LocalModelContract.TABLE} WHERE ${LocalModelContract.TYPE} = :type")
+    fun queryByType(type: String): Single<List<LocalModelEntity>>
+
     @Query("SELECT * FROM ${LocalModelContract.TABLE}")
     fun observe(): Flowable<List<LocalModelEntity>>
+
+    @Query("SELECT * FROM ${LocalModelContract.TABLE} WHERE ${LocalModelContract.TYPE} = :type")
+    fun observeByType(type: String): Flowable<List<LocalModelEntity>>
 
     @Query("SELECT * FROM ${LocalModelContract.TABLE} WHERE ${LocalModelContract.ID} = :id LIMIT 1")
     fun queryById(id: String): Single<LocalModelEntity>

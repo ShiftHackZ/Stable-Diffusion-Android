@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.network.api.sdai
 
 import com.shifthackz.aisdv1.network.extensions.saveFile
+import com.shifthackz.aisdv1.network.response.DownloadableModelResponse
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.io.File
@@ -9,7 +10,9 @@ internal class DownloadableModelsApiImpl(
     private val rawApi: DownloadableModelsApi.RawApi,
 ) : DownloadableModelsApi {
 
-    override fun fetchDownloadableModels() = rawApi.fetchDownloadableModels()
+    override fun fetchOnnxModels() = rawApi.fetchOnnxModels()
+
+    override fun fetchMediaPipeModels() = rawApi.fetchMediaPipeModels()
 
     override fun <T : Any> downloadModel(
         remoteUrl: String,

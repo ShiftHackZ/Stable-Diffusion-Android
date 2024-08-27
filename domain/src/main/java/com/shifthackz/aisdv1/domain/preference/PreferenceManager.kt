@@ -12,9 +12,10 @@ interface PreferenceManager {
     var swarmUiModel: String
     var demoMode: Boolean
     var developerMode: Boolean
-    var localDiffusionCustomModelPath: String
-    var localDiffusionAllowCancel: Boolean
-    var localDiffusionSchedulerThread: SchedulersToken
+    var localMediaPipeCustomModelPath: String
+    var localOnnxCustomModelPath: String
+    var localOnnxAllowCancel: Boolean
+    var localOnnxSchedulerThread: SchedulersToken
     var monitorConnectivity: Boolean
     var autoSaveAiResults: Boolean
     var saveToMediaStore: Boolean
@@ -30,8 +31,9 @@ interface PreferenceManager {
     var stabilityAiEngineId: String
     var onBoardingComplete: Boolean
     var forceSetupAfterUpdate: Boolean
-    var localModelId: String
-    var localUseNNAPI: Boolean
+    var localOnnxModelId: String
+    var localOnnxUseNNAPI: Boolean
+    var localMediaPipeModelId: String
     var designUseSystemColorPalette: Boolean
     var designUseSystemDarkTheme: Boolean
     var designDarkTheme: Boolean

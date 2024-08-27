@@ -70,10 +70,10 @@
     <string name="srv_type_own_short" translatable="false">A1111</string>
     <string name="srv_type_horde" translatable="false">Horde AI Cloud</string>
     <string name="srv_type_horde_short" translatable="false">Horde</string>
-    <string name="srv_type_local" translatable="false">Local Diffusion ONNX (Beta)</string>
-    <string name="srv_type_local_short" translatable="false">Local ONNX</string>
-    <string name="srv_type_media_pipe">Local Google AI MediaPipe</string>
-    <string name="srv_type_media_pipe_short">MediaPipe</string>
+    <string name="srv_type_local" translatable="false">Local Diffusion Microsoft ONNX (Beta)</string>
+    <string name="srv_type_local_short" translatable="false">ONNX</string>
+    <string name="srv_type_media_pipe">Local Google AI MediaPipe (Beta)</string>
+    <string name="srv_type_media_pipe_short" translatable="false">MediaPipe</string>
     <string name="srv_type_hugging_face" translatable="false">Hugging Face Inference</string>
     <string name="srv_type_hugging_face_short" translatable="false">HuggingFace</string>
     <string name="srv_type_open_ai" translatable="false">Open AI</string>
@@ -152,11 +152,12 @@
     <string name="hint_swarm_ui_title">Provide your Swarm UI URL</string>
     <string name="hint_swarm_ui_sub_title">A Modular Stable Diffusion Web-User-Interface, with an emphasis on making tools easily accessible, high performance, and extensibility.</string>
 
-    <string name="hint_local_diffusion_title" translatable="false">Local Diffusion</string>
+    <string name="hint_local_diffusion_title" translatable="false">Local Diffusion Microsoft ONNX</string>
     <!--ToDo translate everywhere -->
     <string name="hint_local_diffusion_sub_title">This configuration uses Microsoft ONNX runtime and allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud.</string>
     <string name="hint_local_diffusion_warning">Warning! Local Diffusion functionality is in beta-test. Don\'t expect for high quality images using local mode. \n\nThis implementation may not work well on non-powerful phones. Generation performance and speed depends on your phone resources (CPU, RAM) and the size of generated image (the smaller the image size, the faster the generation).</string>
 
+    <string name="hint_mediapipe_title">Local Google AI MediaPipe</string>
     <string name="hint_mediapipe_sub_title">This configuration uses Google AI MediaPipe and allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud.</string>
 
     <string name="drawer_web_ui">Web UI</string>

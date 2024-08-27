@@ -4,18 +4,11 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.shifthackz.aisdv1.storage.converters.DateConverters
-import com.shifthackz.aisdv1.storage.converters.ListConverters
+import com.shifthackz.aisdv1.storage.converters.*
 import com.shifthackz.aisdv1.storage.db.persistent.PersistentDatabase.Companion.DB_VERSION
-import com.shifthackz.aisdv1.storage.db.persistent.contract.GenerationResultContract
-import com.shifthackz.aisdv1.storage.db.persistent.dao.GenerationResultDao
-import com.shifthackz.aisdv1.storage.db.persistent.dao.HuggingFaceModelDao
-import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
-import com.shifthackz.aisdv1.storage.db.persistent.dao.SupporterDao
-import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
-import com.shifthackz.aisdv1.storage.db.persistent.entity.HuggingFaceModelEntity
-import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
-import com.shifthackz.aisdv1.storage.db.persistent.entity.SupporterEntity
+import com.shifthackz.aisdv1.storage.db.persistent.contract.*
+import com.shifthackz.aisdv1.storage.db.persistent.dao.*
+import com.shifthackz.aisdv1.storage.db.persistent.entity.*
 
 @Database(
     version = DB_VERSION,
@@ -46,6 +39,11 @@ import com.shifthackz.aisdv1.storage.db.persistent.entity.SupporterEntity
          * Added [SupporterEntity].
          */
         AutoMigration(from = 4, to = 5),
+        /**
+         * Added 1 field to [LocalModelEntity]:
+         * - [LocalModelContract.TYPE]
+         */
+        AutoMigration(from = 5, to = 6),
     ],
 )
 @TypeConverters(
@@ -60,6 +58,6 @@ internal abstract class PersistentDatabase : RoomDatabase() {
 
     companion object {
         const val DB_NAME = "ai_sd_v1_storage_db"
-        const val DB_VERSION = 5
+        const val DB_VERSION = 6
     }
 }

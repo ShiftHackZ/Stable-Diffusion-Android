@@ -54,6 +54,7 @@ import com.shifthackz.aisdv1.core.extensions.getRealPath
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreenTags.CUSTOM_MODEL_SWITCH
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
@@ -91,7 +92,7 @@ fun LocalDiffusionForm(
                 val icon = when (model.downloadState) {
                     is DownloadState.Downloading -> Icons.Outlined.FileDownload
                     else -> when {
-                        model.id == LocalAiModel.CUSTOM.id -> Icons.Outlined.Landslide
+                        model.id == LocalAiModel.CustomOnnx.id -> Icons.Outlined.Landslide
                         model.downloaded -> Icons.Outlined.FileDownloadDone
                         else -> Icons.Outlined.FileDownloadOff
                     }
@@ -113,14 +114,17 @@ fun LocalDiffusionForm(
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 2
                     )
-                    if (model.id != LocalAiModel.CUSTOM.id) {
+                    if (model.id != LocalAiModel.CustomOnnx.id) {
                         Text(
                             text = model.size,
                             maxLines = 1
                         )
                     }
                 }
-                if (model.id != LocalAiModel.CUSTOM.id) {
+                // Do not display action button for custom model
+                if (model.id != LocalAiModel.CustomOnnx.id
+                    && model.id != LocalAiModel.CustomMediaPipe.id
+                ) {
                     Button(
                         modifier = Modifier.padding(end = 8.dp),
                         onClick = { processIntent(ServerSetupIntent.LocalModel.ClickReduce(model)) },
@@ -142,7 +146,9 @@ fun LocalDiffusionForm(
                     }
                 }
             }
-            if (model.id == LocalAiModel.CUSTOM.id) {
+            if (model.id == LocalAiModel.CustomOnnx.id
+                || model.id == LocalAiModel.CustomMediaPipe.id
+            ) {
                 Column(
                     modifier = Modifier.padding(8.dp),
                 ) {
@@ -163,7 +169,7 @@ fun LocalDiffusionForm(
                     val folderStyle = MaterialTheme.typography.bodySmall
                     Text(
                         modifier = Modifier.padding(start = 12.dp),
-                        text = state.localCustomModelPath,
+                        text = state.localOnnxCustomModelPath,
                         style = folderStyle,
                     )
 
@@ -258,17 +264,29 @@ fun LocalDiffusionForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 32.dp, bottom = 8.dp),
-            text = stringResource(id = LocalizationR.string.hint_local_diffusion_title),
+            text = stringResource(
+                id = if (state.mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
+                    LocalizationR.string.hint_local_diffusion_title
+                } else {
+                    LocalizationR.string.hint_mediapipe_title
+                },
+            ),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
         )
         Text(
             modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
-            text = stringResource(id = LocalizationR.string.hint_local_diffusion_sub_title),
+            text = stringResource(
+                id = if (state.mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
+                    LocalizationR.string.hint_local_diffusion_sub_title
+                } else {
+                    LocalizationR.string.hint_mediapipe_sub_title
+                },
+            ),
             style = MaterialTheme.typography.bodyMedium,
         )
-        if (buildInfoProvider.type == BuildType.FOSS) {
+        if (buildInfoProvider.type != BuildType.PLAY) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -285,7 +303,7 @@ fun LocalDiffusionForm(
                 )
             }
         }
-        if (state.localCustomModel && buildInfoProvider.type == BuildType.FOSS) {
+        if (state.localCustomModel && buildInfoProvider.type != BuildType.PLAY) {
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -341,7 +359,7 @@ fun LocalDiffusionForm(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 14.dp),
-                value = state.localCustomModelPath,
+                value = state.localOnnxCustomModelPath,
                 onValueChange = { processIntent(ServerSetupIntent.SelectLocalModelPath(it)) },
                 enabled = true,
                 singleLine = true,
@@ -387,7 +405,7 @@ fun LocalDiffusionForm(
         }
         state.localModels
             .filter {
-                val customPredicate = it.id == LocalAiModel.CUSTOM.id
+                val customPredicate = it.id == LocalAiModel.CustomOnnx.id || it.id == LocalAiModel.CustomMediaPipe.id
                 if (state.localCustomModel) customPredicate else !customPredicate
             }
             .forEach { localModel -> modelItemUi(localModel) }

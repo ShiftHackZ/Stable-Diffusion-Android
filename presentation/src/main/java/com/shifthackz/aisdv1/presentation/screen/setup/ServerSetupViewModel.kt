@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
+import com.shifthackz.aisdv1.core.common.model.Quadruple
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -21,14 +22,16 @@ import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
-import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.allowedModes
-import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomModelSwitchState
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomMediaPipeSwitchState
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomOnnxSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
 import com.shifthackz.aisdv1.presentation.utils.Constants
@@ -40,7 +43,8 @@ class ServerSetupViewModel(
     launchSource: LaunchSource,
     dispatchersProvider: DispatchersProvider,
     getConfigurationUseCase: GetConfigurationUseCase,
-    getLocalAiModelsUseCase: GetLocalAiModelsUseCase,
+    getLocalOnnxModelsUseCase: GetLocalOnnxModelsUseCase,
+    getLocalMediaPipeModelsUseCase: GetLocalMediaPipeModelsUseCase,
     fetchAndGetHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
     private val urlValidator: UrlValidator,
     private val stringValidator: CommonStringValidator,
@@ -78,12 +82,13 @@ class ServerSetupViewModel(
     init {
         !Single.zip(
             getConfigurationUseCase(),
-            getLocalAiModelsUseCase(),
+            getLocalOnnxModelsUseCase(),
+            getLocalMediaPipeModelsUseCase(),
             fetchAndGetHuggingFaceModelsUseCase(),
-            ::Triple,
+            ::Quadruple,
         )
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog) { (configuration, localModels, hfModels) ->
+            .subscribeBy(::errorLog) { (configuration, onnxModels, mpModels, hfModels) ->
                 updateState { state ->
                     state.copy(
                         huggingFaceModels = hfModels.map(HuggingFaceModel::alias),
@@ -91,9 +96,12 @@ class ServerSetupViewModel(
                         huggingFaceApiKey = configuration.huggingFaceApiKey,
                         openAiApiKey = configuration.openAiApiKey,
                         stabilityAiApiKey = configuration.stabilityAiApiKey,
-                        localModels = localModels.mapToUi(),
-                        localCustomModel = localModels.mapLocalCustomModelSwitchState(),
-                        localCustomModelPath = configuration.localModelPath,
+                        localOnnxModels = onnxModels.mapToUi(),
+                        localOnnxCustomModel = onnxModels.mapLocalCustomOnnxSwitchState(),
+                        localOnnxCustomModelPath = configuration.localOnnxModelPath,
+                        localMediaPipeModels = mpModels.mapToUi(),
+                        localMediaPipeCustomModel = mpModels.mapLocalCustomMediaPipeSwitchState(),
+                        localMediaPipeCustomModelPath = configuration.localMediaPipeModelPath,
                         mode = configuration.source,
                         allowedModes = buildInfoProvider.allowedModes,
                         demoMode = configuration.demoMode,
@@ -115,15 +123,28 @@ class ServerSetupViewModel(
     }
 
     override fun processIntent(intent: ServerSetupIntent) = when (intent) {
-        is ServerSetupIntent.AllowLocalCustomModel -> updateState {
-            it.copy(
-                localCustomModel = intent.allow,
-                localModels = currentState.localModels.withNewState(
-                    currentState.localModels.find { m -> m.id == LocalAiModel.CUSTOM.id }?.copy(
-                        selected = intent.allow,
+        is ServerSetupIntent.AllowLocalCustomModel -> updateState { state ->
+            when (state.mode) {
+                ServerSource.LOCAL_MICROSOFT_ONNX -> state.copy(
+                    localOnnxCustomModel = intent.allow,
+                    localOnnxModels = state.localOnnxModels.withNewState(
+                        state.localOnnxModels.find { m -> m.id == LocalAiModel.CustomOnnx.id }?.copy(
+                            selected = intent.allow,
+                        ),
                     ),
-                ),
-            )
+                )
+
+                ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> state.copy(
+                    localMediaPipeCustomModel = intent.allow,
+                    localMediaPipeModels = state.localMediaPipeModels.withNewState(
+                        state.localMediaPipeModels.find { m -> m.id == LocalAiModel.CustomMediaPipe.id}?.copy(
+                            selected = intent.allow
+                        )
+                    )
+                )
+
+                else -> state
+            }
         }
 
         ServerSetupIntent.DismissDialog -> setScreenModal(Modal.None)
@@ -136,7 +157,7 @@ class ServerSetupViewModel(
                 .subscribeBy(::errorLog)
             it.copy(
                 screenModal = Modal.None,
-                localModels = currentState.localModels.withNewState(
+                localOnnxModels = currentState.localOnnxModels.withNewState(
                     intent.model.copy(
                         downloadState = DownloadState.Unknown,
                         downloaded = false,
@@ -146,15 +167,22 @@ class ServerSetupViewModel(
         }
 
         is ServerSetupIntent.SelectLocalModel -> {
-            if (currentState.localModels.any { it.downloadState is DownloadState.Downloading }) {
-                Unit
-            }
-            updateState {
-                it.copy(
-                    localModels = currentState.localModels.withNewState(
-                        intent.model.copy(selected = true),
-                    ),
-                )
+            updateState { state ->
+                when (state.mode) {
+                    ServerSource.LOCAL_MICROSOFT_ONNX -> state.copy(
+                        localOnnxModels = state.localOnnxModels.withNewState(
+                            intent.model.copy(selected = true),
+                        ),
+                    )
+
+                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> state.copy(
+                        localMediaPipeModels = state.localMediaPipeModels.withNewState(
+                            intent.model.copy(selected = true),
+                        ),
+                    )
+
+                    else -> state
+                }
             }
         }
 
@@ -241,11 +269,20 @@ class ServerSetupViewModel(
 
         ServerSetupIntent.ConnectToLocalHost -> connectToServer()
 
-        is ServerSetupIntent.SelectLocalModelPath -> updateState {
-            it.copy(
-                localCustomModelPath = intent.value,
-                localCustomModelPathValidationError = null,
-            )
+        is ServerSetupIntent.SelectLocalModelPath -> updateState { state ->
+            when (state.mode) {
+                ServerSource.LOCAL_MICROSOFT_ONNX -> state.copy(
+                    localOnnxCustomModelPath = intent.value,
+                    localCustomOnnxPathValidationError = null,
+                )
+
+                ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> state.copy(
+                    localMediaPipeCustomModelPath = intent.value,
+                    localCustomMediaPipePathValidationError = null,
+                )
+
+                else -> state
+            }
         }
     }
 
@@ -298,22 +335,28 @@ class ServerSetupViewModel(
             }
         }
 
-        ServerSource.LOCAL_MICROSOFT_ONNX -> {
-            if (currentState.localCustomModel) {
-                val validation = filePathValidator(currentState.localCustomModelPath)
-                updateState {
-                    it.copy(localCustomModelPathValidationError = validation.mapToUi())
-                }
-                validation.isValid
-            } else {
-                currentState.localModels.find { it.selected && it.downloaded } != null
+        ServerSource.LOCAL_MICROSOFT_ONNX -> if (currentState.localOnnxCustomModel) {
+            val validation = filePathValidator(currentState.localOnnxCustomModelPath)
+            updateState {
+                it.copy(localCustomOnnxPathValidationError = validation.mapToUi())
             }
+            validation.isValid
+        } else {
+            currentState.localOnnxModels.find { it.selected && it.downloaded } != null
         }
 
-        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> if (buildInfoProvider.type == BuildType.FOSS) {
-            false
-        } else {
-            true
+        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> when {
+            buildInfoProvider.type == BuildType.FOSS -> false
+            currentState.localMediaPipeCustomModel -> {
+                val validation = filePathValidator(currentState.localMediaPipeCustomModelPath)
+                updateState {
+                    it.copy(localCustomMediaPipePathValidationError = validation.mapToUi())
+                }
+                validation.isValid
+            }
+            else -> {
+                currentState.localMediaPipeModels.find { it.selected && it.downloaded } != null
+            }
         }
 
         ServerSource.HUGGING_FACE -> {
@@ -417,13 +460,15 @@ class ServerSetupViewModel(
     }
 
     private fun connectToLocalDiffusion(): Single<Result<Unit>> {
-        preferenceManager.localDiffusionCustomModelPath = currentState.localCustomModelPath
-        val localModelId = currentState.localModels.find { it.selected }?.id ?: ""
+        preferenceManager.localOnnxCustomModelPath = currentState.localOnnxCustomModelPath
+        val localModelId = currentState.localOnnxModels.find { it.selected }?.id ?: ""
         return setupConnectionInterActor.connectToLocal(localModelId)
     }
 
     private fun connectToMediaPipe(): Single<Result<Unit>> {
-        return setupConnectionInterActor.connectToMediaPipe()
+        preferenceManager.localMediaPipeCustomModelPath = currentState.localMediaPipeCustomModelPath
+        val localModelId = currentState.localMediaPipeModels.find { it.selected }?.id ?: ""
+        return setupConnectionInterActor.connectToMediaPipe(localModelId)
     }
 
     private fun localModelDownloadClickReducer(localModel: ServerSetupState.LocalModel) {
@@ -438,12 +483,26 @@ class ServerSetupViewModel(
                 !deleteModelUseCase(localModel.id)
                     .subscribeOnMainThread(schedulersProvider)
                     .subscribeBy(::errorLog)
-                updateState {
-                    it.copy(
-                        localModels = currentState.localModels.withNewState(
-                            localModel.copy(downloadState = DownloadState.Unknown),
-                        ),
-                    )
+                updateState { state ->
+                    when (state.mode) {
+                        ServerSource.LOCAL_MICROSOFT_ONNX -> {
+                            state.copy(
+                                localOnnxModels = state.localOnnxModels.withNewState(
+                                    localModel.copy(downloadState = DownloadState.Unknown),
+                                ),
+                            )
+                        }
+
+                        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> {
+                            state.copy(
+                                localMediaPipeModels = state.localMediaPipeModels.withNewState(
+                                    localModel.copy(downloadState = DownloadState.Unknown),
+                                ),
+                            )
+                        }
+
+                        else -> state
+                    }
                 }
             }
             // User deletes local model
@@ -452,14 +511,30 @@ class ServerSetupViewModel(
             }
             // User requested new download operation
             else -> {
-                updateState {
-                    it.copy(
-                        localModels = currentState.localModels.withNewState(
-                            localModel.copy(
-                                downloadState = DownloadState.Downloading(),
-                            ),
-                        ),
-                    )
+                updateState { state ->
+                    when (state.mode) {
+                        ServerSource.LOCAL_MICROSOFT_ONNX -> {
+                            state.copy(
+                                localOnnxModels = state.localOnnxModels.withNewState(
+                                    localModel.copy(
+                                        downloadState = DownloadState.Downloading(),
+                                    ),
+                                ),
+                            )
+                        }
+
+                        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> {
+                            state.copy(
+                                localMediaPipeModels = state.localMediaPipeModels.withNewState(
+                                    localModel.copy(
+                                        downloadState = DownloadState.Downloading(),
+                                    ),
+                                ),
+                            )
+                        }
+
+                        else -> state
+                    }
                 }
                 !downloadModelUseCase(localModel.id)
                     .distinctUntilChanged()
@@ -469,13 +544,18 @@ class ServerSetupViewModel(
                         onError = { t ->
                             errorLog(t)
                             val message = t.localizedMessage ?: "Error"
-                            updateState {
-                                it.copy(
-                                    localModels = currentState.localModels.withNewState(
+                            updateState { state ->
+                                state.copy(
+                                    localOnnxModels = state.localOnnxModels.withNewState(
                                         localModel.copy(
                                             downloadState = DownloadState.Error(t),
                                         ),
                                     ),
+                                    localMediaPipeModels = state.localMediaPipeModels.withNewState(
+                                        localModel.copy(
+                                            downloadState = DownloadState.Error(t),
+                                        ),
+                                    )
                                 )
                             }
                             setScreenModal(Modal.Error(message.asUiText()))
@@ -484,7 +564,13 @@ class ServerSetupViewModel(
                             updateState {
                                 when (downloadState) {
                                     is DownloadState.Complete -> it.copy(
-                                        localModels = it.localModels.withNewState(
+                                        localOnnxModels = it.localOnnxModels.withNewState(
+                                            localModel.copy(
+                                                downloadState = downloadState,
+                                                downloaded = true,
+                                            ),
+                                        ),
+                                        localMediaPipeModels = it.localMediaPipeModels.withNewState(
                                             localModel.copy(
                                                 downloadState = downloadState,
                                                 downloaded = true,
@@ -493,7 +579,10 @@ class ServerSetupViewModel(
                                     )
 
                                     else -> it.copy(
-                                        localModels = it.localModels.withNewState(
+                                        localOnnxModels = it.localOnnxModels.withNewState(
+                                            localModel.copy(downloadState = downloadState),
+                                        ),
+                                        localMediaPipeModels = it.localMediaPipeModels.withNewState(
                                             localModel.copy(downloadState = downloadState),
                                         ),
                                     )

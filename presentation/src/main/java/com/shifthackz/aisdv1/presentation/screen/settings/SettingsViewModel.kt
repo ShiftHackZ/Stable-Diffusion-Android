@@ -142,7 +142,7 @@ class SettingsViewModel(
             }
 
             is SettingsIntent.UpdateFlag.NNAPI -> {
-                preferenceManager.localUseNNAPI = intent.flag
+                preferenceManager.localOnnxUseNNAPI = intent.flag
             }
 
             is SettingsIntent.UpdateFlag.TaggedInput -> {

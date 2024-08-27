@@ -68,11 +68,11 @@ class SetServerConfigurationUseCaseImplTest {
         } returns Unit
 
         every {
-            stubPreferenceManager::localModelId.set(any())
+            stubPreferenceManager::localOnnxModelId.set(any())
         } returns Unit
 
         every {
-            stubPreferenceManager::localDiffusionCustomModelPath.set(any())
+            stubPreferenceManager::localOnnxCustomModelPath.set(any())
         } returns Unit
 
         useCase

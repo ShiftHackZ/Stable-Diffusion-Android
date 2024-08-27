@@ -10,6 +10,8 @@ data class LocalModelEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = LocalModelContract.ID)
     val id: String,
+    @ColumnInfo(name = LocalModelContract.TYPE, defaultValue = "onnx")
+    val type: String,
     @ColumnInfo(name = LocalModelContract.NAME)
     val name: String,
     @ColumnInfo(name = LocalModelContract.SIZE)

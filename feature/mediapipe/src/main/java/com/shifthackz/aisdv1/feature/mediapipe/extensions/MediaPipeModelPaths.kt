@@ -1,18 +1,16 @@
-package com.shifthackz.aisdv1.feature.diffusion.extensions
+package com.shifthackz.aisdv1.feature.mediapipe.extensions
 
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
-import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
 
-fun modelPathPrefix(
+fun modelPath(
     preferenceManager: PreferenceManager,
     fileProviderDescriptor: FileProviderDescriptor,
-    localModelIdProvider: LocalModelIdProvider,
 ): String {
-    val modelId = localModelIdProvider.get()
-    return if (modelId == LocalAiModel.CustomOnnx.id) {
-        preferenceManager.localOnnxCustomModelPath
+    val modelId = preferenceManager.localMediaPipeModelId
+    return if (modelId == LocalAiModel.CustomMediaPipe.id) {
+        preferenceManager.localMediaPipeCustomModelPath
     } else {
         "${fileProviderDescriptor.localModelDirPath}/${modelId}"
     }

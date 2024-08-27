@@ -12,7 +12,7 @@ internal class ConnectToLocalDiffusionUseCaseImpl(
         .map { originalConfiguration ->
             originalConfiguration.copy(
                 source = ServerSource.LOCAL_MICROSOFT_ONNX,
-                localModelId = modelId,
+                localOnnxModelId = modelId,
             )
         }
         .flatMapCompletable(setServerConfigurationUseCase::invoke)

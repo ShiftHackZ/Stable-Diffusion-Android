@@ -33,9 +33,12 @@ data class ServerSetupState(
     val password: String = "",
     val huggingFaceModels: List<String> = emptyList(),
     val huggingFaceModel: String = "",
-    val localModels: List<LocalModel> = emptyList(),
-    val localCustomModel: Boolean = false,
-    val localCustomModelPath: String = "",
+    val localOnnxModels: List<LocalModel> = emptyList(),
+    val localOnnxCustomModel: Boolean = false,
+    val localOnnxCustomModelPath: String = "",
+    val localMediaPipeModels: List<LocalModel> = emptyList(),
+    val localMediaPipeCustomModel: Boolean = false,
+    val localMediaPipeCustomModelPath: String = "",
     val passwordVisible: Boolean = false,
     val serverUrlValidationError: UiText? = null,
     val swarmUiUrlValidationError: UiText? = null,
@@ -45,8 +48,30 @@ data class ServerSetupState(
     val huggingFaceApiKeyValidationError: UiText? = null,
     val openAiApiKeyValidationError: UiText? = null,
     val stabilityAiApiKeyValidationError: UiText? = null,
-    val localCustomModelPathValidationError: UiText? = null,
+    val localCustomOnnxPathValidationError: UiText? = null,
+    val localCustomMediaPipePathValidationError: UiText? = null,
 ) : MviState, KoinComponent {
+
+    val localCustomModel: Boolean
+        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
+            localOnnxCustomModel
+        } else {
+            localMediaPipeCustomModel
+        }
+
+    val localModels: List<LocalModel>
+        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
+            localOnnxModels
+        } else {
+            localMediaPipeModels
+        }
+
+    val localCustomModelPathValidationError: UiText?
+        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
+            localCustomOnnxPathValidationError
+        } else {
+            localCustomMediaPipePathValidationError
+        }
 
     val demoModeUrl: String
         get() {

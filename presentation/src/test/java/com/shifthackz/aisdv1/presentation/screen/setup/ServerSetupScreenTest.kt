@@ -126,7 +126,7 @@ class ServerSetupScreenTest : CoreComposeTest {
             it.copy(
                 step = ServerSetupState.Step.CONFIGURE,
                 mode = ServerSource.LOCAL_MICROSOFT_ONNX,
-                localModels = mockLocalAiModels.mapToUi()
+                localOnnxModels = mockLocalAiModels.mapToUi()
             )
         }
         val setupButton = onNodeWithTestTag(ServerSetupScreenTags.MAIN_BUTTON)
@@ -143,9 +143,9 @@ class ServerSetupScreenTest : CoreComposeTest {
         switch.performClick()
         stubUiState.update {
             it.copy(
-                localCustomModel = true,
-                localModels = it.localModels.withNewState(
-                    it.localModels.find { m -> m.id == LocalAiModel.CUSTOM.id }!!.copy(
+                localOnnxCustomModel = true,
+                localOnnxModels = it.localOnnxModels.withNewState(
+                    it.localOnnxModels.find { m -> m.id == LocalAiModel.CustomOnnx.id }!!.copy(
                         selected = true,
                         downloaded = true
                     ),
@@ -165,9 +165,9 @@ class ServerSetupScreenTest : CoreComposeTest {
         switch.performClick()
         stubUiState.update {
             it.copy(
-                localCustomModel = false,
-                localModels = it.localModels.withNewState(
-                    it.localModels.find { m -> m.id == LocalAiModel.CUSTOM.id }!!.copy(
+                localOnnxCustomModel = false,
+                localOnnxModels = it.localOnnxModels.withNewState(
+                    it.localOnnxModels.find { m -> m.id == LocalAiModel.CustomOnnx.id }!!.copy(
                         selected = false,
                     ),
                 ),

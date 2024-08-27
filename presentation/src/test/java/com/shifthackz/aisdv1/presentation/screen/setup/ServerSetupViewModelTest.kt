@@ -12,7 +12,7 @@ import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
-import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
@@ -40,7 +40,7 @@ import org.junit.Test
 class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
     private val stubGetConfigurationUseCase = mockk<GetConfigurationUseCase>()
-    private val stubGetLocalAiModelsUseCase = mockk<GetLocalAiModelsUseCase>()
+    private val stubGetLocalOnnxModelsUseCase = mockk<GetLocalOnnxModelsUseCase>()
     private val stubFetchAndGetHuggingFaceModelsUseCase = mockk<FetchAndGetHuggingFaceModelsUseCase>()
     private val stubUrlValidator = mockk<UrlValidator>()
     private val stubCommonStringValidator = mockk<CommonStringValidator>()
@@ -56,7 +56,8 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         launchSource = LaunchSource.SETTINGS,
         dispatchersProvider = stubDispatchersProvider,
         getConfigurationUseCase = stubGetConfigurationUseCase,
-        getLocalAiModelsUseCase = stubGetLocalAiModelsUseCase,
+        getLocalOnnxModelsUseCase = stubGetLocalOnnxModelsUseCase,
+        
         fetchAndGetHuggingFaceModelsUseCase = stubFetchAndGetHuggingFaceModelsUseCase,
         urlValidator = stubUrlValidator,
         stringValidator = stubCommonStringValidator,
@@ -80,7 +81,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         } returns Single.just(Configuration(serverUrl = "https://5598.is.my.favorite.com"))
 
         every {
-            stubGetLocalAiModelsUseCase()
+            stubGetLocalOnnxModelsUseCase()
         } returns Single.just(mockLocalAiModels)
 
         every {
@@ -98,7 +99,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     fun `initialized, expected UI state updated with correct stub values`() {
         val state = viewModel.state.value
         Assert.assertEquals(true, state.huggingFaceModels.isNotEmpty())
-        Assert.assertEquals(true, state.localModels.isNotEmpty())
+        Assert.assertEquals(true, state.localOnnxModels.isNotEmpty())
         Assert.assertEquals("https://5598.is.my.favorite.com", state.serverUrl)
         Assert.assertEquals(ServerSetupState.AuthType.ANONYMOUS, state.authType)
     }
@@ -123,8 +124,8 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
                 selected = false,
             )
         )
-        Assert.assertEquals(true, state.localCustomModel)
-        Assert.assertEquals(expectedLocalModels, state.localModels)
+        Assert.assertEquals(true, state.localOnnxCustomModel)
+        Assert.assertEquals(expectedLocalModels, state.localOnnxModels)
     }
 
     @Test
@@ -157,7 +158,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
         val state = viewModel.state.value
         val expected = true
-        val actual = state.localModels.any {
+        val actual = state.localOnnxModels.any {
             it.downloadState == DownloadState.Downloading(22)
         }
         Assert.assertEquals(expected, actual)
@@ -201,7 +202,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
         val state = viewModel.state.value
         val expected = false
-        val actual = state.localModels.any {
+        val actual = state.localOnnxModels.any {
             it.downloadState == DownloadState.Downloading(22)
         }
         Assert.assertEquals(expected, actual)
@@ -223,7 +224,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         runTest {
             val state = viewModel.state.value
             Assert.assertEquals(Modal.None, state.screenModal)
-            Assert.assertEquals(false, state.localModels.find { it.id == "1" }!!.downloaded)
+            Assert.assertEquals(false, state.localOnnxModels.find { it.id == "1" }!!.downloaded)
         }
         verify {
             stubDeleteModelUseCase("1")
@@ -234,7 +235,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     fun `given received SelectLocalModel intent, expected passed LocalModel is selected in UI state`() {
         viewModel.processIntent(ServerSetupIntent.SelectLocalModel(mockServerSetupStateLocalModel))
         val state = viewModel.state.value
-        Assert.assertEquals(true, state.localModels.find { it.id == "1" }!!.selected)
+        Assert.assertEquals(true, state.localOnnxModels.find { it.id == "1" }!!.selected)
     }
 
     @Test

@@ -170,21 +170,20 @@ val providersModule = module {
             override val imagesCacheDirPath: String = "${androidApplication().cacheDir}/images"
             override val logsCacheDirPath: String = "${androidApplication().cacheDir}/logs"
             override val localModelDirPath: String = "${androidApplication().filesDir.absolutePath}/model"
-            override val mediaPipeDirPath: String = "${androidApplication().filesDir.absolutePath}/out4"
             override val workCacheDirPath: String = "${androidApplication().cacheDir}/work"
         }
     }
 
     single {
         DeviceNNAPIFlagProvider {
-            get<PreferenceManager>().localUseNNAPI
+            get<PreferenceManager>().localOnnxUseNNAPI
                 .let { nnApi -> if (nnApi) LocalDiffusionFlag.NN_API else LocalDiffusionFlag.CPU }
                 .let(LocalDiffusionFlag::value)
         }
     }
 
     single {
-        LocalModelIdProvider { get<PreferenceManager>().localModelId }
+        LocalModelIdProvider { get<PreferenceManager>().localOnnxModelId }
     }
 
     single {

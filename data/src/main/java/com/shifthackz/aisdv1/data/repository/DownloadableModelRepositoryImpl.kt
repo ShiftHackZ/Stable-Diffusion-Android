@@ -8,8 +8,6 @@ internal class DownloadableModelRepositoryImpl(
     private val localDataSource: DownloadableModelDataSource.Local,
 ) : DownloadableModelRepository {
 
-    override fun isModelDownloaded(id: String) = localDataSource.isDownloaded(id)
-
     override fun download(id: String) = localDataSource
         .getById(id)
         .flatMapObservable { model ->
@@ -18,15 +16,17 @@ internal class DownloadableModelRepositoryImpl(
 
     override fun delete(id: String) = localDataSource.delete(id)
 
-    override fun getAll() = remoteDataSource
+    override fun getAllOnnx() = remoteDataSource
         .fetch()
         .flatMapCompletable(localDataSource::save)
-        .andThen(localDataSource.getAll())
-        .onErrorResumeNext { localDataSource.getAll() }
+        .andThen(localDataSource.getAllOnnx())
+        .onErrorResumeNext { localDataSource.getAllOnnx() }
 
-    override fun getById(id: String) = localDataSource.getById(id)
+    override fun getAllMediaPipe() = remoteDataSource
+        .fetch()
+        .flatMapCompletable(localDataSource::save)
+        .andThen(localDataSource.getAllMediaPipe())
+        .onErrorResumeNext { localDataSource.getAllMediaPipe() }
 
-    override fun observeAll() = localDataSource.observeAll()
-
-    override fun select(id: String) = localDataSource.select(id)
+    override fun observeAllOnnx() = localDataSource.observeAllOnnx()
 }

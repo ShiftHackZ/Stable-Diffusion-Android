@@ -6,5 +6,4 @@ import io.reactivex.rxjava3.core.Single
 
 interface MediaPipe {
     fun process(payload: TextToImagePayload): Single<Bitmap>
-
 }

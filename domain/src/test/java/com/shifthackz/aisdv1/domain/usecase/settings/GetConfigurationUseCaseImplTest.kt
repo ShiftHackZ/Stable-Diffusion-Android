@@ -69,12 +69,12 @@ class GetConfigurationUseCaseImplTest {
         } returns mockConfiguration.stabilityAiEngineId
 
         every {
-            stubPreferenceManager::localModelId.get()
-        } returns mockConfiguration.localModelId
+            stubPreferenceManager::localOnnxModelId.get()
+        } returns mockConfiguration.localOnnxModelId
 
         every {
-            stubPreferenceManager::localDiffusionCustomModelPath.get()
-        } returns mockConfiguration.localModelPath
+            stubPreferenceManager::localOnnxCustomModelPath.get()
+        } returns mockConfiguration.localOnnxModelPath
 
         useCase
             .invoke()

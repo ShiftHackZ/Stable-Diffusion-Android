@@ -64,7 +64,7 @@ class DebugMenuViewModel(
             DebugMenuIntent.ViewLogs -> mainRouter.navigateToLogger()
 
             DebugMenuIntent.AllowLocalDiffusionCancel -> {
-                preferenceManager.localDiffusionAllowCancel = !currentState.localDiffusionAllowCancel
+                preferenceManager.localOnnxAllowCancel = !currentState.localDiffusionAllowCancel
             }
 
             DebugMenuIntent.LocalDiffusionScheduler.Request -> updateState {
@@ -72,7 +72,7 @@ class DebugMenuViewModel(
             }
 
             is DebugMenuIntent.LocalDiffusionScheduler.Confirm -> {
-                preferenceManager.localDiffusionSchedulerThread = intent.token
+                preferenceManager.localOnnxSchedulerThread = intent.token
             }
 
             DebugMenuIntent.DismissModal -> updateState {

@@ -153,7 +153,11 @@ fun ServerSetupScreenContent(
                     onClick = { processIntent(ServerSetupIntent.MainButtonClick) },
                     enabled = when (state.step) {
                         ServerSetupState.Step.CONFIGURE -> when (state.mode) {
-                            ServerSource.LOCAL_MICROSOFT_ONNX -> state.localModels.any {
+                            ServerSource.LOCAL_MICROSOFT_ONNX -> state.localOnnxModels.any {
+                                it.downloaded && it.selected
+                            }
+
+                            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> state.localMediaPipeModels.any {
                                 it.downloaded && it.selected
                             }
 

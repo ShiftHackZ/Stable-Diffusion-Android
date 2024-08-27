@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.domain.mocks
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 
 val mockLocalAiModels = listOf(
-    LocalAiModel.CUSTOM,
+    LocalAiModel.CustomOnnx,
     LocalAiModel(
         id = "1",
         name = "Model 1",

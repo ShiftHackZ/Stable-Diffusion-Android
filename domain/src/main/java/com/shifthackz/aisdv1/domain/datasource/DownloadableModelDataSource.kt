@@ -15,13 +15,12 @@ sealed interface DownloadableModelDataSource {
     }
 
     interface Local : DownloadableModelDataSource {
-        fun getAll(): Single<List<LocalAiModel>>
+        fun getAllOnnx(): Single<List<LocalAiModel>>
+        fun getAllMediaPipe(): Single<List<LocalAiModel>>
         fun getById(id: String): Single<LocalAiModel>
-        fun getSelected(): Single<LocalAiModel>
-        fun observeAll(): Flowable<List<LocalAiModel>>
-        fun select(id: String): Completable
+        fun getSelectedOnnx(): Single<LocalAiModel>
+        fun observeAllOnnx(): Flowable<List<LocalAiModel>>
         fun save(list: List<LocalAiModel>): Completable
-        fun isDownloaded(id: String): Single<Boolean>
         fun delete(id: String): Completable
     }
 }

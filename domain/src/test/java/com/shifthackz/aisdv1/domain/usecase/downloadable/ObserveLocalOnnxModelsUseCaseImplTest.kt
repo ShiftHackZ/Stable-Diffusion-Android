@@ -11,16 +11,16 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.junit.Before
 import org.junit.Test
 
-class ObserveLocalAiModelsUseCaseImplTest {
+class ObserveLocalOnnxModelsUseCaseImplTest {
 
     private val stubLocalModels = BehaviorSubject.create<List<LocalAiModel>>()
     private val stubRepository = mock<DownloadableModelRepository>()
 
-    private val useCase = ObserveLocalAiModelsUseCaseImpl(stubRepository)
+    private val useCase = ObserveLocalOnnxModelsUseCaseImpl(stubRepository)
 
     @Before
     fun initialize() {
-        whenever(stubRepository.observeAll())
+        whenever(stubRepository.observeAllOnnx())
             .thenReturn(stubLocalModels.toFlowable(BackpressureStrategy.LATEST))
     }
 
@@ -68,7 +68,7 @@ class ObserveLocalAiModelsUseCaseImplTest {
             .assertNoErrors()
             .assertValueAt(0, mockLocalAiModels)
 
-        val changedLocalAiModels = listOf(LocalAiModel.CUSTOM)
+        val changedLocalAiModels = listOf(LocalAiModel.CustomOnnx)
         stubLocalModels.onNext(changedLocalAiModels)
 
         stubObserver
@@ -97,7 +97,7 @@ class ObserveLocalAiModelsUseCaseImplTest {
     fun `given observer terminates with unexpected error, expected receive error value`() {
         val stubException = Throwable("Unexpected Flowable termination.")
 
-        whenever(stubRepository.observeAll())
+        whenever(stubRepository.observeAllOnnx())
             .thenReturn(Flowable.error(stubException))
 
         useCase()

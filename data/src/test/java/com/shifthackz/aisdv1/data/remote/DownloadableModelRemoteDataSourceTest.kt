@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.data.mappers.mapRawToCheckpointDomain
 import com.shifthackz.aisdv1.data.mocks.mockDownloadableModelsResponse
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApi
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test
@@ -22,10 +23,10 @@ class DownloadableModelRemoteDataSourceTest {
 
     @Test
     fun `given attempt to fetch models list, api returns data, expected valid domain models list`() {
-        whenever(stubApi.fetchDownloadableModels())
+        whenever(stubApi.fetchOnnxModels())
             .thenReturn(Single.just(mockDownloadableModelsResponse))
 
-        val expected = mockDownloadableModelsResponse.mapRawToCheckpointDomain()
+        val expected = mockDownloadableModelsResponse.mapRawToCheckpointDomain(LocalAiModel.Type.ONNX)
 
         remoteDataSource
             .fetch()
@@ -38,7 +39,7 @@ class DownloadableModelRemoteDataSourceTest {
 
     @Test
     fun `given attempt to fetch models list, api returns empty data, expected empty domain models list`() {
-        whenever(stubApi.fetchDownloadableModels())
+        whenever(stubApi.fetchOnnxModels())
             .thenReturn(Single.just(emptyList()))
 
         remoteDataSource
@@ -52,7 +53,7 @@ class DownloadableModelRemoteDataSourceTest {
 
     @Test
     fun `given attempt to fetch models list, api returns error, expected error value`() {
-        whenever(stubApi.fetchDownloadableModels())
+        whenever(stubApi.fetchOnnxModels())
             .thenReturn(Single.error(stubException))
 
         remoteDataSource

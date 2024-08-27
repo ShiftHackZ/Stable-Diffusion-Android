@@ -5,7 +5,7 @@ import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 
 val mockLocalAiModels = listOf(
-    LocalAiModel.CUSTOM,
+    LocalAiModel.CustomOnnx,
     LocalAiModel(
         id = "1",
         name = "Model 1",
