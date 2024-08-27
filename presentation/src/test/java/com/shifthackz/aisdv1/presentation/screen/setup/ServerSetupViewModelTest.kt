@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
@@ -41,6 +42,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
     private val stubGetConfigurationUseCase = mockk<GetConfigurationUseCase>()
     private val stubGetLocalOnnxModelsUseCase = mockk<GetLocalOnnxModelsUseCase>()
+    private val stubGetLocalMediaPipeModelsUseCase = mockk<GetLocalMediaPipeModelsUseCase>()
     private val stubFetchAndGetHuggingFaceModelsUseCase = mockk<FetchAndGetHuggingFaceModelsUseCase>()
     private val stubUrlValidator = mockk<UrlValidator>()
     private val stubCommonStringValidator = mockk<CommonStringValidator>()
@@ -57,7 +59,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         dispatchersProvider = stubDispatchersProvider,
         getConfigurationUseCase = stubGetConfigurationUseCase,
         getLocalOnnxModelsUseCase = stubGetLocalOnnxModelsUseCase,
-        
+        getLocalMediaPipeModelsUseCase = stubGetLocalMediaPipeModelsUseCase,
         fetchAndGetHuggingFaceModelsUseCase = stubFetchAndGetHuggingFaceModelsUseCase,
         urlValidator = stubUrlValidator,
         stringValidator = stubCommonStringValidator,
@@ -85,6 +87,10 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
         } returns Single.just(mockLocalAiModels)
 
         every {
+            stubGetLocalMediaPipeModelsUseCase()
+        } returns Single.just(emptyList())
+
+        every {
             stubFetchAndGetHuggingFaceModelsUseCase()
         } returns Single.just(mockHuggingFaceModels)
     }
@@ -106,6 +112,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
     @Test
     fun `given received AllowLocalCustomModel intent, expected Custom local model selected in UI state`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateServerMode(ServerSource.LOCAL_MICROSOFT_ONNX))
         viewModel.processIntent(ServerSetupIntent.AllowLocalCustomModel(true))
         val state = viewModel.state.value
         val expectedLocalModels = listOf(
@@ -233,6 +240,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
 
     @Test
     fun `given received SelectLocalModel intent, expected passed LocalModel is selected in UI state`() {
+        viewModel.processIntent(ServerSetupIntent.UpdateServerMode(ServerSource.LOCAL_MICROSOFT_ONNX))
         viewModel.processIntent(ServerSetupIntent.SelectLocalModel(mockServerSetupStateLocalModel))
         val state = viewModel.state.value
         Assert.assertEquals(true, state.localOnnxModels.find { it.id == "1" }!!.selected)
