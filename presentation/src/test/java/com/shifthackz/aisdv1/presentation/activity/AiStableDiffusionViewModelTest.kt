@@ -19,12 +19,9 @@ import io.mockk.mockk
 import io.mockk.verify
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -76,7 +73,7 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
     }
 
     @Test
-    fun `given onStoragePermissionsGranted was called, expected VM sets field saveToMediaStore with true in preference manager`() {
+    fun `given received GrantStoragePermission intent, expected VM sets field saveToMediaStore with true in preference manager`() {
         every {
             stubPreferenceManager::saveToMediaStore.set(any())
         } returns Unit
@@ -85,6 +82,14 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
 
         verify {
             stubPreferenceManager::saveToMediaStore.set(true)
+        }
+    }
+
+    @Test
+    fun `given received HideSplash intent, expected VM sets isShowSplash to false in UI state`() {
+        with(viewModel) {
+            processIntent(AppIntent.HideSplash)
+            Assert.assertFalse(state.value.isShowSplash)
         }
     }
 
@@ -132,7 +137,6 @@ class AiStableDiffusionViewModelTest : CoreViewModelTest<AiStableDiffusionViewMo
 
     @Test
     fun `given route then back events from main router, expected two domain models delivered to effect collector in same order`() {
-        Dispatchers.setMain(StandardTestDispatcher())
         runTest {
             viewModel.effect.test {
                 stubNavigationEffect.onNext(NavigationEffect.Navigate.Route("route2"))
