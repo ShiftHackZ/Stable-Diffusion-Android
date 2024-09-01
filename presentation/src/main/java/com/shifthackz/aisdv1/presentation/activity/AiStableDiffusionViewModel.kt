@@ -13,6 +13,8 @@ import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.home.HomeRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class AiStableDiffusionViewModel(
     dispatchersProvider: DispatchersProvider,
@@ -26,6 +28,9 @@ class AiStableDiffusionViewModel(
     override val initialState = AppState()
 
     override val effectDispatcher = dispatchersProvider.immediate
+
+    private val _isShowSplash = MutableStateFlow(true)
+    val isShowSplash = _isShowSplash.asStateFlow()
 
     init {
         !mainRouter.observe()
@@ -58,5 +63,9 @@ class AiStableDiffusionViewModel(
         is AppIntent.HomeRoute -> {
             homeRouter.navigateToRoute(intent.route)
         }
+    }
+
+    fun hideSplash() {
+        _isShowSplash.value = false
     }
 }

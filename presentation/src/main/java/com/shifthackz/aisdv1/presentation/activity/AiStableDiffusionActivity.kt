@@ -1,17 +1,22 @@
 package com.shifthackz.aisdv1.presentation.activity
 
+import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -47,12 +52,27 @@ class AiStableDiffusionActivity : AppCompatActivity() {
         debugLog("Storage permission is ${result}.")
     }
 
+    @SuppressLint("Recycle")
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
         actionBar?.hide()
-        PermissionUtil.checkNotificationPermission(this, notificationPermission::launch)
-        PermissionUtil.checkStoragePermission(this, storagePermission::launch)
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition { viewModel.isShowSplash.value }
+        splashScreen.setOnExitAnimationListener { splashScreenViewProvider ->
+            val fadeOutAnimation = ObjectAnimator.ofFloat(
+                splashScreenViewProvider.view,
+                View.ALPHA,
+                1f,
+                0f
+            )
+            fadeOutAnimation.duration = 500L
+            fadeOutAnimation.doOnEnd {
+                PermissionUtil.checkNotificationPermission(this, notificationPermission::launch)
+                PermissionUtil.checkStoragePermission(this, storagePermission::launch)
+                splashScreenViewProvider.remove()
+            }
+            fadeOutAnimation.start()
+        }
         setContent {
             val navController = rememberNavController()
             val backStackEntry by navController.currentBackStackEntryAsState()
@@ -63,6 +83,13 @@ class AiStableDiffusionActivity : AppCompatActivity() {
 
             BackHandler(enabled = drawerState.isOpen) {
                 scope.launch { drawerState.close() }
+            }
+
+            LaunchedEffect(backStackEntry) {
+                if (!viewModel.isShowSplash.value) return@LaunchedEffect
+                if (backStackEntry?.destination?.route != Constants.ROUTE_SPLASH) {
+                    viewModel.hideSplash()
+                }
             }
 
             AiSdAppTheme {
