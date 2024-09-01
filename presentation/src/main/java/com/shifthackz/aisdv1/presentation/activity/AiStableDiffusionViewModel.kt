@@ -59,10 +59,8 @@ class AiStableDiffusionViewModel(
             homeRouter.navigateToRoute(intent.route)
         }
 
-        AppIntent.HideSplash -> {
-            updateState { state ->
-                state.copy(isShowSplash = false)
-            }
+        AppIntent.HideSplash -> updateState { state ->
+            state.copy(isShowSplash = false)
         }
     }
 }
