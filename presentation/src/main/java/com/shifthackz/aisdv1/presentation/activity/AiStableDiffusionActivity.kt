@@ -1,7 +1,6 @@
 package com.shifthackz.aisdv1.presentation.activity
 
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.activity.compose.BackHandler
@@ -52,12 +51,11 @@ class AiStableDiffusionActivity : AppCompatActivity() {
         debugLog("Storage permission is ${result}.")
     }
 
-    @SuppressLint("Recycle")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         actionBar?.hide()
-        val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition { viewModel.isShowSplash.value }
+        splashScreen.setKeepOnScreenCondition { viewModel.state.value.isShowSplash }
         splashScreen.setOnExitAnimationListener { splashScreenViewProvider ->
             val fadeOutAnimation = ObjectAnimator.ofFloat(
                 splashScreenViewProvider.view,
@@ -86,9 +84,9 @@ class AiStableDiffusionActivity : AppCompatActivity() {
             }
 
             LaunchedEffect(backStackEntry) {
-                if (!viewModel.isShowSplash.value) return@LaunchedEffect
+                if (!viewModel.state.value.isShowSplash) return@LaunchedEffect
                 if (backStackEntry?.destination?.route != Constants.ROUTE_SPLASH) {
-                    viewModel.hideSplash()
+                    viewModel.processIntent(AppIntent.HideSplash)
                 }
             }
 

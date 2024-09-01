@@ -8,4 +8,5 @@ import com.shifthackz.android.core.mvi.MviState
 @Immutable
 data class AppState(
     val drawerItems: List<NavItem> = mainDrawerNavItems(),
+    val isShowSplash: Boolean = true,
 ) : MviState

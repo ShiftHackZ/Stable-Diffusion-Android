@@ -5,6 +5,7 @@ import com.shifthackz.android.core.mvi.MviIntent
 sealed interface AppIntent : MviIntent {
 
     data object GrantStoragePermission : AppIntent
+    data object HideSplash : AppIntent
 
     data class HomeRoute(val route: String) : AppIntent
 }
