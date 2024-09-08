@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.data.di
 
 import android.content.Context
 import android.os.PowerManager
+import com.shifthackz.aisdv1.data.repository.BackupRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.DownloadableModelRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.EmbeddingsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.GenerationResultRepositoryImpl
@@ -26,6 +27,7 @@ import com.shifthackz.aisdv1.data.repository.SwarmUiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.SwarmUiModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.TemporaryGenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.WakeLockRepositoryImpl
+import com.shifthackz.aisdv1.domain.repository.BackupRepository
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
 import com.shifthackz.aisdv1.domain.repository.EmbeddingsRepository
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
@@ -64,6 +66,7 @@ val repositoryModule = module {
     }
 
     singleOf(::TemporaryGenerationResultRepositoryImpl) bind TemporaryGenerationResultRepository::class
+    factoryOf(::BackupRepositoryImpl) bind BackupRepository::class
     factoryOf(::LocalDiffusionGenerationRepositoryImpl) bind LocalDiffusionGenerationRepository::class
     factoryOf(::MediaPipeGenerationRepositoryImpl) bind MediaPipeGenerationRepository::class
     factoryOf(::HordeGenerationRepositoryImpl) bind HordeGenerationRepository::class

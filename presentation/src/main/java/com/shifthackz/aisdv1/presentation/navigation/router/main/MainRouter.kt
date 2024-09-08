@@ -16,6 +16,8 @@ interface MainRouter : Router<NavigationEffect> {
 
     fun navigateToServerSetup(source: LaunchSource)
 
+    fun navigateToBackup()
+
     fun navigateToGalleryDetails(itemId: Long)
 
     fun navigateToInPaint()

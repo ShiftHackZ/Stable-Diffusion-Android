@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryViewModel
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagViewModel
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
+import com.shifthackz.aisdv1.presentation.screen.backup.BackupViewModel
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuViewModel
 import com.shifthackz.aisdv1.presentation.screen.donate.DonateViewModel
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerViewModel
@@ -53,6 +54,7 @@ val viewModelModule = module {
     viewModelOf(::DonateViewModel)
     viewModelOf(::BackgroundWorkViewModel)
     viewModelOf(::LoggerViewModel)
+    viewModelOf(::BackupViewModel)
 
     viewModel { parameters ->
         OnBoardingViewModel(

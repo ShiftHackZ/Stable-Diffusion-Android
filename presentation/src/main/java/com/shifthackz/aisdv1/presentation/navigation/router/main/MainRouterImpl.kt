@@ -54,6 +54,10 @@ internal class MainRouterImpl : MainRouter {
         })
     }
 
+    override fun navigateToBackup() {
+        effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_BACKUP))
+    }
+
     override fun navigateToGalleryDetails(itemId: Long) {
         effectSubject.onNext(NavigationEffect.Navigate.Route("${Constants.ROUTE_GALLERY_DETAIL}/$itemId"))
     }

@@ -8,6 +8,7 @@ object Constants {
     const val PARAM_SOURCE = "source"
 
     const val ROUTE_SPLASH = "splash"
+    const val ROUTE_BACKUP = "backup"
     const val ROUTE_SERVER_SETUP = "server_setup"
     const val ROUTE_SERVER_SETUP_FULL = "$ROUTE_SERVER_SETUP/{$PARAM_SOURCE}"
     const val ROUTE_CONFIG_LOADER = "config_loader"

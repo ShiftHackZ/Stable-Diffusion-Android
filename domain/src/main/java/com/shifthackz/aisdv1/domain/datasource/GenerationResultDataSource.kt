@@ -8,6 +8,7 @@ sealed interface GenerationResultDataSource {
 
     interface Local : GenerationResultDataSource {
         fun insert(result: AiGenerationResult): Single<Long>
+        fun insert(results: List<AiGenerationResult>): Completable
         fun queryAll(): Single<List<AiGenerationResult>>
         fun queryPage(limit: Int, offset: Int): Single<List<AiGenerationResult>>
         fun queryById(id: Long): Single<AiGenerationResult>

@@ -170,6 +170,7 @@
     <string name="gallery_tab_original">Original</string>
     <string name="gallery_tab_info">Info</string>
 
+    <string name="title_backup">Backup</string>
     <string name="title_text_to_image">Text to Image</string>
     <string name="title_image_to_image">Image to Image</string>
     <string name="title_gallery">Gallery</string>
@@ -388,4 +389,14 @@
     <string name="on_boarding_page_local_title">[Offline] Local Diffusion\nAI generation.</string>
     <string name="on_boarding_page_ui_title">Configure, customize,\nmake it [yours]!</string>
     <string name="on_boarding_page_provider_title">[Freedom] to choose your\nAI generation provider.</string>
+
+    <string name="backup_step_operation">Select operation</string>
+    <string name="backup_step_process">Proceed</string>
+    <string name="backup_action_restore">Restore</string>
+    <string name="backup_action_create">Create</string>
+    <string name="backup_operation_create">Create a new backup</string>
+    <string name="backup_operation_restore">Restore from the backup</string>
+    <string name="backup_entry_config">Generation provider configuration</string>
+    <string name="backup_entry_prefs">Appication settings</string>
+    <string name="backup_entry_gallery">Gallery</string>
 </resources>

@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountTree
 import androidx.compose.material.icons.filled.AllInclusive
 import androidx.compose.material.icons.filled.AutoFixNormal
+import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ColorLens
@@ -240,6 +241,13 @@ private fun ContentSettingsState(
                     ServerSource.SWARM_UI -> LocalizationR.string.srv_type_swarm_ui
                 }.asUiText(),
                 onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.Backup,
+                text = LocalizationR.string.title_backup.asUiText(),
+                onClick = { processIntent(SettingsIntent.NavigateBackup) },
             )
             if (state.showStabilityAiCredits) SettingsItem(
                 modifier = itemModifier,
