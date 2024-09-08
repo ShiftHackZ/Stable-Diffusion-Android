@@ -11,8 +11,8 @@ internal class ConnectToLocalDiffusionUseCaseImpl(
     override fun invoke(modelId: String) = getConfigurationUseCase()
         .map { originalConfiguration ->
             originalConfiguration.copy(
-                source = ServerSource.LOCAL,
-                localModelId = modelId,
+                source = ServerSource.LOCAL_MICROSOFT_ONNX,
+                localOnnxModelId = modelId,
             )
         }
         .flatMapCompletable(setServerConfigurationUseCase::invoke)

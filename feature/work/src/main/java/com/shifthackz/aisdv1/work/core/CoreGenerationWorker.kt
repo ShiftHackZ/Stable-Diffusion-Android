@@ -93,7 +93,7 @@ internal abstract class CoreGenerationWorker(
                     body = subTitle,
                     silent = true,
                     progress = status.current to status.total,
-                    canCancel = preferenceManager.localDiffusionAllowCancel,
+                    canCancel = preferenceManager.localOnnxAllowCancel,
                 )
             }
     }
@@ -112,7 +112,7 @@ internal abstract class CoreGenerationWorker(
         setForegroundNotification(
             title = title,
             body = subTitle,
-            canCancel = source != ServerSource.LOCAL,
+            canCancel = source != ServerSource.LOCAL_MICROSOFT_ONNX,
         )
     }
 

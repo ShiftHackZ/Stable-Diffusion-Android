@@ -36,7 +36,7 @@ internal class LocalDiffusionGenerationRepositoryImpl(
     override fun observeStatus() = localDiffusion.observeStatus()
 
     override fun generateFromText(payload: TextToImagePayload) = downloadableLocalDataSource
-        .getSelected()
+        .getSelectedOnnx()
         .flatMap { model ->
             if (model.downloaded) generate(payload)
             else Single.error(IllegalStateException("Model not downloaded."))
@@ -46,7 +46,7 @@ internal class LocalDiffusionGenerationRepositoryImpl(
 
     private fun generate(payload: TextToImagePayload) = localDiffusion
         .process(payload)
-        .subscribeOn(schedulersProvider.byToken(preferenceManager.localDiffusionSchedulerThread))
+        .subscribeOn(schedulersProvider.byToken(preferenceManager.localOnnxSchedulerThread))
         .map(BitmapToBase64Converter::Input)
         .flatMap(bitmapToBase64Converter::invoke)
         .map(BitmapToBase64Converter.Output::base64ImageString)

@@ -1,7 +1,10 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
+import com.shifthackz.aisdv1.core.common.model.Quadruple
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -11,7 +14,6 @@ import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
-import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.interactor.settings.SetupConnectionInterActor
@@ -19,15 +21,17 @@ import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
-import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalAiModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
-import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomModelSwitchState
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.allowedModes
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomMediaPipeSwitchState
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomOnnxSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
-import com.shifthackz.aisdv1.presentation.screen.setup.mappers.withNewState
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
@@ -37,7 +41,8 @@ class ServerSetupViewModel(
     launchSource: LaunchSource,
     dispatchersProvider: DispatchersProvider,
     getConfigurationUseCase: GetConfigurationUseCase,
-    getLocalAiModelsUseCase: GetLocalAiModelsUseCase,
+    getLocalOnnxModelsUseCase: GetLocalOnnxModelsUseCase,
+    getLocalMediaPipeModelsUseCase: GetLocalMediaPipeModelsUseCase,
     fetchAndGetHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
     private val urlValidator: UrlValidator,
     private val stringValidator: CommonStringValidator,
@@ -49,6 +54,7 @@ class ServerSetupViewModel(
     private val preferenceManager: PreferenceManager,
     private val wakeLockInterActor: WakeLockInterActor,
     private val mainRouter: MainRouter,
+    private val buildInfoProvider: BuildInfoProvider,
 ) : MviRxViewModel<ServerSetupState, ServerSetupIntent, ServerSetupEffect>() {
 
     override val initialState = ServerSetupState(
@@ -74,12 +80,13 @@ class ServerSetupViewModel(
     init {
         !Single.zip(
             getConfigurationUseCase(),
-            getLocalAiModelsUseCase(),
+            getLocalOnnxModelsUseCase(),
+            getLocalMediaPipeModelsUseCase(),
             fetchAndGetHuggingFaceModelsUseCase(),
-            ::Triple,
+            ::Quadruple,
         )
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog) { (configuration, localModels, hfModels) ->
+            .subscribeBy(::errorLog) { (configuration, onnxModels, mpModels, hfModels) ->
                 updateState { state ->
                     state.copy(
                         huggingFaceModels = hfModels.map(HuggingFaceModel::alias),
@@ -87,10 +94,14 @@ class ServerSetupViewModel(
                         huggingFaceApiKey = configuration.huggingFaceApiKey,
                         openAiApiKey = configuration.openAiApiKey,
                         stabilityAiApiKey = configuration.stabilityAiApiKey,
-                        localModels = localModels.mapToUi(),
-                        localCustomModel = localModels.mapLocalCustomModelSwitchState(),
-                        localCustomModelPath = configuration.localModelPath,
+                        localOnnxModels = onnxModels.mapToUi(),
+                        localOnnxCustomModel = onnxModels.mapLocalCustomOnnxSwitchState(),
+                        localOnnxCustomModelPath = configuration.localOnnxModelPath,
+                        localMediaPipeModels = mpModels.mapToUi(),
+                        localMediaPipeCustomModel = mpModels.mapLocalCustomMediaPipeSwitchState(),
+                        localMediaPipeCustomModelPath = configuration.localMediaPipeModelPath,
                         mode = configuration.source,
+                        allowedModes = buildInfoProvider.allowedModes,
                         demoMode = configuration.demoMode,
                         serverUrl = configuration.serverUrl,
                         swarmUiUrl = configuration.swarmUiUrl,
@@ -110,15 +121,8 @@ class ServerSetupViewModel(
     }
 
     override fun processIntent(intent: ServerSetupIntent) = when (intent) {
-        is ServerSetupIntent.AllowLocalCustomModel -> updateState {
-            it.copy(
-                localCustomModel = intent.allow,
-                localModels = currentState.localModels.withNewState(
-                    currentState.localModels.find { m -> m.id == LocalAiModel.CUSTOM.id }?.copy(
-                        selected = intent.allow,
-                    ),
-                ),
-            )
+        is ServerSetupIntent.AllowLocalCustomModel -> updateState { state ->
+            state.withAllowCustomModel(intent.allow)
         }
 
         ServerSetupIntent.DismissDialog -> setScreenModal(Modal.None)
@@ -129,28 +133,11 @@ class ServerSetupViewModel(
             !deleteModelUseCase(intent.model.id)
                 .subscribeOnMainThread(schedulersProvider)
                 .subscribeBy(::errorLog)
-            it.copy(
-                screenModal = Modal.None,
-                localModels = currentState.localModels.withNewState(
-                    intent.model.copy(
-                        downloadState = DownloadState.Unknown,
-                        downloaded = false,
-                    ),
-                ),
-            )
+            it.withDeletedLocalModel(intent.model)
         }
 
-        is ServerSetupIntent.SelectLocalModel -> {
-            if (currentState.localModels.any { it.downloadState is DownloadState.Downloading }) {
-                Unit
-            }
-            updateState {
-                it.copy(
-                    localModels = currentState.localModels.withNewState(
-                        intent.model.copy(selected = true),
-                    ),
-                )
-            }
+        is ServerSetupIntent.SelectLocalModel -> updateState { state ->
+            state.withSelectedLocalModel(intent.model)
         }
 
         ServerSetupIntent.MainButtonClick -> when (currentState.step) {
@@ -236,11 +223,8 @@ class ServerSetupViewModel(
 
         ServerSetupIntent.ConnectToLocalHost -> connectToServer()
 
-        is ServerSetupIntent.SelectLocalModelPath -> updateState {
-            it.copy(
-                localCustomModelPath = intent.value,
-                localCustomModelPathValidationError = null,
-            )
+        is ServerSetupIntent.SelectLocalModelPath -> updateState { state ->
+            state.withLocalCustomModelPath(intent.value)
         }
     }
 
@@ -253,12 +237,13 @@ class ServerSetupViewModel(
         emitEffect(ServerSetupEffect.HideKeyboard)
         !when (currentState.mode) {
             ServerSource.HORDE -> connectToHorde()
-            ServerSource.LOCAL -> connectToLocalDiffusion()
+            ServerSource.LOCAL_MICROSOFT_ONNX -> connectToLocalDiffusion()
             ServerSource.AUTOMATIC1111 -> connectToAutomaticInstance()
             ServerSource.HUGGING_FACE -> connectToHuggingFace()
             ServerSource.OPEN_AI -> connectToOpenAi()
             ServerSource.STABILITY_AI -> connectToStabilityAi()
             ServerSource.SWARM_UI -> connectToSwarmUi()
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> connectToMediaPipe()
         }
             .doOnSubscribe { setScreenModal(Modal.Communicating(canCancel = false)) }
             .subscribeOnMainThread(schedulersProvider)
@@ -292,15 +277,27 @@ class ServerSetupViewModel(
             }
         }
 
-        ServerSource.LOCAL -> {
-            if (currentState.localCustomModel) {
-                val validation = filePathValidator(currentState.localCustomModelPath)
+        ServerSource.LOCAL_MICROSOFT_ONNX -> if (currentState.localOnnxCustomModel) {
+            val validation = filePathValidator(currentState.localOnnxCustomModelPath)
+            updateState {
+                it.copy(localCustomOnnxPathValidationError = validation.mapToUi())
+            }
+            validation.isValid
+        } else {
+            currentState.localOnnxModels.find { it.selected && it.downloaded } != null
+        }
+
+        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> when {
+            buildInfoProvider.type == BuildType.FOSS -> false
+            currentState.localMediaPipeCustomModel -> {
+                val validation = filePathValidator(currentState.localMediaPipeCustomModelPath)
                 updateState {
-                    it.copy(localCustomModelPathValidationError = validation.mapToUi())
+                    it.copy(localCustomMediaPipePathValidationError = validation.mapToUi())
                 }
                 validation.isValid
-            } else {
-                currentState.localModels.find { it.selected && it.downloaded } != null
+            }
+            else -> {
+                currentState.localMediaPipeModels.find { it.selected && it.downloaded } != null
             }
         }
 
@@ -405,87 +402,81 @@ class ServerSetupViewModel(
     }
 
     private fun connectToLocalDiffusion(): Single<Result<Unit>> {
-        preferenceManager.localDiffusionCustomModelPath = currentState.localCustomModelPath
-        val localModelId = currentState.localModels.find { it.selected }?.id ?: ""
+        preferenceManager.localOnnxCustomModelPath = currentState.localOnnxCustomModelPath
+        val localModelId = currentState.localOnnxModels.find { it.selected }?.id ?: ""
         return setupConnectionInterActor.connectToLocal(localModelId)
     }
 
-    private fun localModelDownloadClickReducer(localModel: ServerSetupState.LocalModel) {
+    private fun connectToMediaPipe(): Single<Result<Unit>> {
+        preferenceManager.localMediaPipeCustomModelPath = currentState.localMediaPipeCustomModelPath
+        val localModelId = currentState.localMediaPipeModels.find { it.selected }?.id ?: ""
+        return setupConnectionInterActor.connectToMediaPipe(localModelId)
+    }
+
+    private fun localModelDownloadClickReducer(value: ServerSetupState.LocalModel) {
+        fun localModel(): ServerSetupState.LocalModel =
+            currentState.localModels.firstOrNull { it.id == value.id }
+                ?.let { value.copy(selected = it.selected) }
+                ?: value
+
         when {
             // User cancels download
-            localModel.downloadState is DownloadState.Downloading -> {
-                val index = downloadDisposables.indexOfFirst { it.first == localModel.id }
+            localModel().downloadState is DownloadState.Downloading -> {
+                val index = downloadDisposables.indexOfFirst { it.first == localModel().id }
                 if (index != -1) {
                     downloadDisposables[index].second.dispose()
                     downloadDisposables.removeAt(index)
                 }
-                !deleteModelUseCase(localModel.id)
+                !deleteModelUseCase(localModel().id)
                     .subscribeOnMainThread(schedulersProvider)
                     .subscribeBy(::errorLog)
-                updateState {
-                    it.copy(
-                        localModels = currentState.localModels.withNewState(
-                            localModel.copy(downloadState = DownloadState.Unknown),
-                        ),
+                updateState { state ->
+                    state.withUpdatedLocalModel(
+                        value = localModel().copy(downloadState = DownloadState.Unknown),
                     )
                 }
             }
             // User deletes local model
-            localModel.downloaded -> updateState {
-                it.copy(screenModal = Modal.DeleteLocalModelConfirm(localModel))
+            localModel().downloaded -> updateState {
+                it.copy(screenModal = Modal.DeleteLocalModelConfirm(localModel()))
             }
             // User requested new download operation
             else -> {
-                updateState {
-                    it.copy(
-                        localModels = currentState.localModels.withNewState(
-                            localModel.copy(
-                                downloadState = DownloadState.Downloading(),
-                            ),
-                        ),
+                updateState { state ->
+                    state.withUpdatedLocalModel(
+                        localModel().copy(downloadState = DownloadState.Downloading()),
                     )
                 }
-                !downloadModelUseCase(localModel.id)
+                !downloadModelUseCase(localModel().id)
                     .distinctUntilChanged()
                     .doOnSubscribe { wakeLockInterActor.acquireWakelockUseCase() }
                     .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
-                    .subscribeOnMainThread(schedulersProvider).subscribeBy(
+                    .subscribeOnMainThread(schedulersProvider)
+                    .subscribeBy(
                         onError = { t ->
                             errorLog(t)
                             val message = t.localizedMessage ?: "Error"
-                            updateState {
-                                it.copy(
-                                    localModels = currentState.localModels.withNewState(
-                                        localModel.copy(
-                                            downloadState = DownloadState.Error(t),
-                                        ),
+                            updateState { state ->
+                                state.withUpdatedLocalModel(
+                                    localModel().copy(
+                                        downloadState = DownloadState.Error(t),
                                     ),
                                 )
                             }
                             setScreenModal(Modal.Error(message.asUiText()))
                         },
                         onNext = { downloadState ->
-                            updateState {
-                                when (downloadState) {
-                                    is DownloadState.Complete -> it.copy(
-                                        localModels = it.localModels.withNewState(
-                                            localModel.copy(
-                                                downloadState = downloadState,
-                                                downloaded = true,
-                                            ),
-                                        ),
-                                    )
-
-                                    else -> it.copy(
-                                        localModels = it.localModels.withNewState(
-                                            localModel.copy(downloadState = downloadState),
-                                        ),
-                                    )
-                                }
+                            updateState { state ->
+                                state.withUpdatedLocalModel(
+                                    localModel().copy(
+                                        downloadState = downloadState,
+                                        downloaded = downloadState is DownloadState.Complete
+                                    ),
+                                )
                             }
                         },
                     )
-                    .also { downloadDisposables.add(localModel.id to it) }
+                    .also { downloadDisposables.add(localModel().id to it) }
             }
         }
     }

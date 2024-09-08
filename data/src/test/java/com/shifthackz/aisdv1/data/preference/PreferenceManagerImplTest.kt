@@ -223,17 +223,17 @@ class PreferenceManagerImplTest {
         Assert.assertEquals(ServerSource.AUTOMATIC1111, preferenceManager.source)
 
         whenever(stubPreference.getString(eq(KEY_SERVER_SOURCE), any()))
-            .thenReturn(ServerSource.LOCAL.key)
+            .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX.key)
 
-        preferenceManager.source =  ServerSource.LOCAL
+        preferenceManager.source =  ServerSource.LOCAL_MICROSOFT_ONNX
 
-        Assert.assertEquals(ServerSource.LOCAL, preferenceManager.source)
+        Assert.assertEquals(ServerSource.LOCAL_MICROSOFT_ONNX, preferenceManager.source)
 
         preferenceManager
             .observe()
             .test()
             .assertNoErrors()
-            .assertValueAt(0) { settings -> settings.source == ServerSource.LOCAL }
+            .assertValueAt(0) { settings -> settings.source == ServerSource.LOCAL_MICROSOFT_ONNX }
     }
 
     @Test
@@ -373,14 +373,14 @@ class PreferenceManagerImplTest {
         whenever(stubPreference.getString(eq(KEY_LOCAL_MODEL_ID), any()))
             .thenReturn("")
 
-        Assert.assertEquals("", preferenceManager.localModelId)
+        Assert.assertEquals("", preferenceManager.localOnnxModelId)
 
         whenever(stubPreference.getString(eq(KEY_LOCAL_MODEL_ID), any()))
             .thenReturn("key")
 
-        preferenceManager.localModelId = "key"
+        preferenceManager.localOnnxModelId = "key"
 
-        Assert.assertEquals("key", preferenceManager.localModelId)
+        Assert.assertEquals("key", preferenceManager.localOnnxModelId)
     }
 
     @Test
@@ -388,14 +388,14 @@ class PreferenceManagerImplTest {
         whenever(stubPreference.getBoolean(eq(KEY_LOCAL_NN_API), any()))
             .thenReturn(false)
 
-        Assert.assertEquals(false, preferenceManager.localUseNNAPI)
+        Assert.assertEquals(false, preferenceManager.localOnnxUseNNAPI)
 
         whenever(stubPreference.getBoolean(eq(KEY_LOCAL_NN_API), any()))
             .thenReturn(true)
 
-        preferenceManager.localUseNNAPI = true
+        preferenceManager.localOnnxUseNNAPI = true
 
-        Assert.assertEquals(true, preferenceManager.localUseNNAPI)
+        Assert.assertEquals(true, preferenceManager.localOnnxUseNNAPI)
 
         preferenceManager
             .observe()

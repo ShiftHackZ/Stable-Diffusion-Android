@@ -148,7 +148,7 @@ fun GenerationInputForm(
                 ServerSource.SWARM_UI,
                 ServerSource.STABILITY_AI,
                 ServerSource.HUGGING_FACE,
-                ServerSource.LOCAL -> EngineSelectionComponent(
+                ServerSource.LOCAL_MICROSOFT_ONNX -> EngineSelectionComponent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
@@ -206,7 +206,7 @@ fun GenerationInputForm(
             ServerSource.SWARM_UI,
             ServerSource.HUGGING_FACE,
             ServerSource.STABILITY_AI,
-            ServerSource.LOCAL -> {
+            ServerSource.LOCAL_MICROSOFT_ONNX -> {
                 if (state.formPromptTaggedInput) {
                     ChipTextFieldWithItem(
                         modifier = Modifier
@@ -256,7 +256,7 @@ fun GenerationInputForm(
 
             when (state.mode) {
                 ServerSource.HORDE,
-                ServerSource.LOCAL -> {
+                ServerSource.LOCAL_MICROSOFT_ONNX -> {
                     DropdownTextField(
                         modifier = localModifier.padding(end = 4.dp),
                         label = LocalizationR.string.width.asUiText(),
@@ -295,6 +295,7 @@ fun GenerationInputForm(
                         displayDelegate = { it.key.asUiText() },
                     )
                 }
+                else -> Unit
             }
         }
 
@@ -497,9 +498,11 @@ fun GenerationInputForm(
                     else -> Unit
                 }
 
+                //Steps not available for open ai
                 if (state.mode != ServerSource.OPEN_AI) {
                     val stepsMax = when (state.mode) {
-                        ServerSource.LOCAL -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
+                        ServerSource.LOCAL_MICROSOFT_ONNX -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
+                        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
                         ServerSource.STABILITY_AI -> SAMPLING_STEPS_RANGE_STABILITY_AI_MAX
                         else -> SAMPLING_STEPS_RANGE_MAX
                     }
@@ -519,24 +522,31 @@ fun GenerationInputForm(
                             processIntent(GenerationMviIntent.Update.SamplingSteps(it.roundToInt()))
                         },
                     )
+                }
 
-                    Text(
-                        modifier = Modifier.padding(top = 8.dp),
-                        text = stringResource(
-                            LocalizationR.string.hint_cfg_scale,
-                            "${state.cfgScale.roundTo(2)}",
-                        ),
-                    )
-                    SliderTextInputField(
-                        value = state.cfgScale,
-                        valueRange = (CFG_SCALE_RANGE_MIN * 1f)..(CFG_SCALE_RANGE_MAX * 1f),
-                        valueDiff = 0.5f,
-                        steps = abs(CFG_SCALE_RANGE_MAX - CFG_SCALE_RANGE_MIN) * 2 - 1,
-                        sliderColors = sliderColors,
-                        onValueChange = {
-                            processIntent(GenerationMviIntent.Update.CfgScale(it))
-                        },
-                    )
+                // CFG scale not available on open ai and google media pipe
+                when (state.mode) {
+                    ServerSource.OPEN_AI,
+                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Unit
+                    else -> {
+                        Text(
+                            modifier = Modifier.padding(top = 8.dp),
+                            text = stringResource(
+                                LocalizationR.string.hint_cfg_scale,
+                                "${state.cfgScale.roundTo(2)}",
+                            ),
+                        )
+                        SliderTextInputField(
+                            value = state.cfgScale,
+                            valueRange = (CFG_SCALE_RANGE_MIN * 1f)..(CFG_SCALE_RANGE_MAX * 1f),
+                            valueDiff = 0.5f,
+                            steps = abs(CFG_SCALE_RANGE_MAX - CFG_SCALE_RANGE_MIN) * 2 - 1,
+                            sliderColors = sliderColors,
+                            onValueChange = {
+                                processIntent(GenerationMviIntent.Update.CfgScale(it))
+                            },
+                        )
+                    }
                 }
 
                 when (state.mode) {
@@ -548,9 +558,10 @@ fun GenerationInputForm(
                     else -> Unit
                 }
 
-                // Batch is not available for Local Diffusion
-                if (state.mode != ServerSource.LOCAL) {
-                    batchComponent()
+                // Batch is not available for any Local
+                when (state.mode) {
+                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE, ServerSource.LOCAL_MICROSOFT_ONNX -> Unit
+                    else -> batchComponent()
                 }
                 //Restore faces available only for A1111
                 if (state.mode == ServerSource.AUTOMATIC1111) {

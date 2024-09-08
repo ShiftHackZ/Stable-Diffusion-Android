@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.data.mocks.mockTextToImagePayload
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
 import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
@@ -31,7 +32,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
 
     private val stubBitmap = mockk<Bitmap>()
     private val stubException = Throwable("Something went wrong.")
-    private val stubStatus = BehaviorSubject.create<LocalDiffusion.Status>()
+    private val stubStatus = BehaviorSubject.create<LocalDiffusionStatus>()
     private val stubMediaStoreGateway = mockk<MediaStoreGateway>()
     private val stubBase64ToBitmapConverter = mockk<Base64ToBitmapConverter>()
     private val stubBitmapToBase64Converter = mockk<BitmapToBase64Converter>()
@@ -63,7 +64,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     @Before
     fun initialize() {
         every {
-            stubPreferenceManager::localDiffusionSchedulerThread.get()
+            stubPreferenceManager::localOnnxSchedulerThread.get()
         } returns SchedulersToken.COMPUTATION
 
         every {
@@ -83,17 +84,17 @@ class LocalDiffusionGenerationRepositoryImplTest {
     fun `given attempt to observe status, local emits two values, expected same values with same order`() {
         val stubObserver = repository.observeStatus().test()
 
-        stubStatus.onNext(LocalDiffusion.Status(1, 2))
+        stubStatus.onNext(LocalDiffusionStatus(1, 2))
 
         stubObserver
             .assertNoErrors()
-            .assertValueAt(0, LocalDiffusion.Status(1, 2))
+            .assertValueAt(0, LocalDiffusionStatus(1, 2))
 
-        stubStatus.onNext(LocalDiffusion.Status(2, 2))
+        stubStatus.onNext(LocalDiffusionStatus(2, 2))
 
         stubObserver
             .assertNoErrors()
-            .assertValueAt(1, LocalDiffusion.Status(2, 2))
+            .assertValueAt(1, LocalDiffusionStatus(2, 2))
     }
 
     @Test
@@ -142,7 +143,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     @Test
     fun `given attempt to generate from text, no selected model, expected error value`() {
         every {
-            stubDownloadableLocalDataSource.getSelected()
+            stubDownloadableLocalDataSource.getSelectedOnnx()
         } returns Single.error(stubException)
 
         repository
@@ -157,7 +158,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     @Test
     fun `given attempt to generate from text, has selected not downloaded model, expected IllegalStateException error value`() {
         every {
-            stubDownloadableLocalDataSource.getSelected()
+            stubDownloadableLocalDataSource.getSelectedOnnx()
         } returns Single.just(mockLocalAiModel.copy(downloaded = false))
 
         every {
@@ -182,7 +183,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     @Test
     fun `given attempt to generate from text, has selected downloaded model, local process success, expected valid domain model value`() {
         every {
-            stubDownloadableLocalDataSource.getSelected()
+            stubDownloadableLocalDataSource.getSelectedOnnx()
         } returns Single.just(mockLocalAiModel.copy(downloaded = true))
 
         every {
@@ -205,7 +206,7 @@ class LocalDiffusionGenerationRepositoryImplTest {
     @Test
     fun `given attempt to generate from text, has selected downloaded model, local process fails, expected error value`() {
         every {
-            stubDownloadableLocalDataSource.getSelected()
+            stubDownloadableLocalDataSource.getSelectedOnnx()
         } returns Single.just(mockLocalAiModel.copy(downloaded = true))
 
         every {

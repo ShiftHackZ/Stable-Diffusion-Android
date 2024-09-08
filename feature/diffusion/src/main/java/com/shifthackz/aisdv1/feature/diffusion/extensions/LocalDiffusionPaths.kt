@@ -11,8 +11,8 @@ fun modelPathPrefix(
     localModelIdProvider: LocalModelIdProvider,
 ): String {
     val modelId = localModelIdProvider.get()
-    return if (modelId == LocalAiModel.CUSTOM.id) {
-        preferenceManager.localDiffusionCustomModelPath
+    return if (modelId == LocalAiModel.CustomOnnx.id) {
+        preferenceManager.localOnnxCustomModelPath
     } else {
         "${fileProviderDescriptor.localModelDirPath}/${modelId}"
     }

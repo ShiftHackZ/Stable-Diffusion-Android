@@ -60,7 +60,7 @@ fun LocalDiffusionPageContent(
                     modifier = localModifier,
                     state = TextToImageState(
                         onBoardingDemo = true,
-                        mode = ServerSource.LOCAL,
+                        mode = ServerSource.LOCAL_MICROSOFT_ONNX,
                         advancedToggleButtonVisible = false,
                         advancedOptionsVisible = true,
                         formPromptTaggedInput = true,

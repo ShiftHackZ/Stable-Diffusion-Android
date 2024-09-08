@@ -54,6 +54,7 @@ import com.shifthackz.aisdv1.core.extensions.getRealPath
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreenTags.CUSTOM_MODEL_SWITCH
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
@@ -91,7 +92,8 @@ fun LocalDiffusionForm(
                 val icon = when (model.downloadState) {
                     is DownloadState.Downloading -> Icons.Outlined.FileDownload
                     else -> when {
-                        model.id == LocalAiModel.CUSTOM.id -> Icons.Outlined.Landslide
+                        model.id == LocalAiModel.CustomOnnx.id -> Icons.Outlined.Landslide
+                        model.id == LocalAiModel.CustomMediaPipe.id -> Icons.Outlined.Landslide
                         model.downloaded -> Icons.Outlined.FileDownloadDone
                         else -> Icons.Outlined.FileDownloadOff
                     }
@@ -113,14 +115,20 @@ fun LocalDiffusionForm(
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 2
                     )
-                    if (model.id != LocalAiModel.CUSTOM.id) {
-                        Text(
+                    when (model.id) {
+                        LocalAiModel.CustomOnnx.id,
+                        LocalAiModel.CustomMediaPipe.id -> Unit
+
+                        else -> Text(
                             text = model.size,
                             maxLines = 1
                         )
                     }
                 }
-                if (model.id != LocalAiModel.CUSTOM.id) {
+                // Do not display action button for custom model
+                if (model.id != LocalAiModel.CustomOnnx.id
+                    && model.id != LocalAiModel.CustomMediaPipe.id
+                ) {
                     Button(
                         modifier = Modifier.padding(end = 8.dp),
                         onClick = { processIntent(ServerSetupIntent.LocalModel.ClickReduce(model)) },
@@ -142,7 +150,9 @@ fun LocalDiffusionForm(
                     }
                 }
             }
-            if (model.id == LocalAiModel.CUSTOM.id) {
+            if (model.id == LocalAiModel.CustomOnnx.id
+                || model.id == LocalAiModel.CustomMediaPipe.id
+            ) {
                 Column(
                     modifier = Modifier.padding(8.dp),
                 ) {
@@ -150,81 +160,83 @@ fun LocalDiffusionForm(
                         text = stringResource(id = LocalizationR.string.model_local_custom_title),
                         style = MaterialTheme.typography.bodyMedium,
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = stringResource(id = LocalizationR.string.model_local_custom_sub_title),
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    if (model.id == LocalAiModel.CustomOnnx.id) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = stringResource(id = LocalizationR.string.model_local_custom_sub_title),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
 
-                    fun folderModifier(treeNum: Int) =
-                        Modifier.padding(start = (treeNum - 1) * 12.dp)
+                        fun folderModifier(treeNum: Int) =
+                            Modifier.padding(start = (treeNum - 1) * 12.dp)
 
-                    val folderStyle = MaterialTheme.typography.bodySmall
-                    Text(
-                        modifier = Modifier.padding(start = 12.dp),
-                        text = state.localCustomModelPath,
-                        style = folderStyle,
-                    )
+                        val folderStyle = MaterialTheme.typography.bodySmall
+                        Text(
+                            modifier = Modifier.padding(start = 12.dp),
+                            text = state.localOnnxCustomModelPath,
+                            style = folderStyle,
+                        )
 
-                    Text(
-                        modifier = folderModifier(3),
-                        text = "text_encoder",
-                        style = folderStyle,
-                    )
-                    Text(
-                        modifier = folderModifier(4),
-                        text = "model.ort",
-                        style = folderStyle,
-                    )
+                        Text(
+                            modifier = folderModifier(3),
+                            text = "text_encoder",
+                            style = folderStyle,
+                        )
+                        Text(
+                            modifier = folderModifier(4),
+                            text = "model.ort",
+                            style = folderStyle,
+                        )
 
-                    Text(
-                        modifier = folderModifier(3),
-                        text = "tokenizer",
-                        style = folderStyle,
-                    )
-                    Text(
-                        modifier = folderModifier(4),
-                        text = "merges.txt",
-                        style = folderStyle,
-                    )
-                    Text(
-                        modifier = folderModifier(3),
-                        text = "special_tokens_map.json",
-                        style = folderStyle,
-                    )
-                    Text(
-                        modifier = folderModifier(4),
-                        text = "tokenizer_config.json",
-                        style = folderStyle,
-                    )
-                    Text(
-                        modifier = folderModifier(4),
-                        text = "vocab.json",
-                        style = folderStyle,
-                    )
+                        Text(
+                            modifier = folderModifier(3),
+                            text = "tokenizer",
+                            style = folderStyle,
+                        )
+                        Text(
+                            modifier = folderModifier(4),
+                            text = "merges.txt",
+                            style = folderStyle,
+                        )
+                        Text(
+                            modifier = folderModifier(3),
+                            text = "special_tokens_map.json",
+                            style = folderStyle,
+                        )
+                        Text(
+                            modifier = folderModifier(4),
+                            text = "tokenizer_config.json",
+                            style = folderStyle,
+                        )
+                        Text(
+                            modifier = folderModifier(4),
+                            text = "vocab.json",
+                            style = folderStyle,
+                        )
 
-                    Text(
-                        modifier = folderModifier(3),
-                        text = "unet",
-                        style = folderStyle,
-                    )
-                    Text(
-                        modifier = folderModifier(4),
-                        text = "model.ort",
-                        style = folderStyle,
-                    )
+                        Text(
+                            modifier = folderModifier(3),
+                            text = "unet",
+                            style = folderStyle,
+                        )
+                        Text(
+                            modifier = folderModifier(4),
+                            text = "model.ort",
+                            style = folderStyle,
+                        )
 
-                    Text(
-                        modifier = folderModifier(3),
-                        text = "vae_decoder",
-                        style = folderStyle,
-                    )
-                    Text(
-                        modifier = folderModifier(4),
-                        text = "model.ort",
-                        style = folderStyle,
-                    )
+                        Text(
+                            modifier = folderModifier(3),
+                            text = "vae_decoder",
+                            style = folderStyle,
+                        )
+                        Text(
+                            modifier = folderModifier(4),
+                            text = "model.ort",
+                            style = folderStyle,
+                        )
+                    }
                 }
             }
             when (model.downloadState) {
@@ -258,17 +270,29 @@ fun LocalDiffusionForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 32.dp, bottom = 8.dp),
-            text = stringResource(id = LocalizationR.string.hint_local_diffusion_title),
+            text = stringResource(
+                id = if (state.mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
+                    LocalizationR.string.hint_local_diffusion_title
+                } else {
+                    LocalizationR.string.hint_mediapipe_title
+                },
+            ),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
         )
         Text(
             modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
-            text = stringResource(id = LocalizationR.string.hint_local_diffusion_sub_title),
+            text = stringResource(
+                id = if (state.mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
+                    LocalizationR.string.hint_local_diffusion_sub_title
+                } else {
+                    LocalizationR.string.hint_mediapipe_sub_title
+                },
+            ),
             style = MaterialTheme.typography.bodyMedium,
         )
-        if (buildInfoProvider.type == BuildType.FOSS) {
+        if (buildInfoProvider.type != BuildType.PLAY) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -285,7 +309,7 @@ fun LocalDiffusionForm(
                 )
             }
         }
-        if (state.localCustomModel && buildInfoProvider.type == BuildType.FOSS) {
+        if (state.localCustomModel && buildInfoProvider.type != BuildType.PLAY) {
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -342,9 +366,12 @@ fun LocalDiffusionForm(
                     .fillMaxWidth()
                     .padding(top = 14.dp),
                 value = state.localCustomModelPath,
-                onValueChange = { processIntent(ServerSetupIntent.SelectLocalModelPath(it)) },
+                onValueChange = { string ->
+                    string.filter { it != '\n' }
+                        .let(ServerSetupIntent::SelectLocalModelPath)
+                        .let(processIntent::invoke)
+                },
                 enabled = true,
-                singleLine = true,
                 label = { Text(stringResource(LocalizationR.string.model_local_path_title)) },
                 trailingIcon = {
                     IconButton(
@@ -387,7 +414,8 @@ fun LocalDiffusionForm(
         }
         state.localModels
             .filter {
-                val customPredicate = it.id == LocalAiModel.CUSTOM.id
+                val customPredicate =
+                    it.id == LocalAiModel.CustomOnnx.id || it.id == LocalAiModel.CustomMediaPipe.id
                 if (state.localCustomModel) customPredicate else !customPredicate
             }
             .forEach { localModel -> modelItemUi(localModel) }

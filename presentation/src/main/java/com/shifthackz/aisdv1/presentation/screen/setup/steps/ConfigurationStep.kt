@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.forms.Automatic1111Form
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.HordeForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.HuggingFaceForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.LocalDiffusionForm
+import com.shifthackz.aisdv1.presentation.screen.setup.forms.MediaPipeForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.OpenAiForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.StabilityAiForm
 import com.shifthackz.aisdv1.presentation.screen.setup.forms.SwarmUiForm
@@ -33,7 +34,7 @@ fun ConfigurationStep(
                 processIntent = processIntent,
             )
 
-            ServerSource.LOCAL -> LocalDiffusionForm(
+            ServerSource.LOCAL_MICROSOFT_ONNX -> LocalDiffusionForm(
                 state = state,
                 buildInfoProvider = buildInfoProvider,
                 processIntent = processIntent,
@@ -56,6 +57,12 @@ fun ConfigurationStep(
 
             ServerSource.SWARM_UI -> SwarmUiForm(
                 state = state,
+                processIntent = processIntent,
+            )
+
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> MediaPipeForm(
+                state = state,
+                buildInfoProvider = buildInfoProvider,
                 processIntent = processIntent,
             )
         }

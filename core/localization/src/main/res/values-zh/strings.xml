@@ -167,8 +167,10 @@
 
     <!-- 本地扩散提示 -->
     <string name="hint_local_diffusion_title" translatable="false">本地扩散</string>
-    <string name="hint_local_diffusion_sub_title">此配置允许在您的手机上运行Stable Diffusion AI生成，无需连接到远程服务器/云。 </string>
+    <string name="hint_local_diffusion_sub_title">此配置使用 Microsoft ONNX 运行时，并允许在手机上运行稳定的 Diffusion AI 生成，无需连接到远程服务器/云。</string>
     <string name="hint_local_diffusion_warning">警告！本地扩散功能处于测试版。不要期望使用本地模式获得高质量图像。 \n\n此实现可能在不强大的手机上运行不佳。生成性能和速度取决于您的手机资源（CPU、RAM）和生成的图像大小（图像越小，生成越快）。</string>
+
+    <string name="hint_mediapipe_sub_title">此配置使用 Google AI MediaPipe 运行时，并允许在手机上运行稳定的 Diffusion AI 生成，无需连接到远程服务器/云。</string>
 
     <!-- 抽屉 -->
     <string name="drawer_web_ui">网络界面</string>

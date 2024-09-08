@@ -2,11 +2,11 @@ package com.shifthackz.aisdv1.domain.usecase.downloadable
 
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
 
-internal class ObserveLocalAiModelsUseCaseImpl(
+internal class ObserveLocalOnnxModelsUseCaseImpl(
     private val repository: DownloadableModelRepository,
-) : ObserveLocalAiModelsUseCase {
+) : ObserveLocalOnnxModelsUseCase {
 
     override fun invoke() = repository
-        .observeAll()
+        .observeAllOnnx()
         .distinctUntilChanged()
 }

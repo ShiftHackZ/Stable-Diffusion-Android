@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
 import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.io.File
@@ -22,70 +23,92 @@ internal class DownloadableModelLocalDataSource(
     private val buildInfoProvider: BuildInfoProvider,
 ) : DownloadableModelDataSource.Local {
 
-    override fun getAll() = dao
-        .query()
+    override fun getAllOnnx() = dao
+        .queryByType(LocalAiModel.Type.ONNX.key)
         .map(List<LocalModelEntity>::mapEntityToDomain)
         .map { models ->
             buildList {
                 addAll(models)
-                if (buildInfoProvider.type == BuildType.FOSS) add(LocalAiModel.CUSTOM)
+                if (buildInfoProvider.type != BuildType.PLAY) {
+                    add(LocalAiModel.CustomOnnx)
+                }
+            }
+        }
+        .flatMap { models -> models.withLocalData() }
+
+    override fun getAllMediaPipe(): Single<List<LocalAiModel>> = dao
+        .queryByType(LocalAiModel.Type.MediaPipe.key)
+        .map(List<LocalModelEntity>::mapEntityToDomain)
+        .map { models ->
+            buildList {
+                addAll(models)
+                if (buildInfoProvider.type != BuildType.PLAY) {
+                    add(LocalAiModel.CustomMediaPipe)
+                }
             }
         }
         .flatMap { models -> models.withLocalData() }
 
     override fun getById(id: String): Single<LocalAiModel> {
-        val chain = if (id == LocalAiModel.CUSTOM.id) {
-            Single.just(LocalAiModel.CUSTOM)
-        } else {
-            dao
+        val chain = when (id) {
+            LocalAiModel.CustomOnnx.id -> Single.just(LocalAiModel.CustomOnnx)
+            LocalAiModel.CustomMediaPipe.id -> Single.just(LocalAiModel.CustomMediaPipe)
+            else -> dao
                 .queryById(id)
                 .map(LocalModelEntity::mapEntityToDomain)
         }
-
         return chain.flatMap { model -> model.withLocalData() }
     }
 
-    override fun getSelected() = Single
-        .just(preferenceManager.localModelId)
-        .onErrorResumeNext { Single.error(IllegalStateException("No selected model.")) }
+    override fun getSelectedOnnx() = Single
+        .just(preferenceManager.localOnnxModelId)
         .flatMap(::getById)
         .onErrorResumeNext { Single.error(IllegalStateException("No selected model.")) }
 
-    override fun observeAll() = dao
-        .observe()
+    override fun observeAllOnnx(): Flowable<List<LocalAiModel>> = dao
+        .observeByType(LocalAiModel.Type.ONNX.key)
         .map(List<LocalModelEntity>::mapEntityToDomain)
         .map { models ->
             buildList {
                 addAll(models)
-                if (buildInfoProvider.type == BuildType.FOSS) add(LocalAiModel.CUSTOM)
+                if (buildInfoProvider.type != BuildType.PLAY) add(LocalAiModel.CustomOnnx)
             }
         }
         .flatMap { models -> models.withLocalData().toFlowable() }
 
-    override fun select(id: String) = Completable.fromAction {
-        preferenceManager.localModelId = id
-    }
-
     override fun save(list: List<LocalAiModel>) = list
-        .filter { it.id != LocalAiModel.CUSTOM.id }
+        .filter { it.id != LocalAiModel.CustomOnnx.id }
         .mapDomainToEntity()
         .let(dao::insertList)
 
-    override fun isDownloaded(id: String) = Single.create { emitter ->
+    override fun delete(id: String): Completable = Completable.fromAction {
+        getLocalModelDirectory(id).deleteRecursively()
+    }
+
+    private fun isDownloaded(model: LocalAiModel) = Single.create { emitter ->
         try {
-            if (id == LocalAiModel.CUSTOM.id) {
-                if (!emitter.isDisposed) emitter.onSuccess(true)
-            } else {
-                val files = getLocalModelFiles(id)
-                if (!emitter.isDisposed) emitter.onSuccess(files.size == 4)
+            when (model.id) {
+                LocalAiModel.CustomOnnx.id,
+                LocalAiModel.CustomMediaPipe.id -> emitter.onSuccess(true)
+
+                else -> {
+
+                    when (model.type) {
+                        LocalAiModel.Type.ONNX -> {
+                            val files = getLocalModelFiles(model.id).filter { it.isDirectory }
+                            emitter.onSuccess(files.size == 4)
+                        }
+
+                        LocalAiModel.Type.MediaPipe -> {
+                            val files = getLocalModelFiles(model.id)
+                            emitter.onSuccess(files.isNotEmpty())
+                        }
+                    }
+                }
             }
         } catch (e: Exception) {
             if (!emitter.isDisposed) emitter.onSuccess(false)
         }
-    }
-
-    override fun delete(id: String): Completable = Completable.fromAction {
-        getLocalModelDirectory(id).deleteRecursively()
     }
 
     private fun getLocalModelDirectory(id: String): File {
@@ -95,7 +118,7 @@ internal class DownloadableModelLocalDataSource(
     private fun getLocalModelFiles(id: String): List<File> {
         val localModelDir = getLocalModelDirectory(id)
         if (!localModelDir.exists()) return emptyList()
-        return localModelDir.listFiles()?.filter { it.isDirectory } ?: emptyList()
+        return localModelDir.listFiles()?.toList() ?: emptyList()
     }
 
     private fun List<LocalAiModel>.withLocalData() = Observable
@@ -103,11 +126,14 @@ internal class DownloadableModelLocalDataSource(
         .flatMapSingle { model -> model.withLocalData() }
         .toList()
 
-    private fun LocalAiModel.withLocalData() = isDownloaded(id)
+    private fun LocalAiModel.withLocalData() = isDownloaded(this)
         .map { downloaded ->
             copy(
                 downloaded = downloaded,
-                selected = preferenceManager.localModelId == id,
+                selected = when (this.type) {
+                    LocalAiModel.Type.ONNX -> preferenceManager.localOnnxModelId == id
+                    LocalAiModel.Type.MediaPipe -> preferenceManager.localMediaPipeModelId == id
+                },
             )
         }
 }

@@ -15,7 +15,8 @@ fun ServerSource.getName(): String {
 fun ServerSource.getNameUiText(): UiText = when (this) {
     ServerSource.AUTOMATIC1111 -> LocalizationR.string.srv_type_own
     ServerSource.HORDE -> LocalizationR.string.srv_type_horde
-    ServerSource.LOCAL -> LocalizationR.string.srv_type_local
+    ServerSource.LOCAL_MICROSOFT_ONNX -> LocalizationR.string.srv_type_local
+    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LocalizationR.string.srv_type_media_pipe
     ServerSource.HUGGING_FACE -> LocalizationR.string.srv_type_hugging_face
     ServerSource.OPEN_AI -> LocalizationR.string.srv_type_open_ai
     ServerSource.STABILITY_AI -> LocalizationR.string.srv_type_stability_ai

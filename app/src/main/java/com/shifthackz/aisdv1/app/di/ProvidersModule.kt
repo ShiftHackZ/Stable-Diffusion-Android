@@ -130,7 +130,11 @@ val providersModule = module {
                 append("$version")
                 if (BuildConfig.DEBUG) append("-dev")
                 append(" ($buildNumber)")
-                if (type == BuildType.FOSS) append(" FOSS")
+                when (type) {
+                    BuildType.FULL -> append(" FULL")
+                    BuildType.FOSS -> append(" FOSS")
+                    BuildType.PLAY -> Unit
+                }
             }
         }
     }
@@ -172,14 +176,14 @@ val providersModule = module {
 
     single {
         DeviceNNAPIFlagProvider {
-            get<PreferenceManager>().localUseNNAPI
+            get<PreferenceManager>().localOnnxUseNNAPI
                 .let { nnApi -> if (nnApi) LocalDiffusionFlag.NN_API else LocalDiffusionFlag.CPU }
                 .let(LocalDiffusionFlag::value)
         }
     }
 
     single {
-        LocalModelIdProvider { get<PreferenceManager>().localModelId }
+        LocalModelIdProvider { get<PreferenceManager>().localOnnxModelId }
     }
 
     single {

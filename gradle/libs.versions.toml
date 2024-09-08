@@ -46,6 +46,7 @@ catppuccin = "0.1.2"
 turbine = "1.1.0"
 roboelectric = "4.13"
 testCoroutines = "1.8.1"
+mediaPipeGenerator = "0.10.14"
 
 [libraries]
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp"}
@@ -77,6 +78,7 @@ androidx-work-runtime = { group = "androidx.work", name = "work-runtime", versio
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 google-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanistSystemUi" }
+google-mediapipe-image-generator = { group = "com.google.mediapipe", name = "tasks-vision-image-generator", version.ref = "mediaPipeGenerator" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 retrofit-adapter-rxjava3 = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit" }
@@ -115,6 +117,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version="unspecified" }
+generic-flavors = { id = "generic.flavors", version = "unspecified" }
 generic-library = { id = "generic.library", version = "unspecified" }
 generic-baseline-profm = { id = "generic.baseline.profm", version = "unspecified" }
 generic-compose = { id = "generic.compose", version = "unspecified" }

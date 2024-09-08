@@ -51,27 +51,6 @@ android {
         println("[Signature] -> Build will be signed with signature: $alias")
         buildTypes.getByName("release").signingConfig = signingConfigs.getByName("release")
     }
-
-    flavorDimensions += "type"
-    productFlavors {
-        create("dev") {
-            dimension = "type"
-            applicationIdSuffix = ".dev"
-            resValue("string", "app_name", "SDAI Dev")
-            buildConfigField("String", "BUILD_FLAVOR_TYPE", "\"FOSS\"")
-        }
-        create("foss") {
-            dimension = "type"
-            applicationIdSuffix = ".foss"
-            resValue("string", "app_name", "SDAI FOSS")
-            buildConfigField("String", "BUILD_FLAVOR_TYPE", "\"FOSS\"")
-        }
-        create("playstore") {
-            dimension = "type"
-            resValue("string", "app_name", "SDAI")
-            buildConfigField("String", "BUILD_FLAVOR_TYPE", "\"GOOGLE_PLAY\"")
-        }
-    }
 }
 
 dependencies {
@@ -85,6 +64,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:diffusion"))
+    implementation(project(":feature:mediapipe"))
     implementation(project(":feature:work"))
     implementation(project(":data"))
     implementation(project(":demo"))

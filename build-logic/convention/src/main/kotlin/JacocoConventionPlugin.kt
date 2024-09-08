@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
 
-class JacocoConventionPlugin  : Plugin<Project> {
+class JacocoConventionPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

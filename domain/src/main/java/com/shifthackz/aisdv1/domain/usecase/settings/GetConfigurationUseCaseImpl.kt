@@ -24,8 +24,10 @@ internal class GetConfigurationUseCaseImpl(
             stabilityAiApiKey = preferenceManager.stabilityAiApiKey,
             stabilityAiEngineId = preferenceManager.stabilityAiEngineId,
             authCredentials = authorizationStore.getAuthorizationCredentials(),
-            localModelId = preferenceManager.localModelId,
-            localModelPath = preferenceManager.localDiffusionCustomModelPath,
+            localOnnxModelId = preferenceManager.localOnnxModelId,
+            localOnnxModelPath = preferenceManager.localOnnxCustomModelPath,
+            localMediaPipeModelId = preferenceManager.localMediaPipeModelId,
+            localMediaPipeModelPath = preferenceManager.localMediaPipeCustomModelPath,
         )
     )
 }

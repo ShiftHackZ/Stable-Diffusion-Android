@@ -24,7 +24,9 @@ internal class SetServerConfigurationUseCaseImpl(
             preferenceManager.huggingFaceModel = configuration.huggingFaceModel
             preferenceManager.stabilityAiApiKey = configuration.stabilityAiApiKey
             preferenceManager.stabilityAiEngineId = configuration.stabilityAiEngineId
-            preferenceManager.localModelId = configuration.localModelId
-            preferenceManager.localDiffusionCustomModelPath = configuration.localModelPath
+            preferenceManager.localOnnxModelId = configuration.localOnnxModelId
+            preferenceManager.localOnnxCustomModelPath = configuration.localOnnxModelPath
+            preferenceManager.localMediaPipeModelId = configuration.localMediaPipeModelId
+            preferenceManager.localMediaPipeCustomModelPath = configuration.localMediaPipeModelPath
         }
 }

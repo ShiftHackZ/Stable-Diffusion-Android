@@ -72,7 +72,8 @@ val viewModelModule = module {
             launchSource = launchSource,
             dispatchersProvider = get(),
             getConfigurationUseCase = get(),
-            getLocalAiModelsUseCase = get(),
+            getLocalOnnxModelsUseCase = get(),
+            getLocalMediaPipeModelsUseCase = get(),
             fetchAndGetHuggingFaceModelsUseCase = get(),
             urlValidator = get(),
             stringValidator = get(),
@@ -84,6 +85,7 @@ val viewModelModule = module {
             preferenceManager = get(),
             wakeLockInterActor = get(),
             mainRouter = get(),
+            buildInfoProvider = get(),
         )
     }
 

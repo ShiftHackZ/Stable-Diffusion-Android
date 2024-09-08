@@ -12,6 +12,6 @@ val mockConfiguration = Configuration(
     huggingFaceModel = "5598",
     stabilityAiApiKey = "5598",
     stabilityAiEngineId = "5598",
-    localModelId = "5598",
-    localModelPath = "/storage/emulated/0/5598",
+    localOnnxModelId = "5598",
+    localOnnxModelPath = "/storage/emulated/0/5598",
 )

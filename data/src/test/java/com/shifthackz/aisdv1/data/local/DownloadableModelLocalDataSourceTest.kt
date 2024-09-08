@@ -13,8 +13,6 @@ import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
 import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkConstructor
-import io.mockk.mockkStatic
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
@@ -22,7 +20,6 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.junit.Assert
 import org.junit.Test
-import java.io.File
 
 class DownloadableModelLocalDataSourceTest {
 
@@ -43,7 +40,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get all models, dao returns models list, app build type is PLAY, expected valid domain models list`() {
         every {
-            stubDao.query()
+            stubDao.queryByType(any())
         } returns Single.just(mockLocalModelEntities)
 
         every {
@@ -51,7 +48,7 @@ class DownloadableModelLocalDataSourceTest {
         } returns BuildType.PLAY
 
         every {
-            stubPreferenceManager.localModelId
+            stubPreferenceManager.localOnnxModelId
         } returns ""
 
         every {
@@ -61,7 +58,7 @@ class DownloadableModelLocalDataSourceTest {
         val expected = mockLocalModelEntities.mapEntityToDomain()
 
         localDataSource
-            .getAll()
+            .getAllOnnx()
             .test()
             .assertNoErrors()
             .assertValue { actual ->
@@ -74,7 +71,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get all models, dao returns empty models list, app build type is PLAY, expected empty domain models list`() {
         every {
-            stubDao.query()
+            stubDao.queryByType(any())
         } returns Single.just(emptyList())
 
         every {
@@ -82,11 +79,11 @@ class DownloadableModelLocalDataSourceTest {
         } returns BuildType.PLAY
 
         every {
-            stubPreferenceManager.localModelId
+            stubPreferenceManager.localOnnxModelId
         } returns ""
 
         localDataSource
-            .getAll()
+            .getAllOnnx()
             .test()
             .assertNoErrors()
             .assertValue(emptyList())
@@ -97,7 +94,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get all models, dao returns models list, app build type is FOSS, expected valid domain models list with CUSTOM model included`() {
         every {
-            stubDao.query()
+            stubDao.queryByType(any())
         } returns Single.just(mockLocalModelEntities)
 
         every {
@@ -105,7 +102,7 @@ class DownloadableModelLocalDataSourceTest {
         } returns BuildType.FOSS
 
         every {
-            stubPreferenceManager.localModelId
+            stubPreferenceManager.localOnnxModelId
         } returns ""
 
         every {
@@ -114,11 +111,11 @@ class DownloadableModelLocalDataSourceTest {
 
         val expected = buildList {
             addAll(mockLocalModelEntities.mapEntityToDomain())
-            add(LocalAiModel.CUSTOM.copy(downloaded = true))
+            add(LocalAiModel.CustomOnnx.copy(downloaded = true))
         }
 
         localDataSource
-            .getAll()
+            .getAllOnnx()
             .test()
             .assertNoErrors()
             .assertValue { actual ->
@@ -131,7 +128,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get all models, dao returns empty models list, app build type is FOSS, expected domain models list with only CUSTOM model included`() {
         every {
-            stubDao.query()
+            stubDao.queryByType(any())
         } returns Single.just(emptyList())
 
         every {
@@ -139,14 +136,14 @@ class DownloadableModelLocalDataSourceTest {
         } returns BuildType.FOSS
 
         every {
-            stubPreferenceManager.localModelId
+            stubPreferenceManager.localOnnxModelId
         } returns ""
 
         localDataSource
-            .getAll()
+            .getAllOnnx()
             .test()
             .assertNoErrors()
-            .assertValue(listOf(LocalAiModel.CUSTOM.copy(downloaded = true)))
+            .assertValue(listOf(LocalAiModel.CustomOnnx.copy(downloaded = true)))
             .await()
             .assertComplete()
     }
@@ -154,11 +151,11 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get all models, dao throws exception, expected error value`() {
         every {
-            stubDao.query()
+            stubDao.queryByType(any())
         } returns Single.error(stubException)
 
         localDataSource
-            .getAll()
+            .getAllOnnx()
             .test()
             .assertError(stubException)
             .assertNoValues()
@@ -173,7 +170,7 @@ class DownloadableModelLocalDataSourceTest {
         } returns Single.just(mockLocalModelEntity)
 
         every {
-            stubPreferenceManager.localModelId
+            stubPreferenceManager.localOnnxModelId
         } returns ""
 
         every {
@@ -198,7 +195,7 @@ class DownloadableModelLocalDataSourceTest {
         } returns Single.just(mockLocalModelEntity)
 
         every {
-            stubPreferenceManager.localModelId
+            stubPreferenceManager.localOnnxModelId
         } returns "5598"
 
         every {
@@ -238,7 +235,7 @@ class DownloadableModelLocalDataSourceTest {
         } returns Single.just(mockLocalModelEntity)
 
         every {
-            stubPreferenceManager.localModelId
+            stubPreferenceManager.localOnnxModelId
         } returns "5598"
 
         every {
@@ -248,7 +245,7 @@ class DownloadableModelLocalDataSourceTest {
         val expected = mockLocalModelEntity.mapEntityToDomain().copy(selected = true)
 
         localDataSource
-            .getSelected()
+            .getSelectedOnnx()
             .test()
             .assertNoErrors()
             .assertValue(expected)
@@ -259,11 +256,11 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to get selected model, preference throws exception, expected error value`() {
         every {
-            stubPreferenceManager.localModelId
+            stubPreferenceManager.localOnnxModelId
         } returns ""
 
         localDataSource
-            .getSelected()
+            .getSelectedOnnx()
             .test()
             .assertError { t ->
                 t is IllegalStateException && t.message == "No selected model."
@@ -276,7 +273,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to observe all models, dao emits empty list, then list with two items, app build type is PLAY, expected empty list, then domain list with two items`() {
         every {
-            stubDao.observe()
+            stubDao.observeByType(any())
         } returns stubLocalModels.toFlowable(BackpressureStrategy.LATEST)
 
         every {
@@ -284,7 +281,7 @@ class DownloadableModelLocalDataSourceTest {
         } returns BuildType.PLAY
 
         every {
-            stubPreferenceManager.localModelId
+            stubPreferenceManager.localOnnxModelId
         } returns ""
 
         every {
@@ -292,7 +289,7 @@ class DownloadableModelLocalDataSourceTest {
         } returns "/tmp/local"
 
         val stubObserver = localDataSource
-            .observeAll()
+            .observeAllOnnx()
             .test()
 
         stubLocalModels.onNext(emptyList())
@@ -311,7 +308,7 @@ class DownloadableModelLocalDataSourceTest {
     @Test
     fun `given attempt to observe all models, dao emits empty list, then list with two items, app build type is FOSS, expected list with only CUSTOM model included, then domain list with two items and CUSTOM`() {
         every {
-            stubDao.observe()
+            stubDao.observeByType(any())
         } returns stubLocalModels.toFlowable(BackpressureStrategy.LATEST)
 
         every {
@@ -319,7 +316,7 @@ class DownloadableModelLocalDataSourceTest {
         } returns BuildType.FOSS
 
         every {
-            stubPreferenceManager.localModelId
+            stubPreferenceManager.localOnnxModelId
         } returns ""
 
         every {
@@ -327,14 +324,14 @@ class DownloadableModelLocalDataSourceTest {
         } returns "/tmp/local"
 
         val stubObserver = localDataSource
-            .observeAll()
+            .observeAllOnnx()
             .test()
 
         stubLocalModels.onNext(emptyList())
 
         stubObserver
             .assertNoErrors()
-            .assertValueAt(0, listOf(LocalAiModel.CUSTOM.copy(downloaded = true)))
+            .assertValueAt(0, listOf(LocalAiModel.CustomOnnx.copy(downloaded = true)))
 
         stubLocalModels.onNext(mockLocalModelEntities)
 
@@ -342,59 +339,21 @@ class DownloadableModelLocalDataSourceTest {
             .assertNoErrors()
             .assertValueAt(1, buildList {
                 addAll(mockLocalModelEntities.mapEntityToDomain())
-                add(LocalAiModel.CUSTOM.copy(downloaded = true))
+                add(LocalAiModel.CustomOnnx.copy(downloaded = true))
             })
     }
 
     @Test
     fun `given attempt to observe all models, dao throws exception, expected error value`() {
         every {
-            stubDao.observe()
+            stubDao.observeByType(any())
         } returns Flowable.error(stubException)
 
         localDataSource
-            .observeAll()
+            .observeAllOnnx()
             .test()
             .assertError(stubException)
             .assertNoValues()
-            .await()
-            .assertNotComplete()
-    }
-
-    @Test
-    fun `given attempt to select model, preference changed, expected preference returns changed selected model id value`() {
-        every {
-            stubPreferenceManager.localModelId
-        } returns ""
-
-        every {
-            stubPreferenceManager::localModelId.set(any())
-        } returns Unit
-
-        localDataSource
-            .select("5598")
-            .test()
-            .assertNoErrors()
-            .await()
-            .assertComplete()
-
-        every {
-            stubPreferenceManager.localModelId
-        } returns "5598"
-
-        Assert.assertEquals("5598", stubPreferenceManager.localModelId)
-    }
-
-    @Test
-    fun `given attempt to select model, preference throws exception, expected error value`() {
-        every {
-            stubPreferenceManager::localModelId.set(any())
-        } throws stubException
-
-        localDataSource
-            .select("5598")
-            .test()
-            .assertError(stubException)
             .await()
             .assertNotComplete()
     }
@@ -427,8 +386,6 @@ class DownloadableModelLocalDataSourceTest {
             .assertNotComplete()
     }
 
-    //--
-
     @Test
     fun `given attempt to delete file, delete operation success, expected complete value`() {
         every {
@@ -455,16 +412,5 @@ class DownloadableModelLocalDataSourceTest {
             .assertError(stubException)
             .await()
             .assertNotComplete()
-    }
-
-    @Test
-    fun `given attempt to check if CUSTOM model is downloaded, expected true`() {
-        localDataSource
-            .isDownloaded(LocalAiModel.CUSTOM.id)
-            .test()
-            .assertNoErrors()
-            .assertValue(true)
-            .await()
-            .assertComplete()
     }
 }

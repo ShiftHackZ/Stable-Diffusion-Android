@@ -7,15 +7,15 @@ import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test
 
-class GetLocalAiModelsUseCaseImplTest {
+class GetLocalOnnxModelsUseCaseImplTest {
 
     private val stubRepository = mock<DownloadableModelRepository>()
 
-    private val useCase = GetLocalAiModelsUseCaseImpl(stubRepository)
+    private val useCase = GetLocalOnnxModelsUseCaseImpl(stubRepository)
 
     @Test
     fun `given repository returned models list, expected valid models list value`() {
-        whenever(stubRepository.getAll())
+        whenever(stubRepository.getAllOnnx())
             .thenReturn(Single.just(mockLocalAiModels))
 
         useCase()
@@ -28,7 +28,7 @@ class GetLocalAiModelsUseCaseImplTest {
 
     @Test
     fun `given repository returned empty models list, expected empty models list value`() {
-        whenever(stubRepository.getAll())
+        whenever(stubRepository.getAllOnnx())
             .thenReturn(Single.just(emptyList()))
 
         useCase()
@@ -43,7 +43,7 @@ class GetLocalAiModelsUseCaseImplTest {
     fun `given repository thrown exception, expected error value`() {
         val stubException = Throwable("Unable to collect local models.")
 
-        whenever(stubRepository.getAll())
+        whenever(stubRepository.getAllOnnx())
             .thenReturn(Single.error(stubException))
 
         useCase()

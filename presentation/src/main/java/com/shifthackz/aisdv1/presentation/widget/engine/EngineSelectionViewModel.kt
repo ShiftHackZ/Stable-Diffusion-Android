@@ -11,7 +11,7 @@ import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
-import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalAiModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
@@ -25,7 +25,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 class EngineSelectionViewModel(
     dispatchersProvider: DispatchersProvider,
     fetchAndGetSwarmUiModelsUseCase: FetchAndGetSwarmUiModelsUseCase,
-    observeLocalAiModelsUseCase: ObserveLocalAiModelsUseCase,
+    observeLocalOnnxModelsUseCase: ObserveLocalOnnxModelsUseCase,
     fetchAndGetStabilityAiEnginesUseCase: FetchAndGetStabilityAiEnginesUseCase,
     getHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
     private val preferenceManager: PreferenceManager,
@@ -61,8 +61,8 @@ class EngineSelectionViewModel(
             .onErrorReturn { emptyList() }
             .toFlowable()
 
-        val localAiModels = observeLocalAiModelsUseCase()
-            .map { models -> models.filter { it.downloaded || it.id == LocalAiModel.CUSTOM.id } }
+        val localAiModels = observeLocalOnnxModelsUseCase()
+            .map { models -> models.filter { it.downloaded || it.id == LocalAiModel.CustomOnnx.id } }
             .onErrorReturn { emptyList() }
 
         !Flowable.combineLatest(
@@ -94,7 +94,7 @@ class EngineSelectionViewModel(
                             stEngines = stEngines.map { it.id },
                             selectedStEngine = config.stabilityAiEngineId,
                             localAiModels = localModels,
-                            selectedLocalAiModelId = localModels.firstOrNull { it.id == config.localModelId }?.id
+                            selectedLocalAiModelId = localModels.firstOrNull { it.id == config.localOnnxModelId }?.id
                                 ?: state.selectedLocalAiModelId
                         )
                     }
@@ -131,7 +131,7 @@ class EngineSelectionViewModel(
 
             ServerSource.STABILITY_AI -> preferenceManager.stabilityAiEngineId = intent.value
 
-            ServerSource.LOCAL -> preferenceManager.localModelId = intent.value
+            ServerSource.LOCAL_MICROSOFT_ONNX -> preferenceManager.localOnnxModelId = intent.value
 
             else -> Unit
         }

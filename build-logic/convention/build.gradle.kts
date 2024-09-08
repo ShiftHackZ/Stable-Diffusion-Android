@@ -36,6 +36,10 @@ gradlePlugin {
             id = "generic.application"
             implementationClass = "ApplicationConventionPlugin"
         }
+        register("Flavors") {
+            id = "generic.flavors"
+            implementationClass = "FlavorsConventionPlugin"
+        }
         register("BaselineProFm") {
             id = "generic.baseline.profm"
             implementationClass = "BaselineProFmConventionPlugin"

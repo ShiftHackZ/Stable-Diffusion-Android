@@ -17,7 +17,7 @@ internal class InterruptGenerationUseCaseImpl(
     override fun invoke() = when (preferenceManager.source) {
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.interruptGeneration()
         ServerSource.HORDE -> hordeGenerationRepository.interruptGeneration()
-        ServerSource.LOCAL -> localDiffusionGenerationRepository.interruptGeneration()
+        ServerSource.LOCAL_MICROSOFT_ONNX -> localDiffusionGenerationRepository.interruptGeneration()
         else -> Completable.complete()
     }
 }

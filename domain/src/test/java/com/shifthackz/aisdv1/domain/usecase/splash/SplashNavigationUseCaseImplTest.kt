@@ -89,7 +89,7 @@ class SplashNavigationUseCaseImplTest {
             .thenReturn("")
 
         whenever(stubPreferenceManager.source)
-            .thenReturn(ServerSource.LOCAL)
+            .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
         useCase()
             .test()
@@ -109,7 +109,7 @@ class SplashNavigationUseCaseImplTest {
             .thenReturn("http://192.168.0.1:7860")
 
         whenever(stubPreferenceManager.source)
-            .thenReturn(ServerSource.LOCAL)
+            .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
         useCase()
             .test()

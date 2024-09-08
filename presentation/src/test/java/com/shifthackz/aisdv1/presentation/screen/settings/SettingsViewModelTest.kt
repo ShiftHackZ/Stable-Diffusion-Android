@@ -237,13 +237,13 @@ class SettingsViewModelTest : CoreViewModelTest<SettingsViewModel>() {
     @Test
     fun `given received UpdateFlag NNAPI intent, expected localUseNNAPI preference updated`() {
         every {
-            stubPreferenceManager::localUseNNAPI.set(any())
+            stubPreferenceManager::localOnnxUseNNAPI.set(any())
         } returns Unit
 
         viewModel.processIntent(SettingsIntent.UpdateFlag.NNAPI(true))
 
         verify {
-            stubPreferenceManager::localUseNNAPI.set(true)
+            stubPreferenceManager::localOnnxUseNNAPI.set(true)
         }
     }
 

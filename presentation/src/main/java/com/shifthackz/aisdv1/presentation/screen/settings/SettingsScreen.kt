@@ -235,7 +235,8 @@ private fun ContentSettingsState(
                     ServerSource.HUGGING_FACE -> LocalizationR.string.srv_type_hugging_face_short
                     ServerSource.OPEN_AI -> LocalizationR.string.srv_type_open_ai
                     ServerSource.STABILITY_AI -> LocalizationR.string.srv_type_stability_ai
-                    ServerSource.LOCAL -> LocalizationR.string.srv_type_local_short
+                    ServerSource.LOCAL_MICROSOFT_ONNX -> LocalizationR.string.srv_type_local_short
+                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LocalizationR.string.srv_type_media_pipe_short
                     ServerSource.SWARM_UI -> LocalizationR.string.srv_type_swarm_ui
                 }.asUiText(),
                 onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
@@ -256,7 +257,7 @@ private fun ContentSettingsState(
                 endValueText = state.sdModelSelected.asUiText(),
                 onClick = { processIntent(SettingsIntent.SdModel.OpenChooser) },
             )
-            if (state.showLocalUseNNAPI) {
+            if (state.showLocalMICROSOFTONNXUseNNAPI) {
                 SettingsItem(
                     modifier = itemModifier,
                     loading = state.loading,

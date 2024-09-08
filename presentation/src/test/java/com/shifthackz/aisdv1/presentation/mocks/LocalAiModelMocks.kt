@@ -5,9 +5,10 @@ import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 
 val mockLocalAiModels = listOf(
-    LocalAiModel.CUSTOM,
+    LocalAiModel.CustomOnnx,
     LocalAiModel(
         id = "1",
+        type = LocalAiModel.Type.ONNX,
         name = "Model 1",
         size = "5 Gb",
         sources = listOf("https://example.com/1.html"),

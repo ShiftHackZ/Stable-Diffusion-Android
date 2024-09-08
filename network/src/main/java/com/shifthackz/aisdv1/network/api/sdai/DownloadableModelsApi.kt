@@ -11,7 +11,9 @@ import java.io.File
 
 interface DownloadableModelsApi {
 
-    fun fetchDownloadableModels(): Single<List<DownloadableModelResponse>>
+    fun fetchOnnxModels(): Single<List<DownloadableModelResponse>>
+
+    fun fetchMediaPipeModels(): Single<List<DownloadableModelResponse>>
 
     fun <T : Any> downloadModel(
         remoteUrl: String,
@@ -23,7 +25,10 @@ interface DownloadableModelsApi {
 
     interface RawApi {
         @GET("/models.json")
-        fun fetchDownloadableModels(): Single<List<DownloadableModelResponse>>
+        fun fetchOnnxModels(): Single<List<DownloadableModelResponse>>
+
+        @GET("/mediapipe.json")
+        fun fetchMediaPipeModels(): Single<List<DownloadableModelResponse>>
 
         @Streaming
         @GET

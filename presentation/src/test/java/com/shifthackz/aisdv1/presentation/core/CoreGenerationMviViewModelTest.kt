@@ -4,8 +4,8 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
+import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
 import com.shifthackz.aisdv1.domain.entity.Settings
-import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
@@ -57,7 +57,7 @@ abstract class CoreGenerationMviViewModelTest<V : GenerationMviViewModel<*, *, *
     protected val stubBackgroundTaskManager = mockk<BackgroundTaskManager>()
 
     private val stubHordeProcessStatus = BehaviorSubject.create<HordeProcessStatus>()
-    private val stubLdStatus = BehaviorSubject.create<LocalDiffusion.Status>()
+    private val stubLdStatus = BehaviorSubject.create<LocalDiffusionStatus>()
 
 
     protected val stubCustomSchedulers = object : SchedulersProvider {

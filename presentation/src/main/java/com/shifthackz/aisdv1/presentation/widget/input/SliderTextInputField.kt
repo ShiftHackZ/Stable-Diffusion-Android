@@ -94,9 +94,9 @@ fun SliderTextInputField(
             enabled = true,
             singleLine = true,
             keyboardOptions = KeyboardOptions(
+                autoCorrectEnabled = false,
                 keyboardType = KeyboardType.Number,
-                autoCorrect = false,
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Done
             ),
             label = { Text(stringResource(id = R.string.hint_value)) },
             trailingIcon = {

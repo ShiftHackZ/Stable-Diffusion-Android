@@ -88,7 +88,7 @@ class InterruptGenerationUseCaseImplTest {
     @Test
     fun `given source is LOCAL, api interrupt success, expected complete value`() {
         whenever(stubPreferenceManager.source)
-            .thenReturn(ServerSource.LOCAL)
+            .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
         whenever(stubLocalDiffusionGenerationRepository.interruptGeneration())
             .thenReturn(Completable.complete())
@@ -103,7 +103,7 @@ class InterruptGenerationUseCaseImplTest {
     @Test
     fun `given source is LOCAL, api interrupt fail, expected error value`() {
         whenever(stubPreferenceManager.source)
-            .thenReturn(ServerSource.LOCAL)
+            .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
         whenever(stubLocalDiffusionGenerationRepository.interruptGeneration())
             .thenReturn(Completable.error(stubException))

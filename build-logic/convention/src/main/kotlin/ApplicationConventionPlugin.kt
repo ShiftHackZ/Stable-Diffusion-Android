@@ -1,6 +1,8 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.gradle.BaseExtension
 import com.shifthackz.aisdv1.buildlogic.configureApplication
 import com.shifthackz.aisdv1.buildlogic.configureCompose
+import com.shifthackz.aisdv1.buildlogic.configureFlavors
 import com.shifthackz.aisdv1.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -21,6 +23,9 @@ class ApplicationConventionPlugin : Plugin<Project> {
                 configureApplication(this)
                 configureCompose(this)
                 defaultConfig.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
+            }
+            extensions.configure<BaseExtension> {
+                configureFlavors(this)
             }
         }
     }
