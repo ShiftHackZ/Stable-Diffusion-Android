@@ -25,5 +25,14 @@
     "currency": "USD",
     "type": "bmc",
     "message": "I don't have much money, but wanted to express my sincere thanks for SDAI. Thanks to you, I can keep creating art even though my illness has worsened. I can now access Automatic1111 remotely from the couch! It means so much to me, that I can keep on creating even though I can no longer sit at the desk to use my powerhouse machine. Now even my crappy tablet can do it, lol. Thank you so much! <3"
+  },
+  {
+    "id": 3,
+    "name": "Jacob",
+    "date": "2024-09-02",
+    "amount": "5.00",
+    "currency": "USD",
+    "type": "bmc",
+    "message": ""
   }
 ]

@@ -193,7 +193,7 @@ private fun OnBoardingScreenContent(
             HorizontalPager(
                 modifier = Modifier.fillMaxSize(),
                 state = pagerState,
-                beyondBoundsPageCount = OnBoardingPage.entries.size,
+                beyondViewportPageCount = OnBoardingPage.entries.size,
                 userScrollEnabled = true,
             ) { index ->
                 when (OnBoardingPage.entries[index]) {
