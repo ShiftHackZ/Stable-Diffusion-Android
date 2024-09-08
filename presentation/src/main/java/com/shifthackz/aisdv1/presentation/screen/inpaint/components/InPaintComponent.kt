@@ -133,7 +133,7 @@ fun InPaintComponent(
                     }
 
                     MotionEvent.Move -> {
-                        currentPath.quadraticBezierTo(
+                        currentPath.quadraticTo(
                             previousPosition.x,
                             previousPosition.y,
                             (previousPosition.x + currentPosition.x) / 2,

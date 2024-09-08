@@ -468,7 +468,7 @@ fun GalleryScreenContent(
                             val selected = state.selection.contains(item.id)
                             GalleryUiItem(
                                 modifier = Modifier
-                                    .animateItemPlacement(tween(500))
+                                    .animateItem(tween(500))
                                     .shake(
                                         enabled = state.selectionMode && !selected,
                                         animationDurationMillis = 188,
