@@ -112,7 +112,15 @@ OpenAI requires to use API KEY, which can be created in [OpenAI API Key settings
 
 StabilityAI requires to use API KEY, which can be created in [API Keys page](https://platform.stability.ai/account/keys).
 
-### Option 7: Local Diffusion (Beta)
+### Option 7: Local Diffusion Microsoft ONNX Runtime (Beta)
+
+Only **txt2img** mode is supported.
+
+Allows to use phone resources to generate images.
+
+### Option 8: Local Diffusion Google AI MediaPipe (Beta)
+
+Available only in **playstore** and **full** flavors.
 
 Only **txt2img** mode is supported.
 
