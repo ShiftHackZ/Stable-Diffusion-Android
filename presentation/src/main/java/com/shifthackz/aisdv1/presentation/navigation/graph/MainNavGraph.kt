@@ -4,8 +4,11 @@ import androidx.navigation.NavArgument
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.compose.composable
 import androidx.navigation.get
+import androidx.navigation.toRoute
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
+import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.donate.DonateScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
@@ -22,15 +25,12 @@ import com.shifthackz.aisdv1.presentation.utils.Constants
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
+import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.mainNavGraph() {
-    addDestination(
-        ComposeNavigator.Destination(provider[ComposeNavigator::class]) {
-            SplashScreen()
-        }.apply {
-            route = Constants.ROUTE_SPLASH
-        }
-    )
+    composable<NavigationRoute.Splash> {
+        SplashScreen()
+    }
     addDestination(
         ComposeNavigator.Destination(provider[ComposeNavigator::class]) { entry ->
             val sourceKey = entry.arguments
@@ -105,22 +105,16 @@ fun NavGraphBuilder.mainNavGraph() {
             route = Constants.ROUTE_DONATE
         }
     )
-    addDestination(
-        ComposeNavigator.Destination(provider[ComposeNavigator::class]) { entry ->
-            val sourceKey = entry.arguments
-                ?.getInt(Constants.PARAM_SOURCE)
-                ?: LaunchSource.SPLASH.ordinal
-            OnBoardingScreen(
-                viewModel = koinViewModel<OnBoardingViewModel>(
-                    parameters = { parametersOf(sourceKey) }
-                ),
-            )
-        }.apply {
-            route = Constants.ROUTE_ONBOARDING_FULL
-            addArgument(
-                Constants.PARAM_SOURCE,
-                NavArgument.Builder().setType(NavType.IntType).build(),
-            )
-        }
-    )
+    composable<NavigationRoute.Onboarding>(
+        typeMap = mapOf(
+            typeOf<LaunchSource>() to NavType.EnumType(LaunchSource::class.java)
+        )
+    ) { entry ->
+        val sourceKey = entry.toRoute<NavigationRoute.Onboarding>().source.ordinal
+        OnBoardingScreen(
+            viewModel = koinViewModel<OnBoardingViewModel>(
+                parameters = { parametersOf(sourceKey) }
+            ),
+        )
+    }
 }

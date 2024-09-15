@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.navigation.router.main
 
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
+import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -19,9 +20,12 @@ internal class MainRouterImpl : MainRouter {
     }
 
     override fun navigateToOnBoarding(source: LaunchSource) {
-        effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder("${Constants.ROUTE_ONBOARDING}/${source.ordinal}") {
+        effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder(
+            "",
+            navRoute = NavigationRoute.Onboarding(source = source)
+        ) {
             if (source == LaunchSource.SPLASH) {
-                popUpTo(Constants.ROUTE_SPLASH) {
+                popUpTo(NavigationRoute.Splash) {
                     inclusive = true
                 }
             }
@@ -30,7 +34,7 @@ internal class MainRouterImpl : MainRouter {
 
     override fun navigateToPostSplashConfigLoader() {
         effectSubject.onNext(NavigationEffect.Navigate.RouteBuilder(Constants.ROUTE_CONFIG_LOADER) {
-            popUpTo(Constants.ROUTE_SPLASH) {
+            popUpTo(NavigationRoute.Splash) {
                 inclusive = true
             }
         })

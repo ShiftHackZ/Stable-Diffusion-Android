@@ -8,17 +8,24 @@ sealed interface NavigationEffect : MviEffect {
     data object Back : NavigationEffect
 
     sealed interface Navigate : NavigationEffect {
+        val route: String //todo: Remove
+        val navRoute: NavigationRoute
 
-        val route: String
-
-        data class Route(override val route: String) : Navigate
+        data class Route(
+            override val route: String,
+            override val navRoute: NavigationRoute = NavigationRoute.Splash,
+        ) : Navigate
 
         data class RouteBuilder(
             override val route: String,
+            override val navRoute: NavigationRoute = NavigationRoute.Splash,
             val builder: NavOptionsBuilder.() -> Unit,
         ) : Navigate
 
-        data class RoutePopUp(override val route: String) : Navigate
+        data class RoutePopUp(
+            override val route: String,
+            override val navRoute: NavigationRoute = NavigationRoute.Splash,
+        ) : Navigate
     }
 
     sealed interface Drawer : NavigationEffect {
@@ -29,7 +36,7 @@ sealed interface NavigationEffect : MviEffect {
     }
 
     sealed interface Home : NavigationEffect {
-        val route: String
+        val route: String //todo: Replace with NavigationRoute
 
         data class Route(override val route: String) : Home
 

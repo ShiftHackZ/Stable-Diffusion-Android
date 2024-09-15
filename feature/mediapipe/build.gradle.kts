@@ -14,4 +14,5 @@ dependencies {
     implementation(libs.rx.kotlin)
     fullImplementation(libs.google.mediapipe.image.generator)
     playstoreImplementation(libs.google.mediapipe.image.generator)
+    testImplementation(libs.test.junit)
 }

@@ -17,6 +17,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.android")
                 apply("org.jetbrains.kotlin.kapt")
                 apply("generic.jacoco")
+                apply("org.jetbrains.kotlin.plugin.serialization")
             }
 
             extensions.configure<ApplicationExtension> {

@@ -5,7 +5,7 @@ targetSdk = "34"
 compileSdk = "34"
 minSdk = "24"
 agp = "8.6.0"
-kotlin = "1.9.21"
+kotlin = "2.0.20"
 appcompat = "1.7.0"
 composeCompiler = "1.5.7"
 composeBom = "2024.08.00"
@@ -47,13 +47,14 @@ turbine = "1.1.0"
 roboelectric = "4.13"
 testCoroutines = "1.8.1"
 mediaPipeGenerator = "0.10.14"
+serialization = "1.7.2"
 
 [libraries]
-android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp"}
+android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 apache-stringutils = { group = "org.apache.commons", name = "commons-lang3", version.ref = "apacheStringUtils" }
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat"}
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "composeActivity" }
 androidx-compose-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewModel" }
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewModel" }
@@ -82,8 +83,8 @@ google-mediapipe-image-generator = { group = "com.google.mediapipe", name = "tas
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 retrofit-adapter-rxjava3 = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit" }
-okhttp-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp"}
-okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp"}
+okhttp-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinCompose" }
@@ -93,16 +94,16 @@ rx-java = { group = "io.reactivex.rxjava3", name = "rxjava", version.ref = "rxJa
 rx-kotlin = { group = "io.reactivex.rxjava3", name = "rxkotlin", version.ref = "rxKotlinVersion" }
 rx-network = { group = "io.github.softartdev", name = "reactivenetwork-rx3", version.ref = "rxNetworkVersion" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
-test-junit = { group = "junit", name = "junit", version.ref = "junit"}
-test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk"}
-test-mockito = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockito"}
+test-junit = { group = "junit", name = "junit", version.ref = "junit" }
+test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+test-mockito = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockito" }
 test-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "testCoroutines" }
 test-koin = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
 test-koin-junit = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
 test-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-test-roboelectric = { group = "org.robolectric", name = "robolectric", version.ref = "roboelectric"}
-test-compose-junit = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "composeJunit"}
-test-compose-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "composeJunit"}
+test-roboelectric = { group = "org.robolectric", name = "robolectric", version.ref = "roboelectric" }
+test-compose-junit = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "composeJunit" }
+test-compose-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "composeJunit" }
 compose-gestures = { group = "com.github.SmartToolFactory", name = "Compose-Extended-Gestures", version.ref = "composeGestures" }
 compose-crop = { group = "io.github.mr0xf00", name = "easycrop", version.ref = "crop" }
 shifthackz-mvi = { group = "com.github.ShiftHackZ", name = "AndroidCoreMVI", version.ref = "mvi" }
@@ -111,14 +112,17 @@ shifthackz-daynightswitch = { group = "com.github.ShiftHackZ", name = "DayNightS
 shifthackz-catppuccin-legacy = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "palette-legacy", version.ref = "catppuccin" }
 shifthackz-catppuccin-compose = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "compose", version.ref = "catppuccin" }
 shifthackz-catppuccin-splash = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "splashscreen", version.ref = "catppuccin" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version="unspecified" }
+jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "unspecified" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 generic-flavors = { id = "generic.flavors", version = "unspecified" }
 generic-library = { id = "generic.library", version = "unspecified" }
 generic-baseline-profm = { id = "generic.baseline.profm", version = "unspecified" }
 generic-compose = { id = "generic.compose", version = "unspecified" }
 generic-application = { id = "generic.application", version = "unspecified" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

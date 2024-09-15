@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.generic.compose)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {

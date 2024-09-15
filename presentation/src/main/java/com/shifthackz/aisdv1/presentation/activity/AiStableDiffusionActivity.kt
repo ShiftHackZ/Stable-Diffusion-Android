@@ -24,10 +24,10 @@ import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.extensions.navigatePopUpToCurrent
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
+import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute
 import com.shifthackz.aisdv1.presentation.navigation.graph.mainNavGraph
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerScreen
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppTheme
-import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -85,7 +85,9 @@ class AiStableDiffusionActivity : AppCompatActivity() {
 
             LaunchedEffect(backStackEntry) {
                 if (!viewModel.state.value.isShowSplash) return@LaunchedEffect
-                if (backStackEntry?.destination?.route != Constants.ROUTE_SPLASH) {
+                backStackEntry?.let { entry ->
+                    val route = entry.destination.route ?: ""
+                    if (route.contains("${NavigationRoute.Splash}")) return@LaunchedEffect
                     viewModel.processIntent(AppIntent.HideSplash)
                 }
             }
@@ -101,9 +103,10 @@ class AiStableDiffusionActivity : AppCompatActivity() {
                                 navController.navigate(effect.route)
                             }
 
-                            is NavigationEffect.Navigate.RouteBuilder -> navController.navigate(
-                                effect.route, effect.builder,
-                            )
+                            is NavigationEffect.Navigate.RouteBuilder -> { navController.navigate(
+                                    effect.navRoute, effect.builder,
+                                )
+                            }
 
                             is NavigationEffect.Navigate.RoutePopUp -> {
                                 navController.navigatePopUpToCurrent(effect.route)
@@ -134,7 +137,7 @@ class AiStableDiffusionActivity : AppCompatActivity() {
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = Constants.ROUTE_SPLASH,
+                            startDestination = NavigationRoute.Splash,
                             builder = { mainNavGraph() },
                         )
                     }

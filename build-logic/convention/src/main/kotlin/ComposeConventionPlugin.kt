@@ -15,6 +15,7 @@ class ComposeConventionPlugin : Plugin<Project> {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
                 apply("generic.jacoco")
+                apply("org.jetbrains.kotlin.plugin.compose")
             }
 
             val extension = extensions.getByType<LibraryExtension>()

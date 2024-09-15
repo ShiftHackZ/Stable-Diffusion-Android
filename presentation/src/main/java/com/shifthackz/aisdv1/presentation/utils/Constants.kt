@@ -7,7 +7,7 @@ object Constants {
     const val PARAM_ITEM_ID = "itemId"
     const val PARAM_SOURCE = "source"
 
-    const val ROUTE_SPLASH = "splash"
+    //todo: Migrate ROUTES to NavigationRoute
     const val ROUTE_SERVER_SETUP = "server_setup"
     const val ROUTE_SERVER_SETUP_FULL = "$ROUTE_SERVER_SETUP/{$PARAM_SOURCE}"
     const val ROUTE_CONFIG_LOADER = "config_loader"
@@ -23,8 +23,6 @@ object Constants {
     const val ROUTE_LOGGER = "logger"
     const val ROUTE_IN_PAINT = "in_paint"
     const val ROUTE_DONATE = "donate"
-    const val ROUTE_ONBOARDING = "onboarding"
-    const val ROUTE_ONBOARDING_FULL = "$ROUTE_ONBOARDING/{$PARAM_SOURCE}"
 
     const val SUB_SEED_STRENGTH_MIN = 0f
     const val SUB_SEED_STRENGTH_MAX = 1f

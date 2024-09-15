@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.generic.application)
     alias(libs.plugins.generic.baseline.profm)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
