@@ -31,5 +31,16 @@
     "metadata": {
       "src": "https://huggingface.co/hakurei/waifu-diffusion-v1-4/blob/main/models/wd-1-3-penultimate-ucg-cont.ckpt"
     }
+  },
+  {
+    "id": "2c49a728-5cc8-4d11-9e58-e64d619b6a26",
+    "name": "aniverse_v50",
+    "size": "1.79 Gb",
+    "sources": [
+      "https://github.com/ShiftHackZ/Local-Diffusion-Models-SDAI-MediaPipe/releases/download/patch-19092024/aniverse_v50.zip"
+    ],
+    "metadata": {
+      "src": "https://civitai.com/models/107842/aniverse"
+    }
   }
 ]
