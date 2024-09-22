@@ -26,11 +26,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.NavItem
+import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.item.NavigationItemIcon
 import org.koin.androidx.compose.koinViewModel
@@ -40,18 +43,18 @@ import org.koin.compose.koinInject
 fun DrawerScreen(
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     backStackEntry: NavBackStackEntry? = null,
-    homeRouteEntry: String? = null,
+    homeRouteEntry: NavigationRoute? = null,
     navItems: List<NavItem> = emptyList(),
-    onRootNavigate: (String) -> Unit = {},
-    onHomeNavigate: (String) -> Unit = {},
+    onRootNavigate: (NavigationRoute) -> Unit = {},
+    onHomeNavigate: (NavigationRoute) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     if (navItems.isEmpty()) {
         return content()
     }
-    val currentRootRoute = backStackEntry?.destination?.route
-    val currentRoute = if (currentRootRoute == Constants.ROUTE_HOME) {
-        homeRouteEntry ?: Constants.ROUTE_TXT_TO_IMG
+    val currentRootRoute = backStackEntry?.destination
+    val currentRoute: Any? = if (currentRootRoute?.hasRoute(NavigationRoute.Home::class) == true) {
+        homeRouteEntry ?: NavigationRoute.HomeNavigation.TxtToImg
     } else {
         currentRootRoute
     }
@@ -64,7 +67,7 @@ fun DrawerScreen(
             gesturesEnabled = if (drawerState.isOpen) {
                 true
             } else {
-                currentRootRoute == Constants.ROUTE_HOME
+                currentRootRoute?.hasRoute(NavigationRoute.Home::class) == true
             },
             drawerState = drawerState,
             drawerContent = {
@@ -104,8 +107,11 @@ fun DrawerScreen(
 
                     Spacer(modifier = Modifier.height(32.dp))
                     navItems.forEach { item ->
-                        val selected = item.route == currentRoute ||
-                                item.route == currentRoute?.split("/")?.firstOrNull()
+                        val selected = (currentRoute as? NavigationRoute)?.let { navRoute ->
+                            item.navRoute == navRoute
+                        } ?: (currentRoute as? NavDestination)?.let { destination ->
+                            destination.route?.contains("${item.navRoute}") == true
+                        } ?: false
                         NavigationDrawerItem(
                             modifier = itemModifier.padding(bottom = 4.dp),
                             selected = selected,
@@ -118,13 +124,13 @@ fun DrawerScreen(
                             icon = { NavigationItemIcon(item.icon) },
                             onClick = {
                                 if (!selected) {
-                                    if (Constants.homeRoutes.any { item.route.startsWith(it) }) {
-                                        if (currentRootRoute != Constants.ROUTE_HOME) {
-                                            onRootNavigate(Constants.ROUTE_HOME)
+                                    if (Constants.homeRoutes.any { homeRoute -> item.navRoute == homeRoute }) {
+                                        if (currentRootRoute?.hasRoute(NavigationRoute.Home::class) == false) {
+                                            onRootNavigate(NavigationRoute.Home)
                                         }
-                                        onHomeNavigate(item.route)
+                                        onHomeNavigate(item.navRoute)
                                     } else {
-                                        onRootNavigate(item.route)
+                                        onRootNavigate(item.navRoute)
                                     }
                                 }
                                 intentHandler(DrawerIntent.Close)

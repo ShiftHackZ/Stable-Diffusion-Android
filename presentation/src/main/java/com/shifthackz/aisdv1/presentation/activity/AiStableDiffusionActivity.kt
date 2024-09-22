@@ -17,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -77,17 +78,17 @@ class AiStableDiffusionActivity : AppCompatActivity() {
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val scope = rememberCoroutineScope()
 
-            var homeRouteEntry: String? by remember { mutableStateOf(null) }
+            var homeRouteEntry: NavigationRoute? by remember { mutableStateOf(null) }
 
             BackHandler(enabled = drawerState.isOpen) {
                 scope.launch { drawerState.close() }
             }
 
             LaunchedEffect(backStackEntry) {
+                println("TESTING | route=${backStackEntry?.destination?.route}")
                 if (!viewModel.state.value.isShowSplash) return@LaunchedEffect
                 backStackEntry?.let { entry ->
-                    val route = entry.destination.route ?: ""
-                    if (route.contains("${NavigationRoute.Splash}")) return@LaunchedEffect
+                    if (entry.destination.hasRoute(NavigationRoute.Splash::class)) return@LaunchedEffect
                     viewModel.processIntent(AppIntent.HideSplash)
                 }
             }
@@ -100,16 +101,17 @@ class AiStableDiffusionActivity : AppCompatActivity() {
                             NavigationEffect.Back -> navController.navigateUp()
 
                             is NavigationEffect.Navigate.Route -> {
-                                navController.navigate(effect.route)
+                                navController.navigate(effect.navRoute)
                             }
 
-                            is NavigationEffect.Navigate.RouteBuilder -> { navController.navigate(
+                            is NavigationEffect.Navigate.RouteBuilder -> {
+                                navController.navigate(
                                     effect.navRoute, effect.builder,
                                 )
                             }
 
                             is NavigationEffect.Navigate.RoutePopUp -> {
-                                navController.navigatePopUpToCurrent(effect.route)
+                                navController.navigatePopUpToCurrent(effect.navRoute)
                             }
 
                             NavigationEffect.Drawer.Close -> scope.launch {
@@ -121,7 +123,7 @@ class AiStableDiffusionActivity : AppCompatActivity() {
                             }
 
                             is NavigationEffect.Home -> {
-                                homeRouteEntry = effect.route
+                                homeRouteEntry = effect.navRoute
                             }
                         }
                     },
