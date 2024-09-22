@@ -26,8 +26,8 @@ import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppThemeViewModel
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityViewModel
 import com.shifthackz.aisdv1.presentation.widget.engine.EngineSelectionViewModel
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelModule = module {
