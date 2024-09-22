@@ -85,7 +85,6 @@ class AiStableDiffusionActivity : AppCompatActivity() {
             }
 
             LaunchedEffect(backStackEntry) {
-                println("TESTING | route=${backStackEntry?.destination?.route}")
                 if (!viewModel.state.value.isShowSplash) return@LaunchedEffect
                 backStackEntry?.let { entry ->
                     if (entry.destination.hasRoute(NavigationRoute.Splash::class)) return@LaunchedEffect
