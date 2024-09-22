@@ -40,6 +40,7 @@ internal fun Project.configureCompose(
             add("implementation", libs.findLibrary("google.accompanist.systemuicontroller").get())
             add("implementation", libs.findLibrary("rx.java").get())
             add("implementation", libs.findLibrary("shifthackz.mvi").get())
+            add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
         }
     }
 }

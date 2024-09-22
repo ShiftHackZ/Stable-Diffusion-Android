@@ -1,30 +1,10 @@
 package com.shifthackz.aisdv1.presentation.utils
 
+import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute.HomeNavigation
+
 object Constants {
     const val PAGINATION_PAYLOAD_SIZE = 1000
     const val DEBUG_MENU_ACCESS_TAPS = 7
-
-    const val PARAM_ITEM_ID = "itemId"
-    const val PARAM_SOURCE = "source"
-
-    const val ROUTE_SPLASH = "splash"
-    const val ROUTE_SERVER_SETUP = "server_setup"
-    const val ROUTE_SERVER_SETUP_FULL = "$ROUTE_SERVER_SETUP/{$PARAM_SOURCE}"
-    const val ROUTE_CONFIG_LOADER = "config_loader"
-    const val ROUTE_HOME = "home"
-    const val ROUTE_WEB_UI = "webui"
-    const val ROUTE_TXT_TO_IMG = "text_to_image"
-    const val ROUTE_IMG_TO_IMG = "image_to_image"
-    const val ROUTE_GALLERY = "gallery"
-    const val ROUTE_GALLERY_DETAIL = "gallery_detail"
-    const val ROUTE_GALLERY_DETAIL_FULL = "$ROUTE_GALLERY_DETAIL/{$PARAM_ITEM_ID}"
-    const val ROUTE_SETTINGS = "settings"
-    const val ROUTE_DEBUG = "debug"
-    const val ROUTE_LOGGER = "logger"
-    const val ROUTE_IN_PAINT = "in_paint"
-    const val ROUTE_DONATE = "donate"
-    const val ROUTE_ONBOARDING = "onboarding"
-    const val ROUTE_ONBOARDING_FULL = "$ROUTE_ONBOARDING/{$PARAM_SOURCE}"
 
     const val SUB_SEED_STRENGTH_MIN = 0f
     const val SUB_SEED_STRENGTH_MAX = 1f
@@ -64,10 +44,10 @@ object Constants {
     val sizes = listOf("64", "128", "256", "320", "384", "448", "512")
 
     val homeRoutes = listOf(
-        ROUTE_TXT_TO_IMG,
-        ROUTE_IMG_TO_IMG,
-        ROUTE_GALLERY,
-        ROUTE_SETTINGS
+        HomeNavigation.TxtToImg,
+        HomeNavigation.ImgToImg,
+        HomeNavigation.Gallery,
+        HomeNavigation.Settings,
     )
 
     fun lora(alias: String) = "<lora:$alias:1>"

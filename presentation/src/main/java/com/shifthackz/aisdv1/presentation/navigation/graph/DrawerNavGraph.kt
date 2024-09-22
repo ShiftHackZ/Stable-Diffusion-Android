@@ -11,7 +11,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.NavItem
-import com.shifthackz.aisdv1.presentation.utils.Constants
+import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute
 import com.shifthackz.aisdv1.presentation.widget.source.getNameUiText
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
@@ -36,7 +36,7 @@ private fun webUi(source: ServerSource) = NavItem(
         source.getNameUiText(),
         ")".asUiText(),
     ),
-    route = Constants.ROUTE_WEB_UI,
+    navRoute = NavigationRoute.WebUi,
     icon = NavItem.Icon.Vector(
         vector = Icons.Default.Web,
     ),
@@ -44,7 +44,7 @@ private fun webUi(source: ServerSource) = NavItem(
 
 private fun configuration() = NavItem(
     name = LocalizationR.string.settings_item_config.asUiText(),
-    route = "${Constants.ROUTE_SERVER_SETUP}/${LaunchSource.SETTINGS.ordinal}",
+    navRoute = NavigationRoute.ServerSetup(source = LaunchSource.SETTINGS),
     icon = NavItem.Icon.Vector(
         vector = Icons.Default.SettingsEthernet,
     ),
@@ -52,7 +52,7 @@ private fun configuration() = NavItem(
 
 private fun developerMode() = NavItem(
     name = LocalizationR.string.title_debug_menu.asUiText(),
-    route = Constants.ROUTE_DEBUG,
+    navRoute = NavigationRoute.Debug,
     icon = NavItem.Icon.Vector(
         vector = Icons.Default.DeveloperMode,
     )

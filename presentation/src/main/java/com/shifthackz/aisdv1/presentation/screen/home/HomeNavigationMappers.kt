@@ -1,9 +1,9 @@
 package com.shifthackz.aisdv1.presentation.screen.home
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.presentation.utils.Constants
+import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute
 
-fun AiGenerationResult.Type.mapToRoute(): String = when (this) {
-    AiGenerationResult.Type.TEXT_TO_IMAGE -> Constants.ROUTE_TXT_TO_IMG
-    AiGenerationResult.Type.IMAGE_TO_IMAGE -> Constants.ROUTE_IMG_TO_IMG
+fun AiGenerationResult.Type.mapToRoute(): NavigationRoute = when (this) {
+    AiGenerationResult.Type.TEXT_TO_IMAGE -> NavigationRoute.HomeNavigation.TxtToImg
+    AiGenerationResult.Type.IMAGE_TO_IMAGE -> NavigationRoute.HomeNavigation.ImgToImg
 }

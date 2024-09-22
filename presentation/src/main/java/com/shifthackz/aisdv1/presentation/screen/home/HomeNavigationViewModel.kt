@@ -42,8 +42,8 @@ class HomeNavigationViewModel(
 
     override fun processIntent(intent: HomeNavigationIntent) {
         when (intent) {
-            is HomeNavigationIntent.Route -> homeRouter.navigateToRoute(intent.route)
-            is HomeNavigationIntent.Update -> homeRouter.updateExternallyWithoutNavigation(intent.route)
+            is HomeNavigationIntent.Route -> homeRouter.navigateToRoute(intent.navRoute)
+            is HomeNavigationIntent.Update -> homeRouter.updateExternallyWithoutNavigation(intent.navRoute)
         }
     }
 }
