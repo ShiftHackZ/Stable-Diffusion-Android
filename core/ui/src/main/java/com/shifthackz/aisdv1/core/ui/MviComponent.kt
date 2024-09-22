@@ -21,6 +21,7 @@ fun <S : MviState, I: MviIntent, E : MviEffect> MviComponent(
     processEffect: (effect: E) -> Unit = {},
     applySystemUiColors: Boolean = true,
     navigationBarColor: Color =  MaterialTheme.colorScheme.background,
+    statusBarColor: Color = MaterialTheme.colorScheme.surface,
     content: @Composable (state: S, intentHandler: (I) -> Unit) -> Unit,
 ) {
     if (applySystemUiColors) {
@@ -34,6 +35,7 @@ fun <S : MviState, I: MviIntent, E : MviEffect> MviComponent(
                 Lifecycle.State.RESUMED,
                 Lifecycle.State.CREATED -> {
                     systemUiController.setNavigationBarColor(navigationBarColor)
+                    systemUiController.setStatusBarColor(statusBarColor)
                 }
                 else -> Unit
             }
