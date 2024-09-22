@@ -206,6 +206,7 @@ private fun OnBoardingScreenContent(
                     )
 
                     OnBoardingPage.LocalDiffusion -> LocalDiffusionPageContent()
+
                     OnBoardingPage.LookAndFeel -> LookAndFeelPageContent(
                         darkThemeToken = state.darkThemeToken,
                         appVersion = state.appVersion,
