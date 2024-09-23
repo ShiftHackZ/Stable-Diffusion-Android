@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.network.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.Strictness
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111RestApi
 import com.shifthackz.aisdv1.network.api.horde.HordeRestApi
 import com.shifthackz.aisdv1.network.api.huggingface.HuggingFaceApi
@@ -43,7 +44,11 @@ private const val HTTP_TIMEOUT = 10L
 
 val networkModule = module {
 
-    single<Gson> { GsonBuilder().setLenient().create() }
+    single<Gson> {
+        GsonBuilder()
+            .setStrictness(Strictness.LENIENT)
+            .create()
+    }
 
     single { RestAuthenticator(get()) }
 

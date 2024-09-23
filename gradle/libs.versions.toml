@@ -6,6 +6,7 @@ compileSdk = "34"
 minSdk = "24"
 agp = "8.6.1"
 kotlin = "2.0.20"
+ksp = "2.0.20-1.0.25"
 appcompat = "1.7.0"
 composeCompiler = "1.5.7"
 composeBom = "2024.08.00"
@@ -117,9 +118,10 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+androidx-room = { id = "androidx.room", version.ref = "room" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "unspecified" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 generic-flavors = { id = "generic.flavors", version = "unspecified" }
 generic-library = { id = "generic.library", version = "unspecified" }
 generic-baseline-profm = { id = "generic.baseline.profm", version = "unspecified" }

@@ -136,3 +136,4 @@ jacoco.exec
 
 # Fastlane
 fastlane/report.xml
+.kotlin
