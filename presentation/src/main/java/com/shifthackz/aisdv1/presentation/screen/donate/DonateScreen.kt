@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -47,7 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.Supporter
 import com.shifthackz.aisdv1.presentation.widget.item.SupporterItem
 import org.koin.androidx.compose.koinViewModel
@@ -60,7 +61,6 @@ fun DonateScreen() {
     val context = LocalContext.current
     MviComponent(
         viewModel = koinViewModel<DonateViewModel>(),
-        navigationBarColor = MaterialTheme.colorScheme.surface,
         processEffect = { effect ->
             when (effect) {
                 is DonateEffect.OpenUrl -> context.openUrl(effect.url)
@@ -106,6 +106,7 @@ private fun DonateScreenContent(
             )
             Column(
                 modifier = Modifier
+                    .navigationBarsPadding()
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surface, shape)
                     .clip(shape)

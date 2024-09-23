@@ -37,7 +37,6 @@ internal fun Project.configureCompose(
             add("implementation", libs.findLibrary("androidx.paging.compose").get())
             add("implementation", libs.findLibrary("androidx.lifecycle.viewmodel").get())
             add("implementation", libs.findLibrary("androidx.lifecycle.compose").get())
-            add("implementation", libs.findLibrary("google.accompanist.systemuicontroller").get())
             add("implementation", libs.findLibrary("rx.java").get())
             add("implementation", libs.findLibrary("shifthackz.mvi").get())
             add("implementation", libs.findLibrary("kotlinx.serialization.json").get())

@@ -9,7 +9,7 @@ kotlin = "2.0.20"
 ksp = "2.0.20-1.0.25"
 appcompat = "1.7.0"
 composeCompiler = "1.5.7"
-composeBom = "2024.08.00"
+composeBom = "2024.09.02"
 composeActivity = "1.9.2"
 composeJunit = "1.7.2"
 lifecycleViewModel = "2.8.6"
@@ -17,7 +17,6 @@ navigation = "2.8.1"
 paging = "3.1.1"
 pagingCompose = "1.0.0-alpha18"
 gson = "2.11.0"
-accompanistSystemUi = "0.36.0"
 retrofit = "2.11.0"
 okhttp = "5.0.0-alpha.14"
 koin = "4.0.0"
@@ -79,7 +78,6 @@ androidx-room-rx = { group = "androidx.room", name = "room-rxjava3", version.ref
 androidx-work-runtime = { group = "androidx.work", name = "work-runtime", version.ref = "workManager" }
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-google-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanistSystemUi" }
 google-mediapipe-image-generator = { group = "com.google.mediapipe", name = "tasks-vision-image-generator", version.ref = "mediaPipeGenerator" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }

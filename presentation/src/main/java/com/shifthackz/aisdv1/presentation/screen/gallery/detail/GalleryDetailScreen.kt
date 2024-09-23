@@ -49,7 +49,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.sharing.shareFile
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.theme.colors
@@ -91,8 +91,6 @@ fun GalleryDetailScreen(itemId: Long) {
                 }
             }
         },
-        applySystemUiColors = true,
-        navigationBarColor = MaterialTheme.colorScheme.surface,
     ) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
@@ -232,7 +230,9 @@ private fun GalleryDetailNavigationBar(
                 }
             }
         }
-        NavigationBar {
+        NavigationBar(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ) {
             state.tabs.forEach { tab ->
                 NavigationBarItem(
                     selected = state.selectedTab == tab,

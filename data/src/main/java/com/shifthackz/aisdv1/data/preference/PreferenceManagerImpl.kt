@@ -96,7 +96,7 @@ class PreferenceManagerImpl(
 
     override var monitorConnectivity: Boolean
         get() = if (!source.featureTags.contains(FeatureTag.OwnServer)) false
-        else preferences.getBoolean(KEY_MONITOR_CONNECTIVITY, true)
+        else preferences.getBoolean(KEY_MONITOR_CONNECTIVITY, false)
         set(value) = preferences.edit()
             .putBoolean(KEY_MONITOR_CONNECTIVITY, value)
             .apply()
@@ -321,7 +321,7 @@ class PreferenceManagerImpl(
         const val KEY_MEDIA_PIPE_CUSTOM_MODEL_PATH = "key_mediapipe_custom_model_path"
         const val KEY_ALLOW_LOCAL_DIFFUSION_CANCEL = "key_allow_local_diffusion_cancel"
         const val KEY_LOCAL_DIFFUSION_SCHEDULER_THREAD = "key_local_diffusion_scheduler_thread"
-        const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connectivity"
+        const val KEY_MONITOR_CONNECTIVITY = "key_monitor_connection"
         const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
         const val KEY_SAVE_TO_MEDIA_STORE = "key_save_to_media_store"
         const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"

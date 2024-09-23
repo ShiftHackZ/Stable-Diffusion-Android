@@ -18,6 +18,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -41,6 +42,7 @@ import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviState
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
+import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.utils.Constants.BATCH_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.BATCH_RANGE_MIN
@@ -115,6 +117,7 @@ fun GenerationInputForm(
             },
             label = { Text(stringResource(id = LocalizationR.string.width)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            colors = textFieldColors,
         )
         TextField(
             modifier = modifier.padding(start = 4.dp),
@@ -138,6 +141,7 @@ fun GenerationInputForm(
             },
             label = { Text(stringResource(id = LocalizationR.string.height)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            colors = textFieldColors,
         )
     }
 
@@ -197,6 +201,7 @@ fun GenerationInputForm(
                 value = state.prompt,
                 onValueChange = { processIntent(GenerationMviIntent.Update.Prompt(it)) },
                 label = { Text(stringResource(id = LocalizationR.string.hint_prompt)) },
+                colors = textFieldColors,
             )
         }
 
@@ -239,6 +244,7 @@ fun GenerationInputForm(
                         value = state.negativePrompt,
                         onValueChange = { processIntent(GenerationMviIntent.Update.NegativePrompt(it)) },
                         label = { Text(stringResource(id = LocalizationR.string.hint_prompt_negative)) },
+                        colors = textFieldColors,
                     )
                 }
             }
@@ -422,6 +428,7 @@ fun GenerationInputForm(
                                 )
                             }
                         },
+                        colors = textFieldColors,
                     )
                 }
                 // NSFW flag specifically for Horde API
@@ -468,6 +475,7 @@ fun GenerationInputForm(
                                 )
                             }
                         },
+                        colors = textFieldColors,
                     )
 
                     else -> Unit

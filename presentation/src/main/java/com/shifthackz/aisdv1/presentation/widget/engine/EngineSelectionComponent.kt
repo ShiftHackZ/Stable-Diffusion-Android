@@ -3,7 +3,7 @@ package com.shifthackz.aisdv1.presentation.widget.engine
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
 import org.koin.androidx.compose.koinViewModel
@@ -15,7 +15,6 @@ fun EngineSelectionComponent(
 ) {
     MviComponent(
         viewModel = koinViewModel<EngineSelectionViewModel>(),
-        applySystemUiColors = false,
     ) { state, intentHandler ->
         when (state.mode) {
             ServerSource.AUTOMATIC1111 -> DropdownTextField(

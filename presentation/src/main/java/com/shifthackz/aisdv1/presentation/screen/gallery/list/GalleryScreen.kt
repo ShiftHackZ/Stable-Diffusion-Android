@@ -1,7 +1,6 @@
 @file:OptIn(
     ExperimentalMaterial3Api::class,
     ExperimentalFoundationApi::class,
-    ExperimentalAnimationApi::class,
 )
 
 package com.shifthackz.aisdv1.presentation.screen.gallery.list
@@ -28,6 +27,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -53,7 +53,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -75,6 +75,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.toUpperCase
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
@@ -85,7 +86,7 @@ import com.shifthackz.aisdv1.core.extensions.items
 import com.shifthackz.aisdv1.core.extensions.shake
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.sharing.shareFile
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
@@ -126,7 +127,6 @@ fun GalleryScreen() {
                 }
             }
         },
-        applySystemUiColors = false,
     ) { state, intentHandler ->
         BackHandler(state.selectionMode) {
             intentHandler(GalleryIntent.ChangeSelectionMode(false))
@@ -252,6 +252,7 @@ fun GalleryScreenContent(
                             DropdownMenu(
                                 expanded = state.dropdownMenuShow,
                                 onDismissRequest = { processIntent(GalleryIntent.Dropdown.Close) },
+                                containerColor = MaterialTheme.colorScheme.background,
                             ) {
                                 DropdownMenuItem(
                                     leadingIcon = {
@@ -331,6 +332,7 @@ fun GalleryScreenContent(
                                 )
                             }
                         },
+                        windowInsets = WindowInsets(0, 0, 0, 0),
                     )
                     BackgroundWorkWidget(
                         modifier = Modifier
@@ -559,7 +561,9 @@ fun GalleryUiItem(
                         shape = checkBoxShape,
                     ),
             ) {
-                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                CompositionLocalProvider(
+                    LocalMinimumInteractiveComponentSize provides Dp.Unspecified,
+                ) {
                     Checkbox(
                         checked = checked,
                         onCheckedChange = onCheckedChange,

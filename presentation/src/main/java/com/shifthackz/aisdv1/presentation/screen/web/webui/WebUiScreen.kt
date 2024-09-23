@@ -35,7 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.screen.web.SdaiWebViewClient
 import com.shifthackz.aisdv1.presentation.screen.web.WebViewScreen
@@ -46,7 +46,6 @@ import org.koin.androidx.compose.koinViewModel
 fun WebUiScreen() {
     MviComponent(
         viewModel = koinViewModel<WebUiViewModel>(),
-        applySystemUiColors = false,
     ) { state, intentHandler ->
         WebUiScreenContent(state, intentHandler)
     }    

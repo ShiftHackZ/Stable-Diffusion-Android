@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
@@ -50,7 +50,7 @@ fun InputHistoryScreen(
     onGenerationSelected: (AiGenerationResult) -> Unit = {},
 ) {
     val viewModel = koinViewModel<InputHistoryViewModel>()
-    MviComponent(viewModel = viewModel, applySystemUiColors = false) { _, _ ->
+    MviComponent(viewModel = viewModel) { _, _ ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
             pagingFlow = viewModel.pagingFlow,
@@ -107,7 +107,7 @@ private fun InputHistoryItem(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(color = MaterialTheme.colorScheme.background)
+            .background(color = MaterialTheme.colorScheme.surface)
             .defaultMinSize(minHeight = 50.dp)
             .clickable { onClick(item) },
     ) {

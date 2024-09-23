@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.DrawerValue
@@ -22,7 +23,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.core.common.log.debugLog
-import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.extensions.navigatePopUpToCurrent
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
 import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute
@@ -30,6 +30,7 @@ import com.shifthackz.aisdv1.presentation.navigation.graph.mainNavGraph
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerScreen
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppTheme
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
+import com.shifthackz.android.core.mvi.MviComponent
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -54,6 +55,7 @@ class AiStableDiffusionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         actionBar?.hide()
         splashScreen.setKeepOnScreenCondition { viewModel.state.value.isShowSplash }
@@ -125,9 +127,8 @@ class AiStableDiffusionActivity : AppCompatActivity() {
                                 homeRouteEntry = effect.navRoute
                             }
                         }
-                    },
-                    applySystemUiColors = false,
-                ) { state, _ ->
+                    }
+                ) { state ->
                     DrawerScreen(
                         drawerState = drawerState,
                         backStackEntry = backStackEntry,

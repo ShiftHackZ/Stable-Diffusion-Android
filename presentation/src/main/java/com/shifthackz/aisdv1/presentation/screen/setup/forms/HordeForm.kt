@@ -23,6 +23,7 @@ import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
+import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.utils.Constants
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
@@ -66,6 +67,7 @@ fun HordeForm(
                     ?.takeIf { !state.hordeDefaultApiKey }
                     ?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
             },
+            colors = textFieldColors,
         )
         Row(
             modifier = Modifier.fillMaxWidth(),

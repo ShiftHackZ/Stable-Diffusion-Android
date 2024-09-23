@@ -4,6 +4,7 @@ package com.shifthackz.aisdv1.presentation.modal
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -120,6 +121,7 @@ fun ModalRenderer(
         is Modal.Image.Batch -> ModalBottomSheet(
             onDismissRequest = dismiss,
             shape = RectangleShape,
+            containerColor = MaterialTheme.colorScheme.background,
         ) {
             GenerationImageBatchResultModal(
                 screenModal.results,
@@ -136,6 +138,7 @@ fun ModalRenderer(
         is Modal.PromptBottomSheet -> ModalBottomSheet(
             onDismissRequest = dismiss,
             shape = RectangleShape,
+            containerColor = MaterialTheme.colorScheme.background,
         ) {
             InputHistoryScreen(
                 onGenerationSelected = { ai ->
@@ -266,6 +269,7 @@ fun ModalRenderer(
         Modal.Language -> ModalBottomSheet(
             onDismissRequest = dismiss,
             shape = RectangleShape,
+            containerColor = MaterialTheme.colorScheme.background,
         ) {
             LanguageBottomSheet(onDismissRequest = dismiss)
         }
@@ -333,6 +337,7 @@ fun ModalRenderer(
         is Modal.GalleryGrid -> ModalBottomSheet(
             onDismissRequest = dismiss,
             shape = RectangleShape,
+            containerColor = MaterialTheme.colorScheme.background,
         ) {
             GridBottomSheet(
                 currentGrid = screenModal.grid,
@@ -346,6 +351,7 @@ fun ModalRenderer(
         is Modal.LDScheduler -> ModalBottomSheet(
             onDismissRequest = dismiss,
             shape = RectangleShape,
+            containerColor = MaterialTheme.colorScheme.background,
         ) {
             LDSchedulerBottomSheet(
                 currentScheduler = screenModal.scheduler,

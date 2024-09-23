@@ -23,7 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.shifthackz.aisdv1.core.model.asString
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.model.NavItem
 import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute.HomeNavigation
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
@@ -60,12 +60,12 @@ fun HomeNavigationScreen(
                 restoreState = true
             }
         },
-        applySystemUiColors = true,
-        navigationBarColor = MaterialTheme.colorScheme.surface,
     ) { _, processIntent ->
         Scaffold(
             bottomBar = {
-                NavigationBar {
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ) {
                     navItems.forEach { item ->
                         val selected =
                             currentDestination?.route?.contains("${item.navRoute}") == true
@@ -113,10 +113,8 @@ fun HomeNavigationScreen(
                                     item.content?.invoke()
                                 }
 
-                                HomeNavigation.ImgToImg -> {
-                                    composable<HomeNavigation.ImgToImg> {
-                                        item.content?.invoke()
-                                    }
+                                HomeNavigation.ImgToImg -> composable<HomeNavigation.ImgToImg> {
+                                    item.content?.invoke()
                                 }
 
                                 HomeNavigation.Settings -> composable<HomeNavigation.Settings> {

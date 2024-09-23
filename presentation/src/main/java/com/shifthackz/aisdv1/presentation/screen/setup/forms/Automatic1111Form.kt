@@ -20,6 +20,7 @@ import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
+import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
@@ -58,6 +59,7 @@ fun Automatic1111Form(
                 ?.takeIf { !state.demoMode }
                 ?.let { { Text(it.asString(), color = MaterialTheme.colorScheme.error) } },
             maxLines = 1,
+            colors = textFieldColors,
         )
         if (!state.demoMode) {
             AuthCredentialsForm(

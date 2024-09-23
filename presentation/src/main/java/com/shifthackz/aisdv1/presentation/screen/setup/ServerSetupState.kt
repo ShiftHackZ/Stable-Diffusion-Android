@@ -18,6 +18,7 @@ import org.koin.core.component.inject
 @Immutable
 data class ServerSetupState(
     val showBackNavArrow: Boolean = false,
+    val onBoardingDemo: Boolean = false,
     val step: Step = Step.SOURCE,
     val mode: ServerSource = ServerSource.AUTOMATIC1111,
     val allowedModes: List<ServerSource> = ServerSource.entries,

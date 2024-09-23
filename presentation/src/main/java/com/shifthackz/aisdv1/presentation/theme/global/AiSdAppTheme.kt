@@ -7,7 +7,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.theme.colorTokenPalette
 import com.shifthackz.catppuccin.compose.CatppuccinTheme
 import org.koin.androidx.compose.koinViewModel
@@ -18,7 +18,6 @@ fun AiSdAppTheme(
 ) {
     MviComponent(
         viewModel = koinViewModel<AiSdAppThemeViewModel>(),
-        applySystemUiColors = false,
     ) { state, _ ->
         AiSdAppTheme(state, content)
     }

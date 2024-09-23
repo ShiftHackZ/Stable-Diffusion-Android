@@ -30,7 +30,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.model.asString
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.R
 import com.shifthackz.aisdv1.presentation.model.NavItem
 import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute
@@ -61,7 +61,6 @@ fun DrawerScreen(
 
     MviComponent(
         viewModel = koinViewModel<DrawerViewModel>(),
-        applySystemUiColors = false,
     ) { _, intentHandler ->
         ModalNavigationDrawer(
             gesturesEnabled = if (drawerState.isOpen) {
@@ -71,7 +70,9 @@ fun DrawerScreen(
             },
             drawerState = drawerState,
             drawerContent = {
-                ModalDrawerSheet {
+                ModalDrawerSheet(
+                    drawerContainerColor = MaterialTheme.colorScheme.background,
+                ) {
                     Spacer(modifier = Modifier.height(16.dp))
                     val itemModifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                     Row(
