@@ -10,6 +10,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 
 @Composable
 fun <T : Any> DropdownTextField(
@@ -45,14 +48,15 @@ fun <T : Any> DropdownTextField(
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .menuAnchor(),
+                    .menuAnchor(MenuAnchorType.PrimaryNotEditable),
                 value = value?.let { displayDelegate(it).asString() } ?: "",
                 onValueChange = {},
                 readOnly = true,
                 label = { Text(label.asString()) },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                }
+                },
+                colors = textFieldColors,
             )
         } else {
             Box(
@@ -66,6 +70,7 @@ fun <T : Any> DropdownTextField(
         ExposedDropdownMenu(
             expanded = expanded && !loading,
             onDismissRequest = { expanded = false },
+            containerColor = MaterialTheme.colorScheme.background,
         ) {
             items.forEach { item ->
                 DropdownMenuItem(

@@ -108,16 +108,13 @@ fun LookAndFeelPageContent(
         val job = scope.launch {
             while (isPageVisible) {
                 delay(700)
-                val darkThemeTokenRnd = DarkThemeToken.entries.random()
-                val colorTokenRnd = ColorToken.entries.random()
+                val colorToken = ColorToken.entries.random()
                 settingsState = settingsState.copy(
                     galleryGrid = Grid.entries.random(),
-                    darkThemeToken = darkThemeTokenRnd,
-                    colorToken = colorTokenRnd,
+                    colorToken = colorToken,
                 )
                 themeState = themeState.copy(
-                    darkThemeToken = darkThemeTokenRnd,
-                    colorToken = colorTokenRnd,
+                    colorToken = colorToken,
                 )
             }
         }

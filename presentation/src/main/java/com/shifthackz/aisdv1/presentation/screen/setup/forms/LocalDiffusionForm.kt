@@ -58,6 +58,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreenTags.CUSTOM_MODEL_SWITCH
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
+import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
@@ -393,6 +394,7 @@ fun LocalDiffusionForm(
                     state.localCustomModelPathValidationError
                         ?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
                 },
+                colors = textFieldColors,
             )
             OutlinedButton(
                 modifier = Modifier

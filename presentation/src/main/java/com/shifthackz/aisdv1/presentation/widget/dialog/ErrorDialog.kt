@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.widget.dialog
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ fun ErrorDialog(
 ) {
     AlertDialog(
         shape = RoundedCornerShape(24.dp),
+        containerColor = MaterialTheme.colorScheme.background,
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(onClick = onDismissRequest) {

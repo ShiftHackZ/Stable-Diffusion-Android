@@ -12,13 +12,12 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -32,6 +31,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
 import com.shifthackz.aisdv1.core.common.extensions.showToast
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationStepBar
@@ -109,10 +109,6 @@ fun ServerSetupScreenContent(
     }
     Box(modifier) {
         Scaffold(
-            modifier = Modifier
-                .statusBarsPadding()
-                .navigationBarsPadding()
-                .imePadding(),
             topBar = {
                 Column {
                     CenterAlignedTopAppBar(
@@ -137,6 +133,11 @@ fun ServerSetupScreenContent(
                                 )
                             }
                         },
+                        windowInsets = if (!state.onBoardingDemo) {
+                            TopAppBarDefaults.windowInsets
+                        } else {
+                            WindowInsets(0, 0, 0, 0)
+                        },
                     )
                     ConfigurationStepBar(currentStep = state.step)
                 }
@@ -144,6 +145,7 @@ fun ServerSetupScreenContent(
             bottomBar = {
                 Button(
                     modifier = Modifier
+                        .navigationBarsPadding()
                         .testTag(ServerSetupScreenTags.MAIN_BUTTON)
                         .height(height = 68.dp)
                         .background(MaterialTheme.colorScheme.background)

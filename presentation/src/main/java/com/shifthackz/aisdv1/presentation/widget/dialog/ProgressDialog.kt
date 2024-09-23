@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -116,7 +117,7 @@ fun GeneratingProgressDialogContent(
 ) {
     Surface(
         shape = RoundedCornerShape(16.dp),
-        color = AlertDialogDefaults.containerColor,
+        color = MaterialTheme.colorScheme.background,
     ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
             Text(

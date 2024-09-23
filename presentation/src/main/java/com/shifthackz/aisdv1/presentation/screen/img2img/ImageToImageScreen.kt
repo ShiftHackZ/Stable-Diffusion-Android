@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -57,7 +58,7 @@ import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
@@ -97,7 +98,6 @@ fun ImageToImageScreen() {
                 .build()
                 .launch(context)
         },
-        applySystemUiColors = false,
     ) { state, intentHandler ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),
@@ -157,6 +157,7 @@ private fun ScreenContent(
                                 }
                             }
                         },
+                        windowInsets = WindowInsets(0, 0, 0, 0),
                     )
                     BackgroundWorkWidget(
                         modifier = Modifier

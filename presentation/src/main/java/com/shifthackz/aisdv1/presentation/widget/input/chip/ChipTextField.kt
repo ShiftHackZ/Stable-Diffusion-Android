@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import org.apache.commons.lang3.StringUtils
 
 sealed interface ChipTextFieldEvent<T : Any> {
@@ -221,6 +222,7 @@ fun <T : Any> ChipTextField(
             singleLine = false,
             visualTransformation = VisualTransformation.None,
             interactionSource = interactionSource,
+            colors = textFieldColors,
         )
     }
 }

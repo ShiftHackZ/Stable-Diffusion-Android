@@ -18,6 +18,7 @@ import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
+import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
@@ -54,6 +55,7 @@ fun SwarmUiForm(
             supportingText = state.swarmUiUrlValidationError
                 ?.let { { Text(it.asString(), color = MaterialTheme.colorScheme.error) } },
             maxLines = 1,
+            colors = textFieldColors,
         )
         AuthCredentialsForm(
             state = state,

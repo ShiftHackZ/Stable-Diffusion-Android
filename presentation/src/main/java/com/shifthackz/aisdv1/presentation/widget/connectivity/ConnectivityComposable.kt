@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.theme.colors
 import com.shifthackz.catppuccin.palette.Catppuccin
 import org.koin.androidx.compose.koinViewModel
@@ -23,7 +23,6 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 fun ConnectivityComposable() {
     MviComponent(
         viewModel = koinViewModel<ConnectivityViewModel>(),
-        applySystemUiColors = false,
     ) { state, _ ->
         ConnectivityWidgetState(
             state = state,

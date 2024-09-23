@@ -10,9 +10,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,9 +26,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
+import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.utils.Constants.EXTRA_MAXIMUM
 import com.shifthackz.aisdv1.presentation.utils.Constants.EXTRA_MINIMUM
 import com.shifthackz.aisdv1.presentation.utils.Constants.EXTRA_STEP
@@ -88,7 +89,7 @@ private fun ScreenContent(
         Surface(
             modifier = modifier.fillMaxHeight(0.38f),
             shape = RoundedCornerShape(16.dp),
-            color = AlertDialogDefaults.containerColor,
+            color = MaterialTheme.colorScheme.background,
         ) {
             Scaffold(
                 bottomBar = {
@@ -157,6 +158,7 @@ private fun ScreenContent(
                                 )
                             )
                         },
+                        colors = textFieldColors,
                     )
                     state.currentValue?.let { value ->
                         SliderTextInputField(

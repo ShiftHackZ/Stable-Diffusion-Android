@@ -49,6 +49,7 @@ fun ProviderPageContent(
         mutableStateOf(
             ServerSetupState(
                 showBackNavArrow = false,
+                onBoardingDemo = true,
             )
         )
     }

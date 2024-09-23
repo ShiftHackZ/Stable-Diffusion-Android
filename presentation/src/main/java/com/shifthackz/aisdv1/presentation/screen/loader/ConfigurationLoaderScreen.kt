@@ -19,15 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ConfigurationLoaderScreen() {
     MviComponent(
         viewModel = koinViewModel<ConfigurationLoaderViewModel>(),
-        navigationBarColor = MaterialTheme.colorScheme.surface,
-        applySystemUiColors = true,
     ) { state, _ ->
         ScreenContent(
             modifier = Modifier.fillMaxSize(),

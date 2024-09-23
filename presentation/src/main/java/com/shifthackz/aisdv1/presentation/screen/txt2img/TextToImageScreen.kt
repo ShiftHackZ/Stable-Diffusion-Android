@@ -6,6 +6,7 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,7 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
@@ -51,7 +52,6 @@ import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 fun TextToImageScreen() {
     MviComponent(
         viewModel = koinViewModel<TextToImageViewModel>(),
-        applySystemUiColors = false,
     ) { state, intentHandler ->
         TextToImageScreenContent(
             modifier = Modifier.fillMaxSize(),
@@ -108,6 +108,7 @@ fun TextToImageScreenContent(
                                 )
                             }
                         },
+                        windowInsets = WindowInsets(0, 0, 0, 0),
                     )
                     BackgroundWorkWidget(
                         modifier = Modifier
@@ -155,7 +156,9 @@ fun TextToImageScreenContent(
                                 ?.let { "${state.negativePrompt}, ${it.trim()}" }
                                 ?.let(GenerationMviIntent.Update::NegativePrompt)
                                 ?.let(processIntent::invoke)
-                                ?.also { negativePromptChipTextFieldState.value = TextFieldValue("") }
+                                ?.also {
+                                    negativePromptChipTextFieldState.value = TextFieldValue("")
+                                }
 
                             processIntent(GenerationMviIntent.Generate)
                         },

@@ -37,7 +37,7 @@ data class SettingsState(
     val showStabilityAiCredits: Boolean
         get() = serverSource == ServerSource.STABILITY_AI
 
-    val showLocalMICROSOFTONNXUseNNAPI: Boolean
+    val showLocalMicrosoftONNXUseNNAPI: Boolean
         get() = serverSource == ServerSource.LOCAL_MICROSOFT_ONNX
 
     val showSdModelSelector: Boolean

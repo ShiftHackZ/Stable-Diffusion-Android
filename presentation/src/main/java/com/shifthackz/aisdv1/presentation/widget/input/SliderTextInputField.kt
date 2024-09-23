@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.localization.R
+import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 
 @Composable
 fun SliderTextInputField(
@@ -146,7 +147,8 @@ fun SliderTextInputField(
                         }
                     }
                 }
-            }
+            },
+            colors = textFieldColors,
         )
         Slider(
             value = value,

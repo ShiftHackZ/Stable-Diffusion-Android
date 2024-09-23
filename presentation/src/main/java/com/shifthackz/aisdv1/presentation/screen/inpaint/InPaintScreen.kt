@@ -45,7 +45,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.shifthackz.aisdv1.core.ui.MviComponent
+import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.inpaint.components.CapSizeSlider
@@ -60,8 +60,6 @@ fun InPaintScreen(
 ) {
     MviComponent(
         viewModel = koinViewModel<InPaintViewModel>(),
-        applySystemUiColors = true,
-        navigationBarColor = MaterialTheme.colorScheme.surface,
     ) { state, processIntent ->
         ScreenContent(
             modifier = modifier,
@@ -168,7 +166,9 @@ private fun ScreenContent(
                             )
                         }
                     }
-                    NavigationBar {
+                    NavigationBar(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ) {
                         InPaintState.Tab.entries.forEach { tab ->
                             NavigationBarItem(
                                 selected = state.selectedTab == tab,
