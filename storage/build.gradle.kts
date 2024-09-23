@@ -1,18 +1,19 @@
 plugins {
     alias(libs.plugins.generic.library)
-    kotlin("kapt")
+    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.androidx.room)
 }
 
 android {
     namespace = "com.shifthackz.aisdv1.storage"
     defaultConfig {
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas")
-                arg("room.incremental", "true")
-                arg("room.expandProjection", "true")
-            }
+        ksp {
+            arg("room.incremental", "true")
+            arg("room.expandProjection", "true")
         }
+    }
+    room {
+        schemaDirectory("$projectDir/schemas")
     }
 }
 
@@ -22,6 +23,5 @@ dependencies {
     implementation(libs.google.gson)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.rx)
-    //ToDo migrate to KSP
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 }

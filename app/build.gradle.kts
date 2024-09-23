@@ -79,7 +79,3 @@ dependencies {
     implementation(libs.shifthackz.catppuccin.legacy)
     implementation(libs.androidx.work.runtime)
 }
-
-kapt {
-    correctErrorTypes = true
-}
