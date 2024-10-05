@@ -81,9 +81,9 @@ fun ConfigurationModeButton(
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .padding(top = 8.dp, bottom = 8.dp),
+                    .padding(vertical = 8.dp),
                 text = mode.getName(),
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Start,
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
