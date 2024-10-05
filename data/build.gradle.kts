@@ -22,6 +22,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.rx.kotlin)
     implementation(libs.google.gson)
+    implementation(libs.shifthackz.preferences)
     testImplementation(libs.test.junit)
     testImplementation(libs.test.mockito)
     testImplementation(libs.test.mockk)

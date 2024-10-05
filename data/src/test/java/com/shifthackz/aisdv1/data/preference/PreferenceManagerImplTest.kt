@@ -42,7 +42,7 @@ class PreferenceManagerImplTest {
     private val stubEditor = mock<SharedPreferences.Editor>()
     private val stubPreference = mock<SharedPreferences>()
 
-    private val preferenceManager = PreferenceManagerImpl(stubPreference)
+    private lateinit var preferenceManager : PreferenceManagerImpl
 
     @Before
     fun initialize() {
@@ -64,6 +64,8 @@ class PreferenceManagerImplTest {
 
         whenever(stubPreference.getBoolean(any(), any()))
             .thenReturn(false)
+
+        preferenceManager = PreferenceManagerImpl(stubPreference)
     }
 
     @Test
