@@ -15,6 +15,7 @@ import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.android.core.preferences.delegates
 import io.reactivex.rxjava3.core.BackpressureStrategy
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
@@ -252,6 +253,10 @@ class PreferenceManagerImpl(
                 galleryGrid = galleryGrid,
             )
         }
+
+    override fun refresh(): Completable = Completable.fromAction {
+        preferencesChangedSubject.onNext(Unit)
+    }
 
     private fun <T> onPreferencesChanged(value: T) = preferencesChangedSubject.onNext(value)
 
