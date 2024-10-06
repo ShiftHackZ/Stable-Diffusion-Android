@@ -7,14 +7,18 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.navigation.NavigationEffect
 import com.shifthackz.aisdv1.presentation.navigation.router.home.HomeRouter
 import com.shifthackz.android.core.mvi.EmptyState
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import java.util.concurrent.TimeUnit
 
 class HomeNavigationViewModel(
     generationFormUpdateEvent: GenerationFormUpdateEvent,
+    preferenceManager: PreferenceManager,
     dispatchersProvider: DispatchersProvider,
     schedulersProvider: SchedulersProvider,
     private val homeRouter: HomeRouter,
@@ -38,6 +42,12 @@ class HomeNavigationViewModel(
             .map(HomeNavigationIntent::Route)
             .subscribeOnMainThread(schedulersProvider)
             .subscribeBy(::errorLog, EmptyLambda, ::processIntent)
+
+        !Observable
+            .timer(250L, TimeUnit.MILLISECONDS)
+            .flatMapCompletable { preferenceManager.refresh() }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(::errorLog)
     }
 
     override fun processIntent(intent: HomeNavigationIntent) {

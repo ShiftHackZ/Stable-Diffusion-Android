@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersToken
 import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 
 interface PreferenceManager {
@@ -44,4 +45,5 @@ interface PreferenceManager {
     var galleryGrid: Grid
 
     fun observe(): Flowable<Settings>
+    fun refresh(): Completable
 }

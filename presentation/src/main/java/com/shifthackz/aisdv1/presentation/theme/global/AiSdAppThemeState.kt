@@ -7,6 +7,7 @@ import com.shifthackz.android.core.mvi.MviState
 
 @Immutable
 data class AiSdAppThemeState(
+    val stateKey: Long = System.currentTimeMillis(),
     val systemColorPalette: Boolean = false,
     val systemDarkTheme: Boolean = true,
     val darkTheme: Boolean = true,

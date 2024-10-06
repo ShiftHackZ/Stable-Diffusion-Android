@@ -40,6 +40,7 @@ apacheStringUtils = "3.17.0"
 composeGestures = "4.0.0"
 crop = "0.1.1"
 mvi = "1.0.2"
+preferences = "1.0.1"
 dayNightSwitch = "1.0.0"
 imagepicker = "v2.0.3"
 catppuccin = "0.1.2"
@@ -106,6 +107,7 @@ test-compose-manifest = { group = "androidx.compose.ui", name = "ui-test-manifes
 compose-gestures = { group = "com.github.SmartToolFactory", name = "Compose-Extended-Gestures", version.ref = "composeGestures" }
 compose-crop = { group = "io.github.mr0xf00", name = "easycrop", version.ref = "crop" }
 shifthackz-mvi = { group = "com.github.ShiftHackZ", name = "AndroidCoreMVI", version.ref = "mvi" }
+shifthackz-preferences = { group = "com.github.ShiftHackZ", name = "AndroidPreferences", version.ref = "preferences" }
 shifthackz-imagepicker = { group = "com.github.ShiftHackZ", name = "ImagePicker", version.ref = "imagepicker" }
 shifthackz-daynightswitch = { group = "com.github.ShiftHackZ", name = "DayNightSwitch", version.ref = "dayNightSwitch" }
 shifthackz-catppuccin-legacy = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "palette-legacy", version.ref = "catppuccin" }
