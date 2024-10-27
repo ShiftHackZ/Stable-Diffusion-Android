@@ -34,6 +34,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -144,22 +146,33 @@ private fun ScreenContent(
                     if (!state.loading && state.embeddings.isNotEmpty()) {
                         Row(
                             modifier = modifier
-                                .padding(horizontal = 12.dp)
                                 .fillMaxWidth()
                                 .height(intrinsicSize = IntrinsicSize.Max)
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(color = bgColor)
                                 .onSizeChanged {
                                     if (it.height > dividerHeight) dividerHeight = it.height
-                                },
+                                }
+                                .drawBehind {
+                                    drawRoundRect(
+                                        color = bgColor,
+                                        cornerRadius = CornerRadius(16.dp.toPx())
+                                    )
+                                }
+                                .padding(horizontal = 12.dp),
                         ) {
+                            val selectorBgColor =
+                                if (state.selector) MaterialTheme.colorScheme.primary else Color.Transparent
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(with(LocalDensity.current) { dividerHeight.toDp() })
                                     .weight(1f)
                                     .clip(RoundedCornerShape(16.dp))
-                                    .background(color = if (state.selector) MaterialTheme.colorScheme.primary else Color.Transparent)
+                                    .drawBehind {
+                                        drawRoundRect(
+                                            color = selectorBgColor,
+                                            cornerRadius = CornerRadius(16.dp.toPx())
+                                        )
+                                    }
                                     .clickable { processIntent(EmbeddingIntent.ChangeSelector(true)) },
                                 contentAlignment = Alignment.Center,
                             ) {

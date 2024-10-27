@@ -2,7 +2,6 @@ package com.shifthackz.aisdv1.presentation.screen.onboarding
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -36,14 +34,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
-import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.screen.onboarding.page.FormPageContent
 import com.shifthackz.aisdv1.presentation.screen.onboarding.page.LocalDiffusionPageContent
 import com.shifthackz.aisdv1.presentation.screen.onboarding.page.LookAndFeelPageContent
 import com.shifthackz.aisdv1.presentation.screen.onboarding.page.ProviderPageContent
+import com.shifthackz.android.core.mvi.MviComponent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -151,7 +150,9 @@ private fun OnBoardingScreenContent(
                             Box(
                                 modifier = Modifier
                                     .size(8.dp)
-                                    .background(color, CircleShape)
+                                    .drawBehind {
+                                        drawCircle(color = color)
+                                    }
                             )
                         }
                     }

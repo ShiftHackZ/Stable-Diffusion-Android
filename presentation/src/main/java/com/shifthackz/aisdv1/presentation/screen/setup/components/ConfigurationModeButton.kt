@@ -3,7 +3,6 @@
 package com.shifthackz.aisdv1.presentation.screen.setup.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -24,7 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,19 +44,23 @@ fun ConfigurationModeButton(
     mode: ServerSource,
     onClick: (ServerSource) -> Unit = {},
 ) {
+    val bgColor = MaterialTheme.colorScheme.surfaceVariant
+    val borderColor = MaterialTheme.colorScheme.primary
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
-            .background(
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(16.dp),
-            )
-            .border(
-                width = 2.dp,
-                shape = RoundedCornerShape(16.dp),
-                color = if (state.mode == mode) MaterialTheme.colorScheme.primary
-                else Color.Transparent,
-            )
+            .drawBehind {
+                drawRoundRect(
+                    color = bgColor,
+                    cornerRadius = CornerRadius(16.dp.toPx()),
+                )
+                if (state.mode != mode) return@drawBehind
+                    drawRoundRect(
+                        color = borderColor,
+                        style = Stroke(2.dp.toPx()),
+                        cornerRadius = CornerRadius(16.dp.toPx()),
+                    )
+            }
             .clickable { onClick(mode) }
             .padding(horizontal = 4.dp)
             .padding(bottom = 4.dp),
@@ -68,12 +73,15 @@ fun ConfigurationModeButton(
                 imageVector = when (mode) {
                     ServerSource.AUTOMATIC1111,
                     ServerSource.SWARM_UI -> Icons.Default.Computer
+
                     ServerSource.HORDE,
                     ServerSource.OPEN_AI,
                     ServerSource.STABILITY_AI,
                     ServerSource.HUGGING_FACE -> Icons.Default.Cloud
+
                     ServerSource.LOCAL_MICROSOFT_ONNX,
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Icons.Default.Android
+
                     else -> Icons.Default.QuestionMark
                 },
                 contentDescription = null,

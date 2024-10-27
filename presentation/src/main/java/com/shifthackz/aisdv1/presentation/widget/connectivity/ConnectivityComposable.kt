@@ -95,9 +95,6 @@ private fun ConnectivityWidgetState(
                 modifier = Modifier
                     .drawWithCache {
                         val brushSize = 40f
-                        val brushDefault = Brush.linearGradient(
-                            colors = listOf(uiColor, uiColor)
-                        )
                         val brushAnimated = Brush.linearGradient(
                             colors = listOf(
                                 Color.Transparent,
@@ -110,8 +107,8 @@ private fun ConnectivityWidgetState(
                         )
                         onDrawBehind {
                             drawRoundRect(
+                                color = uiColor,
                                 cornerRadius = CornerRadius(8.dp.toPx()),
-                                brush = brushDefault,
                             )
                             if (state !is ConnectivityState.Uninitialized) return@onDrawBehind
                             drawRoundRect(
