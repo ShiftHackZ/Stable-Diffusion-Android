@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.data.remote.HuggingFaceGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HuggingFaceModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.OpenAiGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.RandomImageRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.ReportRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.ServerConfigurationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StabilityAiCreditsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.StabilityAiEnginesRemoteDataSource
@@ -34,6 +35,7 @@ import com.shifthackz.aisdv1.domain.datasource.HuggingFaceModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.LorasDataSource
 import com.shifthackz.aisdv1.domain.datasource.OpenAiGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.RandomImageDataSource
+import com.shifthackz.aisdv1.domain.datasource.ReportDataSource
 import com.shifthackz.aisdv1.domain.datasource.ServerConfigurationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiCreditsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiEnginesDataSource
@@ -94,6 +96,7 @@ val remoteDataSourceModule = module {
     factoryOf(::StabilityAiGenerationRemoteDataSource) bind StabilityAiGenerationDataSource.Remote::class
     factoryOf(::StabilityAiCreditsRemoteDataSource) bind StabilityAiCreditsDataSource.Remote::class
     factoryOf(::StabilityAiEnginesRemoteDataSource) bind StabilityAiEnginesDataSource.Remote::class
+    factoryOf(::ReportRemoteDataSource) bind ReportDataSource.Remote::class
 
     factory<ServerConnectivityGateway> {
         val lambda: () -> Boolean = {

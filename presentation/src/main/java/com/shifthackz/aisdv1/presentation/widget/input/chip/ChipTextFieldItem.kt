@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.widget.input.chip
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.presentation.model.ExtraType
@@ -26,6 +28,8 @@ fun ChipTextFieldItem(
     type: ExtraType? = null,
     text: String,
     overflow: TextOverflow = TextOverflow.Clip,
+    shape: Shape = RoundedCornerShape(4.dp),
+    innerPadding: PaddingValues = PaddingValues(vertical = 1.dp, horizontal = 2.dp),
     maxLines: Int = Int.MAX_VALUE,
     showDeleteIcon: Boolean = false,
     onDeleteClick: () -> Unit = {},
@@ -47,10 +51,10 @@ fun ChipTextFieldItem(
     }
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(4.dp))
+            .clip(shape)
             .background(bgColor)
             .clickable { onItemClick() }
-            .padding(vertical = 1.dp, horizontal = 2.dp),
+            .padding(innerPadding),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val localColor = MaterialTheme.colorScheme.onPrimary

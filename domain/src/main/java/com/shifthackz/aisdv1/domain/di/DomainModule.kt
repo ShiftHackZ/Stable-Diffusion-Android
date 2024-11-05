@@ -74,6 +74,8 @@ import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.report.SendReportUseCase
+import com.shifthackz.aisdv1.domain.usecase.report.SendReportUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdembedding.FetchAndGetEmbeddingsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdembedding.FetchAndGetEmbeddingsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdhypernet.FetchAndGetHyperNetworksUseCase
@@ -179,6 +181,7 @@ internal val useCasesModule = module {
     factoryOf(::ObserveStabilityAiCreditsUseCaseImpl) bind ObserveStabilityAiCreditsUseCase::class
     factoryOf(::FetchAndGetStabilityAiEnginesUseCaseImpl) bind FetchAndGetStabilityAiEnginesUseCase::class
     factoryOf(::FetchAndGetSupportersUseCaseImpl) bind FetchAndGetSupportersUseCase::class
+    factoryOf(::SendReportUseCaseImpl) bind SendReportUseCase::class
 }
 
 internal val interActorsModule = module {

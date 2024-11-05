@@ -35,6 +35,9 @@ sealed interface NavigationRoute {
     data class GalleryDetail(val itemId: Long) : NavigationRoute
 
     @Serializable
+    data class ReportImage(val itemId: Long) : NavigationRoute
+
+    @Serializable
     data class ServerSetup(val source: LaunchSource) : NavigationRoute
 
     sealed interface HomeNavigation : NavigationRoute {

@@ -231,6 +231,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
                 .subscribeOnMainThread(schedulersProvider)
                 .subscribeBy(::errorLog) { mainRouter.navigateToGalleryDetails(it.id) }
 
+            is GenerationMviIntent.Result.Report -> mainRouter.navigateToReportImage(intent.ai.id)
+
             is GenerationMviIntent.SetModal -> setActiveModal(intent.modal)
 
             GenerationMviIntent.Cancel.Generation -> {

@@ -35,6 +35,7 @@ import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuIntent
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailIntent
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryIntent
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintIntent
+import com.shifthackz.aisdv1.presentation.screen.report.ReportIntent
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
@@ -61,6 +62,7 @@ fun ModalRenderer(
         processIntent(GalleryDetailIntent.DismissDialog)
         processIntent(InPaintIntent.ScreenModal.Dismiss)
         processIntent(DebugMenuIntent.DismissModal)
+        processIntent(ReportIntent.DismissError)
     }
     val context = LocalContext.current
     when (screenModal) {
@@ -112,6 +114,9 @@ fun ModalRenderer(
             onDismissRequest = dismiss,
             onSaveRequest = {
                 processIntent(GenerationMviIntent.Result.Save(listOf(screenModal.result)))
+            },
+            onReportRequest = {
+                processIntent(GenerationMviIntent.Result.Report(screenModal.result))
             },
             onViewDetailRequest = {
                 processIntent(GenerationMviIntent.Result.View(screenModal.result))
