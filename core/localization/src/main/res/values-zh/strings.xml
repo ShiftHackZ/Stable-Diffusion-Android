@@ -427,4 +427,17 @@
     <string name="on_boarding_page_local_title">[离线]生成\n本地扩散。</string>
     <string name="on_boarding_page_ui_title">自定义应用程序，\n让它成为[您的]！</string>
     <string name="on_boarding_page_provider_title">[自由]选择\n代提供商。</string>
+
+    <string name="report_title">举报图片</string>
+    <string name="report_submit">提交举报</string>
+    <string name="report_description">举报描述</string>
+    <string name="report_sent">您的举报已发送!</string>
+    <string name="report_done">返回</string>
+
+    <string name="report_reason_inappropriate_content">不适当内容</string>
+    <string name="report_reason_violence">暴力</string>
+    <string name="report_reason_hateful_speech">仇恨言论</string>
+    <string name="report_reason_intellectual">知识产权侵犯</string>
+    <string name="report_reason_adult">成人内容</string>
+    <string name="report_reason_other">其他</string>
 </resources>

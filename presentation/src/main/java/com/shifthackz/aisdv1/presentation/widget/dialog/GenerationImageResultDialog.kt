@@ -49,6 +49,7 @@ fun GenerationImageResultDialog(
     showSaveButton: Boolean = false,
     onDismissRequest: () -> Unit = {},
     onSaveRequest: () -> Unit = {},
+    onReportRequest: () -> Unit = {},
     onViewDetailRequest: () -> Unit = {},
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
@@ -65,7 +66,7 @@ fun GenerationImageResultDialog(
                 Image(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .defaultMinSize(minHeight = 300.dp,)
+                        .defaultMinSize(minHeight = 300.dp)
                         .align(Alignment.CenterHorizontally)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
@@ -88,32 +89,30 @@ fun GenerationImageResultDialog(
                             color = LocalContentColor.current,
                         )
                     }
-                    OutlinedButton(
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                            .align(Alignment.CenterHorizontally)
-                            .fillMaxWidth(0.7f),
-                        onClick = onDismissRequest,
-                    ) {
-                        Text(
-                            text = stringResource(id = LocalizationR.string.action_close),
-                            color = LocalContentColor.current,
-                        )
-                    }
-
-                } else {
-                    Button(
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .align(Alignment.CenterHorizontally)
-                            .fillMaxWidth(0.7f),
-                        onClick = onDismissRequest,
-                    ) {
-                        Text(
-                            text = stringResource(id = LocalizationR.string.action_close),
-                            color = LocalContentColor.current,
-                        )
-                    }
+                }
+                Button(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .fillMaxWidth(0.7f),
+                    onClick = onReportRequest,
+                ) {
+                    Text(
+                        text = stringResource(id = LocalizationR.string.report_title),
+                        color = LocalContentColor.current,
+                    )
+                }
+                OutlinedButton(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .fillMaxWidth(0.7f),
+                    onClick = onDismissRequest,
+                ) {
+                    Text(
+                        text = stringResource(id = LocalizationR.string.action_close),
+                        color = LocalContentColor.current,
+                    )
                 }
             }
         }

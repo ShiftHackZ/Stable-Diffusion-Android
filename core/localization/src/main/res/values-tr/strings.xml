@@ -361,4 +361,17 @@
     <string name="on_boarding_page_local_title">[Çevrimdışı] nesil\nYerel Dağıtım.</string>
     <string name="on_boarding_page_ui_title">Uygulamayı özelleştirin,\n[kendinizin] yapın!</string>
     <string name="on_boarding_page_provider_title">Nesil sağlayıcıyı\nseçme [Özgürlüğü].</string>
+
+    <string name="report_title">Görüntüyü Şikayet Et</string>
+    <string name="report_submit">Şikayeti Gönder</string>
+    <string name="report_description">Şikayet açıklaması</string>
+    <string name="report_sent">Şikayetiniz gönderildi!</string>
+    <string name="report_done">Geri dön</string>
+
+    <string name="report_reason_inappropriate_content">Uygunsuz içerik</string>
+    <string name="report_reason_violence">Şiddet</string>
+    <string name="report_reason_hateful_speech">Nefret söylemi</string>
+    <string name="report_reason_intellectual">Fikri mülkiyet ihlali</string>
+    <string name="report_reason_adult">Yetişkin içeriği</string>
+    <string name="report_reason_other">Diğer</string>
 </resources>

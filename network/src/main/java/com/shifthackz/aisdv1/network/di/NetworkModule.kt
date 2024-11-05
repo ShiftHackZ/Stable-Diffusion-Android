@@ -15,6 +15,7 @@ import com.shifthackz.aisdv1.network.api.sdai.DonateApi
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApi
 import com.shifthackz.aisdv1.network.api.sdai.DownloadableModelsApiImpl
 import com.shifthackz.aisdv1.network.api.sdai.HuggingFaceModelsApi
+import com.shifthackz.aisdv1.network.api.sdai.ReportApi
 import com.shifthackz.aisdv1.network.api.stabilityai.StabilityAiApi
 import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiApi
 import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiApiImpl
@@ -141,6 +142,12 @@ val networkModule = module {
         get<Retrofit.Builder>()
             .withBaseUrl(get<ApiUrlProvider>().stableDiffusionAppApiUrl)
             .create(DonateApi::class.java)
+    }
+
+    single {
+        get<Retrofit.Builder>()
+            .withBaseUrl(get<ApiUrlProvider>().stableDiffusionReportApiUrl)
+            .create(ReportApi::class.java)
     }
 
     single {

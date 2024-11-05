@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,9 +32,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -183,8 +186,28 @@ private fun GalleryDetailNavigationBar(
     state: GalleryDetailState,
     processIntent: (GalleryDetailIntent) -> Unit = {},
 ) {
-    Column {
+    Column(
+        modifier = Modifier
+            .background(color = MaterialTheme.colorScheme.surface),
+    ) {
         if (state is GalleryDetailState.Content) {
+            OutlinedButton(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp, vertical = 4.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+                onClick = { processIntent(GalleryDetailIntent.Report) },
+            ) {
+                Icon(
+                    modifier = Modifier.padding(end = 8.dp),
+                    imageVector = Icons.Default.Report,
+                    contentDescription = "Report",
+                )
+                Text(
+                    text = stringResource(LocalizationR.string.report_title),
+                    color = LocalContentColor.current
+                )
+            }
             Row(
                 modifier = Modifier
                     .background(color = MaterialTheme.colorScheme.surface)

@@ -67,6 +67,14 @@ internal class MainRouterImpl : MainRouter {
         )
     }
 
+    override fun navigateToReportImage(itemId: Long) {
+        effectSubject.onNext(
+            NavigationEffect.Navigate.Route(
+                navRoute = NavigationRoute.ReportImage(itemId = itemId)
+            )
+        )
+    }
+
     override fun navigateToInPaint() {
         effectSubject.onNext(NavigationEffect.Navigate.Route(navRoute = NavigationRoute.InPaint))
     }

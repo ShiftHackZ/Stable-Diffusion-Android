@@ -17,6 +17,7 @@ import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintViewModel
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderViewModel
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerViewModel
 import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingViewModel
+import com.shifthackz.aisdv1.presentation.screen.report.ReportViewModel
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsViewModel
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashViewModel
@@ -101,6 +102,18 @@ val viewModelModule = module {
             schedulersProvider = get(),
             generationFormUpdateEvent = get(),
             mainRouter = get(),
+        )
+    }
+
+    viewModel { parameters ->
+        ReportViewModel(
+            itemId = parameters.get(),
+            sendReportUseCase = get(),
+            getGenerationResultUseCase = get(),
+            getLastResultFromCacheUseCase = get(),
+            base64ToBitmapConverter = get(),
+            mainRouter = get(),
+            schedulersProvider = get(),
         )
     }
 }

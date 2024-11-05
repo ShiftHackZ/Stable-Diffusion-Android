@@ -361,4 +361,17 @@
     <string name="on_boarding_page_local_title">[Офлайн] генерация\nLocal Diffusion.</string>
     <string name="on_boarding_page_ui_title">Настройте приложение,\nсделайте его [своим]!</string>
     <string name="on_boarding_page_provider_title">[Свобода] выбора\nпровайедра генерации.</string>
+
+    <string name="report_title">Пожаловаться</string>
+    <string name="report_submit">Отправить жалобу</string>
+    <string name="report_description">Описание жалобы</string>
+    <string name="report_sent">Ваша жалоба отправлена!</string>
+    <string name="report_done">Вернуться назад</string>
+
+    <string name="report_reason_inappropriate_content">Неподобающий контент</string>
+    <string name="report_reason_violence">Насилие</string>
+    <string name="report_reason_hateful_speech">Ненавистнические высказывания</string>
+    <string name="report_reason_intellectual">Нарушение интеллектуальной собственности</string>
+    <string name="report_reason_adult">Контент для взрослых</string>
+    <string name="report_reason_other">Другое</string>
 </resources>

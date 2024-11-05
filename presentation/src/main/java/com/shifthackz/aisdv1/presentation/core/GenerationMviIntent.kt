@@ -76,6 +76,8 @@ sealed interface GenerationMviIntent : MviIntent {
         data class Save(val ai: List<AiGenerationResult>) : Result
 
         data class View(val ai: AiGenerationResult) : Result
+
+        data class Report(val ai: AiGenerationResult) : Result
     }
 
     data class SetModal(val modal: Modal) : GenerationMviIntent

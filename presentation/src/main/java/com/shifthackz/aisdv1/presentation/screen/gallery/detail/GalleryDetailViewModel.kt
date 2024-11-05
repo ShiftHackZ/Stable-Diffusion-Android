@@ -81,6 +81,10 @@ class GalleryDetailViewModel(
             )
 
             GalleryDetailIntent.DismissDialog -> setActiveModal(Modal.None)
+
+            GalleryDetailIntent.Report -> (currentState as? GalleryDetailState.Content)
+                ?.id
+                ?.let(mainRouter::navigateToReportImage)
         }
     }
 

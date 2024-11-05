@@ -388,4 +388,17 @@
     <string name="on_boarding_page_local_title">[Offline] Local Diffusion\nAI generation.</string>
     <string name="on_boarding_page_ui_title">Configure, customize,\nmake it [yours]!</string>
     <string name="on_boarding_page_provider_title">[Freedom] to choose your\nAI generation provider.</string>
+
+    <string name="report_title">Report Image</string>
+    <string name="report_submit">Submit Report</string>
+    <string name="report_description">Report description</string>
+    <string name="report_sent">Your report was sent!</string>
+    <string name="report_done">Go back</string>
+
+    <string name="report_reason_inappropriate_content">Inappropriate content</string>
+    <string name="report_reason_violence">Violence</string>
+    <string name="report_reason_hateful_speech">Hateful speech</string>
+    <string name="report_reason_intellectual">Intellectual property infringement</string>
+    <string name="report_reason_adult">Adult content</string>
+    <string name="report_reason_other">Other</string>
 </resources>
