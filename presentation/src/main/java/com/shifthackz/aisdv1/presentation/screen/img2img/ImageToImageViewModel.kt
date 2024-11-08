@@ -32,7 +32,6 @@ import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.drawer.DrawerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.inpaint.InPaintStateProducer
-import com.shz.imagepicker.imagepicker.model.PickedResult
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -141,12 +140,8 @@ class ImageToImageViewModel(
 
             ImageToImageIntent.Pick.Gallery -> emitEffect(ImageToImageEffect.GalleryPicker)
 
-            is ImageToImageIntent.CropImage -> when (intent.result) {
-                is PickedResult.Single -> updateState {
-                    it.copy(screenModal = Modal.Image.Crop(intent.result.image.bitmap))
-                }
-
-                else -> Unit
+            is ImageToImageIntent.CropImage -> updateState {
+                it.copy(screenModal = Modal.Image.Crop(intent.bitmap))
             }
 
             is ImageToImageIntent.UpdateImage -> updateState {

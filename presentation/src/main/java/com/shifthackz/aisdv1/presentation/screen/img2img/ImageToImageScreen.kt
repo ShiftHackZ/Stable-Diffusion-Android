@@ -2,6 +2,9 @@
 
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -53,6 +56,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.model.UiText
@@ -70,13 +74,14 @@ import com.shifthackz.aisdv1.presentation.screen.inpaint.components.InPaintCompo
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MAX
 import com.shifthackz.aisdv1.presentation.utils.Constants.DENOISING_STRENGTH_MIN
+import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
+import com.shifthackz.aisdv1.presentation.utils.uriToBitmap
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
-import com.shz.imagepicker.imagepicker.ImagePicker
-import com.shz.imagepicker.imagepicker.model.GalleryPicker
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import java.io.File
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
@@ -84,19 +89,58 @@ fun ImageToImageScreen() {
     val context = LocalContext.current
     val viewModel = koinViewModel<ImageToImageViewModel>()
     val fileProviderDescriptor: FileProviderDescriptor = koinInject()
+
+    val cameraFile = File(context.cacheDir, "camera.jpg").apply {
+        createNewFile()
+        deleteOnExit()
+    }
+
+    val cameraUri = FileProvider.getUriForFile(
+        context,
+        fileProviderDescriptor.providerPath,
+        cameraFile,
+    )
+
+    val cameraPicker = rememberLauncherForActivityResult(
+        ActivityResultContracts.TakePicture(),
+    ) { success ->
+        if (!success) return@rememberLauncherForActivityResult
+        val bitmap = uriToBitmap(context, cameraUri) ?: return@rememberLauncherForActivityResult
+        viewModel.processIntent(ImageToImageIntent.CropImage(bitmap))
+    }
+
+    val cameraPermission = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (!isGranted) return@rememberLauncherForActivityResult
+        cameraPicker.launch(cameraUri)
+    }
+
+    val mediaPicker = rememberLauncherForActivityResult(
+        ActivityResultContracts.PickVisualMedia(),
+    ) { uri ->
+        val bitmap =
+            uri?.let { uriToBitmap(context, it) } ?: return@rememberLauncherForActivityResult
+        viewModel.processIntent(ImageToImageIntent.CropImage(bitmap))
+    }
+
     MviComponent(
         viewModel = viewModel,
         processEffect = { effect ->
-            ImagePicker.Builder(fileProviderDescriptor.providerPath) { result ->
-                viewModel.processIntent(ImageToImageIntent.CropImage(result))
+            when (effect) {
+                ImageToImageEffect.GalleryPicker -> {
+                    val request = PickVisualMediaRequest(
+                        ActivityResultContracts.PickVisualMedia.ImageOnly,
+                    )
+                    mediaPicker.launch(request)
+                }
+
+                ImageToImageEffect.CameraPicker -> {
+                    if (PermissionUtil.checkCameraPermission(context, cameraPermission::launch)) {
+                        cameraPicker.launch(cameraUri)
+                    }
+                }
             }
-                .useGallery(effect == ImageToImageEffect.GalleryPicker)
-                .useCamera(effect == ImageToImageEffect.CameraPicker)
-                .autoRotate(effect == ImageToImageEffect.GalleryPicker)
-                .multipleSelection(false)
-                .galleryPicker(GalleryPicker.NATIVE)
-                .build()
-                .launch(context)
         },
     ) { state, intentHandler ->
         ScreenContent(
@@ -111,7 +155,7 @@ fun ImageToImageScreen() {
 private fun ScreenContent(
     modifier: Modifier = Modifier,
     state: ImageToImageState,
-    processIntent: (GenerationMviIntent) -> Unit = {}
+    processIntent: (GenerationMviIntent) -> Unit = {},
 ) {
     val promptChipTextFieldState = remember { mutableStateOf(TextFieldValue()) }
     val negativePromptChipTextFieldState = remember { mutableStateOf(TextFieldValue()) }
@@ -340,7 +384,7 @@ private fun ScreenContent(
                                     ServerSource.OPEN_AI -> LocalizationR.string.action_change_configuration
 
                                     else -> LocalizationR.string.action_generate
-                                }
+                                },
                             ),
                             color = LocalContentColor.current,
                         )
@@ -499,7 +543,7 @@ private fun ImagePickButtonBox(
                 id = when (buttonType) {
                     ImagePickButton.PHOTO -> LocalizationR.string.action_image_picker_gallery
                     ImagePickButton.CAMERA -> LocalizationR.string.action_image_picker_camera
-                }
+                },
             ),
             fontSize = 17.sp,
         )

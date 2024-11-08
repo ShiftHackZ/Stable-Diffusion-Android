@@ -42,7 +42,6 @@ dependencies {
     implementation(libs.rx.kotlin)
     implementation(libs.rx.android)
 
-    implementation(libs.shifthackz.imagepicker)
     implementation(libs.shifthackz.daynightswitch)
     implementation(libs.shifthackz.catppuccin.compose)
     implementation(libs.shifthackz.catppuccin.splash)
