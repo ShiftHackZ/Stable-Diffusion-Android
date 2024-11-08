@@ -11,7 +11,7 @@ object PermissionUtil {
     fun checkStoragePermission(
         context: Context,
         onLaunch: (missingPermissions: Array<String>) -> Unit = {},
-    ): Boolean  {
+    ): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return false
         }
@@ -39,6 +39,21 @@ object PermissionUtil {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             onLaunch(Manifest.permission.POST_NOTIFICATIONS)
+            return false
+        }
+        return true
+    }
+
+    fun checkCameraPermission(
+        context: Context,
+        onLaunch: (missingPermission: String) -> Unit,
+    ): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            onLaunch(Manifest.permission.CAMERA)
             return false
         }
         return true

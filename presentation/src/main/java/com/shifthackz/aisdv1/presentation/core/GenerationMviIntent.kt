@@ -11,7 +11,6 @@ import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
 import com.shifthackz.android.core.mvi.MviIntent
-import com.shz.imagepicker.imagepicker.model.PickedResult
 
 sealed interface GenerationMviIntent : MviIntent {
 
@@ -109,7 +108,7 @@ sealed interface ImageToImageIntent : GenerationMviIntent {
 
     data class UpdateImage(val bitmap: Bitmap) : ImageToImageIntent
 
-    data class CropImage(val result: PickedResult) : ImageToImageIntent
+    data class CropImage(val bitmap: Bitmap) : ImageToImageIntent
 
     enum class Pick : ImageToImageIntent {
         Camera, Gallery
