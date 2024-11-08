@@ -47,7 +47,7 @@ catppuccin = "0.1.2"
 turbine = "1.2.0"
 roboelectric = "4.13"
 testCoroutines = "1.9.0"
-mediaPipeGenerator = "0.10.16"
+mediaPipeGenerator = "0.10.18"
 serialization = "1.7.3"
 
 [libraries]
