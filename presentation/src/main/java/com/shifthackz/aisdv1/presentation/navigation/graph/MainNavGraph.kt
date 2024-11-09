@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute
+import com.shifthackz.aisdv1.presentation.screen.backup.BackupScreen
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.donate.DonateScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
@@ -83,6 +84,10 @@ fun NavGraphBuilder.mainNavGraph() {
 
     composable<NavigationRoute.Donate> {
         DonateScreen()
+    }
+
+    composable<NavigationRoute.Backup> {
+        BackupScreen()
     }
 
     composable<NavigationRoute.Onboarding>(

@@ -29,6 +29,9 @@ sealed interface NavigationRoute {
     data object Donate : NavigationRoute
 
     @Serializable
+    data object Backup : NavigationRoute
+
+    @Serializable
     data class Onboarding(val source: LaunchSource) : NavigationRoute
 
     @Serializable

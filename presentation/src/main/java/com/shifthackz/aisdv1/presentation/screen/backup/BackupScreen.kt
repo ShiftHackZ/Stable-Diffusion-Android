@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -25,14 +26,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.core.ui.MviComponent
 import com.shifthackz.aisdv1.presentation.screen.backup.forms.BackupOperationForm
 import com.shifthackz.aisdv1.presentation.screen.backup.forms.CreateBackupForm
+import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupScreenTags
 import com.shifthackz.aisdv1.presentation.widget.toolbar.StepBar
+import com.shifthackz.android.core.mvi.MviComponent
 import org.koin.androidx.compose.koinViewModel
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
@@ -101,6 +104,7 @@ private fun BackupScreenContent(
         bottomBar = {
             Button(
                 modifier = Modifier
+                    .navigationBarsPadding()
                     .height(height = 68.dp)
                     .background(MaterialTheme.colorScheme.background)
                     .fillMaxWidth()

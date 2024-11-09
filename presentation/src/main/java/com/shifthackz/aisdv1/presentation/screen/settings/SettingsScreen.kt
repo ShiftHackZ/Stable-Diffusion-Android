@@ -125,7 +125,9 @@ fun SettingsScreen() {
                 }
 
                 SettingsEffect.ShareLogFile -> ReportProblemEmailComposer().invoke(context)
+
                 is SettingsEffect.OpenUrl -> context.openUrl(effect.url)
+
                 SettingsEffect.DeveloperModeUnlocked -> context.showToast(
                     LocalizationR.string.debug_action_unlock,
                 )
@@ -219,6 +221,8 @@ private fun ContentSettingsState(
         val warningModifier = Modifier
             .fillMaxWidth()
             .padding(top = 4.dp, start = 4.dp)
+
+        Spacer(modifier = Modifier.height(56.dp))
 
         if (!state.onBoardingDemo) {
             //region MAIN SETTINGS

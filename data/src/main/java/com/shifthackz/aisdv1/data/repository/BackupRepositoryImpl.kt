@@ -68,9 +68,9 @@ internal class BackupRepositoryImpl(
                     KEY_SWARM_MODEL to swarmUiModel,
                     KEY_DEMO_MODE to demoMode,
                     KEY_DEVELOPER_MODE to developerMode,
-                    KEY_LOCAL_DIFFUSION_CUSTOM_MODEL_PATH to localDiffusionCustomModelPath,
-                    KEY_ALLOW_LOCAL_DIFFUSION_CANCEL to localDiffusionAllowCancel,
-                    KEY_LOCAL_DIFFUSION_SCHEDULER_THREAD to localDiffusionSchedulerThread,
+                    KEY_LOCAL_DIFFUSION_CUSTOM_MODEL_PATH to localOnnxCustomModelPath,
+                    KEY_ALLOW_LOCAL_DIFFUSION_CANCEL to localOnnxAllowCancel,
+                    KEY_LOCAL_DIFFUSION_SCHEDULER_THREAD to localOnnxSchedulerThread,
                     KEY_MONITOR_CONNECTIVITY to monitorConnectivity,
                     KEY_AI_AUTO_SAVE to autoSaveAiResults,
                     KEY_SAVE_TO_MEDIA_STORE to saveToMediaStore,
@@ -86,8 +86,8 @@ internal class BackupRepositoryImpl(
                     KEY_STABILITY_AI_ENGINE_ID_KEY to stabilityAiEngineId,
                     KEY_ON_BOARDING_COMPLETE to onBoardingComplete,
                     KEY_FORCE_SETUP_AFTER_UPDATE to forceSetupAfterUpdate,
-                    KEY_LOCAL_MODEL_ID to localModelId,
-                    KEY_LOCAL_NN_API to localUseNNAPI,
+                    KEY_LOCAL_MODEL_ID to localOnnxModelId,
+                    KEY_LOCAL_NN_API to localOnnxUseNNAPI,
                     KEY_DESIGN_DYNAMIC_COLORS to designUseSystemColorPalette,
                     KEY_DESIGN_SYSTEM_DARK_THEME to designUseSystemDarkTheme,
                     KEY_DESIGN_DARK_THEME to designDarkTheme,
@@ -139,13 +139,13 @@ internal class BackupRepositoryImpl(
                                 preferenceManager.developerMode = value as Boolean
                             }
                             KEY_LOCAL_DIFFUSION_CUSTOM_MODEL_PATH -> {
-                                preferenceManager.localDiffusionCustomModelPath = value as String
+                                preferenceManager.localOnnxCustomModelPath = value as String
                             }
                             KEY_ALLOW_LOCAL_DIFFUSION_CANCEL -> {
-                                preferenceManager.localDiffusionAllowCancel = value as Boolean
+                                preferenceManager.localOnnxAllowCancel = value as Boolean
                             }
                             KEY_LOCAL_DIFFUSION_SCHEDULER_THREAD -> {
-                                preferenceManager.localDiffusionSchedulerThread = value as SchedulersToken
+                                preferenceManager.localOnnxSchedulerThread = value as SchedulersToken
                             }
                             KEY_MONITOR_CONNECTIVITY -> {
                                 preferenceManager.monitorConnectivity = value as Boolean
@@ -193,10 +193,10 @@ internal class BackupRepositoryImpl(
                                 preferenceManager.forceSetupAfterUpdate = value as Boolean
                             }
                             KEY_LOCAL_MODEL_ID -> {
-                                preferenceManager.localModelId = value as String
+                                preferenceManager.localOnnxModelId = value as String
                             }
                             KEY_LOCAL_NN_API -> {
-                                preferenceManager.localUseNNAPI = value as Boolean
+                                preferenceManager.localOnnxUseNNAPI = value as Boolean
                             }
                             KEY_DESIGN_DYNAMIC_COLORS -> {
                                 preferenceManager.designUseSystemColorPalette = value as Boolean
