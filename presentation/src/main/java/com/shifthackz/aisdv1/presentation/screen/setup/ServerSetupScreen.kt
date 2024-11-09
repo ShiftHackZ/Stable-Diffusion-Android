@@ -43,13 +43,14 @@ import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
 import com.shifthackz.aisdv1.core.common.extensions.showToast
+import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.modal.ModalRenderer
-import com.shifthackz.aisdv1.presentation.screen.setup.components.ConfigurationStepBar
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.ConfigurationStep
 import com.shifthackz.aisdv1.presentation.screen.setup.steps.SourceSelectionStep
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
+import com.shifthackz.aisdv1.presentation.widget.toolbar.StepBar
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
@@ -139,7 +140,15 @@ fun ServerSetupScreenContent(
                             WindowInsets(0, 0, 0, 0)
                         },
                     )
-                    ConfigurationStepBar(currentStep = state.step)
+                    StepBar(
+                        steps = ServerSetupState.Step.entries,
+                        currentStep = state.step,
+                    ) { step ->
+                        when (step) {
+                            ServerSetupState.Step.SOURCE -> LocalizationR.string.srv_step_1
+                            ServerSetupState.Step.CONFIGURE -> LocalizationR.string.srv_step_2
+                        }.asUiText()
+                    }
                 }
             },
             bottomBar = {

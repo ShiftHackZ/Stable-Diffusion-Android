@@ -60,7 +60,7 @@ internal class MainRouterImpl : MainRouter {
     }
 
     override fun navigateToBackup() {
-        effectSubject.onNext(NavigationEffect.Navigate.Route(Constants.ROUTE_BACKUP))
+        effectSubject.onNext(NavigationEffect.Navigate.Route(navRoute = NavigationRoute.Backup))
     }
 
     override fun navigateToGalleryDetails(itemId: Long) {
