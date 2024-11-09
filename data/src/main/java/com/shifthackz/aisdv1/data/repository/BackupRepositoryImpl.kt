@@ -145,7 +145,7 @@ internal class BackupRepositoryImpl(
                                 preferenceManager.localOnnxAllowCancel = value as Boolean
                             }
                             KEY_LOCAL_DIFFUSION_SCHEDULER_THREAD -> {
-                                preferenceManager.localOnnxSchedulerThread = value as SchedulersToken
+                                preferenceManager.localOnnxSchedulerThread = SchedulersToken.valueOf(value as String)
                             }
                             KEY_MONITOR_CONNECTIVITY -> {
                                 preferenceManager.monitorConnectivity = value as Boolean
@@ -163,7 +163,7 @@ internal class BackupRepositoryImpl(
                                 preferenceManager.formPromptTaggedInput = value as Boolean
                             }
                             KEY_SERVER_SOURCE -> {
-                                preferenceManager.source = value as ServerSource
+                                preferenceManager.source = ServerSource.valueOf(value as String)
                             }
                             KEY_SD_MODEL -> {
                                 preferenceManager.sdModel = value as String
@@ -217,7 +217,7 @@ internal class BackupRepositoryImpl(
                                 preferenceManager.backgroundGeneration = value as Boolean
                             }
                             KEY_GALLERY_GRID -> {
-                                preferenceManager.galleryGrid = value as Grid
+                                preferenceManager.galleryGrid = Grid.valueOf(value as String)
                             }
                         }
                     }

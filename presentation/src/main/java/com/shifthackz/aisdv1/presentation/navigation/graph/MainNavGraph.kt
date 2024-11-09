@@ -1,5 +1,8 @@
 package com.shifthackz.aisdv1.presentation.navigation.graph
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -57,7 +60,20 @@ fun NavGraphBuilder.mainNavGraph() {
         GalleryDetailScreen(itemId = itemId)
     }
 
-    composable<NavigationRoute.ReportImage> { entry ->
+    composable<NavigationRoute.ReportImage>(
+        enterTransition = {
+            slideInVertically(
+                initialOffsetY = { it },
+                animationSpec = tween(500),
+            )
+        },
+        exitTransition = {
+            slideOutVertically(
+                targetOffsetY  = { it },
+                animationSpec = tween(500),
+            )
+        },
+    ) { entry ->
         val itemId = entry.toRoute<NavigationRoute.ReportImage>().itemId
         ReportScreen(
             viewModel = koinViewModel<ReportViewModel>(
