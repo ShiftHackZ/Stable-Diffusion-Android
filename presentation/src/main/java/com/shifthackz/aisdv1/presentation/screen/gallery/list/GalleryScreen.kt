@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -438,7 +439,7 @@ fun GalleryScreenContent(
                 lazyGalleryItems.itemCount == 0 -> LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues),
+                        .padding(top = paddingValues.calculateTopPadding()),
                     columns = GridCells.Fixed(state.grid.size),
                     contentPadding = PaddingValues(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -460,7 +461,7 @@ fun GalleryScreenContent(
                 else -> LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues),
+                        .padding(top = paddingValues.calculateTopPadding()),
                     columns = GridCells.Fixed(state.grid.size),
                     contentPadding = PaddingValues(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -496,6 +497,7 @@ fun GalleryScreenContent(
                             GalleryUiItemShimmer()
                         }
                     }
+                    items(2) { Spacer(modifier = Modifier.height(32.dp)) }
                 }
             }
         }
