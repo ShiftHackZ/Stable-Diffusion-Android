@@ -27,4 +27,5 @@ val mockGalleryDetailTxt2Img = GalleryDetailState.Content(
     subSeed = "0001".asUiText(),
     subSeedStrength = "".asUiText(),
     denoisingStrength = "".asUiText(),
+    hidden = false,
 )

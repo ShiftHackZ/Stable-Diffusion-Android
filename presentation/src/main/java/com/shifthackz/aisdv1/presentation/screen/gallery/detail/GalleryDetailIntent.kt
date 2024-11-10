@@ -22,6 +22,8 @@ sealed interface GalleryDetailIntent : MviIntent {
         Request, Confirm
     }
 
+    data object ToggleVisibility : GalleryDetailIntent
+
     data object Report : GalleryDetailIntent
 
     data object DismissDialog : GalleryDetailIntent

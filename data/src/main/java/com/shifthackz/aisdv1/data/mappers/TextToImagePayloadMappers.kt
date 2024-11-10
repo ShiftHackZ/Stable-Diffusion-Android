@@ -143,6 +143,7 @@ fun Pair<TextToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenerat
             subSeed = if (payload.subSeed.trim().isNotEmpty()) payload.subSeed
             else mapSubSeedFromRemote(response.info),
             subSeedStrength = payload.subSeedStrength,
+            hidden = false,
         )
     }
 
@@ -166,6 +167,7 @@ fun Pair<TextToImagePayload, String>.mapCloudToAiGenResult(): AiGenerationResult
             seed = payload.seed,
             subSeed = payload.subSeed,
             subSeedStrength = payload.subSeedStrength,
+            hidden = false,
         )
     }
 
@@ -189,6 +191,7 @@ fun Pair<TextToImagePayload, String>.mapLocalDiffusionToAiGenResult(): AiGenerat
             seed = payload.seed,
             subSeed = payload.subSeed,
             subSeedStrength = payload.subSeedStrength,
+            hidden = false,
         )
     }
 //endregion

@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.core.viewmodel.MviRxViewModel
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageVisibilityUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.model.Modal
@@ -23,6 +24,7 @@ class GalleryDetailViewModel(
     private val getGenerationResultUseCase: GetGenerationResultUseCase,
     private val getLastResultFromCacheUseCase: GetLastResultFromCacheUseCase,
     private val deleteGalleryItemUseCase: DeleteGalleryItemUseCase,
+    private val toggleImageVisibilityUseCase: ToggleImageVisibilityUseCase,
     private val galleryDetailBitmapExporter: GalleryDetailBitmapExporter,
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val schedulersProvider: SchedulersProvider,
@@ -85,6 +87,8 @@ class GalleryDetailViewModel(
             GalleryDetailIntent.Report -> (currentState as? GalleryDetailState.Content)
                 ?.id
                 ?.let(mainRouter::navigateToReportImage)
+
+            GalleryDetailIntent.ToggleVisibility -> toggleVisibility()
         }
     }
 
@@ -145,6 +149,12 @@ class GalleryDetailViewModel(
             }
 
     }
+
+    private fun toggleVisibility() = !toggleImageVisibilityUseCase(itemId)
+        .subscribeOnMainThread(schedulersProvider)
+        .subscribeBy(::errorLog) { hidden ->
+            updateState { it.withHiddenState(hidden) }
+        }
 
     private fun getGenerationResult(id: Long): Single<AiGenerationResult> {
         if (id <= 0) return getLastResultFromCacheUseCase()

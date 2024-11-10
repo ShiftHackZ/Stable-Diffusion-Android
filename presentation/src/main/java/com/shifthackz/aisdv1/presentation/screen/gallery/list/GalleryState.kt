@@ -20,4 +20,5 @@ data class GalleryState(
 data class GalleryGridItemUi(
     val id: Long,
     val bitmap: Bitmap,
+    val hidden: Boolean,
 )

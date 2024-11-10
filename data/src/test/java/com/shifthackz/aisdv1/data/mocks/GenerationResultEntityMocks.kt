@@ -22,6 +22,7 @@ val mockGenerationResultEntity = GenerationResultEntity(
     subSeed = "1504",
     subSeedStrength = 5598f,
     denoisingStrength = 1504f,
+    hidden = false,
 )
 
 val mockGenerationResultEntities = listOf(mockGenerationResultEntity)

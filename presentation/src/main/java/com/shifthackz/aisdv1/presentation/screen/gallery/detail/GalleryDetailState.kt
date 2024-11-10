@@ -48,6 +48,7 @@ sealed interface GalleryDetailState : MviState {
         val subSeed: UiText,
         val subSeedStrength: UiText,
         val denoisingStrength: UiText,
+        val hidden: Boolean,
     ) : GalleryDetailState
 
     fun withTab(tab: Tab): GalleryDetailState = when (this) {
@@ -58,6 +59,11 @@ sealed interface GalleryDetailState : MviState {
     fun withDialog(dialog: Modal) = when (this) {
         is Content -> copy(screenModal = dialog)
         is Loading -> copy(screenModal = dialog)
+    }
+
+    fun withHiddenState(value: Boolean) = when (this) {
+        is Content -> copy(hidden = value)
+        is Loading -> this
     }
 
     enum class Tab(
@@ -101,5 +107,6 @@ fun Triple<AiGenerationResult, Base64ToBitmapConverter.Output, Base64ToBitmapCon
             subSeed = ai.subSeed.asUiText(),
             subSeedStrength = ai.subSeedStrength.toString().asUiText(),
             denoisingStrength = ai.denoisingStrength.toString().asUiText(),
+            hidden = ai.hidden,
         )
     }

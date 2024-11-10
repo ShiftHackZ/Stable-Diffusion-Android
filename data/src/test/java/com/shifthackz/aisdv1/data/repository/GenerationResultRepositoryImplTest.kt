@@ -299,4 +299,40 @@ class GenerationResultRepositoryImplTest {
             .await()
             .assertNotComplete()
     }
+
+    @Test
+    fun `given attempt to toggle image visibility, process succeeds, expected boolean value`() {
+        every {
+            stubLocalDataSource.queryById(any())
+        } returns Single.just(mockAiGenerationResult)
+
+        every {
+            stubLocalDataSource.insert(any())
+        } returns Single.just(5598L)
+
+        repository
+            .toggleVisibility(5598L)
+            .test()
+            .await()
+            .assertComplete()
+    }
+
+    @Test
+    fun `given attempt to toggle image visibility, error occurs, expected boolean value`() {
+        every {
+            stubLocalDataSource.queryById(any())
+        } returns Single.just(mockAiGenerationResult)
+
+        every {
+            stubLocalDataSource.insert(any())
+        } returns Single.error(stubException)
+
+        repository
+            .toggleVisibility(5598L)
+            .test()
+            .assertError(stubException)
+            .assertNoValues()
+            .await()
+            .assertNotComplete()
+    }
 }

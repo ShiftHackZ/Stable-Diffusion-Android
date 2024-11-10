@@ -23,6 +23,8 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -236,6 +238,18 @@ private fun GalleryDetailNavigationBar(
                     )
                 }
                 IconButton(
+                    onClick = { processIntent(GalleryDetailIntent.ToggleVisibility) },
+                ) {
+                    Icon(
+                        imageVector = if (state.hidden) {
+                            Icons.Default.VisibilityOff
+                        } else {
+                            Icons.Default.Visibility
+                        },
+                        contentDescription = "Toggle visibility",
+                    )
+                }
+                IconButton(
                     onClick = { processIntent(GalleryDetailIntent.Export.Params) },
                 ) {
                     Icon(
@@ -297,6 +311,7 @@ private fun GalleryDetailContentState(
             GalleryDetailState.Tab.IMAGE -> ZoomableImage(
                 modifier = Modifier.fillMaxSize(),
                 source = ZoomableImageSource.Bmp(state.bitmap),
+                hideImage = state.hidden,
             )
 
             GalleryDetailState.Tab.ORIGINAL -> state.inputBitmap?.let { bmp ->

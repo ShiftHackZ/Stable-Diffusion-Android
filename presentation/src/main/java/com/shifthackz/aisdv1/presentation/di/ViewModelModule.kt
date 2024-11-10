@@ -97,6 +97,7 @@ val viewModelModule = module {
             getGenerationResultUseCase = get(),
             getLastResultFromCacheUseCase = get(),
             deleteGalleryItemUseCase = get(),
+            toggleImageVisibilityUseCase = get(),
             galleryDetailBitmapExporter = get(),
             base64ToBitmapConverter = get(),
             schedulersProvider = get(),
