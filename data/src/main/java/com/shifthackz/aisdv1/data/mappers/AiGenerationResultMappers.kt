@@ -26,6 +26,7 @@ fun AiGenerationResult.mapDomainToEntity(): GenerationResultEntity = with(this) 
         subSeed = subSeed,
         subSeedStrength = subSeedStrength,
         denoisingStrength = denoisingStrength,
+        hidden = hidden,
     )
 }
 //endregion
@@ -53,6 +54,7 @@ fun GenerationResultEntity.mapEntityToDomain(): AiGenerationResult = with(this) 
         subSeed = subSeed,
         subSeedStrength = subSeedStrength,
         denoisingStrength = denoisingStrength,
+        hidden = hidden,
     )
 }
 //endregion

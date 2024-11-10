@@ -142,6 +142,7 @@ fun Pair<ImageToImagePayload, SdGenerationResponse>.mapToAiGenResult(): AiGenera
             subSeed = if (payload.subSeed.trim().isNotEmpty()) payload.subSeed
             else mapSubSeedFromRemote(response.info),
             subSeedStrength = payload.subSeedStrength,
+            hidden = false,
         )
     }
 
@@ -165,6 +166,7 @@ fun Pair<ImageToImagePayload, String>.mapCloudToAiGenResult(): AiGenerationResul
             seed = payload.seed,
             subSeed = payload.subSeed,
             subSeedStrength = payload.subSeedStrength,
+            hidden = false,
         )
     }
 //endregion

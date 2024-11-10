@@ -24,4 +24,6 @@ interface GenerationResultRepository {
     fun deleteByIdList(idList: List<Long>): Completable
 
     fun deleteAll(): Completable
+
+    fun toggleVisibility(id: Long): Single<Boolean>
 }

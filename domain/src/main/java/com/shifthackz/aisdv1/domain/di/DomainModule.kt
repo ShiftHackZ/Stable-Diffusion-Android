@@ -54,6 +54,8 @@ import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemsUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageVisibilityUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageVisibilityUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
@@ -157,6 +159,7 @@ internal val useCasesModule = module {
     factoryOf(::ObserveSeverConnectivityUseCaseImpl) bind ObserveSeverConnectivityUseCase::class
     factoryOf(::ObserveHordeProcessStatusUseCaseImpl) bind ObserveHordeProcessStatusUseCase::class
     factoryOf(::GetMediaStoreInfoUseCaseImpl) bind GetMediaStoreInfoUseCase::class
+    factoryOf(::ToggleImageVisibilityUseCaseImpl) bind ToggleImageVisibilityUseCase::class
     factoryOf(::GetRandomImageUseCaseImpl) bind GetRandomImageUseCase::class
     factoryOf(::SaveLastResultToCacheUseCaseImpl) bind SaveLastResultToCacheUseCase::class
     factoryOf(::GetLastResultFromCacheUseCaseImpl) bind GetLastResultFromCacheUseCase::class

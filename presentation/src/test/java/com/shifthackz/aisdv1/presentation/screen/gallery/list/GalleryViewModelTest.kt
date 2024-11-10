@@ -143,7 +143,7 @@ class GalleryViewModelTest : CoreViewModelTest<GalleryViewModel>() {
             stubMainRouter.navigateToGalleryDetails(any())
         } returns Unit
 
-        val item = GalleryGridItemUi(5598L, stubBitmap)
+        val item = GalleryGridItemUi(5598L, stubBitmap, false)
         viewModel.processIntent(GalleryIntent.OpenItem(item))
 
         verify {

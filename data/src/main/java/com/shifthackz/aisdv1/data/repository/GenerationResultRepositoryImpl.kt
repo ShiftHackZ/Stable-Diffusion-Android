@@ -39,4 +39,11 @@ internal class GenerationResultRepositoryImpl(
     override fun deleteByIdList(idList: List<Long>) = localDataSource.deleteByIdList(idList)
 
     override fun deleteAll() = localDataSource.deleteAll()
+
+    override fun toggleVisibility(id: Long): Single<Boolean> = localDataSource
+        .queryById(id)
+        .map { it.copy(hidden = !it.hidden) }
+        .flatMap(localDataSource::insert)
+        .flatMap { localDataSource.queryById(id) }
+        .map(AiGenerationResult::hidden)
 }

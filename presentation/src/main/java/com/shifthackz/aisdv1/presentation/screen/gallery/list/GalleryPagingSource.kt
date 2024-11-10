@@ -34,10 +34,10 @@ class GalleryPagingSource(
         )
             .subscribeOn(schedulersProvider.computation)
             .flatMapObservable { Observable.fromIterable(it) }
-            .map { ai -> ai.id to ai.image }
-            .map { (id, base64) -> id to Input(base64) }
-            .concatMapSingle { (id, input) ->
-                base64ToBitmapConverter(input).map { out -> id to out }
+            .map { ai -> Triple(ai.id, ai.hidden, ai.image) }
+            .map { (id, hidden, base64) -> Triple(id, hidden, Input(base64)) }
+            .concatMapSingle { (id, hidden, input) ->
+                base64ToBitmapConverter(input).map { out -> Triple(id, hidden, out) }
             }
             .map(::mapOutputToUi)
             .toList()
@@ -55,9 +55,10 @@ class GalleryPagingSource(
             .map(Wrapper::loadResult)
     }
 
-    private fun mapOutputToUi(output: Pair<Long, Output>) = GalleryGridItemUi(
+    private fun mapOutputToUi(output: Triple<Long, Boolean, Output>) = GalleryGridItemUi(
         output.first,
-        output.second.bitmap,
+        output.third.bitmap,
+        output.second,
     )
 
     private data class Wrapper(val loadResult: GalleryPagedResult)

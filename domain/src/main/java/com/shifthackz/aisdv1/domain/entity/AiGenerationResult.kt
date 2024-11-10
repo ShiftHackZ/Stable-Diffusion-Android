@@ -20,6 +20,7 @@ data class AiGenerationResult(
     val subSeed: String,
     val subSeedStrength: Float,
     val denoisingStrength: Float,
+    val hidden: Boolean,
 ) {
     enum class Type(val key: String) {
         TEXT_TO_IMAGE("txt2img"),

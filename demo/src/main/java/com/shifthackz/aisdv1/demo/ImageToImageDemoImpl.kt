@@ -29,6 +29,7 @@ internal class ImageToImageDemoImpl(
         subSeed = timeProvider.currentTimeMillis().toString(),
         subSeedStrength = 0f,
         denoisingStrength = 0f,
+        hidden = false,
     )
 
     override fun getDemoBase64(payload: ImageToImagePayload) = execute(payload)

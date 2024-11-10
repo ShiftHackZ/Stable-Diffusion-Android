@@ -10,12 +10,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
@@ -43,15 +44,17 @@ fun ZoomableImage(
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     minScale: Float = 1f,
     maxScale: Float = 6f,
+    hideImage: Boolean = false,
+    hideBlurRadius: Float = 69f,
 ) {
     val configuration = LocalConfiguration.current
     val width = configuration.screenWidthDp
 
-    val scale = remember { mutableStateOf(calculateInitialScale(source, width)) }
+    val scale = remember { mutableFloatStateOf(calculateInitialScale(source, width)) }
 //    val rotationState = remember { mutableStateOf(1f) }
 
-    var offsetX by remember { mutableStateOf(0f) }
-    var offsetY by remember { mutableStateOf(0f) }
+    var offsetX by remember { mutableFloatStateOf(0f) }
+    var offsetY by remember { mutableFloatStateOf(0f) }
 
     Box(
         modifier = modifier
@@ -70,24 +73,45 @@ fun ZoomableImage(
         val imageModifier = Modifier
             .align(Alignment.Center)
             .graphicsLayer(
-                scaleX = maxOf(minScale, minOf(maxScale, scale.value)),
-                scaleY = maxOf(minScale, minOf(maxScale, scale.value)),
+                scaleX = maxOf(minScale, minOf(maxScale, scale.floatValue)),
+                scaleY = maxOf(minScale, minOf(maxScale, scale.floatValue)),
                 //rotationZ = rotationState.value,
                 translationX = offsetX,
                 translationY = offsetY,
             )
+            .then(
+                if (!hideImage) Modifier
+                else Modifier.graphicsLayer {
+                    renderEffect = BlurEffect(
+                        radiusX = hideBlurRadius,
+                        radiusY = hideBlurRadius,
+                    )
+                }
+            )
+
         when (source) {
             is ZoomableImageSource.Bmp -> Image(
                 modifier = imageModifier,
                 contentDescription = null,
                 bitmap = source.bitmap.asImageBitmap(),
             )
+
             is ZoomableImageSource.Resource -> Image(
                 modifier = imageModifier,
                 contentDescription = null,
                 painter = painterResource(id = source.resId),
             )
         }
+//        if (hideImage) {
+//            Icon(
+//                modifier = Modifier
+//                    .size(28.dp)
+//                    .align(Alignment.Center),
+//                imageVector = Icons.Default.VisibilityOff,
+//                contentDescription = "hidden",
+//                tint = MaterialTheme.colorScheme.primary,
+//            )
+//        }
     }
 }
 

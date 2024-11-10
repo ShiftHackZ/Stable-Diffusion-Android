@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageVisibilityUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.presentation.core.CoreViewModelTest
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
@@ -39,6 +40,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
     private val stubGetGenerationResultUseCase = mockk<GetGenerationResultUseCase>()
     private val stubGetLastResultFromCacheUseCase = mockk<GetLastResultFromCacheUseCase>()
     private val stubDeleteGalleryItemUseCase = mockk<DeleteGalleryItemUseCase>()
+    private val stubToggleImageVisibilityUseCase = mockk<ToggleImageVisibilityUseCase>()
     private val stubGalleryDetailBitmapExporter = mockk<GalleryDetailBitmapExporter>()
     private val stubBase64ToBitmapConverter = mockk<Base64ToBitmapConverter>()
     private val stubGenerationFormUpdateEvent = mockk<GenerationFormUpdateEvent>()
@@ -50,6 +52,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
         getGenerationResultUseCase = stubGetGenerationResultUseCase,
         getLastResultFromCacheUseCase = stubGetLastResultFromCacheUseCase,
         deleteGalleryItemUseCase = stubDeleteGalleryItemUseCase,
+        toggleImageVisibilityUseCase = stubToggleImageVisibilityUseCase,
         galleryDetailBitmapExporter = stubGalleryDetailBitmapExporter,
         base64ToBitmapConverter = stubBase64ToBitmapConverter,
         schedulersProvider = stubSchedulersProvider,
@@ -95,6 +98,7 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
             subSeed = mockAiGenerationResult.subSeed.asUiText(),
             subSeedStrength = mockAiGenerationResult.subSeedStrength.toString().asUiText(),
             denoisingStrength = mockAiGenerationResult.denoisingStrength.toString().asUiText(),
+            hidden = false,
         )
         val actual = viewModel.state.value
         Assert.assertEquals(expected, actual)
@@ -258,6 +262,19 @@ class GalleryDetailViewModelTest : CoreViewModelTest<GalleryDetailViewModel>() {
         viewModel.processIntent(GalleryDetailIntent.DismissDialog)
         val expected = Modal.None
         val actual = viewModel.state.value.screenModal
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `given received ToggleVisibility intent, expected`() {
+        every {
+            stubToggleImageVisibilityUseCase(any())
+        } returns Single.just(true)
+
+        viewModel.processIntent(GalleryDetailIntent.ToggleVisibility)
+
+        val expected = true
+        val actual = (viewModel.state.value as? GalleryDetailState.Content)?.hidden
         Assert.assertEquals(expected, actual)
     }
 }

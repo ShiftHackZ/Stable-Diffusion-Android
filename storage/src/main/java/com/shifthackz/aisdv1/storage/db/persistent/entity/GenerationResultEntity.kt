@@ -43,4 +43,6 @@ data class GenerationResultEntity(
     val subSeedStrength: Float,
     @ColumnInfo(name = GenerationResultContract.DENOISING_STRENGTH, defaultValue = "${0f}")
     val denoisingStrength: Float,
+    @ColumnInfo(name = GenerationResultContract.HIDDEN, defaultValue = "0")
+    val hidden: Boolean,
 )

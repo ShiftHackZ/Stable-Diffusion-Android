@@ -107,7 +107,7 @@ class PreferenceManagerImpl(
 
     override var formPromptTaggedInput: Boolean by preferences.delegates.boolean(
         key = KEY_FORM_PROMPT_TAGGED_INPUT,
-        default = true,
+        default = false,
         onChanged = ::onPreferencesChanged,
     )
 
@@ -274,7 +274,7 @@ class PreferenceManagerImpl(
         const val KEY_AI_AUTO_SAVE = "key_ai_auto_save"
         const val KEY_SAVE_TO_MEDIA_STORE = "key_save_to_media_store"
         const val KEY_FORM_ALWAYS_SHOW_ADVANCED_OPTIONS = "key_always_show_advanced_options"
-        const val KEY_FORM_PROMPT_TAGGED_INPUT = "key_prompt_tagged_input"
+        const val KEY_FORM_PROMPT_TAGGED_INPUT = "key_prompt_tagged_input_kb"
         const val KEY_SERVER_SOURCE = "key_server_source"
         const val KEY_SD_MODEL = "key_sd_model"
         const val KEY_HORDE_API_KEY = "key_horde_api_key"

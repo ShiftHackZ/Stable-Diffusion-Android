@@ -21,4 +21,5 @@ internal object GenerationResultContract {
     const val SUB_SEED = "sub_seed"
     const val SUB_SEED_STRENGTH = "sub_seed_strength"
     const val DENOISING_STRENGTH = "denoising_strength"
+    const val HIDDEN = "hidden"
 }
