@@ -28,7 +28,10 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -41,6 +44,7 @@ import com.shifthackz.aisdv1.presentation.screen.onboarding.page.FormPageContent
 import com.shifthackz.aisdv1.presentation.screen.onboarding.page.LocalDiffusionPageContent
 import com.shifthackz.aisdv1.presentation.screen.onboarding.page.LookAndFeelPageContent
 import com.shifthackz.aisdv1.presentation.screen.onboarding.page.ProviderPageContent
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @Composable
@@ -69,14 +73,23 @@ private fun OnBoardingScreenContent(
         initialPage = OnBoardingPage.entries.first().ordinal,
         pageCount = { OnBoardingPage.entries.size },
     )
-    BackHandler(pagerState.currentPage > 0) {
-        scope.launch {
+
+    var scrollAnimationJob: Job? by remember { mutableStateOf(null) }
+
+    fun scrollToPage(page: Int) {
+        if (scrollAnimationJob != null) return
+        scrollAnimationJob = scope.launch {
             pagerState.animateScrollToPage(
-                page = pagerState.currentPage - 1,
+                page = page,
                 animationSpec = onBoardingPageAnimation,
             )
-        }
+        }.apply { invokeOnCompletion { scrollAnimationJob = null } }
     }
+
+    BackHandler(pagerState.currentPage > 0) {
+        scrollToPage(pagerState.currentPage - 1)
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -113,12 +126,7 @@ private fun OnBoardingScreenContent(
                         contentPadding = PaddingValues(0.dp),
                         onClick = {
                             if (pagerState.currentPage > 0) {
-                                scope.launch {
-                                    pagerState.animateScrollToPage(
-                                        page = pagerState.currentPage - 1,
-                                        animationSpec = onBoardingPageAnimation,
-                                    )
-                                }
+                                scrollToPage(pagerState.currentPage - 1)
                             } else if (pagerState.currentPage == 0 && launchSource == LaunchSource.SETTINGS) {
                                 processIntent(OnBoardingIntent.Navigate)
                             }
@@ -127,7 +135,7 @@ private fun OnBoardingScreenContent(
                         Icon(
                             modifier = Modifier.rotate(180f),
                             imageVector = Icons.Default.DoubleArrow,
-                            contentDescription = "Next",
+                            contentDescription = "Back",
                         )
                     }
                     Spacer(modifier = Modifier.weight(1f))
@@ -156,12 +164,7 @@ private fun OnBoardingScreenContent(
                             if (pagerState.currentPage == OnBoardingPage.entries.size - 1) {
                                 processIntent(OnBoardingIntent.Navigate)
                             } else {
-                                scope.launch {
-                                    pagerState.animateScrollToPage(
-                                        page = pagerState.currentPage + 1,
-                                        animationSpec = onBoardingPageAnimation,
-                                    )
-                                }
+                                scrollToPage(pagerState.currentPage + 1)
                             }
                         },
                     ) {
