@@ -77,6 +77,7 @@ private fun OnBoardingScreenContent(
 
     fun scrollToPage(page: Int) {
         if (scrollAnimationJob != null) return
+        if (pagerState.isScrollInProgress) return
         scrollAnimationJob = scope.launch {
             pagerState.animateScrollToPage(
                 page = page,

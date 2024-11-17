@@ -208,15 +208,18 @@ private fun DonateScreenContent(
                                 SupporterItem(
                                     modifier = Modifier
                                         .fillMaxWidth()
+                                        .padding(
+                                            top = if (index == 0) 8.dp else 4.dp,
+                                            bottom = 4.dp,
+                                        )
+                                        .padding(horizontal = 12.dp)
                                         .clip(shape)
                                         .drawBehind {
                                             drawRoundRect(
-                                            color = bgColor,
-                                            cornerRadius = CornerRadius(12.dp.toPx()),
-                                        ) }
-                                        .padding(horizontal = 12.dp)
-                                        .padding(top = if (index == 0) 8.dp else 4.dp)
-                                        .padding(bottom = 4.dp),
+                                                color = bgColor,
+                                                cornerRadius = CornerRadius(12.dp.toPx()),
+                                            )
+                                        },
                                     supporter = supporter,
                                 )
                             }
