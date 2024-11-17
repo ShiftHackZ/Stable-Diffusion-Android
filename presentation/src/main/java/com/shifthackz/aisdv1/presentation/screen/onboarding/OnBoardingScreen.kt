@@ -86,7 +86,7 @@ private fun OnBoardingScreenContent(
         }.apply { invokeOnCompletion { scrollAnimationJob = null } }
     }
 
-    BackHandler(pagerState.currentPage > 0) {
+    BackHandler(pagerState.currentPage > 0 || pagerState.isScrollInProgress) {
         scrollToPage(pagerState.currentPage - 1)
     }
 
@@ -127,7 +127,7 @@ private fun OnBoardingScreenContent(
                         onClick = {
                             if (pagerState.currentPage > 0) {
                                 scrollToPage(pagerState.currentPage - 1)
-                            } else if (pagerState.currentPage == 0 && launchSource == LaunchSource.SETTINGS) {
+                            } else if (pagerState.currentPage == 0 && launchSource == LaunchSource.SETTINGS && !pagerState.isScrollInProgress) {
                                 processIntent(OnBoardingIntent.Navigate)
                             }
                         },
