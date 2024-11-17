@@ -163,7 +163,7 @@ private fun OnBoardingScreenContent(
                         shape = RoundedCornerShape(12.dp),
                         contentPadding = PaddingValues(0.dp),
                         onClick = {
-                            if (pagerState.currentPage == OnBoardingPage.entries.size - 1) {
+                            if (pagerState.currentPage == OnBoardingPage.entries.size - 1 && !pagerState.isScrollInProgress) {
                                 processIntent(OnBoardingIntent.Navigate)
                             } else {
                                 scrollToPage(pagerState.currentPage + 1)
