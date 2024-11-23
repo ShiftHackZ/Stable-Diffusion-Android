@@ -5,7 +5,6 @@ package com.shifthackz.aisdv1.presentation.screen.donate
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +36,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -48,9 +49,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
-import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.Supporter
 import com.shifthackz.aisdv1.presentation.widget.item.SupporterItem
+import com.shifthackz.android.core.mvi.MviComponent
 import org.koin.androidx.compose.koinViewModel
 import java.util.Date
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
@@ -104,12 +105,18 @@ private fun DonateScreenContent(
                 topStart = 24.dp,
                 topEnd = 24.dp,
             )
+            val bottomBgColor = MaterialTheme.colorScheme.surface
             Column(
                 modifier = Modifier
                     .navigationBarsPadding()
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface, shape)
                     .clip(shape)
+                    .drawBehind {
+                        drawRoundRect(
+                            color = bottomBgColor,
+                            cornerRadius = CornerRadius(24.dp.toPx()),
+                        )
+                    }
                     .padding(horizontal = 16.dp)
             ) {
                 Row(
@@ -200,12 +207,19 @@ private fun DonateScreenContent(
                                     MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f)
                                 SupporterItem(
                                     modifier = Modifier
-                                        .padding(horizontal = 12.dp)
-                                        .padding(top = if (index == 0) 8.dp else 4.dp)
-                                        .padding(bottom = 4.dp)
                                         .fillMaxWidth()
-                                        .background(bgColor, shape)
-                                        .clip(shape),
+                                        .padding(
+                                            top = if (index == 0) 8.dp else 4.dp,
+                                            bottom = 4.dp,
+                                        )
+                                        .padding(horizontal = 12.dp)
+                                        .clip(shape)
+                                        .drawBehind {
+                                            drawRoundRect(
+                                                color = bgColor,
+                                                cornerRadius = CornerRadius(12.dp.toPx()),
+                                            )
+                                        },
                                     supporter = supporter,
                                 )
                             }

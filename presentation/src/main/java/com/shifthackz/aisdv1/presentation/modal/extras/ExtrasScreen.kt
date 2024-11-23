@@ -1,7 +1,5 @@
 package com.shifthackz.aisdv1.presentation.modal.extras
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,7 +31,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -42,13 +42,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.core.extensions.shimmer
-import com.shifthackz.android.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.widget.error.ErrorComposable
 import com.shifthackz.aisdv1.presentation.widget.source.getName
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
+import com.shifthackz.android.core.mvi.MviComponent
 import org.koin.androidx.compose.koinViewModel
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
@@ -174,8 +174,8 @@ private fun ScreenContent(
                                 ) { index ->
                                     ExtrasItemComposable(
                                         item = state.loras[index],
-                                        onLoraSelected = {
-                                            processIntent(ExtrasIntent.ToggleItem(it))
+                                        onLoraSelected = { item ->
+                                            processIntent(ExtrasIntent.ToggleItem(item))
                                         },
                                     )
                                 }
@@ -204,6 +204,7 @@ private fun ExtrasEmptyState(type: ExtraType, source: ServerSource) {
                 ServerSource.SWARM_UI -> "../Models/Lora"
                 else -> ""
             }
+
             ExtraType.HyperNet -> when (source) {
                 ServerSource.AUTOMATIC1111 -> "../models/hypernetworks"
                 ServerSource.SWARM_UI -> ""
@@ -234,16 +235,24 @@ private fun ExtrasItemComposable(
     item: ExtraItemUi,
     onLoraSelected: (ExtraItemUi) -> Unit,
 ) {
+    val bgColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+    val borderColor = MaterialTheme.colorScheme.primary
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-            .border(
-                width = 2.dp,
-                color = if (item.isApplied) MaterialTheme.colorScheme.primary else Color.Transparent,
-                shape = RoundedCornerShape(16.dp),
-            )
+            .drawBehind {
+                drawRoundRect(
+                    color = bgColor,
+                    cornerRadius = CornerRadius(16.dp.toPx()),
+                )
+                if (!item.isApplied) return@drawBehind
+                drawRoundRect(
+                    color = borderColor,
+                    style = Stroke(2.dp.toPx()),
+                    cornerRadius = CornerRadius(16.dp.toPx()),
+                )
+            }
             .clickable { onLoraSelected(item) }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
