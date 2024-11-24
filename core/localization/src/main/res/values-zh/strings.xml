@@ -412,7 +412,7 @@
 
     <string name="donate_title_thanks">感谢这些了不起的人们提供的支持 ❤</string>
     <string name="donate_bs_title">SDAI 是一款 Android 应用程序，它：</string>
-    <string name="donate_bs_sub_title">• 赋予您使用 Stable Diffusion AI 创建图像的能力； • 让您自由选择生成供应商； • 无广告、无遥测，无监控； • 是一款开源软件； • 欢迎您免费使用。</string>
+    <string name="donate_bs_sub_title">• 赋予您使用 Stable Diffusion AI 创建图像的能力；\n• 让您自由选择生成供应商；\n• 无广告、无遥测，无监控；\n• 是一款开源软件；\n• 欢迎您免费使用。</string>
     <string name="donate_bs_ending">如果您觉得这个软件有价值，想要表示感谢并给予一些支持，请点击下方的按钮。</string>
 
     <string name="permission_storage">存储</string>
