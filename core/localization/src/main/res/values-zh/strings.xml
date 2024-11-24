@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- 系统通用标签 -->
     <string name="tag_steps" translatable="false">步数: %1$s</string>
-    <string name="tag_cfg" translatable="false">CFG: %1$s</string>
     <string name="tag_denoising" translatable="false">降噪: %1$s</string>
 
     <!-- 系统通用按钮和标签 -->
@@ -74,19 +73,9 @@
     <string name="srv_step_2">配置</string>
 
     <!-- 服务类型 -->
-    <string name="srv_type_own" translatable="false">Automatic 1111</string>
-    <string name="srv_type_own_short" translatable="false">A1111</string>
-    <string name="srv_type_horde" translatable="false">Horde AI Cloud</string>
-    <string name="srv_type_horde_short" translatable="false">Horde</string>
     <string name="srv_type_local" translatable="false">Local Diffusion Microsoft ONNX (测试版)</string>
-    <string name="srv_type_media_pipe_short">MediaPipe</string>
     <string name="srv_type_hugging_face" translatable="false">Hugging Face 推理</string>
-    <string name="srv_type_local_short">ONNX</string>
     <string name="srv_type_media_pipe">Local Diffusion Google AI MediaPipe (测试版)</string>
-    <string name="srv_type_hugging_face_short">HuggingFace</string>
-    <string name="srv_type_open_ai">Open AI</string>
-    <string name="srv_type_stability_ai">Stability AI</string>
-    <string name="srv_type_swarm_ui">Swarm UI</string>
 
     <!-- 提示信息 -->
     <string name="hint_prompt">提示文本</string>
@@ -116,7 +105,6 @@
     <string name="hint_quality">质量</string>
     <string name="hint_style">风格</string>
     <string name="hint_tag">标签</string>
-    <string name="hint_hypernet" translatable="false">Nypernetwork</string>
     <string name="hint_value">值</string>
     <string name="hint_mask_blur">掩码模糊: %1$s</string>
     <string name="hint_only_masked_padding">仅掩码填充: %1$s 像素</string>
@@ -169,7 +157,6 @@
     <string name="hint_swarm_ui_sub_title">模块化的 Stable Diffusion Web 用户界面，专注于易访问、高性能和可扩展性。</string>
 
     <!-- 本地扩散提示 -->
-    <string name="hint_local_diffusion_title" translatable="false">Local Diffusion Microsoft ONNX</string>
     <string name="hint_local_diffusion_sub_title">此配置使用 Microsoft ONNX 运行时，您可以在手机端运行 Stable Diffusion AI 的生成功能，而无需连接至远程服务器/云。</string>
     <string name="hint_local_diffusion_warning">警告！Local Diffusion 功能处于测试版。可能无法获得高质量图像。\n\n此功能在资源受限设备上可能不及预期。生成性能和速度取决于您的手机资源（CPU、RAM）和生成的图像大小（图像越小，生成越快）。</string>
 
@@ -201,8 +188,6 @@
     <string name="title_debug_menu">开发者模式</string>
     <string name="title_debug_logger">日志</string>
     <string name="title_lora">LoRA</string>
-    <string name="title_hyper_net" translatable="false">Hypernetworks</string>
-    <string name="title_hyper_net_short" translatable="false">H-Net</string>
     <string name="title_txt_inversion">文本反转</string>
     <string name="title_txt_inversion_short">反转</string>
     <string name="title_tag_edit">编辑标签</string>
@@ -356,9 +341,6 @@
 
     <string name="notification_fail_title">生成失败 😞</string>
     <string name="notification_fail_sub_title">单击此处打开应用程序。</string>
-
-    <!-- 本地扩散模型 -->
-    <string name="model_local_diffusion" translatable="false">Local Diffusion</string>
 
     <!-- 本地自定义模型 -->
     <string name="model_local_custom_switch">加载自定义模型</string>
