@@ -1,11 +1,15 @@
 package com.shifthackz.aisdv1.presentation.navigation.graph
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.NavigationRoute
+import com.shifthackz.aisdv1.presentation.screen.backup.BackupScreen
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.donate.DonateScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
@@ -56,7 +60,20 @@ fun NavGraphBuilder.mainNavGraph() {
         GalleryDetailScreen(itemId = itemId)
     }
 
-    composable<NavigationRoute.ReportImage> { entry ->
+    composable<NavigationRoute.ReportImage>(
+        enterTransition = {
+            slideInVertically(
+                initialOffsetY = { it },
+                animationSpec = tween(500),
+            )
+        },
+        exitTransition = {
+            slideOutVertically(
+                targetOffsetY  = { it },
+                animationSpec = tween(500),
+            )
+        },
+    ) { entry ->
         val itemId = entry.toRoute<NavigationRoute.ReportImage>().itemId
         ReportScreen(
             viewModel = koinViewModel<ReportViewModel>(
@@ -83,6 +100,10 @@ fun NavGraphBuilder.mainNavGraph() {
 
     composable<NavigationRoute.Donate> {
         DonateScreen()
+    }
+
+    composable<NavigationRoute.Backup> {
+        BackupScreen()
     }
 
     composable<NavigationRoute.Onboarding>(

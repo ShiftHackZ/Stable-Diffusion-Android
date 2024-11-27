@@ -91,8 +91,11 @@ sealed interface Modal {
 
         companion object {
             fun create(list: List<AiGenerationResult>, autoSaveEnabled: Boolean): Image =
-                if (list.size > 1) Batch(list, autoSaveEnabled)
-                else Single(list.first(), autoSaveEnabled)
+                if (list.size > 1) {
+                    Batch(list, autoSaveEnabled)
+                } else {
+                    Single(list.first(), autoSaveEnabled)
+                }
         }
     }
 

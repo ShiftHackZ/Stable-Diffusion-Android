@@ -118,6 +118,8 @@ class SettingsViewModel(
                 LaunchSource.SETTINGS
             )
 
+            SettingsIntent.NavigateBackup -> mainRouter.navigateToBackup()
+
             SettingsIntent.NavigateDeveloperMode -> mainRouter.navigateToDebugMenu()
 
             SettingsIntent.SdModel.OpenChooser -> updateState {

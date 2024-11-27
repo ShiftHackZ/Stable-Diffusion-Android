@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.navigation.graph
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.SettingsEthernet
 import androidx.compose.material.icons.filled.Web
@@ -24,6 +25,7 @@ fun mainDrawerNavItems(settings: Settings? = null): List<NavItem> = buildList {
     }
     add(settingsTab())
     add(configuration())
+    add(backup())
     settings?.developerMode?.takeIf { it }?.let {
         add(developerMode())
     }
@@ -50,10 +52,18 @@ private fun configuration() = NavItem(
     ),
 )
 
+private fun backup() = NavItem(
+    name = LocalizationR.string.title_backup.asUiText(),
+    navRoute = NavigationRoute.Backup,
+    icon = NavItem.Icon.Vector(
+        vector = Icons.Default.Backup,
+    ),
+)
+
 private fun developerMode() = NavItem(
     name = LocalizationR.string.title_debug_menu.asUiText(),
     navRoute = NavigationRoute.Debug,
     icon = NavItem.Icon.Vector(
         vector = Icons.Default.DeveloperMode,
-    )
+    ),
 )
