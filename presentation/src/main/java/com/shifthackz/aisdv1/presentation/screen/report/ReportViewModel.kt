@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.report
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
@@ -25,6 +27,7 @@ class ReportViewModel(
     private val base64ToBitmapConverter: Base64ToBitmapConverter,
     private val mainRouter: MainRouter,
     private val schedulersProvider: SchedulersProvider,
+    private val buildInfoProvider: BuildInfoProvider,
 ) : MviRxViewModel<ReportState, ReportIntent, EmptyEffect>() {
 
     override val initialState = ReportState()
@@ -50,35 +53,7 @@ class ReportViewModel(
 
     override fun processIntent(intent: ReportIntent) {
         when (intent) {
-            ReportIntent.Submit -> !sendReportUseCase(
-                text = currentState.text,
-                reason = currentState.reason ?: ReportReason.Other,
-                image = currentState.imageBase64,
-            )
-                .doOnSubscribe {
-                    updateState { it.copy(loading = true) }
-                }
-                .doFinally {
-                    updateState { it.copy(loading = false) }
-                }
-                .subscribeOnMainThread(schedulersProvider)
-                .subscribeBy(
-                    onError = { t ->
-                        errorLog(t)
-                        updateState {
-                            it.copy(
-                                reportSent = false,
-                                screenModal = Modal.Error(
-                                    (t.localizedMessage ?: t.message
-                                    ?: "Something went wrong").asUiText(),
-                                )
-                            )
-                        }
-                    },
-                    onComplete = {
-                        updateState { it.copy(reportSent = true) }
-                    },
-                )
+            ReportIntent.Submit -> submitReport()
 
             is ReportIntent.UpdateReason -> updateState {
                 it.copy(reason = intent.reason)
@@ -100,4 +75,37 @@ class ReportViewModel(
         if (id <= 0) return getLastResultFromCacheUseCase()
         return getGenerationResultUseCase(id)
     }
+
+    private fun submitReport() = !sendReportUseCase(
+        text = currentState.text,
+        reason = currentState.reason,
+        image = currentState.imageBase64,
+    )
+        .doOnSubscribe {
+            updateState { it.copy(loading = true) }
+        }
+        .doFinally {
+            updateState { it.copy(loading = false) }
+        }
+        .subscribeOnMainThread(schedulersProvider)
+        .subscribeBy(
+            onError = { t ->
+                errorLog(t)
+                updateState { state ->
+                    when (buildInfoProvider.type) {
+                        BuildType.PLAY -> state.copy(reportSent = true)
+                        else -> state.copy(
+                            reportSent = false,
+                            screenModal = Modal.Error(
+                                (t.localizedMessage ?: t.message
+                                ?: "Something went wrong").asUiText(),
+                            )
+                        )
+                    }
+                }
+            },
+            onComplete = {
+                updateState { it.copy(reportSent = true) }
+            },
+        )
 }
