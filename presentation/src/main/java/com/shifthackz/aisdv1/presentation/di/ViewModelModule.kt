@@ -115,6 +115,7 @@ val viewModelModule = module {
             base64ToBitmapConverter = get(),
             mainRouter = get(),
             schedulersProvider = get(),
+            buildInfoProvider = get(),
         )
     }
 }
