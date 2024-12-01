@@ -3,7 +3,6 @@
 package com.shifthackz.aisdv1.presentation.screen.donate
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -49,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.common.extensions.openUrl
+import com.shifthackz.aisdv1.core.extensions.fadedEdge
 import com.shifthackz.aisdv1.domain.entity.Supporter
 import com.shifthackz.aisdv1.presentation.widget.item.SupporterItem
 import com.shifthackz.android.core.mvi.MviComponent
@@ -175,11 +174,12 @@ private fun DonateScreenContent(
         ) { contentVisible ->
             if (contentVisible) {
                 if (state.supporters.isNotEmpty()) {
+                    val shadowHeight = 150.dp
                     Box(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize()
+                            .fadedEdge(gradientOffset = shadowHeight),
                         contentAlignment = Alignment.BottomCenter,
                     ) {
-                        val shadowHeight = 150.dp
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
                         ) {
@@ -226,19 +226,6 @@ private fun DonateScreenContent(
                             item {
                                 Spacer(modifier = Modifier.height(shadowHeight + 32.dp))
                             }
-                        }
-                        val shadowGradient = Brush.verticalGradient(
-                            listOf(
-                                Color.Transparent,
-                                MaterialTheme.colorScheme.background,
-                            )
-                        )
-                        Canvas(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(shadowHeight),
-                        ) {
-                            drawRect(shadowGradient)
                         }
                     }
                 }
