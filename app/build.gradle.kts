@@ -41,6 +41,7 @@ android {
         buildConfigField("String", "SWARM_UI_INFO_URL", "\"https://github.com/mcmonkeyprojects/SwarmUI/tree/master/docs\"")
 
         resourceConfigurations += listOf("en", "ru", "uk", "tr", "zh")
+        manifestPlaceholders["excludePermissions"] = "true"
     }
 
     val hasPropertiesFile = File("app/keystore/signing.properties").exists()
