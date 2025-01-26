@@ -23,4 +23,8 @@
         android:maxSdkVersion="31"
         tools:ignore="ScopedStorage" />
 
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_IMAGES"
+        tools:node="remove" />
+
 </manifest>
