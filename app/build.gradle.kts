@@ -9,6 +9,12 @@ plugins {
 
 android {
     namespace = "com.shifthackz.aisdv1.app"
+
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
     defaultConfig {
         applicationId = "com.shifthackz.aisdv1.app"
         versionName = libs.versions.versionName.get()
