@@ -31,6 +31,7 @@ sealed interface GalleryDetailState : MviState {
         override val tabs: List<Tab> = emptyList(),
         override val selectedTab: Tab = Tab.IMAGE,
         override val screenModal: Modal = Modal.None,
+        val showReportButton: Boolean = false,
         val generationType: AiGenerationResult.Type,
         val id: Long,
         val bitmap: Bitmap,

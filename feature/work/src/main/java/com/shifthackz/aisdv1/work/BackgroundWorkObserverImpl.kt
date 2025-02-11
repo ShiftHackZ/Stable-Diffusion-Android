@@ -22,8 +22,8 @@ internal class BackgroundWorkObserverImpl : BackgroundWorkObserver {
         return Flowable.combineLatest(
             stateSubject.toFlowable(BackpressureStrategy.LATEST),
             messageSubject.toFlowable(BackpressureStrategy.LATEST),
-        ) { running, statusMessage ->
-            BackgroundWorkStatus(running, statusMessage.first, statusMessage.second)
+        ) { running, (title, subTitle) ->
+            BackgroundWorkStatus(running, title, subTitle)
         }
     }
 

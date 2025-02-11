@@ -81,18 +81,29 @@ sealed interface Modal {
     sealed interface Image : Modal {
 
         @Immutable
-        data class Single(val result: AiGenerationResult, val autoSaveEnabled: Boolean) : Image
+        data class Single(
+            val result: AiGenerationResult,
+            val autoSaveEnabled: Boolean,
+            val reportEnabled: Boolean,
+        ) : Image
 
         @Immutable
-        data class Batch(val results: List<AiGenerationResult>, val autoSaveEnabled: Boolean) : Image
+        data class Batch(val results: List<AiGenerationResult>, val autoSaveEnabled: Boolean) :
+            Image
 
         @Immutable
         data class Crop(val bitmap: Bitmap) : Image
 
         companion object {
-            fun create(list: List<AiGenerationResult>, autoSaveEnabled: Boolean): Image =
-                if (list.size > 1) Batch(list, autoSaveEnabled)
-                else Single(list.first(), autoSaveEnabled)
+            fun create(
+                list: List<AiGenerationResult>,
+                autoSaveEnabled: Boolean,
+                reportEnabled: Boolean = false,
+            ): Image = if (list.size > 1) {
+                Batch(list, autoSaveEnabled)
+            } else {
+                Single(list.first(), autoSaveEnabled, reportEnabled)
+            }
         }
     }
 
@@ -103,7 +114,7 @@ sealed interface Modal {
     data class Error(val error: UiText) : Modal
 
     @Immutable
-    data class ManualPermission(val permission: UiText): Modal
+    data class ManualPermission(val permission: UiText) : Modal
 
     data object ClearInPaintConfirm : Modal
 

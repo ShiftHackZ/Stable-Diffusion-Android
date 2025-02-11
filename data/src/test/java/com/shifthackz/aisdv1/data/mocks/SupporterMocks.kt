@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.shifthackz.aisdv1.data.mocks
 
 import com.shifthackz.aisdv1.domain.entity.Supporter

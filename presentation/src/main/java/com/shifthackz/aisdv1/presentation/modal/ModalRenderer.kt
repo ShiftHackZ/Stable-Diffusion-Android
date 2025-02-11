@@ -111,6 +111,7 @@ fun ModalRenderer(
         is Modal.Image.Single -> GenerationImageResultDialog(
             imageBase64 = screenModal.result.image,
             showSaveButton = !screenModal.autoSaveEnabled,
+            showReportButton = screenModal.reportEnabled,
             onDismissRequest = dismiss,
             onSaveRequest = {
                 processIntent(GenerationMviIntent.Result.Save(listOf(screenModal.result)))

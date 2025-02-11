@@ -193,22 +193,24 @@ private fun GalleryDetailNavigationBar(
             .background(color = MaterialTheme.colorScheme.surface),
     ) {
         if (state is GalleryDetailState.Content) {
-            OutlinedButton(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp, vertical = 4.dp)
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-                onClick = { processIntent(GalleryDetailIntent.Report) },
-            ) {
-                Icon(
-                    modifier = Modifier.padding(end = 8.dp),
-                    imageVector = Icons.Default.Report,
-                    contentDescription = "Report",
-                )
-                Text(
-                    text = stringResource(LocalizationR.string.report_title),
-                    color = LocalContentColor.current
-                )
+            if (state.showReportButton) {
+                OutlinedButton(
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp, vertical = 4.dp)
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally),
+                    onClick = { processIntent(GalleryDetailIntent.Report) },
+                ) {
+                    Icon(
+                        modifier = Modifier.padding(end = 8.dp),
+                        imageVector = Icons.Default.Report,
+                        contentDescription = "Report",
+                    )
+                    Text(
+                        text = stringResource(LocalizationR.string.report_title),
+                        color = LocalContentColor.current
+                    )
+                }
             }
             Row(
                 modifier = Modifier

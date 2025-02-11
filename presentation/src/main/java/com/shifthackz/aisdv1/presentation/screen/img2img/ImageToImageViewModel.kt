@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
@@ -60,6 +62,7 @@ class ImageToImageViewModel(
     private val mainRouter: MainRouter,
     private val backgroundTaskManager: BackgroundTaskManager,
     private val backgroundWorkObserver: BackgroundWorkObserver,
+    private val buildInfoProvider: BuildInfoProvider,
 ) : GenerationMviViewModel<ImageToImageState, GenerationMviIntent, ImageToImageEffect>(
     preferenceManager = preferenceManager,
     getStableDiffusionSamplersUseCase = getStableDiffusionSamplersUseCase,
@@ -191,8 +194,9 @@ class ImageToImageViewModel(
                     )
                     setActiveModal(
                         Modal.Image.create(
-                            ai,
-                            preferenceManager.autoSaveAiResults,
+                            list = ai,
+                            autoSaveEnabled = preferenceManager.autoSaveAiResults,
+                            reportEnabled = buildInfoProvider.type != BuildType.FOSS,
                         )
                     )
                 }

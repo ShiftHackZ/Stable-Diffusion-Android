@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
@@ -51,6 +53,7 @@ class TextToImageViewModel(
     private val wakeLockInterActor: WakeLockInterActor,
     private val backgroundTaskManager: BackgroundTaskManager,
     private val backgroundWorkObserver: BackgroundWorkObserver,
+    private val buildInfoProvider: BuildInfoProvider,
 ) : GenerationMviViewModel<TextToImageState, GenerationMviIntent, EmptyEffect>(
     preferenceManager = preferenceManager,
     getStableDiffusionSamplersUseCase = getStableDiffusionSamplersUseCase,
@@ -122,7 +125,11 @@ class TextToImageViewModel(
                     LocalizationR.string.notification_finish_sub_title.asUiText(),
                 )
                 setActiveModal(
-                    Modal.Image.create(ai, preferenceManager.autoSaveAiResults)
+                    Modal.Image.create(
+                        list = ai,
+                        autoSaveEnabled = preferenceManager.autoSaveAiResults,
+                        reportEnabled = buildInfoProvider.type != BuildType.FOSS,
+                    )
                 )
             },
         )
