@@ -47,6 +47,7 @@ private const val MOCK_BASE_64 = "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AA
 fun GenerationImageResultDialog(
     imageBase64: String,
     showSaveButton: Boolean = false,
+    showReportButton: Boolean = false,
     onDismissRequest: () -> Unit = {},
     onSaveRequest: () -> Unit = {},
     onReportRequest: () -> Unit = {},
@@ -90,18 +91,22 @@ fun GenerationImageResultDialog(
                         )
                     }
                 }
-                Button(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .align(Alignment.CenterHorizontally)
-                        .fillMaxWidth(0.7f),
-                    onClick = onReportRequest,
-                ) {
-                    Text(
-                        text = stringResource(id = LocalizationR.string.report_title),
-                        color = LocalContentColor.current,
-                    )
+
+                if (showReportButton) {
+                    Button(
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .align(Alignment.CenterHorizontally)
+                            .fillMaxWidth(0.7f),
+                        onClick = onReportRequest,
+                    ) {
+                        Text(
+                            text = stringResource(id = LocalizationR.string.report_title),
+                            color = LocalContentColor.current,
+                        )
+                    }
                 }
+                
                 OutlinedButton(
                     modifier = Modifier
                         .padding(top = 8.dp)

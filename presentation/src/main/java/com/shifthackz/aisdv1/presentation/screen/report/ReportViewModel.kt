@@ -18,6 +18,7 @@ import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.android.core.mvi.EmptyEffect
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import java.util.concurrent.TimeUnit
 
 class ReportViewModel(
     val itemId: Long,
@@ -81,6 +82,7 @@ class ReportViewModel(
         reason = currentState.reason,
         image = currentState.imageBase64,
     )
+        .timeout(10L, TimeUnit.SECONDS)
         .doOnSubscribe {
             updateState { it.copy(loading = true) }
         }

@@ -38,7 +38,6 @@ val viewModelModule = module {
     viewModelOf(::DrawerViewModel)
     viewModelOf(::HomeNavigationViewModel)
     viewModelOf(::ConfigurationLoaderViewModel)
-    viewModelOf(::ImageToImageViewModel)
     viewModelOf(::TextToImageViewModel)
     viewModelOf(::SettingsViewModel)
     viewModelOf(::GalleryViewModel)
@@ -94,6 +93,7 @@ val viewModelModule = module {
         GalleryDetailViewModel(
             itemId = parameters.get(),
             dispatchersProvider = get(),
+            buildInfoProvider = get(),
             getGenerationResultUseCase = get(),
             getLastResultFromCacheUseCase = get(),
             deleteGalleryItemUseCase = get(),
@@ -115,6 +115,34 @@ val viewModelModule = module {
             base64ToBitmapConverter = get(),
             mainRouter = get(),
             schedulersProvider = get(),
+            buildInfoProvider = get(),
+        )
+    }
+
+    viewModel {
+        ImageToImageViewModel(
+            dispatchersProvider = get(),
+            generationFormUpdateEvent = get(),
+            getStableDiffusionSamplersUseCase = get(),
+            observeHordeProcessStatusUseCase = get(),
+            observeLocalDiffusionProcessStatusUseCase = get(),
+            saveLastResultToCacheUseCase = get(),
+            saveGenerationResultUseCase = get(),
+            interruptGenerationUseCase = get(),
+            drawerRouter = get(),
+            dimensionValidator = get(),
+            imageToImageUseCase = get(),
+            getRandomImageUseCase = get(),
+            bitmapToBase64Converter = get(),
+            base64ToBitmapConverter = get(),
+            preferenceManager = get(),
+            schedulersProvider = get(),
+            notificationManager = get(),
+            wakeLockInterActor = get(),
+            inPaintStateProducer = get(),
+            mainRouter = get(),
+            backgroundTaskManager = get(),
+            backgroundWorkObserver = get(),
             buildInfoProvider = get(),
         )
     }

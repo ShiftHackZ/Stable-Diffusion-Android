@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
@@ -21,6 +23,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 class GalleryDetailViewModel(
     private val itemId: Long,
     dispatchersProvider: DispatchersProvider,
+    private val buildInfoProvider: BuildInfoProvider,
     private val getGenerationResultUseCase: GetGenerationResultUseCase,
     private val getLastResultFromCacheUseCase: GetLastResultFromCacheUseCase,
     private val deleteGalleryItemUseCase: DeleteGalleryItemUseCase,
@@ -42,7 +45,9 @@ class GalleryDetailViewModel(
             .postProcess()
             .subscribeBy(::errorLog) { ai ->
                 updateState {
-                    ai.mapToUi().withTab(currentState.selectedTab)
+                    ai.mapToUi()
+                        .copy(showReportButton = buildInfoProvider.type != BuildType.FOSS)
+                        .withTab(currentState.selectedTab)
                 }
             }
     }
