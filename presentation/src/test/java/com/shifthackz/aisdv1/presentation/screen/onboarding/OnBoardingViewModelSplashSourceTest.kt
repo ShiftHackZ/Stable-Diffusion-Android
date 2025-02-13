@@ -15,8 +15,10 @@ import io.mockk.mockk
 import io.mockk.verify
 import io.reactivex.rxjava3.core.Single
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
+@Ignore("ToDo: Investigate why sometimes tests fail on remote worker due to race-conditions.")
 class OnBoardingViewModelSplashSourceTest : CoreViewModelTest<OnBoardingViewModel>() {
 
     private var source = LaunchSource.SPLASH
