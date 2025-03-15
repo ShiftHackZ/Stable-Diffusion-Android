@@ -4,6 +4,10 @@ import com.shifthackz.aisdv1.domain.interactor.settings.SetupConnectionInterActo
 import com.shifthackz.aisdv1.domain.interactor.settings.SetupConnectionInterActorImpl
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActorImpl
+import com.shifthackz.aisdv1.domain.usecase.backup.CreateBackupUseCase
+import com.shifthackz.aisdv1.domain.usecase.backup.CreateBackupUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.backup.RestoreBackupUseCase
+import com.shifthackz.aisdv1.domain.usecase.backup.RestoreBackupUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.caching.DataPreLoaderUseCase
@@ -127,6 +131,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal val useCasesModule = module {
+    factoryOf(::CreateBackupUseCaseImpl) bind CreateBackupUseCase::class
+    factoryOf(::RestoreBackupUseCaseImpl) bind RestoreBackupUseCase::class
     factoryOf(::TextToImageUseCaseImpl) bind TextToImageUseCase::class
     factoryOf(::ImageToImageUseCaseImpl) bind ImageToImageUseCase::class
     factoryOf(::PingStableDiffusionServiceUseCaseImpl) bind PingStableDiffusionServiceUseCase::class
