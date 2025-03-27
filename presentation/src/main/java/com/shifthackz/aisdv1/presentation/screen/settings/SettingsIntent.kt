@@ -13,6 +13,8 @@ sealed interface SettingsIntent : MviIntent {
 
     data object NavigateConfiguration : SettingsIntent
 
+    data object NavigateBackup : SettingsIntent
+
     data object NavigateDeveloperMode : SettingsIntent
 
     sealed interface SdModel : SettingsIntent {

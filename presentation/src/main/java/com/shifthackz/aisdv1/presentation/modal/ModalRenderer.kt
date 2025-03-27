@@ -31,6 +31,7 @@ import com.shifthackz.aisdv1.presentation.modal.language.LanguageBottomSheet
 import com.shifthackz.aisdv1.presentation.modal.ldscheduler.LDSchedulerBottomSheet
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagDialog
 import com.shifthackz.aisdv1.presentation.model.Modal
+import com.shifthackz.aisdv1.presentation.screen.backup.BackupIntent
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuIntent
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailIntent
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryIntent
@@ -63,6 +64,7 @@ fun ModalRenderer(
         processIntent(InPaintIntent.ScreenModal.Dismiss)
         processIntent(DebugMenuIntent.DismissModal)
         processIntent(ReportIntent.DismissError)
+        processIntent(BackupIntent.DismissModal)
     }
     val context = LocalContext.current
     when (screenModal) {

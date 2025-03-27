@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.screen.setup.components
+package com.shifthackz.aisdv1.presentation.widget.toolbar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,16 +22,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.model.UiText
+import com.shifthackz.aisdv1.core.model.asString
+import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 @Composable
-fun ConfigurationStepBar(
+fun <T : Any> StepBar(
     modifier: Modifier = Modifier,
-    currentStep: ServerSetupState.Step,
+    steps: List<T>,
+    currentStep: T,
+    displayDelegate: (T) -> UiText,
 ) {
     val circleSize = 36.dp
     val circleBorder = 2.dp
@@ -55,22 +59,24 @@ fun ConfigurationStepBar(
                 .height(lineHeight)
                 .fillMaxWidth()
             Box(modifier = lineMod.weight(0.5f))
-            (0 until ServerSetupState.Step.entries.size - 1).forEach { index ->
+            (0 until steps.size - 1).forEach { index ->
                 Box(
                     modifier = lineMod
                         .weight(1f)
                         .padding(horizontal = circleSize / 2 - circleBorder / 2)
-                        .background(color = when {
-                            currentStep.ordinal > index -> colorAccent
-                            else -> colorBg
-                        }),
+                        .background(
+                            color = when {
+                                steps.indexOf(currentStep) > index -> colorAccent
+                                else -> colorBg
+                            }
+                        ),
                 )
             }
             Box(modifier = lineMod.weight(0.5f))
         }
         Row {
             val localModifier = Modifier.weight(1f)
-            ServerSetupState.Step.entries.forEach { step ->
+            steps.forEachIndexed { index, step ->
                 val localShape = CircleShape
                 Column(
                     modifier = localModifier,
@@ -84,7 +90,7 @@ fun ConfigurationStepBar(
                             .background(color = colorBg)
                             .border(
                                 width = when {
-                                    step.ordinal <= currentStep.ordinal -> circleBorder
+                                    index <= steps.indexOf(currentStep) -> circleBorder
                                     else -> circleBorder / 2
                                 },
                                 color = colorAccent,
@@ -93,8 +99,8 @@ fun ConfigurationStepBar(
                         contentAlignment = Alignment.Center
                     ) {
                         val icon = when {
-                            step.ordinal < currentStep.ordinal -> Icons.Default.Check
-                            step.ordinal == currentStep.ordinal -> Icons.Default.Circle
+                            index < steps.indexOf(currentStep) -> Icons.Default.Check
+                            index == steps.indexOf(currentStep) -> Icons.Default.Circle
                             else -> null
                         }
                         icon?.let {
@@ -107,14 +113,9 @@ fun ConfigurationStepBar(
                     }
                     Text(
                         modifier = Modifier.padding(top = 8.dp),
-                        text = stringResource(
-                            id = when (step) {
-                                ServerSetupState.Step.SOURCE -> LocalizationR.string.srv_step_1
-                                ServerSetupState.Step.CONFIGURE -> LocalizationR.string.srv_step_2
-                            }
-                        ),
+                        text = displayDelegate(step).asString(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = if (step.ordinal == currentStep.ordinal) {
+                        color = if (step == currentStep) {
                             colorAccent
                         } else {
                             Color.Unspecified
@@ -129,13 +130,19 @@ fun ConfigurationStepBar(
 
 @Composable
 @Preview
-private fun PreviewStep1() {
-    ConfigurationStepBar(currentStep = ServerSetupState.Step.SOURCE)
-
-}
-
-@Composable
-@Preview
-private fun PreviewStep2() {
-    ConfigurationStepBar(currentStep = ServerSetupState.Step.CONFIGURE)
+private fun PreviewServerSetupStepBar() {
+    Column {
+        ServerSetupState.Step.entries.forEach { step ->
+            StepBar(
+                steps = ServerSetupState.Step.entries,
+                currentStep = step,
+                displayDelegate = { currentStep ->
+                    when (currentStep) {
+                        ServerSetupState.Step.SOURCE -> LocalizationR.string.srv_step_1
+                        ServerSetupState.Step.CONFIGURE -> LocalizationR.string.srv_step_2
+                    }.asUiText()
+                },
+            )
+        }
+    }
 }

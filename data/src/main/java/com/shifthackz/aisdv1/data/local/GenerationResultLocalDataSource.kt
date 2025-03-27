@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.storage.db.persistent.dao.GenerationResultDao
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
 internal class GenerationResultLocalDataSource(
@@ -13,6 +14,10 @@ internal class GenerationResultLocalDataSource(
 ) : GenerationResultDataSource.Local {
 
     override fun insert(result: AiGenerationResult) = result
+        .mapDomainToEntity()
+        .let(dao::insert)
+
+    override fun insert(results: List<AiGenerationResult>) = results
         .mapDomainToEntity()
         .let(dao::insert)
 

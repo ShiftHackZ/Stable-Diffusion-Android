@@ -24,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountTree
 import androidx.compose.material.icons.filled.AllInclusive
 import androidx.compose.material.icons.filled.AutoFixNormal
+import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ColorLens
@@ -124,7 +125,9 @@ fun SettingsScreen() {
                 }
 
                 SettingsEffect.ShareLogFile -> ReportProblemEmailComposer().invoke(context)
+
                 is SettingsEffect.OpenUrl -> context.openUrl(effect.url)
+
                 SettingsEffect.DeveloperModeUnlocked -> context.showToast(
                     LocalizationR.string.debug_action_unlock,
                 )
@@ -219,6 +222,8 @@ private fun ContentSettingsState(
             .fillMaxWidth()
             .padding(top = 4.dp, start = 4.dp)
 
+        Spacer(modifier = Modifier.height(56.dp))
+
         if (!state.onBoardingDemo) {
             //region MAIN SETTINGS
             SettingsHeader(
@@ -242,6 +247,13 @@ private fun ContentSettingsState(
                     ServerSource.SWARM_UI -> LocalizationR.string.srv_type_swarm_ui
                 }.asUiText(),
                 onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.Backup,
+                text = LocalizationR.string.title_backup.asUiText(),
+                onClick = { processIntent(SettingsIntent.NavigateBackup) },
             )
             if (state.showStabilityAiCredits) SettingsItem(
                 modifier = itemModifier,
