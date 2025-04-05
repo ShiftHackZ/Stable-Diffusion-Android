@@ -123,4 +123,6 @@ sealed interface Modal {
     data class LDScheduler(val scheduler: SchedulersToken) : Modal
 
     data class GalleryGrid(val grid: Grid) : Modal
+
+    data class SelectDownloadSource(val modelId: String): Modal
 }

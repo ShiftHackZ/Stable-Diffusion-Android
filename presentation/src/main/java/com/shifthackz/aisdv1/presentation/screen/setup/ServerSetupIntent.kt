@@ -95,10 +95,10 @@ sealed interface ServerSetupIntent : MviIntent {
 
     sealed interface LocalModel : ServerSetupIntent {
 
-        val model: ServerSetupState.LocalModel
+        data class ClickReduce(val model: ServerSetupState.LocalModel) : LocalModel
 
-        data class ClickReduce(override val model: ServerSetupState.LocalModel) : LocalModel
+        data class DownloadConfirm(val modelId: String, val url: String): LocalModel
 
-        data class DeleteConfirm(override val model: ServerSetupState.LocalModel) : LocalModel
+        data class DeleteConfirm(val model: ServerSetupState.LocalModel) : LocalModel
     }
 }

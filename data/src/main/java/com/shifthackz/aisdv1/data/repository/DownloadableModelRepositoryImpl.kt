@@ -13,11 +13,7 @@ internal class DownloadableModelRepositoryImpl(
     private val buildInfoProvider: BuildInfoProvider,
 ) : DownloadableModelRepository {
 
-    override fun download(id: String) = localDataSource
-        .getById(id)
-        .flatMapObservable { model ->
-            remoteDataSource.download(id, model.sources.firstOrNull() ?: "")
-        }
+    override fun download(id: String, url: String) = remoteDataSource.download(id, url)
 
     override fun delete(id: String) = localDataSource.delete(id)
 
