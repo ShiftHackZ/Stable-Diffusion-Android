@@ -23,6 +23,7 @@ import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationMviIntent
 import com.shifthackz.aisdv1.presentation.core.ImageToImageIntent
 import com.shifthackz.aisdv1.presentation.modal.crop.CropImageModal
+import com.shifthackz.aisdv1.presentation.modal.download.DownloadDialog
 import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingScreen
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.grid.GridBottomSheet
@@ -367,5 +368,14 @@ fun ModalRenderer(
                 }
             )
         }
+
+        is Modal.SelectDownloadSource -> DownloadDialog(
+            modelId = screenModal.modelId,
+            onDismissRequest = dismiss,
+            onDownloadSourceSelected = { url ->
+                processIntent(ServerSetupIntent.LocalModel.DownloadConfirm(screenModal.modelId, url))
+                dismiss()
+            }
+        )
     }
 }

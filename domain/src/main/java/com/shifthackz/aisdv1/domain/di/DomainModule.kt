@@ -38,6 +38,8 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCase
@@ -185,6 +187,7 @@ internal val useCasesModule = module {
     factoryOf(::FetchAndGetStabilityAiEnginesUseCaseImpl) bind FetchAndGetStabilityAiEnginesUseCase::class
     factoryOf(::FetchAndGetSupportersUseCaseImpl) bind FetchAndGetSupportersUseCase::class
     factoryOf(::SendReportUseCaseImpl) bind SendReportUseCase::class
+    factoryOf(::GetLocalModelUseCaseImpl) bind GetLocalModelUseCase::class
 }
 
 internal val interActorsModule = module {

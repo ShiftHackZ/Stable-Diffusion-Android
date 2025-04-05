@@ -226,6 +226,10 @@ class ServerSetupViewModel(
         is ServerSetupIntent.SelectLocalModelPath -> updateState { state ->
             state.withLocalCustomModelPath(intent.value)
         }
+
+        is ServerSetupIntent.LocalModel.DownloadConfirm -> with(intent) {
+            download(modelId, url)
+        }
     }
 
     private fun validateAndConnectToServer() {
@@ -296,6 +300,7 @@ class ServerSetupViewModel(
                 }
                 validation.isValid
             }
+
             else -> {
                 currentState.localMediaPipeModels.find { it.selected && it.downloaded } != null
             }
@@ -441,44 +446,49 @@ class ServerSetupViewModel(
                 it.copy(screenModal = Modal.DeleteLocalModelConfirm(localModel()))
             }
             // User requested new download operation
-            else -> {
-                updateState { state ->
-                    state.withUpdatedLocalModel(
-                        localModel().copy(downloadState = DownloadState.Downloading()),
-                    )
-                }
-                !downloadModelUseCase(localModel().id)
-                    .distinctUntilChanged()
-                    .doOnSubscribe { wakeLockInterActor.acquireWakelockUseCase() }
-                    .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
-                    .subscribeOnMainThread(schedulersProvider)
-                    .subscribeBy(
-                        onError = { t ->
-                            errorLog(t)
-                            val message = t.localizedMessage ?: "Error"
-                            updateState { state ->
-                                state.withUpdatedLocalModel(
-                                    localModel().copy(
-                                        downloadState = DownloadState.Error(t),
-                                    ),
-                                )
-                            }
-                            setScreenModal(Modal.Error(message.asUiText()))
-                        },
-                        onNext = { downloadState ->
-                            updateState { state ->
-                                state.withUpdatedLocalModel(
-                                    localModel().copy(
-                                        downloadState = downloadState,
-                                        downloaded = downloadState is DownloadState.Complete
-                                    ),
-                                )
-                            }
-                        },
-                    )
-                    .also { downloadDisposables.add(localModel().id to it) }
-            }
+            else -> setScreenModal(Modal.SelectDownloadSource(localModel().id))
         }
+    }
+
+    private fun download(modelId: String, url: String) {
+        val localModel =
+            currentState.localModels.firstOrNull { it.id == modelId } ?: return
+
+        updateState { state ->
+            state.withUpdatedLocalModel(
+                localModel.copy(downloadState = DownloadState.Downloading()),
+            )
+        }
+        !downloadModelUseCase(localModel.id, url)
+            .distinctUntilChanged()
+            .doOnSubscribe { wakeLockInterActor.acquireWakelockUseCase() }
+            .doFinally { wakeLockInterActor.releaseWakeLockUseCase() }
+            .subscribeOnMainThread(schedulersProvider)
+            .subscribeBy(
+                onError = { t ->
+                    errorLog(t)
+                    val message = t.localizedMessage ?: "Error"
+                    updateState { state ->
+                        state.withUpdatedLocalModel(
+                            localModel.copy(
+                                downloadState = DownloadState.Error(t),
+                            ),
+                        )
+                    }
+                    setScreenModal(Modal.Error(message.asUiText()))
+                },
+                onNext = { downloadState ->
+                    updateState { state ->
+                        state.withUpdatedLocalModel(
+                            localModel.copy(
+                                downloadState = downloadState,
+                                downloaded = downloadState is DownloadState.Complete
+                            ),
+                        )
+                    }
+                },
+            )
+            .also { downloadDisposables.add(localModel.id to it) }
     }
 
     private fun setScreenModal(value: Modal) = updateState {

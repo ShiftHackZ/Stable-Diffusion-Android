@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.di
 
 import com.shifthackz.aisdv1.presentation.activity.AiStableDiffusionViewModel
+import com.shifthackz.aisdv1.presentation.modal.download.DownloadDialogViewModel
 import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingViewModel
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasViewModel
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryViewModel
@@ -53,6 +54,7 @@ val viewModelModule = module {
     viewModelOf(::DonateViewModel)
     viewModelOf(::BackgroundWorkViewModel)
     viewModelOf(::LoggerViewModel)
+    viewModelOf(::DownloadDialogViewModel)
 
     viewModel { parameters ->
         OnBoardingViewModel(

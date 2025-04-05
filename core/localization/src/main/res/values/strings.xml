@@ -186,6 +186,7 @@
     <string name="title_txt_inversion">Textual Inversion</string>
     <string name="title_txt_inversion_short">Inversion</string>
     <string name="title_tag_edit">Edit tag</string>
+    <string name="title_select_download_source">Select source</string>
 
     <string name="gallery_media_store_banner">You have %1$s photos saved in Download/SDAI</string>
     <string name="gallery_info_field_date">Created</string>

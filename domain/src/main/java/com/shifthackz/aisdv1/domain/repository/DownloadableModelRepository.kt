@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 interface DownloadableModelRepository {
-    fun download(id: String): Observable<DownloadState>
+    fun download(id: String, url: String): Observable<DownloadState>
     fun delete(id: String): Completable
     fun getAllOnnx(): Single<List<LocalAiModel>>
     fun getAllMediaPipe(): Single<List<LocalAiModel>>
