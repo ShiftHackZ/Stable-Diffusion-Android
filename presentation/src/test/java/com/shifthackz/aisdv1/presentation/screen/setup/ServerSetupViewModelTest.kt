@@ -148,7 +148,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
     @Test
     fun `given received LocalModel ClickReduce intent, model not downloaded, expected UI state is Downloading, wakeLocks called`() {
         every {
-            stubDownloadModelUseCase(any())
+            stubDownloadModelUseCase(any(), any())
         } returns Observable.just(DownloadState.Downloading(22))
 
         every {
@@ -180,7 +180,7 @@ class ServerSetupViewModelTest : CoreViewModelTest<ServerSetupViewModel>() {
             stubWakeLockInterActor.releaseWakeLockUseCase()
         }
         verify {
-            stubDownloadModelUseCase("1")
+            stubDownloadModelUseCase("1", "https://example.com/1.html")
         }
     }
 

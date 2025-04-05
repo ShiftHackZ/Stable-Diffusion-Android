@@ -23,13 +23,13 @@ class DownloadModelUseCaseImplTest {
 
     @Before
     fun initialize() {
-        whenever(stubRepository.download(any()))
+        whenever(stubRepository.download(any(), any()))
             .thenReturn(stubDownloadStatus)
     }
 
     @Test
     fun `given download running, then finishes successfully, expected final state is Complete`() {
-        val stubObserver = useCase("5598").test()
+        val stubObserver = useCase("5598", "https://moroz.cc/stub.zip").test()
 
         stubDownloadStatus.onNext(DownloadState.Unknown)
 
@@ -58,7 +58,7 @@ class DownloadModelUseCaseImplTest {
 
     @Test
     fun `given download running, then fails, expected final state is Error`() {
-        val stubObserver = useCase("5598").test()
+        val stubObserver = useCase("5598", "https://moroz.cc/stub.zip").test()
 
         stubDownloadStatus.onNext(DownloadState.Unknown)
 
@@ -87,7 +87,7 @@ class DownloadModelUseCaseImplTest {
 
     @Test
     fun `given download running, then fails, then user restarts download, then completes, expected state Error on 1st try, final state is Complete`() {
-        val stubObserver = useCase("5598").test()
+        val stubObserver = useCase("5598", "https://moroz.cc/stub.zip").test()
 
         stubDownloadStatus.onNext(DownloadState.Unknown)
 
@@ -140,10 +140,10 @@ class DownloadModelUseCaseImplTest {
 
     @Test
     fun `given observable terminated with unexpected error, expected error value`() {
-        whenever(stubRepository.download(any()))
+        whenever(stubRepository.download(any(), any()))
             .thenReturn(Observable.error(stubTerminateException))
 
-        useCase("5598")
+        useCase("5598", "https://moroz.cc/stub.zip")
             .test()
             .assertError(stubTerminateException)
             .await()

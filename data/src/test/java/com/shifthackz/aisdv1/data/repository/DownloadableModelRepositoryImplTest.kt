@@ -220,28 +220,13 @@ class DownloadableModelRepositoryImplTest {
     }
 
     @Test
-    fun `given attempt to download model, local data source has no such model, expected error value`() {
-        every {
-            stubLocalDataSource.getById(any())
-        } returns Single.error(stubException)
-
-        repository
-            .download("5598")
-            .test()
-            .assertNoValues()
-            .assertError(stubException)
-            .await()
-            .assertNotComplete()
-    }
-
-    @Test
     fun `given attempt to download model, local data source has such model, download succeeds, expected unknown, downloading, complete values`() {
         every {
             stubLocalDataSource.getById(any())
         } returns Single.just(mockLocalAiModel)
 
         val stubObserver = repository
-            .download("5598")
+            .download("5598", "https://moroz.cc/stub.zip")
             .test()
 
         stubDownloadState.onNext(DownloadState.Unknown)
@@ -276,7 +261,7 @@ class DownloadableModelRepositoryImplTest {
         } returns Single.just(mockLocalAiModel)
 
         val stubObserver = repository
-            .download("5598")
+            .download("5598", "https://moroz.cc/stub.zip")
             .test()
 
         stubDownloadState.onNext(DownloadState.Unknown)
@@ -309,7 +294,7 @@ class DownloadableModelRepositoryImplTest {
         } returns Observable.error(stubException)
 
         repository
-            .download("5598")
+            .download("5598", "https://moroz.cc/stub.zip")
             .test()
             .assertError(stubException)
             .assertNoValues()
