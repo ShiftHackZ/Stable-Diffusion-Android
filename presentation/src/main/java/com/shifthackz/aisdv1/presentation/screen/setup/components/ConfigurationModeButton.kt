@@ -81,8 +81,6 @@ fun ConfigurationModeButton(
 
                     ServerSource.LOCAL_MICROSOFT_ONNX,
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Icons.Default.Android
-
-                    else -> Icons.Default.QuestionMark
                 },
                 contentDescription = null,
             )
@@ -104,7 +102,6 @@ fun ConfigurationModeButton(
             ServerSource.STABILITY_AI -> LocalizationR.string.hint_stability_ai_sub_title
             ServerSource.SWARM_UI -> LocalizationR.string.hint_swarm_ui_sub_title
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LocalizationR.string.hint_mediapipe_sub_title
-            else -> null
         }
         descriptionId?.let { resId ->
             Text(

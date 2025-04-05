@@ -2,7 +2,6 @@
 
 package com.shifthackz.aisdv1.presentation.core
 
-import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.extensions.EmptyLambda
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
@@ -15,7 +14,6 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiSampler
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
-import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
@@ -277,6 +275,8 @@ abstract class GenerationMviViewModel<S : GenerationMviState, I : GenerationMviI
                 DrawerIntent.Close -> drawerRouter.closeDrawer()
                 DrawerIntent.Open -> drawerRouter.openDrawer()
             }
+
+            else -> Unit
         }
     }
 
