@@ -8,7 +8,7 @@
 <p>
   <a href="https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app"><img src="docs/assets/badge-google-play.svg" alt="Get it on Google Play" height="54"></a>
   <a href="https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss"><img src="docs/assets/badge-fdroid.svg" alt="Get it on F-Droid" height="54"></a>
-  <img src="docs/assets/badge-app-store.svg" alt="Download on the App Store" height="54">
+  <img src="docs/assets/badge-app-store.svg" alt="Download on the App Store" height="64">
   <a href="https://4pda.to/forum/index.php?showtopic=1082639"><img src="docs/assets/4pda.png" alt="4PDA" height="54"></a>
 </p>
 
@@ -55,12 +55,12 @@ iOS uses the shared mobile experience and intentionally focuses on remote genera
 
 | AI-specific feature | Supported providers | iOS | Android | Notes |
 | --- | --- | --- | --- | --- |
-| Text to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | Remote providers | 🟢 Yes | Core generation path exists for every provider exposed by the current platform/build. |
+| Text to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | 🟡 Remote providers | 🟢 Yes | Core generation path exists for every provider exposed by the current platform/build. |
 | Image to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, Stability AI | 🟢 Yes | 🟢 Yes | OpenAI and local diffusion providers are txt2img-only in the app. |
 | Inpaint mask controls | AUTOMATIC1111 | 🟢 Yes | 🟢 Yes | Mask image, mask blur, mask mode, masked content, inpaint area, and only-masked padding are mapped to the A1111 img2img API. |
-| Negative prompt | AUTOMATIC1111, SwarmUI, Hugging Face, Stability AI, Local ONNX | Remote providers | 🟢 Yes | Horde, OpenAI, and MediaPipe flows do not expose/send a negative prompt. Local ONNX is Android-only. |
+| Negative prompt | AUTOMATIC1111, SwarmUI, Hugging Face, Stability AI, Local ONNX | 🟡 Remote providers | 🟢 Yes | Horde, OpenAI, and MediaPipe flows do not expose/send a negative prompt. Local ONNX is Android-only. |
 | Batch generation | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI | 🟢 Yes | 🟢 Yes | Local providers are treated as single-image generation flows. |
-| Model or engine selection | AUTOMATIC1111, SwarmUI, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | Remote providers | 🟢 Yes | Depending on provider, this selects an SD checkpoint, SwarmUI model, HF model, OpenAI model, Stability engine, or local model. |
+| Model or engine selection | AUTOMATIC1111, SwarmUI, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | 🟡 Remote providers | 🟢 Yes | Depending on provider, this selects an SD checkpoint, SwarmUI model, HF model, OpenAI model, Stability engine, or local model. |
 | LoRA picker | AUTOMATIC1111, SwarmUI | 🟢 Yes | 🟢 Yes | Remote LoRA lists are fetched from the active compatible server. |
 | Textual inversion / embeddings picker | AUTOMATIC1111, SwarmUI | 🟢 Yes | 🟢 Yes | Remote embeddings are fetched from the active compatible server. |
 | Hypernetwork picker | AUTOMATIC1111 | 🟢 Yes | 🟢 Yes | Hypernetwork discovery is implemented for A1111. |
@@ -70,7 +70,7 @@ iOS uses the shared mobile experience and intentionally focuses on remote genera
 | Stability style preset and clip guidance | Stability AI | 🟢 Yes | 🟢 Yes | Passed to Stability AI requests when selected. |
 | NSFW flag | AI Horde | 🟢 Yes | 🟢 Yes | Exposed for Horde requests. |
 | Offline generation | Local ONNX, Local MediaPipe | 🔴 No | 🟢 Yes | Runs on Android after the selected local model is available. |
-| Generation interrupt | AUTOMATIC1111, AI Horde, Local ONNX | Remote providers | 🟢 Yes | Local ONNX interrupt is Android-only. Other providers rely on request completion when no platform-level interrupt is exposed. |
+| Generation interrupt | AUTOMATIC1111, AI Horde, Local ONNX | 🟡 Remote providers | 🟢 Yes | Local ONNX interrupt is Android-only. Other providers rely on request completion when no platform-level interrupt is exposed. |
 
 ## Core Workflow
 
