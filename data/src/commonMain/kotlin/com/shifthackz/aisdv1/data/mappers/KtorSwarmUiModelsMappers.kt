@@ -97,6 +97,7 @@ fun KtorSwarmUiModelsResponse.mapKtorRawToEmbeddingDomain(): List<Embedding> =
  */
 fun List<SwarmUiModelRaw>.mapKtorRawToEmbeddingDomain(): List<Embedding> =
     map(SwarmUiModelRaw::mapKtorRawToEmbeddingDomain)
+        .filter { it.keyword.isNotBlank() }
 
 /**
  * Converts SDAI data with `mapKtorRawToEmbeddingDomain`.
@@ -105,4 +106,14 @@ fun List<SwarmUiModelRaw>.mapKtorRawToEmbeddingDomain(): List<Embedding> =
  * @author Dmitriy Moroz
  */
 fun SwarmUiModelRaw.mapKtorRawToEmbeddingDomain(): Embedding =
-    Embedding(title ?: "")
+    Embedding(embeddingKeyword())
+
+private fun SwarmUiModelRaw.embeddingKeyword(): String {
+    val raw = title?.takeIf(String::isNotBlank) ?: name.orEmpty()
+    val fileName = raw
+        .substringAfterLast('/')
+        .substringAfterLast('\\')
+    return fileName
+        .substringBeforeLast('.', fileName)
+        .trim()
+}

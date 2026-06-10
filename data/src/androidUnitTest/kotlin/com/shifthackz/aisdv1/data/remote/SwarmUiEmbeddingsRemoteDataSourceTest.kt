@@ -1,8 +1,10 @@
 package com.shifthackz.aisdv1.data.remote
 
 import com.shifthackz.aisdv1.data.mocks.mockKtorSwarmUiModelsRaw
+import com.shifthackz.aisdv1.domain.entity.Embedding
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiModelsApi
+import com.shifthackz.aisdv1.network.model.SwarmUiModelRaw
 import com.shifthackz.aisdv1.network.response.KtorSwarmUiModelsResponse
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -25,7 +27,25 @@ class KtorSwarmUiEmbeddingsRemoteDataSourceTest {
 
         val actual = remoteDataSource.fetchEmbeddings(BASE_URL, SESSION_ID, AuthorizationCredentials.None)
 
-        Assert.assertEquals(mockKtorSwarmUiModelsRaw.size, actual.size)
+        Assert.assertEquals(listOf(Embedding("5598")), actual)
+    }
+
+    @Test
+    fun `given swarm embedding has no title, expected keyword mapped from file name`() = runTest {
+        coEvery {
+            stubApi.fetchModels(BASE_URL, any(), null)
+        } returns KtorSwarmUiModelsResponse(
+            files = listOf(
+                SwarmUiModelRaw(
+                    name = "cute-cat.bin",
+                    title = null,
+                ),
+            ),
+        )
+
+        val actual = remoteDataSource.fetchEmbeddings(BASE_URL, SESSION_ID, AuthorizationCredentials.None)
+
+        Assert.assertEquals(listOf(Embedding("cute-cat")), actual)
     }
 
     @Test
