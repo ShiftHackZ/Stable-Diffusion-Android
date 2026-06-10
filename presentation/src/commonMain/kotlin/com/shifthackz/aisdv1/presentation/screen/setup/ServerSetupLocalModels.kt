@@ -109,7 +109,6 @@ internal fun LocalModelItem(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
             .defaultMinSize(minHeight = 50.dp)
             .clickable(onClick = onSelect),
         shape = RoundedCornerShape(16.dp),

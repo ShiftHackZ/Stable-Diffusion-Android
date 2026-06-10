@@ -5,10 +5,12 @@
 
 [Website](https://sdai.moroz.cc) | [Telegram](https://t.me/sdai_app) | [Discord](https://discord.gg/jzdR9m8Ves)
 
-[![Get it on Google Play](docs/assets/badge-google-play.svg)](https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app)
-[![Get it on F-Droid](docs/assets/badge-fdroid.svg)](https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss)
-![Download on the App Store](docs/assets/badge-app-store.svg)
-[![4pda](docs/assets/4pda.png)](https://4pda.to/forum/index.php?showtopic=1082639)
+<p>
+  <a href="https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app"><img src="docs/assets/badge-google-play.svg" alt="Get it on Google Play" height="54"></a>
+  <a href="https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss"><img src="docs/assets/badge-fdroid.svg" alt="Get it on F-Droid" height="54"></a>
+  <img src="docs/assets/badge-app-store.svg" alt="Download on the App Store" height="54">
+  <a href="https://4pda.to/forum/index.php?showtopic=1082639"><img src="docs/assets/4pda.png" alt="4PDA" height="54"></a>
+</p>
 
 SDAI is an open-source, cross-platform AI image generation client for Android and iOS. It gives you one clean mobile workflow for self-hosted Stable Diffusion servers, hosted image APIs, crowdsourced generation, and platform-specific local generation where supported.
 
@@ -25,12 +27,8 @@ No ads. No telemetry. No lock-in to a single provider.
 
 ## Screenshots
 
-![SDAI text to image workflow](docs/screenshots/site/en-US/01-create.png)
-![SDAI advanced generation controls](docs/screenshots/site/en-US/02-controls.png)
-![SDAI provider selection](docs/screenshots/site/en-US/03-providers.png)
-![SDAI generated image gallery](docs/screenshots/site/en-US/04-gallery.png)
-![SDAI app settings](docs/screenshots/site/en-US/05-settings.png)
-![SDAI open-source workflow](docs/screenshots/site/en-US/06-open.png)
+<img src="docs/screenshots/site/readme-row-1.png" alt="SDAI screenshots: generation result, prompt controls, and provider selection" width="100%">
+<img src="docs/screenshots/site/readme-row-2.png" alt="SDAI screenshots: image gallery, app settings, and generation details" width="100%">
 
 ## Provider and Platform Matrix
 

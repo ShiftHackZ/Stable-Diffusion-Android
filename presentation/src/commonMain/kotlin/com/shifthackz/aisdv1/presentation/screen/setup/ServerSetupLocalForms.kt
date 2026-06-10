@@ -3,29 +3,26 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Android
-import androidx.compose.material.icons.filled.Computer
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Landslide
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.file.LOCAL_DIFFUSION_CUSTOM_PATH
-import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 
 @Composable
@@ -111,25 +108,11 @@ internal fun LocalGenerationForm(
             },
         )
         HintText(text = strings.localWarning)
-        if (!isLocalGenerationSetupAvailable()) {
-            SettingsItem(
-                modifier = Modifier.fillMaxWidth(),
-                startIcon = Icons.Default.Computer,
-                text = strings.localPermissionHeader.asUiText(),
-                endValueText = strings.localPermissionTitle.asUiText(),
-            )
-        }
-        SettingsItem(
-            modifier = Modifier.fillMaxWidth(),
-            startIcon = Icons.Outlined.Landslide,
-            text = strings.localCustomSwitch.asUiText(),
-            onClick = { processIntent(ServerSetupIntent.AllowLocalCustomModel(!state.localCustomModel)) },
-            endValueContent = {
-                Switch(
-                    checked = state.localCustomModel,
-                    onCheckedChange = { processIntent(ServerSetupIntent.AllowLocalCustomModel(it)) },
-                )
-            },
+        SwitchRow(
+            icon = Icons.Outlined.Landslide,
+            text = strings.localCustomSwitch,
+            checked = state.localCustomModel,
+            onCheckedChange = { processIntent(ServerSetupIntent.AllowLocalCustomModel(it)) },
         )
         if (state.localCustomModel) {
             LocalCustomModelPathForm(
@@ -138,7 +121,7 @@ internal fun LocalGenerationForm(
                 processIntent = processIntent,
             )
         }
-        state.localModels.forEach { model ->
+        state.visibleLocalModels.forEach { model ->
             LocalModelItem(
                 model = model,
                 selected = model.selected,
@@ -150,6 +133,17 @@ internal fun LocalGenerationForm(
     }
 }
 
+private val ServerSetupState.visibleLocalModels: List<ServerSetupState.LocalModel>
+    get() {
+        val customModels = localModels.filter(ServerSetupState.LocalModel::isCustom)
+        val builtInModels = localModels.filterNot(ServerSetupState.LocalModel::isCustom)
+        return if (localCustomModel) {
+            customModels + builtInModels
+        } else {
+            builtInModels
+        }
+    }
+
 @Composable
 internal fun LocalCustomModelPathForm(
     state: ServerSetupState,
@@ -158,45 +152,57 @@ internal fun LocalCustomModelPathForm(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        if (!isLocalGenerationSetupAvailable()) {
+            Text(
+                modifier = Modifier.padding(top = 8.dp),
+                text = strings.localPermissionHeader,
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = strings.localPermissionTitle,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            OutlinedButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { processIntent(ServerSetupIntent.LaunchManageStoragePermission) },
+            ) {
+                Text(text = strings.localPermissionButton)
+            }
+        }
+        Text(
+            modifier = Modifier.padding(top = 8.dp),
+            text = strings.localPathHeader,
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+        )
         SetupTextField(
             value = state.localCustomModelPath,
             onValueChange = { processIntent(ServerSetupIntent.SelectLocalModelPath(it)) },
-            label = strings.localPathHeader,
+            label = strings.localPathTitle,
             error = state.localCustomModelPathValidationError?.message(strings),
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            ServerSetupLocalPathPickerButton(
-                modifier = Modifier.weight(1f),
-                text = strings.localPathButton,
-                onPathSelected = { processIntent(ServerSetupIntent.SelectLocalModelPath(it)) },
-            )
-            OutlinedButton(
-                modifier = Modifier.weight(1f),
-                onClick = {
-                    processIntent(
-                        ServerSetupIntent.SelectLocalModelPath(
-                            when (state.mode) {
-                                ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LOCAL_DIFFUSION_CUSTOM_PATH
-                                else -> LOCAL_DIFFUSION_CUSTOM_PATH
-                            },
-                        ),
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        processIntent(ServerSetupIntent.SelectLocalModelPath(LOCAL_DIFFUSION_CUSTOM_PATH))
+                    },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = strings.reset,
                     )
-                },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Android,
-                    contentDescription = null,
-                )
-                Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = strings.localPathTitle,
-                )
-            }
-        }
+                }
+            },
+        )
+        ServerSetupLocalPathPickerButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = strings.localPathButton,
+            onPathSelected = { processIntent(ServerSetupIntent.SelectLocalModelPath(it)) },
+        )
     }
 }

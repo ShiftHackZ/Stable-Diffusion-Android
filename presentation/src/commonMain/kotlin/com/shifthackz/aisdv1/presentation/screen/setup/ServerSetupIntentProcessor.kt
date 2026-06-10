@@ -112,6 +112,7 @@ internal class ServerSetupIntentProcessor(
             is ServerSetupIntent.UpdateHordeDefaultApiKey -> updateState {
                 it.copy(
                     hordeDefaultApiKey = intent.value,
+                    hordeApiKey = if (intent.value) HORDE_DEFAULT_API_KEY else "",
                     hordeApiKeyValidationError = null,
                 )
             }

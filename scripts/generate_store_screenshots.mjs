@@ -84,12 +84,22 @@ const outputSpecs = {
     width: 1600,
     height: 900,
     type: "site",
-    dir: (locale, platform) => platform === "ios"
-      ? path.join(root, "docs", "screenshots", "site", "ios", localeFolders[locale])
-      : path.join(root, "docs", "screenshots", "site", localeFolders[locale]),
+    platform: "ios",
+    dir: () => path.join(root, "docs", "screenshots", "site", "ios", "en-US"),
     file: (slide, index) => `${String(index + 1).padStart(2, "0")}-${slide.id}.png`,
   },
 };
+
+const readmeRows = [
+  {
+    file: path.join(root, "docs", "screenshots", "site", "readme-row-1.png"),
+    slides: [0, 1, 2],
+  },
+  {
+    file: path.join(root, "docs", "screenshots", "site", "readme-row-2.png"),
+    slides: [3, 4, 5],
+  },
+];
 
 const featureSpecs = {
   fastlane: { width: 512, height: 250 },
@@ -951,11 +961,56 @@ function renderSvg(svg, outFile) {
   }
 }
 
+function renderReadmeRows(deck) {
+  const spec = outputSpecs.appstore;
+  const sourceDir = spec.dir("en-US", "ios");
+  const rowWidth = spec.width * 3;
+  const rowHeight = spec.height;
+  const missing = [];
+
+  for (const row of readmeRows) {
+    for (const slideIndex of row.slides) {
+      const slide = deck.slides[slideIndex];
+      const file = path.join(sourceDir, spec.file(slide, slideIndex));
+      if (!fs.existsSync(file)) missing.push(path.relative(root, file));
+    }
+  }
+
+  if (missing.length) {
+    console.warn(`Skipped README screenshot rows. Missing iOS App Store screenshots:\n- ${missing.join("\n- ")}`);
+    return;
+  }
+
+  readmeRows.forEach((row) => {
+    const images = row.slides.map((slideIndex, column) => {
+      const slide = deck.slides[slideIndex];
+      const file = path.join(sourceDir, spec.file(slide, slideIndex));
+      const size = pngSize(file);
+      if (size.width !== spec.width || size.height !== spec.height) {
+        throw new Error(`${path.relative(root, file)} is ${size.width}x${size.height}, expected ${spec.width}x${spec.height}`);
+      }
+      return `<image href="${imageHref(file)}" x="${column * spec.width}" y="0" width="${spec.width}" height="${spec.height}"/>`;
+    }).join("\n");
+
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${rowWidth}" height="${rowHeight}" viewBox="0 0 ${rowWidth} ${rowHeight}">
+        ${images}
+      </svg>
+    `;
+    renderSvg(svg, row.file);
+    const size = pngSize(row.file);
+    if (size.width !== rowWidth || size.height !== rowHeight) {
+      throw new Error(`${path.relative(root, row.file)} rendered as ${size.width}x${size.height}, expected ${rowWidth}x${rowHeight}`);
+    }
+    console.log(`Rendered README screenshot row: ${path.relative(root, row.file)}`);
+  });
+}
+
 function render(args) {
   const deck = readDeck();
   const platform = args.platform || deck.defaultPlatform || "android";
   const localeList = list(args.locales || args.locale, [canonicalLocale(deck.defaultLocale)]);
-  const targets = list(args.targets, platform === "ios" ? ["appstore", "site"] : ["fastlane", "googleplay", "site"]);
+  const targets = list(args.targets, platform === "ios" ? ["appstore", "site"] : ["fastlane", "googleplay"]);
   requireCommand("rsvg-convert", "Install librsvg or set rsvg-convert in PATH.");
 
   for (const rawLocale of localeList) {
@@ -968,6 +1023,10 @@ function render(args) {
       if (!spec) throw new Error(`Unknown target: ${target}`);
       if (spec.platform && spec.platform !== platform) {
         throw new Error(`${target} is for ${spec.platform}, but --platform ${platform} was selected.`);
+      }
+      if (target === "site" && locale !== "en-US") {
+        console.log(`Skipped ${spec.label} for ${locale}; website screenshots use ios/en-US only.`);
+        continue;
       }
 
       const outDir = spec.dir(locale, platform);
@@ -989,6 +1048,8 @@ function render(args) {
       console.log(`Rendered ${spec.label}: ${path.relative(root, outDir)}`);
     }
   }
+
+  renderReadmeRows(deck);
 }
 
 function plan(args) {
@@ -1020,9 +1081,9 @@ function printHelp() {
 Usage:
   node scripts/generate_store_screenshots.mjs plan --platform android --locale en-US
   node scripts/generate_store_screenshots.mjs capture --platform android --locale en-US --package com.shifthackz.aisdv1.app.full
-  node scripts/generate_store_screenshots.mjs render --platform android --locale en-US --targets fastlane,googleplay,site
+  node scripts/generate_store_screenshots.mjs render --platform android --locale en-US --targets fastlane,googleplay
   node scripts/generate_store_screenshots.mjs capture --platform ios --locale uk --device booted
-  node scripts/generate_store_screenshots.mjs render --platform ios --locale uk --targets appstore,site
+  node scripts/generate_store_screenshots.mjs render --platform ios --locale en-US --targets appstore,site
 
 Commands:
   plan       Print the localized screenshot deck and required raw files.
@@ -1050,6 +1111,8 @@ Render options:
 Notes:
   - Render never falls back to existing fastlane screenshots.
   - Raw screenshots must come from capture and live in docs/screenshots/raw/<platform>/<locale>/.
+  - Website screenshots are generated from iOS en-US only.
+  - README screenshot rows are generated from iOS en-US App Store screenshots.
   - Maestro is required for capture: https://docs.maestro.dev/getting-started/installing-maestro
   - Maestro is required for capture: https://docs.maestro.dev/maestro-cli/how-to-install-maestro-cli
 `);

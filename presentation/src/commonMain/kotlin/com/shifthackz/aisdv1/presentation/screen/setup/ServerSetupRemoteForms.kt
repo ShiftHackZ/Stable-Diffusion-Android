@@ -9,7 +9,6 @@ import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.Api
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -49,19 +48,11 @@ internal fun Automatic1111Form(
             text = strings.instructions.asUiText(),
             onClick = { processIntent(ServerSetupIntent.LaunchUrl(ServerSetupLink.A1111Instructions)) },
         )
-        SettingsItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            startIcon = Icons.Default.Api,
-            text = strings.demoMode.asUiText(),
-            onClick = { processIntent(ServerSetupIntent.UpdateDemoMode(!state.demoMode)) },
-            endValueContent = {
-                Switch(
-                    checked = state.demoMode,
-                    onCheckedChange = { processIntent(ServerSetupIntent.UpdateDemoMode(it)) },
-                )
-            },
+        SwitchRow(
+            icon = Icons.Default.Api,
+            text = strings.demoMode,
+            checked = state.demoMode,
+            onCheckedChange = { processIntent(ServerSetupIntent.UpdateDemoMode(it)) },
         )
         HintText(text = if (state.demoMode) strings.demoHint else strings.automaticHint)
     }
@@ -110,29 +101,20 @@ internal fun HordeForm(
         title = strings.hordeTitle,
         subtitle = strings.hordeSubtitle,
     ) {
-        SettingsItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            startIcon = Icons.Default.Api,
-            text = strings.useDefaultHordeKey.asUiText(),
-            onClick = { processIntent(ServerSetupIntent.UpdateHordeDefaultApiKey(!state.hordeDefaultApiKey)) },
-            endValueContent = {
-                Switch(
-                    checked = state.hordeDefaultApiKey,
-                    onCheckedChange = { processIntent(ServerSetupIntent.UpdateHordeDefaultApiKey(it)) },
-                )
-            },
+        SetupTextField(
+            value = state.hordeApiKey,
+            onValueChange = { processIntent(ServerSetupIntent.UpdateHordeApiKey(it)) },
+            label = strings.apiKey,
+            enabled = !state.hordeDefaultApiKey,
+            keyboardType = KeyboardType.Password,
+            error = state.hordeApiKeyValidationError?.message(strings),
         )
-        if (!state.hordeDefaultApiKey) {
-            SetupTextField(
-                value = state.hordeApiKey,
-                onValueChange = { processIntent(ServerSetupIntent.UpdateHordeApiKey(it)) },
-                label = strings.apiKey,
-                keyboardType = KeyboardType.Password,
-                error = state.hordeApiKeyValidationError?.message(strings),
-            )
-        }
+        SwitchRow(
+            icon = Icons.Default.Api,
+            text = strings.useDefaultHordeKey,
+            checked = state.hordeDefaultApiKey,
+            onCheckedChange = { processIntent(ServerSetupIntent.UpdateHordeDefaultApiKey(it)) },
+        )
         SettingsItem(
             modifier = Modifier
                 .fillMaxWidth()
@@ -184,7 +166,7 @@ internal fun HuggingFaceForm(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
             startIcon = Icons.Default.Cloud,
-            text = strings.hordeAbout.asUiText(),
+            text = strings.huggingFaceAbout.asUiText(),
             onClick = { processIntent(ServerSetupIntent.LaunchUrl(ServerSetupLink.HuggingFaceInfo)) },
         )
     }
@@ -212,7 +194,7 @@ internal fun OpenAiForm(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
             startIcon = Icons.Default.Cloud,
-            text = strings.hordeAbout.asUiText(),
+            text = strings.openAiAbout.asUiText(),
             onClick = { processIntent(ServerSetupIntent.LaunchUrl(ServerSetupLink.OpenAiInfo)) },
         )
     }
@@ -240,7 +222,7 @@ internal fun StabilityAiForm(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
             startIcon = Icons.Default.Cloud,
-            text = strings.hordeAbout.asUiText(),
+            text = strings.stabilityAbout.asUiText(),
             onClick = { processIntent(ServerSetupIntent.LaunchUrl(ServerSetupLink.StabilityAiInfo)) },
         )
     }

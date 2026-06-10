@@ -153,7 +153,7 @@
     <string name="hint_server_horde_about">Про Horde AI</string>
     <string name="hint_server_horde_get_api_key">Отримати свій API Ключ</string>
 
-    <string name="hint_hugging_face_title">Підключитися доHugging Face</string>
+    <string name="hint_hugging_face_title">Підключитися до Hugging Face</string>
     <string name="hint_hugging_face_sub_title">Hugging Face дозволяє тестувати та оцінювати загальнодоступні моделі машинного навчання або ваші власні приватні моделі.</string>
     <string name="hint_hugging_face_about">Про Hugging Face</string>
     <string name="hint_hugging_face_model">Hugging Face модель</string>

@@ -116,6 +116,20 @@ class ImageToImageViewModel(
 
     private fun applyGenerationResult(
         ai: com.shifthackz.aisdv1.domain.entity.AiGenerationResult,
+        inputImage: Boolean,
+    ) {
+        applyGenerationResult(
+            ai = ai,
+            imageBase64 = if (inputImage) {
+                ai.inputImage.ifBlank { ai.image }
+            } else {
+                null
+            },
+        )
+    }
+
+    private fun applyGenerationResult(
+        ai: com.shifthackz.aisdv1.domain.entity.AiGenerationResult,
         imageBase64: String?,
     ) {
         updateState { state ->

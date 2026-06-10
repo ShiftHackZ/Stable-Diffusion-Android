@@ -285,13 +285,11 @@ internal val ServerSetupState.mainButtonEnabled: Boolean
     get() = when (step) {
         ServerSetupState.Step.SOURCE -> true
         ServerSetupState.Step.CONFIGURE -> when (mode) {
-            ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxModels.any {
-                it.selected && it.downloaded
-            }
+            ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxCustomModel ||
+                localOnnxModels.any { it.selected && it.downloaded }
 
-            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeModels.any {
-                it.selected && it.downloaded
-            }
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeCustomModel ||
+                localMediaPipeModels.any { it.selected && it.downloaded }
 
             else -> true
         }

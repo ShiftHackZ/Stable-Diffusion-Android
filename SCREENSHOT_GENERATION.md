@@ -1,8 +1,9 @@
 # Screenshot Generation
 
-This project generates store and website screenshots from real app screens captured
-on Android emulators and iOS simulators. The marketing template is applied after
-capture, so rendered store images never fall back to older screenshots.
+This project generates store, website, and README screenshots from real app
+screens captured on Android emulators and iOS simulators. The marketing template
+is applied after capture, so rendered store images never fall back to older
+screenshots.
 
 ## Script
 
@@ -15,7 +16,8 @@ Commands:
 - `plan` prints the localized screenshot deck and expected raw screenshot files.
 - `capture` runs a Maestro flow on a real simulator/emulator and saves raw app
   screenshots.
-- `render` turns raw app screenshots into store and website marketing assets.
+- `render` turns raw app screenshots into store, website, and README marketing
+  assets.
 - `all` runs `capture`, then `render`.
 
 ## Requirements
@@ -46,7 +48,7 @@ Default Android package is the `full` flavor:
 
 ```bash
 node scripts/generate_store_screenshots.mjs capture --platform android --locale en-US --flavor full
-node scripts/generate_store_screenshots.mjs render --platform android --locale en-US --targets fastlane,googleplay,site
+node scripts/generate_store_screenshots.mjs render --platform android --locale en-US --targets fastlane,googleplay
 ```
 
 Useful Android options:
@@ -61,14 +63,13 @@ Useful Android options:
 Render all Android locales:
 
 ```bash
-node scripts/generate_store_screenshots.mjs render --platform android --locales en-US,ru,uk --targets fastlane,googleplay,site
+node scripts/generate_store_screenshots.mjs render --platform android --locales en-US,ru,uk --targets fastlane,googleplay
 ```
 
 Android outputs:
 
 - F-Droid fastlane: `fastlane/metadata/android/<locale>/images/phoneScreenshots/`
 - Google Play: `docs/screenshots/googleplay/<locale>/phoneScreenshots/`
-- Website banners: `docs/screenshots/site/<locale>/`
 
 ## iOS
 
@@ -91,15 +92,28 @@ Useful iOS options:
 Render all iOS locales:
 
 ```bash
-node scripts/generate_store_screenshots.mjs render --platform ios --locales en-US,ru,uk --targets appstore,site
+node scripts/generate_store_screenshots.mjs render --platform ios --locales en-US,ru,uk --targets appstore
 ```
 
 iOS outputs:
 
 - App Store 6.9-inch screenshots:
   `docs/screenshots/appstore/<locale>/iphone-6.9/`
-- Website banners from the iOS frame:
-  `docs/screenshots/site/ios/<locale>/`
+- Website banners from the iOS frame, English only:
+  `docs/screenshots/site/ios/en-US/`
+- README screenshot rows from the English iOS App Store screenshots:
+  `docs/screenshots/site/readme-row-1.png`
+  `docs/screenshots/site/readme-row-2.png`
+
+Website screenshots are intentionally generated only from iOS `en-US` output.
+README rows are also intentionally generated from the mobile App Store screenshots,
+not from website banners.
+
+Generate website banners and README rows:
+
+```bash
+node scripts/generate_store_screenshots.mjs render --platform ios --locale en-US --targets appstore,site
+```
 
 ## Raw Screenshots
 
@@ -146,8 +160,9 @@ node scripts/generate_store_screenshots.mjs capture --platform ios --locale en-U
 node scripts/generate_store_screenshots.mjs capture --platform ios --locale ru
 node scripts/generate_store_screenshots.mjs capture --platform ios --locale uk
 
-node scripts/generate_store_screenshots.mjs render --platform android --locales en-US,ru,uk --targets fastlane,googleplay,site
-node scripts/generate_store_screenshots.mjs render --platform ios --locales en-US,ru,uk --targets appstore,site
+node scripts/generate_store_screenshots.mjs render --platform android --locales en-US,ru,uk --targets fastlane,googleplay
+node scripts/generate_store_screenshots.mjs render --platform ios --locales en-US,ru,uk --targets appstore
+node scripts/generate_store_screenshots.mjs render --platform ios --locale en-US --targets appstore,site
 ```
 
 ## Partial Regeneration

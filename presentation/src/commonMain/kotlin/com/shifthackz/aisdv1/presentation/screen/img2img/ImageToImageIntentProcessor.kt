@@ -18,7 +18,7 @@ internal class ImageToImageIntentProcessor(
     private val saveGenerationResults: (List<AiGenerationResult>) -> Unit,
     private val viewGenerationResult: (AiGenerationResult) -> Unit,
     private val reportGenerationResult: (AiGenerationResult) -> Unit,
-    private val applyGenerationResult: (AiGenerationResult) -> Unit,
+    private val applyGenerationResult: (AiGenerationResult, Boolean) -> Unit,
 ) {
 
     fun process(intent: ImageToImageIntent) {
@@ -92,7 +92,7 @@ internal class ImageToImageIntentProcessor(
                     message = null,
                 )
             }
-            is ImageToImageIntent.ApplyGenerationResult -> applyGenerationResult(intent.ai)
+            is ImageToImageIntent.ApplyGenerationResult -> applyGenerationResult(intent.ai, intent.inputImage)
             is ImageToImageIntent.UpdateAdvancedOptionsVisibility -> updateState {
                 it.copy(advancedOptionsVisible = intent.visible)
             }

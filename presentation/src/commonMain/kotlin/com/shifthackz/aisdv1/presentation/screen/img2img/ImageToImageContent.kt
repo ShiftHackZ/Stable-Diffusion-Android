@@ -302,7 +302,7 @@ fun ImageToImageContent(
         ImageToImagePanel.History -> GenerationHistoryDialog(
             onClose = { activeModal = null },
             onGenerationSelected = { ai ->
-                processIntent(ImageToImageIntent.ApplyGenerationResult(ai))
+                processIntent(ImageToImageIntent.ApplyGenerationResult(ai, inputImage = true))
                 activeModal = null
             },
         )

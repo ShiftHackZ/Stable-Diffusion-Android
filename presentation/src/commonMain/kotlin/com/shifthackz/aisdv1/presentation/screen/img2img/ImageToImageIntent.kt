@@ -43,6 +43,7 @@ sealed interface ImageToImageIntent : MviIntent {
     ) : ImageToImageIntent
     data class ApplyGenerationResult(
         val ai: AiGenerationResult,
+        val inputImage: Boolean = false,
     ) : ImageToImageIntent
     data class UpdateAdvancedOptionsVisibility(val visible: Boolean) : ImageToImageIntent
     data class UpdatePrompt(val value: String) : ImageToImageIntent
