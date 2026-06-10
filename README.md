@@ -44,35 +44,35 @@ iOS uses the shared mobile experience and intentionally focuses on remote genera
 
 | Provider / backend | What it connects to | iOS | Android `playstore` | Android `full` | Android `foss` | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| AUTOMATIC1111 WebUI | Your own Stable-Diffusion-WebUI API server | Yes | Yes | Yes | Yes | Own server, demo mode, txt2img, img2img, inpaint, models, LoRA, embeddings, hypernetworks. |
-| SwarmUI | Your own SwarmUI server | Yes | Yes | Yes | Yes | Own server with SwarmUI model, LoRA, and embeddings discovery. |
-| AI Horde | Crowdsourced Stable Horde workers | Yes | Yes | Yes | Yes | Works with the default anonymous key or your own Horde API key. |
-| Hugging Face Inference API | Hosted Hugging Face image models | Yes | Yes | Yes | Yes | Requires a Hugging Face API key and selected model. |
-| OpenAI Images API | OpenAI image generation with GPT Image models | Yes | Yes | Yes | Yes | Requires an OpenAI API key. |
-| Stability AI | Stability AI / DreamStudio image API | Yes | Yes | Yes | Yes | Requires a Stability AI API key and engine selection. |
-| Local Diffusion: Microsoft ONNX Runtime | On-device ONNX model inference | No | Yes | Yes | Yes | Android-only txt2img. Custom local model paths are available outside the Play build. |
-| Local Diffusion: Google AI MediaPipe | On-device MediaPipe image generator | No | Yes | Yes | No | Android-only txt2img. Excluded from the FOSS flavor. |
+| AUTOMATIC1111 WebUI | Your own Stable-Diffusion-WebUI API server | 🟢 Yes | 🟢 Yes | 🟢 Yes | 🟢 Yes | Own server, demo mode, txt2img, img2img, inpaint, models, LoRA, embeddings, hypernetworks. |
+| SwarmUI | Your own SwarmUI server | 🟢 Yes | 🟢 Yes | 🟢 Yes | 🟢 Yes | Own server with SwarmUI model, LoRA, and embeddings discovery. |
+| AI Horde | Crowdsourced Stable Horde workers | 🟢 Yes | 🟢 Yes | 🟢 Yes | 🟢 Yes | Works with the default anonymous key or your own Horde API key. |
+| Hugging Face Inference API | Hosted Hugging Face image models | 🟢 Yes | 🟢 Yes | 🟢 Yes | 🟢 Yes | Requires a Hugging Face API key and selected model. |
+| OpenAI Images API | OpenAI image generation with GPT Image models | 🟢 Yes | 🟢 Yes | 🟢 Yes | 🟢 Yes | Requires an OpenAI API key. |
+| Stability AI | Stability AI / DreamStudio image API | 🟢 Yes | 🟢 Yes | 🟢 Yes | 🟢 Yes | Requires a Stability AI API key and engine selection. |
+| Local Diffusion: Microsoft ONNX Runtime | On-device ONNX model inference | 🔴 No | 🟢 Yes | 🟢 Yes | 🟢 Yes | Android-only txt2img. Custom local model paths are available outside the Play build. |
+| Local Diffusion: Google AI MediaPipe | On-device MediaPipe image generator | 🔴 No | 🟢 Yes | 🟢 Yes | 🔴 No | Android-only txt2img. Excluded from the FOSS flavor. |
 
 ## AI Feature Matrix
 
 | AI-specific feature | Supported providers | iOS | Android | Notes |
 | --- | --- | --- | --- | --- |
-| Text to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | Remote providers | Yes | Core generation path exists for every provider exposed by the current platform/build. |
-| Image to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, Stability AI | Yes | Yes | OpenAI and local diffusion providers are txt2img-only in the app. |
-| Inpaint mask controls | AUTOMATIC1111 | Yes | Yes | Mask image, mask blur, mask mode, masked content, inpaint area, and only-masked padding are mapped to the A1111 img2img API. |
-| Negative prompt | AUTOMATIC1111, SwarmUI, Hugging Face, Stability AI, Local ONNX | Remote providers | Yes | Horde, OpenAI, and MediaPipe flows do not expose/send a negative prompt. Local ONNX is Android-only. |
-| Batch generation | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI | Yes | Yes | Local providers are treated as single-image generation flows. |
-| Model or engine selection | AUTOMATIC1111, SwarmUI, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | Remote providers | Yes | Depending on provider, this selects an SD checkpoint, SwarmUI model, HF model, OpenAI model, Stability engine, or local model. |
-| LoRA picker | AUTOMATIC1111, SwarmUI | Yes | Yes | Remote LoRA lists are fetched from the active compatible server. |
-| Textual inversion / embeddings picker | AUTOMATIC1111, SwarmUI | Yes | Yes | Remote embeddings are fetched from the active compatible server. |
-| Hypernetwork picker | AUTOMATIC1111 | Yes | Yes | Hypernetwork discovery is implemented for A1111. |
-| Sampler selection | AUTOMATIC1111, Stability AI | Yes | Yes | A1111 samplers are fetched from the server; Stability AI uses the app's Stability sampler list. |
-| Restore faces | AUTOMATIC1111 | Yes | Yes | Exposed only for A1111 generation. |
-| OpenAI model, size, and quality | OpenAI | Yes | Yes | Uses current GPT Image model options exposed by the Images API. |
-| Stability style preset and clip guidance | Stability AI | Yes | Yes | Passed to Stability AI requests when selected. |
-| NSFW flag | AI Horde | Yes | Yes | Exposed for Horde requests. |
-| Offline generation | Local ONNX, Local MediaPipe | No | Yes | Runs on Android after the selected local model is available. |
-| Generation interrupt | AUTOMATIC1111, AI Horde, Local ONNX | Remote providers | Yes | Local ONNX interrupt is Android-only. Other providers rely on request completion when no platform-level interrupt is exposed. |
+| Text to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | Remote providers | 🟢 Yes | Core generation path exists for every provider exposed by the current platform/build. |
+| Image to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, Stability AI | 🟢 Yes | 🟢 Yes | OpenAI and local diffusion providers are txt2img-only in the app. |
+| Inpaint mask controls | AUTOMATIC1111 | 🟢 Yes | 🟢 Yes | Mask image, mask blur, mask mode, masked content, inpaint area, and only-masked padding are mapped to the A1111 img2img API. |
+| Negative prompt | AUTOMATIC1111, SwarmUI, Hugging Face, Stability AI, Local ONNX | Remote providers | 🟢 Yes | Horde, OpenAI, and MediaPipe flows do not expose/send a negative prompt. Local ONNX is Android-only. |
+| Batch generation | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI | 🟢 Yes | 🟢 Yes | Local providers are treated as single-image generation flows. |
+| Model or engine selection | AUTOMATIC1111, SwarmUI, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | Remote providers | 🟢 Yes | Depending on provider, this selects an SD checkpoint, SwarmUI model, HF model, OpenAI model, Stability engine, or local model. |
+| LoRA picker | AUTOMATIC1111, SwarmUI | 🟢 Yes | 🟢 Yes | Remote LoRA lists are fetched from the active compatible server. |
+| Textual inversion / embeddings picker | AUTOMATIC1111, SwarmUI | 🟢 Yes | 🟢 Yes | Remote embeddings are fetched from the active compatible server. |
+| Hypernetwork picker | AUTOMATIC1111 | 🟢 Yes | 🟢 Yes | Hypernetwork discovery is implemented for A1111. |
+| Sampler selection | AUTOMATIC1111, Stability AI | 🟢 Yes | 🟢 Yes | A1111 samplers are fetched from the server; Stability AI uses the app's Stability sampler list. |
+| Restore faces | AUTOMATIC1111 | 🟢 Yes | 🟢 Yes | Exposed only for A1111 generation. |
+| OpenAI model, size, and quality | OpenAI | 🟢 Yes | 🟢 Yes | Uses current GPT Image model options exposed by the Images API. |
+| Stability style preset and clip guidance | Stability AI | 🟢 Yes | 🟢 Yes | Passed to Stability AI requests when selected. |
+| NSFW flag | AI Horde | 🟢 Yes | 🟢 Yes | Exposed for Horde requests. |
+| Offline generation | Local ONNX, Local MediaPipe | 🔴 No | 🟢 Yes | Runs on Android after the selected local model is available. |
+| Generation interrupt | AUTOMATIC1111, AI Horde, Local ONNX | Remote providers | 🟢 Yes | Local ONNX interrupt is Android-only. Other providers rely on request completion when no platform-level interrupt is exposed. |
 
 ## Core Workflow
 
