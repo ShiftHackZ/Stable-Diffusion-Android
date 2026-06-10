@@ -187,7 +187,6 @@ internal fun DenoisingStrengthSlider(
                     "hint_denoising_strength",
                     state.denoisingStrength.roundToString(),
                 ),
-                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
