@@ -34,7 +34,7 @@ val modules = listOf(
         ":demo",
         ":domain",
         ":feature:auth",
-        ":feature:diffusion",
+        ":feature:onnx",
         ":feature:mediapipe",
         ":feature:work",
         ":network",
@@ -43,3 +43,5 @@ val modules = listOf(
 )
 
 include(modules)
+
+project(":app").projectDir = file("app/android")

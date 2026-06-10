@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /*.json$
+Disallow: /compose-multiplatform-ios-refactor-plan.md
+
+Sitemap: https://sdai.moroz.cc/sitemap.xml

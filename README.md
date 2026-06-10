@@ -1,157 +1,171 @@
-![Header](docs/assets/github-header-image.png)
-
-# Stable-Diffusion-Android (SDAI)
+# Stable Diffusion AI (SDAI)
 
 ![Google Play](https://img.shields.io/endpoint?color=blue&logo=google-play&logoColor=white&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.shifthackz.aisdv1.app%26l%3DGoogle%2520Play%26m%3D%24version)
 ![F-Droid](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Ff-droid.org%2Fapi%2Fv1%2Fpackages%2Fcom.shifthackz.aisdv1.app.foss&query=%24.packages%5B0%5D.versionName&label=F-Droid&link=https%3A%2F%2Ff-droid.org%2Fpackages%2Fcom.shifthackz.aisdv1.app.foss%2F)
 
+[Website](https://sdai.moroz.cc) | [Telegram](https://t.me/sdai_app) | [Discord](https://discord.gg/jzdR9m8Ves)
 
-[![Google Play](docs/assets/google_play.png)](https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app)
-[![F-Droid](docs/assets/fdroid.png)](https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss)
+[![Get it on Google Play](docs/assets/badge-google-play.svg)](https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app)
+[![Get it on F-Droid](docs/assets/badge-fdroid.svg)](https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss)
+![Download on the App Store](docs/assets/badge-app-store.svg)
 [![4pda](docs/assets/4pda.png)](https://4pda.to/forum/index.php?showtopic=1082639)
 
-Stable Diffusion AI (SDAI) is an easy-to-use app that:
+SDAI is an open-source, cross-platform AI image generation client for Android and iOS. It gives you one clean mobile workflow for self-hosted Stable Diffusion servers, hosted image APIs, crowdsourced generation, and platform-specific local generation where supported.
 
-- Brings you the power of digital art creativity with Stable Diffusion AI
-- Gives you freedom to choose your AI generation provider
-- Has no ADs, telemetry and does not spy on you
+No ads. No telemetry. No lock-in to a single provider.
+
+## Why SDAI
+
+- Choose the backend that fits the moment: your own AUTOMATIC1111 or SwarmUI server, AI Horde, Hugging Face, OpenAI, Stability AI, or local diffusion where the platform supports it.
+- Generate with familiar Stable Diffusion controls: prompts, negative prompts where supported, seed, steps, CFG scale, image size, model selectors, LoRA, embeddings, and more.
+- Use one shared mobile experience across Android and iOS for remote generation workflows.
+- Work locally on Android when privacy or connectivity matters with Microsoft ONNX Runtime or Google AI MediaPipe builds.
+- Keep your creations in a local gallery with image details, zoom, sharing, native platform save flows, and zip export.
+- Stay in control: the project is open source and the app does not include ads or telemetry.
 
 ## Screenshots
 
-![](docs/assets/scr_group_1.png)
-![](docs/assets/scr_group_2.png)
+![SDAI text to image workflow](docs/screenshots/site/en-US/01-create.png)
+![SDAI advanced generation controls](docs/screenshots/site/en-US/02-controls.png)
+![SDAI provider selection](docs/screenshots/site/en-US/03-providers.png)
+![SDAI generated image gallery](docs/screenshots/site/en-US/04-gallery.png)
+![SDAI app settings](docs/screenshots/site/en-US/05-settings.png)
+![SDAI open-source workflow](docs/screenshots/site/en-US/06-open.png)
 
-## Features
+## Provider and Platform Matrix
 
-- Can use server environment powered by [AI Horde](https://stablehorde.net/) (a crowdsourced distributed cluster of Stable Diffusion workers)
-- Can use server environment powered by [Stable-Diffusion-WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) (AUTOMATIC1111)
-- Can use server environment powered by [SwarmUI](https://github.com/mcmonkeyprojects/SwarmUI)
-- Can use server environment powered by [Hugging Face Inference API](https://huggingface.co/docs/api-inference/quicktour).
-- Can use server environment powered by [OpenAI](https://platform.openai.com/docs/api-reference/images) (DALL-E-2, DALL-E-3).
-- Can use server environment powered by [Stability AI](https://platform.stability.ai/).
-- Can use local environment powered by LocalDiffusion (Beta)
-- Supports original Txt2Img, Img2Img modes
-  - **Positive** and **negative** prompt support
-  - Support dynamic **size** in range from 64 to 2048 px (for width and height)
-  - Selection of different **sampling methods** (available samplers are loaded from server)
-  - Unique **seed** input
-  - Dynamic **sampling steps** in range from 1 to 150
-  - Dynamic **CFG scale** in range from 1.0 to 30.0
-  - **Restore faces** option
-  - ( Img2Img ONLY ) : Image selection from device gallery _(requires user permission)_
-  - ( Img2Img ONLY ) : Capture input image from camera _(requires user permission)_
-  - ( Img2Img ONLY ) : Fetching random image for the input
-  - ( Img2Img ONLY ) : Inpaint (for A1111)
-    - Mask blur (1 to 64)
-    - Mask mode (Masked, not masked)
-    - Masked content (Fill, Original, Latent noise, Latent nothing)
-    - Inpaint area (Whole picture, only masked)
-    - Only masked padding (0 to 256 px)
-  - Batch generation with maximum of 20 images (for A1111 and Horde)
-  - Lora picker (for A1111)
-  - Textual inversion picker (for A1111)
-  - Hypernetworks picker (for A1111)
-  - SD Model picker (for A1111)
-- In-app Gallery, stored locally, contains all AI generated images
-  - Displays generated images grid
-  - Image detail view: Zoom, Pinch, Generation Info. 
-  - Export all gallery to **.zip** file
-  - Export single photo to **.zip** file
-- Settings
-  - WebUI server URL
-  - Active SD Model selection
-  - Server availability monitoring (http-ping method)
-  - Enable/Disable auto-saving of generated images
-  - Enable/Disable saving generated images to `Download/SDAI` android MediaStore folder
-  - Clear gallery / app cache
+Android builds are distributed in three flavors:
 
-## Setup instruction
+- `playstore`: Google Play build.
+- `full`: full GitHub/release build.
+- `foss`: F-Droid friendly build.
 
-### Option 1: Use your own Automatic1111 instance
+iOS uses the shared mobile experience and intentionally focuses on remote generation providers for the first iOS milestone.
 
-This requires you to have the AUTOMATIC1111 WebUI that is running in server mode.
+| Provider / backend | What it connects to | iOS | Android `playstore` | Android `full` | Android `foss` | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| AUTOMATIC1111 WebUI | Your own Stable-Diffusion-WebUI API server | Yes | Yes | Yes | Yes | Own server, demo mode, txt2img, img2img, inpaint, models, LoRA, embeddings, hypernetworks. |
+| SwarmUI | Your own SwarmUI server | Yes | Yes | Yes | Yes | Own server with SwarmUI model, LoRA, and embeddings discovery. |
+| AI Horde | Crowdsourced Stable Horde workers | Yes | Yes | Yes | Yes | Works with the default anonymous key or your own Horde API key. |
+| Hugging Face Inference API | Hosted Hugging Face image models | Yes | Yes | Yes | Yes | Requires a Hugging Face API key and selected model. |
+| OpenAI Images API | OpenAI image generation with GPT Image models | Yes | Yes | Yes | Yes | Requires an OpenAI API key. |
+| Stability AI | Stability AI / DreamStudio image API | Yes | Yes | Yes | Yes | Requires a Stability AI API key and engine selection. |
+| Local Diffusion: Microsoft ONNX Runtime | On-device ONNX model inference | No | Yes | Yes | Yes | Android-only txt2img. Custom local model paths are available outside the Play build. |
+| Local Diffusion: Google AI MediaPipe | On-device MediaPipe image generator | No | Yes | Yes | No | Android-only txt2img. Excluded from the FOSS flavor. |
 
-You can have it running either on your own hardware with modern GPU from Nvidia or AMD, or running it using Google Colab. 
+## AI Feature Matrix
 
-1. Follow the setup instructions on [Stable-Diffusion-WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) repository.
-2. Add the arguments `--api --listen` to the command line arguments of WebUI launch script.
-3. After running the server, get the IP address, or URL of your WebUI server.
-4. On the first launch, app will ask you for the server URL, enter it and press "Connect" button. If you want to change the server URL, go to Settings tab, choose "Configure" option and repeat the setup flow.
+| AI-specific feature | Supported providers | iOS | Android | Notes |
+| --- | --- | --- | --- | --- |
+| Text to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | Remote providers | Yes | Core generation path exists for every provider exposed by the current platform/build. |
+| Image to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, Stability AI | Yes | Yes | OpenAI and local diffusion providers are txt2img-only in the app. |
+| Inpaint mask controls | AUTOMATIC1111 | Yes | Yes | Mask image, mask blur, mask mode, masked content, inpaint area, and only-masked padding are mapped to the A1111 img2img API. |
+| Negative prompt | AUTOMATIC1111, SwarmUI, Hugging Face, Stability AI, Local ONNX | Remote providers | Yes | Horde, OpenAI, and MediaPipe flows do not expose/send a negative prompt. Local ONNX is Android-only. |
+| Batch generation | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI | Yes | Yes | Local providers are treated as single-image generation flows. |
+| Model or engine selection | AUTOMATIC1111, SwarmUI, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | Remote providers | Yes | Depending on provider, this selects an SD checkpoint, SwarmUI model, HF model, OpenAI model, Stability engine, or local model. |
+| LoRA picker | AUTOMATIC1111, SwarmUI | Yes | Yes | Remote LoRA lists are fetched from the active compatible server. |
+| Textual inversion / embeddings picker | AUTOMATIC1111, SwarmUI | Yes | Yes | Remote embeddings are fetched from the active compatible server. |
+| Hypernetwork picker | AUTOMATIC1111 | Yes | Yes | Hypernetwork discovery is implemented for A1111. |
+| Sampler selection | AUTOMATIC1111, Stability AI | Yes | Yes | A1111 samplers are fetched from the server; Stability AI uses the app's Stability sampler list. |
+| Restore faces | AUTOMATIC1111 | Yes | Yes | Exposed only for A1111 generation. |
+| OpenAI model, size, and quality | OpenAI | Yes | Yes | Uses current GPT Image model options exposed by the Images API. |
+| Stability style preset and clip guidance | Stability AI | Yes | Yes | Passed to Stability AI requests when selected. |
+| NSFW flag | AI Horde | Yes | Yes | Exposed for Horde requests. |
+| Offline generation | Local ONNX, Local MediaPipe | No | Yes | Runs on Android after the selected local model is available. |
+| Generation interrupt | AUTOMATIC1111, AI Horde, Local ONNX | Remote providers | Yes | Local ONNX interrupt is Android-only. Other providers rely on request completion when no platform-level interrupt is exposed. |
 
-If for some reason you have no ability to run your server instance, you can toggle the **Demo mode** switch on server setup page: it will allow you to test the app and get familiar with it, but it will return some mock images instead of AI-generated ones.
+## Core Workflow
 
-### Option 2: Use your own SwarmUI instance
+### Generate
 
-This requires you to have the SwarmUI that is running in server mode.
+- Txt2Img for all available providers.
+- Img2Img for providers that support image input.
+- Inpaint for A1111-powered Img2Img.
+- Prompt tagging, optional advanced controls, seed handling, steps, CFG scale, size controls, and provider-specific model options.
 
-You can have it running either on your own hardware with modern GPU from Nvidia or AMD, or running it using Google Colab.
+### Save and Review
 
-Please refer to the [SwarmUI documentation](https://github.com/mcmonkeyprojects/SwarmUI?tab=readme-ov-file#swarmui) for installation instructions.
+- Local in-app gallery for generated images.
+- Detail screen with zoom, generation metadata, and sharing.
+- Optional auto-save of results.
+- Native platform save/share flows, including Android MediaStore and iOS Photos/share sheet where available.
+- Export one image or the full gallery as a zip archive.
 
-### Option 3: Use AI Horde
+### Configure
 
-[AI Horde](https://stablehorde.net/) is a crowdsourced distributed cluster of Image generation workers and text generation workers. 
+- Provider setup from first launch or settings.
+- Server URL and credentials for own-server providers.
+- API keys for hosted providers.
+- Local model selection and download flow on Android local diffusion builds.
+- Server availability monitoring for compatible own-server modes.
+- Cache and gallery management.
 
-AI Horde requires to use API KEY, this mobile app allows to use either default API KEY (which is "0000000000"), or type your own. You can sign up and get your own AI Horde API KEY [here](https://stablehorde.net/register).
+## Setup
 
-### Option 4: Hugging Face Inference
+### Option 1: AUTOMATIC1111 WebUI
 
-[Hugging Face Inference API](https://huggingface.co/docs/api-inference/index) allows to test and evaluate, over 150,000 publicly accessible machine learning models, or your own private models, via simple HTTP requests, with fast inference hosted on Hugging Face shared infrastructure. This service is free, but is rate-limited.
+Use this if you already run [Stable-Diffusion-WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) locally, on a server, or in a notebook environment.
 
-Hugging Face Inference requires to use API KEY, which can be created in [Hugging Face account settings](https://huggingface.co/settings/tokens).
+1. Follow the setup instructions in the WebUI repository.
+2. Start WebUI with API access enabled, for example with `--api --listen`.
+3. Copy the reachable server URL.
+4. Open SDAI setup, choose AUTOMATIC1111, enter the URL, and connect.
+
+Demo mode is available from the setup screen if you want to explore the app without connecting to a real generator.
+
+### Option 2: SwarmUI
+
+Use this if your generation environment is powered by [SwarmUI](https://github.com/mcmonkeyprojects/SwarmUI). Start SwarmUI in server mode, copy the reachable URL, then choose SwarmUI during SDAI setup.
+
+### Option 3: AI Horde
+
+[AI Horde](https://stablehorde.net/) is a crowdsourced distributed cluster of image generation workers. SDAI can use the default anonymous key (`0000000000`) or your own key from [stablehorde.net/register](https://stablehorde.net/register).
+
+### Option 4: Hugging Face Inference API
+
+[Hugging Face Inference API](https://huggingface.co/docs/api-inference/index) lets SDAI call hosted public or private image models. Create an API key in [Hugging Face account settings](https://huggingface.co/settings/tokens), then select the Hugging Face provider in SDAI.
 
 ### Option 5: OpenAI
 
-OpenAI provides a service for text to image generation using [DALLE-2](https://openai.com/dall-e-2) or [DALLE-3](https://openai.com/dall-e-3) models. This service is paid. 
+OpenAI image generation in SDAI uses GPT Image models through the Images API. Create an API key in [OpenAI API key settings](https://platform.openai.com/api-keys), then select OpenAI in SDAI.
 
-OpenAI requires to use API KEY, which can be created in [OpenAI API Key settings](https://platform.openai.com/api-keys).
+### Option 6: Stability AI
 
-### Option 6: StabilityAI
+[Stability AI](https://platform.stability.ai/) support uses the Stability image API. Create an API key on the [Stability AI keys page](https://platform.stability.ai/account/keys), then select Stability AI and choose an engine in SDAI.
 
-[StabilityAI](https://platform.stability.ai/) is the image generation service provided by DreamStudio.
+### Option 7: Local Diffusion with Microsoft ONNX Runtime
 
-StabilityAI requires to use API KEY, which can be created in [API Keys page](https://platform.stability.ai/account/keys).
+Use this on Android for on-device txt2img generation. Download or provide a compatible ONNX local diffusion model, select it in setup, and generate without sending prompts to a remote service.
 
-### Option 7: Local Diffusion Microsoft ONNX Runtime (Beta)
+### Option 8: Local Diffusion with Google AI MediaPipe
 
-Only **txt2img** mode is supported.
+Use this on Android for on-device txt2img generation through Google AI MediaPipe. This provider is available only in `playstore` and `full` Android flavors.
 
-Allows to use phone resources to generate images.
+## Build Flavor Notes
 
-### Option 8: Local Diffusion Google AI MediaPipe (Beta)
+Android flavor availability is driven by the Gradle flavor configuration and runtime provider filtering. Most network providers are available everywhere; Google AI MediaPipe is intentionally unavailable in `foss`. The Play build also avoids custom local model path selection for local diffusion models.
 
-Available only in **playstore** and **full** flavors.
+The iOS app is not split into Android-style flavors. It uses the shared mobile UI and remote-provider stack, while Local Diffusion and MediaPipe stay Android-only for the first iOS milestone.
 
-Only **txt2img** mode is supported.
+For a historical overview of flavor policy, see the project wiki page: [Build flavor difference](https://github.com/ShiftHackZ/Stable-Diffusion-Android/wiki/Build-flavor-difference).
 
-Allows to use phone resources to generate images.
+## Supported Languages
 
-## Supported languages
-
-App uses the language provided by OS default settings.
-
-User interface of the app is translated for languages listed in this table:
+SDAI uses the language provided by the OS when a translation is available.
 
 | Language | Since version | Status |
 | --- | --- | --- |
-| English | 0.1.0 | `Translated` |
-| Ukrainian | 0.1.0 | `Translated` |
-| Turkish | 0.4.1 | `Translated` |
-| Russian | 0.5.5 | `Translated` |
-| Chinese (Simplified) | 0.6.2 | `Translated` |
+| English | 0.1.0 | Translated |
+| Ukrainian | 0.1.0 | Translated |
+| Turkish | 0.4.1 | Translated |
+| Russian | 0.5.5 | Translated |
+| Chinese (Simplified) | 0.6.2 | Translated |
 
-Any contributions to the translations are welcome.
-
-## Difference between build flavors (Google Play, F-Droid, GitHub releases)
-
-There are some reasons that some of the SDAI app features can not be distributed through different sources (Google Play, F-Droid) because of rules and compliance policies.
-
-The difference between SDAI app flavors are described at the project wiki page [Build flavor difference](https://github.com/ShiftHackZ/Stable-Diffusion-Android/wiki/Build-flavor-difference).
+Translation contributions are welcome.
 
 ## Donate
 
-This software is open source, provided with no warranty, and you are welcome to use it for free. 
+SDAI is open source and provided with no warranty. You are welcome to use it for free.
 
-In case you find this software valuable, and you'd like to say thanks and show a little support, here is the button:
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/shifthackz)
+If you find the project useful and want to support the work, please check the current donation status at
+[sdai.moroz.cc/donate.html](https://sdai.moroz.cc/donate.html).

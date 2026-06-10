@@ -1,0 +1,21 @@
+<resources>
+
+    <style name="Theme.AiSdCompose" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/catppuccin_frappe_mauve</item>
+        <item name="colorPrimaryVariant">@color/catppuccin_frappe_mauve</item>
+        <item name="colorOnPrimary">@color/catppuccin_frappe_base</item>
+        <item name="colorSecondary">@color/catppuccin_frappe_mauve</item>
+        <item name="colorSecondaryVariant">@color/catppuccin_frappe_mauve</item>
+        <item name="colorOnSecondary">@color/catppuccin_frappe_base</item>
+        <item name="android:statusBarColor">@color/sdai_system_bar_dark</item>
+        <item name="android:navigationBarColor">@color/sdai_system_bar_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
+    <style name="Theme.AiSdCompose.Splash" parent="Theme.Catppuccin.Frappe.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenAnimationDuration">500</item>
+        <item name="postSplashScreenTheme">@style/Theme.AiSdCompose</item>
+    </style>
+</resources>

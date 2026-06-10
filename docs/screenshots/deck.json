@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "appName": "SDAI",
+  "defaultPlatform": "android",
+  "defaultLocale": "en-US",
+  "locales": {
+    "en-US": {
+      "languageCode": "en",
+      "languageName": "English",
+      "mockPrompt": "man, photorealistic, black hair, aviator glasses, handsome, beautiful, nature background",
+      "mockNegativePrompt": "bad anatomy, bad fingers, distorted, jpeg artifacts",
+      "labels": {
+        "txt2img": "Txt2Img",
+        "img2img": "Img2Img",
+        "gallery": "Gallery",
+        "settings": "Settings",
+        "configuration": "Configuration",
+        "serverUrl": "Server URL",
+        "textToImageTitle": "Text to Image",
+        "prompt": "Prompt",
+        "negativePrompt": "Negative prompt",
+        "showAdvanced": "Show advanced options",
+        "automatic1111": "Automatic 1111",
+        "next": "Next",
+        "connect": "Connect",
+        "demoMode": "Demo mode",
+        "language": "Language",
+        "generate": "Imagine",
+        "close": "Close",
+        "galleryDetails": "Details",
+        "galleryInfo": "Info",
+        "taggedInput": "Tagged input",
+        "advancedFormDefault": "Always show advanced options",
+        "lookAndFeel": "Look and feel",
+        "systemDarkTheme": "System dark theme",
+        "accentColor": "Accent color"
+      },
+      "slides": {
+        "create": {
+          "headline": ["Preview results", "right away"],
+          "subline": "Generate in demo or production mode, inspect the image, and keep the result in your local gallery."
+        },
+        "controls": {
+          "headline": ["Prompt with", "clean tags"],
+          "subline": "Use tagged positive and negative prompts, size, seed, sampler, CFG, LoRA, embeddings, and advanced options where supported."
+        },
+        "providers": {
+          "headline": ["Choose your", "AI provider"],
+          "subline": "Connect Automatic1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, or supported local Android engines."
+        },
+        "gallery": {
+          "headline": ["Build your", "image library"],
+          "subline": "Review generated images, open details, share, save, and export your local collection without leaving the app."
+        },
+        "settings": {
+          "headline": ["Tune the", "look and feel"],
+          "subline": "Set language, gallery density, system theme behavior, dark theme palette, and accent color for your workflow."
+        },
+        "open": {
+          "headline": ["Inspect every", "generation"],
+          "subline": "Open result details, copy the prompt, send images back to Txt2Img or Img2Img, and keep full context for reuse."
+        }
+      }
+    },
+    "ru": {
+      "languageCode": "ru",
+      "languageName": "Русский",
+      "mockPrompt": "man, photorealistic, black hair, aviator glasses, handsome, beautiful, nature background",
+      "mockNegativePrompt": "bad anatomy, bad fingers, distorted, jpeg artifacts",
+      "labels": {
+        "txt2img": "Txt2Img",
+        "img2img": "Img2Img",
+        "gallery": "Галерея",
+        "settings": "Параметры",
+        "configuration": "Конфигурация",
+        "serverUrl": "URL-адрес сервера",
+        "textToImageTitle": "Текст в Картинку",
+        "prompt": "Запрос",
+        "negativePrompt": "Отрицательный запрос",
+        "showAdvanced": "Показать все опции",
+        "automatic1111": "Automatic 1111",
+        "next": "Далее",
+        "connect": "Подключиться",
+        "demoMode": "Демо режим",
+        "language": "Язык",
+        "generate": "Генерировать",
+        "close": "Закрыть",
+        "galleryDetails": "Результат генерации",
+        "galleryInfo": "Подробности",
+        "taggedInput": "Ввод с тегами",
+        "advancedFormDefault": "Всегда показывать все опции",
+        "lookAndFeel": "Персонализация",
+        "systemDarkTheme": "Системная тема",
+        "accentColor": "Цвет акцента"
+      },
+      "slides": {
+        "create": {
+          "headline": ["Смотри результат", "сразу"],
+          "subline": "Генерируй в демо или рабочем режиме, открывай изображение и сохраняй результат в локальную галерею."
+        },
+        "controls": {
+          "headline": ["Промпты", "тегами"],
+          "subline": "Позитивный и негативный промпт тегами, размер, seed, sampler, CFG, LoRA, embeddings и расширенные опции там, где это поддержано."
+        },
+        "providers": {
+          "headline": ["Выбирай", "AI provider"],
+          "subline": "Automatic1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI или поддерживаемые локальные движки Android."
+        },
+        "gallery": {
+          "headline": ["Собирай", "свою галерею"],
+          "subline": "Просматривай результаты, открывай детали, делись, сохраняй и экспортируй локальную коллекцию прямо из приложения."
+        },
+        "settings": {
+          "headline": ["Настрой", "интерфейс"],
+          "subline": "Язык, размер сетки галереи, поведение системной темы, палитра темной темы и акцентный цвет под твой workflow."
+        },
+        "open": {
+          "headline": ["Открывай", "детали"],
+          "subline": "Смотри параметры генерации, копируй промпт, отправляй результат в Txt2Img или Img2Img и возвращайся к идеям позже."
+        }
+      }
+    },
+    "uk": {
+      "languageCode": "uk",
+      "languageName": "Українська",
+      "mockPrompt": "man, photorealistic, black hair, aviator glasses, handsome, beautiful, nature background",
+      "mockNegativePrompt": "bad anatomy, bad fingers, distorted, jpeg artifacts",
+      "labels": {
+        "txt2img": "Txt2Img",
+        "img2img": "Img2Img",
+        "gallery": "Галерея",
+        "settings": "Параметри",
+        "configuration": "Конфігурація",
+        "serverUrl": "URL-адреса сервера",
+        "textToImageTitle": "Текст в Картинку",
+        "prompt": "Запит",
+        "negativePrompt": "Негативний запит",
+        "showAdvanced": "Показати всі опції",
+        "automatic1111": "Automatic 1111",
+        "next": "Далі",
+        "connect": "Підключитися",
+        "demoMode": "Демо режим",
+        "language": "Мова",
+        "generate": "Уявити",
+        "close": "Закрити",
+        "galleryDetails": "Результат генерації",
+        "galleryInfo": "Подробиці",
+        "taggedInput": "Введення тегами",
+        "advancedFormDefault": "Завжди показувати всі опції",
+        "lookAndFeel": "Інтерфейс",
+        "systemDarkTheme": "Системна тема",
+        "accentColor": "Акцентний колір"
+      },
+      "slides": {
+        "create": {
+          "headline": ["Дивись результат", "одразу"],
+          "subline": "Генеруй у демо або робочому режимі, відкривай зображення та зберігай результат у локальну галерею."
+        },
+        "controls": {
+          "headline": ["Промпти", "тегами"],
+          "subline": "Позитивний і негативний промпт тегами, розмір, seed, sampler, CFG, LoRA, embeddings і розширені опції там, де це підтримано."
+        },
+        "providers": {
+          "headline": ["Обирай", "AI provider"],
+          "subline": "Automatic1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI або підтримувані локальні рушії Android."
+        },
+        "gallery": {
+          "headline": ["Збирай", "свою галерею"],
+          "subline": "Переглядай результати, відкривай деталі, ділись, зберігай та експортуй локальну колекцію прямо із застосунку."
+        },
+        "settings": {
+          "headline": ["Налаштуй", "інтерфейс"],
+          "subline": "Мова, розмір сітки галереї, поведінка системної теми, палітра темної теми та акцентний колір під твій workflow."
+        },
+        "open": {
+          "headline": ["Відкривай", "деталі"],
+          "subline": "Дивись параметри генерації, копіюй промпт, відправляй результат у Txt2Img або Img2Img і повертайся до ідей пізніше."
+        }
+      }
+    }
+  },
+  "slides": [
+    {
+      "id": "create",
+      "capture": "txt2img_prompt",
+      "layout": "phone-right",
+      "theme": {
+        "background": ["#17151f", "#29264b", "#0f7f89"],
+        "accent": "#42d3d6",
+        "ink": "#ffffff",
+        "muted": "#d7d4e9"
+      }
+    },
+    {
+      "id": "controls",
+      "capture": "txt2img_advanced",
+      "layout": "phone-left",
+      "theme": {
+        "background": ["#fff6ef", "#ffd4c5", "#f26745"],
+        "accent": "#514a91",
+        "ink": "#17151f",
+        "muted": "#5e5361"
+      }
+    },
+    {
+      "id": "providers",
+      "capture": "configuration",
+      "layout": "phone-right",
+      "theme": {
+        "background": ["#edf9f8", "#d1eef0", "#139fb3"],
+        "accent": "#f26745",
+        "ink": "#17151f",
+        "muted": "#435765"
+      }
+    },
+    {
+      "id": "gallery",
+      "capture": "gallery",
+      "layout": "phone-left",
+      "theme": {
+        "background": ["#241832", "#514a91", "#7c76bb"],
+        "accent": "#ffcf5a",
+        "ink": "#ffffff",
+        "muted": "#eeeaff"
+      }
+    },
+    {
+      "id": "settings",
+      "capture": "settings",
+      "layout": "phone-right",
+      "theme": {
+        "background": ["#f7f6fb", "#e6e4f5", "#b8deda"],
+        "accent": "#139fb3",
+        "ink": "#17151f",
+        "muted": "#5f5a6d"
+      }
+    },
+    {
+      "id": "open",
+      "capture": "img2img",
+      "layout": "phone-left",
+      "theme": {
+        "background": ["#101722", "#123b4b", "#3b8f5e"],
+        "accent": "#7df0bd",
+        "ink": "#ffffff",
+        "muted": "#cceade"
+      }
+    }
+  ]
+}

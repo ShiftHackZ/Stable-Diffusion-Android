@@ -1,0 +1,304 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
+package com.shifthackz.aisdv1.presentation.screen.txt2img
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AutoFixNormal
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.localization.Localization
+import com.shifthackz.aisdv1.core.model.UiText
+import com.shifthackz.aisdv1.core.model.asString
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.presentation.modal.GenerationModalRenderer
+import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingScreen
+import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
+import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryBottomSheet
+import com.shifthackz.aisdv1.presentation.modal.tag.EditTagDialog
+import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormEvent
+import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
+import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
+import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
+import kotlin.math.roundToInt
+
+
+@Composable
+internal fun NumberField(
+    value: String,
+    label: String,
+    error: UiText?,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedTextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        singleLine = true,
+        isError = error != null,
+        supportingText = error?.let { message ->
+            { Text(message.asString()) }
+        },
+    )
+}
+
+@Composable
+internal fun SliderRow(
+    label: String,
+    value: String,
+    content: @Composable () -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.W600,
+            )
+        }
+        content()
+    }
+}
+
+@Composable
+internal fun BatchControl(
+    state: TextToImageState,
+    strings: TextToImageStrings,
+    processIntent: (TextToImageIntent) -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = strings.batch,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            OutlinedButton(
+                contentPadding = PaddingValues(horizontal = 12.dp),
+                onClick = {
+                    processIntent(TextToImageIntent.UpdateBatchCount(state.batchCount - 1))
+                },
+            ) {
+                Text("-")
+            }
+            Text(
+                text = state.batchCount.toString(),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.W600,
+            )
+            OutlinedButton(
+                contentPadding = PaddingValues(horizontal = 12.dp),
+                onClick = {
+                    processIntent(TextToImageIntent.UpdateBatchCount(state.batchCount + 1))
+                },
+            ) {
+                Text("+")
+            }
+        }
+    }
+}
+
+@Composable
+internal fun GeneratedImageItem(
+    result: AiGenerationResult,
+    strings: TextToImageStrings,
+    savingImage: Boolean,
+    sharingImage: Boolean,
+    processIntent: (TextToImageIntent) -> Unit,
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 1.dp,
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            val imageBitmap = remember(result.image) {
+                result.image.decodeBase64ImageBitmap()
+            }
+            if (imageBitmap != null) {
+                Image(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(result.aspectRatio),
+                    bitmap = imageBitmap,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(result.aspectRatio),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        modifier = Modifier.size(56.dp),
+                        imageVector = Icons.Default.AutoFixNormal,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                }
+                Text(
+                    text = strings.imageUnavailable,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            Text(
+                text = result.prompt,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+            )
+
+            Text(
+                text = strings.resultMeta(result),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                val actionsEnabled = result.image.isNotBlank() && !savingImage && !sharingImage
+                OutlinedButton(
+                    modifier = Modifier.weight(1f),
+                    enabled = actionsEnabled,
+                    onClick = { processIntent(TextToImageIntent.SaveResult(result.image)) },
+                ) {
+                    if (savingImage) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(18.dp),
+                            strokeWidth = 2.dp,
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Save,
+                            contentDescription = null,
+                        )
+                    }
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = if (savingImage) strings.savingImage else strings.save,
+                    )
+                }
+                OutlinedButton(
+                    modifier = Modifier.weight(1f),
+                    enabled = actionsEnabled,
+                    onClick = { processIntent(TextToImageIntent.ShareResult(result.image)) },
+                ) {
+                    if (sharingImage) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(18.dp),
+                            strokeWidth = 2.dp,
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = null,
+                        )
+                    }
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = if (sharingImage) strings.sharingImage else strings.share,
+                    )
+                }
+            }
+        }
+    }
+}
+
+internal val AiGenerationResult.aspectRatio: Float
+    get() = if (width > 0 && height > 0) width.toFloat() / height.toFloat() else 1f
+
+internal val ServerSource.displayName: String
+    get() = when (this) {
+        ServerSource.AUTOMATIC1111 -> Localization.string("srv_type_own")
+        ServerSource.SWARM_UI -> Localization.string("srv_type_swarm_ui")
+        ServerSource.HORDE -> Localization.string("srv_type_horde")
+        ServerSource.HUGGING_FACE -> Localization.string("srv_type_hugging_face")
+        ServerSource.OPEN_AI -> Localization.string("srv_type_open_ai")
+        ServerSource.STABILITY_AI -> Localization.string("srv_type_stability_ai")
+        ServerSource.LOCAL_MICROSOFT_ONNX -> Localization.string("srv_type_local_short")
+        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
+    }
+
+internal fun Float.roundToString(): String {
+    val rounded = (this * 10f).roundToInt() / 10f
+    return rounded.toString()
+}

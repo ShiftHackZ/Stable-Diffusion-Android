@@ -1,62 +1,57 @@
 [versions]
-versionName = "0.6.8"
-versionCode = "190"
-targetSdk = "34"
-compileSdk = "35"
+versionName = "1.0.0"
+versionCode = "200"
+targetSdk = "36"
+compileSdk = "36"
 minSdk = "24"
-agp = "8.9.1"
-kotlin = "2.1.20"
-ksp = "2.1.20-1.0.32" # Should match kotlin version
-appcompat = "1.7.0"
-composeCompiler = "1.5.7"
-composeBom = "2025.03.01"
-composeActivity = "1.10.1"
-composeJunit = "1.7.8"
-lifecycleViewModel = "2.8.7"
-navigation = "2.8.9"
-paging = "3.1.1" # Do not upgrade!
-pagingCompose = "1.0.0-alpha18" # Do not upgrade!
-gson = "2.12.1"
-retrofit = "2.11.0"
-okhttp = "5.0.0-alpha.14"
-koin = "4.0.4"
-koinCompose = "4.0.4"
-rxAndroidVersion = "3.0.2"
-rxJavaVersion = "3.1.10"
-rxKotlinVersion = "3.0.1"
-rxNetworkVersion = "4.0.0"
-material = "1.12.0"
+agp = "8.13.2"
+kotlin = "2.3.21"
+ksp = "2.3.9"
+appcompat = "1.7.1"
+composeMultiplatform = "1.11.1"
+composeBom = "2026.05.01"
+composeActivity = "1.13.0"
+composeJunit = "1.11.2"
+lifecycleViewModel = "2.10.0"
+navigation = "2.9.8"
+gson = "2.14.0"
+okhttp = "5.4.0"
+ktor = "3.5.0"
+koin = "4.2.1"
+koinCompose = "4.2.1"
+material = "1.14.0"
 junit = "4.13.2"
-mockk = "1.13.17"
+mockk = "1.14.11"
 mockito = "2.2.0"
-coreKtx = "1.15.0"
-crypto = "1.0.0"
-onnx = "1.21.0"
-workManager = "2.10.0"
-room = "2.6.1"
+coreKtx = "1.18.0"
+coreSplashscreen = "1.2.0"
+crypto = "1.1.0"
+onnx = "1.26.0"
+workManager = "2.11.2"
+room = "2.8.4"
+sqlite = "2.6.2"
 timber = "5.0.1"
-exif = "1.4.0"
-apacheStringUtils = "3.17.0"
-composeGestures = "4.0.0"
-crop = "0.1.1"
-mvi = "1.0.2"
-preferences = "1.0.1"
-dayNightSwitch = "1.0.0"
+exif = "1.4.2"
+apacheStringUtils = "3.20.0"
 catppuccin = "0.1.2"
-turbine = "1.2.0"
-roboelectric = "4.14.1"
-testCoroutines = "1.10.1"
-mediaPipeGenerator = "0.10.21"
-serialization = "1.8.1"
+turbine = "1.2.1"
+roboelectric = "4.16.1"
+testCoroutines = "1.11.0"
+coroutines = "1.11.0"
+mediaPipeGenerator = "0.10.26.1"
+protobuf = "4.26.1"
+serialization = "1.11.0"
 
 [libraries]
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 apache-stringutils = { group = "org.apache.commons", name = "commons-lang3", version.ref = "apacheStringUtils" }
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "composeActivity" }
 androidx-compose-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewModel" }
+androidx-lifecycle-viewmodel-core = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycleViewModel" }
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewModel" }
 androidx-lifecycle-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleViewModel" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
@@ -68,30 +63,26 @@ androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graph
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-exif = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exif" }
-androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
-androidx-paging-rx = { group = "androidx.paging", name = "paging-rxjava3", version.ref = "paging" }
-androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingCompose" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "crypto" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-androidx-room-rx = { group = "androidx.room", name = "room-rxjava3", version.ref = "room" }
+androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
 androidx-work-runtime = { group = "androidx.work", name = "work-runtime", version.ref = "workManager" }
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 google-mediapipe-image-generator = { group = "com.google.mediapipe", name = "tasks-vision-image-generator", version.ref = "mediaPipeGenerator" }
-retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
-retrofit-adapter-rxjava3 = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit" }
+google-protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf" }
 okhttp-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinCompose" }
 microsoft-onnx-runtime-android = { group = "com.microsoft.onnxruntime", name = "onnxruntime-android", version.ref = "onnx" }
-rx-android = { group = "io.reactivex.rxjava3", name = "rxandroid", version.ref = "rxAndroidVersion" }
-rx-java = { group = "io.reactivex.rxjava3", name = "rxjava", version.ref = "rxJavaVersion" }
-rx-kotlin = { group = "io.reactivex.rxjava3", name = "rxkotlin", version.ref = "rxKotlinVersion" }
-rx-network = { group = "io.github.softartdev", name = "reactivenetwork-rx3", version.ref = "rxNetworkVersion" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
@@ -103,13 +94,8 @@ test-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "tu
 test-roboelectric = { group = "org.robolectric", name = "robolectric", version.ref = "roboelectric" }
 test-compose-junit = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "composeJunit" }
 test-compose-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "composeJunit" }
-compose-gestures = { group = "com.github.SmartToolFactory", name = "Compose-Extended-Gestures", version.ref = "composeGestures" }
-compose-crop = { group = "io.github.mr0xf00", name = "easycrop", version.ref = "crop" }
-shifthackz-mvi = { group = "com.github.ShiftHackZ", name = "AndroidCoreMVI", version.ref = "mvi" }
-shifthackz-preferences = { group = "com.github.ShiftHackZ", name = "AndroidPreferences", version.ref = "preferences" }
-shifthackz-daynightswitch = { group = "com.github.ShiftHackZ", name = "DayNightSwitch", version.ref = "dayNightSwitch" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 shifthackz-catppuccin-legacy = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "palette-legacy", version.ref = "catppuccin" }
-shifthackz-catppuccin-compose = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "compose", version.ref = "catppuccin" }
 shifthackz-catppuccin-splash = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "splashscreen", version.ref = "catppuccin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
@@ -118,11 +104,13 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 generic-flavors = { id = "generic.flavors", version = "unspecified" }
-generic-library = { id = "generic.library", version = "unspecified" }
+generic-kmp-library = { id = "generic.kmp.library", version = "unspecified" }
+generic-kmp-compose = { id = "generic.kmp.compose", version = "unspecified" }
 generic-baseline-profm = { id = "generic.baseline.profm", version = "unspecified" }
-generic-compose = { id = "generic.compose", version = "unspecified" }
 generic-application = { id = "generic.application", version = "unspecified" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

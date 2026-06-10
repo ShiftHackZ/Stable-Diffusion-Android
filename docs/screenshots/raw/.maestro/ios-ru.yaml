@@ -1,0 +1,243 @@
+appId: "com.shifthackz.aisdv1.app"
+---
+- launchApp:
+    permissions:
+      photos: allow
+    clearState: true
+    stopApp: true
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    text: "Далее"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "8%,9%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- swipe:
+    start: 50%,34%
+    end: 50%,76%
+    duration: 650
+- waitForAnimationToEnd:
+    timeout: 5000
+- swipe:
+    start: 50%,34%
+    end: 50%,76%
+    duration: 650
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Automatic 1111"
+    timeout: 45000
+- tapOn: "Automatic 1111"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn: "Далее"
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Демо режим"
+    timeout: 45000
+- tapOn: "Демо режим"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn: "Подключиться"
+- extendedWaitUntil:
+    visible: "Txt2Img"
+    timeout: 45000
+- tapOn: "Параметры"
+- extendedWaitUntil:
+    visible: "Параметры"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn: "Ввод с тегами"
+- waitForAnimationToEnd:
+    timeout: 1500
+- tapOn: "Всегда показывать все опции"
+- waitForAnimationToEnd:
+    timeout: 1500
+- tapOn: "Txt2Img"
+- extendedWaitUntil:
+    visible: "Текст в Картинку"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn: "Запрос"
+- eraseText
+- inputText: "man, photorealistic, black hair, aviator glasses, handsome, beautiful, nature background,"
+- tapOn:
+    point: "50%,17%"
+- waitForAnimationToEnd:
+    timeout: 1000
+- tapOn: "Отрицательный запрос"
+- eraseText
+- inputText: "bad anatomy, bad fingers, distorted, jpeg artifacts,"
+- tapOn:
+    point: "50%,17%"
+- waitForAnimationToEnd:
+    timeout: 1000
+- tapOn: "Текст в Картинку"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    text: "Показать все опции"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: "docs/screenshots/raw/ios/ru/02-controls"
+- tapOn: "Генерировать"
+- extendedWaitUntil:
+    visible: "Закрыть"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- takeScreenshot: "docs/screenshots/raw/ios/ru/01-create"
+- tapOn: "Закрыть"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Генерировать"
+- extendedWaitUntil:
+    visible: "Закрыть"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Закрыть"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Генерировать"
+- extendedWaitUntil:
+    visible: "Закрыть"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Закрыть"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Генерировать"
+- extendedWaitUntil:
+    visible: "Закрыть"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Закрыть"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Генерировать"
+- extendedWaitUntil:
+    visible: "Закрыть"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Закрыть"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Генерировать"
+- extendedWaitUntil:
+    visible: "Закрыть"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Закрыть"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Галерея"
+- extendedWaitUntil:
+    visible: "Галерея"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 12000
+- takeScreenshot: "docs/screenshots/raw/ios/ru/04-gallery"
+- tapOn:
+    point: "72%,30%"
+- extendedWaitUntil:
+    visible: "Результат генерации"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Подробности"
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: "docs/screenshots/raw/ios/ru/06-open"
+- tapOn:
+    point: "8%,9%"
+- extendedWaitUntil:
+    visible: "Галерея"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn: "Параметры"
+- extendedWaitUntil:
+    visible: "Параметры"
+    timeout: 20000
+- tapOn: "Конфигурация"
+- extendedWaitUntil:
+    visible: "Конфигурация"
+    timeout: 20000
+- extendedWaitUntil:
+    visible: "Automatic 1111"
+    timeout: 45000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: "docs/screenshots/raw/ios/ru/03-providers"
+- tapOn:
+    point: "8%,9%"
+- extendedWaitUntil:
+    visible: "Параметры"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 5000
+- swipe:
+    start: 50%,76%
+    end: 50%,34%
+    duration: 650
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Персонализация"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: "docs/screenshots/raw/ios/ru/settings-light"
+- tapOn: "Системная тема"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: "docs/screenshots/raw/ios/ru/settings-dark"
+- swipe:
+    start: 50%,73%
+    end: 50%,43%
+    duration: 1800
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Цвет акцента"
+    timeout: 20000
+- takeScreenshot: "docs/screenshots/raw/ios/ru/settings-dark-accent"

@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="empty">Boş</string>
+    <string name="language">Türkçe</string>
+    <string name="locale">tr</string>
+    <string name="ok">Tamam</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="cancel">İptal</string>
+    <string name="retry">yeniden dene</string>
+    <string name="delete">Silmek</string>
+    <string name="download">İndirmek</string>
+    <string name="width">Genişlik</string>
+    <string name="height">Yükseklik</string>
+    <string name="browse">Araştır</string>
+    <string name="apply">Uygula</string>
+    <string name="close">Kapalı</string>
+    <string name="next">Sonraki</string>
+    <string name="success">✅ Başarılı</string>
+    <string name="failure">❌ Başarısızlık</string>
+
+    <string name="two">İki</string>
+    <string name="three">Üç</string>
+    <string name="four">Dört</string>
+    <string name="five">Beş</string>
+
+    <string name="version">Versiyon %1$s</string>
+    <string name="settings_footer_developed_by">Moroz Inc. tarafından geliştirildi.</string>
+
+    <string name="splash_status_initializing">Başlatılıyor…</string>
+    <string name="splash_status_fetching">Veri Alınıyor…</string>
+    <string name="splash_status_launching">Uygulama Başlatılıyor!</string>
+
+    <string name="local_no_img2img_support_title">Müsait değil</string>
+    <string name="local_no_img2img_support_sub_title">Görüntü oluşturmak için yerel telefon kaynaklarınızı kullanıyorsanız, Görüntüden Görüntüye modu kullanılamaz.</string>
+    <string name="local_no_img2img_support_sub_title_2">Image to Image modunu kullanmak için Yapılandırma ayarlarında sunucu tabanlı oluşturmaya geçebilirsiniz.</string>
+
+    <string name="openai_no_img2img_support_sub_title">Bu uygulamada OpenAI görsel üretimi için görüntüden görüntüye modu desteklenmiyor.</string>
+    <string name="openai_no_img2img_support_sub_title_2">Görüntüden görüntüye modunu kullanmak için Yapılandırma ayarlarında sunucu tabanlı bir sağlayıcı seçin.</string>
+
+    <string name="action_generate">Resim Oluştur</string>
+    <string name="action_export">Dışa aktar</string>
+    <string name="action_delete_image">Resmi Sil</string>
+    <string name="action_select">Seç</string>
+    <string name="action_connect">Bağlan</string>
+    <string name="action_setup">Kurmak</string>
+    <string name="action_share_image">Resmi paylaş</string>
+    <string name="action_share_prompt">İstemi paylaş</string>
+    <string name="action_send_to_txt2img">txt2img\'de kullanın</string>
+    <string name="action_send_to_img2img">img2img\'de kullanın</string>
+    <string name="action_close">Kapat</string>
+    <string name="action_save">Kaydet</string>
+    <string name="action_update">Güncelle</string>
+    <string name="action_skip">Atla</string>
+    <string name="action_undo">Geri alma</string>
+    <string name="action_clear">Temizlemek</string>
+    <string name="action_options_show">Gelişmiş seçenekleri göster</string>
+    <string name="action_options_hide">Gelişmiş seçenekleri gizle</string>
+    <string name="action_image_picker_gallery">Fotoğraf seç</string>
+    <string name="action_image_picker_camera">Yeni fotoğraf çek</string>
+    <string name="action_image_picker_random">Rastgele görüntü</string>
+    <string name="action_change_configuration">Yapılandırmayı değiştir</string>
+    <string name="action_back">Geri</string>
+    <string name="action_menu">Menü</string>
+    <string name="action_copy">Kopyala</string>
+    <string name="action_refresh">Yenile</string>
+    <string name="action_scroll_to_top">Yukarı kaydır</string>
+    <string name="action_scroll_to_bottom">Aşağı kaydır</string>
+    <string name="action_send">Gönder</string>
+    <string name="action_done">Bitti</string>
+    <string name="action_reset">Sıfırla</string>
+    <string name="action_show_password">Parolayı göster</string>
+    <string name="action_hide_password">Parolayı gizle</string>
+    <string name="message_image_saved">Görüntü kaydedildi</string>
+    <string name="message_share_sheet_opened">Paylaşım sayfası açıldı</string>
+    <string name="message_image_saving">Kaydediliyor</string>
+    <string name="message_image_sharing">Paylaşılıyor</string>
+    <string name="message_image_data_received">Görüntü verisi alındı</string>
+    <string name="message_image_unavailable">Görüntü kullanılamıyor</string>
+    <string name="title_generation_results">Sonuçlar</string>
+    <string name="title_provider">Sağlayıcı</string>
+    <string name="title_lora_item">LoRA %1$s</string>
+    <string name="label_alias">Takma ad: %1$s</string>
+    <string name="generation_result_meta">%1$sx%2$s | %3$s adım</string>
+    <string name="history_result_meta">%1$sx%2$s | %3$s adım | CFG %4$s</string>
+    <string name="error_image_picking_unavailable">Görüntü seçimi bu platformda kullanılamıyor.</string>
+    <string name="error_image_saving_unavailable">Oluşturulan görüntüleri kaydetme bu platformda kullanılamıyor.</string>
+    <string name="error_image_sharing_unavailable">Oluşturulan görüntüleri paylaşma bu platformda kullanılamıyor.</string>
+    <string name="error_unable_to_save_image">Görüntü kaydedilemedi.</string>
+    <string name="error_unable_to_share_image">Görüntü paylaşılamadı.</string>
+    <string name="error_img2img_openai_unsupported">Bu uygulamada OpenAI için image-to-image desteklenmiyor.</string>
+    <string name="error_img2img_local_android_only">Local Diffusion image-to-image yalnızca Android üzerinde kullanılabilir.</string>
+    <string name="error_img2img_select_input">Önce bir giriş görüntüsü seçin.</string>
+    <string name="error_source_android_only">Bu sağlayıcı şimdilik yalnızca Android üzerinde kullanılabilir.</string>
+    <string name="error_source_img2img_unsupported">Bu sağlayıcı burada image-to-image desteklemiyor.</string>
+    <string name="setup_localhost_url_title">Localhost URL</string>
+    <string name="setup_localhost_url_text">Bu adres mevcut cihaza işaret eder. Yalnızca sunucu bu platformdan erişilebiliyorsa devam edin.</string>
+    <string name="srv_step_1">Sağlayıcıyı ayarla</string>
+    <string name="srv_step_2">Yapılandır</string>
+
+    <string name="hint_prompt">İstem (prompt)</string>
+    <string name="hint_prompt_negative">Negatif istem</string>
+    <string name="hint_sampling_steps">Örnekleme Adım Sayısı: %1$s</string>
+    <string name="hint_batch">Grup: %1$s</string>
+    <string name="hint_batch_tag">Toplu üretim</string>
+    <string name="hint_multiple_models">Çoklu Modeller</string>
+    <string name="hint_offline_generation">Çevrimdışı nesil</string>
+    <string name="hint_own_server">Kendi Sunucumuz</string>
+    <string name="hint_cfg_scale">CFG Scale: %1$s</string>
+    <string name="hint_sampler">Örneklerme Yöntemi</string>
+    <string name="hint_style_preset">Stil ön ayarı</string>
+    <string name="hint_clip_guidance_preset">Klip yönlendirme ön ayarı</string>
+    <string name="hint_restore_faces">Yüzleri Düzelt</string>
+    <string name="hint_seed">Başlangıç Noktası (Seed)</string>
+    <string name="hint_sub_seed">Varyasyon Noktası (Variation seed)</string>
+    <string name="hint_nsfw">İzin vermek NSFW</string>
+    <string name="hint_sub_seed_strength">Varyasyon Yoğunluğu: %1$s</string>
+    <string name="hint_denoising_strength">Gürültü Arındırma Yoğunluğu: %1$s</string>
+    <string name="hint_server_url">Sunucu URL\'i</string>
+    <string name="hint_sd_model">SD Modeli</string>
+    <string name="hint_login">Giriş yapmak</string>
+    <string name="hint_password">Şifre</string>
+    <string name="hint_model_open_ai">OpenAI modeli</string>
+    <string name="hint_image_size">Görüntü boyutu</string>
+    <string name="title_input_image">Girdi görüntüsü</string>
+    <string name="hint_quality">Kalite</string>
+    <string name="hint_style">Stil</string>
+    <string name="hint_tag">Etiket</string>
+    <string name="hint_value">Değer</string>
+    <string name="hint_mask_blur">Maske bulanıklığı: %1$s</string>
+    <string name="hint_only_masked_padding">Yalnızca maskelenmiş dolgu: %1$s px</string>
+    <string name="hint_mask_mode">Maske modu</string>
+    <string name="hint_mask_content">Maskelenmiş içerik</string>
+    <string name="hint_in_paint_area">Inpaint alan</string>
+    <string name="hint_autodetect">Otomatik olarak algıla</string>
+
+    <string name="auth_title">Yetki</string>
+    <string name="auth_anonymous">Anonim</string>
+    <string name="auth_http_basic">HTTP Temel</string>
+
+    <string name="hint_server_setup_title">Lütfen Stable Diffusion WebUI(AUTOMATIC1111) URL adresinizi yazın.</string>
+    <string name="hint_server_setup_sub_title">Gradio kütüphanesi kullanılarak uygulanan Stable Diffusion için bir web arayüzü.</string>
+    <string name="hint_valid_urls">Bazı sunucu örnekleri:\n• http://192.168.0.2:%1$s\n• http://alanadiniz.com:%1$s\n• https://alanadiniz.com</string>
+    <string name="hint_demo_mode">Bu mod, Stable Diffusion WebUI sunucunuz olmasa bile uygulama davranışını test etmenize olanak tanır.\n\nDemo modunda uygulama kullanıcı istemini görmezden gelir, AI sunucusunu kullanmaz ve bazı sahte görüntüler döndürür.</string>
+    <string name="hint_args_warning" tools:ignore="TypographyDashes,Typos">Bağlanmadan önce şunlardan emin olun:\n• AUTOMATIC1111 WebUI\'yi --api --listen bayraklarıyla çalıştırıyorsunuz\n• Güvenlik duvarınız 7860 portunu engellemiyor\n• Telefon, bilgisayarınızla aynı WiFi\'da.</string>
+    <string name="hint_args_swarm_ui_warning" tools:ignore="TypographyDashes,Typos">Bağlanmadan önce şunlardan emin olun:\n• Güvenlik duvarınız 7801 portunu engellemiyor\n• Telefon, bilgisayarınızla aynı WiFi\'da.</string>
+
+    <string name="hint_server_horde_title">Horde AI bulutuna bağlanın</string>
+    <string name="hint_server_horde_sub_title">Horde AI, Görüntü oluşturma çalışanları ve metin oluşturma çalışanlarından oluşan kitle kaynaklı dağıtılmış bir kümedir.</string>
+    <string name="hint_server_horde_usage">Anonim olarak bağlanmak için varsayılan API Anahtarını kullanabilirsiniz. Ancak çok fazla eşzamanlı istek olduğunda anonim hesaplar en düşük önceliğe sahiptir.</string>
+    <string name="hint_server_horde_api_key">API Anahtar</string>
+    <string name="hint_server_horde_use_default_api_key">Varsayılan API anahtarını kullan</string>
+    <string name="hint_server_horde_about">Hakkında Horde AI</string>
+    <string name="hint_server_horde_get_api_key">API Anahtarınızı alın</string>
+
+    <string name="hint_hugging_face_title">Hugging Face bulutuna bağlanın</string>
+    <string name="hint_hugging_face_sub_title">Hugging Face çıkarım bulutu, herkese açık makine öğrenimi modellerini veya kendi özel modellerinizi ücretsiz olarak test etmenize ve değerlendirmenize olanak tanıyan bir hizmet sağlar.</string>
+    <string name="hint_hugging_face_about">Hakkında Hugging Face</string>
+    <string name="hint_hugging_face_model">Hugging Face model</string>
+
+    <string name="hint_open_ai_title">OpenAI bulutuna bağlanın</string>
+    <string name="hint_open_ai_sub_title">OpenAI hizmeti GPT Image modelleriyle görüntü oluşturmayı sağlar.</string>
+    <string name="hint_open_ai_about">OpenAI hakkında</string>
+
+    <string name="hint_stability_ai_title">Stability AI\'ya bağlanın</string>
+    <string name="hint_stability_ai_sub_title">StabilityAI - DreamStudio tarafından sağlanan görüntü oluşturma hizmetidir.</string>
+    <string name="hint_stability_ai_about">Hakkında Stability AI</string>
+    <string name="hint_stability_ai_engine">Stability AI motoru</string>
+
+    <string name="hint_swarm_ui_title">Swarm UI URL\'nizi sağlayın</string>
+    <string name="hint_swarm_ui_sub_title">Araçlara kolay erişim, yüksek performans ve genişletilebilirlik üzerine odaklanan Modüler, Kararlı Yaygın Web Kullanıcı Arayüzü.</string>
+
+    <string name="hint_local_diffusion_sub_title">Bu yapılandırma Microsoft ONNX çalışma zamanını kullanır ve uzak bir sunucuya/buluta bağlanmaya gerek kalmadan telefonunuzda Stable Diffusion AI nesillerini çalıştırmanıza olanak tanır.</string>
+    <string name="hint_local_diffusion_warning">Uyarı! Yerel Yayılma işlevi beta testindedir. Yerel modu kullanarak yüksek kaliteli görüntüler beklemeyin. \n\nBu uygulama, güçlü olmayan telefonlarda iyi çalışmayabilir. Oluşturma performansı ve hızı, telefonunuzun kaynaklarına (CPU, RAM) ve oluşturulan görüntünün boyutuna bağlıdır (görüntü boyutu ne kadar küçükse, oluşturma o kadar hızlı olur).</string>
+
+    <string name="hint_mediapipe_sub_title">Bu yapılandırma Google AI MediaPipe çalışma zamanını kullanır ve uzak bir sunucuya/buluta bağlanmaya gerek kalmadan telefonunuzda Stable Diffusion AI nesillerini çalıştırmanıza olanak tanır.</string>
+
+    <string name="drawer_web_ui">Web arayüzü</string>
+
+    <string name="home_tab_txt_to_img">Txt2Img</string>
+    <string name="home_tab_img_to_img">Img2Img</string>
+    <string name="home_tab_gallery">Galeri</string>
+    <string name="home_tab_settings">Ayarlar</string>
+
+    <string name="gallery_tab_image">Resim</string>
+    <string name="gallery_tab_original">Orijinal</string>
+    <string name="gallery_tab_info">Bilgi</string>
+    <string name="gallery_action_report">Bildir</string>
+    <string name="gallery_action_blur">Bulanık</string>
+    <string name="gallery_action_delete">Sil</string>
+
+    <string name="title_text_to_image">Yazıdan Resime</string>
+    <string name="title_image_to_image">Resimden Resime</string>
+    <string name="title_gallery">Galeri</string>
+    <string name="title_history">Geçmiş</string>
+    <string name="title_gallery_details">Detaylar</string>
+    <string name="title_settings">Ayarlar</string>
+    <string name="title_server_setup">Sunucu Kurulumu</string>
+    <string name="title_select_sd_model">SD Modeli seçin</string>
+    <string name="title_clear_app_cache">Uygulama önbelleğini temizle</string>
+    <string name="title_debug_menu">Geliştirici modu</string>
+    <string name="title_debug_logger">Günlükler</string>
+    <string name="title_lora">LoRA</string>
+    <string name="title_txt_inversion">Metin İnversiyon</string>
+    <string name="title_txt_inversion_short">İnversiyon</string>
+    <string name="title_tag_edit">Etiketi düzenle</string>
+    <string name="title_select_download_source">Kaynağı seçin</string>
+
+    <string name="gallery_media_store_banner">Kayıtlı %1$s fotoğrafınız var Download/SDAI</string>
+    <string name="gallery_info_field_date">Oluşturulma</string>
+    <string name="gallery_info_field_type">Tür</string>
+    <string name="gallery_info_field_prompt">İstem</string>
+    <string name="gallery_info_field_negative_prompt">Negatif istem</string>
+    <string name="gallery_info_field_size">Boyut</string>
+    <string name="gallery_info_field_sampling_steps">Örnekleme adımları</string>
+    <string name="gallery_info_field_cfg">CFG Scale</string>
+    <string name="gallery_info_field_restore_faces">Yüz düzeltme</string>
+    <string name="gallery_info_field_sampler">Örnekleme metodu</string>
+    <string name="gallery_info_field_seed">Başlangıç noktası (Seed)</string>
+    <string name="gallery_info_field_sub_seed">Varyasyon başlangıç noktası (Variation seed)</string>
+    <string name="gallery_info_field_sub_seed_strength">Varyasyon oranı</string>
+    <string name="gallery_info_field_denoising_strength">Gürültü Azaltma oranı</string>
+
+    <string name="gallery_menu_unselect_all">Tümünü seç</string>
+    <string name="gallery_menu_selected">Seçili resimler: %1$s</string>
+    <string name="gallery_menu_delete_all">Tümünü sil</string>
+    <string name="gallery_menu_export_all">Tümünü dışa aktar</string>
+    <string name="gallery_menu_selection_mode">Seçim modu</string>
+
+    <string name="settings_header_server">AI ayarları</string>
+    <string name="settings_header_app">Uygulama ayarları</string>
+    <string name="settings_header_info">Bilgi</string>
+    <string name="settings_header_look_and_feel">Kişiselleştirme</string>
+    <string name="settings_header_community">Topluluk</string>
+
+    <string name="settings_item_config">Ayarlar</string>
+    <string name="settings_item_sd_model">SD Modeli</string>
+    <string name="settings_item_stability_ai_credits">Stability AI Kredi</string>
+    <string name="settings_item_local_nnapi">NNAPI (Beta)*</string>
+    <string name="settings_item_local_nnapi_warning">*NNAPI kararlı çalışmayabilir, hata, çökme veya kötü performansla karşılaşırsanız bunu devre dışı bırakın.</string>
+
+    <string name="settings_item_language">Dil</string>
+    <string name="settings_item_demo">Demo modu</string>
+    <string name="settings_item_monitor_connection">Bağlantıyı incele</string>
+    <string name="settings_item_background_generation">Arkaplan oluşturma (Beta)*</string>
+    <string name="settings_item_background_generation_warning">*Arka plan oluşturma işlemi Yerel Yayılım ile stabil çalışmayabilir, lütfen bunu etkinleştirmeden önce Yerel Yayılımın Android cihazınızda düzgün çalıştığından emin olun.</string>
+    <string name="settings_item_auto_save">Resimeleri otomatik kaydet</string>
+    <string name="settings_item_auto_save_warning">*Arka planda oluşturma sırasında görseller her zaman uygulama içi galeriye kaydedilecektir.</string>
+    <string name="settings_item_auto_save_media_store">İndirilenlere Kaydet</string>
+    <string name="settings_item_tagged_input">Etiketli giriş</string>
+    <string name="settings_item_advanced_form_default">Her zaman gelişmiş seçenekleri göster</string>
+    <string name="settings_item_clear_cache">Uygulama ve galeri önbelleğini temizleyin</string>
+
+    <string name="settings_item_lf_lang">Dil</string>
+    <string name="settings_item_lf_gallery_grid">Galeri ızgara boyutu</string>
+    <string name="settings_item_lf_dynamic_colors">Dinamik renkler</string>
+    <string name="settings_item_lf_system_dark_theme">Sistemin koyu teması</string>
+    <string name="settings_item_lf_dark_theme">Koyu tema</string>
+    <string name="settings_item_lf_dark_theme_color">Arka plan rengi</string>
+    <string name="settings_item_lf_accent_color">Vurgu rengi</string>
+
+    <string name="settings_item_report_problem">Hata Bildirin</string>
+    <string name="settings_item_policy">Gizlilik ve Hukuksal Politikalar</string>
+    <string name="settings_item_instructions">Sunucu kurulum talimatları</string>
+    <string name="settings_item_donate">Bağış yapmak</string>
+    <string name="settings_item_on_boarding">Eğitimi görüntüle</string>
+    <string name="settings_item_source">Kaynak kodunu alın</string>
+    <string name="settings_item_telegram">Telegram</string>
+    <string name="settings_item_discord">Discord</string>
+    <string name="settings_item_project_website">Proje web sitesi</string>
+    <string name="settings_item_developer_website">Geliştirici web sitesi</string>
+    <string name="settings_item_license">Lisans</string>
+
+    <string name="communicating_progress_title">Lütfen bekleyin, sunucu ile iletişime geçiliyor…</string>
+    <string name="communicating_progress_sub_title">Bu biraz zaman alabilir.</string>
+    <string name="communicating_random_image_title">Rastgele resim getiriliyor…</string>
+    <string name="communicating_local_title">Çalışan Local Diffusion</string>
+    <string name="communicating_wait_time">Bekleme zamanı: %1$s</string>
+    <string name="communicating_status_queue">Sıradaki konumu: %1$s</string>
+    <string name="communicating_status_steps">Adım: %1$s/%2$s</string>
+
+    <string name="exporting_progress_title">Galeriniz dışarı aktarılıyor…</string>
+    <string name="exporting_progress_sub_title">Resim sayısına göre bu biraz zaman alabilir…</string>
+
+    <string name="interaction_export_title">Galeriyi Dışa Aktar</string>
+    <string name="interaction_export_sub_title">Bu işlem bütün galerideki resimleri tek bir .zip arşivi dosyası olarak dışa aktaracaktır. Galerinizin boyutuna göre bu işlem uzun bir zaman alabailir. Devam etmek istiyor musunuz?</string>
+    <string name="interaction_export_sub_title_selection">Bu, seçili galeri resimlerini *.zip arşivi olarak dışa aktaracaktır. Devam etmek istiyor musunuz?</string>
+    <string name="interaction_cache_sub_title">Bu işlem bütün uygulama ayarlarını ve oluşturulan resimleri silecektir. Devam etmek istiyor musunuz?</string>
+
+    <string name="interaction_warning_title">Uyarı</string>
+    <string name="interaction_warning_localhost_sub_title">Localhost (127.0.0.1) sunucusuna bağlanmaya çalışıyorsunuz.\n\nAndroid cihazınızda ssh tüneli veya başka bir bağlantı noktası yönlendirme mekanizması kurulu olmadığı sürece çalışmayabilir.</string>
+
+    <string name="interaction_delete_generation_title">Resmi sil</string>
+    <string name="interaction_delete_generation_sub_title">Kalıcı olarak bu resmi silmek istediğinize emin misiniz?</string>
+
+    <string name="interaction_delete_all_title">Tüm resimleri sil</string>
+    <string name="interaction_delete_all_sub_title">Tüm görselleri kalıcı olarak silmek istediğinizden emin misiniz?</string>
+
+    <string name="interaction_delete_selection_title">Resimleri sil</string>
+    <string name="interaction_delete_selection_sub_title">Seçili görselleri kalıcı olarak silmek istediğinizden emin misiniz?</string>
+
+    <string name="interaction_delete_local_model_title">Modeli sil</string>
+    <string name="interaction_delete_local_model_sub_title">Modeli silmek istediğinizden emin misiniz "%1$s"?</string>
+
+    <string name="interaction_in_paint_clear_title">Çizimleri temizle</string>
+    <string name="interaction_in_paint_clear_sub_title">Çizimleri temizlemek istediğinizden emin misiniz?</string>
+
+    <string name="interaction_background_scheduled_title">Arkaplan üretimi planlandı</string>
+    <string name="interaction_background_scheduled_sub_title">Arkaplanda yapay zeka üretimi için görev oluşturuldu.\n\nBazı durumlarda Android arkaplanda çalışmaya gecikmeli olarak başlayabilir.\n\nÜretimi başlatma, ilerleme ve tamamlama hakkında anında bildirimler alacaksınız.</string>
+
+    <string name="interaction_background_running_title">Arkaplan oluşturma çalışıyor</string>
+    <string name="interaction_background_running_sub_title">Şu anda arka planda çalışan bir nesil var, lütfen bitene kadar bekleyin.</string>
+
+    <string name="gallery_empty_title">Burada henüz bir şey yok…</string>
+    <string name="gallery_empty_sub_title">Bir şeyler üretmeyi deneyin! Ürettiğiniz resimler burada gözükecektir.</string>
+
+    <string name="status_connected">⚡️ Bağlandı</string>
+    <string name="status_disconnected">️❌ Bağlantı Kesildi</string>
+    <string name="status_communicating">Bağlanıyor…</string>
+
+    <string name="error_title">Hata</string>
+    <string name="error_empty">Alan boş olamaz</string>
+    <string name="error_empty_url">Sunucu URL adresi boş olamaz</string>
+    <string name="error_empty_field">Alan boş olmamalıdır</string>
+    <string name="error_invalid">Geçerli olmayan bilgi girişi</string>
+    <string name="error_invalid_scheme">Sunucu adresi <b>http://</b> veya <b>https://</b> ile başlamalıdır.</string>
+    <string name="error_invalid_port">Port 0 ile 65535 aralığında olmalıdır</string>
+    <string name="error_invalid_url">Geçersiz sunucu adresi.</string>
+    <string name="error_localhost_url">Sunucuya bağlanmak için localhost (127.0.0.1) URL adresi kullanamazsınız.</string>
+    <string name="error_min_size">Asgari boyut %1$s</string>
+    <string name="error_max_size">Azami boyut %1$s</string>
+    <string name="error_download_fail">Yükleme başarısız</string>
+    <string name="error_generic">İsteğiniz işlenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.</string>
+
+    <string name="notification_pending_title">Nesil bekleniyor…</string>
+
+    <string name="notification_started_title">Arkaplan oluşturma başladı!</string>
+
+    <string name="notification_running_title">Üretim süreci çalışıyor…</string>
+    <string name="notification_running_sub_title">Lütfen üretim tamamlanana kadar bekleyin.</string>
+
+    <string name="notification_finish_title">Nesil tamamlandı 🤩</string>
+    <string name="notification_finish_sub_title">Uygulamayı açmak için buraya tıklayın.</string>
+
+    <string name="notification_fail_title">Üretim başarısız oldu 😞</string>
+    <string name="notification_fail_sub_title">Uygulamayı açmak için buraya tıklayın.</string>
+
+    <string name="model_local_custom_switch">Özel modeli yükle</string>
+    <string name="model_local_permission_title">Özel modeli yükleyebilmek için SDAI uygulamasının depolama izinlerini yönetmesine izin vermeniz gerekir; çünkü Android 11\'den itibaren kapsamlı olmayan depolama dosyalarına erişmek gerekir.</string>
+    <string name="model_local_permission_button">Kurulum izni</string>
+
+    <string name="model_local_custom_title">Yerel özel modeli kullanmak için telefonunuzun depolama alanındaki yerel klasöre yerleştirin.</string>
+    <string name="model_local_permission_header">İzinler</string>
+    <string name="model_local_custom_sub_title">Son klasör yapısı şu şekilde olmalıdır::</string>
+    <string name="model_local_path_header">Model yolu</string>
+    <string name="model_local_path_title">Yerel model klasör yolu</string>
+    <string name="model_local_path_button">Klasör seç</string>
+
+    <string name="debug_section_main">Hata ayıklama</string>
+    <string name="debug_section_work_manager">Work Manager API</string>
+    <string name="debug_section_qa">QA işlemleri</string>
+    <string name="debug_action_unlock">Geliştirici modu kilidi açıldı!</string>
+    <string name="debug_action_logger">Günlükleri görüntüle</string>
+    <string name="debug_action_logger_clear">Tüm günlükleri temizle</string>
+    <string name="debug_action_work_restart_txt2img">Son txt2img görevini yeniden başlat</string>
+    <string name="debug_action_work_restart_img2img">Son img2img görevini yeniden başlat</string>
+    <string name="debug_action_work_cancel_all">Tüm çalışanları iptal et</string>
+    <string name="debug_action_ld_allow_cancel">Oluşturmayı kesmeye izin ver</string>
+    <string name="debug_action_ld_scheduler">İşlem zamanlayıcısı</string>
+    <string name="debug_action_bad_base64">Kötü Base64\'ü DB\'ye yerleştirin</string>
+    <string name="debug_logger_empty">Herhangi bir günlük bulunamadı.</string>
+
+    <string name="extras_empty_title">Burada hiçbir şey…</string>
+    <string name="extras_empty_sub_title_lora">%1$s sunucusuna biraz içerik ekleyin: \n\n%2$s</string>
+    <string name="extras_empty_sub_title_hypernet">%1$s sunucusuna biraz içerik ekleyin: \n\n%2$s</string>
+    <string name="extras_empty_sub_title_embedding">%1$s sunucusuna biraz içerik ekleyin: \n\n%2$s</string>
+
+    <string name="in_paint_tab_1">Çizmek</string>
+    <string name="in_paint_tab_2">Ayarlamak</string>
+
+    <string name="in_paint_mode_masked">Inpaint maskeli</string>
+    <string name="in_paint_mode_not_masked">Inpaint maskelenmemiş</string>
+
+    <string name="in_paint_mask_content_fill">Doldurmak</string>
+    <string name="in_paint_mask_content_original">Orijinal</string>
+    <string name="in_paint_mask_content_latent_noise">Gizli gürültü</string>
+    <string name="in_paint_mask_content_latent_nothing">Gizli hiçbir şey</string>
+
+    <string name="in_paint_area_whole">Bütün resim</string>
+    <string name="in_paint_area_only_masked">Sadece maskeli</string>
+
+    <string name="donate_title_thanks">Destekleri için bu harika insanlara teşekkürler ❤</string>
+    <string name="donate_bs_title">SDAI, şu özelliklere sahip açık kaynaklı bir uygulamadır:</string>
+    <string name="donate_bs_sub_title">• Stable Diffusion AI ile görüntü oluşturma gücü sunar;\n• Üretim sağlayıcınızı seçme özgürlüğü verir;\n• AD, telemetri içermez ve sizi gözetlemez;\n• Açık kaynaklı bir yazılımdır;\n• Ücretsiz olarak kullanabilirsiniz.</string>
+    <string name="donate_bs_ending">Bu yazılımı değerli buluyorsanız, projeyi desteklediğiniz ve yaşamasına yardımcı olduğunuz için teşekkürler.</string>
+
+    <string name="permission_storage">Depolamak</string>
+    <string name="permission_notifications">Bildirimler</string>
+
+    <string name="premission_rationale_title">Eksik izinler.</string>
+    <string name="premission_rationale_sub_title">Lütfen uygulama ayarlarında %1$s iznini verin.</string>
+
+    <string name="scheduler_main">Ana İş Parçacığı</string>
+    <string name="scheduler_io">G/Ç İş Parçacığı</string>
+    <string name="scheduler_computation">Hesaplama</string>
+    <string name="scheduler_single_thread">Tek İş Parçacığı</string>
+
+    <string name="on_boarding_page_universal_title">Android ve iOS için\n[evrensel] SDAI.</string>
+    <string name="on_boarding_page_universal_subtitle">SDAI artık aynı ortak deneyimle Android ve iOS desteği sunar.</string>
+    <string name="on_boarding_page_universal_android">Android</string>
+    <string name="on_boarding_page_universal_ios">iOS</string>
+    <string name="on_boarding_page_form_title">Gelişmiş Özellikler\n[Kararlı Dağıtım].</string>
+    <string name="on_boarding_page_local_title">[Çevrimdışı] nesil\nYerel Dağıtım.</string>
+    <string name="on_boarding_page_ui_title">Uygulamayı özelleştirin,\n[kendinizin] yapın!</string>
+    <string name="on_boarding_page_provider_title">Nesil sağlayıcıyı\nseçme [Özgürlüğü].</string>
+
+    <string name="report_title">Görüntüyü Şikayet Et</string>
+    <string name="report_submit">Şikayeti Gönder</string>
+    <string name="report_description">Şikayet açıklaması</string>
+    <string name="report_sent">Şikayetiniz gönderildi!</string>
+    <string name="report_done">Geri dön</string>
+
+    <string name="report_reason_inappropriate_content">Uygunsuz içerik</string>
+    <string name="report_reason_violence">Şiddet</string>
+    <string name="report_reason_hateful_speech">Nefret söylemi</string>
+    <string name="report_reason_intellectual">Fikri mülkiyet ihlali</string>
+    <string name="report_reason_adult">Yetişkin içeriği</string>
+    <string name="report_reason_other">Diğer</string>
+</resources>

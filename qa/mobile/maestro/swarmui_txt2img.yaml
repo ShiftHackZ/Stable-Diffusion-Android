@@ -1,0 +1,17 @@
+appId: ${APP_ID}
+---
+- launchApp
+- tapOn: "Settings"
+- tapOn: "Configuration"
+- tapOn: "Swarm UI"
+- tapOn: "Next"
+- tapOn: "Server URL"
+- inputText: ${SWARMUI_URL}
+- tapOn: "Connect"
+- tapOn: "Txt2Img"
+- tapOn: "Prompt"
+- inputText: "mobile qa swarmui smoke test"
+- tapOn: "Imagine"
+- assertVisible:
+    text: "Generation result|Result"
+    optional: true

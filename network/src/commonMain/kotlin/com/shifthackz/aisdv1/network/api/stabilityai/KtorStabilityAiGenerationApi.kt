@@ -1,0 +1,133 @@
+package com.shifthackz.aisdv1.network.api.stabilityai
+
+import com.shifthackz.aisdv1.network.client.createConfiguredHttpClient
+import com.shifthackz.aisdv1.network.client.defaultNetworkJson
+import com.shifthackz.aisdv1.network.request.StabilityTextToImageRequest
+import com.shifthackz.aisdv1.network.response.StabilityAiErrorResponse
+import com.shifthackz.aisdv1.network.response.StabilityCreditsResponse
+import com.shifthackz.aisdv1.network.response.StabilityGenerationResponse
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.ResponseException
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.formData
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
+import io.ktor.http.appendPathSegments
+import io.ktor.http.content.TextContent
+import io.ktor.http.contentType
+import io.ktor.http.takeFrom
+import kotlinx.serialization.json.Json
+
+class KtorStabilityAiGenerationApi(
+    private val httpClient: HttpClient,
+    private val baseUrl: String,
+    private val json: Json = defaultNetworkJson,
+) : StabilityAiGenerationApi {
+
+    constructor(baseUrl: String) : this(
+        httpClient = createConfiguredHttpClient(installContentNegotiation = false),
+        baseUrl = baseUrl,
+    )
+
+    override suspend fun validateBearerToken(apiKey: String) {
+        mapStabilityError {
+            httpClient.get {
+                url.takeFrom(baseUrl)
+                url.appendPathSegments(PATH_API_VERSION, PATH_USER, PATH_ACCOUNT)
+                header(HttpHeaders.Authorization, "Bearer $apiKey")
+                header(HttpHeaders.Accept, ContentType.Application.Json.toString())
+            }
+        }
+    }
+
+    override suspend fun fetchCredits(apiKey: String): StabilityCreditsResponse = mapStabilityError {
+        httpClient
+            .get {
+                url.takeFrom(baseUrl)
+                url.appendPathSegments(PATH_API_VERSION, PATH_USER, PATH_BALANCE)
+                header(HttpHeaders.Authorization, "Bearer $apiKey")
+                header(HttpHeaders.Accept, ContentType.Application.Json.toString())
+            }
+            .bodyAsText()
+            .let { json.decodeFromString<StabilityCreditsResponse>(it) }
+    }
+
+    override suspend fun textToImage(
+        apiKey: String,
+        engineId: String,
+        request: StabilityTextToImageRequest,
+    ): StabilityGenerationResponse = mapStabilityError {
+        httpClient
+            .post {
+                url.takeFrom(baseUrl)
+                url.appendPathSegments(PATH_API_VERSION, PATH_GENERATION, engineId, PATH_TEXT_TO_IMAGE)
+                header(HttpHeaders.Authorization, "Bearer $apiKey")
+                header(HttpHeaders.Accept, ContentType.Application.Json.toString())
+                contentType(ContentType.Application.Json)
+                setBody(TextContent(json.encodeToString(request), ContentType.Application.Json))
+            }
+            .bodyAsText()
+            .let { json.decodeFromString<StabilityGenerationResponse>(it) }
+    }
+
+    override suspend fun imageToImage(
+        apiKey: String,
+        engineId: String,
+        imageBytes: ByteArray,
+        parameters: Map<String, String>,
+    ): StabilityGenerationResponse = mapStabilityError {
+        httpClient
+            .post {
+                url.takeFrom(baseUrl)
+                url.appendPathSegments(PATH_API_VERSION, PATH_GENERATION, engineId, PATH_IMAGE_TO_IMAGE)
+                header(HttpHeaders.Authorization, "Bearer $apiKey")
+                header(HttpHeaders.Accept, ContentType.Application.Json.toString())
+                setBody(
+                    MultiPartFormDataContent(
+                        formData {
+                            append(
+                                "init_image",
+                                imageBytes,
+                                Headers.build {
+                                    append(HttpHeaders.ContentDisposition, "filename=\"image.png\"")
+                                    append(HttpHeaders.ContentType, ContentType.Image.PNG.toString())
+                                },
+                            )
+                            parameters.forEach { (key, value) ->
+                                append(key, value)
+                            }
+                        },
+                    ),
+                )
+            }
+            .bodyAsText()
+            .let { json.decodeFromString<StabilityGenerationResponse>(it) }
+    }
+
+    private suspend fun <T> mapStabilityError(block: suspend () -> T): T = try {
+        block()
+    } catch (t: ResponseException) {
+        val message = runCatching {
+            json
+                .decodeFromString<StabilityAiErrorResponse>(t.response.bodyAsText())
+                .message
+        }.getOrNull()
+        throw message?.let(::Throwable) ?: t
+    }
+
+    private companion object {
+        const val PATH_API_VERSION = "v1"
+        const val PATH_USER = "user"
+        const val PATH_ACCOUNT = "account"
+        const val PATH_BALANCE = "balance"
+        const val PATH_GENERATION = "generation"
+        const val PATH_TEXT_TO_IMAGE = "text-to-image"
+        const val PATH_IMAGE_TO_IMAGE = "image-to-image"
+    }
+}
