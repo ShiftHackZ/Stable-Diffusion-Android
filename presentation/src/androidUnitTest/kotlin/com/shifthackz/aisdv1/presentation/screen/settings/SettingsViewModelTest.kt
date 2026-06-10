@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.domain.entity.Settings
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
@@ -73,8 +74,19 @@ class SettingsViewModelTest {
         val actual = viewModel.state.value
         assertEquals(false, actual.loading)
         assertEquals("title_5598", actual.sdModelSelected)
-        assertEquals(5598f, actual.stabilityAiCredits)
+        assertEquals(0f, actual.stabilityAiCredits)
         assertEquals("test-version", actual.appVersion)
+    }
+
+    @Test
+    fun `given provider changed to stability ai, expected credits updated`() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        settings.value = settings.value.copy(source = ServerSource.STABILITY_AI)
+        advanceUntilIdle()
+
+        assertEquals(5598f, viewModel.state.value.stabilityAiCredits)
     }
 
     @Test

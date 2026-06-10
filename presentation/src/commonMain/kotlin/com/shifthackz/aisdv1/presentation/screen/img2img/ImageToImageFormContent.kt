@@ -56,7 +56,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -184,14 +183,12 @@ internal fun DenoisingStrengthSlider(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = strings.denoisingStrength,
+                text = Localization.string(
+                    "hint_denoising_strength",
+                    state.denoisingStrength.roundToString(),
+                ),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-                text = state.denoisingStrength.roundToString(),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.W600,
             )
         }
         Slider(

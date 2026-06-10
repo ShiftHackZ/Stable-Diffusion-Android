@@ -63,6 +63,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -237,11 +238,19 @@ internal fun ImageInPaintCanvas(
                 .then(
                     if (drawEnabled) {
                         Modifier.pointerInput(state.brushSize, canvasSize) {
+                            fun Offset.coerceToCanvas(): InPaintPoint {
+                                val maxX = (canvasSize.width - 1).coerceAtLeast(0).toFloat()
+                                val maxY = (canvasSize.height - 1).coerceAtLeast(0).toFloat()
+                                return copy(
+                                    x = x.coerceIn(0f, maxX),
+                                    y = y.coerceIn(0f, maxY),
+                                ).toInPaintPoint()
+                            }
                             detectDragGestures(
                                 onDragStart = { offset ->
                                     if (canvasSize.width > 0 && canvasSize.height > 0) {
                                         activeStroke = InPaintStroke(
-                                            points = listOf(offset.toInPaintPoint()),
+                                            points = listOf(offset.coerceToCanvas()),
                                             brushSize = state.brushSize,
                                             canvasWidth = canvasSize.width,
                                             canvasHeight = canvasSize.height,
@@ -250,7 +259,7 @@ internal fun ImageInPaintCanvas(
                                 },
                                 onDrag = { change, _ ->
                                     activeStroke = activeStroke?.let { stroke ->
-                                        stroke.copy(points = stroke.points + change.position.toInPaintPoint())
+                                        stroke.copy(points = stroke.points + change.position.coerceToCanvas())
                                     }
                                 },
                                 onDragEnd = {
@@ -283,11 +292,13 @@ internal fun ImageInPaintCanvas(
                     ),
                 )
             }
-            state.strokes.forEach { stroke ->
-                drawStroke(stroke, Color.White)
-            }
-            activeStroke?.let { stroke ->
-                drawStroke(stroke, Color.White.copy(alpha = 0.7f))
+            clipRect {
+                state.strokes.forEach { stroke ->
+                    drawStroke(stroke, Color.White)
+                }
+                activeStroke?.let { stroke ->
+                    drawStroke(stroke, Color.White.copy(alpha = 0.7f))
+                }
             }
         }
     }

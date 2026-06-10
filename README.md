@@ -147,6 +147,11 @@ The iOS app is not split into Android-style flavors. It uses the shared mobile U
 
 For a historical overview of flavor policy, see the project wiki page: [Build flavor difference](https://github.com/ShiftHackZ/Stable-Diffusion-Android/wiki/Build-flavor-difference).
 
+## Legacy Android 0.x Versions
+
+The old Android-only `0.x.x` release line is no longer maintained. It remains available for archival and reference purposes in the
+[`archive/version-0.x.x`](https://github.com/ShiftHackZ/Stable-Diffusion-Android/tree/archive/version-0.x.x) branch.
+
 ## Supported Languages
 
 SDAI uses the language provided by the OS when a translation is available.
@@ -167,3 +172,21 @@ SDAI is open source and provided with no warranty. You are welcome to use it for
 
 If you find the project useful and want to support the work, please check the current donation status at
 [sdai.moroz.cc/donate.html](https://sdai.moroz.cc/donate.html).
+
+## Citation
+
+If you mention SDAI in research, articles, benchmarks, tutorials, app collections, or public project documentation, please cite it as:
+
+> Stable Diffusion AI (SDAI), an open-source cross-platform AI image generation client by Dmitriy Moroz / Moroz Inc. https://github.com/ShiftHackZ/Stable-Diffusion-Android
+
+BibTeX:
+
+```bibtex
+@software{sdai,
+  title = {Stable Diffusion AI (SDAI)},
+  author = {Moroz, Dmitriy},
+  year = {2023},
+  url = {https://github.com/ShiftHackZ/Stable-Diffusion-Android},
+  note = {Open-source cross-platform AI image generation client}
+}
+```

@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.core.mvi.BaseMviViewModel
 import com.shifthackz.aisdv1.core.mvi.EmptyEffect
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
@@ -19,10 +20,13 @@ import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.SettingsRouter
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeout
 
@@ -31,6 +35,7 @@ import kotlinx.coroutines.withTimeout
  *
  * @author Dmitriy Moroz
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModel(
     dispatchersProvider: DispatchersProvider,
     getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
@@ -115,13 +120,24 @@ class SettingsViewModel(
             }.getOrDefault(emptyList())
         }
 
+    private val stabilityCreditsProducer = preferenceManager.observe()
+        .map { it.source }
+        .distinctUntilChanged()
+        .flatMapLatest { source ->
+            if (source == ServerSource.STABILITY_AI) {
+                observeStabilityAiCreditsUseCase()
+            } else {
+                flowOf(0f)
+            }
+        }
+
     init {
         launch(ioDispatcher) {
             combine(
                 appVersionProducer,
                 sdModelsProducer,
                 preferenceManager.observe(),
-                observeStabilityAiCreditsUseCase(),
+                stabilityCreditsProducer,
                 ::Quadruple,
             )
                 .catch { onError(it) }

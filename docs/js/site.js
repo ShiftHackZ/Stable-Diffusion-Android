@@ -7,6 +7,7 @@
     links: {
       home: "index.html",
       docs: "docs/",
+      donate: "donate.html",
       privacy: "privacy.html",
       github: "https://github.com/ShiftHackZ/Stable-Diffusion-Android",
       company: "https://moroz.cc",
@@ -106,6 +107,7 @@
             <a href="${site.links.privacy}">Privacy Policy</a>
             <a href="${site.links.docs}">Documentation</a>
             <a href="${site.links.github}" ${external}>GitHub</a>
+            <a href="${site.links.donate}">Donate</a>
           </nav>
           <nav class="footer-column" aria-label="Community">
             <h2>Community</h2>
@@ -257,6 +259,88 @@
     schedule();
   }
 
+  function formatSupporterDate(value) {
+    if (typeof value !== "string") return "";
+    const parts = value.split("-");
+    if (parts.length !== 3) return value;
+    const [year, month, day] = parts;
+    if (year.length !== 4 || month.length !== 2 || day.length !== 2) return value;
+    return `${day}.${month}.${year}`;
+  }
+
+  function createSupporterCard(supporter) {
+    const article = document.createElement("article");
+    article.className = "supporter-card";
+
+    const header = document.createElement("div");
+    header.className = "supporter-card-head";
+
+    const avatar = document.createElement("span");
+    avatar.className = "supporter-avatar";
+    avatar.textContent = String(supporter.name || "?").trim().charAt(0).toUpperCase() || "?";
+
+    const name = document.createElement("strong");
+    name.className = "supporter-name";
+    name.textContent = supporter.name || "Someone";
+
+    const date = document.createElement("span");
+    date.className = "supporter-date";
+    date.textContent = formatSupporterDate(supporter.date);
+
+    header.append(avatar, name, date);
+    article.append(header);
+
+    if (supporter.message) {
+      const message = document.createElement("p");
+      message.className = "supporter-message";
+      message.textContent = supporter.message;
+      article.append(message);
+    }
+
+    return article;
+  }
+
+  async function initDonatePage() {
+    if (document.body.dataset.page !== "donate") return;
+
+    const list = document.querySelector("[data-supporters-list]");
+    const status = document.querySelector("[data-supporters-status]");
+    const count = document.querySelector("[data-supporters-count]");
+    const latest = document.querySelector("[data-supporters-latest]");
+    if (!list) return;
+
+    try {
+      const response = await fetch("supporters.json", { cache: "no-store" });
+      if (!response.ok) throw new Error(`Supporters request failed: ${response.status}`);
+
+      const rawSupporters = await response.json();
+      const supporters = rawSupporters
+        .filter((item) => item && item.name && item.date)
+        .sort((left, right) => {
+          const byDate = new Date(right.date).getTime() - new Date(left.date).getTime();
+          return byDate || Number(right.id || 0) - Number(left.id || 0);
+        });
+
+      if (count) count.textContent = String(supporters.length);
+      if (latest) latest.textContent = supporters[0] ? formatSupporterDate(supporters[0].date) : "None yet";
+
+      list.replaceChildren();
+      supporters.forEach((supporter) => {
+        list.append(createSupporterCard(supporter));
+      });
+
+      if (status) {
+        status.textContent = supporters.length ? "" : "No supporters are listed yet.";
+        status.classList.toggle("is-hidden", supporters.length > 0);
+      }
+    } catch (error) {
+      if (status) {
+        status.textContent = "Supporter list is temporarily unavailable.";
+        status.classList.remove("is-hidden");
+      }
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     renderHeader();
     renderFooter();
@@ -264,6 +348,7 @@
     setActiveNav();
     initMenu();
     initScreenshotSlider();
+    initDonatePage();
 
     document.querySelectorAll("[data-year]").forEach((node) => {
       node.textContent = String(new Date().getFullYear());
