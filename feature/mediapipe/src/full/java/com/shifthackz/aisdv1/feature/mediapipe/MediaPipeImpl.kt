@@ -11,7 +11,6 @@ import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.mediapipe.MediaPipe
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.feature.mediapipe.extensions.modelPath
-import io.reactivex.rxjava3.core.Single
 
 internal class MediaPipeImpl(
     private val context: Context,
@@ -21,7 +20,7 @@ internal class MediaPipeImpl(
 
     private var imageGenerator: ImageGenerator? = null
 
-    override fun process(payload: TextToImagePayload): Single<Bitmap> = Single.create { emitter ->
+    override suspend fun process(payload: TextToImagePayload): Bitmap {
         try {
             initialize()
             debugLog("Generating...")
@@ -34,10 +33,10 @@ internal class MediaPipeImpl(
             val bitmap = BitmapExtractor.extract(result?.generatedImage())
             debugLog("bitmap = $bitmap, ${bitmap.width}X${bitmap.height}")
             close()
-            if (!emitter.isDisposed) emitter.onSuccess(bitmap)
+            return bitmap
         } catch (e: Exception) {
             close()
-            if (!emitter.isDisposed) emitter.onError(e)
+            throw e
         }
     }
 

@@ -1,0 +1,884 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.shifthackz.aisdv1.data.mappers</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script><meta id="sdai-docs-seo" name="description" content="Dokka API documentation for SDAI Kotlin Multiplatform, Android, iOS, and shared modules.">
+<link rel="canonical" href="https://sdai.moroz.cc/docs/data/com.shifthackz.aisdv1.data.mappers/index.html">
+<meta property="og:title" content="SDAI Documentation">
+<meta property="og:description" content="Kotlin API documentation for SDAI Android, iOS, and shared modules.">
+<meta property="og:url" content="https://sdai.moroz.cc/docs/data/com.shifthackz.aisdv1.data.mappers/index.html">
+<meta property="og:site_name" content="SDAI">
+<meta property="og:type" content="website">
+<style id="sdai-docs-branding">
+  .sdai-docs-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .sdai-docs-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .sdai-docs-links a:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .sdai-docs-links svg {
+    width: 18px;
+    height: 18px;
+  }
+  @media (max-width: 760px) {
+    .sdai-docs-links {
+      width: 100%;
+      justify-content: flex-start;
+      margin-left: 0;
+      padding: 6px 0;
+    }
+    .sdai-docs-links a {
+      padding: 0 6px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
+                    SDAI
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+<nav class="sdai-docs-links" aria-label="SDAI documentation links">
+  <a href="https://sdai.moroz.cc/">Main site</a>
+  <a href="https://t.me/sdai_app" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.86 4.58 18.62 19.84c-.24 1.08-.88 1.34-1.78.83l-4.92-3.63-2.37 2.28c-.26.26-.48.48-.98.48l.35-5.02 9.14-8.26c.4-.35-.09-.55-.61-.2L6.15 13.43l-4.87-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 3c.88-.33 1.65.2 1.31 1.58Z"/></svg>
+    <span>Telegram</span>
+  </a>
+  <a href="https://discord.gg/jzdR9m8Ves" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.54 5.26A18.1 18.1 0 0 0 15.04 3.86c-.19.34-.42.8-.57 1.16a16.7 16.7 0 0 0-4.99 0 12.3 12.3 0 0 0-.58-1.16 18 18 0 0 0-4.5 1.4C1.55 9.49.78 13.61 1.16 17.68a18.3 18.3 0 0 0 5.51 2.79c.44-.6.84-1.24 1.17-1.91-.64-.24-1.25-.54-1.82-.89.15-.11.3-.23.44-.35a12.96 12.96 0 0 0 11.08 0l.44.35c-.58.35-1.19.65-1.83.89.34.67.73 1.31 1.17 1.91a18.2 18.2 0 0 0 5.52-2.79c.46-4.72-.78-8.81-3.3-12.42ZM8.68 15.18c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.08 0 1.96.99 1.95 2.19 0 1.21-.87 2.2-1.95 2.2Zm6.64 0c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.09 0 1.96.99 1.95 2.19 0 1.21-.86 2.2-1.95 2.2Z"/></svg>
+    <span>Discord</span>
+  </a>
+</nav>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":data/androidMain">android</button>
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":data/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":data/androidMain" data-filter=":data/androidMain">
+                                <span class="checkbox--icon"></span>
+                                android
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":data/commonMain" data-filter=":data/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    SDAI
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="data::com.shifthackz.aisdv1.data.mappers////PointingToDeclaration//1241199534">
+  <div class="breadcrumbs"><a href="../index.html">data</a><span class="delimiter">/</span><span class="current">com.shifthackz.aisdv1.data.mappers</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-1255422050%2FProperties%2F527451509" anchor-label="MILLIS_PER_DAY" id="-1255422050%2FProperties%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-i-l-l-i-s_-p-e-r_-d-a-y.html"><span>MILLIS_</span><wbr><span>PER_</span><wbr><span>DAY</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1255422050%2FProperties%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-i-l-l-i-s_-p-e-r_-d-a-y.html">MILLIS_PER_DAY</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">MILLIS_PER_DAY</code> value used by the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1496037906%2FFunctions%2F527451509" anchor-label="civilFromDays" id="1496037906%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="civil-from-days.html"><span>civil</span><wbr><span>From</span><wbr><span><span>Days</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1496037906%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="civil-from-days.html"><span class="token function">civilFromDays</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">days<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-triple/index.html">Triple</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">civilFromDays</code> step in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1589215257%2FFunctions%2F527451509" anchor-label="daysFromCivil" id="-1589215257%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="days-from-civil.html"><span>days</span><wbr><span>From</span><wbr><span><span>Civil</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1589215257%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="days-from-civil.html"><span class="token function">daysFromCivil</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">year<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">month<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">day<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">daysFromCivil</code> step in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1749072008%2FFunctions%2F527451509" anchor-label="decodeBase64ImageBytes" id="1749072008%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="decode-base64-image-bytes.html"><span>decode</span><wbr><span>Base64Image</span><wbr><span><span>Bytes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1749072008%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="decode-base64-image-bytes.html"><span class="token function">decodeBase64ImageBytes</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">decodeBase64ImageBytes</code> step in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1405220891%2FFunctions%2F527451509" anchor-label="embeddingKeyword" id="-1405220891%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="embedding-keyword.html"><span>embedding</span><wbr><span><span>Keyword</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1405220891%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-swarm-ui-model-raw/index.html">SwarmUiModelRaw</a><span class="token punctuation">.</span><a href="embedding-keyword.html"><span class="token function">embeddingKeyword</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1270588397%2FFunctions%2F527451509" anchor-label="encodeBase64NoWrap" id="-1270588397%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="encode-base64-no-wrap.html"><span>encode</span><wbr><span>Base64No</span><wbr><span><span>Wrap</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1270588397%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">.</span><a href="encode-base64-no-wrap.html"><span class="token function">encodeBase64NoWrap</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">encodeBase64NoWrap</code> step in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="927349465%2FFunctions%2F527451509" anchor-label="floorDiv" id="927349465%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="floor-div.html"><span>floor</span><wbr><span><span>Div</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="927349465%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="floor-div.html"><span class="token function">floorDiv</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">x<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">y<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">floorDiv</code> step in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1857625826%2FFunctions%2F527451509" anchor-label="mapDomainToEntity" id="1857625826%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-domain-to-entity.html"><span>map</span><wbr><span>Domain</span><wbr><span>To</span><wbr><span><span>Entity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1857625826%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-generation-result-entity/index.html">GenerationResultEntity</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-embedding/index.html">Embedding</a><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-embedding-entity/index.html">StableDiffusionEmbeddingEntity</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-hugging-face-model/index.html">HuggingFaceModel</a><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-hugging-face-model-entity/index.html">HuggingFaceModelEntity</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-lo-r-a/index.html">LoRA</a><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-lora-entity/index.html">StableDiffusionLoraEntity</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-local-ai-model/index.html">LocalAiModel</a><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-local-model-entity/index.html">LocalModelEntity</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-hyper-network/index.html">StableDiffusionHyperNetwork</a><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-hyper-network-entity/index.html">StableDiffusionHyperNetworkEntity</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-model/index.html">StableDiffusionModel</a><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-model-entity/index.html">StableDiffusionModelEntity</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-sampler/index.html">StableDiffusionSampler</a><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-sampler-entity/index.html">StableDiffusionSamplerEntity</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-supporter/index.html">Supporter</a><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-supporter-entity/index.html">SupporterEntity</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-swarm-ui-model/index.html">SwarmUiModel</a><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-swarm-ui-model-entity/index.html">SwarmUiModelEntity</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-generation-result-entity/index.html">GenerationResultEntity</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-embedding/index.html">Embedding</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-embedding-entity/index.html">StableDiffusionEmbeddingEntity</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-hugging-face-model/index.html">HuggingFaceModel</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-hugging-face-model-entity/index.html">HuggingFaceModelEntity</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-lo-r-a/index.html">LoRA</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-lora-entity/index.html">StableDiffusionLoraEntity</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-local-ai-model/index.html">LocalAiModel</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-local-model-entity/index.html">LocalModelEntity</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-hyper-network/index.html">StableDiffusionHyperNetwork</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-hyper-network-entity/index.html">StableDiffusionHyperNetworkEntity</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-model/index.html">StableDiffusionModel</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-model-entity/index.html">StableDiffusionModelEntity</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-sampler/index.html">StableDiffusionSampler</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-sampler-entity/index.html">StableDiffusionSamplerEntity</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-supporter/index.html">Supporter</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-supporter-entity/index.html">SupporterEntity</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-swarm-ui-model/index.html">SwarmUiModel</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-domain-to-entity.html"><span class="token function">mapDomainToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-swarm-ui-model-entity/index.html">SwarmUiModelEntity</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapDomainToEntity</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="638654060%2FFunctions%2F527451509" anchor-label="mapEntityToDomain" id="638654060%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-entity-to-domain.html"><span>map</span><wbr><span>Entity</span><wbr><span>To</span><wbr><span><span>Domain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="638654060%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-embedding-entity/index.html">StableDiffusionEmbeddingEntity</a><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-embedding/index.html">Embedding</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-hyper-network-entity/index.html">StableDiffusionHyperNetworkEntity</a><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-hyper-network/index.html">StableDiffusionHyperNetwork</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-lora-entity/index.html">StableDiffusionLoraEntity</a><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-lo-r-a/index.html">LoRA</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-model-entity/index.html">StableDiffusionModelEntity</a><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-model/index.html">StableDiffusionModel</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-sampler-entity/index.html">StableDiffusionSamplerEntity</a><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-sampler/index.html">StableDiffusionSampler</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-swarm-ui-model-entity/index.html">SwarmUiModelEntity</a><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-swarm-ui-model/index.html">SwarmUiModel</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-generation-result-entity/index.html">GenerationResultEntity</a><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-hugging-face-model-entity/index.html">HuggingFaceModelEntity</a><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-hugging-face-model/index.html">HuggingFaceModel</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-local-model-entity/index.html">LocalModelEntity</a><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-local-ai-model/index.html">LocalAiModel</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-supporter-entity/index.html">SupporterEntity</a><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-supporter/index.html">Supporter</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-embedding-entity/index.html">StableDiffusionEmbeddingEntity</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-embedding/index.html">Embedding</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-hyper-network-entity/index.html">StableDiffusionHyperNetworkEntity</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-hyper-network/index.html">StableDiffusionHyperNetwork</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-lora-entity/index.html">StableDiffusionLoraEntity</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-lo-r-a/index.html">LoRA</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-model-entity/index.html">StableDiffusionModelEntity</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-model/index.html">StableDiffusionModel</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-stable-diffusion-sampler-entity/index.html">StableDiffusionSamplerEntity</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-sampler/index.html">StableDiffusionSampler</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-swarm-ui-model-entity/index.html">SwarmUiModelEntity</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-swarm-ui-model/index.html">SwarmUiModel</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-generation-result-entity/index.html">GenerationResultEntity</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-hugging-face-model-entity/index.html">HuggingFaceModelEntity</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-hugging-face-model/index.html">HuggingFaceModel</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-local-model-entity/index.html">LocalModelEntity</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-local-ai-model/index.html">LocalAiModel</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../storage/com.shifthackz.aisdv1.storage.db.persistent.entity/-supporter-entity/index.html">SupporterEntity</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-entity-to-domain.html"><span class="token function">mapEntityToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-supporter/index.html">Supporter</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapEntityToDomain</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="733469413%2FFunctions%2F527451509" anchor-label="mapHordeImageToImageResult" id="733469413%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-horde-image-to-image-result.html"><span>map</span><wbr><span>Horde</span><wbr><span>Image</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="733469413%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-image-to-image-payload/index.html">ImageToImagePayload</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-horde-image-to-image-result.html"><span class="token function">mapHordeImageToImageResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapHordeImageToImageResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1901909357%2FFunctions%2F527451509" anchor-label="mapHordeTextToImageResult" id="1901909357%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-horde-text-to-image-result.html"><span>map</span><wbr><span>Horde</span><wbr><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1901909357%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-horde-text-to-image-result.html"><span class="token function">mapHordeTextToImageResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapHordeTextToImageResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="173214571%2FFunctions%2F527451509" anchor-label="mapHuggingFaceImageToImageResult" id="173214571%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-hugging-face-image-to-image-result.html"><span>map</span><wbr><span>Hugging</span><wbr><span>Face</span><wbr><span>Image</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="173214571%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-image-to-image-payload/index.html">ImageToImagePayload</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-hugging-face-image-to-image-result.html"><span class="token function">mapHuggingFaceImageToImageResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapHuggingFaceImageToImageResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1879675021%2FFunctions%2F527451509" anchor-label="mapHuggingFaceTextToImageResult" id="-1879675021%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-hugging-face-text-to-image-result.html"><span>map</span><wbr><span>Hugging</span><wbr><span>Face</span><wbr><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1879675021%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-hugging-face-text-to-image-result.html"><span class="token function">mapHuggingFaceTextToImageResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapHuggingFaceTextToImageResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-677801672%2FFunctions%2F527451509" anchor-label="mapKtorImageToImageCloudResult" id="-677801672%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-ktor-image-to-image-cloud-result.html"><span>map</span><wbr><span>Ktor</span><wbr><span>Image</span><wbr><span>To</span><wbr><span>Image</span><wbr><span>Cloud</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-677801672%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-image-to-image-payload/index.html">ImageToImagePayload</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-ktor-image-to-image-cloud-result.html"><span class="token function">mapKtorImageToImageCloudResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapKtorImageToImageCloudResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-403526972%2FFunctions%2F527451509" anchor-label="mapKtorRawToCheckpointDomain" id="-403526972%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-ktor-raw-to-checkpoint-domain.html"><span>map</span><wbr><span>Ktor</span><wbr><span>Raw</span><wbr><span>To</span><wbr><span>Checkpoint</span><wbr><span><span>Domain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-403526972%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-ktor-stable-diffusion-model-raw/index.html">KtorStableDiffusionModelRaw</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-checkpoint-domain.html"><span class="token function">mapKtorRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-model/index.html">StableDiffusionModel</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-stable-diffusion-sampler-raw/index.html">StableDiffusionSamplerRaw</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-checkpoint-domain.html"><span class="token function">mapKtorRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-sampler/index.html">StableDiffusionSampler</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-swarm-ui-model-raw/index.html">SwarmUiModelRaw</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-checkpoint-domain.html"><span class="token function">mapKtorRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-swarm-ui-model/index.html">SwarmUiModel</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.response/-ktor-swarm-ui-models-response/index.html">KtorSwarmUiModelsResponse</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-checkpoint-domain.html"><span class="token function">mapKtorRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-swarm-ui-model/index.html">SwarmUiModel</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-ktor-stable-diffusion-model-raw/index.html">KtorStableDiffusionModelRaw</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-ktor-raw-to-checkpoint-domain.html"><span class="token function">mapKtorRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-model/index.html">StableDiffusionModel</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-stable-diffusion-sampler-raw/index.html">StableDiffusionSamplerRaw</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-ktor-raw-to-checkpoint-domain.html"><span class="token function">mapKtorRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-sampler/index.html">StableDiffusionSampler</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-swarm-ui-model-raw/index.html">SwarmUiModelRaw</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-ktor-raw-to-checkpoint-domain.html"><span class="token function">mapKtorRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-swarm-ui-model/index.html">SwarmUiModel</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapKtorRawToCheckpointDomain</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-113641942%2FFunctions%2F527451509" anchor-label="mapKtorRawToDomain" id="-113641942%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-ktor-raw-to-domain.html"><span>map</span><wbr><span>Ktor</span><wbr><span>Raw</span><wbr><span>To</span><wbr><span><span>Domain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-113641942%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-server-configuration-raw/index.html">ServerConfigurationRaw</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-domain.html"><span class="token function">mapKtorRawToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-configuration/index.html">ServerConfiguration</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapKtorRawToDomain</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="796092567%2FFunctions%2F527451509" anchor-label="mapKtorRawToEmbeddingDomain" id="796092567%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-ktor-raw-to-embedding-domain.html"><span>map</span><wbr><span>Ktor</span><wbr><span>Raw</span><wbr><span>To</span><wbr><span>Embedding</span><wbr><span><span>Domain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="796092567%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-swarm-ui-model-raw/index.html">SwarmUiModelRaw</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-embedding-domain.html"><span class="token function">mapKtorRawToEmbeddingDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-embedding/index.html">Embedding</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.response/-ktor-sd-embeddings-response/index.html">KtorSdEmbeddingsResponse</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-embedding-domain.html"><span class="token function">mapKtorRawToEmbeddingDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-embedding/index.html">Embedding</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.response/-ktor-swarm-ui-models-response/index.html">KtorSwarmUiModelsResponse</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-embedding-domain.html"><span class="token function">mapKtorRawToEmbeddingDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-embedding/index.html">Embedding</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-swarm-ui-model-raw/index.html">SwarmUiModelRaw</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-ktor-raw-to-embedding-domain.html"><span class="token function">mapKtorRawToEmbeddingDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-embedding/index.html">Embedding</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapKtorRawToEmbeddingDomain</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1706399850%2FFunctions%2F527451509" anchor-label="mapKtorRawToHyperNetworkDomain" id="-1706399850%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-ktor-raw-to-hyper-network-domain.html"><span>map</span><wbr><span>Ktor</span><wbr><span>Raw</span><wbr><span>To</span><wbr><span>Hyper</span><wbr><span>Network</span><wbr><span><span>Domain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1706399850%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-stable-diffusion-hyper-network-raw/index.html">StableDiffusionHyperNetworkRaw</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-hyper-network-domain.html"><span class="token function">mapKtorRawToHyperNetworkDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-hyper-network/index.html">StableDiffusionHyperNetwork</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-stable-diffusion-hyper-network-raw/index.html">StableDiffusionHyperNetworkRaw</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-ktor-raw-to-hyper-network-domain.html"><span class="token function">mapKtorRawToHyperNetworkDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stable-diffusion-hyper-network/index.html">StableDiffusionHyperNetwork</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapKtorRawToHyperNetworkDomain</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1808657296%2FFunctions%2F527451509" anchor-label="mapKtorRawToLoraDomain" id="-1808657296%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-ktor-raw-to-lora-domain.html"><span>map</span><wbr><span>Ktor</span><wbr><span>Raw</span><wbr><span>To</span><wbr><span>Lora</span><wbr><span><span>Domain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1808657296%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-stable-diffusion-lora-raw/index.html">StableDiffusionLoraRaw</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-lora-domain.html"><span class="token function">mapKtorRawToLoraDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-lo-r-a/index.html">LoRA</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-swarm-ui-model-raw/index.html">SwarmUiModelRaw</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-lora-domain.html"><span class="token function">mapKtorRawToLoraDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-lo-r-a/index.html">LoRA</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.response/-ktor-swarm-ui-models-response/index.html">KtorSwarmUiModelsResponse</a><span class="token punctuation">.</span><a href="map-ktor-raw-to-lora-domain.html"><span class="token function">mapKtorRawToLoraDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-lo-r-a/index.html">LoRA</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-stable-diffusion-lora-raw/index.html">StableDiffusionLoraRaw</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-ktor-raw-to-lora-domain.html"><span class="token function">mapKtorRawToLoraDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-lo-r-a/index.html">LoRA</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-swarm-ui-model-raw/index.html">SwarmUiModelRaw</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-ktor-raw-to-lora-domain.html"><span class="token function">mapKtorRawToLoraDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-lo-r-a/index.html">LoRA</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapKtorRawToLoraDomain</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-530083162%2FFunctions%2F527451509" anchor-label="mapKtorTextToImageCloudResult" id="-530083162%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-ktor-text-to-image-cloud-result.html"><span>map</span><wbr><span>Ktor</span><wbr><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span>Cloud</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-530083162%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-ktor-text-to-image-cloud-result.html"><span class="token function">mapKtorTextToImageCloudResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapKtorTextToImageCloudResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1870273444%2FFunctions%2F-1634526779" anchor-label="mapLocalDiffusionToAiGenResult" id="-1870273444%2FFunctions%2F-1634526779" data-filterable-set=":data/androidMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/androidMain" data-filterable-set=":data/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-local-diffusion-to-ai-gen-result.html"><span>map</span><wbr><span>Local</span><wbr><span>Diffusion</span><wbr><span>To</span><wbr><span>Ai</span><wbr><span>Gen</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1870273444%2FFunctions%2F-1634526779"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/androidMain" data-filterable-set=":data/androidMain" data-active="" data-toggle=":data/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-local-diffusion-to-ai-gen-result.html"><span class="token function">mapLocalDiffusionToAiGenResult</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapLocalDiffusionToAiGenResult</code>.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1570314634%2FFunctions%2F527451509" anchor-label="mapOpenAiCloudToAiGenResult" id="1570314634%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-open-ai-cloud-to-ai-gen-result.html"><span>map</span><wbr><span>Open</span><wbr><span>Ai</span><wbr><span>Cloud</span><wbr><span>To</span><wbr><span>Ai</span><wbr><span>Gen</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1570314634%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-open-ai-cloud-to-ai-gen-result.html"><span class="token function">mapOpenAiCloudToAiGenResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapOpenAiCloudToAiGenResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1144236922%2FFunctions%2F527451509" anchor-label="mapRawToCheckpointDomain" id="-1144236922%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-raw-to-checkpoint-domain.html"><span>map</span><wbr><span>Raw</span><wbr><span>To</span><wbr><span>Checkpoint</span><wbr><span><span>Domain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1144236922%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-hugging-face-model-raw/index.html">HuggingFaceModelRaw</a><span class="token punctuation">.</span><a href="map-raw-to-checkpoint-domain.html"><span class="token function">mapRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-hugging-face-model/index.html">HuggingFaceModel</a><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-stability-ai-engine-raw/index.html">StabilityAiEngineRaw</a><span class="token punctuation">.</span><a href="map-raw-to-checkpoint-domain.html"><span class="token function">mapRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stability-ai-engine/index.html">StabilityAiEngine</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-hugging-face-model-raw/index.html">HuggingFaceModelRaw</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-raw-to-checkpoint-domain.html"><span class="token function">mapRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-hugging-face-model/index.html">HuggingFaceModel</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-stability-ai-engine-raw/index.html">StabilityAiEngineRaw</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-raw-to-checkpoint-domain.html"><span class="token function">mapRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stability-ai-engine/index.html">StabilityAiEngine</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.response/-downloadable-model-response/index.html">DownloadableModelResponse</a><span class="token punctuation">.</span><a href="map-raw-to-checkpoint-domain.html"><span class="token function">mapRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-local-ai-model/-type/index.html">LocalAiModel.Type</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-local-ai-model/index.html">LocalAiModel</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.response/-downloadable-model-response/index.html">DownloadableModelResponse</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-raw-to-checkpoint-domain.html"><span class="token function">mapRawToCheckpointDomain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-local-ai-model/-type/index.html">LocalAiModel.Type</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-local-ai-model/index.html">LocalAiModel</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapRawToCheckpointDomain</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1040862934%2FFunctions%2F527451509" anchor-label="mapRawToDomain" id="1040862934%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-raw-to-domain.html"><span>map</span><wbr><span>Raw</span><wbr><span>To</span><wbr><span><span>Domain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1040862934%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../network/com.shifthackz.aisdv1.network.model/-supporter-raw/index.html">SupporterRaw</a><span class="token punctuation">.</span><a href="map-raw-to-domain.html"><span class="token function">mapRawToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-supporter/index.html">Supporter</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-supporter-raw/index.html">SupporterRaw</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-raw-to-domain.html"><span class="token function">mapRawToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-supporter/index.html">Supporter</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapRawToDomain</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1529750910%2FFunctions%2F527451509" anchor-label="mapStabilityImageToImageResult" id="-1529750910%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-stability-image-to-image-result.html"><span>map</span><wbr><span>Stability</span><wbr><span>Image</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1529750910%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-image-to-image-payload/index.html">ImageToImagePayload</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-stability-image-to-image-result.html"><span class="token function">mapStabilityImageToImageResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapStabilityImageToImageResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1698437194%2FFunctions%2F527451509" anchor-label="mapStabilityTextToImageResult" id="1698437194%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-stability-text-to-image-result.html"><span>map</span><wbr><span>Stability</span><wbr><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1698437194%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-stability-text-to-image-result.html"><span class="token function">mapStabilityTextToImageResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapStabilityTextToImageResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="650764652%2FFunctions%2F527451509" anchor-label="mapStableDiffusionImageToImageResult" id="650764652%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-stable-diffusion-image-to-image-result.html"><span>map</span><wbr><span>Stable</span><wbr><span>Diffusion</span><wbr><span>Image</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="650764652%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-image-to-image-payload/index.html">ImageToImagePayload</a><span class="token punctuation">, </span><a href="../../network/com.shifthackz.aisdv1.network.response/-sd-generation-response/index.html">SdGenerationResponse</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-stable-diffusion-image-to-image-result.html"><span class="token function">mapStableDiffusionImageToImageResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapStableDiffusionImageToImageResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1505956021%2FFunctions%2F527451509" anchor-label="mapStableDiffusionSeedFromRemote" id="1505956021%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-stable-diffusion-seed-from-remote.html"><span>map</span><wbr><span>Stable</span><wbr><span>Diffusion</span><wbr><span>Seed</span><wbr><span>From</span><wbr><span><span>Remote</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1505956021%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="map-stable-diffusion-seed-from-remote.html"><span class="token function">mapStableDiffusionSeedFromRemote</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">info<span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.response/-sd-generation-response/-info/index.html">SdGenerationResponse.Info</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">index<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapStableDiffusionSeedFromRemote</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1065043923%2FFunctions%2F527451509" anchor-label="mapStableDiffusionSubSeedFromRemote" id="-1065043923%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-stable-diffusion-sub-seed-from-remote.html"><span>map</span><wbr><span>Stable</span><wbr><span>Diffusion</span><wbr><span>Sub</span><wbr><span>Seed</span><wbr><span>From</span><wbr><span><span>Remote</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1065043923%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="map-stable-diffusion-sub-seed-from-remote.html"><span class="token function">mapStableDiffusionSubSeedFromRemote</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">info<span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.response/-sd-generation-response/-info/index.html">SdGenerationResponse.Info</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">index<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapStableDiffusionSubSeedFromRemote</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="12813684%2FFunctions%2F527451509" anchor-label="mapStableDiffusionTextToImageResult" id="12813684%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-stable-diffusion-text-to-image-result.html"><span>map</span><wbr><span>Stable</span><wbr><span>Diffusion</span><wbr><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="12813684%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">, </span><a href="../../network/com.shifthackz.aisdv1.network.response/-sd-generation-response/index.html">SdGenerationResponse</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-stable-diffusion-text-to-image-result.html"><span class="token function">mapStableDiffusionTextToImageResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">createdAtMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapStableDiffusionTextToImageResult</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1218045960%2FFunctions%2F527451509" anchor-label="mapToBasicHttpAuthorization" id="-1218045960%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-basic-http-authorization.html"><span>map</span><wbr><span>To</span><wbr><span>Basic</span><wbr><span>Http</span><wbr><span><span>Authorization</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1218045960%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.auth/-authorization-credentials/index.html">AuthorizationCredentials</a><span class="token punctuation">.</span><a href="map-to-basic-http-authorization.html"><span class="token function">mapToBasicHttpAuthorization</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.auth/-basic-http-authorization/index.html">BasicHttpAuthorization</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToBasicHttpAuthorization</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-384041792%2FFunctions%2F527451509" anchor-label="mapToDomain" id="-384041792%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-domain.html"><span>map</span><wbr><span>To</span><wbr><span><span>Domain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-384041792%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-server-configuration-entity/index.html">ServerConfigurationEntity</a><span class="token punctuation">.</span><a href="map-to-domain.html"><span class="token function">mapToDomain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-configuration/index.html">ServerConfiguration</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToDomain</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-834679651%2FFunctions%2F527451509" anchor-label="mapToEntity" id="-834679651%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-entity.html"><span>map</span><wbr><span>To</span><wbr><span><span>Entity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-834679651%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-configuration/index.html">ServerConfiguration</a><span class="token punctuation">.</span><a href="map-to-entity.html"><span class="token function">mapToEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../storage/com.shifthackz.aisdv1.storage.db.cache.entity/-server-configuration-entity/index.html">ServerConfigurationEntity</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToEntity</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="225732404%2FFunctions%2F527451509" anchor-label="mapToHordeRequest" id="225732404%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-horde-request.html"><span>map</span><wbr><span>To</span><wbr><span>Horde</span><wbr><span><span>Request</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="225732404%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-image-to-image-payload/index.html">ImageToImagePayload</a><span class="token punctuation">.</span><a href="map-to-horde-request.html"><span class="token function">mapToHordeRequest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.request/-horde-generation-async-request/index.html">HordeGenerationAsyncRequest</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">.</span><a href="map-to-horde-request.html"><span class="token function">mapToHordeRequest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.request/-horde-generation-async-request/index.html">HordeGenerationAsyncRequest</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToHordeRequest</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="683380660%2FFunctions%2F527451509" anchor-label="mapToHuggingFaceRequest" id="683380660%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-hugging-face-request.html"><span>map</span><wbr><span>To</span><wbr><span>Hugging</span><wbr><span>Face</span><wbr><span><span>Request</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="683380660%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-image-to-image-payload/index.html">ImageToImagePayload</a><span class="token punctuation">.</span><a href="map-to-hugging-face-request.html"><span class="token function">mapToHuggingFaceRequest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.request/-hugging-face-generation-request/index.html">HuggingFaceGenerationRequest</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">.</span><a href="map-to-hugging-face-request.html"><span class="token function">mapToHuggingFaceRequest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.request/-hugging-face-generation-request/index.html">HuggingFaceGenerationRequest</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToHuggingFaceRequest</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="824267915%2FFunctions%2F527451509" anchor-label="mapToKtorRequest" id="824267915%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-ktor-request.html"><span>map</span><wbr><span>To</span><wbr><span>Ktor</span><wbr><span><span>Request</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="824267915%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-configuration/index.html">ServerConfiguration</a><span class="token punctuation">.</span><a href="map-to-ktor-request.html"><span class="token function">mapToKtorRequest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.model/-server-configuration-raw/index.html">ServerConfigurationRaw</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToKtorRequest</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1821526410%2FFunctions%2F527451509" anchor-label="mapToKtorSwarmUiRequest" id="1821526410%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-ktor-swarm-ui-request.html"><span>map</span><wbr><span>To</span><wbr><span>Ktor</span><wbr><span>Swarm</span><wbr><span>Ui</span><wbr><span><span>Request</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1821526410%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-image-to-image-payload/index.html">ImageToImagePayload</a><span class="token punctuation">.</span><a href="map-to-ktor-swarm-ui-request.html"><span class="token function">mapToKtorSwarmUiRequest</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sessionId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">swarmUiModel<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.request/-swarm-ui-generation-request/index.html">SwarmUiGenerationRequest</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">.</span><a href="map-to-ktor-swarm-ui-request.html"><span class="token function">mapToKtorSwarmUiRequest</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sessionId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">swarmUiModel<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.request/-swarm-ui-generation-request/index.html">SwarmUiGenerationRequest</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToKtorSwarmUiRequest</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="384990309%2FFunctions%2F527451509" anchor-label="mapToOpenAiRequest" id="384990309%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-open-ai-request.html"><span>map</span><wbr><span>To</span><wbr><span>Open</span><wbr><span>Ai</span><wbr><span><span>Request</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="384990309%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">.</span><a href="map-to-open-ai-request.html"><span class="token function">mapToOpenAiRequest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.request/-open-ai-request/index.html">OpenAiRequest</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToOpenAiRequest</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1688736276%2FFunctions%2F527451509" anchor-label="mapToStabilityAiRequest" id="1688736276%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-stability-ai-request.html"><span>map</span><wbr><span>To</span><wbr><span>Stability</span><wbr><span>Ai</span><wbr><span><span>Request</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1688736276%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-image-to-image-payload/index.html">ImageToImagePayload</a><span class="token punctuation">.</span><a href="map-to-stability-ai-request.html"><span class="token function">mapToStabilityAiRequest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">.</span><a href="map-to-stability-ai-request.html"><span class="token function">mapToStabilityAiRequest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.request/-stability-text-to-image-request/index.html">StabilityTextToImageRequest</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToStabilityAiRequest</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-242494541%2FFunctions%2F527451509" anchor-label="mapToStabilityPrompt" id="-242494541%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-stability-prompt.html"><span>map</span><wbr><span>To</span><wbr><span>Stability</span><wbr><span><span>Prompt</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-242494541%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="map-to-stability-prompt.html"><span class="token function">mapToStabilityPrompt</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">defaultWeight<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">1.0</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../network/com.shifthackz.aisdv1.network.model/-stability-text-prompt-raw/index.html">StabilityTextPromptRaw</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToStabilityPrompt</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1133900236%2FFunctions%2F527451509" anchor-label="mapToStableDiffusionRequest" id="-1133900236%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-stable-diffusion-request.html"><span>map</span><wbr><span>To</span><wbr><span>Stable</span><wbr><span>Diffusion</span><wbr><span><span>Request</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1133900236%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-image-to-image-payload/index.html">ImageToImagePayload</a><span class="token punctuation">.</span><a href="map-to-stable-diffusion-request.html"><span class="token function">mapToStableDiffusionRequest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.request/-image-to-image-request/index.html">ImageToImageRequest</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a><span class="token punctuation">.</span><a href="map-to-stable-diffusion-request.html"><span class="token function">mapToStableDiffusionRequest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.request/-text-to-image-request/index.html">TextToImageRequest</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToStableDiffusionRequest</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1924272970%2FFunctions%2F527451509" anchor-label="padded" id="-1924272970%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="padded.html"><span><span>padded</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1924272970%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">.</span><a href="padded.html"><span class="token function">padded</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">padded</code> step in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1934356615%2FFunctions%2F527451509" anchor-label="parseInfo" id="-1934356615%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="parse-info.html"><span>parse</span><wbr><span><span>Info</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1934356615%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="parse-info.html"><span class="token function">parseInfo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">infoString<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../network/com.shifthackz.aisdv1.network.response/-sd-generation-response/-info/index.html">SdGenerationResponse.Info</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">parseInfo</code> step in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1391306957%2FFunctions%2F527451509" anchor-label="toEpochMillis" id="-1391306957%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-epoch-millis.html"><span>to</span><wbr><span>Epoch</span><wbr><span><span>Millis</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1391306957%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="to-epoch-millis.html"><span class="token function">toEpochMillis</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">toEpochMillis</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1225922%2FFunctions%2F527451509" anchor-label="toIsoDate" id="1225922%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-iso-date.html"><span>to</span><wbr><span>Iso</span><wbr><span><span>Date</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1225922%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">.</span><a href="to-iso-date.html"><span class="token function">toIsoDate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">toIsoDate</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-958094321%2FFunctions%2F527451509" anchor-label="toPngDataUri" id="-958094321%2FFunctions%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-png-data-uri.html"><span>to</span><wbr><span>Png</span><wbr><span>Data</span><wbr><span><span>Uri</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-958094321%2FFunctions%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="to-png-data-uri.html"><span class="token function">toPngDataUri</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">toPngDataUri</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

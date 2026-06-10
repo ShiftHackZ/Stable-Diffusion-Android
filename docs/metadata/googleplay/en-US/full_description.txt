@@ -1,0 +1,25 @@
+Create AI images on mobile with SDAI.
+
+SDAI is an open-source AI image generator for Android that gives you a clean mobile workflow for prompting, tuning generation settings, reviewing results, and choosing the AI provider that fits your setup.
+
+Use SDAI when you want a flexible AI art generator instead of a single locked cloud service. Connect to your own AUTOMATIC1111 or SwarmUI server, use AI Horde community workers, call hosted providers such as Hugging Face, OpenAI Images, or Stability AI, or try supported Android local diffusion engines where available.
+
+What you can do:
+- Create images from text prompts
+- Use positive and negative prompts where supported
+- Tune size, seed, steps, CFG scale, samplers, batch options, and provider-specific settings
+- Work with Img2Img, Inpaint, LoRA, embeddings, hypernetworks, and model selection when your provider supports them
+- Save generated images in a built-in gallery
+- Open generation details, reuse prompts, share images, save to device, or export your gallery
+- Switch between light and dark themes, languages, and gallery layouts
+
+Why creators use SDAI:
+- Bring your own AI provider
+- Keep a mobile-first workflow for serious image generation
+- Use self-hosted, cloud, community, or local options
+- No ads, no telemetry, no provider lock-in
+- Open-source and community-driven
+
+SDAI is made for artists, hobbyists, prompt engineers, and builders who want image generation on the go without giving up control. Start with demo mode, connect the provider you already trust, and turn ideas into images from your phone.
+
+Note: feature availability depends on the selected AI provider and app flavor. Some local generation features are Android-only and may not be available in every distribution channel.

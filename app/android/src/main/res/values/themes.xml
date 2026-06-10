@@ -1,0 +1,21 @@
+<resources>
+
+    <style name="Theme.AiSdCompose" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/catppuccin_latte_mauve</item>
+        <item name="colorPrimaryVariant">@color/catppuccin_latte_mauve</item>
+        <item name="colorOnPrimary">@color/catppuccin_latte_base</item>
+        <item name="colorSecondary">@color/catppuccin_latte_mauve</item>
+        <item name="colorSecondaryVariant">@color/catppuccin_latte_mauve</item>
+        <item name="colorOnSecondary">@color/catppuccin_latte_base</item>
+        <item name="android:statusBarColor">@color/sdai_system_bar_light</item>
+        <item name="android:navigationBarColor">@color/sdai_system_bar_light</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+    <style name="Theme.AiSdCompose.Splash" parent="Theme.Catppuccin.Latte.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenAnimationDuration">500</item>
+        <item name="postSplashScreenTheme">@style/Theme.AiSdCompose</item>
+    </style>
+</resources>

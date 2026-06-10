@@ -1,0 +1,18 @@
+SDAI is an open-source AI image generation app for creators who want provider freedom on mobile.
+
+Write prompts, tune settings, connect the image provider you already use, and keep results in a clean local gallery. SDAI is designed for artists, hobbyists, prompt engineers, and builders who want a mobile workflow around their existing generation setup.
+
+Built for flexible AI art workflows:
+- Connect to self-hosted WebUI servers and supported hosted APIs
+- Use community workers when you need remote generation
+- Prompt with positive and negative text where supported
+- Adjust size, seed, steps, CFG scale, sampler, model or engine settings when available
+- Review generated images in a built-in gallery
+- Open result details, reuse prompts, share images, and save to your device
+- Choose language, gallery density, theme behavior, and accent color
+
+SDAI does not lock your work into one cloud. Use the AI provider that fits the moment, keep your workflow mobile, and move from prompt to saved image without losing control.
+
+No ads. No telemetry. Open source. Provider-first.
+
+Feature availability depends on the selected AI provider.

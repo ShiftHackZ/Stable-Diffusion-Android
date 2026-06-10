@@ -1,0 +1,431 @@
+@file:Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
+
+package com.shifthackz.aisdv1.feature.onnx.ai.unet
+
+import ai.onnxruntime.OnnxTensor
+import ai.onnxruntime.OrtSession
+import ai.onnxruntime.OrtSession.SessionOptions
+import ai.onnxruntime.providers.NNAPIFlags
+import android.graphics.Bitmap
+import android.util.Pair
+import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.core.common.log.debugLog
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.feature.onnx.LocalDiffusionContract
+import com.shifthackz.aisdv1.feature.onnx.LocalDiffusionContract.KEY_ENCODER_HIDDEN_STATES
+import com.shifthackz.aisdv1.feature.onnx.LocalDiffusionContract.KEY_LATENT_SAMPLE
+import com.shifthackz.aisdv1.feature.onnx.LocalDiffusionContract.KEY_SAMPLE
+import com.shifthackz.aisdv1.feature.onnx.LocalDiffusionContract.KEY_TIME_STEP
+import com.shifthackz.aisdv1.feature.onnx.LocalDiffusionContract.ORT
+import com.shifthackz.aisdv1.feature.onnx.LocalDiffusionContract.ORT_KEY_MODEL_FORMAT
+import com.shifthackz.aisdv1.feature.onnx.LocalDiffusionContract.TAG
+import com.shifthackz.aisdv1.feature.onnx.ai.extensions.duplicate
+import com.shifthackz.aisdv1.feature.onnx.ai.extensions.getSizes
+import com.shifthackz.aisdv1.feature.onnx.ai.extensions.multipleTensorsByFloat
+import com.shifthackz.aisdv1.feature.onnx.ai.extensions.splitTensor
+import com.shifthackz.aisdv1.feature.onnx.ai.scheduler.EulerAncestralDiscreteLocalDiffusionScheduler
+import com.shifthackz.aisdv1.feature.onnx.ai.vae.VaeDecoder
+import com.shifthackz.aisdv1.feature.onnx.entity.Array3D
+import com.shifthackz.aisdv1.feature.onnx.entity.LocalDiffusionFlag
+import com.shifthackz.aisdv1.feature.onnx.entity.LocalDiffusionTensor
+import com.shifthackz.aisdv1.feature.onnx.environment.DeviceNNAPIFlagProvider
+import com.shifthackz.aisdv1.feature.onnx.environment.LocalModelIdProvider
+import com.shifthackz.aisdv1.feature.onnx.environment.OrtEnvironmentProvider
+import com.shifthackz.aisdv1.feature.onnx.extensions.modelPathPrefix
+import java.nio.IntBuffer
+import java.util.EnumSet
+import java.util.Random
+import kotlin.math.cos
+import kotlin.math.ln
+import kotlin.math.sqrt
+
+/**
+ * Coordinates `UNet` behavior in the SDAI ONNX local diffusion feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
+internal class UNet(
+    /**
+     * Exposes the `deviceNNAPIFlagProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val deviceNNAPIFlagProvider: DeviceNNAPIFlagProvider,
+    /**
+     * Exposes the `ortEnvironmentProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val ortEnvironmentProvider: OrtEnvironmentProvider,
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val fileProviderDescriptor: FileProviderDescriptor,
+    /**
+     * Exposes the `localModelIdProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val localModelIdProvider: LocalModelIdProvider,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val preferenceManager: PreferenceManager,
+) {
+
+    /**
+     * Exposes the `decoder` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private var decoder: VaeDecoder? = null
+
+    /**
+     * Exposes the `random` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val random = Random()
+
+    /**
+     * Exposes the `callback` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private var callback: Callback? = null
+    /**
+     * Exposes the `session` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private var session: OrtSession? = null
+
+    /**
+     * Exposes the `width` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private var width = 384
+    /**
+     * Exposes the `height` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private var height = 384
+
+    /**
+     * Executes the `initialize` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    fun initialize() {
+        if (session != null) return
+        decoder = VaeDecoder(
+            ortEnvironmentProvider,
+            fileProviderDescriptor,
+            localModelIdProvider,
+            preferenceManager,
+            deviceNNAPIFlagProvider.get(),
+        )
+        val options = SessionOptions()
+        options.addConfigEntry(ORT_KEY_MODEL_FORMAT, ORT)
+        if (deviceNNAPIFlagProvider.get() == LocalDiffusionFlag.NN_API.value) {
+            options.addNnapi(EnumSet.of(NNAPIFlags.CPU_DISABLED))
+        }
+        session = ortEnvironmentProvider.get().createSession(
+            "${modelPathPrefix(preferenceManager, fileProviderDescriptor, localModelIdProvider)}/${LocalDiffusionContract.UNET_MODEL}",
+            options
+        )
+    }
+
+    /**
+     * Creates the SDAI value produced by `createUNetModelInput`.
+     *
+     * @param encoderHiddenStates encoder hidden states value consumed by the API.
+     * @param sample sample value consumed by the API.
+     * @param timeStep time step value consumed by the API.
+     * @return Result produced by `createUNetModelInput`.
+     * @author Dmitriy Moroz
+     */
+    private fun createUNetModelInput(
+        encoderHiddenStates: OnnxTensor,
+        sample: OnnxTensor,
+        timeStep: OnnxTensor
+    ): Map<String, OnnxTensor> {
+        val map: MutableMap<String, OnnxTensor> = HashMap()
+        map[KEY_ENCODER_HIDDEN_STATES] = encoderHiddenStates
+        map[KEY_SAMPLE] = sample
+        map[KEY_TIME_STEP] = timeStep
+        return map
+    }
+
+    /**
+     * Executes the `generateLatentSample` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param batchSize batch size value consumed by the API.
+     * @param height height value consumed by the API.
+     * @param width width value consumed by the API.
+     * @param seed seed value consumed by the API.
+     * @param initNoiseSigma init noise sigma value consumed by the API.
+     * @return Result produced by `generateLatentSample`.
+     * @author Dmitriy Moroz
+     */
+    private fun generateLatentSample(
+        batchSize: Int,
+        height: Int,
+        width: Int,
+        seed: Long,
+        initNoiseSigma: Float
+    ): LocalDiffusionTensor<*> {
+        val random = Random(seed)
+        val channels = 4
+        val latentsArray = Array(batchSize) {
+            Array(channels) {
+                Array(height / 8) {
+                    FloatArray(width / 8)
+                }
+            }
+        }
+        for (i in 0 until batchSize) {
+            for (j in 0 until channels) {
+                for (k in 0 until (height / 8)) {
+                    for (l in 0 until (width / 8)) {
+                        val u1 = random.nextDouble()
+                        val u2 = random.nextDouble()
+                        val radius = sqrt(-2.0f * ln(u1))
+                        val theta = 2.0 * Math.PI * u2
+                        val standardNormalRand = radius * cos(theta)
+                        latentsArray[i][j][k][l] = (standardNormalRand * initNoiseSigma).toFloat()
+                    }
+                }
+            }
+        }
+        return LocalDiffusionTensor(
+            OnnxTensor.createTensor(ortEnvironmentProvider.get(), latentsArray),
+            latentsArray,
+            longArrayOf(
+                batchSize.toLong(),
+                channels.toLong(),
+                (height / 8).toLong(),
+                (width / 8).toLong()
+            )
+        )
+    }
+
+    /**
+     * Executes the `performGuidance` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param noisePrediction noise prediction value consumed by the API.
+     * @param noisePredictionText noise prediction text value consumed by the API.
+     * @param guidanceScale guidance scale value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    private fun performGuidance(
+        noisePrediction: Array3D<FloatArray>,
+        noisePredictionText: Array3D<FloatArray>,
+        guidanceScale: Double,
+    ) {
+        val indexes: LongArray = getSizes(noisePrediction)
+        for (i in 0 until indexes[0]) {
+            for (j in 0 until indexes[1]) {
+                for (k in 0 until indexes[2]) {
+                    for (l in 0 until indexes[3]) {
+                        noisePrediction[i.toInt()][j.toInt()][k.toInt()][l.toInt()] =
+                            noisePrediction[i.toInt()][j.toInt()][k.toInt()][l.toInt()] +
+                                    guidanceScale.toFloat() * (noisePredictionText[i.toInt()][j.toInt()][k.toInt()][l.toInt()] -
+                                    noisePrediction[i.toInt()][j.toInt()][k.toInt()][l.toInt()])
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Executes the `inference` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param seedNum seed num value consumed by the API.
+     * @param numInferenceSteps num inference steps value consumed by the API.
+     * @param textEmbeddings text embeddings value consumed by the API.
+     * @param guidanceScale guidance scale value consumed by the API.
+     * @param batchSize batch size value consumed by the API.
+     * @param width width value consumed by the API.
+     * @param height height value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    fun inference(
+        seedNum: Long,
+        numInferenceSteps: Int,
+        textEmbeddings: OnnxTensor,
+        guidanceScale: Double,
+        batchSize: Int,
+        width: Int,
+        height: Int,
+    ) {
+        debugLog("{$TAG} {uNet} {inference} Trying to start inference:")
+        debugLog("{$TAG} {uNet} {inference} - seed: $seedNum")
+        debugLog("{$TAG} {uNet} {inference} - numInferenceSteps: $numInferenceSteps")
+        debugLog("{$TAG} {uNet} {inference} - textEmbeddings: $textEmbeddings")
+        debugLog("{$TAG} {uNet} {inference} - guidanceScale: $guidanceScale")
+        debugLog("{$TAG} {uNet} {inference} - batchSize: $batchSize")
+        debugLog("{$TAG} {uNet} {inference} - size: ${width}x${height}")
+        this.width = width
+        this.height = height
+        val localDiffusionScheduler = EulerAncestralDiscreteLocalDiffusionScheduler()
+        debugLog("{$TAG} {uNet} {inference} Initialized scheduler: $localDiffusionScheduler")
+        val timeSteps: IntArray = localDiffusionScheduler.setTimeSteps(numInferenceSteps)
+        val seed = if (seedNum <= 0) random.nextLong() else seedNum
+        var latents: LocalDiffusionTensor<*> = generateLatentSample(
+            batchSize,
+            height,
+            width,
+            seed,
+            localDiffusionScheduler.initNoiseSigma.toFloat()
+        )
+        debugLog("{$TAG} {uNet} {inference} Got latents: ${latents.hashCode()}")
+        val shape = longArrayOf(2, 4, (height / 8).toLong(), (width / 8).toLong())
+        debugLog("{$TAG} {uNet} {inference} Got shape: $shape")
+        debugLog("{$TAG} {uNet} {inference} Starting steps processing! Total : ${timeSteps.size}")
+        for (i in timeSteps.indices) {
+            var latentModelInput: LocalDiffusionTensor<*> = duplicate(
+                latents.tensor.floatBuffer.array(),
+                shape,
+            )
+            latentModelInput = localDiffusionScheduler.scaleModelInput(latentModelInput, i)
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} ------------------")
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} Latent model input: $latentModelInput")
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} Notifying callback about step.")
+            callback?.onStep(timeSteps.size, i)
+            val input = createUNetModelInput(
+                textEmbeddings,
+                latentModelInput.tensor,
+                OnnxTensor.createTensor(
+                    ortEnvironmentProvider.get(),
+                    IntBuffer.wrap(intArrayOf(timeSteps[i])),
+                    longArrayOf(1)
+                )
+            )
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} Got uNet model input: $input")
+            val result = session!!.run(input)
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} Got result from uNet session: $result")
+            val dataSet = result[0].value as Array3D<FloatArray>
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} Trying to close ORT session in: $result")
+            result.close()
+            val splitTensors: Pair<Array3D<FloatArray>, Array3D<FloatArray>> =
+                splitTensor(
+                    dataSet,
+                    longArrayOf(1, 4, (height / 8).toLong(), (width / 8).toLong())
+                )
+            val noisePrediction = splitTensors.first
+            val noisePredictionText = splitTensors.second
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} Got split tensors with prediction:")
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} - splitTensors: $splitTensors")
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} - noisePrediction: $noisePrediction")
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} - noisePredictionText: $noisePredictionText")
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} Trying to preform guidance...")
+            performGuidance(noisePrediction, noisePredictionText, guidanceScale)
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} Guidance performed successfully!")
+            latents = localDiffusionScheduler.step(
+                LocalDiffusionTensor(
+                    OnnxTensor.createTensor(
+                        ortEnvironmentProvider.get(),
+                        noisePrediction,
+                    ),
+                    noisePrediction,
+                    getSizes(noisePrediction),
+                ),
+                i,
+                latents,
+            )
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} Finalized latents: $latents")
+            debugLog("{$TAG} {uNet} {inference} {Step_$i} ------------------")
+        }
+        callback?.also { clb ->
+            debugLog("{$TAG} {uNet} {inference} Finalization / Flushing image...")
+            callback?.onStep(timeSteps.size, timeSteps.size)
+            val bitmap = decode(latents)
+            debugLog("{$TAG} {uNet} {inference} Finalization / Decoded bitmap: ${bitmap.hashCode()}")
+            clb.onBuildImage(0, bitmap)
+            debugLog("{$TAG} {uNet} {inference} Finalization / Notifying callback and closing session.")
+            close()
+        }
+    }
+
+    /**
+     * Executes the `decode` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param latents latents value consumed by the API.
+     * @return Result produced by `decode`.
+     * @author Dmitriy Moroz
+     */
+    fun decode(latents: LocalDiffusionTensor<*>): Bitmap {
+        debugLog("{$TAG} {uNet} {decode} Trying to decode latents: ${latents.hashCode()}")
+        val tensor: LocalDiffusionTensor<*> = multipleTensorsByFloat(
+            latents.tensor.floatBuffer.array(),
+            1.0f / 0.18215f,
+            latents.shape
+        )
+        val decoderInput: MutableMap<String, OnnxTensor> = HashMap()
+        decoderInput[KEY_LATENT_SAMPLE] = tensor.tensor
+        val value: Any = decoder!!.decode(decoderInput.toMap())
+        val bitmap = decoder!!.convertToImage(
+            value as Array3D<FloatArray>,
+            width,
+            height,
+        )
+        debugLog("{$TAG} {uNet} {decode} Bitmap generated successfully: ${bitmap.hashCode()}")
+        return bitmap
+    }
+
+    /**
+     * Executes the `close` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    fun close() {
+        debugLog("{$TAG} {uNet} {close} Closing session...")
+        session?.close()
+        decoder?.close()
+        session = null
+        decoder = null
+        debugLog("{$TAG} {uNet} {close} Session closed successfully!")
+    }
+
+    /**
+     * Executes the `setCallback` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param callback callback value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    fun setCallback(callback: Callback?) {
+        debugLog("{$TAG} {uNet} Setting new result callback ${callback.hashCode()}")
+        this.callback = callback
+    }
+
+    /**
+     * Defines the `Callback` contract for the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    interface Callback {
+        /**
+         * Executes the `onStep` step in the SDAI ONNX local diffusion feature layer.
+         *
+         * @param maxStep max step value consumed by the API.
+         * @param step step value consumed by the API.
+         * @author Dmitriy Moroz
+         */
+        fun onStep(maxStep: Int, step: Int)
+        /**
+         * Executes the `onBuildImage` step in the SDAI ONNX local diffusion feature layer.
+         *
+         * @param status status value consumed by the API.
+         * @param bitmap bitmap image processed by the operation.
+         * @author Dmitriy Moroz
+         */
+        fun onBuildImage(status: Int, bitmap: Bitmap?)
+    }
+}

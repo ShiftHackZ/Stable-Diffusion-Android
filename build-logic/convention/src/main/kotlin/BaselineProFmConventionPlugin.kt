@@ -1,11 +1,11 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
 import com.android.tools.profgen.ArtProfile
 import com.android.tools.profgen.ArtProfileSerializer
 import com.android.tools.profgen.DexFile
 import com.android.tools.profgen.DexFileData
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 import java.io.FileOutputStream
 import java.util.Collections
 

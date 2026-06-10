@@ -1,0 +1,180 @@
+package com.shifthackz.aisdv1.presentation.widget.item
+
+import androidx.compose.animation.Animatable
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.extensions.shimmer
+import kotlinx.coroutines.delay
+
+/**
+ * Renders the `SettingsItem` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param loading loading value consumed by the API.
+ * @param enabled enabled value consumed by the API.
+ * @param selected selected value consumed by the API.
+ * @param animateBackground animate background value consumed by the API.
+ * @param showChevron show chevron value consumed by the API.
+ * @param endValueText end value text value consumed by the API.
+ * @param endValueContent end value content value consumed by the API.
+ * @param startIconContent start icon content value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
+@Composable
+fun SettingsItem(
+    text: String,
+    modifier: Modifier = Modifier,
+    loading: Boolean = false,
+    enabled: Boolean = true,
+    selected: Boolean = false,
+    animateBackground: Boolean = false,
+    showChevron: Boolean = true,
+    endValueText: String = "",
+    endValueContent: (@Composable () -> Unit)? = null,
+    startIconContent: (@Composable () -> Unit)? = null,
+    onClick: () -> Unit = {},
+) {
+    val primary = MaterialTheme.colorScheme.primaryContainer
+    val secondary = MaterialTheme.colorScheme.tertiaryContainer
+    var colorFrom by remember { mutableStateOf(primary) }
+    var colorTo by remember { mutableStateOf(secondary) }
+    val colorState = remember { Animatable(colorFrom) }
+    if (animateBackground) {
+        LaunchedEffect(Unit) {
+            while (true) {
+                colorState.animateTo(colorTo, animationSpec = tween(500))
+                delay(500)
+                val tmp = colorTo
+                colorTo = colorFrom
+                colorFrom = tmp
+            }
+        }
+    }
+
+    if (loading) {
+        Box(
+            modifier = modifier
+                .clip(RoundedCornerShape(16.dp))
+                .defaultMinSize(minHeight = 50.dp)
+                .shimmer(),
+        )
+    }
+    AnimatedVisibility(
+        visible = !loading,
+        enter = fadeIn(),
+        exit = fadeOut(),
+    ) {
+        Row(
+            modifier = modifier
+                .clip(RoundedCornerShape(16.dp))
+                .background(
+                    color = if (animateBackground) {
+                        colorState.value
+                    } else {
+                        MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.8f)
+                    },
+                )
+                .defaultMinSize(minHeight = 50.dp)
+                .clickable(enabled = enabled) { onClick() }
+                .border(
+                    width = 2.dp,
+                    shape = RoundedCornerShape(16.dp),
+                    color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            SettingsItemContent(
+                modifier = endValueContent
+                    ?.let { Modifier.fillMaxWidth(0.8f) }
+                    ?: Modifier,
+                text = text,
+                startIconContent = startIconContent,
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                endValueContent?.invoke() ?: run {
+                    if (endValueText.isNotEmpty()) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(0.5f),
+                            text = endValueText,
+                            style = MaterialTheme.typography.bodySmall,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Right,
+                        )
+                    }
+                    if (showChevron) {
+                        Icon(
+                            modifier = Modifier.padding(horizontal = 6.dp),
+                            imageVector = Icons.Default.ChevronRight,
+                            contentDescription = null,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Renders the `SettingsItemContent` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param startIconContent start icon content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
+@Composable
+fun SettingsItemContent(
+    text: String,
+    modifier: Modifier = Modifier,
+    startIconContent: (@Composable () -> Unit)? = null,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Spacer(modifier = Modifier.width(8.dp))
+        startIconContent?.invoke()
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge,
+        )
+    }
+}

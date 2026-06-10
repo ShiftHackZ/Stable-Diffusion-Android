@@ -1,0 +1,1177 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.shifthackz.aisdv1.presentation.screen.txt2img</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script><meta id="sdai-docs-seo" name="description" content="Dokka API documentation for SDAI Kotlin Multiplatform, Android, iOS, and shared modules.">
+<link rel="canonical" href="https://sdai.moroz.cc/docs/presentation/com.shifthackz.aisdv1.presentation.screen.txt2img/index.html">
+<meta property="og:title" content="SDAI Documentation">
+<meta property="og:description" content="Kotlin API documentation for SDAI Android, iOS, and shared modules.">
+<meta property="og:url" content="https://sdai.moroz.cc/docs/presentation/com.shifthackz.aisdv1.presentation.screen.txt2img/index.html">
+<meta property="og:site_name" content="SDAI">
+<meta property="og:type" content="website">
+<style id="sdai-docs-branding">
+  .sdai-docs-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .sdai-docs-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .sdai-docs-links a:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .sdai-docs-links svg {
+    width: 18px;
+    height: 18px;
+  }
+  @media (max-width: 760px) {
+    .sdai-docs-links {
+      width: 100%;
+      justify-content: flex-start;
+      margin-left: 0;
+      padding: 6px 0;
+    }
+    .sdai-docs-links a {
+      padding: 0 6px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
+                    SDAI
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+<nav class="sdai-docs-links" aria-label="SDAI documentation links">
+  <a href="https://sdai.moroz.cc/">Main site</a>
+  <a href="https://t.me/sdai_app" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.86 4.58 18.62 19.84c-.24 1.08-.88 1.34-1.78.83l-4.92-3.63-2.37 2.28c-.26.26-.48.48-.98.48l.35-5.02 9.14-8.26c.4-.35-.09-.55-.61-.2L6.15 13.43l-4.87-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 3c.88-.33 1.65.2 1.31 1.58Z"/></svg>
+    <span>Telegram</span>
+  </a>
+  <a href="https://discord.gg/jzdR9m8Ves" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.54 5.26A18.1 18.1 0 0 0 15.04 3.86c-.19.34-.42.8-.57 1.16a16.7 16.7 0 0 0-4.99 0 12.3 12.3 0 0 0-.58-1.16 18 18 0 0 0-4.5 1.4C1.55 9.49.78 13.61 1.16 17.68a18.3 18.3 0 0 0 5.51 2.79c.44-.6.84-1.24 1.17-1.91-.64-.24-1.25-.54-1.82-.89.15-.11.3-.23.44-.35a12.96 12.96 0 0 0 11.08 0l.44.35c-.58.35-1.19.65-1.83.89.34.67.73 1.31 1.17 1.91a18.2 18.2 0 0 0 5.52-2.79c.46-4.72-.78-8.81-3.3-12.42ZM8.68 15.18c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.08 0 1.96.99 1.95 2.19 0 1.21-.87 2.2-1.95 2.2Zm6.64 0c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.09 0 1.96.99 1.95 2.19 0 1.21-.86 2.2-1.95 2.2Z"/></svg>
+    <span>Discord</span>
+  </a>
+</nav>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":presentation/androidMain">android</button>
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":presentation/commonMain">common</button>
+                <button class="platform-tag platform-selector native-like" data-active="" aria-pressed="true" data-filter=":presentation/iosMain">ios</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":presentation/androidMain" data-filter=":presentation/androidMain">
+                                <span class="checkbox--icon"></span>
+                                android
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":presentation/commonMain" data-filter=":presentation/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option native-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":presentation/iosMain" data-filter=":presentation/iosMain">
+                                <span class="checkbox--icon"></span>
+                                ios
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    SDAI
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="presentation::com.shifthackz.aisdv1.presentation.screen.txt2img////PointingToDeclaration//1426011139">
+  <div class="breadcrumbs"><a href="../index.html">presentation</a><span class="delimiter">/</span><span class="current">com.shifthackz.aisdv1.presentation.screen.txt2img</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="1967665268%2FClasslikes%2F97127765" anchor-label="AndroidImageSaver" id="1967665268%2FClasslikes%2F97127765" data-filterable-set=":presentation/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-image-saver/index.html"><span>Android</span><wbr><span>Image</span><wbr><span><span>Saver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1967665268%2FClasslikes%2F97127765"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-android-image-saver/index.html">AndroidImageSaver</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>mediaStoreGateway<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.gateway/-media-store-gateway/index.html">MediaStoreGateway</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>dispatchersProvider<span class="token operator">: </span><a href="../../core/common/com.shifthackz.aisdv1.core.common.schedulers/-dispatchers-provider/index.html">DispatchersProvider</a></span></span><span class="token punctuation">)</span> : <a href="-image-saver/index.html">ImageSaver</a></div><div class="brief "><p class="paragraph">Coordinates <code class="lang-kotlin">AndroidImageSaver</code> behavior in the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="532234470%2FClasslikes%2F97127765" anchor-label="AndroidImageSharer" id="532234470%2FClasslikes%2F97127765" data-filterable-set=":presentation/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-image-sharer/index.html"><span>Android</span><wbr><span>Image</span><wbr><span><span>Sharer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="532234470%2FClasslikes%2F97127765"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-android-image-sharer/index.html">AndroidImageSharer</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>fileProviderDescriptor<span class="token operator">: </span><a href="../../core/common/com.shifthackz.aisdv1.core.common.file/-file-provider-descriptor/index.html">FileProviderDescriptor</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>dispatchersProvider<span class="token operator">: </span><a href="../../core/common/com.shifthackz.aisdv1.core.common.schedulers/-dispatchers-provider/index.html">DispatchersProvider</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>base64ToBitmapConverter<span class="token operator">: </span><a href="../../core/imageprocessing/com.shifthackz.aisdv1.core.imageprocessing/-base64-to-bitmap-converter/index.html">Base64ToBitmapConverter</a></span></span><span class="token punctuation">)</span> : <a href="-image-sharer/index.html">ImageSharer</a>, <a href="../com.shifthackz.aisdv1.presentation.utils/-file-savable-exporter/-bmp-to-file/index.html">FileSavableExporter.BmpToFile</a></div><div class="brief "><p class="paragraph">Coordinates <code class="lang-kotlin">AndroidImageSharer</code> behavior in the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="610107147%2FClasslikes%2F-1625832475" anchor-label="ImageSaver" id="610107147%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-image-saver/index.html"><span>Image</span><wbr><span><span>Saver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="610107147%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-image-saver/index.html">ImageSaver</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ImageSaver</code> contract for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-816835832%2FClasslikes%2F-1625832475" anchor-label="ImageSaveResult" id="-816835832%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-image-save-result/index.html"><span>Image</span><wbr><span>Save</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-816835832%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-image-save-result/index.html">ImageSaveResult</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ImageSaveResult</code> contract for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1397605679%2FClasslikes%2F-1625832475" anchor-label="ImageSharer" id="1397605679%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-image-sharer/index.html"><span>Image</span><wbr><span><span>Sharer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1397605679%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-image-sharer/index.html">ImageSharer</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ImageSharer</code> contract for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="654967652%2FClasslikes%2F-1625832475" anchor-label="ImageShareResult" id="654967652%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-image-share-result/index.html"><span>Image</span><wbr><span>Share</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="654967652%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-image-share-result/index.html">ImageShareResult</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ImageShareResult</code> contract for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-576401386%2FClasslikes%2F-1449504415" anchor-label="IosImageSaver" id="-576401386%2FClasslikes%2F-1449504415" data-filterable-set=":presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-ios-image-saver/index.html"><span>Ios</span><wbr><span>Image</span><wbr><span><span>Saver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-576401386%2FClasslikes%2F-1449504415"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-active="" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">class </span><a href="-ios-image-saver/index.html">IosImageSaver</a> : <a href="../../presentation/com.shifthackz.aisdv1.presentation.screen.txt2img/-image-saver/index.html">ImageSaver</a></div><div class="brief "><p class="paragraph">Coordinates <code class="lang-kotlin">IosImageSaver</code> behavior in the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1024420476%2FClasslikes%2F-1449504415" anchor-label="IosImageSharer" id="-1024420476%2FClasslikes%2F-1449504415" data-filterable-set=":presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-ios-image-sharer/index.html"><span>Ios</span><wbr><span>Image</span><wbr><span><span>Sharer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1024420476%2FClasslikes%2F-1449504415"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-active="" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">class </span><a href="-ios-image-sharer/index.html">IosImageSharer</a> : <a href="../../presentation/com.shifthackz.aisdv1.presentation.screen.txt2img/-image-sharer/index.html">ImageSharer</a></div><div class="brief "><p class="paragraph">Coordinates <code class="lang-kotlin">IosImageSharer</code> behavior in the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1883994939%2FClasslikes%2F-1625832475" anchor-label="StableDiffusionSamplersKey" id="1883994939%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stable-diffusion-samplers-key/index.html"><span>Stable</span><wbr><span>Diffusion</span><wbr><span>Samplers</span><wbr><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1883994939%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">data </span><span class="token keyword">class </span><a href="-stable-diffusion-samplers-key/index.html">StableDiffusionSamplersKey</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>serverUrl<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>demoMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Carries <code class="lang-kotlin">StableDiffusionSamplersKey</code> data through the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1766404772%2FClasslikes%2F-1625832475" anchor-label="TextToImageActionHandler" id="1766404772%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-to-image-action-handler/index.html"><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span>Action</span><wbr><span><span>Handler</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1766404772%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-text-to-image-action-handler/index.html">TextToImageActionHandler</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>dispatchersProvider<span class="token operator">: </span><a href="../../core/common/com.shifthackz.aisdv1.core.common.schedulers/-dispatchers-provider/index.html">DispatchersProvider</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>textToImageUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-text-to-image-use-case/index.html">TextToImageUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>saveGenerationResultUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-save-generation-result-use-case/index.html">SaveGenerationResultUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>saveLastResultToCacheUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.caching/-save-last-result-to-cache-use-case/index.html">SaveLastResultToCacheUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>interruptGenerationUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-interrupt-generation-use-case/index.html">InterruptGenerationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>backgroundTaskManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-task-manager/index.html">BackgroundTaskManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>backgroundWorkObserver<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>platformServices<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.core/-generation-platform-services/index.html">GenerationPlatformServices</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>buildInfoProvider<span class="token operator">: </span><a href="../../core/common/com.shifthackz.aisdv1.core.common.appbuild/-build-info-provider/index.html">BuildInfoProvider</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>dimensionValidator<span class="token operator">: </span><a href="../../core/validation/com.shifthackz.aisdv1.core.validation.dimension/-dimension-validator/index.html">DimensionValidator</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>imageSaver<span class="token operator">: </span><a href="-image-saver/index.html">ImageSaver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>imageSharer<span class="token operator">: </span><a href="-image-sharer/index.html">ImageSharer</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>router<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.navigation.router/-text-to-image-router/index.html">TextToImageRouter</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>currentState<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>emitState<span class="token operator">: </span><span class="token punctuation">(</span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>updateState<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">(</span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>launch<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.core/-view-model-launcher/index.html">ViewModelLauncher</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>onError<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Coordinates <code class="lang-kotlin">TextToImageActionHandler</code> behavior in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1089178930%2FClasslikes%2F-1625832475" anchor-label="TextToImageIntent" id="-1089178930%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-to-image-intent/index.html"><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Intent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1089178930%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-text-to-image-intent/index.html">TextToImageIntent</a> : <a href="../../core/ui/com.shifthackz.aisdv1.core.mvi/-mvi-intent/index.html">MviIntent</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">TextToImageIntent</code> contract for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1573834238%2FClasslikes%2F-1625832475" anchor-label="TextToImageIntentProcessor" id="-1573834238%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-to-image-intent-processor/index.html"><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span>Intent</span><wbr><span><span>Processor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1573834238%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-text-to-image-intent-processor/index.html">TextToImageIntentProcessor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>router<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.navigation.router/-text-to-image-router/index.html">TextToImageRouter</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>updateState<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">(</span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generate<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>cancelGeneration<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>saveImage<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>shareImage<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>saveGenerationResults<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>viewGenerationResult<span class="token operator">: </span><span class="token punctuation">(</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>reportGenerationResult<span class="token operator">: </span><span class="token punctuation">(</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>applyGenerationResult<span class="token operator">: </span><span class="token punctuation">(</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Coordinates <code class="lang-kotlin">TextToImageIntentProcessor</code> behavior in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1645875668%2FClasslikes%2F-1625832475" anchor-label="TextToImagePanel" id="1645875668%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-to-image-panel/index.html"><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Panel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1645875668%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-text-to-image-panel/index.html">TextToImagePanel</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">TextToImagePanel</code> contract for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1992335385%2FClasslikes%2F-1625832475" anchor-label="TextToImageState" id="-1992335385%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-to-image-state/index.html"><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1992335385%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Immutable.html"><span class="token annotation builtin">Immutable</span></a></div></div><span class="token keyword">data </span><span class="token keyword">class </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>loadingConfiguration<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generating<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>savingImage<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sharingImage<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>promptValidationError<span class="token operator">: </span><a href="../../core/ui/com.shifthackz.aisdv1.core.model/-ui-text/index.html">UiText</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>error<span class="token operator">: </span><a href="../../core/ui/com.shifthackz.aisdv1.core.model/-ui-text/index.html">UiText</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>message<span class="token operator">: </span><a href="../../core/ui/com.shifthackz.aisdv1.core.model/-ui-text/index.html">UiText</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>screenModal<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.model/-generation-modal/index.html">GenerationModal</a><span class="token operator"> = </span>GenerationModal.None<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>results<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>editTag<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.model/-prompt-tag-edit-request/index.html">PromptTagEditRequest</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>onBoardingDemo<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>mode<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token operator"> = </span>ServerSource.AUTOMATIC1111<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>advancedToggleButtonVisible<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>advancedOptionsVisible<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>formPromptTaggedInput<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>prompt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">""</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>negativePrompt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">""</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>width<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>DEFAULT_SIZE.toString()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>height<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>DEFAULT_SIZE.toString()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>samplingSteps<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">20</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>cfgScale<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">7.0f</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>restoreFaces<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>seed<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">""</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>subSeed<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">""</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>subSeedStrength<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>selectedSampler<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">""</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>availableSamplers<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>selectedStylePreset<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stability-ai-style-preset/index.html">StabilityAiStylePreset</a><span class="token operator"> = </span>StabilityAiStylePreset.NONE<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>selectedClipGuidancePreset<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-stability-ai-clip-guidance/index.html">StabilityAiClipGuidance</a><span class="token operator"> = </span>StabilityAiClipGuidance.NONE<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>openAiModel<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-open-ai-model/index.html">OpenAiModel</a><span class="token operator"> = </span>OpenAiModel.default<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>openAiSize<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-open-ai-size/index.html">OpenAiSize</a><span class="token operator"> = </span>OpenAiSize.W1024_H1024<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>openAiQuality<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-open-ai-quality/index.html">OpenAiQuality</a><span class="token operator"> = </span>OpenAiQuality.AUTO<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>widthValidationError<span class="token operator">: </span><a href="../../core/ui/com.shifthackz.aisdv1.core.model/-ui-text/index.html">UiText</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>heightValidationError<span class="token operator">: </span><a href="../../core/ui/com.shifthackz.aisdv1.core.model/-ui-text/index.html">UiText</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>nsfw<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>batchCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></span></span><span class="token punctuation">)</span> : <a href="../../core/ui/com.shifthackz.aisdv1.core.mvi/-mvi-state/index.html">MviState</a>, <a href="../com.shifthackz.aisdv1.presentation.widget.input/-generation-input-form-state/index.html">GenerationInputFormState</a></div><div class="brief "><p class="paragraph">Carries <code class="lang-kotlin">TextToImageState</code> data through the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1463569066%2FClasslikes%2F-1625832475" anchor-label="TextToImageStrings" id="-1463569066%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-to-image-strings/index.html"><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Strings</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1463569066%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-text-to-image-strings/index.html">TextToImageStrings</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>title<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("title_text_to_image")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>prompt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("hint_prompt")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>negativePrompt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("hint_prompt_negative")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>width<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("width")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>height<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("height")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>steps<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("gallery_info_field_sampling_steps")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>cfgScale<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("gallery_info_field_cfg")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>batch<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("hint_batch_tag")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("action_generate")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generating<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("notification_running_title")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>save<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("action_save")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>savingImage<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("message_image_saving")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>share<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("action_share_prompt")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sharingImage<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("message_image_sharing")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>configureProvider<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("settings_item_config")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sourceUnavailable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("error_source_android_only")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>results<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("title_generation_results")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>imageUnavailable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>Localization.string("message_image_data_received")<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>resultMeta<span class="token operator">: </span><span class="token punctuation">(</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>{ result -&gt;
+        Localization.string(
+            "generation_result_meta",
+            result.width,
+            result.height,
+            result.samplingSteps,
+        )
+    }</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Carries <code class="lang-kotlin">TextToImageStrings</code> data through the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1576186068%2FClasslikes%2F-1625832475" anchor-label="TextToImageViewModel" id="1576186068%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-to-image-view-model/index.html"><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span>View</span><wbr><span><span>Model</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1576186068%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-text-to-image-view-model/index.html">TextToImageViewModel</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>dispatchersProvider<span class="token operator">: </span><a href="../../core/common/com.shifthackz.aisdv1.core.common.schedulers/-dispatchers-provider/index.html">DispatchersProvider</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>getConfigurationUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.settings/-get-configuration-use-case/index.html">GetConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>getStableDiffusionSamplersUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.sdsampler/-get-stable-diffusion-samplers-use-case/index.html">GetStableDiffusionSamplersUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>textToImageUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-text-to-image-use-case/index.html">TextToImageUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>saveGenerationResultUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-save-generation-result-use-case/index.html">SaveGenerationResultUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>saveLastResultToCacheUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.caching/-save-last-result-to-cache-use-case/index.html">SaveLastResultToCacheUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>interruptGenerationUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-interrupt-generation-use-case/index.html">InterruptGenerationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>observeHordeProcessStatusUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-observe-horde-process-status-use-case/index.html">ObserveHordeProcessStatusUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>observeLocalDiffusionProcessStatusUseCase<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-observe-local-diffusion-process-status-use-case/index.html">ObserveLocalDiffusionProcessStatusUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>backgroundTaskManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-task-manager/index.html">BackgroundTaskManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>backgroundWorkObserver<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>platformServices<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.core/-generation-platform-services/index.html">GenerationPlatformServices</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>buildInfoProvider<span class="token operator">: </span><a href="../../core/common/com.shifthackz.aisdv1.core.common.appbuild/-build-info-provider/index.html">BuildInfoProvider</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generationFormUpdateEvent<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.core/-generation-form-update-event/index.html">GenerationFormUpdateEvent</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>dimensionValidator<span class="token operator">: </span><a href="../../core/validation/com.shifthackz.aisdv1.core.validation.dimension/-dimension-validator/index.html">DimensionValidator</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>imageSaver<span class="token operator">: </span><a href="-image-saver/index.html">ImageSaver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>imageSharer<span class="token operator">: </span><a href="-image-sharer/index.html">ImageSharer</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>router<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.navigation.router/-text-to-image-router/index.html">TextToImageRouter</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>onError<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span> : <a href="../../core/ui/com.shifthackz.aisdv1.core.mvi/-base-mvi-view-model/index.html">BaseMviViewModel</a><span class="token operator">&lt;</span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">, </span><a href="-text-to-image-intent/index.html">TextToImageIntent</a><span class="token punctuation">, </span><a href="../../core/ui/com.shifthackz.aisdv1.core.mvi/-empty-effect/index.html">EmptyEffect</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Coordinates <code class="lang-kotlin">TextToImageViewModel</code> behavior in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1090899663%2FClasslikes%2F97127765" anchor-label="UnsupportedAndroidImageSaver" id="-1090899663%2FClasslikes%2F97127765" data-filterable-set=":presentation/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unsupported-android-image-saver/index.html"><span>Unsupported</span><wbr><span>Android</span><wbr><span>Image</span><wbr><span><span>Saver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1090899663%2FClasslikes%2F97127765"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">object </span><a href="-unsupported-android-image-saver/index.html">UnsupportedAndroidImageSaver</a> : <a href="-image-saver/index.html">ImageSaver</a></div><div class="brief "><p class="paragraph">Provides the <code class="lang-kotlin">UnsupportedAndroidImageSaver</code> singleton used by the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="206002121%2FClasslikes%2F97127765" anchor-label="UnsupportedAndroidImageSharer" id="206002121%2FClasslikes%2F97127765" data-filterable-set=":presentation/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unsupported-android-image-sharer/index.html"><span>Unsupported</span><wbr><span>Android</span><wbr><span>Image</span><wbr><span><span>Sharer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="206002121%2FClasslikes%2F97127765"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">object </span><a href="-unsupported-android-image-sharer/index.html">UnsupportedAndroidImageSharer</a> : <a href="-image-sharer/index.html">ImageSharer</a></div><div class="brief "><p class="paragraph">Provides the <code class="lang-kotlin">UnsupportedAndroidImageSharer</code> singleton used by the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="1760691323%2FProperties%2F-1625832475" anchor-label="aspectRatio" id="1760691323%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="aspect-ratio.html"><span>aspect</span><wbr><span><span>Ratio</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1760691323%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">val </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token punctuation">.</span><a href="aspect-ratio.html">aspectRatio</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">AiGenerationResult</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1162128443%2FProperties%2F-1625832475" anchor-label="DEFAULT_SIZE" id="1162128443%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-e-f-a-u-l-t_-s-i-z-e.html"><span>DEFAULT_</span><wbr><span>SIZE</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1162128443%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-d-e-f-a-u-l-t_-s-i-z-e.html">DEFAULT_SIZE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">512</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">DEFAULT_SIZE</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2031568766%2FProperties%2F-1625832475" anchor-label="displayName" id="-2031568766%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="display-name.html"><span>display</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2031568766%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">val </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token punctuation">.</span><a href="display-name.html">displayName</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">ServerSource</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-133949071%2FProperties%2F-1625832475" anchor-label="MAX_BATCH_COUNT" id="-133949071%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-a-x_-b-a-t-c-h_-c-o-u-n-t.html"><span>MAX_</span><wbr><span>BATCH_</span><wbr><span>COUNT</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-133949071%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-a-x_-b-a-t-c-h_-c-o-u-n-t.html">MAX_BATCH_COUNT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">20</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">MAX_BATCH_COUNT</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1376737620%2FProperties%2F-1625832475" anchor-label="MAX_CFG_SCALE" id="-1376737620%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-a-x_-c-f-g_-s-c-a-l-e.html"><span>MAX_</span><wbr><span>CFG_</span><wbr><span>SCALE</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1376737620%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-a-x_-c-f-g_-s-c-a-l-e.html">MAX_CFG_SCALE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">30.0f</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">MAX_CFG_SCALE</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-318346476%2FProperties%2F-1625832475" anchor-label="MAX_STEPS" id="-318346476%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-a-x_-s-t-e-p-s.html"><span>MAX_</span><wbr><span>STEPS</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-318346476%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-a-x_-s-t-e-p-s.html">MAX_STEPS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">150</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">MAX_STEPS</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2105689397%2FProperties%2F-1625832475" anchor-label="MAX_SUB_SEED_STRENGTH" id="-2105689397%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-a-x_-s-u-b_-s-e-e-d_-s-t-r-e-n-g-t-h.html"><span>MAX_</span><wbr><span>SUB_</span><wbr><span>SEED_</span><wbr><span>STRENGTH</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2105689397%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-a-x_-s-u-b_-s-e-e-d_-s-t-r-e-n-g-t-h.html">MAX_SUB_SEED_STRENGTH</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">1.0f</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">MAX_SUB_SEED_STRENGTH</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1592352423%2FProperties%2F97127765" anchor-label="MIME_TYPE_JPG" id="-1592352423%2FProperties%2F97127765" data-filterable-set=":presentation/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-i-m-e_-t-y-p-e_-j-p-g.html"><span>MIME_</span><wbr><span>TYPE_</span><wbr><span>JPG</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1592352423%2FProperties%2F97127765"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-i-m-e_-t-y-p-e_-j-p-g.html">MIME_TYPE_JPG</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">MIME_TYPE_JPG</code> value used by the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1926346051%2FProperties%2F-1625832475" anchor-label="MIN_BATCH_COUNT" id="1926346051%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-i-n_-b-a-t-c-h_-c-o-u-n-t.html"><span>MIN_</span><wbr><span>BATCH_</span><wbr><span>COUNT</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1926346051%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-i-n_-b-a-t-c-h_-c-o-u-n-t.html">MIN_BATCH_COUNT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">MIN_BATCH_COUNT</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1061744898%2FProperties%2F-1625832475" anchor-label="MIN_CFG_SCALE" id="-1061744898%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-i-n_-c-f-g_-s-c-a-l-e.html"><span>MIN_</span><wbr><span>CFG_</span><wbr><span>SCALE</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1061744898%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-i-n_-c-f-g_-s-c-a-l-e.html">MIN_CFG_SCALE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">1.0f</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">MIN_CFG_SCALE</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1981690778%2FProperties%2F-1625832475" anchor-label="MIN_STEPS" id="-1981690778%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-i-n_-s-t-e-p-s.html"><span>MIN_</span><wbr><span>STEPS</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1981690778%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-i-n_-s-t-e-p-s.html">MIN_STEPS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">MIN_STEPS</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1169706723%2FProperties%2F-1625832475" anchor-label="MIN_SUB_SEED_STRENGTH" id="-1169706723%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-i-n_-s-u-b_-s-e-e-d_-s-t-r-e-n-g-t-h.html"><span>MIN_</span><wbr><span>SUB_</span><wbr><span>SEED_</span><wbr><span>STRENGTH</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1169706723%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-i-n_-s-u-b_-s-e-e-d_-s-t-r-e-n-g-t-h.html">MIN_SUB_SEED_STRENGTH</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">MIN_SUB_SEED_STRENGTH</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="864749998%2FFunctions%2F-1625832475" anchor-label="appendPromptTag" id="864749998%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="append-prompt-tag.html"><span>append</span><wbr><span>Prompt</span><wbr><span><span>Tag</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="864749998%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="append-prompt-tag.html"><span class="token function">appendPromptTag</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">tag<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">appendPromptTag</code> step in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="950973015%2FFunctions%2F-1625832475" anchor-label="BatchControl" id="950973015%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-batch-control.html"><span>Batch</span><wbr><span><span>Control</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="950973015%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-batch-control.html"><span class="token function">BatchControl</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="-text-to-image-strings/index.html">TextToImageStrings</a><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="-text-to-image-intent/index.html">TextToImageIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders the <code class="lang-kotlin">BatchControl</code> UI for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1027783844%2FFunctions%2F-1625832475" anchor-label="canGenerate" id="1027783844%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="can-generate.html"><span>can</span><wbr><span><span>Generate</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1027783844%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">.</span><a href="can-generate.html"><span class="token function">canGenerate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">canGenerate</code> step in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1203983322%2FFunctions%2F97127765" anchor-label="createImageFileName" id="1203983322%2FFunctions%2F97127765" data-filterable-set=":presentation/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create-image-file-name.html"><span>create</span><wbr><span>Image</span><wbr><span>File</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1203983322%2FFunctions%2F97127765"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="create-image-file-name.html"><span class="token function">createImageFileName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Creates the SDAI value produced by <code class="lang-kotlin">createImageFileName</code>.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1893844593%2FFunctions%2F1426011139" anchor-label="createPlatformImageSaver" id="1893844593%2FFunctions%2F1426011139" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create-platform-image-saver.html"><span>create</span><wbr><span>Platform</span><wbr><span>Image</span><wbr><span><span>Saver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1893844593%2FFunctions%2F1426011139"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button><button class="platform-bookmark" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain" data-toggle=":presentation/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="create-platform-image-saver.html"><span class="token function">createPlatformImageSaver</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-image-saver/index.html">ImageSaver</a></div><div class="brief "><p class="paragraph">Creates the SDAI value produced by <code class="lang-kotlin">createPlatformImageSaver</code>.</p></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="create-platform-image-saver.html"><span class="token function">createPlatformImageSaver</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-image-saver/index.html">ImageSaver</a></div><div class="brief "><p class="paragraph">Creates the SDAI value produced by <code class="lang-kotlin">createPlatformImageSaver</code>.</p></div></div><div class="content sourceset-dependent-content" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="create-platform-image-saver.html"><span class="token function">createPlatformImageSaver</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../presentation/com.shifthackz.aisdv1.presentation.screen.txt2img/-image-saver/index.html">ImageSaver</a></div><div class="brief "><p class="paragraph">Creates the SDAI value produced by <code class="lang-kotlin">createPlatformImageSaver</code>.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-108833759%2FFunctions%2F1426011139" anchor-label="createPlatformImageSharer" id="-108833759%2FFunctions%2F1426011139" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create-platform-image-sharer.html"><span>create</span><wbr><span>Platform</span><wbr><span>Image</span><wbr><span><span>Sharer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-108833759%2FFunctions%2F1426011139"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button><button class="platform-bookmark" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain" data-toggle=":presentation/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="create-platform-image-sharer.html"><span class="token function">createPlatformImageSharer</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-image-sharer/index.html">ImageSharer</a></div><div class="brief "><p class="paragraph">Creates the SDAI value produced by <code class="lang-kotlin">createPlatformImageSharer</code>.</p></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="create-platform-image-sharer.html"><span class="token function">createPlatformImageSharer</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-image-sharer/index.html">ImageSharer</a></div><div class="brief "><p class="paragraph">Creates the SDAI value produced by <code class="lang-kotlin">createPlatformImageSharer</code>.</p></div></div><div class="content sourceset-dependent-content" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="create-platform-image-sharer.html"><span class="token function">createPlatformImageSharer</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../presentation/com.shifthackz.aisdv1.presentation.screen.txt2img/-image-sharer/index.html">ImageSharer</a></div><div class="brief "><p class="paragraph">Creates the SDAI value produced by <code class="lang-kotlin">createPlatformImageSharer</code>.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-518913785%2FFunctions%2F1426011139" anchor-label="decodeBase64ImageBitmap" id="-518913785%2FFunctions%2F1426011139" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="decode-base64-image-bitmap.html"><span>decode</span><wbr><span>Base64Image</span><wbr><span><span>Bitmap</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-518913785%2FFunctions%2F1426011139"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button><button class="platform-bookmark" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain" data-toggle=":presentation/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="decode-base64-image-bitmap.html"><span class="token function">decodeBase64ImageBitmap</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/ImageBitmap.html">ImageBitmap</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">decodeBase64ImageBitmap</code>.</p></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="decode-base64-image-bitmap.html"><span class="token function">decodeBase64ImageBitmap</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/ImageBitmap.html">ImageBitmap</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">decodeBase64ImageBitmap</code>.</p></div></div><div class="content sourceset-dependent-content" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="decode-base64-image-bitmap.html"><span class="token function">decodeBase64ImageBitmap</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/ImageBitmap.html">ImageBitmap</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">decodeBase64ImageBitmap</code>.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="350096260%2FFunctions%2F-1449504415" anchor-label="decodeGeneratedImageData" id="350096260%2FFunctions%2F-1449504415" data-filterable-set=":presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="decode-generated-image-data.html"><span>decode</span><wbr><span>Generated</span><wbr><span>Image</span><wbr><span><span>Data</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="350096260%2FFunctions%2F-1449504415"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-active="" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="decode-generated-image-data.html"><span class="token function">decodeGeneratedImageData</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSData///PointingToDeclaration/">NSData</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">decodeGeneratedImageData</code> step in the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="467483142%2FFunctions%2F-1449504415" anchor-label="decodeGeneratedUiImage" id="467483142%2FFunctions%2F-1449504415" data-filterable-set=":presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="decode-generated-ui-image.html"><span>decode</span><wbr><span>Generated</span><wbr><span>Ui</span><wbr><span><span>Image</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="467483142%2FFunctions%2F-1449504415"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-active="" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="decode-generated-ui-image.html"><span class="token function">decodeGeneratedUiImage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="platform.UIKit/UIImage///PointingToDeclaration/">UIImage</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">decodeGeneratedUiImage</code> step in the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-947679611%2FFunctions%2F-1625832475" anchor-label="errorMessage" id="-947679611%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-message.html"><span>error</span><wbr><span><span>Message</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-947679611%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../../core/validation/com.shifthackz.aisdv1.core.validation/-validation-result/index.html">ValidationResult</a><span class="token operator">&lt;</span><a href="../../core/validation/com.shifthackz.aisdv1.core.validation.dimension/-dimension-validator/-error/index.html">DimensionValidator.Error</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="error-message.html"><span class="token function">errorMessage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../core/ui/com.shifthackz.aisdv1.core.model/-ui-text/index.html">UiText</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">function</code> step in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1173189317%2FFunctions%2F-1625832475" anchor-label="flushPendingTaggedText" id="1173189317%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="flush-pending-tagged-text.html"><span>flush</span><wbr><span>Pending</span><wbr><span>Tagged</span><wbr><span><span>Text</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1173189317%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="flush-pending-tagged-text.html"><span class="token function">flushPendingTaggedText</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">, </span></span><span class="parameter ">promptChipTextFieldState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/TextFieldValue.html">TextFieldValue</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">negativePromptChipTextFieldState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/TextFieldValue.html">TextFieldValue</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="-text-to-image-intent/index.html">TextToImageIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">flushPendingTaggedText</code> step in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-256757608%2FFunctions%2F-1625832475" anchor-label="GeneratedImageItem" id="-256757608%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-generated-image-item.html"><span>Generated</span><wbr><span>Image</span><wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-256757608%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-generated-image-item.html"><span class="token function">GeneratedImageItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">result<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="-text-to-image-strings/index.html">TextToImageStrings</a><span class="token punctuation">, </span></span><span class="parameter ">savingImage<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">sharingImage<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="-text-to-image-intent/index.html">TextToImageIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders the <code class="lang-kotlin">GeneratedImageItem</code> UI for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1527440666%2FFunctions%2F-1625832475" anchor-label="GenerationHistoryDialog" id="1527440666%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-generation-history-dialog.html"><span>Generation</span><wbr><span>History</span><wbr><span><span>Dialog</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1527440666%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-generation-history-dialog.html"><span class="token function">GenerationHistoryDialog</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">onClose<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter ">onGenerationSelected<span class="token operator">: </span><span class="token punctuation">(</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders the <code class="lang-kotlin">GenerationHistoryDialog</code> UI for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1845631476%2FFunctions%2F-1625832475" anchor-label="localizedMessageText" id="1845631476%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="localized-message-text.html"><span>localized</span><wbr><span>Message</span><wbr><span><span>Text</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1845631476%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token punctuation">.</span><a href="localized-message-text.html"><span class="token function">localizedMessageText</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../core/ui/com.shifthackz.aisdv1.core.model/-ui-text/index.html">UiText</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">localizedMessageText</code> step in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-990354100%2FFunctions%2F-1625832475" anchor-label="mapToPayload" id="-990354100%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-payload.html"><span>map</span><wbr><span>To</span><wbr><span><span>Payload</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-990354100%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">.</span><a href="map-to-payload.html"><span class="token function">mapToPayload</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-text-to-image-payload/index.html">TextToImagePayload</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">mapToPayload</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="493691690%2FFunctions%2F-1625832475" anchor-label="NumberField" id="493691690%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-number-field.html"><span>Number</span><wbr><span><span>Field</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="493691690%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-number-field.html"><span class="token function">NumberField</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">error<span class="token operator">: </span><a href="../../core/ui/com.shifthackz.aisdv1.core.model/-ui-text/index.html">UiText</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">onValueChange<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token operator"> = </span>Modifier</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders the <code class="lang-kotlin">NumberField</code> UI for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1701886098%2FFunctions%2F-1625832475" anchor-label="progressModal" id="-1701886098%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="progress-modal.html"><span>progress</span><wbr><span><span>Modal</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1701886098%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">.</span><a href="progress-modal.html"><span class="token function">progressModal</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">canCancelLocalGeneration<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.model/-generation-modal/index.html">GenerationModal</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">progressModal</code> step in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="821025036%2FFunctions%2F-1449504415" anchor-label="rootViewController" id="821025036%2FFunctions%2F-1449504415" data-filterable-set=":presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="root-view-controller.html"><span>root</span><wbr><span>View</span><wbr><span><span>Controller</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="821025036%2FFunctions%2F-1449504415"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-active="" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><span data-unresolved-link="platform.UIKit/UIApplication///PointingToDeclaration/">UIApplication</span><span class="token punctuation">.</span><a href="root-view-controller.html"><span class="token function">rootViewController</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="platform.UIKit/UIViewController///PointingToDeclaration/">UIViewController</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">rootViewController</code> step in the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-92532331%2FFunctions%2F-1625832475" anchor-label="roundToString" id="-92532331%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="round-to-string.html"><span>round</span><wbr><span>To</span><wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-92532331%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">.</span><a href="round-to-string.html"><span class="token function">roundToString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">roundToString</code> step in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1972522232%2FFunctions%2F97127765" anchor-label="runSavingAction" id="1972522232%2FFunctions%2F97127765" data-filterable-set=":presentation/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="run-saving-action.html"><span>run</span><wbr><span>Saving</span><wbr><span><span>Action</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1972522232%2FFunctions%2F97127765"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">inline suspend </span><span class="token keyword">fun </span><a href="run-saving-action.html"><span class="token function">runSavingAction</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>action<span class="token operator">: </span><span class="token keyword">suspend </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-image-save-result/index.html">ImageSaveResult</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">runSavingAction</code> step in the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="668891786%2FFunctions%2F97127765" anchor-label="runSharingAction" id="668891786%2FFunctions%2F97127765" data-filterable-set=":presentation/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="run-sharing-action.html"><span>run</span><wbr><span>Sharing</span><wbr><span><span>Action</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="668891786%2FFunctions%2F97127765"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">inline suspend </span><span class="token keyword">fun </span><a href="run-sharing-action.html"><span class="token function">runSharingAction</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>action<span class="token operator">: </span><span class="token keyword">suspend </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-image-share-result/index.html">ImageShareResult</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">runSharingAction</code> step in the SDAI presentation layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="429176265%2FFunctions%2F-1625832475" anchor-label="SliderRow" id="429176265%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-slider-row.html"><span>Slider</span><wbr><span><span>Row</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="429176265%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-slider-row.html"><span class="token function">SliderRow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">content<span class="token operator">: </span><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a>&nbsp;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders the <code class="lang-kotlin">SliderRow</code> UI for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1535595901%2FFunctions%2F-1625832475" anchor-label="TextToImageBody" id="-1535595901%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-to-image-body.html"><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Body</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1535595901%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-text-to-image-body.html"><span class="token function">TextToImageBody</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="-text-to-image-strings/index.html">TextToImageStrings</a><span class="token punctuation">, </span></span><span class="parameter ">promptChipTextFieldState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/TextFieldValue.html">TextFieldValue</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">negativePromptChipTextFieldState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/TextFieldValue.html">TextFieldValue</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="-text-to-image-intent/index.html">TextToImageIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders the <code class="lang-kotlin">TextToImageBody</code> UI for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1110503805%2FFunctions%2F-1625832475" anchor-label="TextToImageContent" id="-1110503805%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-to-image-content.html"><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Content</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1110503805%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="-text-to-image-content.html"><span class="token function">TextToImageContent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="-text-to-image-intent/index.html">TextToImageIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token operator"> = </span>Modifier<span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="-text-to-image-strings/index.html">TextToImageStrings</a><span class="token operator"> = </span>TextToImageStrings()<span class="token punctuation">, </span></span><span class="parameter ">useDrawerNavigation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders the <code class="lang-kotlin">TextToImageContent</code> UI for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-986221915%2FFunctions%2F-1625832475" anchor-label="TextToImageForm" id="-986221915%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-to-image-form.html"><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Form</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-986221915%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-text-to-image-form.html"><span class="token function">TextToImageForm</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="-text-to-image-strings/index.html">TextToImageStrings</a><span class="token punctuation">, </span></span><span class="parameter ">promptChipTextFieldState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/TextFieldValue.html">TextFieldValue</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">negativePromptChipTextFieldState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/TextFieldValue.html">TextFieldValue</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="-text-to-image-intent/index.html">TextToImageIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders the <code class="lang-kotlin">TextToImageForm</code> UI for the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="601285131%2FFunctions%2F97127765" anchor-label="toImageBytes" id="601285131%2FFunctions%2F97127765" data-filterable-set=":presentation/androidMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-image-bytes.html"><span>to</span><wbr><span>Image</span><wbr><span><span>Bytes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="601285131%2FFunctions%2F97127765"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="to-image-bytes.html"><span class="token function">toImageBytes</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">toImageBytes</code>.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1789172065%2FFunctions%2F-1449504415" anchor-label="topMostPresentedViewController" id="1789172065%2FFunctions%2F-1449504415" data-filterable-set=":presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="top-most-presented-view-controller.html"><span>top</span><wbr><span>Most</span><wbr><span>Presented</span><wbr><span>View</span><wbr><span><span>Controller</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1789172065%2FFunctions%2F-1449504415"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-active="" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><span data-unresolved-link="platform.UIKit/UIViewController///PointingToDeclaration/">UIViewController</span><span class="token punctuation">.</span><a href="top-most-presented-view-controller.html"><span class="token function">topMostPresentedViewController</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="platform.UIKit/UIViewController///PointingToDeclaration/">UIViewController</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">topMostPresentedViewController</code>.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-110811110%2FFunctions%2F-1625832475" anchor-label="toTextToImageIntent" id="-110811110%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-text-to-image-intent.html"><span>to</span><wbr><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span><span>Intent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-110811110%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../com.shifthackz.aisdv1.presentation.widget.input/-generation-input-form-event/index.html">GenerationInputFormEvent</a><span class="token punctuation">.</span><a href="to-text-to-image-intent.html"><span class="token function">toTextToImageIntent</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-text-to-image-intent/index.html">TextToImageIntent</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">toTextToImageIntent</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-381312787%2FFunctions%2F-1625832475" anchor-label="toTextToImageResultModal" id="-381312787%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-text-to-image-result-modal.html"><span>to</span><wbr><span>Text</span><wbr><span>To</span><wbr><span>Image</span><wbr><span>Result</span><wbr><span><span>Modal</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-381312787%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="to-text-to-image-result-modal.html"><span class="token function">toTextToImageResultModal</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">autoSaveEnabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">reportEnabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.model/-generation-modal/index.html">GenerationModal</a></div><div class="brief "><p class="paragraph">Converts SDAI data with <code class="lang-kotlin">toTextToImageResultModal</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-784582063%2FFunctions%2F-1625832475" anchor-label="validated" id="-784582063%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="validated.html"><span><span>validated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-784582063%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">.</span><a href="validated.html"><span class="token function">validated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">dimensionValidator<span class="token operator">: </span><a href="../../core/validation/com.shifthackz.aisdv1.core.validation.dimension/-dimension-validator/index.html">DimensionValidator</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-text-to-image-state/index.html">TextToImageState</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">validated</code> step in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-105216256%2FFunctions%2F-1625832475" anchor-label="withSettings" id="-105216256%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="with-settings.html"><span>with</span><wbr><span><span>Settings</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-105216256%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">.</span><a href="with-settings.html"><span class="token function">withSettings</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">settings<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-settings/index.html">Settings</a><span class="token punctuation">, </span></span><span class="parameter ">stableDiffusionSamplers<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-text-to-image-state/index.html">TextToImageState</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">withSettings</code> step in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1823401293%2FFunctions%2F-1625832475" anchor-label="withSource" id="1823401293%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="with-source.html"><span>with</span><wbr><span><span>Source</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1823401293%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-text-to-image-state/index.html">TextToImageState</a><span class="token punctuation">.</span><a href="with-source.html"><span class="token function">withSource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">source<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token punctuation">, </span></span><span class="parameter ">stableDiffusionSamplers<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-text-to-image-state/index.html">TextToImageState</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">withSource</code> step in the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

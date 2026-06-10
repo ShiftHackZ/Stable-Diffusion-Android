@@ -32,6 +32,14 @@ gradlePlugin {
             id = "generic.compose"
             implementationClass = "ComposeConventionPlugin"
         }
+        register("KmpLibrary") {
+            id = "generic.kmp.library"
+            implementationClass = "KmpLibraryConventionPlugin"
+        }
+        register("KmpCompose") {
+            id = "generic.kmp.compose"
+            implementationClass = "KmpComposeConventionPlugin"
+        }
         register("Application") {
             id = "generic.application"
             implementationClass = "ApplicationConventionPlugin"

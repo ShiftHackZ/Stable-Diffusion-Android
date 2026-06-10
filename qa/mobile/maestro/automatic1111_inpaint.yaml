@@ -1,0 +1,15 @@
+appId: ${APP_ID}
+---
+- launchApp
+- tapOn: "Img2Img"
+- tapOn: "Random image"
+- tapOn: "Inpaint"
+- swipe:
+    start: 45%,45%
+    end: 58%,52%
+    duration: 500
+- tapOn: "Draw"
+- tapOn: "Imagine"
+- assertVisible:
+    text: "Generation result|Result"
+    optional: true

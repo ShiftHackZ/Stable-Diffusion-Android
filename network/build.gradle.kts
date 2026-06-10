@@ -1,23 +1,34 @@
 plugins {
-    alias(libs.plugins.generic.library)
+    alias(libs.plugins.generic.kmp.library)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
     namespace = "com.shifthackz.aisdv1.network"
 }
 
-dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":feature:auth"))
-    implementation(libs.google.gson)
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.gson)
-    implementation(libs.retrofit.adapter.rxjava3)
-    api(libs.okhttp.core)
-    implementation(libs.okhttp.logging)
-    implementation(libs.koin.core)
-    implementation(libs.rx.kotlin)
-    implementation(libs.rx.network)
-    testImplementation(libs.test.junit)
-    testImplementation(libs.test.mockk)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.koin.core)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.core)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.test.junit)
+            implementation(libs.test.mockk)
+        }
+    }
 }

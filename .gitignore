@@ -62,6 +62,11 @@ captures/
 
 # Signing files
 .signing/
+/.gradle-docker-cache/
+qa/mobile/.env
+qa/mobile/.env.*
+!qa/mobile/.env.example
+scripts/*.local
 
 # Local configuration file (sdk path, etc)
 

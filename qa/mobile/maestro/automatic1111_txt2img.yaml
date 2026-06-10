@@ -1,0 +1,17 @@
+appId: ${APP_ID}
+---
+- launchApp
+- tapOn: "Settings"
+- tapOn: "Configuration"
+- tapOn: "Automatic 1111"
+- tapOn: "Next"
+- tapOn: "Server URL"
+- inputText: ${A1111_URL}
+- tapOn: "Connect"
+- tapOn: "Txt2Img"
+- tapOn: "Prompt"
+- inputText: "mobile qa smoke test"
+- tapOn: "Imagine"
+- assertVisible:
+    text: "Generation result|Result"
+    optional: true

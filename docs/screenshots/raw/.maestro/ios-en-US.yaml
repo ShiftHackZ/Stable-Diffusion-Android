@@ -1,0 +1,243 @@
+appId: "com.shifthackz.aisdv1.app"
+---
+- launchApp:
+    permissions:
+      photos: allow
+    clearState: true
+    stopApp: true
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "82%,90%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    text: "Next"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "8%,9%"
+- waitForAnimationToEnd:
+    timeout: 5000
+- swipe:
+    start: 50%,34%
+    end: 50%,76%
+    duration: 650
+- waitForAnimationToEnd:
+    timeout: 5000
+- swipe:
+    start: 50%,34%
+    end: 50%,76%
+    duration: 650
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Automatic 1111"
+    timeout: 45000
+- tapOn: "Automatic 1111"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn: "Next"
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Demo mode"
+    timeout: 45000
+- tapOn: "Demo mode"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn: "Connect"
+- extendedWaitUntil:
+    visible: "Txt2Img"
+    timeout: 45000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn: "Tagged input"
+- waitForAnimationToEnd:
+    timeout: 1500
+- tapOn: "Always show advanced options"
+- waitForAnimationToEnd:
+    timeout: 1500
+- tapOn: "Txt2Img"
+- extendedWaitUntil:
+    visible: "Text to Image"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn: "Prompt"
+- eraseText
+- inputText: "man, photorealistic, black hair, aviator glasses, handsome, beautiful, nature background,"
+- tapOn:
+    point: "50%,17%"
+- waitForAnimationToEnd:
+    timeout: 1000
+- tapOn: "Negative prompt"
+- eraseText
+- inputText: "bad anatomy, bad fingers, distorted, jpeg artifacts,"
+- tapOn:
+    point: "50%,17%"
+- waitForAnimationToEnd:
+    timeout: 1000
+- tapOn: "Text to Image"
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    text: "Show advanced options"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: "docs/screenshots/raw/ios/en-US/02-controls"
+- tapOn: "Imagine"
+- extendedWaitUntil:
+    visible: "Close"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- takeScreenshot: "docs/screenshots/raw/ios/en-US/01-create"
+- tapOn: "Close"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Imagine"
+- extendedWaitUntil:
+    visible: "Close"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Close"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Imagine"
+- extendedWaitUntil:
+    visible: "Close"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Close"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Imagine"
+- extendedWaitUntil:
+    visible: "Close"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Close"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Imagine"
+- extendedWaitUntil:
+    visible: "Close"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Close"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Imagine"
+- extendedWaitUntil:
+    visible: "Close"
+    timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Close"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Gallery"
+- extendedWaitUntil:
+    visible: "Gallery"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 12000
+- takeScreenshot: "docs/screenshots/raw/ios/en-US/04-gallery"
+- tapOn:
+    point: "72%,30%"
+- extendedWaitUntil:
+    visible: "Details"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 9000
+- tapOn: "Info"
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: "docs/screenshots/raw/ios/en-US/06-open"
+- tapOn:
+    point: "8%,9%"
+- extendedWaitUntil:
+    visible: "Gallery"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 20000
+- tapOn: "Configuration"
+- extendedWaitUntil:
+    visible: "Configuration"
+    timeout: 20000
+- extendedWaitUntil:
+    visible: "Automatic 1111"
+    timeout: 45000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: "docs/screenshots/raw/ios/en-US/03-providers"
+- tapOn:
+    point: "8%,9%"
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 5000
+- swipe:
+    start: 50%,76%
+    end: 50%,34%
+    duration: 650
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Look and feel"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: "docs/screenshots/raw/ios/en-US/settings-light"
+- tapOn: "System dark theme"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: "docs/screenshots/raw/ios/en-US/settings-dark"
+- swipe:
+    start: 50%,73%
+    end: 50%,43%
+    duration: 1800
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Accent color"
+    timeout: 20000
+- takeScreenshot: "docs/screenshots/raw/ios/en-US/settings-dark-accent"

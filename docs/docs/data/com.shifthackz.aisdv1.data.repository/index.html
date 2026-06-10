@@ -1,0 +1,569 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.shifthackz.aisdv1.data.repository</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script><meta id="sdai-docs-seo" name="description" content="Dokka API documentation for SDAI Kotlin Multiplatform, Android, iOS, and shared modules.">
+<link rel="canonical" href="https://sdai.moroz.cc/docs/data/com.shifthackz.aisdv1.data.repository/index.html">
+<meta property="og:title" content="SDAI Documentation">
+<meta property="og:description" content="Kotlin API documentation for SDAI Android, iOS, and shared modules.">
+<meta property="og:url" content="https://sdai.moroz.cc/docs/data/com.shifthackz.aisdv1.data.repository/index.html">
+<meta property="og:site_name" content="SDAI">
+<meta property="og:type" content="website">
+<style id="sdai-docs-branding">
+  .sdai-docs-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .sdai-docs-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .sdai-docs-links a:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .sdai-docs-links svg {
+    width: 18px;
+    height: 18px;
+  }
+  @media (max-width: 760px) {
+    .sdai-docs-links {
+      width: 100%;
+      justify-content: flex-start;
+      margin-left: 0;
+      padding: 6px 0;
+    }
+    .sdai-docs-links a {
+      padding: 0 6px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
+                    SDAI
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+<nav class="sdai-docs-links" aria-label="SDAI documentation links">
+  <a href="https://sdai.moroz.cc/">Main site</a>
+  <a href="https://t.me/sdai_app" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.86 4.58 18.62 19.84c-.24 1.08-.88 1.34-1.78.83l-4.92-3.63-2.37 2.28c-.26.26-.48.48-.98.48l.35-5.02 9.14-8.26c.4-.35-.09-.55-.61-.2L6.15 13.43l-4.87-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 3c.88-.33 1.65.2 1.31 1.58Z"/></svg>
+    <span>Telegram</span>
+  </a>
+  <a href="https://discord.gg/jzdR9m8Ves" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.54 5.26A18.1 18.1 0 0 0 15.04 3.86c-.19.34-.42.8-.57 1.16a16.7 16.7 0 0 0-4.99 0 12.3 12.3 0 0 0-.58-1.16 18 18 0 0 0-4.5 1.4C1.55 9.49.78 13.61 1.16 17.68a18.3 18.3 0 0 0 5.51 2.79c.44-.6.84-1.24 1.17-1.91-.64-.24-1.25-.54-1.82-.89.15-.11.3-.23.44-.35a12.96 12.96 0 0 0 11.08 0l.44.35c-.58.35-1.19.65-1.83.89.34.67.73 1.31 1.17 1.91a18.2 18.2 0 0 0 5.52-2.79c.46-4.72-.78-8.81-3.3-12.42ZM8.68 15.18c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.08 0 1.96.99 1.95 2.19 0 1.21-.87 2.2-1.95 2.2Zm6.64 0c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.09 0 1.96.99 1.95 2.19 0 1.21-.86 2.2-1.95 2.2Z"/></svg>
+    <span>Discord</span>
+  </a>
+</nav>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":data/androidMain">android</button>
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":data/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":data/androidMain" data-filter=":data/androidMain">
+                                <span class="checkbox--icon"></span>
+                                android
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":data/commonMain" data-filter=":data/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    SDAI
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="data::com.shifthackz.aisdv1.data.repository////PointingToDeclaration//1241199534">
+  <div class="breadcrumbs"><a href="../index.html">data</a><span class="delimiter">/</span><span class="current">com.shifthackz.aisdv1.data.repository</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="1854589521%2FClasslikes%2F527451509" anchor-label="DownloadableModelRepositoryImpl" id="1854589521%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-downloadable-model-repository-impl/index.html"><span>Downloadable</span><wbr><span>Model</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1854589521%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-downloadable-model-repository-impl/index.html">DownloadableModelRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-downloadable-model-data-source/-remote/index.html">DownloadableModelDataSource.Remote</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-downloadable-model-data-source/-local/index.html">DownloadableModelDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>buildInfoProvider<span class="token operator">: </span><a href="../../core/common/com.shifthackz.aisdv1.core.common.appbuild/-build-info-provider/index.html">BuildInfoProvider</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-downloadable-model-repository/index.html">DownloadableModelRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">DownloadableModelRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1142332262%2FClasslikes%2F527451509" anchor-label="EmbeddingsRepositoryImpl" id="-1142332262%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-embeddings-repository-impl/index.html"><span>Embeddings</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1142332262%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-embeddings-repository-impl/index.html">EmbeddingsRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>rdsA1111<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-embeddings-data-source/-remote/-automatic1111/index.html">EmbeddingsDataSource.Remote.Automatic1111</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rdsSwarm<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-embeddings-data-source/-remote/-swarm-ui/index.html">EmbeddingsDataSource.Remote.SwarmUi</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>swarmSessionRemoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-swarm-ui-models-remote-data-source/index.html">SwarmUiModelsRemoteDataSource</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lds<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-embeddings-data-source/-local/index.html">EmbeddingsDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sessionPreference<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-session-preference/index.html">SessionPreference</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-embeddings-repository/index.html">EmbeddingsRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">EmbeddingsRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="118408161%2FClasslikes%2F527451509" anchor-label="GenerationResultRepositoryImpl" id="118408161%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-generation-result-repository-impl/index.html"><span>Generation</span><wbr><span>Result</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="118408161%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-generation-result-repository-impl/index.html">GenerationResultRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter ">mediaStoreGateway<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.gateway/-media-store-gateway/index.html">MediaStoreGateway</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-generation-result-data-source/-local/index.html">GenerationResultDataSource.Local</a></span></span><span class="token punctuation">)</span> : <a href="../com.shifthackz.aisdv1.data.core/-core-media-store-repository/index.html">CoreMediaStoreRepository</a>, <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-generation-result-repository/index.html">GenerationResultRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">GenerationResultRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1185101292%2FClasslikes%2F527451509" anchor-label="HordeGenerationRepositoryImpl" id="-1185101292%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-horde-generation-repository-impl/index.html"><span>Horde</span><wbr><span>Generation</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1185101292%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-horde-generation-repository-impl/index.html">HordeGenerationRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mediaStoreGateway<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.gateway/-media-store-gateway/index.html">MediaStoreGateway</a><span class="token punctuation">, </span></span><span class="parameter ">localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-generation-result-data-source/-local/index.html">GenerationResultDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter ">backgroundWorkObserver<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-horde-generation-data-source/-remote/index.html">HordeGenerationDataSource.Remote</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>statusSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-horde-generation-data-source/-status-source/index.html">HordeGenerationDataSource.StatusSource</a></span></span><span class="token punctuation">)</span> : <a href="../com.shifthackz.aisdv1.data.core/-core-generation-repository/index.html">CoreGenerationRepository</a>, <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-horde-generation-repository/index.html">HordeGenerationRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">HordeGenerationRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="24555022%2FClasslikes%2F527451509" anchor-label="HuggingFaceGenerationRepositoryImpl" id="24555022%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-hugging-face-generation-repository-impl/index.html"><span>Hugging</span><wbr><span>Face</span><wbr><span>Generation</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="24555022%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-hugging-face-generation-repository-impl/index.html">HuggingFaceGenerationRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mediaStoreGateway<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.gateway/-media-store-gateway/index.html">MediaStoreGateway</a><span class="token punctuation">, </span></span><span class="parameter ">localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-generation-result-data-source/-local/index.html">GenerationResultDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter ">backgroundWorkObserver<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-hugging-face-generation-data-source/-remote/index.html">HuggingFaceGenerationDataSource.Remote</a></span></span><span class="token punctuation">)</span> : <a href="../com.shifthackz.aisdv1.data.core/-core-generation-repository/index.html">CoreGenerationRepository</a>, <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-hugging-face-generation-repository/index.html">HuggingFaceGenerationRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">HuggingFaceGenerationRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="119634940%2FClasslikes%2F527451509" anchor-label="HuggingFaceModelsRepositoryImpl" id="119634940%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-hugging-face-models-repository-impl/index.html"><span>Hugging</span><wbr><span>Face</span><wbr><span>Models</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="119634940%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-hugging-face-models-repository-impl/index.html">HuggingFaceModelsRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-hugging-face-models-remote-data-source/index.html">HuggingFaceModelsRemoteDataSource</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-hugging-face-models-data-source/-local/index.html">HuggingFaceModelsDataSource.Local</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-hugging-face-models-repository/index.html">HuggingFaceModelsRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">HuggingFaceModelsRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="466033732%2FClasslikes%2F-1634526779" anchor-label="LocalDiffusionGenerationRepositoryImpl" id="466033732%2FClasslikes%2F-1634526779" data-filterable-set=":data/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/androidMain" data-filterable-set=":data/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-local-diffusion-generation-repository-impl/index.html"><span>Local</span><wbr><span>Diffusion</span><wbr><span>Generation</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="466033732%2FClasslikes%2F-1634526779"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/androidMain" data-filterable-set=":data/androidMain" data-active="" data-toggle=":data/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-local-diffusion-generation-repository-impl/index.html">LocalDiffusionGenerationRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mediaStoreGateway<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.gateway/-media-store-gateway/index.html">MediaStoreGateway</a><span class="token punctuation">, </span></span><span class="parameter ">localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-generation-result-data-source/-local/index.html">GenerationResultDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter ">backgroundWorkObserver<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDiffusion<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.diffusion/-local-diffusion/index.html">LocalDiffusion</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>downloadableLocalDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-downloadable-model-data-source/-local/index.html">DownloadableModelDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>bitmapToBase64Converter<span class="token operator">: </span><a href="../../core/imageprocessing/com.shifthackz.aisdv1.core.imageprocessing/-bitmap-to-base64-converter/index.html">BitmapToBase64Converter</a></span></span><span class="token punctuation">)</span> : <a href="../com.shifthackz.aisdv1.data.core/-core-generation-repository/index.html">CoreGenerationRepository</a>, <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-local-diffusion-generation-repository/index.html">LocalDiffusionGenerationRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">LocalDiffusionGenerationRepository</code> behavior in the SDAI data layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-902053577%2FClasslikes%2F527451509" anchor-label="LorasRepositoryImpl" id="-902053577%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-loras-repository-impl/index.html"><span>Loras</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-902053577%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-loras-repository-impl/index.html">LorasRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>rdsA1111<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-loras-data-source/-remote/-automatic1111/index.html">LorasDataSource.Remote.Automatic1111</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rdsSwarm<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-loras-data-source/-remote/-swarm-ui/index.html">LorasDataSource.Remote.SwarmUi</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>swarmSessionRemoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-swarm-ui-models-remote-data-source/index.html">SwarmUiModelsRemoteDataSource</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lds<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-loras-data-source/-local/index.html">LorasDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sessionPreference<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-session-preference/index.html">SessionPreference</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-loras-repository/index.html">LorasRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">LorasRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="968562862%2FClasslikes%2F-1634526779" anchor-label="MediaPipeGenerationRepositoryImpl" id="968562862%2FClasslikes%2F-1634526779" data-filterable-set=":data/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/androidMain" data-filterable-set=":data/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-media-pipe-generation-repository-impl/index.html"><span>Media</span><wbr><span>Pipe</span><wbr><span>Generation</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="968562862%2FClasslikes%2F-1634526779"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/androidMain" data-filterable-set=":data/androidMain" data-active="" data-toggle=":data/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-media-pipe-generation-repository-impl/index.html">MediaPipeGenerationRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mediaStoreGateway<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.gateway/-media-store-gateway/index.html">MediaStoreGateway</a><span class="token punctuation">, </span></span><span class="parameter ">localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-generation-result-data-source/-local/index.html">GenerationResultDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter ">backgroundWorkObserver<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter ">preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>mediaPipe<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.mediapipe/-media-pipe/index.html">MediaPipe</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>bitmapToBase64Converter<span class="token operator">: </span><a href="../../core/imageprocessing/com.shifthackz.aisdv1.core.imageprocessing/-bitmap-to-base64-converter/index.html">BitmapToBase64Converter</a></span></span><span class="token punctuation">)</span> : <a href="../com.shifthackz.aisdv1.data.core/-core-generation-repository/index.html">CoreGenerationRepository</a>, <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-media-pipe-generation-repository/index.html">MediaPipeGenerationRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">MediaPipeGenerationRepository</code> behavior in the SDAI data layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1495747276%2FClasslikes%2F527451509" anchor-label="OpenAiGenerationRepositoryImpl" id="1495747276%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-open-ai-generation-repository-impl/index.html"><span>Open</span><wbr><span>Ai</span><wbr><span>Generation</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1495747276%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-open-ai-generation-repository-impl/index.html">OpenAiGenerationRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mediaStoreGateway<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.gateway/-media-store-gateway/index.html">MediaStoreGateway</a><span class="token punctuation">, </span></span><span class="parameter ">localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-generation-result-data-source/-local/index.html">GenerationResultDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter ">backgroundWorkObserver<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-open-ai-generation-data-source/-remote/index.html">OpenAiGenerationDataSource.Remote</a></span></span><span class="token punctuation">)</span> : <a href="../com.shifthackz.aisdv1.data.core/-core-generation-repository/index.html">CoreGenerationRepository</a>, <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-open-ai-generation-repository/index.html">OpenAiGenerationRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">OpenAiGenerationRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1315067392%2FClasslikes%2F527451509" anchor-label="RandomImageRepositoryImpl" id="1315067392%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-random-image-repository-impl/index.html"><span>Random</span><wbr><span>Image</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1315067392%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-random-image-repository-impl/index.html">RandomImageRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-random-image-data-source/-remote/index.html">RandomImageDataSource.Remote</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-random-image-repository/index.html">RandomImageRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">RandomImageRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="635929200%2FClasslikes%2F527451509" anchor-label="RemoteStabilityAiEnginesRepository" id="635929200%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-remote-stability-ai-engines-repository/index.html"><span>Remote</span><wbr><span>Stability</span><wbr><span>Ai</span><wbr><span>Engines</span><wbr><span><span>Repository</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="635929200%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-remote-stability-ai-engines-repository/index.html">RemoteStabilityAiEnginesRepository</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stability-ai-engines-remote-data-source/index.html">StabilityAiEnginesRemoteDataSource</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-stability-ai-engines-repository/index.html">StabilityAiEnginesRepository</a></div><div class="brief "><p class="paragraph">Coordinates <code class="lang-kotlin">RemoteStabilityAiEnginesRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1270957026%2FClasslikes%2F527451509" anchor-label="ReportRepositoryImpl" id="1270957026%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-report-repository-impl/index.html"><span>Report</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1270957026%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-report-repository-impl/index.html">ReportRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>rds<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-report-data-source/-remote/index.html">ReportDataSource.Remote</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-report-repository/index.html">ReportRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">ReportRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2097227643%2FClasslikes%2F527451509" anchor-label="ServerConfigurationRepositoryImpl" id="-2097227643%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-server-configuration-repository-impl/index.html"><span>Server</span><wbr><span>Configuration</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2097227643%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-server-configuration-repository-impl/index.html">ServerConfigurationRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-server-configuration-data-source/-remote/index.html">ServerConfigurationDataSource.Remote</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-server-configuration-data-source/-local/index.html">ServerConfigurationDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-server-configuration-repository/index.html">ServerConfigurationRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">ServerConfigurationRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-29235379%2FClasslikes%2F527451509" anchor-label="StabilityAiCreditsRepositoryImpl" id="-29235379%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stability-ai-credits-repository-impl/index.html"><span>Stability</span><wbr><span>Ai</span><wbr><span>Credits</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-29235379%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-stability-ai-credits-repository-impl/index.html">StabilityAiCreditsRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stability-ai-credits-remote-data-source/index.html">StabilityAiCreditsRemoteDataSource</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stability-ai-credits-data-source/-local/index.html">StabilityAiCreditsDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-stability-ai-credits-repository/index.html">StabilityAiCreditsRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">StabilityAiCreditsRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2045952945%2FClasslikes%2F527451509" anchor-label="StabilityAiGenerationRepositoryImpl" id="-2045952945%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stability-ai-generation-repository-impl/index.html"><span>Stability</span><wbr><span>Ai</span><wbr><span>Generation</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2045952945%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-stability-ai-generation-repository-impl/index.html">StabilityAiGenerationRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mediaStoreGateway<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.gateway/-media-store-gateway/index.html">MediaStoreGateway</a><span class="token punctuation">, </span></span><span class="parameter ">backgroundWorkObserver<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter ">localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-generation-result-data-source/-local/index.html">GenerationResultDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generationRds<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stability-ai-generation-data-source/-remote/index.html">StabilityAiGenerationDataSource.Remote</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>creditsRds<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stability-ai-credits-remote-data-source/index.html">StabilityAiCreditsRemoteDataSource</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>creditsLds<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stability-ai-credits-data-source/-local/index.html">StabilityAiCreditsDataSource.Local</a></span></span><span class="token punctuation">)</span> : <a href="../com.shifthackz.aisdv1.data.core/-core-generation-repository/index.html">CoreGenerationRepository</a>, <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-stability-ai-generation-repository/index.html">StabilityAiGenerationRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">StabilityAiGenerationRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="559930326%2FClasslikes%2F527451509" anchor-label="StableDiffusionGenerationRepositoryImpl" id="559930326%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stable-diffusion-generation-repository-impl/index.html"><span>Stable</span><wbr><span>Diffusion</span><wbr><span>Generation</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="559930326%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-stable-diffusion-generation-repository-impl/index.html">StableDiffusionGenerationRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mediaStoreGateway<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.gateway/-media-store-gateway/index.html">MediaStoreGateway</a><span class="token punctuation">, </span></span><span class="parameter ">backgroundWorkObserver<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter ">localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-generation-result-data-source/-local/index.html">GenerationResultDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stable-diffusion-generation-data-source/-remote/index.html">StableDiffusionGenerationDataSource.Remote</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>textToImageDemo<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.demo/-text-to-image-demo/index.html">TextToImageDemo</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>imageToImageDemo<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.demo/-image-to-image-demo/index.html">ImageToImageDemo</a></span></span><span class="token punctuation">)</span> : <a href="../com.shifthackz.aisdv1.data.core/-core-generation-repository/index.html">CoreGenerationRepository</a>, <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-stable-diffusion-generation-repository/index.html">StableDiffusionGenerationRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">StableDiffusionGenerationRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2128177009%2FClasslikes%2F527451509" anchor-label="StableDiffusionHyperNetworksRepositoryImpl" id="-2128177009%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stable-diffusion-hyper-networks-repository-impl/index.html"><span>Stable</span><wbr><span>Diffusion</span><wbr><span>Hyper</span><wbr><span>Networks</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2128177009%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-stable-diffusion-hyper-networks-repository-impl/index.html">StableDiffusionHyperNetworksRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stable-diffusion-hyper-networks-data-source/-remote/index.html">StableDiffusionHyperNetworksDataSource.Remote</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stable-diffusion-hyper-networks-data-source/-local/index.html">StableDiffusionHyperNetworksDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-stable-diffusion-hyper-networks-repository/index.html">StableDiffusionHyperNetworksRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">StableDiffusionHyperNetworksRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-99037756%2FClasslikes%2F527451509" anchor-label="StableDiffusionModelsRepositoryImpl" id="-99037756%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stable-diffusion-models-repository-impl/index.html"><span>Stable</span><wbr><span>Diffusion</span><wbr><span>Models</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-99037756%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-stable-diffusion-models-repository-impl/index.html">StableDiffusionModelsRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stable-diffusion-models-data-source/-remote/index.html">StableDiffusionModelsDataSource.Remote</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stable-diffusion-models-data-source/-local/index.html">StableDiffusionModelsDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-stable-diffusion-models-repository/index.html">StableDiffusionModelsRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">StableDiffusionModelsRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-567707165%2FClasslikes%2F527451509" anchor-label="StableDiffusionSamplersRepositoryImpl" id="-567707165%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stable-diffusion-samplers-repository-impl/index.html"><span>Stable</span><wbr><span>Diffusion</span><wbr><span>Samplers</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-567707165%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-stable-diffusion-samplers-repository-impl/index.html">StableDiffusionSamplersRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stable-diffusion-samplers-data-source/-remote/index.html">StableDiffusionSamplersDataSource.Remote</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-stable-diffusion-samplers-data-source/-local/index.html">StableDiffusionSamplersDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-stable-diffusion-samplers-repository/index.html">StableDiffusionSamplersRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">StableDiffusionSamplersRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-661722881%2FClasslikes%2F527451509" anchor-label="SupportersRepositoryImpl" id="-661722881%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-supporters-repository-impl/index.html"><span>Supporters</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-661722881%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-supporters-repository-impl/index.html">SupportersRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-supporters-remote-data-source/index.html">SupportersRemoteDataSource</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-supporters-data-source/-local/index.html">SupportersDataSource.Local</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-supporters-repository/index.html">SupportersRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">SupportersRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-447161932%2FClasslikes%2F527451509" anchor-label="SwarmUiGenerationRepositoryImpl" id="-447161932%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-swarm-ui-generation-repository-impl/index.html"><span>Swarm</span><wbr><span>Ui</span><wbr><span>Generation</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-447161932%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-swarm-ui-generation-repository-impl/index.html">SwarmUiGenerationRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mediaStoreGateway<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.gateway/-media-store-gateway/index.html">MediaStoreGateway</a><span class="token punctuation">, </span></span><span class="parameter ">localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-generation-result-data-source/-local/index.html">GenerationResultDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter ">backgroundWorkObserver<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sessionPreference<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-session-preference/index.html">SessionPreference</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>swarmSessionRemoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-swarm-ui-models-remote-data-source/index.html">SwarmUiModelsRemoteDataSource</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-swarm-ui-generation-data-source/-remote/index.html">SwarmUiGenerationDataSource.Remote</a></span></span><span class="token punctuation">)</span> : <a href="../com.shifthackz.aisdv1.data.core/-core-generation-repository/index.html">CoreGenerationRepository</a>, <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-swarm-ui-generation-repository/index.html">SwarmUiGenerationRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">SwarmUiGenerationRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="42429090%2FClasslikes%2F527451509" anchor-label="SwarmUiModelsRepositoryImpl" id="42429090%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-swarm-ui-models-repository-impl/index.html"><span>Swarm</span><wbr><span>Ui</span><wbr><span>Models</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="42429090%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-swarm-ui-models-repository-impl/index.html">SwarmUiModelsRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>remoteDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-swarm-ui-models-remote-data-source/index.html">SwarmUiModelsRemoteDataSource</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>localDataSource<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.datasource/-swarm-ui-models-data-source/-local/index.html">SwarmUiModelsDataSource.Local</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sessionPreference<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.preference/-session-preference/index.html">SessionPreference</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-swarm-ui-models-repository/index.html">SwarmUiModelsRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">SwarmUiModelsRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1869410542%2FClasslikes%2F527451509" anchor-label="TemporaryGenerationResultRepositoryImpl" id="-1869410542%2FClasslikes%2F527451509" data-filterable-set=":data/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/commonMain" data-filterable-set=":data/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-temporary-generation-result-repository-impl/index.html"><span>Temporary</span><wbr><span>Generation</span><wbr><span>Result</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1869410542%2FClasslikes%2F527451509"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-temporary-generation-result-repository-impl/index.html">TemporaryGenerationResultRepositoryImpl</a> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-temporary-generation-result-repository/index.html">TemporaryGenerationResultRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">TemporaryGenerationResultRepository</code> behavior in the SDAI data layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="51731463%2FClasslikes%2F-1634526779" anchor-label="WakeLockRepositoryImpl" id="51731463%2FClasslikes%2F-1634526779" data-filterable-set=":data/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/androidMain" data-filterable-set=":data/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-wake-lock-repository-impl/index.html"><span>Wake</span><wbr><span>Lock</span><wbr><span>Repository</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="51731463%2FClasslikes%2F-1634526779"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/androidMain" data-filterable-set=":data/androidMain" data-active="" data-toggle=":data/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-wake-lock-repository-impl/index.html">WakeLockRepositoryImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>powerManager<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://developer.android.com/reference/kotlin/android/os/PowerManager.html">PowerManager</a></span></span><span class="token punctuation">)</span> : <a href="../../domain/com.shifthackz.aisdv1.domain.repository/-wake-lock-repository/index.html">WakeLockRepository</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">WakeLockRepository</code> behavior in the SDAI data layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

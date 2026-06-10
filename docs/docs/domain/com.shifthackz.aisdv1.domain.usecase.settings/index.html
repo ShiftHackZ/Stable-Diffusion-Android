@@ -1,0 +1,686 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.shifthackz.aisdv1.domain.usecase.settings</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script><meta id="sdai-docs-seo" name="description" content="Dokka API documentation for SDAI Kotlin Multiplatform, Android, iOS, and shared modules.">
+<link rel="canonical" href="https://sdai.moroz.cc/docs/domain/com.shifthackz.aisdv1.domain.usecase.settings/index.html">
+<meta property="og:title" content="SDAI Documentation">
+<meta property="og:description" content="Kotlin API documentation for SDAI Android, iOS, and shared modules.">
+<meta property="og:url" content="https://sdai.moroz.cc/docs/domain/com.shifthackz.aisdv1.domain.usecase.settings/index.html">
+<meta property="og:site_name" content="SDAI">
+<meta property="og:type" content="website">
+<style id="sdai-docs-branding">
+  .sdai-docs-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .sdai-docs-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .sdai-docs-links a:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .sdai-docs-links svg {
+    width: 18px;
+    height: 18px;
+  }
+  @media (max-width: 760px) {
+    .sdai-docs-links {
+      width: 100%;
+      justify-content: flex-start;
+      margin-left: 0;
+      padding: 6px 0;
+    }
+    .sdai-docs-links a {
+      padding: 0 6px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
+                    SDAI
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+<nav class="sdai-docs-links" aria-label="SDAI documentation links">
+  <a href="https://sdai.moroz.cc/">Main site</a>
+  <a href="https://t.me/sdai_app" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.86 4.58 18.62 19.84c-.24 1.08-.88 1.34-1.78.83l-4.92-3.63-2.37 2.28c-.26.26-.48.48-.98.48l.35-5.02 9.14-8.26c.4-.35-.09-.55-.61-.2L6.15 13.43l-4.87-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 3c.88-.33 1.65.2 1.31 1.58Z"/></svg>
+    <span>Telegram</span>
+  </a>
+  <a href="https://discord.gg/jzdR9m8Ves" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.54 5.26A18.1 18.1 0 0 0 15.04 3.86c-.19.34-.42.8-.57 1.16a16.7 16.7 0 0 0-4.99 0 12.3 12.3 0 0 0-.58-1.16 18 18 0 0 0-4.5 1.4C1.55 9.49.78 13.61 1.16 17.68a18.3 18.3 0 0 0 5.51 2.79c.44-.6.84-1.24 1.17-1.91-.64-.24-1.25-.54-1.82-.89.15-.11.3-.23.44-.35a12.96 12.96 0 0 0 11.08 0l.44.35c-.58.35-1.19.65-1.83.89.34.67.73 1.31 1.17 1.91a18.2 18.2 0 0 0 5.52-2.79c.46-4.72-.78-8.81-3.3-12.42ZM8.68 15.18c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.08 0 1.96.99 1.95 2.19 0 1.21-.87 2.2-1.95 2.2Zm6.64 0c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.09 0 1.96.99 1.95 2.19 0 1.21-.86 2.2-1.95 2.2Z"/></svg>
+    <span>Discord</span>
+  </a>
+</nav>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":domain/androidMain">android</button>
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":domain/commonMain">common</button>
+                <button class="platform-tag platform-selector native-like" data-active="" aria-pressed="true" data-filter=":domain/iosMain">ios</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":domain/androidMain" data-filter=":domain/androidMain">
+                                <span class="checkbox--icon"></span>
+                                android
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":domain/commonMain" data-filter=":domain/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option native-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":domain/iosMain" data-filter=":domain/iosMain">
+                                <span class="checkbox--icon"></span>
+                                ios
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    SDAI
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="domain::com.shifthackz.aisdv1.domain.usecase.settings////PointingToDeclaration//2025977453">
+  <div class="breadcrumbs"><a href="../index.html">domain</a><span class="delimiter">/</span><span class="current">com.shifthackz.aisdv1.domain.usecase.settings</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="37354609%2FClasslikes%2F-911324849" anchor-label="ConnectToA1111UseCase" id="37354609%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connect-to-a1111-use-case/index.html"><span>Connect</span><wbr><span>To</span><wbr><span>A1111Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="37354609%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-connect-to-a1111-use-case/index.html">ConnectToA1111UseCase</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ConnectToA1111UseCase</code> contract for the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1924178340%2FClasslikes%2F-911324849" anchor-label="ConnectToHordeUseCase" id="-1924178340%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connect-to-horde-use-case/index.html"><span>Connect</span><wbr><span>To</span><wbr><span>Horde</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1924178340%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-connect-to-horde-use-case/index.html">ConnectToHordeUseCase</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ConnectToHordeUseCase</code> contract for the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-481802782%2FClasslikes%2F-911324849" anchor-label="ConnectToHuggingFaceUseCase" id="-481802782%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connect-to-hugging-face-use-case/index.html"><span>Connect</span><wbr><span>To</span><wbr><span>Hugging</span><wbr><span>Face</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-481802782%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-connect-to-hugging-face-use-case/index.html">ConnectToHuggingFaceUseCase</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ConnectToHuggingFaceUseCase</code> contract for the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1518682434%2FClasslikes%2F-911324849" anchor-label="ConnectToLocalDiffusionUseCase" id="-1518682434%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connect-to-local-diffusion-use-case/index.html"><span>Connect</span><wbr><span>To</span><wbr><span>Local</span><wbr><span>Diffusion</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1518682434%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-connect-to-local-diffusion-use-case/index.html">ConnectToLocalDiffusionUseCase</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ConnectToLocalDiffusionUseCase</code> contract for the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1253597694%2FClasslikes%2F-911324849" anchor-label="ConnectToLocalDiffusionUseCaseImpl" id="1253597694%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connect-to-local-diffusion-use-case-impl/index.html"><span>Connect</span><wbr><span>To</span><wbr><span>Local</span><wbr><span>Diffusion</span><wbr><span>Use</span><wbr><span>Case</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1253597694%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-connect-to-local-diffusion-use-case-impl/index.html">ConnectToLocalDiffusionUseCaseImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>getConfigurationUseCase<span class="token operator">: </span><a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>setServerConfigurationUseCase<span class="token operator">: </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a></span></span><span class="token punctuation">)</span> : <a href="-connect-to-local-diffusion-use-case/index.html">ConnectToLocalDiffusionUseCase</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">ConnectToLocalDiffusionUseCase</code> behavior in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-333335294%2FClasslikes%2F-911324849" anchor-label="ConnectToMediaPipeUseCase" id="-333335294%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connect-to-media-pipe-use-case/index.html"><span>Connect</span><wbr><span>To</span><wbr><span>Media</span><wbr><span>Pipe</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-333335294%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-connect-to-media-pipe-use-case/index.html">ConnectToMediaPipeUseCase</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ConnectToMediaPipeUseCase</code> contract for the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1555207746%2FClasslikes%2F-911324849" anchor-label="ConnectToMediaPipeUseCaseImpl" id="1555207746%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connect-to-media-pipe-use-case-impl/index.html"><span>Connect</span><wbr><span>To</span><wbr><span>Media</span><wbr><span>Pipe</span><wbr><span>Use</span><wbr><span>Case</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1555207746%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-connect-to-media-pipe-use-case-impl/index.html">ConnectToMediaPipeUseCaseImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>getConfigurationUseCase<span class="token operator">: </span><a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>setServerConfigurationUseCase<span class="token operator">: </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a></span></span><span class="token punctuation">)</span> : <a href="-connect-to-media-pipe-use-case/index.html">ConnectToMediaPipeUseCase</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">ConnectToMediaPipeUseCase</code> behavior in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1227565002%2FClasslikes%2F-911324849" anchor-label="ConnectToOpenAiUseCase" id="-1227565002%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connect-to-open-ai-use-case/index.html"><span>Connect</span><wbr><span>To</span><wbr><span>Open</span><wbr><span>Ai</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1227565002%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-connect-to-open-ai-use-case/index.html">ConnectToOpenAiUseCase</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ConnectToOpenAiUseCase</code> contract for the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2077985153%2FClasslikes%2F-911324849" anchor-label="ConnectToStabilityAiUseCase" id="2077985153%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connect-to-stability-ai-use-case/index.html"><span>Connect</span><wbr><span>To</span><wbr><span>Stability</span><wbr><span>Ai</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2077985153%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-connect-to-stability-ai-use-case/index.html">ConnectToStabilityAiUseCase</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ConnectToStabilityAiUseCase</code> contract for the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1296839428%2FClasslikes%2F-911324849" anchor-label="ConnectToSwarmUiUseCase" id="-1296839428%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connect-to-swarm-ui-use-case/index.html"><span>Connect</span><wbr><span>To</span><wbr><span>Swarm</span><wbr><span>Ui</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1296839428%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-connect-to-swarm-ui-use-case/index.html">ConnectToSwarmUiUseCase</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">ConnectToSwarmUiUseCase</code> contract for the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="181628412%2FClasslikes%2F-911324849" anchor-label="DefaultConnectToA1111UseCaseImpl" id="181628412%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default-connect-to-a1111-use-case-impl/index.html"><span>Default</span><wbr><span>Connect</span><wbr><span>To</span><wbr><span>A1111Use</span><wbr><span>Case</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="181628412%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-default-connect-to-a1111-use-case-impl/index.html">DefaultConnectToA1111UseCaseImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>getConfigurationUseCase<span class="token operator">: </span><a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>setServerConfigurationUseCase<span class="token operator">: </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>testConnectivityUseCase<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.usecase.connectivity/-test-connectivity-use-case/index.html">TestConnectivityUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>dataPreLoaderUseCase<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.usecase.caching/-data-pre-loader-use-case/index.html">DataPreLoaderUseCase</a></span></span><span class="token punctuation">)</span> : <a href="-connect-to-a1111-use-case/index.html">ConnectToA1111UseCase</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">DefaultConnectToA1111UseCase</code> behavior in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1732239975%2FClasslikes%2F-911324849" anchor-label="DefaultConnectToHordeUseCaseImpl" id="1732239975%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default-connect-to-horde-use-case-impl/index.html"><span>Default</span><wbr><span>Connect</span><wbr><span>To</span><wbr><span>Horde</span><wbr><span>Use</span><wbr><span>Case</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1732239975%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-default-connect-to-horde-use-case-impl/index.html">DefaultConnectToHordeUseCaseImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>getConfigurationUseCase<span class="token operator">: </span><a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>setServerConfigurationUseCase<span class="token operator">: </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>testHordeApiKeyUseCase<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.usecase.connectivity/-test-horde-api-key-use-case/index.html">TestHordeApiKeyUseCase</a></span></span><span class="token punctuation">)</span> : <a href="-connect-to-horde-use-case/index.html">ConnectToHordeUseCase</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">DefaultConnectToHordeUseCase</code> behavior in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1455116973%2FClasslikes%2F-911324849" anchor-label="DefaultConnectToHuggingFaceUseCaseImpl" id="1455116973%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default-connect-to-hugging-face-use-case-impl/index.html"><span>Default</span><wbr><span>Connect</span><wbr><span>To</span><wbr><span>Hugging</span><wbr><span>Face</span><wbr><span>Use</span><wbr><span>Case</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1455116973%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-default-connect-to-hugging-face-use-case-impl/index.html">DefaultConnectToHuggingFaceUseCaseImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>getConfigurationUseCase<span class="token operator">: </span><a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>setServerConfigurationUseCase<span class="token operator">: </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>testHuggingFaceApiKeyUseCase<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.usecase.connectivity/-test-hugging-face-api-key-use-case/index.html">TestHuggingFaceApiKeyUseCase</a></span></span><span class="token punctuation">)</span> : <a href="-connect-to-hugging-face-use-case/index.html">ConnectToHuggingFaceUseCase</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">DefaultConnectToHuggingFaceUseCase</code> behavior in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1114826485%2FClasslikes%2F-911324849" anchor-label="DefaultConnectToOpenAiUseCaseImpl" id="-1114826485%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default-connect-to-open-ai-use-case-impl/index.html"><span>Default</span><wbr><span>Connect</span><wbr><span>To</span><wbr><span>Open</span><wbr><span>Ai</span><wbr><span>Use</span><wbr><span>Case</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1114826485%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-default-connect-to-open-ai-use-case-impl/index.html">DefaultConnectToOpenAiUseCaseImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>getConfigurationUseCase<span class="token operator">: </span><a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>setServerConfigurationUseCase<span class="token operator">: </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>testOpenAiApiKeyUseCase<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.usecase.connectivity/-test-open-ai-api-key-use-case/index.html">TestOpenAiApiKeyUseCase</a></span></span><span class="token punctuation">)</span> : <a href="-connect-to-open-ai-use-case/index.html">ConnectToOpenAiUseCase</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">DefaultConnectToOpenAiUseCase</code> behavior in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="649440972%2FClasslikes%2F-911324849" anchor-label="DefaultConnectToStabilityAiUseCaseImpl" id="649440972%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default-connect-to-stability-ai-use-case-impl/index.html"><span>Default</span><wbr><span>Connect</span><wbr><span>To</span><wbr><span>Stability</span><wbr><span>Ai</span><wbr><span>Use</span><wbr><span>Case</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="649440972%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-default-connect-to-stability-ai-use-case-impl/index.html">DefaultConnectToStabilityAiUseCaseImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>getConfigurationUseCase<span class="token operator">: </span><a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>setServerConfigurationUseCase<span class="token operator">: </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>testStabilityAiApiKeyUseCase<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.usecase.connectivity/-test-stability-ai-api-key-use-case/index.html">TestStabilityAiApiKeyUseCase</a></span></span><span class="token punctuation">)</span> : <a href="-connect-to-stability-ai-use-case/index.html">ConnectToStabilityAiUseCase</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">DefaultConnectToStabilityAiUseCase</code> behavior in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1760347577%2FClasslikes%2F-911324849" anchor-label="DefaultConnectToSwarmUiUseCaseImpl" id="-1760347577%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default-connect-to-swarm-ui-use-case-impl/index.html"><span>Default</span><wbr><span>Connect</span><wbr><span>To</span><wbr><span>Swarm</span><wbr><span>Ui</span><wbr><span>Use</span><wbr><span>Case</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1760347577%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-default-connect-to-swarm-ui-use-case-impl/index.html">DefaultConnectToSwarmUiUseCaseImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>getConfigurationUseCase<span class="token operator">: </span><a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>setServerConfigurationUseCase<span class="token operator">: </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>testSwarmUiConnectivityUseCase<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.usecase.connectivity/-test-swarm-ui-connectivity-use-case/index.html">TestSwarmUiConnectivityUseCase</a></span></span><span class="token punctuation">)</span> : <a href="-connect-to-swarm-ui-use-case/index.html">ConnectToSwarmUiUseCase</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">DefaultConnectToSwarmUiUseCase</code> behavior in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1189748128%2FClasslikes%2F-911324849" anchor-label="DefaultGetConfigurationUseCaseImpl" id="1189748128%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default-get-configuration-use-case-impl/index.html"><span>Default</span><wbr><span>Get</span><wbr><span>Configuration</span><wbr><span>Use</span><wbr><span>Case</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1189748128%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-default-get-configuration-use-case-impl/index.html">DefaultGetConfigurationUseCaseImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>configurationStore<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.preference/-configuration-store/index.html">ConfigurationStore</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a></span></span><span class="token punctuation">)</span> : <a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">DefaultGetConfigurationUseCase</code> behavior in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1848266223%2FClasslikes%2F-911324849" anchor-label="DefaultSetServerConfigurationUseCaseImpl" id="-1848266223%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default-set-server-configuration-use-case-impl/index.html"><span>Default</span><wbr><span>Set</span><wbr><span>Server</span><wbr><span>Configuration</span><wbr><span>Use</span><wbr><span>Case</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1848266223%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-default-set-server-configuration-use-case-impl/index.html">DefaultSetServerConfigurationUseCaseImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>configurationStore<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.preference/-configuration-store/index.html">ConfigurationStore</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authorizationStore<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.feature.auth/-authorization-store/index.html">AuthorizationStore</a></span></span><span class="token punctuation">)</span> : <a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a></div><div class="brief "><p class="paragraph">Implements <code class="lang-kotlin">DefaultSetServerConfigurationUseCase</code> behavior in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="95175893%2FClasslikes%2F-911324849" anchor-label="GetConfigurationUseCase" id="95175893%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-get-configuration-use-case/index.html"><span>Get</span><wbr><span>Configuration</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="95175893%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">GetConfigurationUseCase</code> contract for the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-293335546%2FClasslikes%2F-911324849" anchor-label="SetServerConfigurationUseCase" id="-293335546%2FClasslikes%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-set-server-configuration-use-case/index.html"><span>Set</span><wbr><span>Server</span><wbr><span>Configuration</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-293335546%2FClasslikes%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a></div><div class="brief "><p class="paragraph">Defines the <code class="lang-kotlin">SetServerConfigurationUseCase</code> contract for the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-1533208658%2FProperties%2F-911324849" anchor-label="CONNECTION_DELAY_MILLIS" id="-1533208658%2FProperties%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-c-o-n-n-e-c-t-i-o-n_-d-e-l-a-y_-m-i-l-l-i-s.html"><span>CONNECTION_</span><wbr><span>DELAY_</span><wbr><span>MILLIS</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1533208658%2FProperties%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-c-o-n-n-e-c-t-i-o-n_-d-e-l-a-y_-m-i-l-l-i-s.html">CONNECTION_DELAY_MILLIS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">CONNECTION_DELAY_MILLIS</code> value used by the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1424757044%2FProperties%2F-911324849" anchor-label="CONNECTION_TIMEOUT_MILLIS" id="-1424757044%2FProperties%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-c-o-n-n-e-c-t-i-o-n_-t-i-m-e-o-u-t_-m-i-l-l-i-s.html"><span>CONNECTION_</span><wbr><span>TIMEOUT_</span><wbr><span>MILLIS</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1424757044%2FProperties%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-c-o-n-n-e-c-t-i-o-n_-t-i-m-e-o-u-t_-m-i-l-l-i-s.html">CONNECTION_TIMEOUT_MILLIS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">CONNECTION_TIMEOUT_MILLIS</code> value used by the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="25140903%2FProperties%2F-911324849" anchor-label="LOCAL_NETWORK_RETRY_ATTEMPTS" id="25140903%2FProperties%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-l-o-c-a-l_-n-e-t-w-o-r-k_-r-e-t-r-y_-a-t-t-e-m-p-t-s.html"><span>LOCAL_</span><wbr><span>NETWORK_</span><wbr><span>RETRY_</span><wbr><span>ATTEMPTS</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="25140903%2FProperties%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-l-o-c-a-l_-n-e-t-w-o-r-k_-r-e-t-r-y_-a-t-t-e-m-p-t-s.html">LOCAL_NETWORK_RETRY_ATTEMPTS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">LOCAL_NETWORK_RETRY_ATTEMPTS</code> value used by the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-177685032%2FProperties%2F-911324849" anchor-label="LOCAL_NETWORK_RETRY_DELAYS_MILLIS" id="-177685032%2FProperties%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-l-o-c-a-l_-n-e-t-w-o-r-k_-r-e-t-r-y_-d-e-l-a-y-s_-m-i-l-l-i-s.html"><span>LOCAL_</span><wbr><span>NETWORK_</span><wbr><span>RETRY_</span><wbr><span>DELAYS_</span><wbr><span>MILLIS</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-177685032%2FProperties%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="-l-o-c-a-l_-n-e-t-w-o-r-k_-r-e-t-r-y_-d-e-l-a-y-s_-m-i-l-l-i-s.html">LOCAL_NETWORK_RETRY_DELAYS_MILLIS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">LOCAL_NETWORK_RETRY_DELAYS_MILLIS</code> value used by the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-342343778%2FProperties%2F2025977453" anchor-label="localNetworkPermissionRetryEnabled" id="-342343778%2FProperties%2F2025977453" data-filterable-set=":domain/commonMain,:domain/androidMain,:domain/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain,:domain/androidMain,:domain/iosMain" data-filterable-set=":domain/commonMain,:domain/androidMain,:domain/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="local-network-permission-retry-enabled.html"><span>local</span><wbr><span>Network</span><wbr><span>Permission</span><wbr><span>Retry</span><wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-342343778%2FProperties%2F2025977453"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":domain/androidMain" data-filterable-set=":domain/androidMain" data-active="" data-toggle=":domain/androidMain">android</button><button class="platform-bookmark" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain" data-toggle=":domain/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":domain/iosMain" data-filterable-set=":domain/iosMain" data-toggle=":domain/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":domain/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">actual </span><span class="token keyword">val </span><a href="local-network-permission-retry-enabled.html">localNetworkPermissionRetryEnabled</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">localNetworkPermissionRetryEnabled</code> value used by the SDAI domain layer.</p></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">expect </span><span class="token keyword">val </span><a href="local-network-permission-retry-enabled.html">localNetworkPermissionRetryEnabled</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">localNetworkPermissionRetryEnabled</code> value used by the SDAI domain layer.</p></div></div><div class="content sourceset-dependent-content" data-togglable=":domain/iosMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">actual </span><span class="token keyword">val </span><a href="local-network-permission-retry-enabled.html">localNetworkPermissionRetryEnabled</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">localNetworkPermissionRetryEnabled</code> value used by the SDAI domain layer.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-103094133%2FFunctions%2F-911324849" anchor-label="connectWithApiKey" id="-103094133%2FFunctions%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="connect-with-api-key.html"><span>connect</span><wbr><span>With</span><wbr><span>Api</span><wbr><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-103094133%2FFunctions%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="connect-with-api-key.html"><span class="token function">connectWithApiKey</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">getConfigurationUseCase<span class="token operator">: </span><a href="-get-configuration-use-case/index.html">GetConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter ">setServerConfigurationUseCase<span class="token operator">: </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter ">testApiKey<span class="token operator">: </span><span class="token keyword">suspend </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">updateConfiguration<span class="token operator">: </span><span class="token punctuation">(</span><a href="../com.shifthackz.aisdv1.domain.entity/-configuration/index.html">Configuration</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="../com.shifthackz.aisdv1.domain.entity/-configuration/index.html">Configuration</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">connectWithApiKey</code> step in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-699104527%2FFunctions%2F-911324849" anchor-label="isLikelyLocalNetworkBootstrapError" id="-699104527%2FFunctions%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-likely-local-network-bootstrap-error.html"><span>is</span><wbr><span>Likely</span><wbr><span>Local</span><wbr><span>Network</span><wbr><span>Bootstrap</span><wbr><span><span>Error</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-699104527%2FFunctions%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token punctuation">.</span><a href="is-likely-local-network-bootstrap-error.html"><span class="token function">isLikelyLocalNetworkBootstrapError</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">isLikelyLocalNetworkBootstrapError</code> step in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="357316663%2FFunctions%2F-911324849" anchor-label="isLikelyLocalNetworkEndpoint" id="357316663%2FFunctions%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-likely-local-network-endpoint.html"><span>is</span><wbr><span>Likely</span><wbr><span>Local</span><wbr><span>Network</span><wbr><span><span>Endpoint</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="357316663%2FFunctions%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="is-likely-local-network-endpoint.html"><span class="token function">isLikelyLocalNetworkEndpoint</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">isLikelyLocalNetworkEndpoint</code> step in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1970018328%2FFunctions%2F-911324849" anchor-label="requireRemoteValidApiKey" id="1970018328%2FFunctions%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="require-remote-valid-api-key.html"><span>require</span><wbr><span>Remote</span><wbr><span>Valid</span><wbr><span>Api</span><wbr><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1970018328%2FFunctions%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="require-remote-valid-api-key.html"><span class="token function">requireRemoteValidApiKey</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">valid<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">requireRemoteValidApiKey</code> step in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1707960337%2FFunctions%2F-911324849" anchor-label="restoreRemoteConfigurationAndFail" id="1707960337%2FFunctions%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="restore-remote-configuration-and-fail.html"><span>restore</span><wbr><span>Remote</span><wbr><span>Configuration</span><wbr><span>And</span><wbr><span><span>Fail</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1707960337%2FFunctions%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="restore-remote-configuration-and-fail.html"><span class="token function">restoreRemoteConfigurationAndFail</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">configuration<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.domain.entity/-configuration/index.html">Configuration</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">setServerConfigurationUseCase<span class="token operator">: </span><a href="-set-server-configuration-use-case/index.html">SetServerConfigurationUseCase</a><span class="token punctuation">, </span></span><span class="parameter ">throwable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">restoreRemoteConfigurationAndFail</code> step in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-339915317%2FFunctions%2F-911324849" anchor-label="retryRemoteDelayed" id="-339915317%2FFunctions%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="retry-remote-delayed.html"><span>retry</span><wbr><span>Remote</span><wbr><span><span>Delayed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-339915317%2FFunctions%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="retry-remote-delayed.html"><span class="token function">retryRemoteDelayed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">attempts<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">delayMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">block<span class="token operator">: </span><span class="token keyword">suspend </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">retryRemoteDelayed</code> step in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1247299636%2FFunctions%2F-911324849" anchor-label="withLocalNetworkPermissionRetry" id="1247299636%2FFunctions%2F-911324849" data-filterable-set=":domain/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":domain/commonMain" data-filterable-set=":domain/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="with-local-network-permission-retry.html"><span>with</span><wbr><span>Local</span><wbr><span>Network</span><wbr><span>Permission</span><wbr><span><span>Retry</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1247299636%2FFunctions%2F-911324849"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="with-local-network-permission-retry.html">T</a><span class="token operator">&gt; </span><a href="with-local-network-permission-retry.html"><span class="token function">withLocalNetworkPermissionRetry</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">url<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">block<span class="token operator">: </span><span class="token keyword">suspend </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="with-local-network-permission-retry.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="with-local-network-permission-retry.html">T</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">withLocalNetworkPermissionRetry</code> step in the SDAI domain layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

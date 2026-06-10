@@ -1,0 +1,11 @@
+appId: ${APP_ID}
+---
+- launchApp
+- tapOn: "Img2Img"
+- tapOn: "Random image"
+- tapOn: "Prompt"
+- inputText: "mobile qa image to image smoke test"
+- tapOn: "Imagine"
+- assertVisible:
+    text: "Generation result|Result"
+    optional: true

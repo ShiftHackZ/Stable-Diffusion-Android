@@ -13,10 +13,6 @@ internal fun Project.configureCompose(
             buildConfig = true
         }
 
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.findVersion("composeCompiler").get().toString()
-        }
-
         dependencies {
             add("implementation", project(":core:common"))
 
@@ -33,12 +29,8 @@ internal fun Project.configureCompose(
             add("implementation", libs.findLibrary("androidx.compose.activity").get())
             add("implementation", libs.findLibrary("androidx.compose.viewmodel").get())
             add("implementation", libs.findLibrary("androidx.compose.navigation").get())
-            add("implementation", libs.findLibrary("androidx.paging.runtime").get())
-            add("implementation", libs.findLibrary("androidx.paging.compose").get())
             add("implementation", libs.findLibrary("androidx.lifecycle.viewmodel").get())
             add("implementation", libs.findLibrary("androidx.lifecycle.compose").get())
-            add("implementation", libs.findLibrary("rx.java").get())
-            add("implementation", libs.findLibrary("shifthackz.mvi").get())
             add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
         }
     }
