@@ -8,7 +8,7 @@
 <p>
   <a href="https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app"><img src="docs/assets/badge-google-play.svg" alt="Get it on Google Play" height="54"></a>
   <a href="https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss"><img src="docs/assets/badge-fdroid.svg" alt="Get it on F-Droid" height="54"></a>
-  <img src="docs/assets/badge-app-store.svg" alt="Download on the App Store" height="64">
+  <img src="docs/assets/badge-app-store-readme.png" alt="Download on the App Store" height="54">
   <a href="https://4pda.to/forum/index.php?showtopic=1082639"><img src="docs/assets/4pda.png" alt="4PDA" height="54"></a>
 </p>
 
