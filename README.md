@@ -147,7 +147,7 @@ The iOS app is not split into Android-style flavors. It uses the shared mobile U
 
 For a historical overview of flavor policy, see the project wiki page: [Build flavor difference](https://github.com/ShiftHackZ/Stable-Diffusion-Android/wiki/Build-flavor-difference).
 
-## Legacy Android 0.x Versions
+## Legacy Android 0.x.x Versions
 
 The old Android-only `0.x.x` release line is no longer maintained. It remains available for archival and reference purposes in the
 [`archive/version-0.x.x`](https://github.com/ShiftHackZ/Stable-Diffusion-Android/tree/archive/version-0.x.x) branch.
