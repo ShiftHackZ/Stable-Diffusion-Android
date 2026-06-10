@@ -1,9 +1,9 @@
 package com.shifthackz.aisdv1.data.remote
 
+import com.shifthackz.aisdv1.data.mappers.mapToStableDiffusionRequest
 import com.shifthackz.aisdv1.data.mocks.mockImageToImagePayload
 import com.shifthackz.aisdv1.data.mocks.mockSdGenerationResponse
 import com.shifthackz.aisdv1.data.mocks.mockTextToImagePayload
-import com.shifthackz.aisdv1.data.mappers.mapToStableDiffusionRequest
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111GenerationApi
 import com.shifthackz.aisdv1.network.auth.BasicHttpAuthorization

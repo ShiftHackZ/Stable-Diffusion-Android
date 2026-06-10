@@ -3,8 +3,6 @@ package com.shifthackz.aisdv1.data.remote
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.file.unzip
 import com.shifthackz.aisdv1.domain.entity.DownloadState
-import java.io.File
-import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
@@ -14,6 +12,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.io.File
+import java.util.concurrent.TimeUnit
 
 /**
  * Coordinates `AndroidDownloadableModelFileDownloader` behavior in the SDAI data layer.

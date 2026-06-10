@@ -1,7 +1,6 @@
 package com.shifthackz.aisdv1.data.remote
 
 import com.shifthackz.aisdv1.data.mocks.mockHuggingFaceModelsRaw
-import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.network.api.huggingface.HuggingFaceModelsApi
 import io.mockk.coEvery
 import io.mockk.mockk

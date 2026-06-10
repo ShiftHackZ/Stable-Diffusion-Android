@@ -20,8 +20,8 @@ import com.shifthackz.aisdv1.data.di.dataModule
 import com.shifthackz.aisdv1.demo.di.demoModule
 import com.shifthackz.aisdv1.domain.di.coreDomainModule
 import com.shifthackz.aisdv1.domain.di.domainModule
-import com.shifthackz.aisdv1.network.di.networkModule
 import com.shifthackz.aisdv1.network.di.coreNetworkModule
+import com.shifthackz.aisdv1.network.di.networkModule
 import com.shifthackz.aisdv1.presentation.di.presentationModule
 import com.shifthackz.aisdv1.work.di.SdaiWorkerFactory
 import com.shifthackz.aisdv1.work.di.backgroundWorkModule

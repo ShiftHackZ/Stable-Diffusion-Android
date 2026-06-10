@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.presentation.di
 
-import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.AndroidGenerationPlatformServices
+import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationPlatformServices
 import com.shifthackz.aisdv1.presentation.screen.debug.AndroidDebugMenuPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
@@ -18,8 +18,8 @@ import com.shifthackz.aisdv1.presentation.screen.setup.AndroidServerSetupDownloa
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupDownloadGuard
 import com.shifthackz.aisdv1.presentation.screen.txt2img.AndroidImageSaver
 import com.shifthackz.aisdv1.presentation.screen.txt2img.AndroidImageSharer
-import com.shifthackz.aisdv1.presentation.screen.txt2img.ImageSharer
 import com.shifthackz.aisdv1.presentation.screen.txt2img.ImageSaver
+import com.shifthackz.aisdv1.presentation.screen.txt2img.ImageSharer
 import com.shifthackz.aisdv1.presentation.widget.work.AndroidBackgroundWorkImageLoader
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkImageLoader
 import org.koin.android.ext.koin.androidContext

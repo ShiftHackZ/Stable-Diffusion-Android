@@ -1,10 +1,10 @@
 package com.shifthackz.aisdv1.presentation.modal.extras
 
 import androidx.compose.runtime.Immutable
+import com.shifthackz.aisdv1.core.mvi.MviState
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
-import com.shifthackz.aisdv1.core.mvi.MviState
 
 /**
  * Carries `ExtrasState` data through the SDAI presentation layer.

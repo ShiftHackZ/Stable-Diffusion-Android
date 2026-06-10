@@ -1,10 +1,10 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
+import com.shifthackz.aisdv1.core.mvi.MviIntent
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
-import com.shifthackz.aisdv1.core.mvi.MviIntent
 
 /**
  * Defines the `SettingsIntent` contract for the SDAI presentation layer.

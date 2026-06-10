@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.report
 
-import com.shifthackz.aisdv1.domain.entity.ReportReason
 import com.shifthackz.aisdv1.core.mvi.MviIntent
+import com.shifthackz.aisdv1.domain.entity.ReportReason
 
 /**
  * Defines the `ReportIntent` contract for the SDAI presentation layer.

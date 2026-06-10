@@ -28,17 +28,17 @@ import androidx.compose.ui.window.DialogProperties
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.di.initKoin
-import com.shifthackz.aisdv1.presentation.model.ExtraType
-import com.shifthackz.aisdv1.presentation.theme.sliderColors
-import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagConstants.EXTRA_MAXIMUM
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagConstants.EXTRA_MINIMUM
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagConstants.EXTRA_STEP
+import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.theme.sliderColors
+import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.widget.input.SliderTextInputField
 import com.shifthackz.aisdv1.presentation.widget.input.chip.ChipTextFieldItem
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
-import kotlin.math.abs
 import org.koin.core.parameter.parametersOf
+import kotlin.math.abs
 
 /**
  * Renders the `EditTagDialog` UI for the SDAI presentation layer.

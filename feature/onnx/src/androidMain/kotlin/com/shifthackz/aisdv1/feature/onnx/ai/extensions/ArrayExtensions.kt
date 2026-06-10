@@ -1,8 +1,8 @@
 package com.shifthackz.aisdv1.feature.onnx.ai.extensions
 
 import com.shifthackz.aisdv1.feature.onnx.entity.Array3D
-import kotlin.math.ceil
 import java.util.function.Function
+import kotlin.math.ceil
 
 /**
  * Executes the `arrange` step in the SDAI ONNX local diffusion feature layer.

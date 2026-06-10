@@ -3,10 +3,10 @@
 package com.shifthackz.aisdv1.data.gateway.mediastore
 
 import android.content.Context
-import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore as defaultShouldUseNewMediaStore
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.log.debugLog
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
+import com.shifthackz.aisdv1.core.common.extensions.shouldUseNewMediaStore as defaultShouldUseNewMediaStore
 
 /**
  * Coordinates `MediaStoreGatewayFactory` behavior in the SDAI data layer.

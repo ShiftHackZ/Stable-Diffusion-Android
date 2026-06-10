@@ -7,10 +7,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.Image
@@ -26,12 +30,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,8 +49,6 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerSheetContent
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerSheetItem
-import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationBar
-import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationBarItem
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
 import com.shifthackz.aisdv1.presentation.widget.source.getName
 
@@ -113,6 +115,15 @@ internal fun AppScaffold(
                         ),
                     )
                 }
+            },
+            topBar = {
+                // This is a workaround to apply the top app bar container color as the status bar color
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .windowInsetsTopHeight(WindowInsets.statusBars)
+                        .background(TopAppBarDefaults.topAppBarColors().containerColor)
+                )
             },
         ) { paddingValues ->
             Column(

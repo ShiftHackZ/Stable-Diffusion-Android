@@ -12,9 +12,9 @@ import com.shifthackz.aisdv1.feature.onnx.ai.extensions.arrange
 import com.shifthackz.aisdv1.feature.onnx.ai.extensions.interpolate
 import com.shifthackz.aisdv1.feature.onnx.ai.extensions.lineSpace
 import com.shifthackz.aisdv1.feature.onnx.entity.Array3D
+import com.shifthackz.aisdv1.feature.onnx.entity.LocalDiffusionConfig
 import com.shifthackz.aisdv1.feature.onnx.entity.LocalDiffusionTensor
 import com.shifthackz.aisdv1.feature.onnx.environment.OrtEnvironmentProvider
-import com.shifthackz.aisdv1.feature.onnx.entity.LocalDiffusionConfig
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.nio.FloatBuffer

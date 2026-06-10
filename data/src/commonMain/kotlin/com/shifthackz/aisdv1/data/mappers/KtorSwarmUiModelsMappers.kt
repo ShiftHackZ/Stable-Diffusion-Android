@@ -1,8 +1,8 @@
 package com.shifthackz.aisdv1.data.mappers
 
-import com.shifthackz.aisdv1.domain.entity.SwarmUiModel
 import com.shifthackz.aisdv1.domain.entity.Embedding
 import com.shifthackz.aisdv1.domain.entity.LoRA
+import com.shifthackz.aisdv1.domain.entity.SwarmUiModel
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.network.auth.BasicHttpAuthorization
 import com.shifthackz.aisdv1.network.model.SwarmUiModelRaw

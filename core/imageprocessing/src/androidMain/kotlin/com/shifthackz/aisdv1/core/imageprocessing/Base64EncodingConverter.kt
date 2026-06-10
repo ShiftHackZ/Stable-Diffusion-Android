@@ -1,8 +1,6 @@
 package com.shifthackz.aisdv1.core.imageprocessing
 
 import com.shifthackz.aisdv1.core.common.log.errorLog
-import com.shifthackz.aisdv1.core.imageprocessing.Base64EncodingConverter.Input
-import com.shifthackz.aisdv1.core.imageprocessing.Base64EncodingConverter.Output
 import com.shifthackz.aisdv1.core.imageprocessing.utils.base64DefaultToNoWrap
 
 /**

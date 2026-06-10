@@ -27,31 +27,13 @@ import androidx.compose.ui.viewinterop.UIKitInteropProperties
 import androidx.compose.ui.viewinterop.UIKitView
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGRectMake
-import platform.Foundation.NSSelectorFromString
 import platform.UIKit.NSTextAlignmentCenter
 import platform.UIKit.UIColor
-import platform.UIKit.UIControlEventEditingChanged
-import platform.UIKit.UIEdgeInsetsMake
 import platform.UIKit.UIFont
 import platform.UIKit.UIKeyboardType
-import platform.UIKit.UIKeyboardTypeASCIICapable
-import platform.UIKit.UIKeyboardTypeDecimalPad
-import platform.UIKit.UIKeyboardTypeDefault
-import platform.UIKit.UIKeyboardTypeEmailAddress
-import platform.UIKit.UIKeyboardTypeNumberPad
-import platform.UIKit.UIKeyboardTypeURL
 import platform.UIKit.UILabel
-import platform.UIKit.UIReturnKeyType
-import platform.UIKit.UITextAutocapitalizationType
-import platform.UIKit.UITextAutocorrectionType
-import platform.UIKit.UITextField
-import platform.UIKit.UITextFieldDelegateProtocol
-import platform.UIKit.UITextFieldViewMode
-import platform.UIKit.UITextView
-import platform.UIKit.UITextViewDelegateProtocol
 import platform.UIKit.UIView
 
 /**

@@ -14,7 +14,6 @@ import com.shifthackz.aisdv1.presentation.mocks.mockAiGenerationResult
 import com.shifthackz.aisdv1.presentation.navigation.router.GalleryDetailRouter
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineDispatcher

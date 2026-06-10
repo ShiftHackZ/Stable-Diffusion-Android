@@ -1,22 +1,22 @@
 package com.shifthackz.aisdv1.presentation.app
 
+import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.ConfigurationLoaderRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.DebugMenuRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.DonateRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.GalleryDetailRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.GalleryRouter
-import com.shifthackz.aisdv1.presentation.navigation.router.ServerSetupRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.HistoryRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.HomeRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ImageToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.LoggerRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.OnBoardingRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ReportRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.ServerSetupRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.SettingsRouter
-import com.shifthackz.aisdv1.presentation.navigation.router.TextToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.SplashRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.TextToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.WebUiRouter
-import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 

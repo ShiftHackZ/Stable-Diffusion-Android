@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.report
 
-import com.shifthackz.aisdv1.domain.entity.ReportReason
 import com.shifthackz.aisdv1.core.mvi.MviState
+import com.shifthackz.aisdv1.domain.entity.ReportReason
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 
 /**

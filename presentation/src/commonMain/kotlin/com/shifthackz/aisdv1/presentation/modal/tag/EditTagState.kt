@@ -2,8 +2,8 @@ package com.shifthackz.aisdv1.presentation.modal.tag
 
 import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.core.common.math.roundTo
-import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.core.mvi.MviState
+import com.shifthackz.aisdv1.presentation.model.ExtraType
 
 /**
  * Carries `EditTagState` data through the SDAI presentation layer.

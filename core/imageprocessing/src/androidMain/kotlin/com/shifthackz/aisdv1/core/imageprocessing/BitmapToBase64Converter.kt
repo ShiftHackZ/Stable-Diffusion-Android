@@ -1,8 +1,6 @@
 package com.shifthackz.aisdv1.core.imageprocessing
 
 import android.graphics.Bitmap
-import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter.Input
-import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter.Output
 import com.shifthackz.aisdv1.core.imageprocessing.utils.bitmapToBase64
 
 /**

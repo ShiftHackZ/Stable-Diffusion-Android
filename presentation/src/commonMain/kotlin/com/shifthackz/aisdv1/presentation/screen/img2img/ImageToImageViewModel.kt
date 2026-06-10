@@ -1,8 +1,8 @@
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
-import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
+import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.mvi.BaseMviViewModel
 import com.shifthackz.aisdv1.core.mvi.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator

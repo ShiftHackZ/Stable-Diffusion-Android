@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.network.di
 
-import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111MetadataApi
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111GenerationApi
+import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111MetadataApi
 import com.shifthackz.aisdv1.network.api.automatic1111.KtorAutomatic1111GenerationApi
 import com.shifthackz.aisdv1.network.api.automatic1111.KtorAutomatic1111MetadataApi
 import com.shifthackz.aisdv1.network.api.horde.HordeGenerationApi
@@ -16,10 +16,10 @@ import com.shifthackz.aisdv1.network.api.openai.KtorOpenAiGenerationApi
 import com.shifthackz.aisdv1.network.api.openai.OpenAiGenerationApi
 import com.shifthackz.aisdv1.network.api.sdai.KtorSdaiAppApi
 import com.shifthackz.aisdv1.network.api.sdai.SdaiAppApi
-import com.shifthackz.aisdv1.network.api.stabilityai.KtorStabilityAiGenerationApi
 import com.shifthackz.aisdv1.network.api.stabilityai.KtorStabilityAiEnginesApi
-import com.shifthackz.aisdv1.network.api.stabilityai.StabilityAiGenerationApi
+import com.shifthackz.aisdv1.network.api.stabilityai.KtorStabilityAiGenerationApi
 import com.shifthackz.aisdv1.network.api.stabilityai.StabilityAiEnginesApi
+import com.shifthackz.aisdv1.network.api.stabilityai.StabilityAiGenerationApi
 import com.shifthackz.aisdv1.network.api.swarmui.KtorSwarmUiGenerationApi
 import com.shifthackz.aisdv1.network.api.swarmui.KtorSwarmUiModelsApi
 import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiGenerationApi

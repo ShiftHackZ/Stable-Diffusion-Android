@@ -1,11 +1,11 @@
 package com.shifthackz.aisdv1.presentation.screen.settings
 
 import androidx.compose.runtime.Immutable
+import com.shifthackz.aisdv1.core.mvi.MviState
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.core.mvi.MviState
 
 /**
  * Carries `SettingsState` data through the SDAI presentation layer.

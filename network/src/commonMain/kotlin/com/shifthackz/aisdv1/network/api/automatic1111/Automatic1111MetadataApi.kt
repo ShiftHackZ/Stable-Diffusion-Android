@@ -1,10 +1,10 @@
 package com.shifthackz.aisdv1.network.api.automatic1111
 
 import com.shifthackz.aisdv1.network.auth.BasicHttpAuthorization
+import com.shifthackz.aisdv1.network.model.KtorStableDiffusionModelRaw
 import com.shifthackz.aisdv1.network.model.ServerConfigurationRaw
 import com.shifthackz.aisdv1.network.model.StableDiffusionHyperNetworkRaw
 import com.shifthackz.aisdv1.network.model.StableDiffusionLoraRaw
-import com.shifthackz.aisdv1.network.model.KtorStableDiffusionModelRaw
 import com.shifthackz.aisdv1.network.model.StableDiffusionSamplerRaw
 import com.shifthackz.aisdv1.network.response.KtorSdEmbeddingsResponse
 

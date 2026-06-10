@@ -1,9 +1,9 @@
 package com.shifthackz.aisdv1.presentation.modal.embedding
 
 import androidx.compose.runtime.Immutable
+import com.shifthackz.aisdv1.core.mvi.MviState
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.model.ErrorState
-import com.shifthackz.aisdv1.core.mvi.MviState
 
 /**
  * Carries `EmbeddingState` data through the SDAI presentation layer.

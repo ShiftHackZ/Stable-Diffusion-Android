@@ -4,9 +4,9 @@ import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
+import kotlinx.coroutines.suspendCancellableCoroutine
 import platform.Foundation.NSData
 import platform.Foundation.create
-import kotlinx.coroutines.suspendCancellableCoroutine
 import platform.Photos.PHAccessLevelAddOnly
 import platform.Photos.PHAssetCreationRequest
 import platform.Photos.PHAssetResourceTypePhoto
@@ -15,9 +15,9 @@ import platform.Photos.PHAuthorizationStatusLimited
 import platform.Photos.PHPhotoLibrary
 import platform.darwin.dispatch_async
 import platform.darwin.dispatch_get_main_queue
+import kotlin.coroutines.resume
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
-import kotlin.coroutines.resume
 
 /**
  * Creates the SDAI value produced by `createPlatformImageSaver`.

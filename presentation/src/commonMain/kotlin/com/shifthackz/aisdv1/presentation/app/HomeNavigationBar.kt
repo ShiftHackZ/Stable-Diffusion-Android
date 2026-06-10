@@ -1,4 +1,4 @@
-package com.shifthackz.aisdv1.presentation.screen.home
+package com.shifthackz.aisdv1.presentation.app
 
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -9,31 +9,31 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 /**
- * Carries `HomeNavigationBarItem` data through the SDAI presentation layer.
+ * Carries bottom navigation item data used by [AppScaffold].
  *
  * @author Dmitriy Moroz
  */
-data class HomeNavigationBarItem(
+internal data class HomeNavigationBarItem(
     /**
-     * Exposes the `label` value used by the SDAI presentation layer.
+     * Text displayed under the item icon.
      *
      * @author Dmitriy Moroz
      */
     val label: String,
     /**
-     * Exposes the `selected` value used by the SDAI presentation layer.
+     * Whether this item represents the current route.
      *
      * @author Dmitriy Moroz
      */
     val selected: Boolean,
     /**
-     * Exposes the `icon` value used by the SDAI presentation layer.
+     * Icon displayed above the item label.
      *
      * @author Dmitriy Moroz
      */
     val icon: @Composable () -> Unit,
     /**
-     * Exposes the `onClick` value used by the SDAI presentation layer.
+     * Action invoked when the item is selected.
      *
      * @author Dmitriy Moroz
      */
@@ -41,13 +41,13 @@ data class HomeNavigationBarItem(
 )
 
 /**
- * Renders the `HomeNavigationBar` UI for the SDAI presentation layer.
+ * Renders the app bottom navigation bar.
  *
- * @param items items value consumed by the API.
+ * @param items route items displayed in the bottom navigation bar.
  * @author Dmitriy Moroz
  */
 @Composable
-fun HomeNavigationBar(
+internal fun HomeNavigationBar(
     items: List<HomeNavigationBarItem>,
 ) {
     NavigationBar(

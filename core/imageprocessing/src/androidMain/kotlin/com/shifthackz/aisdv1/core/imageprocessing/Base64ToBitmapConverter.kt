@@ -2,8 +2,6 @@ package com.shifthackz.aisdv1.core.imageprocessing
 
 import android.graphics.Bitmap
 import com.shifthackz.aisdv1.core.common.log.errorLog
-import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Input
-import com.shifthackz.aisdv1.core.imageprocessing.Base64ToBitmapConverter.Output
 import com.shifthackz.aisdv1.core.imageprocessing.utils.base64ToBitmap
 
 /**

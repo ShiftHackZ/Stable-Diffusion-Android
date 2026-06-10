@@ -1,7 +1,5 @@
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
-import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 import org.jetbrains.skia.Color
 import org.jetbrains.skia.EncodedImageFormat
 import org.jetbrains.skia.Image
@@ -11,6 +9,8 @@ import org.jetbrains.skia.PaintStrokeCap
 import org.jetbrains.skia.PaintStrokeJoin
 import org.jetbrains.skia.Path
 import org.jetbrains.skia.Surface
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 /**
  * Executes the `encodeInPaintMaskBase64` step in the SDAI presentation layer.

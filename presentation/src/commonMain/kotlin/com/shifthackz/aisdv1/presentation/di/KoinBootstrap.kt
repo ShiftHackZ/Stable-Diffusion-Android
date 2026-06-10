@@ -1,11 +1,11 @@
 package com.shifthackz.aisdv1.presentation.di
 
+import com.shifthackz.aisdv1.core.validation.di.validatorsModule
 import com.shifthackz.aisdv1.data.di.coreDataModule
 import com.shifthackz.aisdv1.data.di.dataModule
 import com.shifthackz.aisdv1.demo.di.demoModule
 import com.shifthackz.aisdv1.domain.di.coreDomainModule
 import com.shifthackz.aisdv1.feature.auth.di.authModule
-import com.shifthackz.aisdv1.core.validation.di.validatorsModule
 import com.shifthackz.aisdv1.network.di.coreNetworkModule
 import com.shifthackz.aisdv1.network.di.networkModule
 import org.koin.core.Koin
