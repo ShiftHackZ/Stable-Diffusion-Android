@@ -8,6 +8,11 @@ import com.shifthackz.aisdv1.network.request.TextToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import kotlinx.serialization.json.Json
 
+/**
+ * Converts SDAI data with `mapToStableDiffusionRequest`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun TextToImagePayload.mapToStableDiffusionRequest(): TextToImageRequest = with(this) {
     TextToImageRequest(
         prompt = prompt,
@@ -25,6 +30,11 @@ fun TextToImagePayload.mapToStableDiffusionRequest(): TextToImageRequest = with(
     )
 }
 
+/**
+ * Converts SDAI data with `mapToStableDiffusionRequest`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun ImageToImagePayload.mapToStableDiffusionRequest(): ImageToImageRequest = with(this) {
     ImageToImageRequest(
         initImages = listOf(base64Image),
@@ -51,6 +61,13 @@ fun ImageToImagePayload.mapToStableDiffusionRequest(): ImageToImageRequest = wit
     )
 }
 
+/**
+ * Converts SDAI data with `mapStableDiffusionTextToImageResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @return Result produced by `mapStableDiffusionTextToImageResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<TextToImagePayload, SdGenerationResponse>.mapStableDiffusionTextToImageResult(
     createdAtMillis: Long,
 ): List<AiGenerationResult> {
@@ -82,6 +99,13 @@ fun Pair<TextToImagePayload, SdGenerationResponse>.mapStableDiffusionTextToImage
     }
 }
 
+/**
+ * Converts SDAI data with `mapStableDiffusionImageToImageResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @return Result produced by `mapStableDiffusionImageToImageResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<ImageToImagePayload, SdGenerationResponse>.mapStableDiffusionImageToImageResult(
     createdAtMillis: Long,
 ): List<AiGenerationResult> {
@@ -113,16 +137,39 @@ fun Pair<ImageToImagePayload, SdGenerationResponse>.mapStableDiffusionImageToIma
     }
 }
 
+/**
+ * Converts SDAI data with `mapStableDiffusionSeedFromRemote`.
+ *
+ * @param info info value consumed by the API.
+ * @param index index value consumed by the API.
+ * @return Result produced by `mapStableDiffusionSeedFromRemote`.
+ * @author Dmitriy Moroz
+ */
 private fun mapStableDiffusionSeedFromRemote(info: SdGenerationResponse.Info?, index: Int): String =
     info?.allSeeds?.getOrNull(index)?.toString()
         ?: info?.seed?.toString()
         ?: ""
 
+/**
+ * Converts SDAI data with `mapStableDiffusionSubSeedFromRemote`.
+ *
+ * @param info info value consumed by the API.
+ * @param index index value consumed by the API.
+ * @return Result produced by `mapStableDiffusionSubSeedFromRemote`.
+ * @author Dmitriy Moroz
+ */
 private fun mapStableDiffusionSubSeedFromRemote(info: SdGenerationResponse.Info?, index: Int): String =
     info?.allSubSeeds?.getOrNull(index)?.toString()
         ?: info?.subSeed?.toString()
         ?: ""
 
+/**
+ * Executes the `parseInfo` step in the SDAI data layer.
+ *
+ * @param infoString info string value consumed by the API.
+ * @return Result produced by `parseInfo`.
+ * @author Dmitriy Moroz
+ */
 private fun parseInfo(infoString: String?): SdGenerationResponse.Info? = infoString
     ?.takeIf(String::isNotBlank)
     ?.let { raw ->

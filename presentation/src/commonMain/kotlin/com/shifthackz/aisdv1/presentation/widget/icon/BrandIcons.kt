@@ -9,26 +9,51 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.unit.dp
 
+/**
+ * Provides the `BrandIcons` singleton used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 object BrandIcons {
 
+    /**
+     * Exposes the `Telegram` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val Telegram: ImageVector
         get() = telegram ?: brandIcon(
             name = "Brand.Telegram",
             pathData = TELEGRAM_PATH,
         ).also { telegram = it }
 
+    /**
+     * Exposes the `Discord` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val Discord: ImageVector
         get() = discord ?: brandIcon(
             name = "Brand.Discord",
             pathData = DISCORD_PATH,
         ).also { discord = it }
 
+    /**
+     * Exposes the `Apple` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val Apple: ImageVector
         get() = apple ?: brandIcon(
             name = "Brand.Apple",
             pathData = APPLE_PATH,
         ).also { apple = it }
 
+    /**
+     * Exposes the `Sdai` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val Sdai: ImageVector
         get() = sdai ?: brandIcon(
             name = "Brand.Sdai",
@@ -42,6 +67,11 @@ object BrandIcons {
             pivotY = 256f,
         ).also { sdai = it }
 
+    /**
+     * Exposes the `SdaiLetters` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val SdaiLetters: ImageVector
         get() = sdaiLetters ?: brandIcon(
             name = "Brand.SdaiLetters",
@@ -55,6 +85,11 @@ object BrandIcons {
             pivotY = 256f,
         ).also { sdaiLetters = it }
 
+    /**
+     * Exposes the `Moroz` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val Moroz: ImageVector
         get() = moroz ?: brandIcon(
             name = "Brand.Moroz",
@@ -66,6 +101,21 @@ object BrandIcons {
         ).also { moroz = it }
 }
 
+/**
+ * Executes the `brandIcon` step in the SDAI presentation layer.
+ *
+ * @param name name value consumed by the API.
+ * @param pathData path data value consumed by the API.
+ * @param viewportWidth viewport width value consumed by the API.
+ * @param viewportHeight viewport height value consumed by the API.
+ * @param pathFillType path fill type value consumed by the API.
+ * @param strokeLineWidth stroke line width value consumed by the API.
+ * @param scaleX scale x value consumed by the API.
+ * @param scaleY scale y value consumed by the API.
+ * @param pivotX pivot x value consumed by the API.
+ * @param pivotY pivot y value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 private fun brandIcon(
     name: String,
     pathData: String,
@@ -90,6 +140,21 @@ private fun brandIcon(
     pivotY = pivotY,
 )
 
+/**
+ * Executes the `brandIcon` step in the SDAI presentation layer.
+ *
+ * @param name name value consumed by the API.
+ * @param pathData path data value consumed by the API.
+ * @param viewportWidth viewport width value consumed by the API.
+ * @param viewportHeight viewport height value consumed by the API.
+ * @param pathFillType path fill type value consumed by the API.
+ * @param strokeLineWidth stroke line width value consumed by the API.
+ * @param scaleX scale x value consumed by the API.
+ * @param scaleY scale y value consumed by the API.
+ * @param pivotX pivot x value consumed by the API.
+ * @param pivotY pivot y value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 private fun brandIcon(
     name: String,
     pathData: List<String>,
@@ -135,25 +200,80 @@ private fun brandIcon(
     }
 }.build()
 
+/**
+ * Exposes the `telegram` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private var telegram: ImageVector? = null
+/**
+ * Exposes the `discord` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private var discord: ImageVector? = null
+/**
+ * Exposes the `apple` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private var apple: ImageVector? = null
+/**
+ * Exposes the `sdai` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private var sdai: ImageVector? = null
+/**
+ * Exposes the `sdaiLetters` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private var sdaiLetters: ImageVector? = null
+/**
+ * Exposes the `moroz` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private var moroz: ImageVector? = null
 
+/**
+ * Exposes the `TELEGRAM_PATH` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val TELEGRAM_PATH =
     "M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.162l-2.015 9.49c-.153.685-.554.851-1.122.53l-3.105-2.29-1.497 1.44c-.166.166-.305.305-.625.305l.223-3.155 5.738-5.187c.25-.222-.054-.345-.386-.123l-7.09 4.465-3.052-.953c-.663-.207-.675-.663.138-.981l11.93-4.599c.553-.207 1.036.123.863 1.058z"
 
+/**
+ * Exposes the `DISCORD_PATH` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val DISCORD_PATH =
     "M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"
 
+/**
+ * Exposes the `APPLE_PATH` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val APPLE_PATH =
     "M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"
 
+/**
+ * Exposes the `MOROZ_PATH` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val MOROZ_PATH =
     "M75.25,86.64C75.81,86.64 76.55,86.53 76.66,86.25C76.72,86.02 76.44,85.74 75.81,85.68C72.53,83.76 74.23,75.71 76.95,66.71C78.76,60.76 81.02,54.42 82.67,49.09C83.74,45.64 84.54,42.63 84.71,40.43C84.88,36.97 84.03,35.55 82.50,35.55C76.04,35.55 57.69,61.72 53.16,68.58C56.21,59.74 63.63,43.82 67.60,30.85C70.77,20.38 71.68,11.88 66.13,10.75C55.37,12.50 42.34,29.95 32.37,43.03C31.41,44.50 30.50,45.58 30.44,45.58C30.73,43.20 31.41,37.37 29.99,37.37C29.76,37.37 29.59,37.48 29.42,37.65C29.25,38.22 29.31,41.50 29.42,41.73C29.76,41.84 28.97,46.71 28.52,48.64C22.12,58.32 16.23,68.35 13.51,77.19C13.17,78.26 12.94,79.22 12.88,79.73C13.05,81.09 13.45,81.72 14.07,81.72C15.60,81.72 18.32,77.70 20.70,72.77C24.21,65.86 27.38,56.79 29.82,48.75C37.47,37.99 54.63,13.86 65.62,11.99C70.09,13.07 69.24,20.43 66.35,29.89C62.28,43.26 52.48,65.80 51.17,69.99C50.95,70.79 50.89,71.12 51.00,71.29C51.12,71.58 51.34,71.69 51.57,71.69C52.14,71.69 52.93,71.07 53.89,69.77C57.29,64.50 76.38,36.97 81.87,36.97C82.72,36.97 83.29,37.65 83.35,39.24L83.46,39.18C83.97,39.18 82.16,45.47 80.00,52.49C78.13,58.55 76.04,65.12 74.96,68.75L74.17,71.35C72.24,81.15 71.39,86.64 75.25,86.64ZM14.41,80.07C14.07,80.07 14.19,79.17 14.64,77.75C16.11,72.94 21.10,62.18 24.55,57.13C26.14,54.53 26.82,53.40 26.93,53.40C27.10,53.40 26.82,54.13 26.42,55.49C24.21,62.69 19.00,74.30 15.94,78.60C15.21,79.62 14.70,80.07 14.41,80.07Z"
 
+/**
+ * Exposes the `SDAI_PATHS` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val SDAI_PATHS = listOf(
     "m97.08,263.52c-19.59,6.37 -11.94,20.48 -9.14,28.05 -7.72,17.28 -12.25,56.92 13.11,60.05 5.78,-1.13 12.31,-2.55 18.02,-6 13.37,-8.08 24.18,-21.66 24.22,-28.2v-45.95c0,-6.76 -1.03,-7.95 -7.95,-7.95z",
     "m417.58,264.98c19.59,6.37 11.94,20.48 9.14,28.05 7.72,17.28 12.25,56.92 -13.11,60.05 -5.78,-1.13 -12.31,-2.55 -18.02,-6 -13.37,-8.08 -24.18,-21.66 -24.22,-28.2v-45.95c0,-6.76 1.03,-7.95 7.95,-7.95z",
@@ -165,6 +285,11 @@ private val SDAI_PATHS = listOf(
     "m224.1,96.54c-24.92,1.89 -20.33,15.94 -31.37,18.21 -6.39,0.79 -16.56,-6.99 -29.64,-5.49 -14.89,1.95 -25.77,12.65 -24.3,23.9 1.86,11.01 8.31,11.28 10.1,17.86 2.46,5.8 -3.27,7.85 -7.24,4.4 -9.7,-12.72 -11.41,-14.14 -18.38,-14.78 -12.38,-0.07 -22.41,14.11 -22.49,30.12 -0.08,0.78 -0.14,1.57 -0.14,2.38v24.4c-9.67,0.41 -17.52,9.06 -17.49,18.82l0.08,25.85c0.03,9.99 3,12.77 12.99,12.76l36.01,-0.06c7.55,-0.01 11.02,-0.44 11.02,-10.43l-0.13,-22.95c-0.07,-3.71 -0.02,-13.44 10.21,-16.27l88.33,-1.54c5.04,-0.09 9.1,-4.06 9.1,-9.1v-30.07c0,-0.4 -0.03,-0.79 -0.08,-1.18v-44.92c0,-4.35 -1.48,-8.3 -3.89,-11.27 -4.7,-6.58 -13.34,-10.63 -22.7,-10.63z",
 )
 
+/**
+ * Exposes the `SDAI_LETTER_PATHS` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val SDAI_LETTER_PATHS = listOf(
     "M214.87,300C195.36,306.99 177.03,303.95 158.57,295.95C161.61,289.08 164.41,282.75 167.35,276.12C176.97,280.89 186.83,283.93 197.55,283C198.71,282.91 200.07,283.08 200.97,282.53C202.4,281.64 204.42,280.33 204.54,279.05C204.65,277.81 202.93,275.63 201.56,275.16C196.72,273.51 191.67,272.46 186.73,271.07C182.6,269.9 178.4,268.82 174.41,267.24C166.21,263.99 160.98,258.1 160.1,249.08C159.19,239.72 162.66,232.17 170.24,226.57C177.65,221.1 186.31,219.43 195.19,219.22C206.41,218.96 217.38,220.6 227.94,226.25C225.31,232.62 222.7,238.96 220.41,244.53C212.53,242.91 205.2,241.22 197.79,239.99C195.44,239.6 192.71,239.99 190.49,240.87C188.97,241.47 187.28,243.45 187.09,244.99C186.94,246.15 188.82,248.33 190.2,248.77C195.4,250.42 200.79,251.5 206.08,252.88C209.28,253.72 212.51,254.54 215.61,255.68C224.13,258.82 230.24,264.15 231.23,273.81C232.31,284.35 227.95,292.18 219.2,297.77C217.94,298.58 216.56,299.18 214.87,300z",
     "M322.22,301.26C306.32,301.31 290.87,301.31 275.14,301.31C275.14,274.96 275.14,248.24 275.14,220.26C292.77,221.05 310.56,220.31 327.8,223.03C350.35,226.58 361.75,243.4 360.05,266.15C358.65,284.98 343.4,299.28 322.22,301.26M332.86,264.1C333.26,246.6 322.99,239.36 302.33,242.63C302.33,255.31 302.33,268 302.33,280.66C322.85,281.96 329.27,278.61 332.86,264.1z",

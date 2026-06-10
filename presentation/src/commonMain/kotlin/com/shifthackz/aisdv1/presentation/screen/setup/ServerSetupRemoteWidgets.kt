@@ -98,6 +98,13 @@ import kotlinx.coroutines.launch
 
 
 
+/**
+ * Renders the `FormTitle` UI for the SDAI presentation layer.
+ *
+ * @param title title value consumed by the API.
+ * @param subtitle subtitle value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun FormTitle(
     title: String,
@@ -121,6 +128,13 @@ internal fun FormTitle(
     }
 }
 
+/**
+ * Renders the `HintText` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun HintText(
     text: String,
@@ -133,6 +147,14 @@ internal fun HintText(
     )
 }
 
+/**
+ * Renders the `AuthFields` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun AuthFields(
     state: ServerSetupState,
@@ -204,6 +226,20 @@ internal fun AuthFields(
     }
 }
 
+/**
+ * Renders the `SetupTextField` UI for the SDAI presentation layer.
+ *
+ * @param value value value consumed by the API.
+ * @param onValueChange callback invoked by the component.
+ * @param label label value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param enabled enabled value consumed by the API.
+ * @param error error value consumed by the API.
+ * @param keyboardType keyboard type value consumed by the API.
+ * @param visualTransformation visual transformation value consumed by the API.
+ * @param trailingIcon trailing icon value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SetupTextField(
     value: String,

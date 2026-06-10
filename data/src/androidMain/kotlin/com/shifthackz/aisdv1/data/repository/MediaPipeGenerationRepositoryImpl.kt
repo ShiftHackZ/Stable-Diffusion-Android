@@ -14,12 +14,27 @@ import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * Implements `MediaPipeGenerationRepository` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class MediaPipeGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     localDataSource: GenerationResultDataSource.Local,
     backgroundWorkObserver: BackgroundWorkObserver,
     preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `mediaPipe` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val mediaPipe: MediaPipe,
+    /**
+     * Exposes the `bitmapToBase64Converter` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val bitmapToBase64Converter: BitmapToBase64Converter,
 ) : CoreGenerationRepository(
     mediaStoreGateway = mediaStoreGateway,

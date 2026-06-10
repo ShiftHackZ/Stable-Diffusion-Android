@@ -7,6 +7,12 @@ import androidx.compose.runtime.remember
 import com.shifthackz.aisdv1.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.di.initKoin
 
+/**
+ * Renders the `AiSdAppTheme` UI for the SDAI presentation layer.
+ *
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun AiSdAppTheme(
     content: @Composable () -> Unit,
@@ -20,6 +26,14 @@ fun AiSdAppTheme(
     }
 }
 
+/**
+ * Renders the `AiSdAppTheme` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param applySystemBars apply system bars value consumed by the API.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun AiSdAppTheme(
     state: AiSdAppThemeState,

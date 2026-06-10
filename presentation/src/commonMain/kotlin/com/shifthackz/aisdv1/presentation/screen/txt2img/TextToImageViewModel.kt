@@ -26,26 +26,131 @@ import com.shifthackz.aisdv1.presentation.navigation.router.TextToImageRouter
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.withContext
 
+/**
+ * Coordinates `TextToImageViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class TextToImageViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `getConfigurationUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getConfigurationUseCase: GetConfigurationUseCase,
+    /**
+     * Exposes the `getStableDiffusionSamplersUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    /**
+     * Exposes the `textToImageUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val textToImageUseCase: TextToImageUseCase,
+    /**
+     * Exposes the `saveGenerationResultUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
+    /**
+     * Exposes the `saveLastResultToCacheUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase,
+    /**
+     * Exposes the `interruptGenerationUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val interruptGenerationUseCase: InterruptGenerationUseCase,
+    /**
+     * Exposes the `observeHordeProcessStatusUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
+    /**
+     * Exposes the `observeLocalDiffusionProcessStatusUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `backgroundTaskManager` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val backgroundTaskManager: BackgroundTaskManager,
+    /**
+     * Exposes the `backgroundWorkObserver` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `platformServices` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val platformServices: GenerationPlatformServices,
+    /**
+     * Exposes the `buildInfoProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val buildInfoProvider: BuildInfoProvider,
+    /**
+     * Exposes the `generationFormUpdateEvent` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val generationFormUpdateEvent: GenerationFormUpdateEvent,
+    /**
+     * Exposes the `dimensionValidator` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dimensionValidator: DimensionValidator,
+    /**
+     * Exposes the `imageSaver` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val imageSaver: ImageSaver,
+    /**
+     * Exposes the `imageSharer` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val imageSharer: ImageSharer,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: TextToImageRouter,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<TextToImageState, TextToImageIntent, EmptyEffect>(
     initialState = TextToImageState(),

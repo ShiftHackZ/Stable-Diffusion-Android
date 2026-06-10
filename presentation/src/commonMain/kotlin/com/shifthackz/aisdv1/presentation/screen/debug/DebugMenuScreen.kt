@@ -15,6 +15,14 @@ import com.shifthackz.aisdv1.presentation.modal.ldscheduler.LDSchedulerBottomShe
 import com.shifthackz.aisdv1.presentation.navigation.router.DebugMenuRouter
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `DebugMenuScreen` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param onMessage callback invoked by the component.
+ * @param router router value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun DebugMenuScreen(
     modifier: Modifier = Modifier,
@@ -65,6 +73,11 @@ fun DebugMenuScreen(
     }
 }
 
+/**
+ * Renders the `debugMenuScreenStrings` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun debugMenuScreenStrings() = DebugMenuScreenStrings(
     title = Localization.string("title_debug_menu"),
@@ -83,6 +96,11 @@ internal fun debugMenuScreenStrings() = DebugMenuScreenStrings(
     backContentDescription = Localization.string("action_back"),
 )
 
+/**
+ * Renders the `toContentState` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun DebugMenuState.toContentState() = DebugMenuScreenContentState(
     localDiffusionAllowCancel = localDiffusionAllowCancel,
@@ -92,6 +110,11 @@ internal fun DebugMenuState.toContentState() = DebugMenuScreenContentState(
     showQualityAssuranceSection = showQualityAssuranceSection,
 )
 
+/**
+ * Converts SDAI data with `toIntent`.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun DebugMenuAction.toIntent(): DebugMenuIntent = when (this) {
     DebugMenuAction.NavigateBack -> DebugMenuIntent.NavigateBack
     DebugMenuAction.ViewLogs -> DebugMenuIntent.ViewLogs

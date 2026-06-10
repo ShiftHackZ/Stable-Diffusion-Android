@@ -8,6 +8,13 @@ import com.shifthackz.aisdv1.network.request.SwarmUiGenerationRequest
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
+/**
+ * Converts SDAI data with `mapToKtorSwarmUiRequest`.
+ *
+ * @param sessionId session id value consumed by the API.
+ * @param swarmUiModel swarm ui model value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 fun TextToImagePayload.mapToKtorSwarmUiRequest(
     sessionId: String,
     swarmUiModel: String,
@@ -28,6 +35,13 @@ fun TextToImagePayload.mapToKtorSwarmUiRequest(
     steps = samplingSteps,
 )
 
+/**
+ * Converts SDAI data with `mapToKtorSwarmUiRequest`.
+ *
+ * @param sessionId session id value consumed by the API.
+ * @param swarmUiModel swarm ui model value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 fun ImageToImagePayload.mapToKtorSwarmUiRequest(
     sessionId: String,
     swarmUiModel: String,
@@ -48,6 +62,13 @@ fun ImageToImagePayload.mapToKtorSwarmUiRequest(
     steps = samplingSteps,
 )
 
+/**
+ * Converts SDAI data with `mapKtorTextToImageCloudResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @return Result produced by `mapKtorTextToImageCloudResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<TextToImagePayload, String>.mapKtorTextToImageCloudResult(
     createdAtMillis: Long,
 ): AiGenerationResult {
@@ -74,6 +95,13 @@ fun Pair<TextToImagePayload, String>.mapKtorTextToImageCloudResult(
     )
 }
 
+/**
+ * Converts SDAI data with `mapKtorImageToImageCloudResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @return Result produced by `mapKtorImageToImageCloudResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<ImageToImagePayload, String>.mapKtorImageToImageCloudResult(
     createdAtMillis: Long,
 ): AiGenerationResult {
@@ -100,9 +128,20 @@ fun Pair<ImageToImagePayload, String>.mapKtorImageToImageCloudResult(
     )
 }
 
+/**
+ * Executes the `encodeBase64NoWrap` step in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalEncodingApi::class)
 fun ByteArray.encodeBase64NoWrap(): String = Base64.Default.encode(this)
 
+/**
+ * Converts SDAI data with `toPngDataUri`.
+ *
+ * @return Result produced by `toPngDataUri`.
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalEncodingApi::class)
 private fun String.toPngDataUri(): String {
     val normalized = substringAfter("base64,", this)

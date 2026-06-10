@@ -54,14 +54,67 @@ import platform.UIKit.UITextView
 import platform.UIKit.UITextViewDelegateProtocol
 import platform.UIKit.UIView
 
+/**
+ * Exposes the `TEXT_FIELD_CORNER_RADIUS` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal const val TEXT_FIELD_CORNER_RADIUS = 4.0
+/**
+ * Exposes the `FIELD_TOP` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal const val FIELD_TOP = 8.0
+/**
+ * Exposes the `MIN_FIELD_HEIGHT` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal const val MIN_FIELD_HEIGHT = 56.0
+/**
+ * Exposes the `LABEL_HEIGHT` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal const val LABEL_HEIGHT = 20.0
+/**
+ * Exposes the `MULTILINE_TOP_INSET` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal const val MULTILINE_TOP_INSET = 16.0
+/**
+ * Exposes the `MULTILINE_HORIZONTAL_INSET` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal const val MULTILINE_HORIZONTAL_INSET = 14.0
+/**
+ * Exposes the `MULTILINE_BOTTOM_INSET` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal const val MULTILINE_BOTTOM_INSET = 10.0
 
+/**
+ * Renders the `PlatformOutlinedTextField` UI for the SDAI presentation layer.
+ *
+ * @param value value value consumed by the API.
+ * @param onValueChange callback invoked by the component.
+ * @param label label value consumed by the API.
+ * @param containerColor container color value consumed by the API.
+ * @param textColor text color value consumed by the API.
+ * @param hintColor hint color value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param enabled enabled value consumed by the API.
+ * @param error error value consumed by the API.
+ * @param keyboardType keyboard type value consumed by the API.
+ * @param visualTransformation visual transformation value consumed by the API.
+ * @param trailingIcon trailing icon value consumed by the API.
+ * @param singleLine single line value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal actual fun PlatformOutlinedTextField(
@@ -186,7 +239,17 @@ internal actual fun PlatformOutlinedTextField(
     }
 }
 
+/**
+ * Coordinates `PlatformTextInputView` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private class PlatformTextInputView(
+    /**
+     * Exposes the `singleLine` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val singleLine: Boolean,
 ) : UIView(
     frame = CGRectMake(0.0, 0.0, 0.0, 0.0),

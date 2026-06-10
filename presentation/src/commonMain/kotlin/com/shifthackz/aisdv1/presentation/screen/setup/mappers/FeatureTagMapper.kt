@@ -3,6 +3,11 @@ package com.shifthackz.aisdv1.presentation.screen.setup.mappers
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.domain.entity.FeatureTag
 
+/**
+ * Converts SDAI data with `mapToUi`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun FeatureTag.mapToUi(): String = Localization.string(
     when (this) {
         FeatureTag.Txt2Img -> "home_tab_txt_to_img"

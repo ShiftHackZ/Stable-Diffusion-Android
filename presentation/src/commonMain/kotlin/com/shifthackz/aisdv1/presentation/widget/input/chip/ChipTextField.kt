@@ -42,17 +42,63 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 
+/**
+ * Defines the `ChipTextFieldEvent` contract for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 sealed interface ChipTextFieldEvent<T : Any> {
 
+    /**
+     * Carries `Add` data through the SDAI presentation layer.
+     *
+     * @param item item value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class Add<T : Any>(val item: T) : ChipTextFieldEvent<T>
 
+    /**
+     * Carries `AddBatch` data through the SDAI presentation layer.
+     *
+     * @param items items value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class AddBatch<T : Any>(val items: List<T>) : ChipTextFieldEvent<T>
 
+    /**
+     * Carries `Update` data through the SDAI presentation layer.
+     *
+     * @param index index value consumed by the API.
+     * @param item item value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class Update<T : Any>(val index: Int, val item: T) : ChipTextFieldEvent<T>
 
+    /**
+     * Carries `Remove` data through the SDAI presentation layer.
+     *
+     * @param index index value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class Remove<T : Any>(val index: Int) : ChipTextFieldEvent<T>
 }
 
+/**
+ * Renders the `ChipTextField` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param label label value consumed by the API.
+ * @param textStyle text style value consumed by the API.
+ * @param textFieldValueState text field value state value consumed by the API.
+ * @param chips chips value consumed by the API.
+ * @param horizontalArrangement horizontal arrangement value consumed by the API.
+ * @param verticalArrangement vertical arrangement value consumed by the API.
+ * @param maxItemsInEachRow max items in each row value consumed by the API.
+ * @param chipSeparatorChar chip separator char value consumed by the API.
+ * @param chipEventListener chip event listener value consumed by the API.
+ * @param chipContent chip content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ChipTextField(
     modifier: Modifier = Modifier,
@@ -84,6 +130,24 @@ fun ChipTextField(
     )
 }
 
+/**
+ * Renders the `ChipTextField` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param label label value consumed by the API.
+ * @param textStyle text style value consumed by the API.
+ * @param textFieldValueState text field value state value consumed by the API.
+ * @param chips chips value consumed by the API.
+ * @param horizontalArrangement horizontal arrangement value consumed by the API.
+ * @param verticalArrangement vertical arrangement value consumed by the API.
+ * @param maxItemsInEachRow max items in each row value consumed by the API.
+ * @param chipSeparatorChar chip separator char value consumed by the API.
+ * @param chipTextToItemMapper chip text to item mapper value consumed by the API.
+ * @param chipItemToTextMapper chip item to text mapper value consumed by the API.
+ * @param chipEventListener chip event listener value consumed by the API.
+ * @param chipContent chip content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun <T : Any> ChipTextField(
     modifier: Modifier = Modifier,
@@ -233,6 +297,13 @@ fun <T : Any> ChipTextField(
     }
 }
 
+/**
+ * Executes the `differenceFrom` step in the SDAI presentation layer.
+ *
+ * @param previous previous value consumed by the API.
+ * @return Result produced by `differenceFrom`.
+ * @author Dmitriy Moroz
+ */
 private fun String.differenceFrom(previous: String): String {
     val commonPrefixLength = previous
         .zip(this)

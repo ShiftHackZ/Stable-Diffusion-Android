@@ -52,33 +52,155 @@ import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
 import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 
+/**
+ * Carries `ReportScreenContentState` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Immutable
 data class ReportScreenContentState(
+    /**
+     * Exposes the `loading` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val loading: Boolean = true,
+    /**
+     * Exposes the `imageBase64` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val imageBase64: String = "",
+    /**
+     * Exposes the `text` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val text: String = "",
+    /**
+     * Exposes the `reason` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val reason: ReportReason = ReportReason.Other,
+    /**
+     * Exposes the `reportSent` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val reportSent: Boolean = false,
 )
 
+/**
+ * Carries `ReportScreenStrings` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class ReportScreenStrings(
+    /**
+     * Exposes the `title` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val title: String,
+    /**
+     * Exposes the `done` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val done: String,
+    /**
+     * Exposes the `submit` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val submit: String,
+    /**
+     * Exposes the `sent` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sent: String,
+    /**
+     * Exposes the `description` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val description: String,
+    /**
+     * Exposes the `backContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val backContentDescription: String,
+    /**
+     * Exposes the `sendContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sendContentDescription: String,
+    /**
+     * Exposes the `doneContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val doneContentDescription: String,
+    /**
+     * Exposes the `imageContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val imageContentDescription: String,
+    /**
+     * Exposes the `reasonInappropriateContent` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val reasonInappropriateContent: String,
+    /**
+     * Exposes the `reasonViolence` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val reasonViolence: String,
+    /**
+     * Exposes the `reasonHatefulSpeech` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val reasonHatefulSpeech: String,
+    /**
+     * Exposes the `reasonIntellectualProperty` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val reasonIntellectualProperty: String,
+    /**
+     * Exposes the `reasonAdultContent` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val reasonAdultContent: String,
+    /**
+     * Exposes the `reasonOther` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val reasonOther: String,
 )
 
+/**
+ * Renders the `ReportScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param onNavigateBack callback invoked by the component.
+ * @param onSubmit callback invoked by the component.
+ * @param onTextChange callback invoked by the component.
+ * @param onReasonChange callback invoked by the component.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ReportScreenContent(
     state: ReportScreenContentState,
@@ -166,6 +288,15 @@ fun ReportScreenContent(
     }
 }
 
+/**
+ * Renders the `ReportLoadedContent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param onTextChange callback invoked by the component.
+ * @param onReasonChange callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun ReportLoadedContent(
     state: ReportScreenContentState,
@@ -243,6 +374,12 @@ private fun ReportLoadedContent(
     }
 }
 
+/**
+ * Executes the `label` step in the SDAI presentation layer.
+ *
+ * @param reason reason value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 private fun ReportScreenStrings.label(reason: ReportReason): String = when (reason) {
     ReportReason.InappropriateContent -> reasonInappropriateContent
     ReportReason.Violence -> reasonViolence

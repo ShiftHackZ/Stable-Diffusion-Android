@@ -57,6 +57,14 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
+/**
+ * Renders the `GenerationInputAdvancedOptions` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param onEvent callback invoked by the component.
+ * @param afterSlidersSection after sliders section value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GenerationInputAdvancedOptions(
     state: GenerationInputFormState,

@@ -41,6 +41,7 @@ coroutines = "1.11.0"
 mediaPipeGenerator = "0.10.26.1"
 protobuf = "4.26.1"
 serialization = "1.11.0"
+dokka = "2.2.0"
 
 [libraries]
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -114,3 +115,4 @@ generic-kmp-compose = { id = "generic.kmp.compose", version = "unspecified" }
 generic-baseline-profm = { id = "generic.baseline.profm", version = "unspecified" }
 generic-application = { id = "generic.application", version = "unspecified" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }

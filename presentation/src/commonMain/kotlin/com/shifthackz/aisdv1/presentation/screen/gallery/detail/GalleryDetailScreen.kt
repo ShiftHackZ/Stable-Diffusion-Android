@@ -66,6 +66,14 @@ import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `GalleryDetailScreen` UI for the SDAI presentation layer.
+ *
+ * @param itemId item id value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param router router value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GalleryDetailScreen(
     itemId: Long,

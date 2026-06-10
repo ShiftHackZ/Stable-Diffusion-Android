@@ -25,6 +25,16 @@ import com.shifthackz.aisdv1.core.common.file.LOCAL_DIFFUSION_CUSTOM_PATH
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 
+/**
+ * Renders the `ConfigurationStep` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param listState list state value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ConfigurationStep(
     state: ServerSetupState,
@@ -88,6 +98,14 @@ internal fun ConfigurationStep(
     }
 }
 
+/**
+ * Renders the `LocalGenerationForm` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun LocalGenerationForm(
     state: ServerSetupState,
@@ -133,6 +151,11 @@ internal fun LocalGenerationForm(
     }
 }
 
+/**
+ * Exposes the `ServerSetupState` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val ServerSetupState.visibleLocalModels: List<ServerSetupState.LocalModel>
     get() {
         val customModels = localModels.filter(ServerSetupState.LocalModel::isCustom)
@@ -144,6 +167,14 @@ private val ServerSetupState.visibleLocalModels: List<ServerSetupState.LocalMode
         }
     }
 
+/**
+ * Renders the `LocalCustomModelPathForm` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun LocalCustomModelPathForm(
     state: ServerSetupState,

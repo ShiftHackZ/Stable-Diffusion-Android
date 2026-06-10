@@ -14,13 +14,38 @@ import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepositor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * Implements `LocalDiffusionGenerationRepository` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class LocalDiffusionGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     localDataSource: GenerationResultDataSource.Local,
     backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `localDiffusion` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val localDiffusion: LocalDiffusion,
+    /**
+     * Exposes the `downloadableLocalDataSource` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val downloadableLocalDataSource: DownloadableModelDataSource.Local,
+    /**
+     * Exposes the `bitmapToBase64Converter` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val bitmapToBase64Converter: BitmapToBase64Converter,
 ) : CoreGenerationRepository(
     mediaStoreGateway = mediaStoreGateway,

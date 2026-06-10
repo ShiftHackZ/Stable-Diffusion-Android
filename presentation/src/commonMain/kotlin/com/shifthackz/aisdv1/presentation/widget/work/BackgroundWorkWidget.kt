@@ -34,6 +34,12 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.di.initKoin
 
+/**
+ * Renders the `BackgroundWorkWidget` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun BackgroundWorkWidget(
     modifier: Modifier = Modifier,
@@ -54,6 +60,14 @@ fun BackgroundWorkWidget(
     }
 }
 
+/**
+ * Renders the `BackgroundWorkWidgetContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun BackgroundWorkWidgetContent(
     modifier: Modifier = Modifier,

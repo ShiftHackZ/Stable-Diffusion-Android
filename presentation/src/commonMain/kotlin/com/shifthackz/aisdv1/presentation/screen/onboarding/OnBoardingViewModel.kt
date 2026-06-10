@@ -12,12 +12,47 @@ import com.shifthackz.aisdv1.presentation.navigation.router.OnBoardingRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.postOnBoardingNavigation
 import kotlinx.coroutines.withContext
 
+/**
+ * Coordinates `OnBoardingViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class OnBoardingViewModel(
+    /**
+     * Exposes the `launchSource` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val launchSource: LaunchSource,
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: OnBoardingRouter,
+    /**
+     * Exposes the `splashNavigationUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val splashNavigationUseCase: SplashNavigationUseCase,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `buildInfoProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val buildInfoProvider: BuildInfoProvider,
 ) : BaseMviViewModel<OnBoardingState, OnBoardingIntent, EmptyEffect>(
     initialState = OnBoardingState(),

@@ -95,6 +95,11 @@ import org.koin.dsl.module
 
 import org.koin.core.module.Module
 
+/**
+ * Executes the `registerPresentationCoreBindings` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun Module.registerPresentationCoreBindings() {
     single<LinksProvider> { DefaultLinksProvider }
     single<BuildInfoProvider> { createPlatformBuildInfoProvider() }

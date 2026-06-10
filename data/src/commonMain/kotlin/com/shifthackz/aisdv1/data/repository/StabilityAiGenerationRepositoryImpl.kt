@@ -13,13 +13,38 @@ import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 
+/**
+ * Implements `StabilityAiGenerationRepository` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class StabilityAiGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     backgroundWorkObserver: BackgroundWorkObserver,
     localDataSource: GenerationResultDataSource.Local,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `generationRds` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val generationRds: StabilityAiGenerationDataSource.Remote,
+    /**
+     * Exposes the `creditsRds` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val creditsRds: StabilityAiCreditsRemoteDataSource,
+    /**
+     * Exposes the `creditsLds` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val creditsLds: StabilityAiCreditsDataSource.Local,
 ) : CoreGenerationRepository(
     mediaStoreGateway = mediaStoreGateway,

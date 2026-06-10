@@ -15,47 +15,252 @@ import com.shifthackz.aisdv1.presentation.model.GenerationModal
 import com.shifthackz.aisdv1.presentation.model.PromptTagEditRequest
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormState
 
+/**
+ * Carries `ImageToImageState` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Immutable
 data class ImageToImageState(
+    /**
+     * Exposes the `loadingConfiguration` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val loadingConfiguration: Boolean = true,
+    /**
+     * Exposes the `imageBase64` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val imageBase64: String = "",
+    /**
+     * Exposes the `denoisingStrength` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val denoisingStrength: Float = DEFAULT_DENOISING_STRENGTH,
+    /**
+     * Exposes the `pickingImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val pickingImage: Boolean = false,
+    /**
+     * Exposes the `generating` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val generating: Boolean = false,
+    /**
+     * Exposes the `savingImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val savingImage: Boolean = false,
+    /**
+     * Exposes the `sharingImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sharingImage: Boolean = false,
+    /**
+     * Exposes the `inPaint` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val inPaint: ImageInPaintState = ImageInPaintState(),
+    /**
+     * Exposes the `promptValidationError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val promptValidationError: String? = null,
+    /**
+     * Exposes the `error` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val error: String? = null,
+    /**
+     * Exposes the `message` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val message: String? = null,
+    /**
+     * Exposes the `screenModal` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val screenModal: GenerationModal = GenerationModal.None,
+    /**
+     * Exposes the `results` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val results: List<AiGenerationResult> = emptyList(),
+    /**
+     * Exposes the `editTag` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val editTag: PromptTagEditRequest? = null,
+    /**
+     * Exposes the `onBoardingDemo` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val onBoardingDemo: Boolean = false,
+    /**
+     * Exposes the `mode` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val mode: ServerSource = ServerSource.AUTOMATIC1111,
+    /**
+     * Exposes the `advancedToggleButtonVisible` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val advancedToggleButtonVisible: Boolean = true,
+    /**
+     * Exposes the `advancedOptionsVisible` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val advancedOptionsVisible: Boolean = false,
+    /**
+     * Exposes the `formPromptTaggedInput` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val formPromptTaggedInput: Boolean = false,
+    /**
+     * Exposes the `prompt` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val prompt: String = "",
+    /**
+     * Exposes the `negativePrompt` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val negativePrompt: String = "",
+    /**
+     * Exposes the `width` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val width: String = DEFAULT_SIZE.toString(),
+    /**
+     * Exposes the `height` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val height: String = DEFAULT_SIZE.toString(),
+    /**
+     * Exposes the `samplingSteps` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val samplingSteps: Int = 20,
+    /**
+     * Exposes the `cfgScale` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val cfgScale: Float = 7f,
+    /**
+     * Exposes the `restoreFaces` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val restoreFaces: Boolean = false,
+    /**
+     * Exposes the `seed` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val seed: String = "",
+    /**
+     * Exposes the `subSeed` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val subSeed: String = "",
+    /**
+     * Exposes the `subSeedStrength` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val subSeedStrength: Float = 0f,
+    /**
+     * Exposes the `selectedSampler` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val selectedSampler: String = "",
+    /**
+     * Exposes the `availableSamplers` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val availableSamplers: List<String> = emptyList(),
+    /**
+     * Exposes the `selectedStylePreset` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val selectedStylePreset: StabilityAiStylePreset = StabilityAiStylePreset.NONE,
+    /**
+     * Exposes the `selectedClipGuidancePreset` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val selectedClipGuidancePreset: StabilityAiClipGuidance = StabilityAiClipGuidance.NONE,
+    /**
+     * Exposes the `openAiModel` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val openAiModel: OpenAiModel = OpenAiModel.default,
+    /**
+     * Exposes the `openAiSize` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val openAiSize: OpenAiSize = OpenAiSize.W1024_H1024,
+    /**
+     * Exposes the `openAiQuality` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val openAiQuality: OpenAiQuality = OpenAiQuality.AUTO,
+    /**
+     * Exposes the `widthValidationError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val widthValidationError: UiText? = null,
+    /**
+     * Exposes the `heightValidationError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val heightValidationError: UiText? = null,
+    /**
+     * Exposes the `nsfw` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val nsfw: Boolean = false,
+    /**
+     * Exposes the `batchCount` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val batchCount: Int = 1,
 ) : MviState, GenerationInputFormState {
 
@@ -83,6 +288,12 @@ data class ImageToImageState(
             !generating
 }
 
+/**
+ * Converts SDAI data with `mapToPayload`.
+ *
+ * @param maskBase64 mask base64 value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun ImageToImageState.mapToPayload(
     maskBase64: String? = null,
 ): ImageToImagePayload = ImageToImagePayload(
@@ -111,5 +322,15 @@ internal fun ImageToImageState.mapToPayload(
     stabilityAiStylePreset = selectedStylePreset.takeIf { mode == ServerSource.STABILITY_AI },
 )
 
+/**
+ * Exposes the `DEFAULT_SIZE` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal const val DEFAULT_SIZE = 512
+/**
+ * Exposes the `DEFAULT_DENOISING_STRENGTH` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal const val DEFAULT_DENOISING_STRENGTH = 0.75f

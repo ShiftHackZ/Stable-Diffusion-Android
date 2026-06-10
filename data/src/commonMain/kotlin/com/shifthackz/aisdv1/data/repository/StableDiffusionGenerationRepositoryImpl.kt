@@ -14,14 +14,44 @@ import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 
+/**
+ * Implements `StableDiffusionGenerationRepository` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class StableDiffusionGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     backgroundWorkObserver: BackgroundWorkObserver,
     localDataSource: GenerationResultDataSource.Local,
+    /**
+     * Exposes the `remoteDataSource` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val remoteDataSource: StableDiffusionGenerationDataSource.Remote,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `authorizationStore` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val authorizationStore: AuthorizationStore,
+    /**
+     * Exposes the `textToImageDemo` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val textToImageDemo: TextToImageDemo,
+    /**
+     * Exposes the `imageToImageDemo` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val imageToImageDemo: ImageToImageDemo,
 ) : CoreGenerationRepository(
     mediaStoreGateway = mediaStoreGateway,

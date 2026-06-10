@@ -20,26 +20,126 @@ import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+/**
+ * Defines the `AppRoute` contract for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 sealed interface AppRoute {
+    /**
+     * Provides the `Splash` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object Splash : AppRoute
+    /**
+     * Carries `OnBoarding` data through the SDAI presentation layer.
+     *
+     * @param source source value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class OnBoarding(val source: LaunchSource = LaunchSource.SPLASH) : AppRoute
+    /**
+     * Carries `Setup` data through the SDAI presentation layer.
+     *
+     * @param source source value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class Setup(val source: LaunchSource = LaunchSource.SPLASH) : AppRoute
+    /**
+     * Provides the `ConfigurationLoader` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object ConfigurationLoader : AppRoute
+    /**
+     * Provides the `Home` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object Home : AppRoute
+    /**
+     * Provides the `TextToImage` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object TextToImage : AppRoute
+    /**
+     * Provides the `ImageToImage` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object ImageToImage : AppRoute
+    /**
+     * Provides the `ImageInPaint` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object ImageInPaint : AppRoute
+    /**
+     * Provides the `Gallery` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object Gallery : AppRoute
+    /**
+     * Carries `GalleryDetail` data through the SDAI presentation layer.
+     *
+     * @param itemId item id value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class GalleryDetail(val itemId: Long) : AppRoute
+    /**
+     * Provides the `Settings` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object Settings : AppRoute
+    /**
+     * Provides the `History` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object History : AppRoute
+    /**
+     * Carries `Report` data through the SDAI presentation layer.
+     *
+     * @param itemId item id value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class Report(val itemId: Long) : AppRoute
+    /**
+     * Provides the `Debug` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object Debug : AppRoute
+    /**
+     * Provides the `Logger` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object Logger : AppRoute
+    /**
+     * Provides the `Donate` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object Donate : AppRoute
+    /**
+     * Provides the `WebUi` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object WebUi : AppRoute
 }
 
+/**
+ * Coordinates `RootAppRouter` behavior in the SDAI presentation layer.
+ *
+ * @param initialRoute initial route value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 class RootAppRouter(
     initialRoute: AppRoute = AppRoute.Splash,
 ) : ServerSetupRouter,
@@ -225,6 +325,11 @@ class RootAppRouter(
     }
 }
 
+/**
+ * Executes the `isHomeRoute` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 fun AppRoute.isHomeRoute(): Boolean = when (this) {
     AppRoute.Home,
     AppRoute.TextToImage,
@@ -248,6 +353,11 @@ fun AppRoute.isHomeRoute(): Boolean = when (this) {
     -> false
 }
 
+/**
+ * Executes the `canFallBackToTextToImage` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private fun AppRoute.canFallBackToTextToImage(): Boolean = when (this) {
     AppRoute.ImageToImage,
     AppRoute.ImageInPaint,

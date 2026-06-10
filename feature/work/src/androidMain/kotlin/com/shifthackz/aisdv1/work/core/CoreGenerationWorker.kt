@@ -24,15 +24,45 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
+/**
+ * Coordinates `CoreGenerationWorker` behavior in the SDAI background work feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal abstract class CoreGenerationWorker(
     context: Context,
     workerParameters: WorkerParameters,
     pushNotificationManager: PushNotificationManager,
     activityIntentProvider: ActivityIntentProvider,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `backgroundWorkObserver` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `observeHordeProcessStatusUseCase` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
+    /**
+     * Exposes the `observeLocalDiffusionProcessStatusUseCase` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    /**
+     * Exposes the `interruptGenerationUseCase` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val interruptGenerationUseCase: InterruptGenerationUseCase,
 ) : NotificationWorker(
     context = context,

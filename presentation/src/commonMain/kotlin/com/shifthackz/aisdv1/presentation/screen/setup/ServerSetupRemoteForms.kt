@@ -18,6 +18,14 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.widget.input.DropdownTextField
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 
+/**
+ * Renders the `Automatic1111Form` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun Automatic1111Form(
     state: ServerSetupState,
@@ -58,6 +66,14 @@ internal fun Automatic1111Form(
     }
 }
 
+/**
+ * Renders the `SwarmUiForm` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SwarmUiForm(
     state: ServerSetupState,
@@ -91,6 +107,14 @@ internal fun SwarmUiForm(
     }
 }
 
+/**
+ * Renders the `HordeForm` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun HordeForm(
     state: ServerSetupState,
@@ -135,6 +159,14 @@ internal fun HordeForm(
     }
 }
 
+/**
+ * Renders the `HuggingFaceForm` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun HuggingFaceForm(
     state: ServerSetupState,
@@ -172,6 +204,14 @@ internal fun HuggingFaceForm(
     }
 }
 
+/**
+ * Renders the `OpenAiForm` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun OpenAiForm(
     state: ServerSetupState,
@@ -200,6 +240,14 @@ internal fun OpenAiForm(
     }
 }
 
+/**
+ * Renders the `StabilityAiForm` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun StabilityAiForm(
     state: ServerSetupState,
@@ -228,6 +276,14 @@ internal fun StabilityAiForm(
     }
 }
 
+/**
+ * Renders the `RemoteFormScaffold` UI for the SDAI presentation layer.
+ *
+ * @param title title value consumed by the API.
+ * @param subtitle subtitle value consumed by the API.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun RemoteFormScaffold(
     title: String,

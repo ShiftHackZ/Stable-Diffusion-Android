@@ -94,6 +94,11 @@ import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import org.koin.dsl.module
 
 
+/**
+ * Exposes the `corePresentationModule` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val corePresentationModule = module {
     registerPresentationCoreBindings()
     registerPresentationViewModelBindings()

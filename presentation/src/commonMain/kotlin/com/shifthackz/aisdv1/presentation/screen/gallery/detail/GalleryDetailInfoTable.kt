@@ -67,6 +67,14 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.core.parameter.parametersOf
 
 
+/**
+ * Renders the `GalleryDetailsTable` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param content content value consumed by the API.
+ * @param onCopyTextClick callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryDetailsTable(
     modifier: Modifier = Modifier,
@@ -179,6 +187,18 @@ internal fun GalleryDetailsTable(
     }
 }
 
+/**
+ * Renders the `GalleryDetailRow` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param column1Weight column1 weight value consumed by the API.
+ * @param column2Weight column2 weight value consumed by the API.
+ * @param name name value consumed by the API.
+ * @param value value value consumed by the API.
+ * @param color color value consumed by the API.
+ * @param onCopyTextClick callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryDetailRow(
     modifier: Modifier = Modifier,
@@ -215,6 +235,14 @@ internal fun GalleryDetailRow(
     }
 }
 
+/**
+ * Renders the `GalleryDetailCell` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param text text value consumed by the API.
+ * @param color color value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryDetailCell(
     modifier: Modifier = Modifier,

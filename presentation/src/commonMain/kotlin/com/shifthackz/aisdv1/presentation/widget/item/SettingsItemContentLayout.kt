@@ -38,6 +38,22 @@ import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import kotlinx.coroutines.delay
 
+/**
+ * Renders the `SettingsItem` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param loading loading value consumed by the API.
+ * @param enabled enabled value consumed by the API.
+ * @param selected selected value consumed by the API.
+ * @param animateBackground animate background value consumed by the API.
+ * @param showChevron show chevron value consumed by the API.
+ * @param endValueText end value text value consumed by the API.
+ * @param endValueContent end value content value consumed by the API.
+ * @param startIconContent start icon content value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SettingsItem(
     text: String,
@@ -136,6 +152,14 @@ fun SettingsItem(
     }
 }
 
+/**
+ * Renders the `SettingsItemContent` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param startIconContent start icon content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SettingsItemContent(
     text: String,

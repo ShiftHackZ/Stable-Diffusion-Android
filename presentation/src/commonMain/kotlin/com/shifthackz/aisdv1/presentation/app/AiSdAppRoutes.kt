@@ -94,6 +94,19 @@ import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
 
 
+/**
+ * Renders the `HomeRoutesScaffold` UI for the SDAI presentation layer.
+ *
+ * @param languageCode BCP-47 language code handled by the platform layer.
+ * @param activeRoute active route value consumed by the API.
+ * @param renderedRoutes rendered routes value consumed by the API.
+ * @param router router value consumed by the API.
+ * @param buildInfoProvider build info provider value consumed by the API.
+ * @param preferenceManager preference manager value consumed by the API.
+ * @param textToImageViewModel text to image view model value consumed by the API.
+ * @param imageToImageViewModel image to image view model value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun HomeRoutesScaffold(
     languageCode: String,
@@ -165,6 +178,15 @@ internal fun HomeRoutesScaffold(
     }
 }
 
+/**
+ * Renders the `HomeRouteSlot` UI for the SDAI presentation layer.
+ *
+ * @param route route value consumed by the API.
+ * @param activeRoute active route value consumed by the API.
+ * @param renderedRoutes rendered routes value consumed by the API.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun HomeRouteSlot(
     route: AppRoute,
@@ -185,6 +207,17 @@ internal fun HomeRouteSlot(
     }
 }
 
+/**
+ * Renders the `OverlayRouteContent` UI for the SDAI presentation layer.
+ *
+ * @param languageCode BCP-47 language code handled by the platform layer.
+ * @param route route value consumed by the API.
+ * @param koin koin value consumed by the API.
+ * @param router router value consumed by the API.
+ * @param urlLauncher url launcher value consumed by the API.
+ * @param imageToImageViewModel image to image view model value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun OverlayRouteContent(
     languageCode: String,
@@ -338,6 +371,11 @@ internal fun OverlayRouteContent(
     }
 }
 
+/**
+ * Executes the `asHomeTabRoute` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun AppRoute.asHomeTabRoute(): AppRoute? = when (this) {
     AppRoute.Home,
     AppRoute.TextToImage,

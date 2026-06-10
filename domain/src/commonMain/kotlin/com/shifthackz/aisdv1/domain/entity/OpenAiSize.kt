@@ -1,7 +1,22 @@
 package com.shifthackz.aisdv1.domain.entity
 
+/**
+ * Coordinates `OpenAiSize` behavior in the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 enum class OpenAiSize(
+    /**
+     * Exposes the `key` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val key: String,
+    /**
+     * Exposes the `supportedModels` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val supportedModels: Set<OpenAiModel>,
 ) {
     W1024_H1024(
@@ -48,9 +63,19 @@ enum class OpenAiSize(
         supportedModels = setOf(OpenAiModel.GPT_IMAGE_2),
     );
 
+    /**
+     * Exposes the `width` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val width: Int
         get() = key.split("x").first().toInt()
 
+    /**
+     * Exposes the `height` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val height: Int
         get() = key.split("x").last().toInt()
 }

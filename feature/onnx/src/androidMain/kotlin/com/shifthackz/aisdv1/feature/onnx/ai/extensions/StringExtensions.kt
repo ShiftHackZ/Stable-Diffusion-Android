@@ -1,5 +1,11 @@
 package com.shifthackz.aisdv1.feature.onnx.ai.extensions
 
+/**
+ * Executes the `halfCorner` step in the SDAI ONNX local diffusion feature layer.
+ *
+ * @return Result produced by `halfCorner`.
+ * @author Dmitriy Moroz
+ */
 internal fun String.halfCorner(): String {
     var output = this
     val regs = arrayOf(
@@ -14,6 +20,12 @@ internal fun String.halfCorner(): String {
     return output
 }
 
+/**
+ * Converts SDAI data with `toArrays`.
+ *
+ * @return Result produced by `toArrays`.
+ * @author Dmitriy Moroz
+ */
 internal fun String.toArrays(): Array<String?> {
     val codePoints = codePoints().toArray()
     val words = arrayOfNulls<String>(codePoints.size)

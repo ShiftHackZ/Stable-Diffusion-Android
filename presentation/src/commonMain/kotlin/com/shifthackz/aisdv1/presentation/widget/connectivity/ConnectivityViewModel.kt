@@ -13,11 +13,41 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 
+/**
+ * Coordinates `ConnectivityViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class ConnectivityViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `observeServerConnectivityUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val observeServerConnectivityUseCase: ObserveSeverConnectivityUseCase,
+    /**
+     * Exposes the `getMonitorConnectivityUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getMonitorConnectivityUseCase: GetMonitorConnectivityUseCase,
+    /**
+     * Exposes the `observeMonitorConnectivityUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val observeMonitorConnectivityUseCase: ObserveMonitorConnectivityUseCase,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<ConnectivityState, EmptyIntent, EmptyEffect>(
     initialState = ConnectivityState.Uninitialized(

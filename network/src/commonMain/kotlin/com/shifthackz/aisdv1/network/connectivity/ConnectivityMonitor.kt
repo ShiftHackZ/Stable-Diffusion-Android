@@ -10,8 +10,23 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
+/**
+ * Coordinates `ConnectivityMonitor` behavior in the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class ConnectivityMonitor(
+    /**
+     * Exposes the `httpClient` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val httpClient: HttpClient = createConfiguredHttpClient(),
+    /**
+     * Exposes the `shouldSkipConnectionCheck` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val shouldSkipConnectionCheck: () -> Boolean = { false },
 ) {
 

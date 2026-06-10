@@ -6,6 +6,11 @@ import com.shifthackz.aisdv1.storage.db.persistent.PersistentDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
+/**
+ * Exposes the `persistentDatabasePlatformModule` value used by the SDAI storage layer.
+ *
+ * @author Dmitriy Moroz
+ */
 actual val persistentDatabasePlatformModule = module {
     single<RoomDatabase.Builder<PersistentDatabase>> {
         val context = androidContext().applicationContext

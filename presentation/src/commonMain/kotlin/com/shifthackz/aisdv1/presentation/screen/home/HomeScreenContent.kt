@@ -39,19 +39,83 @@ import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 
+/**
+ * Carries `HomeStrings` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class HomeStrings(
+    /**
+     * Exposes the `title` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val title: String = "SDAI",
+    /**
+     * Exposes the `providerTitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val providerTitle: String = Localization.string("title_provider"),
+    /**
+     * Exposes the `endpointTitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val endpointTitle: String = Localization.string("hint_server_url"),
+    /**
+     * Exposes the `startTextToImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val startTextToImage: String = Localization.string("title_text_to_image"),
+    /**
+     * Exposes the `startImageToImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val startImageToImage: String = Localization.string("title_image_to_image"),
+    /**
+     * Exposes the `gallery` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val gallery: String = Localization.string("title_gallery"),
+    /**
+     * Exposes the `history` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val history: String = Localization.string("title_history"),
+    /**
+     * Exposes the `settings` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val settings: String = Localization.string("title_settings"),
+    /**
+     * Exposes the `configureProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val configureProvider: String = Localization.string("settings_item_config"),
+    /**
+     * Exposes the `retry` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val retry: String = Localization.string("retry"),
 )
 
+/**
+ * Renders the `HomeScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param strings strings value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun HomeScreenContent(
     state: HomeState,
@@ -97,6 +161,14 @@ fun HomeScreenContent(
     }
 }
 
+/**
+ * Renders the `HomeBody` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun HomeBody(
     state: HomeState,
@@ -216,6 +288,14 @@ private fun HomeBody(
     }
 }
 
+/**
+ * Renders the `HomeError` UI for the SDAI presentation layer.
+ *
+ * @param message message value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun HomeError(
     message: String,
@@ -247,6 +327,13 @@ private fun HomeError(
     }
 }
 
+/**
+ * Renders the `HomeInfoRow` UI for the SDAI presentation layer.
+ *
+ * @param label label value consumed by the API.
+ * @param value value value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun HomeInfoRow(
     label: String,
@@ -274,6 +361,11 @@ private fun HomeInfoRow(
     }
 }
 
+/**
+ * Exposes the `ServerSource` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val ServerSource.displayName: String
     get() = when (this) {
         ServerSource.AUTOMATIC1111 -> Localization.string("srv_type_own")

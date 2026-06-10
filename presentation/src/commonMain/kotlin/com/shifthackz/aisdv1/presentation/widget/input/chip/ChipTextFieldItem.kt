@@ -21,6 +21,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 
+/**
+ * Renders the `ChipTextFieldItem` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param type type value consumed by the API.
+ * @param text text value consumed by the API.
+ * @param overflow overflow value consumed by the API.
+ * @param shape shape value consumed by the API.
+ * @param innerPadding inner padding value consumed by the API.
+ * @param maxLines max lines value consumed by the API.
+ * @param showDeleteIcon show delete icon value consumed by the API.
+ * @param onDeleteClick callback invoked by the component.
+ * @param onItemClick callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ChipTextFieldItem(
     modifier: Modifier = Modifier,

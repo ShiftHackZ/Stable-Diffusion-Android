@@ -34,6 +34,19 @@ import com.shifthackz.aisdv1.core.common.math.roundTo
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 
+/**
+ * Renders the `SliderTextInputField` UI for the SDAI presentation layer.
+ *
+ * @param value value value consumed by the API.
+ * @param onValueChange callback invoked by the component.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param valueRange value range value consumed by the API.
+ * @param valueDiff value diff value consumed by the API.
+ * @param fractionDigits fraction digits value consumed by the API.
+ * @param steps steps value consumed by the API.
+ * @param sliderColors slider colors value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SliderTextInputField(
     value: Double,
@@ -55,6 +68,19 @@ fun SliderTextInputField(
     sliderColors = sliderColors,
 )
 
+/**
+ * Renders the `SliderTextInputField` UI for the SDAI presentation layer.
+ *
+ * @param value value value consumed by the API.
+ * @param onValueChange callback invoked by the component.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param valueRange value range value consumed by the API.
+ * @param valueDiff value diff value consumed by the API.
+ * @param fractionDigits fraction digits value consumed by the API.
+ * @param steps steps value consumed by the API.
+ * @param sliderColors slider colors value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SliderTextInputField(
     value: Float,

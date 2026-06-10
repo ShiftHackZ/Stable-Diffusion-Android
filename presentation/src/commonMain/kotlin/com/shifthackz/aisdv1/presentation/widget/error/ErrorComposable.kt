@@ -6,6 +6,13 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.presentation.model.ErrorState
 
+/**
+ * Renders the `ErrorComposable` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ErrorComposable(
     modifier: Modifier = Modifier,

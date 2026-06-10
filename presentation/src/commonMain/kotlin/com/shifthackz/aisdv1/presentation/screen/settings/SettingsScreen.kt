@@ -93,6 +93,13 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlinx.coroutines.launch
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `SettingsScreen` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param router router value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
@@ -123,6 +130,15 @@ fun SettingsScreen(
     }
 }
 
+/**
+ * Renders the `SettingsScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param platformActions platform actions value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SettingsScreenContent(
     modifier: Modifier = Modifier,

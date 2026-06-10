@@ -8,6 +8,13 @@ import android.net.Uri
 import com.shifthackz.aisdv1.core.common.extensions.uriFromFile
 import java.io.File
 
+/**
+ * Performs the SDAI side effect handled by `shareText`.
+ *
+ * @param text text value consumed by the API.
+ * @param shareChooserTitle share chooser title value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 fun Context.shareText(
     text: String,
     shareChooserTitle: String? = null,
@@ -19,6 +26,15 @@ fun Context.shareText(
     startChooserActivity(shareIntent, shareChooserTitle)
 }
 
+/**
+ * Performs the SDAI side effect handled by `shareFile`.
+ *
+ * @param file file used by the operation.
+ * @param fileProviderPath file provider path value consumed by the API.
+ * @param fileMimeType file mime type value consumed by the API.
+ * @param shareChooserTitle share chooser title value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 fun Context.shareFile(
     file: File,
     fileProviderPath: String,
@@ -35,6 +51,16 @@ fun Context.shareFile(
     startChooserActivity(shareIntent, shareChooserTitle)
 }
 
+/**
+ * Performs the SDAI side effect handled by `shareEmail`.
+ *
+ * @param email email value consumed by the API.
+ * @param subject subject value consumed by the API.
+ * @param body body value consumed by the API.
+ * @param file file used by the operation.
+ * @param fileProviderPath file provider path value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 fun Context.shareEmail(
     email: String,
     subject: String,
@@ -57,6 +83,13 @@ fun Context.shareEmail(
     startChooserActivity(emailIntent, null)
 }
 
+/**
+ * Executes the `startChooserActivity` step in the SDAI core UI layer.
+ *
+ * @param intent intent to process in the MVI workflow.
+ * @param title title value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 private fun Context.startChooserActivity(
     intent: Intent,
     title: String?,

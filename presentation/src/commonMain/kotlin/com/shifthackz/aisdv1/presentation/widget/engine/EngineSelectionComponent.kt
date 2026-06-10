@@ -29,6 +29,12 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.di.initKoin
 import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 
+/**
+ * Renders the `EngineSelectionComponent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun EngineSelectionComponent(
     modifier: Modifier = Modifier,
@@ -48,6 +54,14 @@ fun EngineSelectionComponent(
     }
 }
 
+/**
+ * Renders the `EngineSelectionContent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun EngineSelectionContent(
     state: EngineSelectionState,
@@ -108,6 +122,18 @@ fun EngineSelectionContent(
     }
 }
 
+/**
+ * Renders the `DropdownTextField` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param loading loading value consumed by the API.
+ * @param label label value consumed by the API.
+ * @param value value value consumed by the API.
+ * @param items items value consumed by the API.
+ * @param onItemSelected callback invoked by the component.
+ * @param displayDelegate display delegate value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun <T : Any> DropdownTextField(
     modifier: Modifier = Modifier,

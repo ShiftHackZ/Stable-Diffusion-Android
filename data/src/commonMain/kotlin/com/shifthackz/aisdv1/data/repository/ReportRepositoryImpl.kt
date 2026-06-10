@@ -6,11 +6,34 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.ReportRepository
 
+/**
+ * Implements `ReportRepository` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class ReportRepositoryImpl(
+    /**
+     * Exposes the `rds` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val rds: ReportDataSource.Remote,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
 ) : ReportRepository {
 
+    /**
+     * Executes the `send` step in the SDAI data layer.
+     *
+     * @param text text value consumed by the API.
+     * @param reason reason value consumed by the API.
+     * @param image image value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override suspend fun send(text: String, reason: ReportReason, image: String) {
         val source = preferenceManager.source
         val model = when (source) {

@@ -8,12 +8,47 @@ import com.shifthackz.aisdv1.domain.usecase.debug.DebugInsertBadBase64UseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.DebugMenuRouter
 import kotlinx.coroutines.flow.catch
 
+/**
+ * Coordinates `DebugMenuViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class DebugMenuViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `debugInsertBadBase64UseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val debugInsertBadBase64UseCase: DebugInsertBadBase64UseCase,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: DebugMenuRouter,
+    /**
+     * Exposes the `platformActions` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val platformActions: DebugMenuPlatformActions,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<DebugMenuState, DebugMenuIntent, DebugMenuEffect>(
     initialState = DebugMenuState(

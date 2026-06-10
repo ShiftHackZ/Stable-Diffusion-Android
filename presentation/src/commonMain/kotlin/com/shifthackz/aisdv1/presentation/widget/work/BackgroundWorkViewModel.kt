@@ -9,10 +9,35 @@ import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 
+/**
+ * Coordinates `BackgroundWorkViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class BackgroundWorkViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `backgroundWorkObserver` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `imageLoader` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val imageLoader: BackgroundWorkImageLoader,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<BackgroundWorkState, BackgroundWorkIntent, EmptyEffect>(
     initialState = BackgroundWorkState(),

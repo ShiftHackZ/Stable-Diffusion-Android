@@ -18,10 +18,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 
+/**
+ * Carries `ConfigurationLoaderScreenContentState` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class ConfigurationLoaderScreenContentState(
+    /**
+     * Exposes the `statusText` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val statusText: String = "",
 )
 
+/**
+ * Converts SDAI data with `toContentState`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun ConfigurationLoaderState.toContentState() = ConfigurationLoaderScreenContentState(
     statusText = when (status) {
         ConfigurationLoaderState.Status.Initializing -> Localization.string("splash_status_initializing")
@@ -31,6 +46,13 @@ fun ConfigurationLoaderState.toContentState() = ConfigurationLoaderScreenContent
     },
 )
 
+/**
+ * Renders the `ConfigurationLoaderScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ConfigurationLoaderScreenContent(
     state: ConfigurationLoaderScreenContentState,

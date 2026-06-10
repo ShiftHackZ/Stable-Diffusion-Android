@@ -93,6 +93,11 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `AiSdApp` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun AiSdApp() {
     val koin = remember { initKoin() }

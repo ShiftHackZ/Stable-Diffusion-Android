@@ -4,10 +4,27 @@ import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import java.io.File
 
+/**
+ * Coordinates `AndroidDownloadableModelFileStore` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class AndroidDownloadableModelFileStore(
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fileProviderDescriptor: FileProviderDescriptor,
 ) : DownloadableModelFileStore {
 
+    /**
+     * Executes the `isDownloaded` step in the SDAI data layer.
+     *
+     * @param model model value consumed by the API.
+     * @return Result produced by `isDownloaded`.
+     * @author Dmitriy Moroz
+     */
     override fun isDownloaded(model: LocalAiModel): Boolean = try {
         when (model.id) {
             LocalAiModel.CustomOnnx.id,
@@ -29,14 +46,34 @@ internal class AndroidDownloadableModelFileStore(
         false
     }
 
+    /**
+     * Performs the SDAI side effect handled by `delete`.
+     *
+     * @param id identifier of the target entity.
+     * @author Dmitriy Moroz
+     */
     override fun delete(id: String) {
         getLocalModelDirectory(id).deleteRecursively()
     }
 
+    /**
+     * Loads SDAI data through `getLocalModelDirectory`.
+     *
+     * @param id identifier of the target entity.
+     * @return Result produced by `getLocalModelDirectory`.
+     * @author Dmitriy Moroz
+     */
     private fun getLocalModelDirectory(id: String): File {
         return File("${fileProviderDescriptor.localModelDirPath}/$id")
     }
 
+    /**
+     * Loads SDAI data through `getLocalModelFiles`.
+     *
+     * @param id identifier of the target entity.
+     * @return Result produced by `getLocalModelFiles`.
+     * @author Dmitriy Moroz
+     */
     private fun getLocalModelFiles(id: String): List<File> {
         val localModelDir = getLocalModelDirectory(id)
         if (!localModelDir.exists()) return emptyList()

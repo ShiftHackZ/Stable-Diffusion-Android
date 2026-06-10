@@ -22,6 +22,15 @@ import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.localization.Localization
 
+/**
+ * Renders the `ModalDialogToolbar` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param loading loading value consumed by the API.
+ * @param text text value consumed by the API.
+ * @param onClose callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ModalDialogToolbar(
     modifier: Modifier = Modifier,

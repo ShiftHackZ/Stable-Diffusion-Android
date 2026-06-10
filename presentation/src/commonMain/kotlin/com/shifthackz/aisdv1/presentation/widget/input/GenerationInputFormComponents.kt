@@ -57,6 +57,13 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
+/**
+ * Renders the `GenerationBatchComponent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param onEvent callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GenerationBatchComponent(
     state: GenerationInputFormState,
@@ -79,6 +86,14 @@ internal fun GenerationBatchComponent(
         )
 }
 
+/**
+ * Renders the `GenerationSizeTextFieldsComponent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param onEvent callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun RowScope.GenerationSizeTextFieldsComponent(
     modifier: Modifier = Modifier,
@@ -129,6 +144,14 @@ internal fun RowScope.GenerationSizeTextFieldsComponent(
         )
 }
 
+/**
+ * Executes the `processTaggedPrompt` step in the SDAI presentation layer.
+ *
+ * @param keywords keywords value consumed by the API.
+ * @param event event value consumed by the API.
+ * @return Result produced by `processTaggedPrompt`.
+ * @author Dmitriy Moroz
+ */
 internal fun processTaggedPrompt(keywords: List<String>, event: ChipTextFieldEvent<String>): String {
     val newKeywords = when (event) {
         is ChipTextFieldEvent.Add -> buildList {

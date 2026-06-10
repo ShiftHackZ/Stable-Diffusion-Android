@@ -11,6 +11,11 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
+/**
+ * Exposes the `onnxModule` value used by the SDAI ONNX local diffusion feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val onnxModule = module {
     singleOf(::UNet)
     singleOf(::EnglishTextTokenizer) bind LocalDiffusionTextTokenizer::class

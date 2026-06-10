@@ -11,11 +11,26 @@ import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 
+/**
+ * Implements `HuggingFaceGenerationRepository` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class HuggingFaceGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     localDataSource: GenerationResultDataSource.Local,
     backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `remoteDataSource` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val remoteDataSource: HuggingFaceGenerationDataSource.Remote,
 ) : CoreGenerationRepository(
     mediaStoreGateway = mediaStoreGateway,

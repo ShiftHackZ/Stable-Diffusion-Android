@@ -44,6 +44,18 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
 
+/**
+ * Renders the `GenerationImageResultDialog` UI for the SDAI presentation layer.
+ *
+ * @param imageBase64 image base64 value consumed by the API.
+ * @param showSaveButton show save button value consumed by the API.
+ * @param showReportButton show report button value consumed by the API.
+ * @param onDismissRequest callback invoked by the component.
+ * @param onSaveRequest callback invoked by the component.
+ * @param onReportRequest callback invoked by the component.
+ * @param onViewDetailRequest callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GenerationImageResultDialog(
     imageBase64: String,
@@ -127,6 +139,15 @@ fun GenerationImageResultDialog(
     }
 }
 
+/**
+ * Renders the `GenerationImageBatchResultModal` UI for the SDAI presentation layer.
+ *
+ * @param results results value consumed by the API.
+ * @param showSaveButton show save button value consumed by the API.
+ * @param onSaveRequest callback invoked by the component.
+ * @param onViewDetailRequest callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ColumnScope.GenerationImageBatchResultModal(
     results: List<AiGenerationResult>,
@@ -174,6 +195,13 @@ fun ColumnScope.GenerationImageBatchResultModal(
     )
 }
 
+/**
+ * Renders the `GenerationBatchImageItem` UI for the SDAI presentation layer.
+ *
+ * @param result result value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun GenerationBatchImageItem(
     result: AiGenerationResult,

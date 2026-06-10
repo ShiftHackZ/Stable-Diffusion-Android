@@ -17,6 +17,15 @@ import com.shifthackz.aisdv1.presentation.theme.global.catppuccinAccentColor
 import com.shifthackz.aisdv1.presentation.theme.global.catppuccinBaseColor
 import com.shifthackz.aisdv1.presentation.theme.global.catppuccinOverlayColor
 
+/**
+ * Renders the `DarkThemeColorSelector` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param selectedToken selected token value consumed by the API.
+ * @param colorToken color token value consumed by the API.
+ * @param onSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun DarkThemeColorSelector(
     modifier: Modifier = Modifier,

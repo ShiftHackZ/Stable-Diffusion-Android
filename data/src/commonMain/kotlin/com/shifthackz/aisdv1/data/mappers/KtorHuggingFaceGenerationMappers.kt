@@ -5,6 +5,11 @@ import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.HuggingFaceGenerationRequest
 
+/**
+ * Converts SDAI data with `mapToHuggingFaceRequest`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun TextToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest = with(this) {
     HuggingFaceGenerationRequest(
         inputs = prompt,
@@ -19,6 +24,11 @@ fun TextToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest =
     )
 }
 
+/**
+ * Converts SDAI data with `mapToHuggingFaceRequest`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun ImageToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest = with(this) {
     HuggingFaceGenerationRequest(
         inputs = base64Image,
@@ -34,6 +44,13 @@ fun ImageToImagePayload.mapToHuggingFaceRequest(): HuggingFaceGenerationRequest 
     )
 }
 
+/**
+ * Converts SDAI data with `mapHuggingFaceTextToImageResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @return Result produced by `mapHuggingFaceTextToImageResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<TextToImagePayload, String>.mapHuggingFaceTextToImageResult(
     createdAtMillis: Long,
 ): AiGenerationResult {
@@ -60,6 +77,13 @@ fun Pair<TextToImagePayload, String>.mapHuggingFaceTextToImageResult(
     )
 }
 
+/**
+ * Converts SDAI data with `mapHuggingFaceImageToImageResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @return Result produced by `mapHuggingFaceImageToImageResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<ImageToImagePayload, String>.mapHuggingFaceImageToImageResult(
     createdAtMillis: Long,
 ): AiGenerationResult {

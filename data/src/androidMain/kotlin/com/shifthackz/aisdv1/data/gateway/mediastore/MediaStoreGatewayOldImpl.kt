@@ -22,6 +22,13 @@ import java.io.File
 @Deprecated("Deprecated since Android 12, it is here to support old devices.")
 internal class MediaStoreGatewayOldImpl : MediaStoreGateway {
 
+    /**
+     * Executes the `exportToFile` step in the SDAI data layer.
+     *
+     * @param fileName file name value consumed by the API.
+     * @param content content value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override fun exportToFile(fileName: String, content: ByteArray) {
         val dirPath = Environment.getExternalStorageDirectory().path + DIR_PATH
         val dir = File(dirPath)
@@ -31,6 +38,12 @@ internal class MediaStoreGatewayOldImpl : MediaStoreGateway {
         file.writeBytes(content)
     }
 
+    /**
+     * Loads SDAI data through `getInfo`.
+     *
+     * @return Result produced by `getInfo`.
+     * @author Dmitriy Moroz
+     */
     override fun getInfo(): MediaStoreInfo {
         val dirPath = Environment.getExternalStorageDirectory().path + DIR_PATH
         val dir = File(dirPath)
@@ -43,7 +56,17 @@ internal class MediaStoreGatewayOldImpl : MediaStoreGateway {
         return MediaStoreInfo()
     }
 
+    /**
+     * Provides the `companion object` singleton used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     companion object {
+        /**
+         * Exposes the `DIR_PATH` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
         private const val DIR_PATH = "/Download/SDAI"
     }
 }

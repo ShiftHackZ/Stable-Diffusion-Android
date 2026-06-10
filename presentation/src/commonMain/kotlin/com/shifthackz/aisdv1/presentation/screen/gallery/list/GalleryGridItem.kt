@@ -99,6 +99,18 @@ import kotlin.random.Random
 import org.koin.core.parameter.parametersOf
 
 
+/**
+ * Renders the `GalleryUiItem` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param item item value consumed by the API.
+ * @param checked checked value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @param onLongClick callback invoked by the component.
+ * @param onCheckedChange callback invoked by the component.
+ * @param selectionMode selection mode value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GalleryUiItem(
     modifier: Modifier = Modifier,
@@ -223,6 +235,11 @@ fun GalleryUiItem(
     }
 }
 
+/**
+ * Renders the `GalleryUiItemShimmer` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryUiItemShimmer() {
     Box(
@@ -234,6 +251,12 @@ internal fun GalleryUiItemShimmer() {
     )
 }
 
+/**
+ * Renders the `GalleryEmptyState` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryEmptyState(modifier: Modifier = Modifier) {
     Column(

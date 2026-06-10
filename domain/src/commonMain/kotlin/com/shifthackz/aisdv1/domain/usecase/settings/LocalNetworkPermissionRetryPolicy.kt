@@ -2,8 +2,22 @@ package com.shifthackz.aisdv1.domain.usecase.settings
 
 import kotlinx.coroutines.delay
 
+/**
+ * Exposes the `localNetworkPermissionRetryEnabled` value used by the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal expect val localNetworkPermissionRetryEnabled: Boolean
 
+/**
+ * Executes the `withLocalNetworkPermissionRetry` step in the SDAI domain layer.
+ *
+ * @param url remote URL used by the operation.
+ * @param block block value consumed by the API.
+ * @return Result produced by `withLocalNetworkPermissionRetry`.
+ * @throws Throwable when the delegated operation cannot complete.
+ * @author Dmitriy Moroz
+ */
 internal suspend fun <T> withLocalNetworkPermissionRetry(
     url: String,
     block: suspend () -> T,
@@ -27,6 +41,12 @@ internal suspend fun <T> withLocalNetworkPermissionRetry(
     throw lastError ?: IllegalStateException("Local network request failed.")
 }
 
+/**
+ * Executes the `isLikelyLocalNetworkEndpoint` step in the SDAI domain layer.
+ *
+ * @return Result produced by `isLikelyLocalNetworkEndpoint`.
+ * @author Dmitriy Moroz
+ */
 private fun String.isLikelyLocalNetworkEndpoint(): Boolean {
     val host = substringAfter("://", this)
         .substringBefore("/")
@@ -48,6 +68,12 @@ private fun String.isLikelyLocalNetworkEndpoint(): Boolean {
     return first == 172 && second != null && second in 16..31
 }
 
+/**
+ * Executes the `isLikelyLocalNetworkBootstrapError` step in the SDAI domain layer.
+ *
+ * @return Result produced by `isLikelyLocalNetworkBootstrapError`.
+ * @author Dmitriy Moroz
+ */
 private fun Throwable.isLikelyLocalNetworkBootstrapError(): Boolean {
     val text = buildString {
         append(message.orEmpty())
@@ -69,5 +95,15 @@ private fun Throwable.isLikelyLocalNetworkBootstrapError(): Boolean {
     ).any(text::contains)
 }
 
+/**
+ * Exposes the `LOCAL_NETWORK_RETRY_ATTEMPTS` value used by the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val LOCAL_NETWORK_RETRY_ATTEMPTS = 3
+/**
+ * Exposes the `LOCAL_NETWORK_RETRY_DELAYS_MILLIS` value used by the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val LOCAL_NETWORK_RETRY_DELAYS_MILLIS = listOf(1_500L, 3_000L)

@@ -12,6 +12,14 @@ import org.jetbrains.skia.PaintStrokeJoin
 import org.jetbrains.skia.Path
 import org.jetbrains.skia.Surface
 
+/**
+ * Executes the `encodeInPaintMaskBase64` step in the SDAI presentation layer.
+ *
+ * @param imageBase64 image base64 value consumed by the API.
+ * @param strokes strokes value consumed by the API.
+ * @return Result produced by `encodeInPaintMaskBase64`.
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalEncodingApi::class)
 internal actual suspend fun encodeInPaintMaskBase64(
     imageBase64: String,
@@ -40,6 +48,14 @@ internal actual suspend fun encodeInPaintMaskBase64(
     Base64.encode(data.bytes)
 }.getOrNull()
 
+/**
+ * Converts SDAI data with `toSkiaPath`.
+ *
+ * @param targetWidth target width value consumed by the API.
+ * @param targetHeight target height value consumed by the API.
+ * @return Result produced by `toSkiaPath`.
+ * @author Dmitriy Moroz
+ */
 @Suppress("DEPRECATION", "DEPRECATION_ERROR")
 private fun InPaintStroke.toSkiaPath(
     targetWidth: Int,

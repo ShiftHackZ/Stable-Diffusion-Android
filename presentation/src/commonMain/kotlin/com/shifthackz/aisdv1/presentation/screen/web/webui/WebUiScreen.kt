@@ -40,6 +40,12 @@ import com.shifthackz.aisdv1.presentation.navigation.router.WebUiRouter
 import com.shifthackz.aisdv1.presentation.widget.source.getName
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `WebUiScreen` UI for the SDAI presentation layer.
+ *
+ * @param router router value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun WebUiScreen(
     router: WebUiRouter? = null,
@@ -63,6 +69,13 @@ fun WebUiScreen(
     }
 }
 
+/**
+ * Renders the `WebUiScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun WebUiScreenContent(
     state: WebUiState = WebUiState(),
@@ -152,11 +165,35 @@ fun WebUiScreenContent(
     }
 }
 
+/**
+ * Defines the `WebUiController` contract for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 interface WebUiController {
+    /**
+     * Exposes the `canGoBack` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val canGoBack: Boolean
+    /**
+     * Executes the `goBack` step in the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     fun goBack()
 }
 
+/**
+ * Renders the `WebUiBrowser` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param url remote URL used by the operation.
+ * @param onLoadingChanged callback invoked by the component.
+ * @param onControllerChanged callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal expect fun WebUiBrowser(
     modifier: Modifier = Modifier,
@@ -165,6 +202,12 @@ internal expect fun WebUiBrowser(
     onControllerChanged: (WebUiController?) -> Unit = {},
 )
 
+/**
+ * Renders the `WebUiBackHandler` UI for the SDAI presentation layer.
+ *
+ * @param onBack callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal expect fun WebUiBackHandler(
     onBack: () -> Unit,

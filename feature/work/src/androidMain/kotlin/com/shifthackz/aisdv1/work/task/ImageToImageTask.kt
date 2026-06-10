@@ -19,6 +19,11 @@ import com.shifthackz.aisdv1.work.mappers.toImageToImagePayload
 import kotlinx.coroutines.CancellationException
 import java.io.File
 
+/**
+ * Coordinates `ImageToImageTask` behavior in the SDAI background work feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class ImageToImageTask(
     context: Context,
     workerParameters: WorkerParameters,
@@ -28,8 +33,23 @@ internal class ImageToImageTask(
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
     interruptGenerationUseCase: InterruptGenerationUseCase,
+    /**
+     * Exposes the `backgroundWorkObserver` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `imageToImageUseCase` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val imageToImageUseCase: ImageToImageUseCase,
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fileProviderDescriptor: FileProviderDescriptor,
 ) : CoreGenerationWorker(
     context = context,

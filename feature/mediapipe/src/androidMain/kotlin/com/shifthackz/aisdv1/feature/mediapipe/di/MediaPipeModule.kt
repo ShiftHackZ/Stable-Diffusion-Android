@@ -6,6 +6,11 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
+/**
+ * Exposes the `mediaPipeModule` value used by the SDAI MediaPipe feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val mediaPipeModule = module {
     factoryOf(::MediaPipeImpl) bind MediaPipe::class
 }

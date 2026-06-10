@@ -1,12 +1,52 @@
 package com.shifthackz.aisdv1.domain.entity
 
+/**
+ * Carries `LocalAiModel` data through the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class LocalAiModel(
+    /**
+     * Exposes the `id` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val id: String,
+    /**
+     * Exposes the `type` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val type: Type,
+    /**
+     * Exposes the `name` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val name: String,
+    /**
+     * Exposes the `size` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val size: String,
+    /**
+     * Exposes the `sources` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sources: List<String>,
+    /**
+     * Exposes the `downloaded` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val downloaded: Boolean = false,
+    /**
+     * Exposes the `selected` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val selected: Boolean = false,
 ) {
     enum class Type(val key: String) {

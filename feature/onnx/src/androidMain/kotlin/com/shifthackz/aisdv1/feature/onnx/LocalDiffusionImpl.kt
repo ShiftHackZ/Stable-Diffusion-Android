@@ -17,14 +17,46 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
+/**
+ * Implements `LocalDiffusion` behavior in the SDAI ONNX local diffusion feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class LocalDiffusionImpl(
+    /**
+     * Exposes the `uNet` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val uNet: UNet,
+    /**
+     * Exposes the `tokenizer` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val tokenizer: LocalDiffusionTextTokenizer,
+    /**
+     * Exposes the `ortEnvironmentProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val ortEnvironmentProvider: OrtEnvironmentProvider,
 ) : LocalDiffusion {
 
+    /**
+     * Exposes the `statusFlow` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val statusFlow = MutableSharedFlow<LocalDiffusionStatus>(extraBufferCapacity = 64)
 
+    /**
+     * Executes the `process` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param payload generation payload used by the operation.
+     * @return Result produced by `process`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun process(payload: TextToImagePayload): Bitmap = suspendCancellableCoroutine { continuation ->
         try {
             continuation.invokeOnCancellation {
@@ -95,12 +127,27 @@ internal class LocalDiffusionImpl(
     }
 
     // ToDo review method of LocalDiffusion cancellation, now next generation crashes using this approach
+    /**
+     * Performs the SDAI side effect handled by `interrupt`.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun interrupt() {
         interruptGeneration()
     }
 
+    /**
+     * Loads SDAI data through `observeStatus`.
+     *
+     * @author Dmitriy Moroz
+     */
     override fun observeStatus() = statusFlow.asSharedFlow()
 
+    /**
+     * Performs the SDAI side effect handled by `interruptGeneration`.
+     *
+     * @author Dmitriy Moroz
+     */
     private fun interruptGeneration() {
         debugLog("{$TAG} Trying to interrupt generation.")
         tokenizer.close()

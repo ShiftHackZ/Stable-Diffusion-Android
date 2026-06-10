@@ -24,6 +24,13 @@ import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageContent
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageState
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
 
+/**
+ * Renders the `FormPageContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param isPageVisible is page visible value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun FormPageContent(
     modifier: Modifier = Modifier,

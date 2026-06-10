@@ -6,6 +6,11 @@ import com.shifthackz.aisdv1.storage.gateway.GatewayClearCacheDb
 import com.shifthackz.aisdv1.storage.gateway.GatewayClearPersistentDb
 import org.koin.dsl.module
 
+/**
+ * Exposes the `databaseModule` value used by the SDAI storage layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val databaseModule = module {
     includes(
         persistentDatabaseModule,
@@ -21,6 +26,18 @@ val databaseModule = module {
     }
 }
 
+/**
+ * Performs the SDAI side effect handled by `clearCacheDatabase`.
+ *
+ * @param database database value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal expect suspend fun clearCacheDatabase(database: CacheDatabase)
 
+/**
+ * Performs the SDAI side effect handled by `clearPersistentDatabase`.
+ *
+ * @param database database value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal expect suspend fun clearPersistentDatabase(database: PersistentDatabase)

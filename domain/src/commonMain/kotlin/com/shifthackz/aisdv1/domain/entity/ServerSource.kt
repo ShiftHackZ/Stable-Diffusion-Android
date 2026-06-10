@@ -2,9 +2,29 @@ package com.shifthackz.aisdv1.domain.entity
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 
+/**
+ * Coordinates `ServerSource` behavior in the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 enum class ServerSource(
+    /**
+     * Exposes the `key` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val key: String,
+    /**
+     * Exposes the `featureTags` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val featureTags: Set<FeatureTag>,
+    /**
+     * Exposes the `allowedInBuilds` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val allowedInBuilds: Set<BuildType> = setOf(BuildType.FOSS, BuildType.PLAY, BuildType.FULL),
 ) {
     AUTOMATIC1111(

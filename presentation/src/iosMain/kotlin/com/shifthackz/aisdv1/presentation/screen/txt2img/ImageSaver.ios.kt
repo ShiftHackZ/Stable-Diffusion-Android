@@ -19,10 +19,27 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.coroutines.resume
 
+/**
+ * Creates the SDAI value produced by `createPlatformImageSaver`.
+ *
+ * @author Dmitriy Moroz
+ */
 actual fun createPlatformImageSaver(): ImageSaver = IosImageSaver()
 
+/**
+ * Coordinates `IosImageSaver` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private class IosImageSaver : ImageSaver {
 
+    /**
+     * Performs the SDAI side effect handled by `save`.
+     *
+     * @param base64 Base64 image payload used by the operation.
+     * @return Result produced by `save`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun save(base64: String): ImageSaveResult {
         val data = runCatching { base64.decodeGeneratedImageData() }.getOrElse { t ->
             return ImageSaveResult.Failed(t.message ?: "Unable to decode generated image")
@@ -63,6 +80,12 @@ private class IosImageSaver : ImageSaver {
     }
 }
 
+/**
+ * Executes the `decodeGeneratedImageData` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `decodeGeneratedImageData`.
+ * @author Dmitriy Moroz
+ */
 @OptIn(BetaInteropApi::class, ExperimentalEncodingApi::class, ExperimentalForeignApi::class)
 private fun String.decodeGeneratedImageData(): NSData {
     val raw = substringAfter("base64,", this).filterNot(Char::isWhitespace)

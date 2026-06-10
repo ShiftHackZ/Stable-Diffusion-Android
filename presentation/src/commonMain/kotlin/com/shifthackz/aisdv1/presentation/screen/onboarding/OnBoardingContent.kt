@@ -46,6 +46,15 @@ import com.shifthackz.aisdv1.presentation.screen.onboarding.page.UniversalPageCo
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+/**
+ * Renders the `OnBoardingContent` UI for the SDAI presentation layer.
+ *
+ * @param launchSource launch source value consumed by the API.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun OnBoardingContent(
     launchSource: LaunchSource,

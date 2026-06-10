@@ -5,6 +5,11 @@ import com.shifthackz.aisdv1.feature.auth.credentials.Credentials
 import com.shifthackz.aisdv1.feature.auth.credentials.EmptyCredentials
 import com.shifthackz.aisdv1.feature.auth.credentials.HttpBasicCredentials
 
+/**
+ * Converts SDAI data with `toRaw`.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun AuthorizationCredentials.toRaw(): Credentials = when (this) {
     is AuthorizationCredentials.HttpBasic -> HttpBasicCredentials(
         login = login,
@@ -13,6 +18,11 @@ internal fun AuthorizationCredentials.toRaw(): Credentials = when (this) {
     else -> EmptyCredentials()
 }
 
+/**
+ * Converts SDAI data with `toDomain`.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun Credentials.toDomain(): AuthorizationCredentials = when (this) {
     is HttpBasicCredentials -> AuthorizationCredentials.HttpBasic(
         login = login,
@@ -21,6 +31,13 @@ internal fun Credentials.toDomain(): AuthorizationCredentials = when (this) {
     else -> AuthorizationCredentials.None
 }
 
+/**
+ * Executes the `parseByKeyValueToRaw` step in the SDAI authentication feature layer.
+ *
+ * @param key key value consumed by the API.
+ * @param rawValue raw value value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun parseByKeyValueToRaw(
     key: AuthorizationCredentials.Key,
     rawValue: String,

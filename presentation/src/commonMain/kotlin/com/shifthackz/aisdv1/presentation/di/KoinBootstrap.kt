@@ -12,6 +12,12 @@ import org.koin.core.Koin
 import org.koin.core.context.startKoin
 import org.koin.mp.KoinPlatform
 
+/**
+ * Executes the `initKoin` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `initKoin`.
+ * @author Dmitriy Moroz
+ */
 fun initKoin(): Koin =
     KoinPlatform.getKoinOrNull() ?: startKoin {
         modules(

@@ -22,7 +22,17 @@ import java.util.Random
 import kotlin.math.cos
 import kotlin.math.pow
 
+/**
+ * Coordinates `EulerAncestralDiscreteLocalDiffusionScheduler` behavior in the SDAI ONNX local diffusion feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class EulerAncestralDiscreteLocalDiffusionScheduler(
+    /**
+     * Exposes the `config` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val config: LocalDiffusionConfig = LocalDiffusionConfig(),
 ) : LocalDiffusionScheduler, KoinComponent {
     

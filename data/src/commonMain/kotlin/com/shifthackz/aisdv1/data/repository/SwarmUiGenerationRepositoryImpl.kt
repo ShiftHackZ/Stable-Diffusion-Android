@@ -16,14 +16,44 @@ import com.shifthackz.aisdv1.domain.preference.SessionPreference
 import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
 import com.shifthackz.aisdv1.network.exception.SwarmUiBadSessionException
 
+/**
+ * Implements `SwarmUiGenerationRepository` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class SwarmUiGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     localDataSource: GenerationResultDataSource.Local,
     backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `sessionPreference` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val sessionPreference: SessionPreference,
+    /**
+     * Exposes the `authorizationStore` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val authorizationStore: AuthorizationStore,
+    /**
+     * Exposes the `swarmSessionRemoteDataSource` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val swarmSessionRemoteDataSource: SwarmUiModelsRemoteDataSource,
+    /**
+     * Exposes the `remoteDataSource` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val remoteDataSource: SwarmUiGenerationDataSource.Remote,
 ) : CoreGenerationRepository(
     mediaStoreGateway = mediaStoreGateway,

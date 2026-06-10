@@ -10,6 +10,19 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 
+/**
+ * Renders the `ProgressDialog` UI for the SDAI presentation layer.
+ *
+ * @param title title value consumed by the API.
+ * @param subTitle sub title value consumed by the API.
+ * @param canDismiss can dismiss value consumed by the API.
+ * @param onDismissRequest callback invoked by the component.
+ * @param waitTimeSeconds wait time seconds value consumed by the API.
+ * @param positionInQueue position in queue value consumed by the API.
+ * @param step step value consumed by the API.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ProgressDialog(
     title: UiText = Localization.string("communicating_progress_title").asUiText(),
@@ -39,6 +52,15 @@ fun ProgressDialog(
     }
 }
 
+/**
+ * Renders the `ProgressDialogStatus` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param waitTimeSeconds wait time seconds value consumed by the API.
+ * @param positionInQueue position in queue value consumed by the API.
+ * @param step step value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ProgressDialogStatus(
     modifier: Modifier = Modifier,
@@ -53,6 +75,12 @@ fun ProgressDialogStatus(
     )
 }
 
+/**
+ * Renders the `ProgressDialogCancelButton` UI for the SDAI presentation layer.
+ *
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ProgressDialogCancelButton(onClick: () -> Unit) {
     ProgressDialogCancelButtonContent(
@@ -61,6 +89,17 @@ fun ProgressDialogCancelButton(onClick: () -> Unit) {
     )
 }
 
+/**
+ * Renders the `GeneratingProgressDialogContent` UI for the SDAI presentation layer.
+ *
+ * @param title title value consumed by the API.
+ * @param subTitle sub title value consumed by the API.
+ * @param waitTimeSeconds wait time seconds value consumed by the API.
+ * @param positionInQueue position in queue value consumed by the API.
+ * @param step step value consumed by the API.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GeneratingProgressDialogContent(
     title: UiText = Localization.string("communicating_progress_title").asUiText(),
@@ -79,6 +118,13 @@ fun GeneratingProgressDialogContent(
     )
 }
 
+/**
+ * Executes the `waitTimeText` step in the SDAI presentation layer.
+ *
+ * @param waitTimeSeconds wait time seconds value consumed by the API.
+ * @return Result produced by `waitTimeText`.
+ * @author Dmitriy Moroz
+ */
 private fun waitTimeText(waitTimeSeconds: Int?): String? {
     return waitTimeSeconds?.let { seconds ->
         Localization.string(
@@ -88,6 +134,14 @@ private fun waitTimeText(waitTimeSeconds: Int?): String? {
     }
 }
 
+/**
+ * Executes the `statusText` step in the SDAI presentation layer.
+ *
+ * @param positionInQueue position in queue value consumed by the API.
+ * @param step step value consumed by the API.
+ * @return Result produced by `statusText`.
+ * @author Dmitriy Moroz
+ */
 private fun statusText(
     positionInQueue: Int?,
     step: Pair<Int, Int>?,

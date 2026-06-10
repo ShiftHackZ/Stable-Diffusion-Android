@@ -9,6 +9,11 @@ import platform.Foundation.NSApplicationSupportDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
+/**
+ * Exposes the `persistentDatabasePlatformModule` value used by the SDAI storage layer.
+ *
+ * @author Dmitriy Moroz
+ */
 actual val persistentDatabasePlatformModule = module {
     single<RoomDatabase.Builder<PersistentDatabase>> {
         Room.databaseBuilder<PersistentDatabase>(
@@ -17,6 +22,12 @@ actual val persistentDatabasePlatformModule = module {
     }
 }
 
+/**
+ * Executes the `applicationSupportDirectory` step in the SDAI storage layer.
+ *
+ * @return Result produced by `applicationSupportDirectory`.
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalForeignApi::class)
 private fun applicationSupportDirectory(): String {
     val directory = NSFileManager.defaultManager.URLForDirectory(

@@ -11,6 +11,11 @@ import com.shifthackz.aisdv1.network.request.StabilityTextToImageRequest
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
+/**
+ * Converts SDAI data with `mapToStabilityAiRequest`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun TextToImagePayload.mapToStabilityAiRequest(): StabilityTextToImageRequest = with(this) {
     StabilityTextToImageRequest(
         height = height,
@@ -30,6 +35,11 @@ fun TextToImagePayload.mapToStabilityAiRequest(): StabilityTextToImageRequest = 
     )
 }
 
+/**
+ * Converts SDAI data with `mapToStabilityAiRequest`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun ImageToImagePayload.mapToStabilityAiRequest() = with(this) {
     buildMap {
         buildList {
@@ -50,6 +60,13 @@ fun ImageToImagePayload.mapToStabilityAiRequest() = with(this) {
     }
 }
 
+/**
+ * Converts SDAI data with `mapStabilityTextToImageResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @return Result produced by `mapStabilityTextToImageResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<TextToImagePayload, String>.mapStabilityTextToImageResult(
     createdAtMillis: Long,
 ): AiGenerationResult {
@@ -76,6 +93,13 @@ fun Pair<TextToImagePayload, String>.mapStabilityTextToImageResult(
     )
 }
 
+/**
+ * Converts SDAI data with `mapStabilityImageToImageResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @return Result produced by `mapStabilityImageToImageResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<ImageToImagePayload, String>.mapStabilityImageToImageResult(
     createdAtMillis: Long,
 ): AiGenerationResult {
@@ -102,6 +126,13 @@ fun Pair<ImageToImagePayload, String>.mapStabilityImageToImageResult(
     )
 }
 
+/**
+ * Converts SDAI data with `mapToStabilityPrompt`.
+ *
+ * @param defaultWeight default weight value consumed by the API.
+ * @return Result produced by `mapToStabilityPrompt`.
+ * @author Dmitriy Moroz
+ */
 fun String.mapToStabilityPrompt(defaultWeight: Double = 1.0): List<StabilityTextPromptRaw> =
     buildList {
         this@mapToStabilityPrompt
@@ -123,6 +154,11 @@ fun String.mapToStabilityPrompt(defaultWeight: Double = 1.0): List<StabilityText
             }
     }
 
+/**
+ * Executes the `decodeBase64ImageBytes` step in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalEncodingApi::class)
 fun String.decodeBase64ImageBytes(): ByteArray = substringAfter("base64,", this)
     .filterNot(Char::isWhitespace)

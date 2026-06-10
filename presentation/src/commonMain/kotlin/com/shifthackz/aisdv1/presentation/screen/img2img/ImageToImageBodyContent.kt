@@ -80,6 +80,14 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlin.math.roundToInt
 
 
+/**
+ * Renders the `UnsupportedImageToImageBody` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param mode mode value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun UnsupportedImageToImageBody(
     modifier: Modifier = Modifier,
@@ -128,6 +136,18 @@ internal fun UnsupportedImageToImageBody(
     }
 }
 
+/**
+ * Renders the `ImageToImageBody` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param inputImageBitmap input image bitmap value consumed by the API.
+ * @param promptChipTextFieldState prompt chip text field state value consumed by the API.
+ * @param negativePromptChipTextFieldState negative prompt chip text field state value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @param onInPaintClick callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ImageToImageBody(
     state: ImageToImageState,
@@ -169,6 +189,16 @@ internal fun ImageToImageBody(
     }
 }
 
+/**
+ * Renders the `ImageInputSection` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param image image value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @param onInPaintClick callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ImageInputSection(
     state: ImageToImageState,
@@ -237,6 +267,16 @@ internal fun ImageInputSection(
     }
 }
 
+/**
+ * Renders the `EmptyImageInputActions` UI for the SDAI presentation layer.
+ *
+ * @param strings strings value consumed by the API.
+ * @param enabled enabled value consumed by the API.
+ * @param onGalleryClick callback invoked by the component.
+ * @param onCameraClick callback invoked by the component.
+ * @param onRandomClick callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun EmptyImageInputActions(
     strings: ImageToImageStrings,
@@ -277,6 +317,17 @@ internal fun EmptyImageInputActions(
     }
 }
 
+/**
+ * Renders the `SelectedImageInput` UI for the SDAI presentation layer.
+ *
+ * @param image image value consumed by the API.
+ * @param inPaint in paint value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @param enabled enabled value consumed by the API.
+ * @param onInPaintClick callback invoked by the component.
+ * @param onClearClick callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SelectedImageInput(
     image: ImageBitmap,

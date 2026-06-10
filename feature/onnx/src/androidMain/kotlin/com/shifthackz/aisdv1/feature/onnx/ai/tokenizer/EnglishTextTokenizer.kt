@@ -29,24 +29,89 @@ import java.util.Arrays
 import java.util.Locale
 import java.util.regex.Pattern
 
+/**
+ * Coordinates `EnglishTextTokenizer` behavior in the SDAI ONNX local diffusion feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class EnglishTextTokenizer(
+    /**
+     * Exposes the `ortEnvironmentProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val ortEnvironmentProvider: OrtEnvironmentProvider,
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fileProviderDescriptor: FileProviderDescriptor,
+    /**
+     * Exposes the `localModelIdProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val localModelIdProvider: LocalModelIdProvider,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
 ) : LocalDiffusionTextTokenizer {
 
+    /**
+     * Exposes the `pattern` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val pattern = Pattern.compile(TOKENIZER_REGEX)
 
+    /**
+     * Exposes the `encoder` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val encoder: MutableMap<String, Int> = HashMap()
+    /**
+     * Exposes the `decoder` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val decoder: MutableMap<Int, String> = HashMap()
+    /**
+     * Exposes the `bpeRanks` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val bpeRanks: MutableMap<Pair<String, String>, Int?> = HashMap()
 
+    /**
+     * Exposes the `isInitMap` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private var isInitMap = false
+    /**
+     * Exposes the `session` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private var session: OrtSession? = null
 
+    /**
+     * Exposes the `maxLength` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val maxLength = 77
 
+    /**
+     * Executes the `initialize` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override fun initialize() {
         if (session != null) {
             debugLog("{$TAG} {TOKENIZER} {initialize} Session already initialized, skipping...")
@@ -68,6 +133,13 @@ internal class EnglishTextTokenizer(
         debugLog("{$TAG} {TOKENIZER} {initialize} Tokenizer map initialized successfully!")
     }
 
+    /**
+     * Executes the `decode` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param ids ids value consumed by the API.
+     * @return Result produced by `decode`.
+     * @author Dmitriy Moroz
+     */
     override fun decode(ids: IntArray?): String {
         debugLog("{$TAG} {TOKENIZER} {decode} Trying to decode ${ids?.size ?: "null"} int array...")
         if (ids == null) {
@@ -92,6 +164,13 @@ internal class EnglishTextTokenizer(
         return resultString
     }
 
+    /**
+     * Executes the `encode` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param text text value consumed by the API.
+     * @return Result produced by `encode`.
+     * @author Dmitriy Moroz
+     */
     override fun encode(text: String?): IntArray {
         debugLog("{$TAG} {TOKENIZER} {encode} Trying to encode ${text ?: "null"}...")
         var input = text
@@ -133,6 +212,13 @@ internal class EnglishTextTokenizer(
         return copy
     }
 
+    /**
+     * Executes the `tensor` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param ids ids value consumed by the API.
+     * @return Result produced by `tensor`.
+     * @author Dmitriy Moroz
+     */
     override fun tensor(ids: IntArray?): OnnxTensor? {
         debugLog("{$TAG} {TOKENIZER} {tensor} Trying to tensor ${ids?.size ?: "null"} int array...")
         if (ids == null) {
@@ -154,8 +240,19 @@ internal class EnglishTextTokenizer(
         return tensor
     }
 
+    /**
+     * Creates the SDAI value produced by `createUnconditionalInput`.
+     *
+     * @param text text value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override fun createUnconditionalInput(text: String?): IntArray = encode(text)
 
+    /**
+     * Executes the `close` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override fun close() {
         debugLog("{$TAG} {TOKENIZER} {close} Closing session...")
         session?.close()
@@ -163,6 +260,13 @@ internal class EnglishTextTokenizer(
         debugLog("{$TAG} {TOKENIZER} {close} Session closed successfully!")
     }
 
+    /**
+     * Executes the `bpe` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param token token value consumed by the API.
+     * @return Result produced by `bpe`.
+     * @author Dmitriy Moroz
+     */
     private fun bpe(token: String): List<String> {
         if (TextUtils.isEmpty(token)) {
             return listOf(token)
@@ -220,6 +324,13 @@ internal class EnglishTextTokenizer(
         return word.filterNotNull()
     }
 
+    /**
+     * Loads SDAI data through `getPairs`.
+     *
+     * @param word word value consumed by the API.
+     * @return Result produced by `getPairs`.
+     * @author Dmitriy Moroz
+     */
     private fun getPairs(word: List<String?>): Set<Pair<String, String>> {
         val result: MutableSet<Pair<String, String>> = LinkedHashSet()
         for (i in 0 until word.size - 1) {
@@ -228,6 +339,12 @@ internal class EnglishTextTokenizer(
         return result
     }
 
+    /**
+     * Loads SDAI data through `loadEncoder`.
+     *
+     * @return Result produced by `loadEncoder`.
+     * @author Dmitriy Moroz
+     */
     private fun loadEncoder(): Map<String, Int> {
         val map: MutableMap<String, Int> = HashMap()
         try {
@@ -246,6 +363,13 @@ internal class EnglishTextTokenizer(
         return map
     }
 
+    /**
+     * Loads SDAI data through `loadDecoder`.
+     *
+     * @param encoder encoder value consumed by the API.
+     * @return Result produced by `loadDecoder`.
+     * @author Dmitriy Moroz
+     */
     private fun loadDecoder(encoder: Map<String, Int>): Map<Int, String> {
         val result: MutableMap<Int, String> = HashMap(encoder.size)
         for (entry in encoder) {
@@ -254,6 +378,12 @@ internal class EnglishTextTokenizer(
         return result
     }
 
+    /**
+     * Loads SDAI data through `loadBpeRanks`.
+     *
+     * @return Result produced by `loadBpeRanks`.
+     * @author Dmitriy Moroz
+     */
     private fun loadBpeRanks(): Map<Pair<String, String>, Int?> {
         val result: MutableMap<Pair<String, String>, Int?> = HashMap()
         try {
@@ -278,7 +408,17 @@ internal class EnglishTextTokenizer(
         return result
     }
 
+    /**
+     * Provides the `companion object` singleton used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     companion object {
+        /**
+         * Exposes the `TOKENIZER_REGEX` value used by the SDAI ONNX local diffusion feature layer.
+         *
+         * @author Dmitriy Moroz
+         */
         private const val TOKENIZER_REGEX = "'s|'t|'re|'ve|'m|'ll|'d| ?\\p{L}+| ?\\p{N}+| ?[^\\s\\p{L}\\p{N}]+|\\s+(?!\\S)|\\s+"
     }
 }

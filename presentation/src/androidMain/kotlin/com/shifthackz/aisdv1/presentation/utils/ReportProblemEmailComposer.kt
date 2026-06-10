@@ -9,11 +9,32 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
 
+/**
+ * Coordinates `ReportProblemEmailComposer` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class ReportProblemEmailComposer : KoinComponent {
 
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fileProviderDescriptor: FileProviderDescriptor by inject()
+    /**
+     * Exposes the `buildInfoProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val buildInfoProvider: BuildInfoProvider by inject()
 
+    /**
+     * Executes the `invoke` step in the SDAI presentation layer.
+     *
+     * @param context Android context used by the operation.
+     * @author Dmitriy Moroz
+     */
     fun invoke(context: Context) {
         val logFile = File(
             fileProviderDescriptor.logsCacheDirPath +

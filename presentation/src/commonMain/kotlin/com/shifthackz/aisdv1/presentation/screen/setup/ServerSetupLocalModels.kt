@@ -98,6 +98,16 @@ import kotlinx.coroutines.launch
 
 
 
+/**
+ * Renders the `LocalModelItem` UI for the SDAI presentation layer.
+ *
+ * @param model model value consumed by the API.
+ * @param selected selected value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @param onSelect callback invoked by the component.
+ * @param onAction callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun LocalModelItem(
     model: ServerSetupState.LocalModel,
@@ -199,6 +209,11 @@ internal fun LocalModelItem(
     }
 }
 
+/**
+ * Renders the `LocalOnnxFolderStructure` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun LocalOnnxFolderStructure() {
     val lines = listOf(

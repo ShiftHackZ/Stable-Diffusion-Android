@@ -19,16 +19,58 @@ import com.shifthackz.aisdv1.feature.onnx.extensions.modelPathPrefix
 import java.util.EnumSet
 import kotlin.math.roundToInt
 
+/**
+ * Coordinates `VaeDecoder` behavior in the SDAI ONNX local diffusion feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class VaeDecoder(
+    /**
+     * Exposes the `ortEnvironmentProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val ortEnvironmentProvider: OrtEnvironmentProvider,
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fileProviderDescriptor: FileProviderDescriptor,
+    /**
+     * Exposes the `localModelIdProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val localModelIdProvider: LocalModelIdProvider,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `deviceId` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val deviceId: Int,
 ) {
 
+    /**
+     * Exposes the `session` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private var session: OrtSession? = null
 
+    /**
+     * Executes the `decode` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param input input value consumed by the API.
+     * @return Result produced by `decode`.
+     * @author Dmitriy Moroz
+     */
     fun decode(input: Map<String?, OnnxTensor?>?): Any {
         initialize()
         val result = session!!.run(input)
@@ -38,6 +80,15 @@ internal class VaeDecoder(
         return value
     }
 
+    /**
+     * Executes the `convertToImage` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param output output value consumed by the API.
+     * @param width width value consumed by the API.
+     * @param height height value consumed by the API.
+     * @return Result produced by `convertToImage`.
+     * @author Dmitriy Moroz
+     */
     fun convertToImage(
         output: Array3D<FloatArray>,
         width: Int,
@@ -56,11 +107,21 @@ internal class VaeDecoder(
         return bitmap
     }
 
+    /**
+     * Executes the `close` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     fun close() {
         session?.close()
         session = null
     }
 
+    /**
+     * Executes the `initialize` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private fun initialize() {
         if (session != null) return
         val options = SessionOptions()
@@ -74,6 +135,15 @@ internal class VaeDecoder(
         )
     }
 
+    /**
+     * Executes the `clamp` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param value value value consumed by the API.
+     * @param min min value consumed by the API.
+     * @param max max value consumed by the API.
+     * @return Result produced by `clamp`.
+     * @author Dmitriy Moroz
+     */
     private fun clamp(value: Double, min: Double = 0.0, max: Double = 1.0): Double = when {
         value < min -> min
         value > max -> max

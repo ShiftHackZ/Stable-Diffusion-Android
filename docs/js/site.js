@@ -6,6 +6,7 @@
     startYear: 2023,
     links: {
       home: "index.html",
+      docs: "docs/",
       privacy: "privacy.html",
       github: "https://github.com/ShiftHackZ/Stable-Diffusion-Android",
       company: "https://moroz.cc",
@@ -53,6 +54,7 @@
           <div class="site-menu" id="site-menu" data-site-menu>
             <nav class="site-nav" aria-label="Main navigation">
               <a href="${site.links.home}" data-nav="home">Home</a>
+              <a href="${site.links.docs}" data-nav="docs">Documentation</a>
               <a href="${site.links.privacy}" data-nav="privacy">Privacy Policy</a>
             </nav>
             <div class="social-links" aria-label="Community">
@@ -102,6 +104,7 @@
           <nav class="footer-column" aria-label="Info">
             <h2>Info</h2>
             <a href="${site.links.privacy}">Privacy Policy</a>
+            <a href="${site.links.docs}">Documentation</a>
             <a href="${site.links.github}" ${external}>GitHub</a>
           </nav>
           <nav class="footer-column" aria-label="Community">

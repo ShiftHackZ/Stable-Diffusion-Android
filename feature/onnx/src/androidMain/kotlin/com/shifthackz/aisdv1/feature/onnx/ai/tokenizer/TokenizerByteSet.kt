@@ -1,7 +1,22 @@
 package com.shifthackz.aisdv1.feature.onnx.ai.tokenizer
 
+/**
+ * Provides the `TokenizerByteSet` singleton used by the SDAI ONNX local diffusion feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 object TokenizerByteSet {
+    /**
+     * Exposes the `byteEncoder` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val byteEncoder: MutableMap<Int, String> = HashMap()
+    /**
+     * Exposes the `byteDecoder` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val byteDecoder: MutableMap<String, Int> = HashMap()
 
     init {
@@ -264,10 +279,22 @@ object TokenizerByteSet {
         reversal()
     }
 
+    /**
+     * Executes the `put` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param key key value consumed by the API.
+     * @param value value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     private fun put(key: Int, value: String) {
         byteEncoder[key] = value
     }
 
+    /**
+     * Executes the `reversal` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private fun reversal() {
         for (entry in byteEncoder.entries) {
             byteDecoder[entry.value] = entry.key

@@ -12,6 +12,17 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 
+/**
+ * Renders the `ChipTextFieldWithItem` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param textFieldValueState text field value state value consumed by the API.
+ * @param label label value consumed by the API.
+ * @param list list value consumed by the API.
+ * @param onItemClick callback invoked by the component.
+ * @param onEvent callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ChipTextFieldWithItem(
     modifier: Modifier = Modifier,

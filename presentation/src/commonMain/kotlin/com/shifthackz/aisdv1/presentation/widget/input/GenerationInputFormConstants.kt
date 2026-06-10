@@ -1,19 +1,79 @@
 package com.shifthackz.aisdv1.presentation.widget.input
 
+/**
+ * Provides the `GenerationInputFormConstants` singleton used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal object GenerationInputFormConstants {
+    /**
+     * Exposes the `SUB_SEED_STRENGTH_MIN` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     const val SUB_SEED_STRENGTH_MIN = 0f
+    /**
+     * Exposes the `SUB_SEED_STRENGTH_MAX` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     const val SUB_SEED_STRENGTH_MAX = 1f
 
+    /**
+     * Exposes the `SAMPLING_STEPS_RANGE_MIN` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     const val SAMPLING_STEPS_RANGE_MIN = 1
+    /**
+     * Exposes the `SAMPLING_STEPS_RANGE_MAX` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     const val SAMPLING_STEPS_RANGE_MAX = 150
+    /**
+     * Exposes the `SAMPLING_STEPS_RANGE_STABILITY_AI_MAX` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     const val SAMPLING_STEPS_RANGE_STABILITY_AI_MAX = 50
+    /**
+     * Exposes the `SAMPLING_STEPS_LOCAL_DIFFUSION_MAX` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     const val SAMPLING_STEPS_LOCAL_DIFFUSION_MAX = 50
 
+    /**
+     * Exposes the `BATCH_RANGE_MIN` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     const val BATCH_RANGE_MIN = 1
+    /**
+     * Exposes the `BATCH_RANGE_MAX` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     const val BATCH_RANGE_MAX = 20
 
+    /**
+     * Exposes the `CFG_SCALE_RANGE_MIN` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     const val CFG_SCALE_RANGE_MIN = 1
+    /**
+     * Exposes the `CFG_SCALE_RANGE_MAX` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     const val CFG_SCALE_RANGE_MAX = 35
 
+    /**
+     * Exposes the `sizes` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sizes = listOf("64", "128", "256", "320", "384", "448", "512")
 }

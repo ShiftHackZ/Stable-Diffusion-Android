@@ -8,10 +8,25 @@ import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
+/**
+ * Exposes the `cacheDatabaseBuilderQualifier` value used by the SDAI storage layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val cacheDatabaseBuilderQualifier = named("cacheDatabaseBuilder")
 
+/**
+ * Exposes the `cacheDatabasePlatformModule` value used by the SDAI storage layer.
+ *
+ * @author Dmitriy Moroz
+ */
 expect val cacheDatabasePlatformModule: Module
 
+/**
+ * Exposes the `cacheDatabaseModule` value used by the SDAI storage layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val cacheDatabaseModule = module {
     includes(cacheDatabasePlatformModule)
 
@@ -28,6 +43,13 @@ val cacheDatabaseModule = module {
     single { get<CacheDatabase>().swarmUiModelDao() }
 }
 
+/**
+ * Loads SDAI data through `getCacheDatabase`.
+ *
+ * @param builder builder value consumed by the API.
+ * @return Result produced by `getCacheDatabase`.
+ * @author Dmitriy Moroz
+ */
 internal fun getCacheDatabase(
     builder: RoomDatabase.Builder<CacheDatabase>,
 ): CacheDatabase =

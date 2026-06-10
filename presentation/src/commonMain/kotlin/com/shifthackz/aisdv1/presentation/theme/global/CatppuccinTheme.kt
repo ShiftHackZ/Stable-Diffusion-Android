@@ -7,6 +7,14 @@ import androidx.compose.ui.graphics.Color
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 
+/**
+ * Executes the `catppuccinColorScheme` step in the SDAI presentation layer.
+ *
+ * @param token token value consumed by the API.
+ * @param darkThemeToken dark theme token value consumed by the API.
+ * @param isDark is dark value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun catppuccinColorScheme(
     token: ColorToken,
     darkThemeToken: DarkThemeToken,
@@ -81,6 +89,13 @@ internal fun catppuccinColorScheme(
     }
 }
 
+/**
+ * Executes the `catppuccinTypography` step in the SDAI presentation layer.
+ *
+ * @param isDark is dark value consumed by the API.
+ * @param darkThemeToken dark theme token value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun catppuccinTypography(
     isDark: Boolean,
     darkThemeToken: DarkThemeToken,
@@ -104,6 +119,13 @@ internal fun catppuccinTypography(
     )
 }
 
+/**
+ * Executes the `catppuccinPalette` step in the SDAI presentation layer.
+ *
+ * @param isDark is dark value consumed by the API.
+ * @param darkThemeToken dark theme token value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 private fun catppuccinPalette(
     isDark: Boolean,
     darkThemeToken: DarkThemeToken,
@@ -117,22 +139,51 @@ private fun catppuccinPalette(
     }
 }
 
+/**
+ * Executes the `catppuccinAccentColor` step in the SDAI presentation layer.
+ *
+ * @param token token value consumed by the API.
+ * @param isDark is dark value consumed by the API.
+ * @param darkThemeToken dark theme token value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun catppuccinAccentColor(
     token: ColorToken,
     isDark: Boolean,
     darkThemeToken: DarkThemeToken,
 ): Color = token.toColor(catppuccinPalette(isDark, darkThemeToken))
 
+/**
+ * Executes the `catppuccinBaseColor` step in the SDAI presentation layer.
+ *
+ * @param isDark is dark value consumed by the API.
+ * @param darkThemeToken dark theme token value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun catppuccinBaseColor(
     isDark: Boolean,
     darkThemeToken: DarkThemeToken,
 ): Color = catppuccinPalette(isDark, darkThemeToken).base
 
+/**
+ * Executes the `catppuccinOverlayColor` step in the SDAI presentation layer.
+ *
+ * @param isDark is dark value consumed by the API.
+ * @param darkThemeToken dark theme token value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun catppuccinOverlayColor(
     isDark: Boolean,
     darkThemeToken: DarkThemeToken,
 ): Color = catppuccinPalette(isDark, darkThemeToken).overlay1
 
+/**
+ * Converts SDAI data with `toColor`.
+ *
+ * @param palette palette value consumed by the API.
+ * @return Result produced by `toColor`.
+ * @author Dmitriy Moroz
+ */
 private fun ColorToken.toColor(palette: CatppuccinPalette): Color =
     when (this) {
         ColorToken.ROSEWATER -> palette.rosewater
@@ -151,6 +202,12 @@ private fun ColorToken.toColor(palette: CatppuccinPalette): Color =
         ColorToken.LAVENDER -> palette.lavender
     }
 
+/**
+ * Executes the `inverse` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `inverse`.
+ * @author Dmitriy Moroz
+ */
 private fun Color.inverse(): Color =
     Color(
         red = 1f - red,
@@ -159,31 +216,151 @@ private fun Color.inverse(): Color =
         alpha = alpha,
     )
 
+/**
+ * Carries `CatppuccinPalette` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private data class CatppuccinPalette(
+    /**
+     * Exposes the `rosewater` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val rosewater: Color,
+    /**
+     * Exposes the `flamingo` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val flamingo: Color,
+    /**
+     * Exposes the `pink` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val pink: Color,
+    /**
+     * Exposes the `mauve` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val mauve: Color,
+    /**
+     * Exposes the `red` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val red: Color,
+    /**
+     * Exposes the `maroon` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val maroon: Color,
+    /**
+     * Exposes the `peach` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val peach: Color,
+    /**
+     * Exposes the `yellow` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val yellow: Color,
+    /**
+     * Exposes the `green` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val green: Color,
+    /**
+     * Exposes the `teal` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val teal: Color,
+    /**
+     * Exposes the `sky` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sky: Color,
+    /**
+     * Exposes the `sapphire` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sapphire: Color,
+    /**
+     * Exposes the `blue` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val blue: Color,
+    /**
+     * Exposes the `lavender` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val lavender: Color,
+    /**
+     * Exposes the `text` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val text: Color,
+    /**
+     * Exposes the `subtext1` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val subtext1: Color,
+    /**
+     * Exposes the `subtext0` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val subtext0: Color,
+    /**
+     * Exposes the `overlay1` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val overlay1: Color,
+    /**
+     * Exposes the `base` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val base: Color,
+    /**
+     * Exposes the `mantle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val mantle: Color,
+    /**
+     * Exposes the `crust` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val crust: Color,
 ) {
 
+    /**
+     * Provides the `companion object` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     companion object {
+        /**
+         * Exposes the `Latte` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val Latte = CatppuccinPalette(
             rosewater = Color(0xffdc8a78),
             flamingo = Color(0xffdd7878),
@@ -208,6 +385,11 @@ private data class CatppuccinPalette(
             crust = Color(0xffdce0e8),
         )
 
+        /**
+         * Exposes the `Frappe` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val Frappe = CatppuccinPalette(
             rosewater = Color(0xfff2d5cf),
             flamingo = Color(0xffeebebe),
@@ -232,6 +414,11 @@ private data class CatppuccinPalette(
             crust = Color(0xff232634),
         )
 
+        /**
+         * Exposes the `Macchiato` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val Macchiato = CatppuccinPalette(
             rosewater = Color(0xfff4dbd6),
             flamingo = Color(0xfff0c6c6),
@@ -256,6 +443,11 @@ private data class CatppuccinPalette(
             crust = Color(0xff181926),
         )
 
+        /**
+         * Exposes the `Mocha` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val Mocha = CatppuccinPalette(
             rosewater = Color(0xfff5e0dc),
             flamingo = Color(0xfff2cdcd),

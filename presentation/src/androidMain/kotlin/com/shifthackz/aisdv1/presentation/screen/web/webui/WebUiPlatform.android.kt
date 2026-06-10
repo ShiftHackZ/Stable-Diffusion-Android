@@ -12,6 +12,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 
+/**
+ * Renders the `WebUiBrowser` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param url remote URL used by the operation.
+ * @param onLoadingChanged callback invoked by the component.
+ * @param onControllerChanged callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal actual fun WebUiBrowser(
     modifier: Modifier,
@@ -34,6 +43,12 @@ internal actual fun WebUiBrowser(
     )
 }
 
+/**
+ * Renders the `WebUiBackHandler` UI for the SDAI presentation layer.
+ *
+ * @param onBack callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal actual fun WebUiBackHandler(
     onBack: () -> Unit,
@@ -41,17 +56,46 @@ internal actual fun WebUiBackHandler(
     BackHandler(onBack = onBack)
 }
 
+/**
+ * Coordinates `AndroidWebUiController` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private class AndroidWebUiController(
+    /**
+     * Exposes the `webView` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val webView: WebView,
 ) : WebUiController {
+    /**
+     * Exposes the `canGoBack` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val canGoBack: Boolean
         get() = webView.canGoBack()
 
+    /**
+     * Executes the `goBack` step in the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override fun goBack() {
         webView.goBack()
     }
 }
 
+/**
+ * Renders the `AndroidWebUiView` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param url remote URL used by the operation.
+ * @param client client value consumed by the API.
+ * @param onWebViewChanged callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 private fun AndroidWebUiView(
@@ -85,7 +129,17 @@ private fun AndroidWebUiView(
     )
 }
 
+/**
+ * Coordinates `WebUiClient` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private class WebUiClient(
+    /**
+     * Exposes the `onLoadingChanged` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onLoadingChanged: (Boolean) -> Unit = {},
 ) : WebViewClient() {
 

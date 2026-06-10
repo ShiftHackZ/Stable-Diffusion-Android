@@ -10,6 +10,13 @@ import platform.UIKit.UIImage
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
+/**
+ * Executes the `decodeGeneratedUiImage` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `decodeGeneratedUiImage`.
+ * @throws IllegalStateException when the current state is invalid.
+ * @author Dmitriy Moroz
+ */
 @OptIn(BetaInteropApi::class, ExperimentalEncodingApi::class, ExperimentalForeignApi::class)
 internal fun String.decodeGeneratedUiImage(): UIImage {
     val raw = substringAfter("base64,", this)

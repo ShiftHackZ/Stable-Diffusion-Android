@@ -26,6 +26,12 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import org.koin.compose.koinInject
 
+/**
+ * Renders the `rememberImageToImagePlatformActions` UI for the SDAI presentation layer.
+ *
+ * @return Result produced by `rememberImageToImagePlatformActions`.
+ * @author Dmitriy Moroz
+ */
 @Composable
 actual fun rememberImageToImagePlatformActions(): ImageToImagePlatformActions {
     val context = LocalContext.current
@@ -109,15 +115,54 @@ actual fun rememberImageToImagePlatformActions(): ImageToImagePlatformActions {
     }
 }
 
+/**
+ * Defines the `AndroidImagePickOutcome` contract for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private sealed interface AndroidImagePickOutcome {
+    /**
+     * Carries `Selected` data through the SDAI presentation layer.
+     *
+     * @param uri uri value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class Selected(val uri: Uri) : AndroidImagePickOutcome
+    /**
+     * Provides the `Cancelled` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object Cancelled : AndroidImagePickOutcome
+    /**
+     * Carries `Failed` data through the SDAI presentation layer.
+     *
+     * @param message message value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class Failed(val message: String) : AndroidImagePickOutcome
 }
 
+/**
+ * Coordinates `AndroidImagePickerState` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private class AndroidImagePickerState {
+    /**
+     * Exposes the `continuation` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private var continuation: CancellableContinuation<AndroidImagePickOutcome>? = null
 
+    /**
+     * Executes the `await` step in the SDAI presentation layer.
+     *
+     * @param launchPicker launch picker value consumed by the API.
+     * @return Result produced by `await`.
+     * @author Dmitriy Moroz
+     */
     suspend fun await(launchPicker: () -> Unit): AndroidImagePickOutcome =
         suspendCancellableCoroutine { nextContinuation ->
             if (continuation != null) {
@@ -135,6 +180,12 @@ private class AndroidImagePickerState {
             launchPicker()
         }
 
+    /**
+     * Executes the `resume` step in the SDAI presentation layer.
+     *
+     * @param result result value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     fun resume(result: AndroidImagePickOutcome) {
         val current = continuation ?: return
         continuation = null
@@ -142,6 +193,13 @@ private class AndroidImagePickerState {
     }
 }
 
+/**
+ * Executes the `imageUriToPickResult` step in the SDAI presentation layer.
+ *
+ * @param uri uri value consumed by the API.
+ * @return Result produced by `imageUriToPickResult`.
+ * @author Dmitriy Moroz
+ */
 private fun Context.imageUriToPickResult(uri: Uri): ImageToImagePickResult =
     runCatching {
         val bitmap = decodeSampledBitmap(uri) ?: error("Unable to decode selected image")
@@ -154,6 +212,13 @@ private fun Context.imageUriToPickResult(uri: Uri): ImageToImagePickResult =
         ImageToImagePickResult.Failed(t.message ?: "Unable to read selected image")
     }
 
+/**
+ * Converts SDAI data with `decodeSampledBitmap`.
+ *
+ * @param uri uri value consumed by the API.
+ * @return Result produced by `decodeSampledBitmap`.
+ * @author Dmitriy Moroz
+ */
 private fun Context.decodeSampledBitmap(uri: Uri): Bitmap? {
     return try {
         val boundsOptions = BitmapFactory.Options().apply {
@@ -177,6 +242,13 @@ private fun Context.decodeSampledBitmap(uri: Uri): Bitmap? {
     }
 }
 
+/**
+ * Executes the `function` step in the SDAI presentation layer.
+ *
+ * @param maxSide max side value consumed by the API.
+ * @return Result produced by `function`.
+ * @author Dmitriy Moroz
+ */
 private fun BitmapFactory.Options.calculateInSampleSize(maxSide: Int): Int {
     var sampleSize = 1
     while (maxOf(outWidth / sampleSize, outHeight / sampleSize) > maxSide) {
@@ -185,6 +257,12 @@ private fun BitmapFactory.Options.calculateInSampleSize(maxSide: Int): Int {
     return sampleSize.coerceAtLeast(1)
 }
 
+/**
+ * Executes the `centerCropAndScale` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `centerCropAndScale`.
+ * @author Dmitriy Moroz
+ */
 private fun Bitmap.centerCropAndScale(): Bitmap {
     val cropSize = minOf(width, height)
     val cropped = if (width == cropSize && height == cropSize) {
@@ -209,11 +287,27 @@ private fun Bitmap.centerCropAndScale(): Bitmap {
         }
 }
 
+/**
+ * Converts SDAI data with `toJpegBase64`.
+ *
+ * @return Result produced by `toJpegBase64`.
+ * @author Dmitriy Moroz
+ */
 private fun Bitmap.toJpegBase64(): String =
     ByteArrayOutputStream().use { stream ->
         compress(Bitmap.CompressFormat.JPEG, PICKED_IMAGE_JPEG_QUALITY, stream)
         Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
     }
 
+/**
+ * Exposes the `MAX_PICKED_IMAGE_SIDE` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val MAX_PICKED_IMAGE_SIDE = 1536
+/**
+ * Exposes the `PICKED_IMAGE_JPEG_QUALITY` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val PICKED_IMAGE_JPEG_QUALITY = 95

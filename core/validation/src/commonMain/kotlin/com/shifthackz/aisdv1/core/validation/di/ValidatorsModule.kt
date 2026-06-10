@@ -12,6 +12,11 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
+/**
+ * Exposes the `validatorsModule` value used by the SDAI validation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val validatorsModule = module {
     // !!! Do not use [factoryOf] for DimensionValidatorImpl, it has 2 default Ints in constructor
     factory<DimensionValidator> { DimensionValidatorImpl() }

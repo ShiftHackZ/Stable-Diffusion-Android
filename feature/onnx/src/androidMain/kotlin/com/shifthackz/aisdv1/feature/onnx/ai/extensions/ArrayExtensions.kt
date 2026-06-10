@@ -4,6 +4,15 @@ import com.shifthackz.aisdv1.feature.onnx.entity.Array3D
 import kotlin.math.ceil
 import java.util.function.Function
 
+/**
+ * Executes the `arrange` step in the SDAI ONNX local diffusion feature layer.
+ *
+ * @param start start value consumed by the API.
+ * @param stop stop value consumed by the API.
+ * @param step step value consumed by the API.
+ * @return Result produced by `arrange`.
+ * @author Dmitriy Moroz
+ */
 internal fun arrange(start: Double, stop: Double, step: Double?): DoubleArray {
     val size = (step?.let { ceil((stop - start) / step) } ?: ceil(stop - start)).toInt()
     val result = DoubleArray(size)
@@ -13,6 +22,15 @@ internal fun arrange(start: Double, stop: Double, step: Double?): DoubleArray {
     return result
 }
 
+/**
+ * Executes the `lineSpace` step in the SDAI ONNX local diffusion feature layer.
+ *
+ * @param start start value consumed by the API.
+ * @param end end value consumed by the API.
+ * @param steps steps value consumed by the API.
+ * @return Result produced by `lineSpace`.
+ * @author Dmitriy Moroz
+ */
 internal fun lineSpace(start: Double, end: Double, steps: Int): DoubleArray {
     val doubles = DoubleArray(steps)
     for (i in 0 until steps) {
@@ -21,6 +39,15 @@ internal fun lineSpace(start: Double, end: Double, steps: Int): DoubleArray {
     return doubles
 }
 
+/**
+ * Executes the `interpolate` step in the SDAI ONNX local diffusion feature layer.
+ *
+ * @param x x value consumed by the API.
+ * @param xp xp value consumed by the API.
+ * @param fp fp value consumed by the API.
+ * @return Result produced by `interpolate`.
+ * @author Dmitriy Moroz
+ */
 internal fun interpolate(x: DoubleArray, xp: DoubleArray, fp: DoubleArray): DoubleArray {
     val y = DoubleArray(x.size)
     val interpolation = createLinearInterpolationFunction(xp, fp)
@@ -28,6 +55,12 @@ internal fun interpolate(x: DoubleArray, xp: DoubleArray, fp: DoubleArray): Doub
     return y
 }
 
+/**
+ * Loads SDAI data through `getSizes`.
+ *
+ * @param dataSet data set value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun getSizes(dataSet: Array3D<FloatArray>): LongArray = longArrayOf(
     dataSet.size.toLong(),
     dataSet[0].size.toLong(),
@@ -35,6 +68,15 @@ internal fun getSizes(dataSet: Array3D<FloatArray>): LongArray = longArrayOf(
     dataSet[0][0][0].size.toLong()
 )
 
+/**
+ * Creates the SDAI value produced by `createLinearInterpolationFunction`.
+ *
+ * @param x x value consumed by the API.
+ * @param y y value consumed by the API.
+ * @return Result produced by `createLinearInterpolationFunction`.
+ * @throws IllegalArgumentException when input validation fails.
+ * @author Dmitriy Moroz
+ */
 internal fun createLinearInterpolationFunction(
     x: DoubleArray,
     y: DoubleArray,

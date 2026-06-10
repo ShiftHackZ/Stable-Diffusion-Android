@@ -56,6 +56,15 @@ import com.shifthackz.aisdv1.presentation.widget.source.getName
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `EmbeddingScreen` UI for the SDAI presentation layer.
+ *
+ * @param prompt positive prompt text for image generation.
+ * @param negativePrompt negative prompt text for image generation.
+ * @param onNewPrompts callback invoked by the component.
+ * @param onClose callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun EmbeddingScreen(
     prompt: String,
@@ -93,6 +102,14 @@ fun EmbeddingScreen(
     }
 }
 
+/**
+ * Renders the `ScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
@@ -258,6 +275,12 @@ private fun ScreenContent(
     }
 }
 
+/**
+ * Renders the `EmbeddingEmptyState` UI for the SDAI presentation layer.
+ *
+ * @param source source value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun EmbeddingEmptyState(source: ServerSource) {
     Column(
@@ -288,6 +311,14 @@ private fun EmbeddingEmptyState(source: ServerSource) {
     }
 }
 
+/**
+ * Renders the `EmbeddingItemComposable` UI for the SDAI presentation layer.
+ *
+ * @param item item value consumed by the API.
+ * @param selector selector value consumed by the API.
+ * @param onItemToggle callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun EmbeddingItemComposable(
     item: EmbeddingItemUi,

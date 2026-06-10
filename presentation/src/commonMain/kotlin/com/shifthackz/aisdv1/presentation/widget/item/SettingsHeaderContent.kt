@@ -28,6 +28,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.extensions.shimmer
 
+/**
+ * Renders the `SettingsHeaderContent` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param loading loading value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SettingsHeaderContent(
     text: String,

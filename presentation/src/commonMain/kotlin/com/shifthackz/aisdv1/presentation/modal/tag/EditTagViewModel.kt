@@ -4,6 +4,16 @@ import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.mvi.BaseMviViewModel
 import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 
+/**
+ * Coordinates `EditTagViewModel` behavior in the SDAI presentation layer.
+ *
+ * @param dispatchersProvider dispatchers provider value consumed by the API.
+ * @param prompt positive prompt text for image generation.
+ * @param negativePrompt negative prompt text for image generation.
+ * @param tag tag value consumed by the API.
+ * @param isNegative is negative value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 class EditTagViewModel(
     dispatchersProvider: DispatchersProvider,
     prompt: String,

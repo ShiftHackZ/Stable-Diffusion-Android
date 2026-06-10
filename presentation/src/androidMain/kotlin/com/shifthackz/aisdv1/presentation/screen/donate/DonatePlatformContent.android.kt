@@ -8,6 +8,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.presentation.R as PresentationR
 
+/**
+ * Renders the `DonateBrandIcon` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal actual fun DonateBrandIcon() {
     Image(

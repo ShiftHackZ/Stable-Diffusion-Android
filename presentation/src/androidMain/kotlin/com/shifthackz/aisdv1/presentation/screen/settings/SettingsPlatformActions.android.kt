@@ -17,6 +17,12 @@ import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import com.shifthackz.aisdv1.presentation.utils.ReportProblemEmailComposer
 import kotlinx.coroutines.CompletableDeferred
 
+/**
+ * Renders the `rememberSettingsPlatformActions` UI for the SDAI presentation layer.
+ *
+ * @return Result produced by `rememberSettingsPlatformActions`.
+ * @author Dmitriy Moroz
+ */
 @Composable
 actual fun rememberSettingsPlatformActions(): SettingsPlatformActions {
     val context = LocalContext.current
@@ -46,19 +52,65 @@ actual fun rememberSettingsPlatformActions(): SettingsPlatformActions {
     }
 }
 
+/**
+ * Coordinates `AndroidSettingsPlatformActions` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private class AndroidSettingsPlatformActions(
+    /**
+     * Exposes the `context` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val context: Context,
+    /**
+     * Exposes the `launchStoragePermission` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val launchStoragePermission: (Array<String>) -> Unit,
+    /**
+     * Exposes the `launchNotificationPermission` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val launchNotificationPermission: (String) -> Unit,
+    /**
+     * Exposes the `storagePermissionResult` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val storagePermissionResult: MutableState<CompletableDeferred<Boolean>?>,
+    /**
+     * Exposes the `notificationPermissionResult` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val notificationPermissionResult: MutableState<CompletableDeferred<Boolean>?>,
 ) : SettingsPlatformActions {
 
+    /**
+     * Exposes the `requiresStoragePermissionForMediaStore` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val requiresStoragePermissionForMediaStore: Boolean
         get() = Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2
 
+    /**
+     * Exposes the `supportsBackgroundGeneration` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override val supportsBackgroundGeneration: Boolean = true
 
+    /**
+     * Executes the `requestStoragePermission` step in the SDAI presentation layer.
+     *
+     * @return Result produced by `requestStoragePermission`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun requestStoragePermission(): Boolean {
         if (PermissionUtil.checkStoragePermission(context)) return true
 
@@ -80,6 +132,12 @@ private class AndroidSettingsPlatformActions(
         return result.await()
     }
 
+    /**
+     * Executes the `requestNotificationPermission` step in the SDAI presentation layer.
+     *
+     * @return Result produced by `requestNotificationPermission`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun requestNotificationPermission(): Boolean {
         if (PermissionUtil.checkNotificationPermission(context)) return true
 
@@ -101,18 +159,39 @@ private class AndroidSettingsPlatformActions(
         return result.await()
     }
 
+    /**
+     * Executes the `openUrl` step in the SDAI presentation layer.
+     *
+     * @param url remote URL used by the operation.
+     * @author Dmitriy Moroz
+     */
     override fun openUrl(url: String) {
         context.openUrl(url)
     }
 
+    /**
+     * Performs the SDAI side effect handled by `shareLogFile`.
+     *
+     * @author Dmitriy Moroz
+     */
     override fun shareLogFile() {
         ReportProblemEmailComposer().invoke(context)
     }
 
+    /**
+     * Executes the `showDeveloperModeUnlocked` step in the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override fun showDeveloperModeUnlocked() {
         context.showToast(Localization.string("debug_action_unlock"))
     }
 
+    /**
+     * Executes the `openAppSettings` step in the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     override fun openAppSettings() {
         context.openAppSettings()
     }

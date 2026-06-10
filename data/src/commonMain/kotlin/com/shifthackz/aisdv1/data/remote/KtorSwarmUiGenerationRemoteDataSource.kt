@@ -16,10 +16,32 @@ import com.shifthackz.aisdv1.network.request.SwarmUiGenerationRequest
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+/**
+ * Coordinates `KtorSwarmUiGenerationRemoteDataSource` behavior in the SDAI data layer.
+ *
+ * @throws IllegalStateException when the delegated operation cannot complete.
+ * @author Dmitriy Moroz
+ */
 class KtorSwarmUiGenerationRemoteDataSource(
+    /**
+     * Exposes the `api` value used by the SDAI data layer.
+     *
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
     private val api: SwarmUiGenerationApi,
 ) : SwarmUiGenerationDataSource.Remote {
 
+    /**
+     * Executes the `textToImage` step in the SDAI data layer.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param sessionId session id value consumed by the API.
+     * @param model model value consumed by the API.
+     * @param credentials credentials value consumed by the API.
+     * @param payload generation payload used by the operation.
+     * @author Dmitriy Moroz
+     */
     override suspend fun textToImage(
         baseUrl: String,
         sessionId: String,
@@ -35,6 +57,16 @@ class KtorSwarmUiGenerationRemoteDataSource(
         (sourcePayload to base64).mapKtorTextToImageCloudResult(currentTimeMillis())
     }
 
+    /**
+     * Executes the `imageToImage` step in the SDAI data layer.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param sessionId session id value consumed by the API.
+     * @param model model value consumed by the API.
+     * @param credentials credentials value consumed by the API.
+     * @param payload generation payload used by the operation.
+     * @author Dmitriy Moroz
+     */
     override suspend fun imageToImage(
         baseUrl: String,
         sessionId: String,
@@ -50,6 +82,17 @@ class KtorSwarmUiGenerationRemoteDataSource(
         (payload to base64).mapKtorImageToImageCloudResult(currentTimeMillis())
     }
 
+    /**
+     * Executes the `generate` step in the SDAI data layer.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param credentials credentials value consumed by the API.
+     * @param payload generation payload used by the operation.
+     * @param request request value consumed by the API.
+     * @return Result produced by `generate`.
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
     private suspend fun <T : Any> generate(
         baseUrl: String,
         credentials: AuthorizationCredentials,
@@ -68,6 +111,11 @@ class KtorSwarmUiGenerationRemoteDataSource(
         return payload to base64
     }
 
+    /**
+     * Executes the `currentTimeMillis` step in the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     @OptIn(ExperimentalTime::class)
     private fun currentTimeMillis(): Long = Clock.System.now().toEpochMilliseconds()
 }

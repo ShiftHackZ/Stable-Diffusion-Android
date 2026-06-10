@@ -14,16 +14,36 @@ import com.shifthackz.aisdv1.presentation.app.AiSdApp
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import org.koin.android.ext.android.inject
 
+/**
+ * Coordinates `AiStableDiffusionActivity` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class AiStableDiffusionActivity : AppCompatActivity() {
 
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager by inject()
 
+    /**
+     * Exposes the `notificationPermission` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val notificationPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         debugLog("Notification permission is ${if (granted) "GRANTED" else "DENIED"}.")
     }
 
+    /**
+     * Exposes the `storagePermission` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val storagePermission = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
@@ -33,6 +53,12 @@ class AiStableDiffusionActivity : AppCompatActivity() {
         debugLog("Storage permission is ${result}.")
     }
 
+    /**
+     * Executes the `onCreate` step in the SDAI presentation layer.
+     *
+     * @param savedInstanceState saved instance state value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)

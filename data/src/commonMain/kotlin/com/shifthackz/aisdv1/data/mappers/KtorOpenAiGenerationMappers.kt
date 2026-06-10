@@ -5,6 +5,11 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.OpenAiRequest
 
+/**
+ * Converts SDAI data with `mapToOpenAiRequest`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun TextToImagePayload.mapToOpenAiRequest(): OpenAiRequest = with(this) {
     val model = openAiModel ?: OpenAiModel.default
     OpenAiRequest(
@@ -15,6 +20,12 @@ fun TextToImagePayload.mapToOpenAiRequest(): OpenAiRequest = with(this) {
     )
 }
 
+/**
+ * Converts SDAI data with `mapOpenAiCloudToAiGenResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @author Dmitriy Moroz
+ */
 fun Pair<TextToImagePayload, String>.mapOpenAiCloudToAiGenResult(
     createdAtMillis: Long,
 ): AiGenerationResult = let { (payload, base64) ->

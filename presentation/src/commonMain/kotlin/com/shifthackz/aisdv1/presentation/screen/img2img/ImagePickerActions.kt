@@ -81,6 +81,16 @@ import kotlin.math.roundToInt
 
 
 
+/**
+ * Renders the `ImagePickerTileButton` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param icon icon value consumed by the API.
+ * @param enabled enabled value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ImagePickerTileButton(
     text: String,
@@ -116,6 +126,16 @@ internal fun ImagePickerTileButton(
     }
 }
 
+/**
+ * Renders the `ImagePickerButton` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param icon icon value consumed by the API.
+ * @param enabled enabled value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ImagePickerButton(
     text: String,

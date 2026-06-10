@@ -138,6 +138,11 @@ import com.shifthackz.aisdv1.domain.usecase.swarmmodel.FetchAndGetSwarmUiModelsU
 import com.shifthackz.aisdv1.domain.usecase.swarmmodel.FetchAndGetSwarmUiModelsUseCaseImpl
 import org.koin.dsl.module
 
+/**
+ * Exposes the `coreDomainModule` value used by the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val coreDomainModule = module {
     single<ServerConnectivityGateway> { NoOpServerConnectivityGateway }
     single<BackgroundWorkObserver> { NoOpBackgroundWorkObserver }

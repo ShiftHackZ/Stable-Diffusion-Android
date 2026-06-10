@@ -9,6 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+/**
+ * Renders the `TableCell` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param weight weight value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun RowScope.TableCell(
     text: String,

@@ -2,6 +2,12 @@ package com.shifthackz.aisdv1.core.common.appbuild
 
 import platform.Foundation.NSBundle
 
+/**
+ * Creates the SDAI value produced by `createPlatformBuildInfoProvider`.
+ *
+ * @return Result produced by `createPlatformBuildInfoProvider`.
+ * @author Dmitriy Moroz
+ */
 actual fun createPlatformBuildInfoProvider(): BuildInfoProvider = object : BuildInfoProvider {
     private val bundle = NSBundle.mainBundle
 

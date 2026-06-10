@@ -5,6 +5,13 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import java.io.ByteArrayOutputStream
 
+/**
+ * Executes the `cropBase64ImageToSquare` step in the SDAI presentation layer.
+ *
+ * @param base64 Base64 image payload used by the operation.
+ * @return Result produced by `cropBase64ImageToSquare`.
+ * @author Dmitriy Moroz
+ */
 internal actual suspend fun cropBase64ImageToSquare(base64: String): String =
     runCatching {
         val raw = base64.substringAfter("base64,", base64).trim()
@@ -33,5 +40,15 @@ internal actual suspend fun cropBase64ImageToSquare(base64: String): String =
         }
     }.getOrDefault(base64)
 
+/**
+ * Exposes the `MAX_CROPPED_IMAGE_SIDE` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val MAX_CROPPED_IMAGE_SIDE = 1536
+/**
+ * Exposes the `CROPPED_IMAGE_JPEG_QUALITY` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val CROPPED_IMAGE_JPEG_QUALITY = 95

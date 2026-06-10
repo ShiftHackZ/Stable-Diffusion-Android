@@ -43,11 +43,41 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 
+/**
+ * Carries `HistoryStrings` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class HistoryStrings(
+    /**
+     * Exposes the `title` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val title: String = Localization.string("title_gallery"),
+    /**
+     * Exposes the `empty` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val empty: String = Localization.string("gallery_empty_title"),
+    /**
+     * Exposes the `refresh` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val refresh: String = Localization.string("action_update"),
+    /**
+     * Exposes the `imageUnavailable` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val imageUnavailable: String = Localization.string("message_image_unavailable"),
+    /**
+     * Exposes the `resultMeta` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val resultMeta: (AiGenerationResult) -> String = { item ->
         Localization.string(
             "history_result_meta",
@@ -59,6 +89,15 @@ data class HistoryStrings(
     },
 )
 
+/**
+ * Renders the `HistoryScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param strings strings value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun HistoryScreenContent(
     state: HistoryState,
@@ -141,6 +180,14 @@ fun HistoryScreenContent(
     }
 }
 
+/**
+ * Renders the `HistoryError` UI for the SDAI presentation layer.
+ *
+ * @param message message value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun HistoryError(
     message: String,
@@ -170,6 +217,13 @@ private fun HistoryError(
     }
 }
 
+/**
+ * Renders the `HistoryItem` UI for the SDAI presentation layer.
+ *
+ * @param item item value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun HistoryItem(
     item: AiGenerationResult,
@@ -235,5 +289,10 @@ private fun HistoryItem(
     }
 }
 
+/**
+ * Exposes the `AiGenerationResult` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val AiGenerationResult.aspectRatio: Float
     get() = if (width > 0 && height > 0) width.toFloat() / height.toFloat() else 1f

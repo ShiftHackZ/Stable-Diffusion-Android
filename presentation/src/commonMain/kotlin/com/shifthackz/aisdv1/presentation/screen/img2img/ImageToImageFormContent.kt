@@ -80,6 +80,16 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlin.math.roundToInt
 
 
+/**
+ * Renders the `ImageToImageForm` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param promptChipTextFieldState prompt chip text field state value consumed by the API.
+ * @param negativePromptChipTextFieldState negative prompt chip text field state value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ImageToImageForm(
     state: ImageToImageState,
@@ -153,6 +163,14 @@ internal fun ImageToImageForm(
     }
 }
 
+/**
+ * Renders the `DenoisingStrengthSlider` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun DenoisingStrengthSlider(
     state: ImageToImageState,
@@ -186,6 +204,16 @@ internal fun DenoisingStrengthSlider(
     }
 }
 
+/**
+ * Renders the `GeneratedImageItem` UI for the SDAI presentation layer.
+ *
+ * @param result result value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @param savingImage saving image value consumed by the API.
+ * @param sharingImage sharing image value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GeneratedImageItem(
     result: AiGenerationResult,
@@ -285,6 +313,12 @@ internal fun GeneratedImageItem(
     }
 }
 
+/**
+ * Renders the `EmptyGeneratedImage` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun EmptyGeneratedImage(text: String) {
     Box(

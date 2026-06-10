@@ -2,8 +2,23 @@ package com.shifthackz.aisdv1.core.validation.dimension
 
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 
+/**
+ * Implements `DimensionValidator` behavior in the SDAI validation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class DimensionValidatorImpl(
+    /**
+     * Exposes the `minimum` value used by the SDAI validation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val minimum: Int = MINIMUM,
+    /**
+     * Exposes the `maximum` value used by the SDAI validation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val maximum: Int = MAXIMUM,
 ) : DimensionValidator {
 

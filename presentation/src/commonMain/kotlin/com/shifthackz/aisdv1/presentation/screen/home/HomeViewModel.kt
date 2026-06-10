@@ -10,10 +10,35 @@ import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.HomeRouter
 import kotlinx.coroutines.withContext
 
+/**
+ * Coordinates `HomeViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class HomeViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `getConfigurationUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getConfigurationUseCase: GetConfigurationUseCase,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: HomeRouter,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<HomeState, HomeIntent, EmptyEffect>(
     initialState = HomeState(),
@@ -60,6 +85,12 @@ class HomeViewModel(
     }
 }
 
+/**
+ * Converts SDAI data with `toHomeState`.
+ *
+ * @return Result produced by `toHomeState`.
+ * @author Dmitriy Moroz
+ */
 private fun Configuration.toHomeState(): HomeState =
     HomeState(
         loading = false,

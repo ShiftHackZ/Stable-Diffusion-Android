@@ -14,6 +14,14 @@ import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.presentation.widget.item.GridIcon
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 
+/**
+ * Renders the `GridBottomSheet` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param currentGrid current grid value consumed by the API.
+ * @param onSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GridBottomSheet(
     modifier: Modifier = Modifier,

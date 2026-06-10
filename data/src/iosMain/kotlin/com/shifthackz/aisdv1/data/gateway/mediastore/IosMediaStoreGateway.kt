@@ -17,8 +17,20 @@ import platform.Photos.PHPhotoLibrary
 import platform.darwin.dispatch_async
 import platform.darwin.dispatch_get_main_queue
 
+/**
+ * Coordinates `IosMediaStoreGateway` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class IosMediaStoreGateway : MediaStoreGateway {
 
+    /**
+     * Executes the `exportToFile` step in the SDAI data layer.
+     *
+     * @param fileName file name value consumed by the API.
+     * @param content content value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override fun exportToFile(fileName: String, content: ByteArray) {
         val data = content.toNSData()
         dispatch_async(dispatch_get_main_queue()) {
@@ -38,9 +50,20 @@ internal class IosMediaStoreGateway : MediaStoreGateway {
         }
     }
 
+    /**
+     * Loads SDAI data through `getInfo`.
+     *
+     * @author Dmitriy Moroz
+     */
     override fun getInfo(): MediaStoreInfo = MediaStoreInfo()
 }
 
+/**
+ * Converts SDAI data with `toNSData`.
+ *
+ * @return Result produced by `toNSData`.
+ * @author Dmitriy Moroz
+ */
 @OptIn(BetaInteropApi::class, ExperimentalForeignApi::class)
 private fun ByteArray.toNSData(): NSData =
     usePinned { pinned ->

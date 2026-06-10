@@ -2,11 +2,34 @@ package com.shifthackz.aisdv1.domain.usecase.settings
 
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 
+/**
+ * Implements `ConnectToLocalDiffusionUseCase` behavior in the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class ConnectToLocalDiffusionUseCaseImpl(
+    /**
+     * Exposes the `getConfigurationUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getConfigurationUseCase: GetConfigurationUseCase,
+    /**
+     * Exposes the `setServerConfigurationUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
 ) : ConnectToLocalDiffusionUseCase {
 
+    /**
+     * Executes the `invoke` step in the SDAI domain layer.
+     *
+     * @param modelId model id value consumed by the API.
+     * @param modelPath model path value consumed by the API.
+     * @return Result produced by `invoke`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun invoke(
         modelId: String,
         modelPath: String,
@@ -21,11 +44,34 @@ internal class ConnectToLocalDiffusionUseCaseImpl(
     }
 }
 
+/**
+ * Implements `ConnectToMediaPipeUseCase` behavior in the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class ConnectToMediaPipeUseCaseImpl(
+    /**
+     * Exposes the `getConfigurationUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getConfigurationUseCase: GetConfigurationUseCase,
+    /**
+     * Exposes the `setServerConfigurationUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
 ) : ConnectToMediaPipeUseCase {
 
+    /**
+     * Executes the `invoke` step in the SDAI domain layer.
+     *
+     * @param modelId model id value consumed by the API.
+     * @param modelPath model path value consumed by the API.
+     * @return Result produced by `invoke`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun invoke(
         modelId: String,
         modelPath: String,

@@ -22,6 +22,13 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 
+/**
+ * Renders the `ApplySystemBarTheme` UI for the SDAI presentation layer.
+ *
+ * @param colorScheme color scheme value consumed by the API.
+ * @param isDark is dark value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal actual fun ApplySystemBarTheme(
     colorScheme: ColorScheme,
@@ -63,6 +70,13 @@ internal actual fun ApplySystemBarTheme(
     }
 }
 
+/**
+ * Executes the `applySystemBars` step in the SDAI presentation layer.
+ *
+ * @param color color value consumed by the API.
+ * @param lightBars light bars value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 private fun Window.applySystemBars(
     color: Int,
     lightBars: Boolean,
@@ -89,6 +103,12 @@ private fun Window.applySystemBars(
     decorView.post { applyColors() }
 }
 
+/**
+ * Executes the `applySystemBarIconMode` step in the SDAI presentation layer.
+ *
+ * @param lightBars light bars value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Suppress("DEPRECATION")
 private fun Window.applySystemBarIconMode(lightBars: Boolean) {
     var flags = decorView.systemUiVisibility
@@ -114,6 +134,11 @@ private fun Window.applySystemBarIconMode(lightBars: Boolean) {
     }
 }
 
+/**
+ * Executes the `findActivity` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private tailrec fun Context.findActivity(): Activity? = when (this) {
     is Activity -> this
     is ContextWrapper -> baseContext.findActivity()

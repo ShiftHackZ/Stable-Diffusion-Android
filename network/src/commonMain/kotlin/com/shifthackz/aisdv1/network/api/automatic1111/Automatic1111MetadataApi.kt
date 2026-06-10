@@ -8,38 +8,99 @@ import com.shifthackz.aisdv1.network.model.KtorStableDiffusionModelRaw
 import com.shifthackz.aisdv1.network.model.StableDiffusionSamplerRaw
 import com.shifthackz.aisdv1.network.response.KtorSdEmbeddingsResponse
 
+/**
+ * Defines the `Automatic1111MetadataApi` contract for the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 interface Automatic1111MetadataApi {
 
+    /**
+     * Loads SDAI data through `fetchLoras`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @return Result produced by `fetchLoras`.
+     * @author Dmitriy Moroz
+     */
     suspend fun fetchLoras(
         baseUrl: String,
         authorization: BasicHttpAuthorization?,
     ): List<StableDiffusionLoraRaw>
 
+    /**
+     * Loads SDAI data through `fetchEmbeddings`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @return Result produced by `fetchEmbeddings`.
+     * @author Dmitriy Moroz
+     */
     suspend fun fetchEmbeddings(
         baseUrl: String,
         authorization: BasicHttpAuthorization?,
     ): KtorSdEmbeddingsResponse
 
+    /**
+     * Loads SDAI data through `fetchHyperNetworks`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @return Result produced by `fetchHyperNetworks`.
+     * @author Dmitriy Moroz
+     */
     suspend fun fetchHyperNetworks(
         baseUrl: String,
         authorization: BasicHttpAuthorization?,
     ): List<StableDiffusionHyperNetworkRaw>
 
+    /**
+     * Loads SDAI data through `fetchModels`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @return Result produced by `fetchModels`.
+     * @author Dmitriy Moroz
+     */
     suspend fun fetchModels(
         baseUrl: String,
         authorization: BasicHttpAuthorization?,
     ): List<KtorStableDiffusionModelRaw>
 
+    /**
+     * Loads SDAI data through `fetchSamplers`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @return Result produced by `fetchSamplers`.
+     * @author Dmitriy Moroz
+     */
     suspend fun fetchSamplers(
         baseUrl: String,
         authorization: BasicHttpAuthorization?,
     ): List<StableDiffusionSamplerRaw>
 
+    /**
+     * Loads SDAI data through `fetchConfiguration`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @return Result produced by `fetchConfiguration`.
+     * @author Dmitriy Moroz
+     */
     suspend fun fetchConfiguration(
         baseUrl: String,
         authorization: BasicHttpAuthorization?,
     ): ServerConfigurationRaw
 
+    /**
+     * Performs the SDAI side effect handled by `updateConfiguration`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @param request request value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     suspend fun updateConfiguration(
         baseUrl: String,
         authorization: BasicHttpAuthorization?,

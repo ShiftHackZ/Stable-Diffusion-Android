@@ -5,6 +5,15 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 
+/**
+ * Executes the `restoreRemoteConfigurationAndFail` step in the SDAI domain layer.
+ *
+ * @param configuration configuration value consumed by the API.
+ * @param setServerConfigurationUseCase set server configuration use case value consumed by the API.
+ * @param throwable throwable value consumed by the API.
+ * @return Result produced by `restoreRemoteConfigurationAndFail`.
+ * @author Dmitriy Moroz
+ */
 internal suspend fun restoreRemoteConfigurationAndFail(
     configuration: Configuration?,
     setServerConfigurationUseCase: SetServerConfigurationUseCase,
@@ -17,10 +26,25 @@ internal suspend fun restoreRemoteConfigurationAndFail(
     return Result.failure(throwable)
 }
 
+/**
+ * Executes the `requireRemoteValidApiKey` step in the SDAI domain layer.
+ *
+ * @param valid valid value consumed by the API.
+ * @throws IllegalStateException when the delegated operation cannot complete.
+ * @author Dmitriy Moroz
+ */
 internal fun requireRemoteValidApiKey(valid: Boolean) {
     if (!valid) throw IllegalStateException("Bad key")
 }
 
+/**
+ * Executes the `retryRemoteDelayed` step in the SDAI domain layer.
+ *
+ * @param attempts attempts value consumed by the API.
+ * @param delayMillis delay millis value consumed by the API.
+ * @param block block value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal suspend fun retryRemoteDelayed(
     attempts: Int,
     delayMillis: Long,

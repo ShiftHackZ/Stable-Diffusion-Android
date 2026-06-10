@@ -7,12 +7,42 @@ import com.shifthackz.aisdv1.core.mvi.EmptyEffect
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
 
+/**
+ * Exposes the `INPUT_HISTORY_FIRST_PAGE` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val INPUT_HISTORY_FIRST_PAGE = 0
+/**
+ * Exposes the `INPUT_HISTORY_PAGE_SIZE` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val INPUT_HISTORY_PAGE_SIZE = 1000
 
+/**
+ * Coordinates `InputHistoryViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class InputHistoryViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `getGenerationResultPagedUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getGenerationResultPagedUseCase: GetGenerationResultPagedUseCase,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<InputHistoryState, InputHistoryIntent, EmptyEffect>(
     initialState = InputHistoryState(),

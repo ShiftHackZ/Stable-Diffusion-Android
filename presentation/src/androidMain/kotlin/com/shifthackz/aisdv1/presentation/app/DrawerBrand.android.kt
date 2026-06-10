@@ -9,6 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.shifthackz.aisdv1.presentation.R
 
+/**
+ * Renders the `DrawerBrandLogo` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal actual fun DrawerBrandLogo(modifier: Modifier) {
     Image(
@@ -18,6 +24,12 @@ internal actual fun DrawerBrandLogo(modifier: Modifier) {
     )
 }
 
+/**
+ * Renders the `DrawerPlatformIcon` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal actual fun DrawerPlatformIcon(modifier: Modifier) {
     Icon(

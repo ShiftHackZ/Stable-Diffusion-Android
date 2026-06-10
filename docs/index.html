@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SDAI - Stable Diffusion AI for Android and iOS</title>
-  <meta name="description" content="SDAI is an open-source mobile Stable Diffusion AI image generation app for Android and iOS with remote AI provider support, local gallery, advanced controls, and mobile-first workflows.">
-  <meta name="keywords" content="SDAI, Stable Diffusion AI, AI image generation, Android Stable Diffusion, iOS Stable Diffusion, Automatic1111, SwarmUI, AI Horde, Hugging Face, Stability AI, OpenAI">
+  <title>SDAI - Stable Diffusion AI for Android, iOS, and API Documentation</title>
+  <meta name="description" content="SDAI is an open-source mobile Stable Diffusion AI image generation app for Android and iOS with remote provider support, local gallery, advanced controls, developer documentation, and mobile-first workflows.">
+  <meta name="keywords" content="SDAI, Stable Diffusion AI, AI image generation, Android Stable Diffusion, iOS Stable Diffusion, Dokka documentation, Kotlin API documentation, Automatic1111, SwarmUI, AI Horde, Hugging Face, Stability AI, OpenAI">
   <meta name="application-name" content="SDAI">
   <meta name="author" content="Moroz Inc.">
   <meta name="robots" content="index,follow,max-image-preview:large">
@@ -14,8 +14,8 @@
   <link rel="alternate" href="https://sdai.moroz.cc/" hreflang="en">
   <link rel="apple-touch-icon" href="https://sdai.moroz.cc/assets/sdai.png">
   <link rel="manifest" href="site.webmanifest">
-  <meta property="og:title" content="SDAI - Stable Diffusion AI for Android and iOS">
-  <meta property="og:description" content="Generate AI images from your phone with your own server, cloud APIs, community workers, or supported local engines.">
+  <meta property="og:title" content="SDAI - Stable Diffusion AI for Android, iOS, and API Documentation">
+  <meta property="og:description" content="Generate AI images from your phone and browse the SDAI Kotlin API documentation for Android, iOS, and shared modules.">
   <meta property="og:url" content="https://sdai.moroz.cc/">
   <meta property="og:site_name" content="SDAI">
   <meta property="og:type" content="website">
@@ -25,8 +25,8 @@
   <meta property="og:image:height" content="900">
   <meta property="og:image:alt" content="SDAI AI image generation result preview">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SDAI - Stable Diffusion AI for Android and iOS">
-  <meta name="twitter:description" content="An open-source mobile Stable Diffusion workflow with AI provider freedom and a clean gallery.">
+  <meta name="twitter:title" content="SDAI - Stable Diffusion AI for Android, iOS, and API Documentation">
+  <meta name="twitter:description" content="An open-source mobile Stable Diffusion workflow with AI provider freedom, a clean gallery, and Dokka API docs.">
   <meta name="twitter:image" content="https://sdai.moroz.cc/screenshots/site/ios/en-US/01-create.png">
   <link rel="icon" href="assets/sdai.png">
   <link rel="stylesheet" href="css/site.css">
@@ -48,6 +48,9 @@
           "name": "SDAI",
           "alternateName": "Stable Diffusion AI",
           "url": "https://sdai.moroz.cc/",
+          "hasPart": {
+            "@id": "https://sdai.moroz.cc/docs/#documentation"
+          },
           "publisher": {
             "@id": "https://sdai.moroz.cc/#organization"
           }
@@ -83,6 +86,19 @@
           },
           "publisher": {
             "@id": "https://sdai.moroz.cc/#organization"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://sdai.moroz.cc/docs/#documentation",
+          "name": "SDAI Documentation",
+          "url": "https://sdai.moroz.cc/docs/",
+          "description": "Dokka API documentation for SDAI Kotlin Multiplatform, Android, iOS, and shared modules.",
+          "isPartOf": {
+            "@id": "https://sdai.moroz.cc/#website"
+          },
+          "about": {
+            "@id": "https://sdai.moroz.cc/#app"
           }
         }
       ]

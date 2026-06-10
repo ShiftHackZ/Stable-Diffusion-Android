@@ -1,5 +1,11 @@
 package com.shifthackz.aisdv1.domain.entity
 
+/**
+ * Coordinates `StabilityAiStylePreset` behavior in the SDAI domain layer.
+ *
+ * @param key key value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 enum class StabilityAiStylePreset(val key: String) {
     NONE(""),
     MODEL_3D("3d-model"),

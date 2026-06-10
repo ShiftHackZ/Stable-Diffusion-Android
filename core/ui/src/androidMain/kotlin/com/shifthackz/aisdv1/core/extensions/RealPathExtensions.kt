@@ -8,6 +8,14 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 
+/**
+ * Loads SDAI data through `getRealPath`.
+ *
+ * @param context Android context used by the operation.
+ * @param uri uri value consumed by the API.
+ * @return Result produced by `getRealPath`.
+ * @author Dmitriy Moroz
+ */
 fun getRealPath(context: Context, uri: Uri): String? {
     if (DocumentsContract.isDocumentUri(context, uri)) {
         if (isExternalStorageDocument(uri)) {
@@ -64,6 +72,16 @@ fun getRealPath(context: Context, uri: Uri): String? {
     return null
 }
 
+/**
+ * Loads SDAI data through `getDataColumn`.
+ *
+ * @param context Android context used by the operation.
+ * @param uri uri value consumed by the API.
+ * @param selection selection value consumed by the API.
+ * @param selectionArgs selection args value consumed by the API.
+ * @return Result produced by `getDataColumn`.
+ * @author Dmitriy Moroz
+ */
 fun getDataColumn(
     context: Context, uri: Uri?, selection: String?,
     selectionArgs: Array<String>?

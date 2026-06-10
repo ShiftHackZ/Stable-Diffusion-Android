@@ -17,7 +17,17 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 
+/**
+ * Coordinates `KtorAutomatic1111GenerationApi` behavior in the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class KtorAutomatic1111GenerationApi(
+    /**
+     * Exposes the `httpClient` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val httpClient: HttpClient = createConfiguredHttpClient(),
 ) : Automatic1111GenerationApi {
 

@@ -11,6 +11,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Renders the `ErrorComposableContent` UI for the SDAI presentation layer.
+ *
+ * @param title title value consumed by the API.
+ * @param message message value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ErrorComposableContent(
     title: String,

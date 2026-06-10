@@ -18,6 +18,17 @@ import com.shifthackz.aisdv1.presentation.widget.dialog.InfoDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialogCancelButton
 
+/**
+ * Renders the `GenerationModalRenderer` UI for the SDAI presentation layer.
+ *
+ * @param screenModal screen modal value consumed by the API.
+ * @param onDismissRequest callback invoked by the component.
+ * @param onCancelGeneration callback invoked by the component.
+ * @param onSaveRequest callback invoked by the component.
+ * @param onReportRequest callback invoked by the component.
+ * @param onViewDetailRequest callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GenerationModalRenderer(
     screenModal: GenerationModal,

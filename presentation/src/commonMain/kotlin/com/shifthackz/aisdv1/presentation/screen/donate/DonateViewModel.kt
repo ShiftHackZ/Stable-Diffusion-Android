@@ -7,11 +7,41 @@ import com.shifthackz.aisdv1.domain.usecase.donate.FetchSupportersUseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.DonateRouter
 import kotlinx.coroutines.withContext
 
+/**
+ * Coordinates `DonateViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class DonateViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `fetchSupportersUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fetchSupportersUseCase: FetchSupportersUseCase,
+    /**
+     * Exposes the `linksProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val linksProvider: LinksProvider,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: DonateRouter,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<DonateState, DonateIntent, DonateEffect>(
     initialState = DonateState(),

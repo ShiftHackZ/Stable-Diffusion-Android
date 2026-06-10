@@ -7,9 +7,19 @@ import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 
+/**
+ * Renders the `getName` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ServerSource.getName(): String = getNameUiText().asString()
 
+/**
+ * Loads SDAI data through `getNameUiText`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun ServerSource.getNameUiText(): UiText = Localization.string(
     when (this) {
         ServerSource.AUTOMATIC1111 -> "srv_type_own"

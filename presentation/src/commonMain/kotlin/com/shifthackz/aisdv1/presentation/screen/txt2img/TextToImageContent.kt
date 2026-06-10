@@ -73,25 +73,125 @@ import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlin.math.roundToInt
 
+/**
+ * Carries `TextToImageStrings` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class TextToImageStrings(
+    /**
+     * Exposes the `title` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val title: String = Localization.string("title_text_to_image"),
+    /**
+     * Exposes the `prompt` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val prompt: String = Localization.string("hint_prompt"),
+    /**
+     * Exposes the `negativePrompt` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val negativePrompt: String = Localization.string("hint_prompt_negative"),
+    /**
+     * Exposes the `width` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val width: String = Localization.string("width"),
+    /**
+     * Exposes the `height` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val height: String = Localization.string("height"),
+    /**
+     * Exposes the `steps` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val steps: String = Localization.string("gallery_info_field_sampling_steps"),
+    /**
+     * Exposes the `cfgScale` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val cfgScale: String = Localization.string("gallery_info_field_cfg"),
+    /**
+     * Exposes the `batch` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val batch: String = Localization.string("hint_batch_tag"),
+    /**
+     * Exposes the `generate` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val generate: String = Localization.string("action_generate"),
+    /**
+     * Exposes the `generating` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val generating: String = Localization.string("notification_running_title"),
+    /**
+     * Exposes the `save` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val save: String = Localization.string("action_save"),
+    /**
+     * Exposes the `savingImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val savingImage: String = Localization.string("message_image_saving"),
+    /**
+     * Exposes the `share` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val share: String = Localization.string("action_share_prompt"),
+    /**
+     * Exposes the `sharingImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sharingImage: String = Localization.string("message_image_sharing"),
+    /**
+     * Exposes the `configureProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val configureProvider: String = Localization.string("settings_item_config"),
+    /**
+     * Exposes the `sourceUnavailable` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sourceUnavailable: String = Localization.string("error_source_android_only"),
+    /**
+     * Exposes the `results` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val results: String = Localization.string("title_generation_results"),
+    /**
+     * Exposes the `imageUnavailable` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val imageUnavailable: String = Localization.string("message_image_data_received"),
+    /**
+     * Exposes the `resultMeta` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val resultMeta: (AiGenerationResult) -> String = { result ->
         Localization.string(
             "generation_result_meta",
@@ -102,6 +202,16 @@ data class TextToImageStrings(
     },
 )
 
+/**
+ * Renders the `TextToImageContent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param strings strings value consumed by the API.
+ * @param useDrawerNavigation use drawer navigation value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun TextToImageContent(
     state: TextToImageState,
@@ -286,6 +396,11 @@ fun TextToImageContent(
     )
 }
 
+/**
+ * Converts SDAI data with `toTextToImageIntent`.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun GenerationInputFormEvent.toTextToImageIntent(): TextToImageIntent? = when (this) {
     is GenerationInputFormEvent.EditTag -> TextToImageIntent.ShowEditTag(
         prompt = prompt,
@@ -316,11 +431,27 @@ internal fun GenerationInputFormEvent.toTextToImageIntent(): TextToImageIntent? 
     is GenerationInputFormEvent.UpdateWidth -> TextToImageIntent.UpdateWidth(value)
 }
 
+/**
+ * Executes the `appendPromptTag` step in the SDAI presentation layer.
+ *
+ * @param tag tag value consumed by the API.
+ * @return Result produced by `appendPromptTag`.
+ * @author Dmitriy Moroz
+ */
 private fun String.appendPromptTag(tag: String): String =
     listOf(this, tag.trim())
         .filter(String::isNotBlank)
         .joinToString(", ")
 
+/**
+ * Executes the `flushPendingTaggedText` step in the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param promptChipTextFieldState prompt chip text field state value consumed by the API.
+ * @param negativePromptChipTextFieldState negative prompt chip text field state value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 private fun flushPendingTaggedText(
     state: TextToImageState,
     promptChipTextFieldState: androidx.compose.runtime.MutableState<TextFieldValue>,
@@ -342,6 +473,13 @@ private fun flushPendingTaggedText(
         ?.also { negativePromptChipTextFieldState.value = TextFieldValue() }
 }
 
+/**
+ * Renders the `GenerationHistoryDialog` UI for the SDAI presentation layer.
+ *
+ * @param onClose callback invoked by the component.
+ * @param onGenerationSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun GenerationHistoryDialog(
     onClose: () -> Unit,
@@ -353,15 +491,60 @@ private fun GenerationHistoryDialog(
     )
 }
 
+/**
+ * Defines the `TextToImagePanel` contract for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private sealed interface TextToImagePanel {
+    /**
+     * Provides the `History` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object History : TextToImagePanel
+    /**
+     * Carries `Embeddings` data through the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data class Embeddings(
+        /**
+         * Exposes the `prompt` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val prompt: String,
+        /**
+         * Exposes the `negativePrompt` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val negativePrompt: String,
     ) : TextToImagePanel
+    /**
+     * Carries `Extras` data through the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data class Extras(
+        /**
+         * Exposes the `prompt` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val prompt: String,
+        /**
+         * Exposes the `negativePrompt` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val negativePrompt: String,
+        /**
+         * Exposes the `type` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val type: ExtraType,
     ) : TextToImagePanel
 }

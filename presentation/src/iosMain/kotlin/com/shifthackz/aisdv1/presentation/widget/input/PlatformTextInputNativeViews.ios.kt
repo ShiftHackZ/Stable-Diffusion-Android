@@ -55,6 +55,11 @@ import platform.UIKit.UITextViewDelegateProtocol
 import platform.UIKit.UIView
 
 
+/**
+ * Coordinates `PlatformUITextField` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class PlatformUITextField : UITextField(
     frame = CGRectMake(0.0, 0.0, 0.0, 0.0),
 ),
@@ -130,6 +135,11 @@ internal class PlatformUITextField : UITextField(
     }
 }
 
+/**
+ * Coordinates `PlatformUITextView` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class PlatformUITextView : UITextView(
     frame = CGRectMake(0.0, 0.0, 0.0, 0.0),
     textContainer = null,
@@ -194,6 +204,11 @@ internal class PlatformUITextView : UITextView(
     }
 }
 
+/**
+ * Converts SDAI data with `toUiKeyboardType`.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun KeyboardType.toUiKeyboardType(): UIKeyboardType = when (this) {
     KeyboardType.Ascii -> UIKeyboardTypeASCIICapable
     KeyboardType.Decimal -> UIKeyboardTypeDecimalPad
@@ -203,6 +218,11 @@ internal fun KeyboardType.toUiKeyboardType(): UIKeyboardType = when (this) {
     else -> UIKeyboardTypeDefault
 }
 
+/**
+ * Converts SDAI data with `toUIColor`.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun Color.toUIColor(): UIColor = UIColor.colorWithRed(
     red = red.toDouble(),
     green = green.toDouble(),

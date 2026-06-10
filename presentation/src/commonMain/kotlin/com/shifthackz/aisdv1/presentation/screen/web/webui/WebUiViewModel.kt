@@ -7,9 +7,19 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.presentation.navigation.router.WebUiRouter
 
+/**
+ * Coordinates `WebUiViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class WebUiViewModel(
     dispatchersProvider: DispatchersProvider,
     preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: WebUiRouter,
 ) : BaseMviViewModel<WebUiState, WebUiIntent, EmptyEffect>(
     initialState = WebUiState(
@@ -27,6 +37,11 @@ class WebUiViewModel(
     }
 }
 
+/**
+ * Executes the `webUiUrl` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private fun PreferenceManager.webUiUrl(): String = when (source) {
     ServerSource.AUTOMATIC1111 -> automatic1111ServerUrl
     ServerSource.SWARM_UI -> swarmUiServerUrl

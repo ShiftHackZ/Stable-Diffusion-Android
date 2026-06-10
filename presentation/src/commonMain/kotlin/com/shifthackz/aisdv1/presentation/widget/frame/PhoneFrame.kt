@@ -19,6 +19,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+/**
+ * Renders the `PhoneFrame` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun PhoneFrame(
     modifier: Modifier = Modifier,

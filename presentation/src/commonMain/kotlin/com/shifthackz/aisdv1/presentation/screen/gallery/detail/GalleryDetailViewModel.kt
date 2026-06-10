@@ -16,17 +16,77 @@ import com.shifthackz.aisdv1.presentation.navigation.router.GalleryDetailRouter
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 
+/**
+ * Coordinates `GalleryDetailViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class GalleryDetailViewModel(
+    /**
+     * Exposes the `itemId` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val itemId: Long,
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `buildInfoProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val buildInfoProvider: BuildInfoProvider,
+    /**
+     * Exposes the `getGenerationResultUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getGenerationResultUseCase: GetGenerationResultUseCase,
+    /**
+     * Exposes the `getLastResultFromCacheUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getLastResultFromCacheUseCase: GetLastResultFromCacheUseCase,
+    /**
+     * Exposes the `deleteGalleryItemUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val deleteGalleryItemUseCase: DeleteGalleryItemUseCase,
+    /**
+     * Exposes the `toggleImageVisibilityUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val toggleImageVisibilityUseCase: ToggleImageVisibilityUseCase,
+    /**
+     * Exposes the `generationFormUpdateEvent` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val generationFormUpdateEvent: GenerationFormUpdateEvent,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: GalleryDetailRouter,
+    /**
+     * Exposes the `platformActions` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val platformActions: GalleryDetailPlatformActions,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<GalleryDetailState, GalleryDetailIntent, EmptyEffect>(
     initialState = GalleryDetailState(),

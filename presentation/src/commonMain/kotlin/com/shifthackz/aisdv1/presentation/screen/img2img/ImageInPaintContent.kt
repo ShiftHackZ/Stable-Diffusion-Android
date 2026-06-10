@@ -76,6 +76,16 @@ import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+/**
+ * Renders the `ImageInPaintScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param image image value consumed by the API.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @param onClose callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ImageInPaintScreenContent(
     modifier: Modifier = Modifier,

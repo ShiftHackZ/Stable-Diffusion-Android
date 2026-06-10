@@ -9,6 +9,23 @@ import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 
+/**
+ * Renders the `SettingsItem` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param loading loading value consumed by the API.
+ * @param enabled enabled value consumed by the API.
+ * @param selected selected value consumed by the API.
+ * @param startIcon start icon value consumed by the API.
+ * @param text text value consumed by the API.
+ * @param animateBackground animate background value consumed by the API.
+ * @param showChevron show chevron value consumed by the API.
+ * @param endValueText end value text value consumed by the API.
+ * @param endValueContent end value content value consumed by the API.
+ * @param startIconContent start icon content value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SettingsItem(
     modifier: Modifier = Modifier,
@@ -42,6 +59,15 @@ fun SettingsItem(
     )
 }
 
+/**
+ * Renders the `SettingsItemContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param icon icon value consumed by the API.
+ * @param text text value consumed by the API.
+ * @param iconContent icon content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SettingsItemContent(
     modifier: Modifier = Modifier,
@@ -59,6 +85,13 @@ fun SettingsItemContent(
     )
 }
 
+/**
+ * Renders the `settingsStartIconContent` UI for the SDAI presentation layer.
+ *
+ * @param startIcon start icon value consumed by the API.
+ * @param customContent custom content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 private fun settingsStartIconContent(
     startIcon: ImageVector?,
     customContent: (@Composable () -> Unit)?,

@@ -11,10 +11,35 @@ import com.shifthackz.aisdv1.presentation.navigation.router.postSplashNavigation
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 
+/**
+ * Coordinates `SplashViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class SplashViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `splashNavigationUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val splashNavigationUseCase: SplashNavigationUseCase,
+    /**
+     * Exposes the `splashRouter` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val splashRouter: SplashRouter,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<EmptyState, EmptyIntent, EmptyEffect>(
     initialState = EmptyState,

@@ -22,6 +22,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Renders the `InfoDialogContent` UI for the SDAI presentation layer.
+ *
+ * @param title title value consumed by the API.
+ * @param subTitle sub title value consumed by the API.
+ * @param okText ok text value consumed by the API.
+ * @param onDismissRequest callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun InfoDialogContent(
     title: String,
@@ -55,6 +64,15 @@ fun InfoDialogContent(
     )
 }
 
+/**
+ * Renders the `ErrorDialogContent` UI for the SDAI presentation layer.
+ *
+ * @param title title value consumed by the API.
+ * @param text text value consumed by the API.
+ * @param okText ok text value consumed by the API.
+ * @param onDismissRequest callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ErrorDialogContent(
     title: String,
@@ -88,6 +106,18 @@ fun ErrorDialogContent(
     )
 }
 
+/**
+ * Renders the `DecisionInteractiveDialogContent` UI for the SDAI presentation layer.
+ *
+ * @param title title value consumed by the API.
+ * @param text text value consumed by the API.
+ * @param confirmActionText confirm action text value consumed by the API.
+ * @param dismissActionText dismiss action text value consumed by the API.
+ * @param onConfirmAction callback invoked by the component.
+ * @param onDismissRequest callback invoked by the component.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun DecisionInteractiveDialogContent(
     title: String,
@@ -130,6 +160,16 @@ fun DecisionInteractiveDialogContent(
     )
 }
 
+/**
+ * Renders the `ProgressDialogContent` UI for the SDAI presentation layer.
+ *
+ * @param title title value consumed by the API.
+ * @param subTitle sub title value consumed by the API.
+ * @param waitTimeText wait time text value consumed by the API.
+ * @param statusText status text value consumed by the API.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ProgressDialogContent(
     title: String,
@@ -170,6 +210,14 @@ fun ProgressDialogContent(
     }
 }
 
+/**
+ * Renders the `ProgressDialogStatusContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param waitTimeText wait time text value consumed by the API.
+ * @param statusText status text value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ProgressDialogStatusContent(
     modifier: Modifier = Modifier,
@@ -190,6 +238,13 @@ fun ProgressDialogStatusContent(
     }
 }
 
+/**
+ * Renders the `ProgressDialogCancelButtonContent` UI for the SDAI presentation layer.
+ *
+ * @param cancelText cancel text value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ProgressDialogCancelButtonContent(
     cancelText: String,

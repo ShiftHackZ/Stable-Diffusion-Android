@@ -21,6 +21,11 @@ import com.shifthackz.aisdv1.work.mappers.toTextToImagePayload
 import kotlinx.coroutines.CancellationException
 import java.io.File
 
+/**
+ * Coordinates `TextToImageTask` behavior in the SDAI background work feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class TextToImageTask(
     context: Context,
     workerParameters: WorkerParameters,
@@ -29,9 +34,29 @@ internal class TextToImageTask(
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
     interruptGenerationUseCase: InterruptGenerationUseCase,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `backgroundWorkObserver` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `textToImageUseCase` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val textToImageUseCase: TextToImageUseCase,
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fileProviderDescriptor: FileProviderDescriptor,
 ) : CoreGenerationWorker(
     context = context,

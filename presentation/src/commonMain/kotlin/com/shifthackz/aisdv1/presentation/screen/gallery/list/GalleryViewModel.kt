@@ -18,20 +18,85 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.MutableStateFlow
 
+/**
+ * Exposes the `GALLERY_FIRST_PAGE` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val GALLERY_FIRST_PAGE = 0
+/**
+ * Exposes the `GALLERY_PAGE_SIZE` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val GALLERY_PAGE_SIZE = 60
 
+/**
+ * Coordinates `GalleryViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class GalleryViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `getMediaStoreInfoUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getMediaStoreInfoUseCase: GetMediaStoreInfoUseCase,
+    /**
+     * Exposes the `backgroundWorkObserver` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `deleteAllGalleryUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val deleteAllGalleryUseCase: DeleteAllGalleryUseCase,
+    /**
+     * Exposes the `deleteGalleryItemsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val deleteGalleryItemsUseCase: DeleteGalleryItemsUseCase,
+    /**
+     * Exposes the `getGenerationResultPagedUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getGenerationResultPagedUseCase: GetGenerationResultPagedUseCase,
+    /**
+     * Exposes the `galleryExportService` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val galleryExportService: GalleryExportService,
+    /**
+     * Exposes the `galleryRouter` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val galleryRouter: GalleryRouter,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<GalleryState, GalleryIntent, GalleryEffect>(
     initialState = GalleryState(grid = preferenceManager.galleryGrid),
@@ -255,8 +320,28 @@ class GalleryViewModel(
     }
 }
 
+/**
+ * Carries `GalleryPageSnapshot` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private data class GalleryPageSnapshot(
+    /**
+     * Exposes the `limit` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val limit: Int,
+    /**
+     * Exposes the `items` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val items: List<GalleryGridItemUi>,
+    /**
+     * Exposes the `totalCount` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val totalCount: Int,
 )

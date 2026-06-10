@@ -5,11 +5,34 @@ import com.shifthackz.aisdv1.core.validation.path.FilePathValidator
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 
+/**
+ * Carries `ServerSetupValidationResult` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal data class ServerSetupValidationResult(
+    /**
+     * Exposes the `isValid` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val isValid: Boolean,
+    /**
+     * Exposes the `state` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val state: ServerSetupState,
 )
 
+/**
+ * Executes the `validateServerSetup` step in the SDAI presentation layer.
+ *
+ * @param urlValidator url validator value consumed by the API.
+ * @param stringValidator string validator value consumed by the API.
+ * @param filePathValidator file path validator value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun ServerSetupState.validateServerSetup(
     urlValidator: UrlValidator,
     stringValidator: CommonStringValidator,
@@ -63,6 +86,16 @@ internal fun ServerSetupState.validateServerSetup(
     )
 }
 
+/**
+ * Executes the `validateApiKey` step in the SDAI presentation layer.
+ *
+ * @param key key value consumed by the API.
+ * @param stringValidator string validator value consumed by the API.
+ * @param useDefault use default value consumed by the API.
+ * @param update update value consumed by the API.
+ * @return Result produced by `validateApiKey`.
+ * @author Dmitriy Moroz
+ */
 private fun ServerSetupState.validateApiKey(
     key: String,
     stringValidator: CommonStringValidator,
@@ -75,6 +108,17 @@ private fun ServerSetupState.validateApiKey(
     return ServerSetupValidationResult(validation.isValid, update(error))
 }
 
+/**
+ * Executes the `validateLocalModel` step in the SDAI presentation layer.
+ *
+ * @param customModel custom model value consumed by the API.
+ * @param customModelPath custom model path value consumed by the API.
+ * @param hasDownloadedSelection has downloaded selection value consumed by the API.
+ * @param filePathValidator file path validator value consumed by the API.
+ * @param update update value consumed by the API.
+ * @return Result produced by `validateLocalModel`.
+ * @author Dmitriy Moroz
+ */
 private fun ServerSetupState.validateLocalModel(
     customModel: Boolean,
     customModelPath: String,
@@ -88,6 +132,15 @@ private fun ServerSetupState.validateLocalModel(
     return ServerSetupValidationResult(validation.isValid, update(error))
 }
 
+/**
+ * Executes the `validateServerUrlAndCredentials` step in the SDAI presentation layer.
+ *
+ * @param url remote URL used by the operation.
+ * @param urlValidator url validator value consumed by the API.
+ * @param stringValidator string validator value consumed by the API.
+ * @return Result produced by `validateServerUrlAndCredentials`.
+ * @author Dmitriy Moroz
+ */
 private fun ServerSetupState.validateServerUrlAndCredentials(
     url: String,
     urlValidator: UrlValidator,

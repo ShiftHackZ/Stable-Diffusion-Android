@@ -99,6 +99,14 @@ import kotlin.random.Random
 import org.koin.core.parameter.parametersOf
 
 
+/**
+ * Renders the `GalleryScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GalleryScreenContent(
     modifier: Modifier = Modifier,

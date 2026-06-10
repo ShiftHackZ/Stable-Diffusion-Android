@@ -44,35 +44,119 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 import kotlinx.coroutines.launch
 
+/**
+ * Carries `LoggerScreenStrings` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class LoggerScreenStrings(
+    /**
+     * Exposes the `title` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val title: String = Localization.string("title_debug_logger"),
+    /**
+     * Exposes the `emptyMessage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val emptyMessage: String = Localization.string("debug_logger_empty"),
+    /**
+     * Exposes the `backContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val backContentDescription: String = Localization.string("action_back"),
+    /**
+     * Exposes the `refreshContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val refreshContentDescription: String = Localization.string("action_refresh"),
+    /**
+     * Exposes the `scrollTopContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val scrollTopContentDescription: String = Localization.string("action_scroll_to_top"),
+    /**
+     * Exposes the `scrollBottomContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val scrollBottomContentDescription: String = Localization.string("action_scroll_to_bottom"),
 )
 
+/**
+ * Carries `LoggerScreenContentState` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class LoggerScreenContentState(
+    /**
+     * Exposes the `loading` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val loading: Boolean = true,
+    /**
+     * Exposes the `text` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val text: String = "",
 )
 
+/**
+ * Defines the `LoggerScreenAction` contract for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 sealed interface LoggerScreenAction {
+    /**
+     * Provides the `ReadLogs` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object ReadLogs : LoggerScreenAction
+    /**
+     * Provides the `NavigateBack` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object NavigateBack : LoggerScreenAction
 }
 
+/**
+ * Converts SDAI data with `toContentState`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun LoggerState.toContentState() = LoggerScreenContentState(
     loading = loading,
     text = text,
 )
 
+/**
+ * Converts SDAI data with `toIntent`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun LoggerScreenAction.toIntent(): LoggerIntent = when (this) {
     LoggerScreenAction.ReadLogs -> LoggerIntent.ReadLogs
     LoggerScreenAction.NavigateBack -> LoggerIntent.NavigateBack
 }
 
+/**
+ * Renders the `LoggerScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param strings strings value consumed by the API.
+ * @param state state rendered or processed by the component.
+ * @param processAction process action value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun LoggerScreenContent(
     strings: LoggerScreenStrings,

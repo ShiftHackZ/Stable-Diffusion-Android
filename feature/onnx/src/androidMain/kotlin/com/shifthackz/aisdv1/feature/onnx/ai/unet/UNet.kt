@@ -39,24 +39,89 @@ import kotlin.math.cos
 import kotlin.math.ln
 import kotlin.math.sqrt
 
+/**
+ * Coordinates `UNet` behavior in the SDAI ONNX local diffusion feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class UNet(
+    /**
+     * Exposes the `deviceNNAPIFlagProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val deviceNNAPIFlagProvider: DeviceNNAPIFlagProvider,
+    /**
+     * Exposes the `ortEnvironmentProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val ortEnvironmentProvider: OrtEnvironmentProvider,
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fileProviderDescriptor: FileProviderDescriptor,
+    /**
+     * Exposes the `localModelIdProvider` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val localModelIdProvider: LocalModelIdProvider,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
 ) {
 
+    /**
+     * Exposes the `decoder` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private var decoder: VaeDecoder? = null
 
+    /**
+     * Exposes the `random` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val random = Random()
 
+    /**
+     * Exposes the `callback` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private var callback: Callback? = null
+    /**
+     * Exposes the `session` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private var session: OrtSession? = null
 
+    /**
+     * Exposes the `width` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private var width = 384
+    /**
+     * Exposes the `height` value used by the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private var height = 384
 
+    /**
+     * Executes the `initialize` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     fun initialize() {
         if (session != null) return
         decoder = VaeDecoder(
@@ -77,6 +142,15 @@ internal class UNet(
         )
     }
 
+    /**
+     * Creates the SDAI value produced by `createUNetModelInput`.
+     *
+     * @param encoderHiddenStates encoder hidden states value consumed by the API.
+     * @param sample sample value consumed by the API.
+     * @param timeStep time step value consumed by the API.
+     * @return Result produced by `createUNetModelInput`.
+     * @author Dmitriy Moroz
+     */
     private fun createUNetModelInput(
         encoderHiddenStates: OnnxTensor,
         sample: OnnxTensor,
@@ -89,6 +163,17 @@ internal class UNet(
         return map
     }
 
+    /**
+     * Executes the `generateLatentSample` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param batchSize batch size value consumed by the API.
+     * @param height height value consumed by the API.
+     * @param width width value consumed by the API.
+     * @param seed seed value consumed by the API.
+     * @param initNoiseSigma init noise sigma value consumed by the API.
+     * @return Result produced by `generateLatentSample`.
+     * @author Dmitriy Moroz
+     */
     private fun generateLatentSample(
         batchSize: Int,
         height: Int,
@@ -131,6 +216,14 @@ internal class UNet(
         )
     }
 
+    /**
+     * Executes the `performGuidance` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param noisePrediction noise prediction value consumed by the API.
+     * @param noisePredictionText noise prediction text value consumed by the API.
+     * @param guidanceScale guidance scale value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     private fun performGuidance(
         noisePrediction: Array3D<FloatArray>,
         noisePredictionText: Array3D<FloatArray>,
@@ -151,6 +244,18 @@ internal class UNet(
         }
     }
 
+    /**
+     * Executes the `inference` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param seedNum seed num value consumed by the API.
+     * @param numInferenceSteps num inference steps value consumed by the API.
+     * @param textEmbeddings text embeddings value consumed by the API.
+     * @param guidanceScale guidance scale value consumed by the API.
+     * @param batchSize batch size value consumed by the API.
+     * @param width width value consumed by the API.
+     * @param height height value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     fun inference(
         seedNum: Long,
         numInferenceSteps: Int,
@@ -249,6 +354,13 @@ internal class UNet(
         }
     }
 
+    /**
+     * Executes the `decode` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param latents latents value consumed by the API.
+     * @return Result produced by `decode`.
+     * @author Dmitriy Moroz
+     */
     fun decode(latents: LocalDiffusionTensor<*>): Bitmap {
         debugLog("{$TAG} {uNet} {decode} Trying to decode latents: ${latents.hashCode()}")
         val tensor: LocalDiffusionTensor<*> = multipleTensorsByFloat(
@@ -268,6 +380,11 @@ internal class UNet(
         return bitmap
     }
 
+    /**
+     * Executes the `close` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     fun close() {
         debugLog("{$TAG} {uNet} {close} Closing session...")
         session?.close()
@@ -277,13 +394,38 @@ internal class UNet(
         debugLog("{$TAG} {uNet} {close} Session closed successfully!")
     }
 
+    /**
+     * Executes the `setCallback` step in the SDAI ONNX local diffusion feature layer.
+     *
+     * @param callback callback value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     fun setCallback(callback: Callback?) {
         debugLog("{$TAG} {uNet} Setting new result callback ${callback.hashCode()}")
         this.callback = callback
     }
 
+    /**
+     * Defines the `Callback` contract for the SDAI ONNX local diffusion feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     interface Callback {
+        /**
+         * Executes the `onStep` step in the SDAI ONNX local diffusion feature layer.
+         *
+         * @param maxStep max step value consumed by the API.
+         * @param step step value consumed by the API.
+         * @author Dmitriy Moroz
+         */
         fun onStep(maxStep: Int, step: Int)
+        /**
+         * Executes the `onBuildImage` step in the SDAI ONNX local diffusion feature layer.
+         *
+         * @param status status value consumed by the API.
+         * @param bitmap bitmap image processed by the operation.
+         * @author Dmitriy Moroz
+         */
         fun onBuildImage(status: Int, bitmap: Bitmap?)
     }
 }

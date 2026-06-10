@@ -56,6 +56,14 @@ import com.shifthackz.aisdv1.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.di.initKoin
 
+/**
+ * Renders the `InputHistoryBottomSheet` UI for the SDAI presentation layer.
+ *
+ * @param onClose callback invoked by the component.
+ * @param onGenerationSelected callback invoked by the component.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun InputHistoryBottomSheet(
     onClose: () -> Unit,
@@ -84,6 +92,13 @@ fun InputHistoryBottomSheet(
     }
 }
 
+/**
+ * Renders the `InputHistoryScreen` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param onGenerationSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun InputHistoryScreen(
     modifier: Modifier = Modifier,
@@ -106,6 +121,15 @@ fun InputHistoryScreen(
     }
 }
 
+/**
+ * Renders the `ScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @param onGenerationSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
@@ -165,6 +189,13 @@ private fun ScreenContent(
     }
 }
 
+/**
+ * Renders the `InputHistoryError` UI for the SDAI presentation layer.
+ *
+ * @param message message value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun InputHistoryError(
     message: String,
@@ -186,6 +217,14 @@ private fun InputHistoryError(
     }
 }
 
+/**
+ * Renders the `InputHistoryItem` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param item item value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun InputHistoryItem(
     modifier: Modifier = Modifier,

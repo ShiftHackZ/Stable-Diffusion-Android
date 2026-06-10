@@ -22,17 +22,72 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeoutOrNull
 
+/**
+ * Coordinates `EngineSelectionViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 class EngineSelectionViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `fetchAndGetSwarmUiModelsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fetchAndGetSwarmUiModelsUseCase: FetchAndGetSwarmUiModelsUseCase,
+    /**
+     * Exposes the `observeLocalOnnxModelsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val observeLocalOnnxModelsUseCase: ObserveLocalOnnxModelsUseCase,
+    /**
+     * Exposes the `fetchAndGetStabilityAiEnginesUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fetchAndGetStabilityAiEnginesUseCase: FetchAndGetStabilityAiEnginesUseCase,
+    /**
+     * Exposes the `getHuggingFaceModelsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getHuggingFaceModelsUseCase: FetchHuggingFaceModelsUseCase,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `getConfigurationUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getConfigurationUseCase: GetConfigurationUseCase,
+    /**
+     * Exposes the `selectStableDiffusionModelUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
+    /**
+     * Exposes the `getStableDiffusionModelsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<EngineSelectionState, EngineSelectionIntent, EmptyEffect>(
     initialState = EngineSelectionState(),
@@ -194,12 +249,33 @@ class EngineSelectionViewModel(
         .getOrElse { emptyList() }
 }
 
+/**
+ * Exposes the `REMOTE_OPTIONS_TIMEOUT_MILLIS` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val REMOTE_OPTIONS_TIMEOUT_MILLIS = 5_000L
 
+/**
+ * Executes the `hasA1111Endpoint` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private fun Configuration.hasA1111Endpoint(): Boolean = serverUrl.isMobileRemoteEndpoint()
 
+/**
+ * Executes the `hasSwarmEndpoint` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private fun Configuration.hasSwarmEndpoint(): Boolean = swarmUiUrl.isMobileRemoteEndpoint()
 
+/**
+ * Executes the `isMobileRemoteEndpoint` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `isMobileRemoteEndpoint`.
+ * @author Dmitriy Moroz
+ */
 private fun String.isMobileRemoteEndpoint(): Boolean {
     val value = trim().lowercase()
     return value.isNotBlank() &&
@@ -211,14 +287,50 @@ private fun String.isMobileRemoteEndpoint(): Boolean {
         !value.startsWith("https://[::1]")
 }
 
+/**
+ * Executes the `safeHuggingFaceModelAlias` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `safeHuggingFaceModelAlias`.
+ * @author Dmitriy Moroz
+ */
 private fun String.safeHuggingFaceModelAlias(): String =
     takeIf(HuggingFaceModel.supportedHfInferenceTextToImageAliases::contains)
         ?: HuggingFaceModel.default.alias
 
+/**
+ * Carries `RemoteOptions` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private data class RemoteOptions(
+    /**
+     * Exposes the `config` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val config: Configuration,
+    /**
+     * Exposes the `sdModels` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sdModels: List<Pair<com.shifthackz.aisdv1.domain.entity.StableDiffusionModel, Boolean>> = emptyList(),
+    /**
+     * Exposes the `swarmModels` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val swarmModels: List<com.shifthackz.aisdv1.domain.entity.SwarmUiModel> = emptyList(),
+    /**
+     * Exposes the `hfModels` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val hfModels: List<com.shifthackz.aisdv1.domain.entity.HuggingFaceModel> = emptyList(),
+    /**
+     * Exposes the `stEngines` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val stEngines: List<com.shifthackz.aisdv1.domain.entity.StabilityAiEngine> = emptyList(),
 )

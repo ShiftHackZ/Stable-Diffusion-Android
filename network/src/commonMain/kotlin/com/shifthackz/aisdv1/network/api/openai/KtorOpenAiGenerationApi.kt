@@ -15,16 +15,43 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 
+/**
+ * Coordinates `KtorOpenAiGenerationApi` behavior in the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class KtorOpenAiGenerationApi(
+    /**
+     * Exposes the `httpClient` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val httpClient: HttpClient,
+    /**
+     * Exposes the `baseUrl` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val baseUrl: String,
 ) : OpenAiGenerationApi {
 
+    /**
+     * Creates a new SDAI component instance.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     constructor(baseUrl: String) : this(
         httpClient = createConfiguredHttpClient(),
         baseUrl = baseUrl,
     )
 
+    /**
+     * Executes the `validateBearerToken` step in the SDAI network layer.
+     *
+     * @param apiKey api key value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override suspend fun validateBearerToken(apiKey: String) {
         httpClient.get {
             url.takeFrom(baseUrl)
@@ -33,6 +60,14 @@ class KtorOpenAiGenerationApi(
         }
     }
 
+    /**
+     * Executes the `generateImage` step in the SDAI network layer.
+     *
+     * @param apiKey api key value consumed by the API.
+     * @param request request value consumed by the API.
+     * @return Result produced by `generateImage`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun generateImage(
         apiKey: String,
         request: OpenAiRequest,
@@ -46,10 +81,35 @@ class KtorOpenAiGenerationApi(
         }
         .body()
 
+    /**
+     * Provides the `companion object` singleton used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private companion object {
+        /**
+         * Exposes the `PATH_API_VERSION` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
         const val PATH_API_VERSION = "v1"
+        /**
+         * Exposes the `PATH_MODELS` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
         const val PATH_MODELS = "models"
+        /**
+         * Exposes the `PATH_IMAGES` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
         const val PATH_IMAGES = "images"
+        /**
+         * Exposes the `PATH_GENERATIONS` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
         const val PATH_GENERATIONS = "generations"
     }
 }

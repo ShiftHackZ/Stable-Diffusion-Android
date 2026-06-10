@@ -13,13 +13,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * Carries `DrawerSheetItem` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class DrawerSheetItem(
+    /**
+     * Exposes the `label` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val label: String,
+    /**
+     * Exposes the `selected` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val selected: Boolean,
+    /**
+     * Exposes the `icon` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val icon: @Composable () -> Unit,
+    /**
+     * Exposes the `onClick` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val onClick: () -> Unit,
 )
 
+/**
+ * Renders the `DrawerSheetContent` UI for the SDAI presentation layer.
+ *
+ * @param items items value consumed by the API.
+ * @param header header value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun DrawerSheetContent(
     items: List<DrawerSheetItem>,

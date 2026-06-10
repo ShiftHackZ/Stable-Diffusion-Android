@@ -13,9 +13,29 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
 import kotlinx.serialization.json.Json
 
+/**
+ * Coordinates `KtorStabilityAiEnginesApi` behavior in the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class KtorStabilityAiEnginesApi(
+    /**
+     * Exposes the `httpClient` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val httpClient: HttpClient,
+    /**
+     * Exposes the `baseUrl` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val baseUrl: String,
+    /**
+     * Exposes the `json` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val json: Json = defaultNetworkJson,
 ) : StabilityAiEnginesApi {
 

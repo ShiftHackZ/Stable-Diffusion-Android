@@ -14,6 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlin.math.ceil
 
+/**
+ * Renders the `verticalScrollbar` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun Modifier.verticalScrollbar(
     state: ScrollState,
@@ -30,6 +36,12 @@ fun Modifier.verticalScrollbar(
     ScrollbarThumb(offset = thumbOffset, size = thumbHeight)
 }
 
+/**
+ * Renders the `verticalScrollbar` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun Modifier.verticalScrollbar(
     state: LazyGridState,
@@ -68,6 +80,12 @@ fun Modifier.verticalScrollbar(
     ScrollbarThumb(offset = thumbOffset, size = thumbHeight)
 }
 
+/**
+ * Renders the `verticalScrollbar` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun Modifier.verticalScrollbar(
     state: LazyListState,
@@ -103,17 +121,47 @@ fun Modifier.verticalScrollbar(
     ScrollbarThumb(offset = thumbOffset, size = thumbHeight)
 }
 
+/**
+ * Carries `ScrollbarThumb` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private data class ScrollbarThumb(
+    /**
+     * Exposes the `offset` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val offset: Float,
+    /**
+     * Exposes the `size` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val size: Float,
 )
 
+/**
+ * Executes the `function` step in the SDAI presentation layer.
+ *
+ * @param viewportHeight viewport height value consumed by the API.
+ * @param totalHeight total height value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 private fun androidx.compose.ui.graphics.drawscope.DrawScope.thumbHeight(
     viewportHeight: Float,
     totalHeight: Float,
 ): Float = (viewportHeight * viewportHeight / totalHeight)
     .coerceAtLeast(28.dp.toPx())
 
+/**
+ * Executes the `verticalScrollbar` step in the SDAI presentation layer.
+ *
+ * @param color color value consumed by the API.
+ * @param thumbProvider thumb provider value consumed by the API.
+ * @return Result produced by `verticalScrollbar`.
+ * @author Dmitriy Moroz
+ */
 private fun Modifier.verticalScrollbar(
     color: Color,
     thumbProvider: androidx.compose.ui.graphics.drawscope.DrawScope.() -> ScrollbarThumb?,

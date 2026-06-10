@@ -77,6 +77,14 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
+/**
+ * Renders the `BrushSizeSlider` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param size size value consumed by the API.
+ * @param onValueChanged callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun BrushSizeSlider(
     modifier: Modifier = Modifier,
@@ -133,6 +141,14 @@ internal fun BrushSizeSlider(
     }
 }
 
+/**
+ * Renders the `ImageInPaintParamsForm` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param model model value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ImageInPaintParamsForm(
     modifier: Modifier = Modifier,
@@ -225,6 +241,14 @@ internal fun ImageInPaintParamsForm(
     }
 }
 
+/**
+ * Renders the `SelectableRow` UI for the SDAI presentation layer.
+ *
+ * @param selected selected value consumed by the API.
+ * @param text text value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SelectableRow(
     selected: Boolean,
@@ -245,8 +269,21 @@ internal fun SelectableRow(
     }
 }
 
+/**
+ * Converts SDAI data with `toInPaintPoint`.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun Offset.toInPaintPoint(): InPaintPoint = InPaintPoint(x = x, y = y)
 
+/**
+ * Converts SDAI data with `toPath`.
+ *
+ * @param targetWidth target width value consumed by the API.
+ * @param targetHeight target height value consumed by the API.
+ * @return Result produced by `toPath`.
+ * @author Dmitriy Moroz
+ */
 internal fun InPaintStroke.toPath(
     targetWidth: Float,
     targetHeight: Float,

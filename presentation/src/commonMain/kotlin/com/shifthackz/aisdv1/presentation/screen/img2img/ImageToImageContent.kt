@@ -79,30 +79,155 @@ import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlin.math.roundToInt
 
+/**
+ * Carries `ImageToImageStrings` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class ImageToImageStrings(
+    /**
+     * Exposes the `title` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val title: String = Localization.string("title_image_to_image"),
+    /**
+     * Exposes the `pickGallery` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val pickGallery: String = Localization.string("action_image_picker_gallery"),
+    /**
+     * Exposes the `pickCamera` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val pickCamera: String = Localization.string("action_image_picker_camera"),
+    /**
+     * Exposes the `pickRandom` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val pickRandom: String = Localization.string("action_image_picker_random"),
+    /**
+     * Exposes the `clear` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val clear: String = Localization.string("action_clear"),
+    /**
+     * Exposes the `configureProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val configureProvider: String = Localization.string("action_change_configuration"),
+    /**
+     * Exposes the `generate` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val generate: String = Localization.string("action_generate"),
+    /**
+     * Exposes the `generating` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val generating: String = Localization.string("notification_running_title"),
+    /**
+     * Exposes the `denoisingStrength` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val denoisingStrength: String = Localization.string("hint_denoising_strength"),
+    /**
+     * Exposes the `inputImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val inputImage: String = Localization.string("title_input_image"),
+    /**
+     * Exposes the `inPaint` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val inPaint: String = Localization.string("in_paint_title"),
+    /**
+     * Exposes the `sourceUnavailable` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sourceUnavailable: String = Localization.string("error_source_img2img_unsupported"),
+    /**
+     * Exposes the `unsupportedTitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val unsupportedTitle: String = Localization.string("local_no_img2img_support_title"),
+    /**
+     * Exposes the `openAiUnsupportedSubtitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val openAiUnsupportedSubtitle: String = Localization.string("openai_no_img2img_support_sub_title"),
+    /**
+     * Exposes the `openAiUnsupportedSubtitle2` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val openAiUnsupportedSubtitle2: String = Localization.string("openai_no_img2img_support_sub_title_2"),
+    /**
+     * Exposes the `localUnsupportedSubtitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val localUnsupportedSubtitle: String = Localization.string("local_no_img2img_support_sub_title"),
+    /**
+     * Exposes the `localUnsupportedSubtitle2` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val localUnsupportedSubtitle2: String = Localization.string("local_no_img2img_support_sub_title_2"),
+    /**
+     * Exposes the `save` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val save: String = Localization.string("action_save"),
+    /**
+     * Exposes the `savingImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val savingImage: String = Localization.string("message_image_saving"),
+    /**
+     * Exposes the `share` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val share: String = Localization.string("action_share_prompt"),
+    /**
+     * Exposes the `sharingImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sharingImage: String = Localization.string("message_image_sharing"),
+    /**
+     * Exposes the `results` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val results: String = Localization.string("title_generation_results"),
+    /**
+     * Exposes the `imageUnavailable` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val imageUnavailable: String = Localization.string("message_image_data_received"),
+    /**
+     * Exposes the `resultMeta` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val resultMeta: (AiGenerationResult) -> String = { result ->
         Localization.string(
             "generation_result_meta",
@@ -113,6 +238,16 @@ data class ImageToImageStrings(
     },
 )
 
+/**
+ * Renders the `ImageToImageContent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param strings strings value consumed by the API.
+ * @param useDrawerNavigation use drawer navigation value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ImageToImageContent(
     state: ImageToImageState,

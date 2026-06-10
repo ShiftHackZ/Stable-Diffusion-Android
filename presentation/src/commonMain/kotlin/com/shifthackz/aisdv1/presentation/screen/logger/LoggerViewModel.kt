@@ -6,10 +6,35 @@ import com.shifthackz.aisdv1.core.mvi.EmptyEffect
 import com.shifthackz.aisdv1.presentation.navigation.router.LoggerRouter
 import kotlinx.coroutines.withContext
 
+/**
+ * Coordinates `LoggerViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class LoggerViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `logReader` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val logReader: LogReader,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: LoggerRouter,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<LoggerState, LoggerIntent, EmptyEffect>(
     initialState = LoggerState(),

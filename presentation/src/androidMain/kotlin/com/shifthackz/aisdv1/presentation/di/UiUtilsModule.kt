@@ -28,6 +28,11 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
+/**
+ * Exposes the `uiUtilsModule` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val uiUtilsModule = module {
     factoryOf(::GalleryExporter) bind GalleryExportService::class
     factory { AndroidGalleryPlatformActions(androidContext(), get()) } bind GalleryPlatformActions::class

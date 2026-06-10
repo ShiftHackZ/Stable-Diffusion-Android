@@ -8,6 +8,11 @@ import com.shifthackz.aisdv1.core.imageprocessing.R
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
+/**
+ * Exposes the `imageProcessingModule` value used by the SDAI image processing layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val imageProcessingModule = module {
 
     factory {

@@ -30,6 +30,19 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 
+/**
+ * Renders the `GenerationBottomToolbar` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param mode mode value consumed by the API.
+ * @param prompt positive prompt text for image generation.
+ * @param negativePrompt negative prompt text for image generation.
+ * @param strokeAccentState stroke accent state value consumed by the API.
+ * @param onExtraSelected callback invoked by the component.
+ * @param onEmbeddingsSelected callback invoked by the component.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GenerationBottomToolbar(
     modifier: Modifier = Modifier,
@@ -80,6 +93,18 @@ fun GenerationBottomToolbar(
     }
 }
 
+/**
+ * Renders the `GenerationBottomToolbarBottomLayer` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param mode mode value consumed by the API.
+ * @param prompt positive prompt text for image generation.
+ * @param negativePrompt negative prompt text for image generation.
+ * @param strokeAccentState stroke accent state value consumed by the API.
+ * @param onExtraSelected callback invoked by the component.
+ * @param onEmbeddingsSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun GenerationBottomToolbarBottomLayer(
     modifier: Modifier = Modifier,

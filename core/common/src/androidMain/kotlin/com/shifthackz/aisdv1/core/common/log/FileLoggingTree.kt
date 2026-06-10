@@ -18,16 +18,51 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Coordinates `FileLoggingTree` behavior in the SDAI core common layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class FileLoggingTree : Timber.Tree(), KoinComponent {
 
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fileProviderDescriptor: FileProviderDescriptor by inject()
+    /**
+     * Exposes the `buildInfoProvider` value used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val buildInfoProvider: BuildInfoProvider by inject()
+    /**
+     * Exposes the `writeMutex` value used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val writeMutex = Mutex()
+    /**
+     * Exposes the `logScope` value used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val logScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
+    /**
+     * Exposes the `formatDate` value used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val formatDate: String
         get() = "[${SimpleDateFormat(LOGGER_TIMESTAMP_FORMAT, Locale.ROOT).format(Date())}]"
 
+    /**
+     * Exposes the `formatPriority` value used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val formatPriority: (Int) -> String = {
         when (it) {
             Log.ASSERT -> "[A]"
@@ -40,6 +75,11 @@ class FileLoggingTree : Timber.Tree(), KoinComponent {
         }
     }
 
+    /**
+     * Exposes the `formatTag` value used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val formatTag: (String?) -> String = { tag ->
         tag?.let { "[$it]" } ?: LOGGER_DEFAULT_TAG
     }
@@ -53,6 +93,15 @@ class FileLoggingTree : Timber.Tree(), KoinComponent {
         })
     }
 
+    /**
+     * Executes the `log` step in the SDAI core common layer.
+     *
+     * @param priority priority value consumed by the API.
+     * @param tag tag value consumed by the API.
+     * @param message message value consumed by the API.
+     * @param t t value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         val log = buildString {
             append(formatDate)
@@ -70,6 +119,12 @@ class FileLoggingTree : Timber.Tree(), KoinComponent {
         writeLine(log)
     }
 
+    /**
+     * Executes the `writeLine` step in the SDAI core common layer.
+     *
+     * @param message message value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     private fun writeLine(message: String) {
         logScope.launch {
             writeMutex.withLock {
@@ -88,12 +143,38 @@ class FileLoggingTree : Timber.Tree(), KoinComponent {
         }
     }
 
+    /**
+     * Provides the `companion object` singleton used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
     companion object {
+        /**
+         * Exposes the `LOGGER_TIMESTAMP_FORMAT` value used by the SDAI core common layer.
+         *
+         * @author Dmitriy Moroz
+         */
         private const val LOGGER_TIMESTAMP_FORMAT = "dd.MM.yyyy HH:mm:SS"
+        /**
+         * Exposes the `LOGGER_DEFAULT_TAG` value used by the SDAI core common layer.
+         *
+         * @author Dmitriy Moroz
+         */
         private const val LOGGER_DEFAULT_TAG = "[SDAI]"
 
+        /**
+         * Exposes the `LOGGER_FILENAME` value used by the SDAI core common layer.
+         *
+         * @author Dmitriy Moroz
+         */
         const val LOGGER_FILENAME = "sdaiv1.log"
 
+        /**
+         * Performs the SDAI side effect handled by `clearLog`.
+         *
+         * @param fileProviderDescriptor file provider descriptor value consumed by the API.
+         * @author Dmitriy Moroz
+         */
         fun clearLog(fileProviderDescriptor: FileProviderDescriptor) {
             val cacheDirectory = File(fileProviderDescriptor.logsCacheDirPath)
             cacheDirectory.deleteRecursively()

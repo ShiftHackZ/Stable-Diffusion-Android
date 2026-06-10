@@ -26,6 +26,11 @@ import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiGenerationApi
 import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiModelsApi
 import org.koin.dsl.module
 
+/**
+ * Exposes the `coreNetworkModule` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val coreNetworkModule = module {
     single<SdaiAppApi> {
         KtorSdaiAppApi(
@@ -68,11 +73,51 @@ val coreNetworkModule = module {
     }
 }
 
+/**
+ * Exposes the `STABLE_DIFFUSION_APP_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val STABLE_DIFFUSION_APP_API_URL = "https://sdai.moroz.cc"
+/**
+ * Exposes the `STABLE_DIFFUSION_REPORT_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val STABLE_DIFFUSION_REPORT_API_URL = "https://sdai-report.moroz.cc"
+/**
+ * Exposes the `IMAGE_CDN_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val IMAGE_CDN_API_URL = "https://random.imagecdn.app"
+/**
+ * Exposes the `STABILITY_AI_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val STABILITY_AI_API_URL = "https://api.stability.ai"
+/**
+ * Exposes the `OPEN_AI_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val OPEN_AI_API_URL = "https://api.openai.com"
+/**
+ * Exposes the `HORDE_AI_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val HORDE_AI_API_URL = "https://stablehorde.net"
+/**
+ * Exposes the `HUGGING_FACE_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val HUGGING_FACE_API_URL = "https://huggingface.co"
+/**
+ * Exposes the `HUGGING_FACE_INFERENCE_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val HUGGING_FACE_INFERENCE_API_URL = "https://router.huggingface.co/hf-inference"

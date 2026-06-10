@@ -21,6 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.domain.entity.Supporter
 
+/**
+ * Renders the `SupporterItem` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param supporter supporter value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SupporterItem(
     modifier: Modifier = Modifier,
@@ -71,6 +78,12 @@ fun SupporterItem(
     }
 }
 
+/**
+ * Executes the `formatSupporterDate` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `formatSupporterDate`.
+ * @author Dmitriy Moroz
+ */
 private fun String.formatSupporterDate(): String {
     val parts = split("-")
     if (parts.size != 3) return this

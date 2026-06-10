@@ -67,6 +67,14 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.core.parameter.parametersOf
 
 
+/**
+ * Renders the `GalleryDetailScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GalleryDetailScreenContent(
     modifier: Modifier = Modifier,
@@ -141,6 +149,13 @@ fun GalleryDetailScreenContent(
     }
 }
 
+/**
+ * Renders the `GalleryDetailNavigationBar` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryDetailNavigationBar(
     state: GalleryDetailState,
@@ -277,6 +292,15 @@ internal fun GalleryDetailNavigationBar(
     }
 }
 
+/**
+ * Renders the `GalleryDetailActionButton` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param icon icon value consumed by the API.
+ * @param label label value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryDetailActionButton(
     modifier: Modifier = Modifier,
@@ -300,6 +324,15 @@ internal fun GalleryDetailActionButton(
     }
 }
 
+/**
+ * Renders the `GalleryDetailContentState` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param content content value consumed by the API.
+ * @param onCopyTextClick callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryDetailContentState(
     modifier: Modifier = Modifier,

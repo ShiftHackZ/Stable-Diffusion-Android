@@ -1,5 +1,11 @@
 package com.shifthackz.aisdv1.domain.entity
 
+/**
+ * Coordinates `Grid` behavior in the SDAI domain layer.
+ *
+ * @param size size value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 enum class Grid(val size: Int) {
     Fixed2(2),
     Fixed3(3),

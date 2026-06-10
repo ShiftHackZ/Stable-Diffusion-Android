@@ -33,6 +33,12 @@ import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneWidth
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
 import com.shifthackz.aisdv1.presentation.widget.icon.BrandIcons
 
+/**
+ * Renders the `UniversalPageContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun UniversalPageContent(
     modifier: Modifier = Modifier,
@@ -107,6 +113,14 @@ fun UniversalPageContent(
     Spacer(modifier = Modifier.weight(1f))
 }
 
+/**
+ * Renders the `PlatformCard` UI for the SDAI presentation layer.
+ *
+ * @param title title value consumed by the API.
+ * @param icon icon value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun PlatformCard(
     title: String,

@@ -4,10 +4,30 @@ import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.mvi.BaseMviViewModel
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalModelUseCase
 
+/**
+ * Coordinates `DownloadDialogViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class DownloadDialogViewModel(
     modelId: String,
+    /**
+     * Exposes the `getLocalModelUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getLocalModelUseCase: GetLocalModelUseCase,
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<DownloadDialogState, DownloadDialogIntent, DownloadDialogEffect>(
     initialState = DownloadDialogState(),

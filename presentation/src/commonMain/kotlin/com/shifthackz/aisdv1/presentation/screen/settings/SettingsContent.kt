@@ -93,6 +93,14 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlinx.coroutines.launch
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `ContentSettingsState` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ContentSettingsState(
     modifier: Modifier = Modifier,

@@ -4,9 +4,20 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
 
 //region DOMAIN --> ENTITY
+/**
+ * Converts SDAI data with `mapDomainToEntity`.
+ *
+ * @return Result produced by `mapDomainToEntity`.
+ * @author Dmitriy Moroz
+ */
 fun List<AiGenerationResult>.mapDomainToEntity(): List<GenerationResultEntity> =
     map(AiGenerationResult::mapDomainToEntity)
 
+/**
+ * Converts SDAI data with `mapDomainToEntity`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun AiGenerationResult.mapDomainToEntity(): GenerationResultEntity = with(this) {
     GenerationResultEntity(
         id = id,
@@ -32,9 +43,20 @@ fun AiGenerationResult.mapDomainToEntity(): GenerationResultEntity = with(this) 
 //endregion
 
 //region ENTITY --> DOMAIN
+/**
+ * Converts SDAI data with `mapEntityToDomain`.
+ *
+ * @return Result produced by `mapEntityToDomain`.
+ * @author Dmitriy Moroz
+ */
 fun List<GenerationResultEntity>.mapEntityToDomain(): List<AiGenerationResult> =
     map(GenerationResultEntity::mapEntityToDomain)
 
+/**
+ * Converts SDAI data with `mapEntityToDomain`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun GenerationResultEntity.mapEntityToDomain(): AiGenerationResult = with(this) {
     AiGenerationResult(
         id = id,

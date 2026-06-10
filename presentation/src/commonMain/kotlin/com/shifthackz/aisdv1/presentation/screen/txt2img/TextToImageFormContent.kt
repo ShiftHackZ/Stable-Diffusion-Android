@@ -74,6 +74,16 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlin.math.roundToInt
 
 
+/**
+ * Renders the `TextToImageBody` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param promptChipTextFieldState prompt chip text field state value consumed by the API.
+ * @param negativePromptChipTextFieldState negative prompt chip text field state value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun TextToImageBody(
     state: TextToImageState,
@@ -104,6 +114,16 @@ internal fun TextToImageBody(
     }
 }
 
+/**
+ * Renders the `TextToImageForm` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param promptChipTextFieldState prompt chip text field state value consumed by the API.
+ * @param negativePromptChipTextFieldState negative prompt chip text field state value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun TextToImageForm(
     state: TextToImageState,

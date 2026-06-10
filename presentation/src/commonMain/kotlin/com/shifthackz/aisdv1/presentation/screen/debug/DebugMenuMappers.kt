@@ -5,6 +5,11 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asUiText
 
+/**
+ * Converts SDAI data with `mapToUi`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun SchedulersToken.mapToUi(): UiText = when (this) {
     SchedulersToken.MAIN_THREAD -> "scheduler_main"
     SchedulersToken.IO_THREAD -> "scheduler_io"

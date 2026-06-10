@@ -80,6 +80,11 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlin.math.roundToInt
 
 
+/**
+ * Converts SDAI data with `toImageToImageIntent`.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent = when (this) {
     is GenerationInputFormEvent.EditTag -> ImageToImageIntent.ShowEditTag(
         prompt = prompt,
@@ -110,11 +115,27 @@ internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent
         ImageToImageIntent.UpdateStabilityAiClipGuidance(value)
 }
 
+/**
+ * Executes the `appendPromptTag` step in the SDAI presentation layer.
+ *
+ * @param tag tag value consumed by the API.
+ * @return Result produced by `appendPromptTag`.
+ * @author Dmitriy Moroz
+ */
 internal fun String.appendPromptTag(tag: String): String =
     listOf(this, tag.trim())
         .filter(String::isNotBlank)
         .joinToString(", ")
 
+/**
+ * Executes the `flushPendingTaggedText` step in the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param promptChipTextFieldState prompt chip text field state value consumed by the API.
+ * @param negativePromptChipTextFieldState negative prompt chip text field state value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun flushPendingTaggedText(
     state: ImageToImageState,
     promptChipTextFieldState: androidx.compose.runtime.MutableState<TextFieldValue>,
@@ -136,6 +157,13 @@ internal fun flushPendingTaggedText(
         ?.also { negativePromptChipTextFieldState.value = TextFieldValue("") }
 }
 
+/**
+ * Renders the `GenerationHistoryDialog` UI for the SDAI presentation layer.
+ *
+ * @param onClose callback invoked by the component.
+ * @param onGenerationSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GenerationHistoryDialog(
     onClose: () -> Unit,
@@ -147,26 +175,86 @@ internal fun GenerationHistoryDialog(
     )
 }
 
+/**
+ * Defines the `ImageToImagePanel` contract for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal sealed interface ImageToImagePanel {
+    /**
+     * Provides the `History` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object History : ImageToImagePanel
+    /**
+     * Carries `Embeddings` data through the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data class Embeddings(
+        /**
+         * Exposes the `prompt` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val prompt: String,
+        /**
+         * Exposes the `negativePrompt` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val negativePrompt: String,
     ) : ImageToImagePanel
 
+    /**
+     * Carries `Extras` data through the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data class Extras(
+        /**
+         * Exposes the `prompt` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val prompt: String,
+        /**
+         * Exposes the `negativePrompt` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val negativePrompt: String,
+        /**
+         * Exposes the `type` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
         val type: ExtraType,
     ) : ImageToImagePanel
 }
 
+/**
+ * Exposes the `AiGenerationResult` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val AiGenerationResult.aspectRatio: Float
     get() = if (width > 0 && height > 0) width.toFloat() / height.toFloat() else 1f
 
+/**
+ * Exposes the `ImageBitmap` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val ImageBitmap.safeAspectRatio: Float
     get() = if (width > 0 && height > 0) width.toFloat() / height.toFloat() else 1f
 
+/**
+ * Exposes the `ServerSource` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val ServerSource.displayName: String
     get() = when (this) {
         ServerSource.AUTOMATIC1111 -> Localization.string("srv_type_own")
@@ -179,6 +267,12 @@ internal val ServerSource.displayName: String
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
     }
 
+/**
+ * Executes the `roundToString` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `roundToString`.
+ * @author Dmitriy Moroz
+ */
 internal fun Float.roundToString(): String {
     val rounded = (this * 100f).roundToInt() / 100f
     return rounded.toString()

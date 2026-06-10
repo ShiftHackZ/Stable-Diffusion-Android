@@ -95,6 +95,11 @@ import org.koin.dsl.module
 
 import org.koin.core.module.Module
 
+/**
+ * Executes the `registerPresentationViewModelBindings` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun Module.registerPresentationViewModelBindings() {
     factory {
         AiSdAppThemeViewModel(

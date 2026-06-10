@@ -9,6 +9,12 @@ import com.shifthackz.aisdv1.presentation.navigation.router.DonateRouter
 import com.shifthackz.aisdv1.presentation.platform.rememberExternalUrlLauncher
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `DonateScreen` UI for the SDAI presentation layer.
+ *
+ * @param router router value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun DonateScreen(
     router: DonateRouter? = null,
@@ -41,6 +47,11 @@ fun DonateScreen(
     }
 }
 
+/**
+ * Renders the `donateScreenStrings` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun donateScreenStrings() = DonateScreenStrings(
     title = Localization.string("settings_item_donate"),
@@ -51,5 +62,10 @@ private fun donateScreenStrings() = DonateScreenStrings(
     backContentDescription = Localization.string("action_back"),
 )
 
+/**
+ * Renders the `DonateBrandIcon` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal expect fun DonateBrandIcon()

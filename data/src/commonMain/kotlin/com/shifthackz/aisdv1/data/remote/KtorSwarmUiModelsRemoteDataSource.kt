@@ -8,10 +8,30 @@ import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.network.api.swarmui.SwarmUiModelsApi
 import com.shifthackz.aisdv1.network.request.SwarmUiModelsRequest
 
+/**
+ * Coordinates `KtorSwarmUiModelsRemoteDataSource` behavior in the SDAI data layer.
+ *
+ * @throws IllegalStateException when the delegated operation cannot complete.
+ * @author Dmitriy Moroz
+ */
 class KtorSwarmUiModelsRemoteDataSource(
+    /**
+     * Exposes the `api` value used by the SDAI data layer.
+     *
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
     private val api: SwarmUiModelsApi,
 ) : SwarmUiModelsRemoteDataSource {
 
+    /**
+     * Loads SDAI data through `getNewSession`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param credentials credentials value consumed by the API.
+     * @return Result produced by `getNewSession`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun getNewSession(
         baseUrl: String,
         credentials: AuthorizationCredentials,
@@ -24,6 +44,15 @@ class KtorSwarmUiModelsRemoteDataSource(
         ?.takeIf(String::isNotBlank)
         ?: throw IllegalStateException("Bad session ID.")
 
+    /**
+     * Loads SDAI data through `fetchSwarmModels`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param sessionId session id value consumed by the API.
+     * @param credentials credentials value consumed by the API.
+     * @return Result produced by `fetchSwarmModels`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun fetchSwarmModels(
         baseUrl: String,
         sessionId: String,

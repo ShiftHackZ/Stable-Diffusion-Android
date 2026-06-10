@@ -3,6 +3,12 @@ package com.shifthackz.aisdv1.data.mappers
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 
+/**
+ * Converts SDAI data with `mapLocalDiffusionToAiGenResult`.
+ *
+ * @return Result produced by `mapLocalDiffusionToAiGenResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<TextToImagePayload, String>.mapLocalDiffusionToAiGenResult(): AiGenerationResult =
     let { (payload, base64) ->
         AiGenerationResult(

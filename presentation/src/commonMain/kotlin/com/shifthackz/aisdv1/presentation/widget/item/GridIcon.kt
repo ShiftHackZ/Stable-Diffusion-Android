@@ -15,6 +15,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.domain.entity.Grid
 
+/**
+ * Renders the `GridIcon` UI for the SDAI presentation layer.
+ *
+ * @param grid grid value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param iconSize icon size value consumed by the API.
+ * @param spacing spacing value consumed by the API.
+ * @param color color value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GridIcon(
     grid: Grid,

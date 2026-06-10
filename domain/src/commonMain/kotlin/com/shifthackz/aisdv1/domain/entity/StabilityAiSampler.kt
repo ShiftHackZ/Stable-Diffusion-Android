@@ -1,5 +1,10 @@
 package com.shifthackz.aisdv1.domain.entity
 
+/**
+ * Coordinates `StabilityAiSampler` behavior in the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 enum class StabilityAiSampler {
     NONE,
     DDIM,

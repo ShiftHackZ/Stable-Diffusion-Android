@@ -19,7 +19,17 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 
+/**
+ * Coordinates `KtorSwarmUiGenerationApi` behavior in the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class KtorSwarmUiGenerationApi(
+    /**
+     * Exposes the `httpClient` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val httpClient: HttpClient = createConfiguredHttpClient(),
 ) : SwarmUiGenerationApi {
 

@@ -7,8 +7,18 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
+/**
+ * Exposes the `persistentDatabasePlatformModule` value used by the SDAI storage layer.
+ *
+ * @author Dmitriy Moroz
+ */
 expect val persistentDatabasePlatformModule: Module
 
+/**
+ * Exposes the `persistentDatabaseModule` value used by the SDAI storage layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val persistentDatabaseModule = module {
     includes(persistentDatabasePlatformModule)
     single {
@@ -20,6 +30,13 @@ val persistentDatabaseModule = module {
     single { get<PersistentDatabase>().supporterDao() }
 }
 
+/**
+ * Loads SDAI data through `getPersistentDatabase`.
+ *
+ * @param builder builder value consumed by the API.
+ * @return Result produced by `getPersistentDatabase`.
+ * @author Dmitriy Moroz
+ */
 internal fun getPersistentDatabase(
     builder: RoomDatabase.Builder<PersistentDatabase>,
 ): PersistentDatabase =

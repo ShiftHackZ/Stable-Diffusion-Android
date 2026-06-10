@@ -4,23 +4,109 @@ import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 
+/**
+ * Defines the `ConfigurationStore` contract for the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
 interface ConfigurationStore {
+    /**
+     * Exposes the `automatic1111ServerUrl` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var automatic1111ServerUrl: String
+    /**
+     * Exposes the `swarmUiServerUrl` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var swarmUiServerUrl: String
+    /**
+     * Exposes the `swarmUiModel` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var swarmUiModel: String
+    /**
+     * Exposes the `demoMode` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var demoMode: Boolean
+    /**
+     * Exposes the `source` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var source: ServerSource
+    /**
+     * Exposes the `hordeApiKey` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var hordeApiKey: String
+    /**
+     * Exposes the `openAiApiKey` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var openAiApiKey: String
+    /**
+     * Exposes the `huggingFaceApiKey` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var huggingFaceApiKey: String
+    /**
+     * Exposes the `huggingFaceModel` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var huggingFaceModel: String
+    /**
+     * Exposes the `stabilityAiApiKey` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var stabilityAiApiKey: String
+    /**
+     * Exposes the `stabilityAiEngineId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var stabilityAiEngineId: String
+    /**
+     * Exposes the `localOnnxModelId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var localOnnxModelId: String
+    /**
+     * Exposes the `localOnnxModelPath` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var localOnnxModelPath: String
+    /**
+     * Exposes the `localMediaPipeModelId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var localMediaPipeModelId: String
+    /**
+     * Exposes the `localMediaPipeModelPath` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
     var localMediaPipeModelPath: String
 
+    /**
+     * Loads SDAI data through `getConfiguration`.
+     *
+     * @param authCredentials auth credentials value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     fun getConfiguration(
         authCredentials: AuthorizationCredentials,
     ): Configuration = Configuration(
@@ -42,6 +128,12 @@ interface ConfigurationStore {
         localMediaPipeModelPath = localMediaPipeModelPath,
     )
 
+    /**
+     * Executes the `setConfiguration` step in the SDAI domain layer.
+     *
+     * @param configuration configuration value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     fun setConfiguration(configuration: Configuration) {
         source = configuration.source
         automatic1111ServerUrl = configuration.serverUrl

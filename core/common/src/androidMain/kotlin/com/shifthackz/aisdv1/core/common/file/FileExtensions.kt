@@ -6,6 +6,14 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
+/**
+ * Converts SDAI data with `writeBitmap`.
+ *
+ * @param bitmap bitmap image processed by the operation.
+ * @param format format value consumed by the API.
+ * @param quality quality value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 fun File.writeBitmap(
     bitmap: Bitmap,
     format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
@@ -17,6 +25,13 @@ fun File.writeBitmap(
     }
 }
 
+/**
+ * Executes the `writeFilesToZip` step in the SDAI core common layer.
+ *
+ * @param files files used by the operation.
+ * @param bufferSize buffer size value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 fun File.writeFilesToZip(
     files: List<File>,
     bufferSize: Int = 1024,
@@ -42,6 +57,11 @@ fun File.writeFilesToZip(
     }
 }
 
+/**
+ * Executes the `unzip` step in the SDAI core common layer.
+ *
+ * @author Dmitriy Moroz
+ */
 fun File.unzip() {
     if (!path.endsWith(".zip")) return
     val destinationDir = parentFile ?: return

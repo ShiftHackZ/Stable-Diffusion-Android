@@ -8,6 +8,11 @@ import com.shifthackz.aisdv1.presentation.di.initKoin
 import com.shifthackz.aisdv1.presentation.navigation.router.SplashRouter
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `SplashScreen` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SplashScreen() {
     val koin = remember { initKoin() }

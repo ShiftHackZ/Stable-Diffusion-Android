@@ -16,14 +16,59 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withTimeout
 
+/**
+ * Coordinates `ReportViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class ReportViewModel(
+    /**
+     * Exposes the `itemId` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val itemId: Long,
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `sendReportUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val sendReportUseCase: SendReportUseCase,
+    /**
+     * Exposes the `getGenerationResultUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getGenerationResultUseCase: GetGenerationResultUseCase,
+    /**
+     * Exposes the `getLastResultFromCacheUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getLastResultFromCacheUseCase: GetLastResultFromCacheUseCase,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: ReportRouter,
+    /**
+     * Exposes the `buildInfoProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val buildInfoProvider: BuildInfoProvider,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<ReportState, ReportIntent, EmptyEffect>(
     initialState = ReportState(),

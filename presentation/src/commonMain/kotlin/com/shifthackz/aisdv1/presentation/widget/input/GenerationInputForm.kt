@@ -57,6 +57,19 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
+/**
+ * Renders the `GenerationInputForm` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param isImg2Img is img2 img value consumed by the API.
+ * @param textFieldContainerColor text field container color value consumed by the API.
+ * @param promptChipTextFieldState prompt chip text field state value consumed by the API.
+ * @param negativePromptChipTextFieldState negative prompt chip text field state value consumed by the API.
+ * @param onEvent callback invoked by the component.
+ * @param afterSlidersSection after sliders section value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GenerationInputForm(
     modifier: Modifier = Modifier,

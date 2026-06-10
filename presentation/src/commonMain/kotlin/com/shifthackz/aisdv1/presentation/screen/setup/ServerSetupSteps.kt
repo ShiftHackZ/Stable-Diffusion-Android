@@ -97,6 +97,13 @@ import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 import kotlinx.coroutines.launch
 
 
+/**
+ * Renders the `ServerSetupLoading` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ServerSetupLoading(
     text: String,
@@ -116,6 +123,13 @@ internal fun ServerSetupLoading(
         }
     }
 }
+/**
+ * Renders the `ConfigurationStepBar` UI for the SDAI presentation layer.
+ *
+ * @param currentStep current step value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ConfigurationStepBar(
     currentStep: ServerSetupState.Step,
@@ -209,6 +223,16 @@ internal fun ConfigurationStepBar(
         }
     }
 }
+/**
+ * Renders the `SourceSelectionStep` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param listState list state value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SourceSelectionStep(
     state: ServerSetupState,
@@ -252,11 +276,27 @@ internal fun SourceSelectionStep(
     }
 }
 
+/**
+ * Executes the `isItemFullyVisible` step in the SDAI presentation layer.
+ *
+ * @param index index value consumed by the API.
+ * @return Result produced by `isItemFullyVisible`.
+ * @author Dmitriy Moroz
+ */
 internal fun LazyListState.isItemFullyVisible(index: Int): Boolean {
     val item = layoutInfo.visibleItemsInfo.firstOrNull { it.index == index } ?: return false
     return item.offset >= layoutInfo.viewportStartOffset &&
         item.offset + item.size <= layoutInfo.viewportEndOffset
 }
+/**
+ * Renders the `SourceModeItem` UI for the SDAI presentation layer.
+ *
+ * @param source source value consumed by the API.
+ * @param selected selected value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SourceModeItem(
     source: ServerSource,

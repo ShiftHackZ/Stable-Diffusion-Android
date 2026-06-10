@@ -17,11 +17,33 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 
+/**
+ * Implements `PushNotificationManager` behavior in the SDAI notification layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class PushNotificationManagerImpl(
+    /**
+     * Exposes the `context` value used by the SDAI notification layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val context: Context,
+    /**
+     * Exposes the `manager` value used by the SDAI notification layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val manager: NotificationManagerCompat,
 ) : PushNotificationManager {
 
+    /**
+     * Creates the SDAI value produced by `createAndShowInstant`.
+     *
+     * @param title title value consumed by the API.
+     * @param body body value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     @SuppressLint("MissingPermission")
     override fun createAndShowInstant(title: UiText, body: UiText) {
         val inForeground = context.isAppInForeground()
@@ -41,16 +63,38 @@ internal class PushNotificationManagerImpl(
         show(System.currentTimeMillis().toInt(), notification)
     }
 
+    /**
+     * Creates the SDAI value produced by `createAndShowInstant`.
+     *
+     * @param title title value consumed by the API.
+     * @param body body value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override fun createAndShowInstant(title: String, body: String) {
         createAndShowInstant(title.asUiText(), body.asUiText())
     }
 
+    /**
+     * Executes the `show` step in the SDAI notification layer.
+     *
+     * @param id identifier of the target entity.
+     * @param notification notification value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     @SuppressLint("MissingPermission")
     override fun show(id: Int, notification: Notification) {
         createNotificationChannel()
         manager.notify(id, notification)
     }
 
+    /**
+     * Creates the SDAI value produced by `createNotification`.
+     *
+     * @param title title value consumed by the API.
+     * @param body body value consumed by the API.
+     * @param block block value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override fun createNotification(
         title: UiText,
         body: UiText?,
@@ -67,6 +111,15 @@ internal class PushNotificationManagerImpl(
         build()
     }
 
+    /**
+     * Creates the SDAI value produced by `createNotification`.
+     *
+     * @param title title value consumed by the API.
+     * @param body body value consumed by the API.
+     * @param block block value consumed by the API.
+     * @return Result produced by `createNotification`.
+     * @author Dmitriy Moroz
+     */
     override fun createNotification(
         title: String,
         body: String?,
@@ -75,6 +128,11 @@ internal class PushNotificationManagerImpl(
         return createNotification(title.asUiText(), body?.asUiText(), block)
     }
 
+    /**
+     * Creates the SDAI value produced by `createNotificationChannel`.
+     *
+     * @author Dmitriy Moroz
+     */
     override fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (manager.getNotificationChannel(SDAI_NOTIFICATION_CHANNEL_ID) == null) {
@@ -93,6 +151,12 @@ internal class PushNotificationManagerImpl(
         }
     }
 
+    /**
+     * Executes the `hasNotificationPermission` step in the SDAI notification layer.
+     *
+     * @return Result produced by `hasNotificationPermission`.
+     * @author Dmitriy Moroz
+     */
     private fun hasNotificationPermission(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
@@ -101,7 +165,17 @@ internal class PushNotificationManagerImpl(
         }
     }
 
+    /**
+     * Provides the `companion object` singleton used by the SDAI notification layer.
+     *
+     * @author Dmitriy Moroz
+     */
     companion object {
+        /**
+         * Exposes the `SDAI_NOTIFICATION_CHANNEL_ID` value used by the SDAI notification layer.
+         *
+         * @author Dmitriy Moroz
+         */
         private const val SDAI_NOTIFICATION_CHANNEL_ID = "SDAI_NOTIFICATION_CHANNEL"
     }
 }

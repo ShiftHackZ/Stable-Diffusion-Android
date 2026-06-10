@@ -7,6 +7,12 @@ import com.shifthackz.aisdv1.presentation.di.initKoin
 import com.shifthackz.aisdv1.presentation.navigation.router.LoggerRouter
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `LoggerScreen` UI for the SDAI presentation layer.
+ *
+ * @param router router value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun LoggerScreen(
     router: LoggerRouter? = null,

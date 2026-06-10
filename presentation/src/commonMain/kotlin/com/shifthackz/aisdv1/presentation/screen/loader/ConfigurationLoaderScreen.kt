@@ -8,6 +8,11 @@ import com.shifthackz.aisdv1.presentation.di.initKoin
 import com.shifthackz.aisdv1.presentation.navigation.router.ConfigurationLoaderRouter
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `ConfigurationLoaderScreen` UI for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ConfigurationLoaderScreen() {
     val koin = remember { initKoin() }

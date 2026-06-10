@@ -4,6 +4,11 @@ package com.shifthackz.aisdv1.presentation.utils
 
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 
+/**
+ * Provides the `ExtrasFormatter` singleton used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 object ExtrasFormatter {
 
     /**

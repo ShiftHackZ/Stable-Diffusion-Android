@@ -28,6 +28,12 @@ import platform.posix.memcpy
 import kotlin.coroutines.resume
 import kotlinx.coroutines.CancellableContinuation
 
+/**
+ * Renders the `rememberImageToImagePlatformActions` UI for the SDAI presentation layer.
+ *
+ * @return Result produced by `rememberImageToImagePlatformActions`.
+ * @author Dmitriy Moroz
+ */
 @Composable
 actual fun rememberImageToImagePlatformActions(): ImageToImagePlatformActions {
     val picker = remember { IosImagePicker() }
@@ -50,19 +56,63 @@ actual fun rememberImageToImagePlatformActions(): ImageToImagePlatformActions {
     }
 }
 
+/**
+ * Defines the `IosImagePickOutcome` contract for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private sealed interface IosImagePickOutcome {
+    /**
+     * Carries `Selected` data through the SDAI presentation layer.
+     *
+     * @param image image value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class Selected(val image: UIImage) : IosImagePickOutcome
+    /**
+     * Provides the `Cancelled` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object Cancelled : IosImagePickOutcome
+    /**
+     * Provides the `Unsupported` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     data object Unsupported : IosImagePickOutcome
+    /**
+     * Carries `Failed` data through the SDAI presentation layer.
+     *
+     * @param message message value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class Failed(val message: String) : IosImagePickOutcome
 }
 
+/**
+ * Coordinates `IosImagePicker` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private class IosImagePicker : NSObject(),
     UIImagePickerControllerDelegateProtocol,
     UINavigationControllerDelegateProtocol {
 
+    /**
+     * Exposes the `continuation` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private var continuation: CancellableContinuation<IosImagePickOutcome>? = null
 
+    /**
+     * Executes the `pick` step in the SDAI presentation layer.
+     *
+     * @param source source value consumed by the API.
+     * @return Result produced by `pick`.
+     * @author Dmitriy Moroz
+     */
     suspend fun pick(source: ImageToImagePickSource): IosImagePickOutcome =
         suspendCancellableCoroutine { nextContinuation ->
             if (continuation != null) {
@@ -82,6 +132,12 @@ private class IosImagePicker : NSObject(),
             }
         }
 
+    /**
+     * Executes the `present` step in the SDAI presentation layer.
+     *
+     * @param source source value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     private fun present(source: ImageToImagePickSource) {
         val sourceType = when (source) {
             ImageToImagePickSource.Camera -> UI_IMAGE_PICKER_SOURCE_TYPE_CAMERA
@@ -111,6 +167,13 @@ private class IosImagePicker : NSObject(),
         )
     }
 
+    /**
+     * Executes the `imagePickerController` step in the SDAI presentation layer.
+     *
+     * @param picker picker value consumed by the API.
+     * @param didFinishPickingMediaWithInfo did finish picking media with info value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override fun imagePickerController(
         picker: UIImagePickerController,
         didFinishPickingMediaWithInfo: Map<Any?, *>,
@@ -123,11 +186,23 @@ private class IosImagePicker : NSObject(),
         resume(result)
     }
 
+    /**
+     * Executes the `imagePickerControllerDidCancel` step in the SDAI presentation layer.
+     *
+     * @param picker picker value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override fun imagePickerControllerDidCancel(picker: UIImagePickerController) {
         picker.dismissViewControllerAnimated(true, completion = null)
         resume(IosImagePickOutcome.Cancelled)
     }
 
+    /**
+     * Executes the `resume` step in the SDAI presentation layer.
+     *
+     * @param result result value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     private fun resume(result: IosImagePickOutcome) {
         val current = continuation ?: return
         continuation = null
@@ -135,6 +210,12 @@ private class IosImagePicker : NSObject(),
     }
 }
 
+/**
+ * Executes the `base64Jpeg` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `base64Jpeg`.
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalEncodingApi::class, ExperimentalForeignApi::class)
 private fun UIImage.base64Jpeg(): String? {
     val data = UIImageJPEGRepresentation(this, compressionQuality = 0.95) ?: return null
@@ -147,6 +228,12 @@ private fun UIImage.base64Jpeg(): String? {
     return Base64.encode(bytes)
 }
 
+/**
+ * Executes the `rootViewController` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `rootViewController`.
+ * @author Dmitriy Moroz
+ */
 private fun UIApplication.rootViewController(): UIViewController? =
     keyWindow?.rootViewController
         ?: windows
@@ -158,10 +245,26 @@ private fun UIApplication.rootViewController(): UIViewController? =
             .firstOrNull()
             ?.rootViewController
 
+/**
+ * Converts SDAI data with `topMostPresentedViewController`.
+ *
+ * @return Result produced by `topMostPresentedViewController`.
+ * @author Dmitriy Moroz
+ */
 private fun UIViewController.topMostPresentedViewController(): UIViewController =
     presentedViewController?.topMostPresentedViewController() ?: this
 
+/**
+ * Exposes the `UI_IMAGE_PICKER_SOURCE_TYPE_PHOTO_LIBRARY` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val UI_IMAGE_PICKER_SOURCE_TYPE_PHOTO_LIBRARY =
     UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary
+/**
+ * Exposes the `UI_IMAGE_PICKER_SOURCE_TYPE_CAMERA` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val UI_IMAGE_PICKER_SOURCE_TYPE_CAMERA =
     UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera

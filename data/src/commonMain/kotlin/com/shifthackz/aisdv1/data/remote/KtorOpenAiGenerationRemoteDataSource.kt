@@ -8,11 +8,30 @@ import com.shifthackz.aisdv1.network.api.openai.OpenAiGenerationApi
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+/**
+ * Coordinates `KtorOpenAiGenerationRemoteDataSource` behavior in the SDAI data layer.
+ *
+ * @throws IllegalStateException when the delegated operation cannot complete.
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalTime::class)
 class KtorOpenAiGenerationRemoteDataSource(
+    /**
+     * Exposes the `api` value used by the SDAI data layer.
+     *
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
     private val api: OpenAiGenerationApi,
 ) : OpenAiGenerationDataSource.Remote {
 
+    /**
+     * Executes the `validateApiKey` step in the SDAI data layer.
+     *
+     * @param apiKey api key value consumed by the API.
+     * @return Result produced by `validateApiKey`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun validateApiKey(apiKey: String): Boolean = try {
         api.validateBearerToken(apiKey)
         true
@@ -20,6 +39,13 @@ class KtorOpenAiGenerationRemoteDataSource(
         false
     }
 
+    /**
+     * Executes the `textToImage` step in the SDAI data layer.
+     *
+     * @param apiKey api key value consumed by the API.
+     * @param payload generation payload used by the operation.
+     * @author Dmitriy Moroz
+     */
     override suspend fun textToImage(
         apiKey: String,
         payload: TextToImagePayload,

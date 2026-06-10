@@ -1,0 +1,999 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>CoreGenerationWorker</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script><meta id="sdai-docs-seo" name="description" content="Dokka API documentation for SDAI Kotlin Multiplatform, Android, iOS, and shared modules.">
+<link rel="canonical" href="https://sdai.moroz.cc/docs/feature/work/com.shifthackz.aisdv1.work.core/-core-generation-worker/index.html">
+<meta property="og:title" content="SDAI Documentation">
+<meta property="og:description" content="Kotlin API documentation for SDAI Android, iOS, and shared modules.">
+<meta property="og:url" content="https://sdai.moroz.cc/docs/feature/work/com.shifthackz.aisdv1.work.core/-core-generation-worker/index.html">
+<meta property="og:site_name" content="SDAI">
+<meta property="og:type" content="website">
+<style id="sdai-docs-branding">
+  .sdai-docs-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .sdai-docs-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .sdai-docs-links a:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .sdai-docs-links svg {
+    width: 18px;
+    height: 18px;
+  }
+  @media (max-width: 760px) {
+    .sdai-docs-links {
+      width: 100%;
+      justify-content: flex-start;
+      margin-left: 0;
+      padding: 6px 0;
+    }
+    .sdai-docs-links a {
+      padding: 0 6px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../index.html" tabindex="1">
+                    SDAI
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+<nav class="sdai-docs-links" aria-label="SDAI documentation links">
+  <a href="https://sdai.moroz.cc/">Main site</a>
+  <a href="https://t.me/sdai_app" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.86 4.58 18.62 19.84c-.24 1.08-.88 1.34-1.78.83l-4.92-3.63-2.37 2.28c-.26.26-.48.48-.98.48l.35-5.02 9.14-8.26c.4-.35-.09-.55-.61-.2L6.15 13.43l-4.87-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 3c.88-.33 1.65.2 1.31 1.58Z"/></svg>
+    <span>Telegram</span>
+  </a>
+  <a href="https://discord.gg/jzdR9m8Ves" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.54 5.26A18.1 18.1 0 0 0 15.04 3.86c-.19.34-.42.8-.57 1.16a16.7 16.7 0 0 0-4.99 0 12.3 12.3 0 0 0-.58-1.16 18 18 0 0 0-4.5 1.4C1.55 9.49.78 13.61 1.16 17.68a18.3 18.3 0 0 0 5.51 2.79c.44-.6.84-1.24 1.17-1.91-.64-.24-1.25-.54-1.82-.89.15-.11.3-.23.44-.35a12.96 12.96 0 0 0 11.08 0l.44.35c-.58.35-1.19.65-1.83.89.34.67.73 1.31 1.17 1.91a18.2 18.2 0 0 0 5.52-2.79c.46-4.72-.78-8.81-3.3-12.42ZM8.68 15.18c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.08 0 1.96.99 1.95 2.19 0 1.21-.87 2.2-1.95 2.2Zm6.64 0c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.09 0 1.96.99 1.95 2.19 0 1.21-.86 2.2-1.95 2.2Z"/></svg>
+    <span>Discord</span>
+  </a>
+</nav>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":feature:work/androidMain">android</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":feature:work/androidMain" data-filter=":feature:work/androidMain">
+                                <span class="checkbox--icon"></span>
+                                android
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    SDAI
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="feature/work::com.shifthackz.aisdv1.work.core/CoreGenerationWorker///PointingToDeclaration//-2033601414">
+  <div class="breadcrumbs"><a href="../../index.html">feature/work</a><span class="delimiter">/</span><a href="../index.html">com.shifthackz.aisdv1.work.core</a><span class="delimiter">/</span><span class="current">CoreGenerationWorker</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Core</span><wbr><span>Generation</span><wbr><span><span>Worker</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">CoreGenerationWorker</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">workerParameters<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/work/WorkerParameters.html">WorkerParameters</a><span class="token punctuation">, </span></span><span class="parameter ">pushNotificationManager<span class="token operator">: </span><a href="../../../../core/notification/com.shifthackz.aisdv1.core.notification/-push-notification-manager/index.html">PushNotificationManager</a><span class="token punctuation">, </span></span><span class="parameter ">activityIntentProvider<span class="token operator">: </span><a href="../../../../core/common/com.shifthackz.aisdv1.core.common.appbuild/-activity-intent-provider/index.html">ActivityIntentProvider</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preferenceManager<span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>backgroundWorkObserver<span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>observeHordeProcessStatusUseCase<span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-observe-horde-process-status-use-case/index.html">ObserveHordeProcessStatusUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>observeLocalDiffusionProcessStatusUseCase<span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-observe-local-diffusion-process-status-use-case/index.html">ObserveLocalDiffusionProcessStatusUseCase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>interruptGenerationUseCase<span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-interrupt-generation-use-case/index.html">InterruptGenerationUseCase</a></span></span><span class="token punctuation">)</span> : <a href="../-notification-worker/index.html">NotificationWorker</a><span class="source-link-wrapper"><span class="source-link" data-element-type="source-link">(<a href="https://github.com/ShiftHackZ/Stable-Diffusion-Android/tree/master/feature/work/src/androidMain/kotlin/com/shifthackz/aisdv1/work/core/CoreGenerationWorker.kt#L32">source</a>)</span></span></div><p class="paragraph">Coordinates <code class="lang-kotlin">CoreGenerationWorker</code> behavior in the SDAI background work feature layer.</p><span class="kdoc-tag"><h4 class="">Author</h4><p class="paragraph">Dmitriy Moroz</p></span><h4 class="tableheader">Inheritors</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../com.shifthackz.aisdv1.work.task/-image-to-image-task/index.html">ImageToImageTask</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html">TextToImageTask</a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-2034626031%2FConstructors%2F-2033601414" anchor-label="CoreGenerationWorker" id="-2034626031%2FConstructors%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-core-generation-worker.html"><span>Core</span><wbr><span>Generation</span><wbr><span><span>Worker</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2034626031%2FConstructors%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">workerParameters<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/work/WorkerParameters.html">WorkerParameters</a><span class="token punctuation">, </span></span><span class="parameter ">pushNotificationManager<span class="token operator">: </span><a href="../../../../core/notification/com.shifthackz.aisdv1.core.notification/-push-notification-manager/index.html">PushNotificationManager</a><span class="token punctuation">, </span></span><span class="parameter ">activityIntentProvider<span class="token operator">: </span><a href="../../../../core/common/com.shifthackz.aisdv1.core.common.appbuild/-activity-intent-provider/index.html">ActivityIntentProvider</a><span class="token punctuation">, </span></span><span class="parameter ">preferenceManager<span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a><span class="token punctuation">, </span></span><span class="parameter ">backgroundWorkObserver<span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a><span class="token punctuation">, </span></span><span class="parameter ">observeHordeProcessStatusUseCase<span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-observe-horde-process-status-use-case/index.html">ObserveHordeProcessStatusUseCase</a><span class="token punctuation">, </span></span><span class="parameter ">observeLocalDiffusionProcessStatusUseCase<span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-observe-local-diffusion-process-status-use-case/index.html">ObserveLocalDiffusionProcessStatusUseCase</a><span class="token punctuation">, </span></span><span class="parameter ">interruptGenerationUseCase<span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-interrupt-generation-use-case/index.html">InterruptGenerationUseCase</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-1086443170%2FProperties%2F-2033601414" anchor-label="activityIntentProvider" id="-1086443170%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-notification-worker/activity-intent-provider.html"><span>activity</span><wbr><span>Intent</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1086443170%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="../-notification-worker/activity-intent-provider.html">activityIntentProvider</a><span class="token operator">: </span><a href="../../../../core/common/com.shifthackz.aisdv1.core.common.appbuild/-activity-intent-provider/index.html">ActivityIntentProvider</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">activityIntentProvider</code> value used by the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-327014297%2FProperties%2F-2033601414" anchor-label="applicationContext" id="-327014297%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-327014297%2FProperties%2F-2033601414"><span>application</span><wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-327014297%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-327014297%2FProperties%2F-2033601414">applicationContext</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1655026885%2FProperties%2F-2033601414" anchor-label="backgroundExecutor" id="1655026885%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1655026885%2FProperties%2F-2033601414"><span>background</span><wbr><span><span>Executor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1655026885%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP">RestrictTo.Scope.LIBRARY_GROUP</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1655026885%2FProperties%2F-2033601414">backgroundExecutor</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/util/concurrent/Executor.html">Executor</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-176229583%2FProperties%2F-2033601414" anchor-label="backgroundWorkObserver" id="-176229583%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="background-work-observer.html"><span>background</span><wbr><span>Work</span><wbr><span><span>Observer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-176229583%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="background-work-observer.html">backgroundWorkObserver</a><span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.feature.work/-background-work-observer/index.html">BackgroundWorkObserver</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">backgroundWorkObserver</code> value used by the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1269180052%2FProperties%2F-2033601414" anchor-label="coroutineContext" id="1269180052%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1269180052%2FProperties%2F-2033601414"><span>coroutine</span><wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1269180052%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1269180052%2FProperties%2F-2033601414"><strike>coroutineContext</strike></a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1143943434%2FProperties%2F-2033601414" anchor-label="coroutineScope" id="1143943434%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="coroutine-scope.html"><span>coroutine</span><wbr><span><span>Scope</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1143943434%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="coroutine-scope.html">coroutineScope</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2136178756%2FProperties%2F-2033601414" anchor-label="foregroundInfoAsync" id="2136178756%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#2136178756%2FProperties%2F-2033601414"><span>foreground</span><wbr><span>Info</span><wbr><span><span>Async</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2136178756%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#2136178756%2FProperties%2F-2033601414">foregroundInfoAsync</a><span class="token operator">: </span><span data-unresolved-link="com.google.common.util.concurrent/ListenableFuture///PointingToDeclaration/">ListenableFuture</span><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/work/ForegroundInfo.html">ForegroundInfo</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1956915683%2FProperties%2F-2033601414" anchor-label="genericNotificationId" id="1956915683%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-notification-worker/generic-notification-id.html"><span>generic</span><wbr><span>Notification</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1956915683%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-notification-worker/generic-notification-id.html">genericNotificationId</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">genericNotificationId</code> value used by the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1553159413%2FProperties%2F-2033601414" anchor-label="id" id="-1553159413%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1553159413%2FProperties%2F-2033601414"><span><span>id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1553159413%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1553159413%2FProperties%2F-2033601414">id</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/util/UUID.html">UUID</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="774082432%2FProperties%2F-2033601414" anchor-label="inputData" id="774082432%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#774082432%2FProperties%2F-2033601414"><span>input</span><wbr><span><span>Data</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="774082432%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#774082432%2FProperties%2F-2033601414">inputData</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/work/Data.html">Data</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="644587754%2FProperties%2F-2033601414" anchor-label="interruptGenerationUseCase" id="644587754%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="interrupt-generation-use-case.html"><span>interrupt</span><wbr><span>Generation</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="644587754%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="interrupt-generation-use-case.html">interruptGenerationUseCase</a><span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-interrupt-generation-use-case/index.html">InterruptGenerationUseCase</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">interruptGenerationUseCase</code> value used by the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-43937871%2FProperties%2F-2033601414" anchor-label="isStopped" id="-43937871%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-43937871%2FProperties%2F-2033601414"><span>is</span><wbr><span><span>Stopped</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-43937871%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-43937871%2FProperties%2F-2033601414">isStopped</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2101847327%2FProperties%2F-2033601414" anchor-label="isUsed" id="2101847327%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#2101847327%2FProperties%2F-2033601414"><span>is</span><wbr><span><span>Used</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2101847327%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP">RestrictTo.Scope.LIBRARY_GROUP</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#2101847327%2FProperties%2F-2033601414">isUsed</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2065437287%2FProperties%2F-2033601414" anchor-label="mAppContext" id="-2065437287%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-2065437287%2FProperties%2F-2033601414"><span>m</span><wbr><span>App</span><wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2065437287%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">var </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-2065437287%2FProperties%2F-2033601414">mAppContext</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-832428031%2FProperties%2F-2033601414" anchor-label="mStopReason" id="-832428031%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-832428031%2FProperties%2F-2033601414"><span>m</span><wbr><span>Stop</span><wbr><span><span>Reason</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-832428031%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-832428031%2FProperties%2F-2033601414">mStopReason</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/concurrent/atomic/AtomicInteger.html">AtomicInteger</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1514102922%2FProperties%2F-2033601414" anchor-label="mUsed" id="1514102922%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1514102922%2FProperties%2F-2033601414"><span>m</span><wbr><span><span>Used</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1514102922%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">var </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1514102922%2FProperties%2F-2033601414">mUsed</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="829710723%2FProperties%2F-2033601414" anchor-label="mWorkerParams" id="829710723%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#829710723%2FProperties%2F-2033601414"><span>m</span><wbr><span>Worker</span><wbr><span><span>Params</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="829710723%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">var </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#829710723%2FProperties%2F-2033601414">mWorkerParams</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/work/WorkerParameters.html">WorkerParameters</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1127573222%2FProperties%2F-2033601414" anchor-label="network" id="1127573222%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1127573222%2FProperties%2F-2033601414"><span><span>network</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1127573222%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RequiresApi.html"><span class="token annotation builtin">RequiresApi</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">28</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1127573222%2FProperties%2F-2033601414">network</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/net/Network.html">Network</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1098739668%2FProperties%2F-2033601414" anchor-label="notificationId" id="1098739668%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-notification-worker/notification-id.html"><span>notification</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1098739668%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-notification-worker/notification-id.html">notificationId</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">notificationId</code> value used by the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1010550048%2FProperties%2F-2033601414" anchor-label="observeHordeProcessStatusUseCase" id="1010550048%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="observe-horde-process-status-use-case.html"><span>observe</span><wbr><span>Horde</span><wbr><span>Process</span><wbr><span>Status</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1010550048%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="observe-horde-process-status-use-case.html">observeHordeProcessStatusUseCase</a><span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-observe-horde-process-status-use-case/index.html">ObserveHordeProcessStatusUseCase</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">observeHordeProcessStatusUseCase</code> value used by the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-643414360%2FProperties%2F-2033601414" anchor-label="observeLocalDiffusionProcessStatusUseCase" id="-643414360%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="observe-local-diffusion-process-status-use-case.html"><span>observe</span><wbr><span>Local</span><wbr><span>Diffusion</span><wbr><span>Process</span><wbr><span>Status</span><wbr><span>Use</span><wbr><span><span>Case</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-643414360%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="observe-local-diffusion-process-status-use-case.html">observeLocalDiffusionProcessStatusUseCase</a><span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.usecase.generation/-observe-local-diffusion-process-status-use-case/index.html">ObserveLocalDiffusionProcessStatusUseCase</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">observeLocalDiffusionProcessStatusUseCase</code> value used by the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-208073435%2FProperties%2F-2033601414" anchor-label="params" id="-208073435%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-208073435%2FProperties%2F-2033601414"><span><span>params</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-208073435%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-208073435%2FProperties%2F-2033601414">params</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/work/WorkerParameters.html">WorkerParameters</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1163208478%2FProperties%2F-2033601414" anchor-label="preferenceManager" id="-1163208478%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="preference-manager.html"><span>preference</span><wbr><span><span>Manager</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1163208478%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="preference-manager.html">preferenceManager</a><span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.preference/-preference-manager/index.html">PreferenceManager</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">preferenceManager</code> value used by the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1839679016%2FProperties%2F-2033601414" anchor-label="pushNotificationManager" id="-1839679016%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-notification-worker/push-notification-manager.html"><span>push</span><wbr><span>Notification</span><wbr><span><span>Manager</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1839679016%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="../-notification-worker/push-notification-manager.html">pushNotificationManager</a><span class="token operator">: </span><a href="../../../../core/notification/com.shifthackz.aisdv1.core.notification/-push-notification-manager/index.html">PushNotificationManager</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">pushNotificationManager</code> value used by the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-633990521%2FProperties%2F-2033601414" anchor-label="runAttemptCount" id="-633990521%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-633990521%2FProperties%2F-2033601414"><span>run</span><wbr><span>Attempt</span><wbr><span><span>Count</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-633990521%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/IntRange.html"><span class="token annotation builtin">IntRange</span></a><span class="token punctuation">(</span><span>from<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">0</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-633990521%2FProperties%2F-2033601414">runAttemptCount</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-49268437%2FProperties%2F-2033601414" anchor-label="source" id="-49268437%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="source.html"><span><span>source</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-49268437%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">val </span><a href="source.html">source</a><span class="token operator">: </span><a href="../../../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1211274080%2FProperties%2F-2033601414" anchor-label="stopReason" id="-1211274080%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1211274080%2FProperties%2F-2033601414"><span>stop</span><wbr><span><span>Reason</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1211274080%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RequiresApi.html"><span class="token annotation builtin">RequiresApi</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">31</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1211274080%2FProperties%2F-2033601414">stopReason</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1786896269%2FProperties%2F-2033601414" anchor-label="tags" id="1786896269%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1786896269%2FProperties%2F-2033601414"><span><span>tags</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1786896269%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1786896269%2FProperties%2F-2033601414">tags</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="946140686%2FProperties%2F-2033601414" anchor-label="taskExecutor" id="946140686%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#946140686%2FProperties%2F-2033601414"><span>task</span><wbr><span><span>Executor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="946140686%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP">RestrictTo.Scope.LIBRARY_GROUP</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#946140686%2FProperties%2F-2033601414">taskExecutor</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><span data-unresolved-link="androidx.work.impl.utils.taskexecutor/TaskExecutor///PointingToDeclaration/">TaskExecutor</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="526558997%2FProperties%2F-2033601414" anchor-label="triggeredContentAuthorities" id="526558997%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#526558997%2FProperties%2F-2033601414"><span>triggered</span><wbr><span>Content</span><wbr><span><span>Authorities</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="526558997%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RequiresApi.html"><span class="token annotation builtin">RequiresApi</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">24</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#526558997%2FProperties%2F-2033601414">triggeredContentAuthorities</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="297087965%2FProperties%2F-2033601414" anchor-label="triggeredContentUris" id="297087965%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#297087965%2FProperties%2F-2033601414"><span>triggered</span><wbr><span>Content</span><wbr><span><span>Uris</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="297087965%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RequiresApi.html"><span class="token annotation builtin">RequiresApi</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">24</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#297087965%2FProperties%2F-2033601414">triggeredContentUris</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-55586328%2FProperties%2F-2033601414" anchor-label="workerFactory" id="-55586328%2FProperties%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-55586328%2FProperties%2F-2033601414"><span>worker</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-55586328%2FProperties%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP">RestrictTo.Scope.LIBRARY_GROUP</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">val </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-55586328%2FProperties%2F-2033601414">workerFactory</a><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/work/WorkerFactory.html">WorkerFactory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="410697181%2FFunctions%2F-2033601414" anchor-label="clearSubscriptions" id="410697181%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="clear-subscriptions.html"><span>clear</span><wbr><span><span>Subscriptions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="410697181%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">fun </span><a href="clear-subscriptions.html"><span class="token function">clearSubscriptions</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-504556241%2FFunctions%2F-2033601414" anchor-label="doWork" id="-504556241%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-notification-worker/index.html#-504556241%2FFunctions%2F-2033601414"><span>do</span><wbr><span><span>Work</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-504556241%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../-notification-worker/index.html#-504556241%2FFunctions%2F-2033601414"><span class="token function">doWork</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/work/ListenableWorker.Result.html">ListenableWorker.Result</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1577343784%2FFunctions%2F-2033601414" anchor-label="getForegroundInfo" id="1577343784%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1577343784%2FFunctions%2F-2033601414"><span>get</span><wbr><span>Foreground</span><wbr><span><span>Info</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1577343784%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1577343784%2FFunctions%2F-2033601414"><span class="token function">getForegroundInfo</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/work/ForegroundInfo.html">ForegroundInfo</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="67363926%2FFunctions%2F-2033601414" anchor-label="getForegroundInfoAsync" id="67363926%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#67363926%2FFunctions%2F-2033601414"><span>get</span><wbr><span>Foreground</span><wbr><span>Info</span><wbr><span><span>Async</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="67363926%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#67363926%2FFunctions%2F-2033601414"><span class="token function">getForegroundInfoAsync</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.google.common.util.concurrent/ListenableFuture///PointingToDeclaration/">ListenableFuture</span><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/work/ForegroundInfo.html">ForegroundInfo</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="850285179%2FFunctions%2F-2033601414" anchor-label="handleCancellation" id="850285179%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="handle-cancellation.html"><span>handle</span><wbr><span><span>Cancellation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="850285179%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="handle-cancellation.html"><span class="token function">handleCancellation</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1811167137%2FFunctions%2F-2033601414" anchor-label="handleError" id="1811167137%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="handle-error.html"><span>handle</span><wbr><span><span>Error</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1811167137%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">fun </span><a href="handle-error.html"><span class="token function">handleError</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">t<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1169098451%2FFunctions%2F-2033601414" anchor-label="handleProcess" id="-1169098451%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="handle-process.html"><span>handle</span><wbr><span><span>Process</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1169098451%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">fun </span><a href="handle-process.html"><span class="token function">handleProcess</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="819269210%2FFunctions%2F-2033601414" anchor-label="handleStart" id="819269210%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="handle-start.html"><span>handle</span><wbr><span><span>Start</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="819269210%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">fun </span><a href="handle-start.html"><span class="token function">handleStart</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-565774927%2FFunctions%2F-2033601414" anchor-label="handleSuccess" id="-565774927%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="handle-success.html"><span>handle</span><wbr><span><span>Success</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-565774927%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">fun </span><a href="handle-success.html"><span class="token function">handleSuccess</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">result<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../domain/com.shifthackz.aisdv1.domain.entity/-ai-generation-result/index.html">AiGenerationResult</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-426192387%2FFunctions%2F-2033601414" anchor-label="listenHordeStatus" id="-426192387%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="listen-horde-status.html"><span>listen</span><wbr><span>Horde</span><wbr><span><span>Status</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-426192387%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">fun </span><a href="listen-horde-status.html"><span class="token function">listenHordeStatus</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-937993165%2FFunctions%2F-2033601414" anchor-label="listenLocalDiffusionStatus" id="-937993165%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="listen-local-diffusion-status.html"><span>listen</span><wbr><span>Local</span><wbr><span>Diffusion</span><wbr><span><span>Status</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-937993165%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">fun </span><a href="listen-local-diffusion-status.html"><span class="token function">listenLocalDiffusionStatus</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1990082143%2FFunctions%2F-2033601414" anchor-label="onStopped" id="-1990082143%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1990082143%2FFunctions%2F-2033601414"><span>on</span><wbr><span><span>Stopped</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1990082143%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1990082143%2FFunctions%2F-2033601414"><span class="token function">onStopped</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="317365985%2FFunctions%2F-2033601414" anchor-label="setForeground" id="317365985%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#317365985%2FFunctions%2F-2033601414"><span>set</span><wbr><span><span>Foreground</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="317365985%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#317365985%2FFunctions%2F-2033601414"><span class="token function">setForeground</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">foregroundInfo<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/work/ForegroundInfo.html">ForegroundInfo</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1269350234%2FFunctions%2F-2033601414" anchor-label="setForegroundAsync" id="-1269350234%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1269350234%2FFunctions%2F-2033601414"><span>set</span><wbr><span>Foreground</span><wbr><span><span>Async</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1269350234%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1269350234%2FFunctions%2F-2033601414"><span class="token function">setForegroundAsync</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">foregroundInfo<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/work/ForegroundInfo.html">ForegroundInfo</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><span data-unresolved-link="com.google.common.util.concurrent/ListenableFuture///PointingToDeclaration/">ListenableFuture</span><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/Void.html">Void</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="481781326%2FFunctions%2F-2033601414" anchor-label="setForegroundNotification" id="481781326%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-notification-worker/set-foreground-notification.html"><span>set</span><wbr><span>Foreground</span><wbr><span><span>Notification</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="481781326%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-notification-worker/set-foreground-notification.html"><span class="token function">setForegroundNotification</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">title<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">body<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">subText<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">progress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">silent<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">canCancel<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">setForegroundNotification</code> step in the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1755411902%2FFunctions%2F-2033601414" anchor-label="setProgress" id="1755411902%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1755411902%2FFunctions%2F-2033601414"><span>set</span><wbr><span><span>Progress</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1755411902%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1755411902%2FFunctions%2F-2033601414"><span class="token function">setProgress</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">data<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/work/Data.html">Data</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-348364649%2FFunctions%2F-2033601414" anchor-label="setProgressAsync" id="-348364649%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-348364649%2FFunctions%2F-2033601414"><span>set</span><wbr><span>Progress</span><wbr><span><span>Async</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-348364649%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-348364649%2FFunctions%2F-2033601414"><span class="token function">setProgressAsync</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">data<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/work/Data.html">Data</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><span data-unresolved-link="com.google.common.util.concurrent/ListenableFuture///PointingToDeclaration/">ListenableFuture</span><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/Void.html">Void</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1019169525%2FFunctions%2F-2033601414" anchor-label="setUsed" id="1019169525%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1019169525%2FFunctions%2F-2033601414"><span>set</span><wbr><span><span>Used</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1019169525%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP">RestrictTo.Scope.LIBRARY_GROUP</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#1019169525%2FFunctions%2F-2033601414"><span class="token function">setUsed</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1105389493%2FFunctions%2F-2033601414" anchor-label="showGenericNotification" id="1105389493%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-notification-worker/show-generic-notification.html"><span>show</span><wbr><span>Generic</span><wbr><span><span>Notification</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1105389493%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-notification-worker/show-generic-notification.html"><span class="token function">showGenericNotification</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">text<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">body<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">showGenericNotification</code> step in the SDAI background work feature layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1181660772%2FFunctions%2F-2033601414" anchor-label="startWork" id="-1181660772%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1181660772%2FFunctions%2F-2033601414"><span>start</span><wbr><span><span>Work</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1181660772%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1181660772%2FFunctions%2F-2033601414"><span class="token function">startWork</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.google.common.util.concurrent/ListenableFuture///PointingToDeclaration/">ListenableFuture</span><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/work/ListenableWorker.Result.html">ListenableWorker.Result</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1498077086%2FFunctions%2F-2033601414" anchor-label="stop" id="-1498077086%2FFunctions%2F-2033601414" data-filterable-set=":feature:work/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":feature:work/androidMain" data-filterable-set=":feature:work/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1498077086%2FFunctions%2F-2033601414"><span><span>stop</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1498077086%2FFunctions%2F-2033601414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":feature:work/androidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP">RestrictTo.Scope.LIBRARY_GROUP</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../com.shifthackz.aisdv1.work.task/-text-to-image-task/index.html#-1498077086%2FFunctions%2F-2033601414"><span class="token function">stop</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">reason<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

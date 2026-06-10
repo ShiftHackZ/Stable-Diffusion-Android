@@ -30,6 +30,12 @@ import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageState
 import com.shifthackz.aisdv1.presentation.widget.dialog.GeneratingProgressDialogContent
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
 
+/**
+ * Renders the `LocalDiffusionPageContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun LocalDiffusionPageContent(
     modifier: Modifier = Modifier,

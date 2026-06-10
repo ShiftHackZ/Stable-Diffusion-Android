@@ -8,8 +8,19 @@ import kotlinx.cinterop.ptr
 import platform.posix.gettimeofday
 import platform.posix.timeval
 
+/**
+ * Executes the `platformNanoTime` step in the SDAI core common layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal actual fun platformNanoTime(): Long = platformCurrentTimeMillis() * 1_000_000L
 
+/**
+ * Executes the `platformCurrentTimeMillis` step in the SDAI core common layer.
+ *
+ * @return Result produced by `platformCurrentTimeMillis`.
+ * @author Dmitriy Moroz
+ */
 internal actual fun platformCurrentTimeMillis(): Long = memScoped {
     val time = alloc<timeval>()
     gettimeofday(time.ptr, null)

@@ -77,13 +77,32 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
+/**
+ * Coordinates `ImageInPaintTab` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal enum class ImageInPaintTab(
+    /**
+     * Exposes the `label` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val label: String,
 ) {
     Draw(Localization.string("in_paint_tab_1")),
     Adjust(Localization.string("in_paint_tab_2")),
 }
 
+/**
+ * Renders the `ImageInPaintSection` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param image image value consumed by the API.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ImageInPaintSection(
     modifier: Modifier = Modifier,
@@ -179,6 +198,16 @@ internal fun ImageInPaintSection(
     }
 }
 
+/**
+ * Renders the `ImageInPaintCanvas` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param image image value consumed by the API.
+ * @param state state rendered or processed by the component.
+ * @param drawEnabled draw enabled value consumed by the API.
+ * @param onStrokeDrawn callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ImageInPaintCanvas(
     modifier: Modifier = Modifier,

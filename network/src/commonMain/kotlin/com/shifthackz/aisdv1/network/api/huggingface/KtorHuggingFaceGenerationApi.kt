@@ -20,10 +20,35 @@ import io.ktor.http.takeFrom
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 
+/**
+ * Coordinates `KtorHuggingFaceGenerationApi` behavior in the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class KtorHuggingFaceGenerationApi(
+    /**
+     * Exposes the `httpClient` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val httpClient: HttpClient,
+    /**
+     * Exposes the `apiBaseUrl` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val apiBaseUrl: String,
+    /**
+     * Exposes the `inferenceBaseUrl` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val inferenceBaseUrl: String,
+    /**
+     * Exposes the `json` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val json: Json = defaultNetworkJson,
 ) : HuggingFaceGenerationApi {
 

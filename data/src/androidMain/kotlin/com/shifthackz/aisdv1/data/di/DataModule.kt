@@ -22,6 +22,11 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
+/**
+ * Exposes the `androidDataOverridesModule` value used by the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val androidDataOverridesModule = module {
     singleOf(::DatabaseClearGatewayImpl) bind DatabaseClearGateway::class
     single<MediaStoreGateway> {
@@ -39,4 +44,9 @@ private val androidDataOverridesModule = module {
     factoryOf(::MediaPipeGenerationRepositoryImpl) bind MediaPipeGenerationRepository::class
 }
 
+/**
+ * Exposes the `dataModule` value used by the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 actual val dataModule = arrayOf(androidDataOverridesModule)

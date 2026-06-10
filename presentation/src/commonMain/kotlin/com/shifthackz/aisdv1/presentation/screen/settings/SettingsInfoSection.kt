@@ -93,6 +93,15 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlinx.coroutines.launch
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `SettingsInfoSection` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param headerModifier header modifier value consumed by the API.
+ * @param itemModifier item modifier value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SettingsInfoSection(
     state: SettingsState,

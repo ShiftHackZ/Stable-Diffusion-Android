@@ -5,6 +5,11 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 
+/**
+ * Exposes the `textFieldColors` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val textFieldColors: TextFieldColors
     @Composable get() = OutlinedTextFieldDefaults.colors(
         errorContainerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.25f),

@@ -121,6 +121,11 @@ import com.shifthackz.aisdv1.storage.di.databaseModule
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
+/**
+ * Exposes the `coreDataModule` value used by the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val coreDataModule = module {
     includes(databaseModule, preferenceDataModule, swarmUiModelsDataModule)
 

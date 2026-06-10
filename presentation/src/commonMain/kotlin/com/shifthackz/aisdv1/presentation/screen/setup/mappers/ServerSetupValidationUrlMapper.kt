@@ -6,6 +6,12 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.url.UrlValidator
 
+/**
+ * Executes the `function` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `function`.
+ * @author Dmitriy Moroz
+ */
 fun ValidationResult<UrlValidator.Error>.mapToUi(): UiText? {
     if (this.isValid) return null
     val key = when (validationError as UrlValidator.Error) {

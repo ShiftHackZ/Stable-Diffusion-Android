@@ -13,6 +13,14 @@ import com.shifthackz.aisdv1.core.common.schedulers.SchedulersToken
 import com.shifthackz.aisdv1.presentation.screen.debug.mapToUi
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 
+/**
+ * Renders the `LDSchedulerBottomSheet` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param currentScheduler current scheduler value consumed by the API.
+ * @param onSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun LDSchedulerBottomSheet(
     modifier: Modifier = Modifier,

@@ -11,16 +11,61 @@ import com.shifthackz.aisdv1.domain.preference.SessionPreference
 import com.shifthackz.aisdv1.domain.repository.LorasRepository
 import com.shifthackz.aisdv1.network.exception.SwarmUiBadSessionException
 
+/**
+ * Implements `LorasRepository` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class LorasRepositoryImpl(
+    /**
+     * Exposes the `rdsA1111` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val rdsA1111: LorasDataSource.Remote.Automatic1111,
+    /**
+     * Exposes the `rdsSwarm` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val rdsSwarm: LorasDataSource.Remote.SwarmUi,
+    /**
+     * Exposes the `swarmSessionRemoteDataSource` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val swarmSessionRemoteDataSource: SwarmUiModelsRemoteDataSource,
+    /**
+     * Exposes the `lds` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val lds: LorasDataSource.Local,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
+    /**
+     * Exposes the `sessionPreference` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val sessionPreference: SessionPreference,
+    /**
+     * Exposes the `authorizationStore` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val authorizationStore: AuthorizationStore,
 ) : LorasRepository {
 
+    /**
+     * Loads SDAI data through `fetchLoras`.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun fetchLoras() {
         val loras = when (preferenceManager.source) {
             ServerSource.AUTOMATIC1111 -> rdsA1111.fetchLoras(
@@ -35,13 +80,30 @@ internal class LorasRepositoryImpl(
         lds.insertLoras(loras)
     }
 
+    /**
+     * Loads SDAI data through `fetchAndGetLoras`.
+     *
+     * @return Result produced by `fetchAndGetLoras`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun fetchAndGetLoras(): List<LoRA> {
         runCatching { fetchLoras() }
         return getLoras()
     }
 
+    /**
+     * Loads SDAI data through `getLoras`.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun getLoras(): List<LoRA> = lds.getLoras()
 
+    /**
+     * Loads SDAI data through `fetchSwarmLoras`.
+     *
+     * @return Result produced by `fetchSwarmLoras`.
+     * @author Dmitriy Moroz
+     */
     private suspend fun fetchSwarmLoras(): List<LoRA> {
         val baseUrl = preferenceManager.swarmUiServerUrl
         val credentials = authorizationStore.getAuthorizationCredentials()
@@ -54,6 +116,14 @@ internal class LorasRepositoryImpl(
         }
     }
 
+    /**
+     * Loads SDAI data through `getSessionId`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param credentials credentials value consumed by the API.
+     * @return Result produced by `getSessionId`.
+     * @author Dmitriy Moroz
+     */
     private suspend fun getSessionId(
         baseUrl: String,
         credentials: AuthorizationCredentials,
@@ -62,6 +132,14 @@ internal class LorasRepositoryImpl(
         .takeIf(String::isNotBlank)
         ?: forceRenewSession(baseUrl, credentials)
 
+    /**
+     * Executes the `forceRenewSession` step in the SDAI data layer.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param credentials credentials value consumed by the API.
+     * @return Result produced by `forceRenewSession`.
+     * @author Dmitriy Moroz
+     */
     private suspend fun forceRenewSession(
         baseUrl: String,
         credentials: AuthorizationCredentials,

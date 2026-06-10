@@ -93,8 +93,19 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlinx.coroutines.launch
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Executes the `text` step in the SDAI presentation layer.
+ *
+ * @param key key value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun text(key: String): UiText = Localization.string(key).asUiText()
 
+/**
+ * Executes the `shortTitle` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun ServerSource.shortTitle(): String = when (this) {
     ServerSource.AUTOMATIC1111 -> Localization.string("srv_type_own_short")
     ServerSource.HORDE -> Localization.string("srv_type_horde_short")

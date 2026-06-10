@@ -8,10 +8,35 @@ import com.shifthackz.aisdv1.presentation.navigation.router.HistoryRouter
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 
+/**
+ * Coordinates `HistoryViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class HistoryViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `getAllGalleryUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getAllGalleryUseCase: GetAllGalleryUseCase,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: HistoryRouter,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<HistoryState, HistoryIntent, EmptyEffect>(
     initialState = HistoryState(),

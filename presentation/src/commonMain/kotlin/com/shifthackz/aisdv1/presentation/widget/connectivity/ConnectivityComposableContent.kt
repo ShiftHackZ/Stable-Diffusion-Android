@@ -26,12 +26,24 @@ import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.extensions.measureTextWidth
 import com.shifthackz.aisdv1.core.localization.Localization
 
+/**
+ * Coordinates `ConnectivityStatus` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 enum class ConnectivityStatus {
     Uninitialized,
     Connected,
     Disconnected,
 }
 
+/**
+ * Renders the `ConnectivityWidget` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ConnectivityWidget(
     state: ConnectivityState,
@@ -63,6 +75,17 @@ fun ConnectivityWidget(
     )
 }
 
+/**
+ * Renders the `ConnectivityComposableContent` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param status status value consumed by the API.
+ * @param containerColor container color value consumed by the API.
+ * @param contentColor content color value consumed by the API.
+ * @param visible visible value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ConnectivityComposableContent(
     text: String,

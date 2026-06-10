@@ -27,10 +27,34 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 
+/**
+ * Defines the `ZoomableImageSource` contract for the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 sealed interface ZoomableImageSource {
+    /**
+     * Carries `Bitmap` data through the SDAI presentation layer.
+     *
+     * @param image image value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     data class Bitmap(val image: ImageBitmap) : ZoomableImageSource
 }
 
+/**
+ * Renders the `ZoomableImage` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param source source value consumed by the API.
+ * @param backgroundColor background color value consumed by the API.
+ * @param minScale min scale value consumed by the API.
+ * @param maxScale max scale value consumed by the API.
+ * @param hideImage hide image value consumed by the API.
+ * @param hideBlurRadius hide blur radius value consumed by the API.
+ * @param fitToWidth fit to width value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ZoomableImage(
     modifier: Modifier = Modifier,
@@ -121,27 +145,80 @@ fun ZoomableImage(
     }
 }
 
+/**
+ * Exposes the `ZoomableImageSource` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val ZoomableImageSource.aspectRatio: Float
     get() = bitmap.width.toFloat() / bitmap.height.coerceAtLeast(1)
 
+/**
+ * Exposes the `ZoomableImageSource` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private val ZoomableImageSource.bitmap: ImageBitmap
     get() = (this as ZoomableImageSource.Bitmap).image
 
+/**
+ * Carries `ImageContentSize` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private data class ImageContentSize(
+    /**
+     * Exposes the `width` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val width: Float,
+    /**
+     * Exposes the `height` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val height: Float,
 )
 
+/**
+ * Executes the `sizeForContainer` step in the SDAI presentation layer.
+ *
+ * @param containerSize container size value consumed by the API.
+ * @param fitToWidth fit to width value consumed by the API.
+ * @return Result produced by `sizeForContainer`.
+ * @author Dmitriy Moroz
+ */
 private fun ZoomableImageSource.sizeForContainer(
     containerSize: IntSize,
     fitToWidth: Boolean,
 ): ImageContentSize {
+    /**
+     * Exposes the `image` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val image = bitmap
+    /**
+     * Exposes the `sourceWidth` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sourceWidth = image.width.toFloat()
+    /**
+     * Exposes the `sourceHeight` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val sourceHeight = image.height.toFloat().coerceAtLeast(1f)
     if (!fitToWidth || containerSize.width <= 0) {
         return ImageContentSize(sourceWidth, sourceHeight)
     }
+    /**
+     * Exposes the `width` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val width = containerSize.width.toFloat()
     return ImageContentSize(
         width = width,
@@ -149,6 +226,15 @@ private fun ZoomableImageSource.sizeForContainer(
     )
 }
 
+/**
+ * Executes the `coerceInBounds` step in the SDAI presentation layer.
+ *
+ * @param containerSize container size value consumed by the API.
+ * @param contentSize content size value consumed by the API.
+ * @param scale scale value consumed by the API.
+ * @return Result produced by `coerceInBounds`.
+ * @author Dmitriy Moroz
+ */
 private fun Float.coerceInBounds(
     containerSize: Float,
     contentSize: Float,

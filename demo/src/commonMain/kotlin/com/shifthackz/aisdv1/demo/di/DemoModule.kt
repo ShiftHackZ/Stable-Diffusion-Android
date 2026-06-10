@@ -10,6 +10,11 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
+/**
+ * Exposes the `demoModule` value used by the SDAI demo layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val demoModule = module {
     singleOf(::DemoDataSerializer)
     factoryOf(::TextToImageDemoImpl) bind TextToImageDemo::class

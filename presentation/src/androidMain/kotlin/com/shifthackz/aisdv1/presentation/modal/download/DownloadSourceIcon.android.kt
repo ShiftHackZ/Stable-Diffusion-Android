@@ -9,6 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.shifthackz.aisdv1.presentation.R
 
+/**
+ * Renders the `DownloadSourceIcon` UI for the SDAI presentation layer.
+ *
+ * @param host host value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal actual fun DownloadSourceIcon(
     host: String,

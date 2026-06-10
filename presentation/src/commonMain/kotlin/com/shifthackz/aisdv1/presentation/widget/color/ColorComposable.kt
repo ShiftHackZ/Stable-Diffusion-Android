@@ -17,6 +17,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * Renders the `ColorComposable` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param selectedToken selected token value consumed by the API.
+ * @param token token value consumed by the API.
+ * @param color color value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @param iconTint icon tint value consumed by the API.
+ * @param selectedBorderTint selected border tint value consumed by the API.
+ * @param unselectedBorderTint unselected border tint value consumed by the API.
+ * @param borderSize border size value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun <T : Any> ColorComposable(
     modifier: Modifier = Modifier,

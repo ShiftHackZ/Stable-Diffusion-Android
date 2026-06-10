@@ -13,6 +13,14 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.debugInspectorInfo
 
+/**
+ * Executes the `shake` step in the SDAI core UI layer.
+ *
+ * @param enabled enabled value consumed by the API.
+ * @param animationDurationMillis animation duration millis value consumed by the API.
+ * @param animationStartOffset animation start offset value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 fun Modifier.shake(
     enabled: Boolean,
     animationDurationMillis: Int = 167,

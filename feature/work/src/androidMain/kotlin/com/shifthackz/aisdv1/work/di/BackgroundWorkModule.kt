@@ -13,6 +13,11 @@ import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
+/**
+ * Exposes the `backgroundWorkModule` value used by the SDAI background work feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val backgroundWorkModule = module {
     factory {
         WorkManagerProvider { WorkManager.getInstance(androidApplication()) }

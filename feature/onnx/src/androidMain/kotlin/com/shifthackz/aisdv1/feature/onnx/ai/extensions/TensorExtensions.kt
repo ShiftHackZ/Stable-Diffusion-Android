@@ -10,6 +10,14 @@ import com.shifthackz.aisdv1.feature.onnx.environment.OrtEnvironmentProvider
 import org.koin.java.KoinJavaComponent.inject
 import java.nio.FloatBuffer
 
+/**
+ * Executes the `duplicate` step in the SDAI ONNX local diffusion feature layer.
+ *
+ * @param data data value consumed by the API.
+ * @param dimensions dimensions value consumed by the API.
+ * @return Result produced by `duplicate`.
+ * @author Dmitriy Moroz
+ */
 internal fun duplicate(data: FloatArray, dimensions: LongArray?): LocalDiffusionTensor<*> {
     val ortEnvironmentProvider: OrtEnvironmentProvider by inject(OrtEnvironmentProvider::class.java)
     val floats = FloatArray(data.size * 2)
@@ -26,6 +34,15 @@ internal fun duplicate(data: FloatArray, dimensions: LongArray?): LocalDiffusion
     )
 }
 
+/**
+ * Executes the `multipleTensorsByFloat` step in the SDAI ONNX local diffusion feature layer.
+ *
+ * @param data data value consumed by the API.
+ * @param value value value consumed by the API.
+ * @param dimensions dimensions value consumed by the API.
+ * @return Result produced by `multipleTensorsByFloat`.
+ * @author Dmitriy Moroz
+ */
 internal fun multipleTensorsByFloat(
     data: FloatArray,
     value: Float,
@@ -47,6 +64,14 @@ internal fun multipleTensorsByFloat(
 }
 
 
+/**
+ * Executes the `splitTensor` step in the SDAI ONNX local diffusion feature layer.
+ *
+ * @param tensorToSplit tensor to split value consumed by the API.
+ * @param dimensions dimensions value consumed by the API.
+ * @return Result produced by `splitTensor`.
+ * @author Dmitriy Moroz
+ */
 internal fun splitTensor(
     tensorToSplit: Array3D<FloatArray>,
     dimensions: LongArray,

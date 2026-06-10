@@ -3,19 +3,80 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.presentation.navigation.router.ServerSetupRouter
 
+/**
+ * Coordinates `ServerSetupIntentProcessor` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class ServerSetupIntentProcessor(
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: ServerSetupRouter,
+    /**
+     * Exposes the `linksProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val linksProvider: LinksProvider,
+    /**
+     * Exposes the `currentState` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val currentState: () -> ServerSetupState,
+    /**
+     * Exposes the `updateState` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val updateState: (((ServerSetupState) -> ServerSetupState) -> Unit),
+    /**
+     * Exposes the `emitEffect` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val emitEffect: (ServerSetupEffect) -> Unit,
+    /**
+     * Exposes the `localModelDownloadClickReducer` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val localModelDownloadClickReducer: (ServerSetupState.LocalModel) -> Unit,
+    /**
+     * Exposes the `deleteLocalModel` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val deleteLocalModel: (String) -> Unit,
+    /**
+     * Exposes the `download` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val download: (String, String) -> Unit,
+    /**
+     * Exposes the `validateAndConnectToServer` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val validateAndConnectToServer: () -> Unit,
+    /**
+     * Exposes the `connectToServer` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val connectToServer: () -> Unit,
 ) {
 
+    /**
+     * Executes the `process` step in the SDAI presentation layer.
+     *
+     * @param intent intent to process in the MVI workflow.
+     * @author Dmitriy Moroz
+     */
     fun process(intent: ServerSetupIntent) {
         when (intent) {
             is ServerSetupIntent.AllowLocalCustomModel -> updateState { state ->

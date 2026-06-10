@@ -18,6 +18,11 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 
+/**
+ * Executes the `shimmer` step in the SDAI core UI layer.
+ *
+ * @author Dmitriy Moroz
+ */
 fun Modifier.shimmer() = composed {
     var size by remember { mutableStateOf(IntSize.Zero) }
     val transition = rememberInfiniteTransition(label = "shimmer")

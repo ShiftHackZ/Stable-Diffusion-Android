@@ -12,11 +12,30 @@ import com.shifthackz.aisdv1.network.response.StabilityGenerationResponse
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+/**
+ * Coordinates `KtorStabilityAiGenerationRemoteDataSource` behavior in the SDAI data layer.
+ *
+ * @throws IllegalStateException when the delegated operation cannot complete.
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalTime::class)
 class KtorStabilityAiGenerationRemoteDataSource(
+    /**
+     * Exposes the `api` value used by the SDAI data layer.
+     *
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
     private val api: StabilityAiGenerationApi,
 ) : StabilityAiGenerationDataSource.Remote {
 
+    /**
+     * Executes the `validateApiKey` step in the SDAI data layer.
+     *
+     * @param apiKey api key value consumed by the API.
+     * @return Result produced by `validateApiKey`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun validateApiKey(apiKey: String): Boolean = try {
         api.validateBearerToken(apiKey)
         true
@@ -24,6 +43,14 @@ class KtorStabilityAiGenerationRemoteDataSource(
         false
     }
 
+    /**
+     * Executes the `textToImage` step in the SDAI data layer.
+     *
+     * @param apiKey api key value consumed by the API.
+     * @param engineId engine id value consumed by the API.
+     * @param payload generation payload used by the operation.
+     * @author Dmitriy Moroz
+     */
     override suspend fun textToImage(
         apiKey: String,
         engineId: String,
@@ -37,6 +64,14 @@ class KtorStabilityAiGenerationRemoteDataSource(
             )
         }
 
+    /**
+     * Executes the `imageToImage` step in the SDAI data layer.
+     *
+     * @param apiKey api key value consumed by the API.
+     * @param engineId engine id value consumed by the API.
+     * @param payload generation payload used by the operation.
+     * @author Dmitriy Moroz
+     */
     override suspend fun imageToImage(
         apiKey: String,
         engineId: String,
@@ -55,6 +90,14 @@ class KtorStabilityAiGenerationRemoteDataSource(
             )
         }
 
+    /**
+     * Executes the `processResponse` step in the SDAI data layer.
+     *
+     * @param payload generation payload used by the operation.
+     * @return Result produced by `processResponse`.
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
     private fun <T : Any> StabilityGenerationResponse.processResponse(payload: T): Pair<T, String> {
         return artifacts?.firstOrNull()?.base64?.let { base64 ->
             payload to base64

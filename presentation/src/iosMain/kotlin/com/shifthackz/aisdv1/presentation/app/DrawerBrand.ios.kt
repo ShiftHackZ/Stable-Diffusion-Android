@@ -17,6 +17,12 @@ import com.shifthackz.aisdv1.presentation.generated.resources.sdai_logo
 import com.shifthackz.aisdv1.presentation.widget.icon.BrandIcons
 import org.jetbrains.compose.resources.painterResource
 
+/**
+ * Renders the `DrawerBrandLogo` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal actual fun DrawerBrandLogo(modifier: Modifier) {
     Surface(
@@ -37,6 +43,12 @@ internal actual fun DrawerBrandLogo(modifier: Modifier) {
     }
 }
 
+/**
+ * Renders the `DrawerPlatformIcon` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal actual fun DrawerPlatformIcon(modifier: Modifier) {
     Icon(

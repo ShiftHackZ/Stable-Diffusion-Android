@@ -11,6 +11,11 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.preference.SessionPreference
 import org.koin.dsl.module
 
+/**
+ * Exposes the `preferenceDataModule` value used by the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val preferenceDataModule = module {
     single<PreferenceManager> {
         PreferenceManagerImpl(
@@ -32,5 +37,15 @@ val preferenceDataModule = module {
     }
 }
 
+/**
+ * Exposes the `KEY_PREFERENCE_MANAGER` value used by the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val KEY_PREFERENCE_MANAGER = "aisdv1_preference_manager"
+/**
+ * Exposes the `KEY_PREFERENCE_AUTHORIZATION` value used by the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val KEY_PREFERENCE_AUTHORIZATION = "sdai_authorization_preference"

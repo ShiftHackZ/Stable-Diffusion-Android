@@ -97,6 +97,14 @@ import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 import kotlinx.coroutines.launch
 
 
+/**
+ * Renders the `SettingsAction` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param icon icon value consumed by the API.
+ * @param onClick callback invoked when the user activates the control.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SettingsAction(
     text: String,
@@ -113,6 +121,15 @@ internal fun SettingsAction(
     )
 }
 
+/**
+ * Renders the `SwitchRow` UI for the SDAI presentation layer.
+ *
+ * @param text text value consumed by the API.
+ * @param icon icon value consumed by the API.
+ * @param checked checked value consumed by the API.
+ * @param onCheckedChange callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SwitchRow(
     text: String,
@@ -138,6 +155,14 @@ internal fun SwitchRow(
     )
 }
 
+/**
+ * Renders the `ServerSetupModal` UI for the SDAI presentation layer.
+ *
+ * @param modal modal value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun ServerSetupModal(
     modal: ServerSetupState.Modal,
@@ -232,6 +257,11 @@ internal fun ServerSetupModal(
     }
 }
 
+/**
+ * Exposes the `ServerSource` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val ServerSource.icon: ImageVector
     get() = when (this) {
         ServerSource.AUTOMATIC1111,
@@ -249,6 +279,12 @@ internal val ServerSource.icon: ImageVector
         -> Icons.Default.Android
     }
 
+/**
+ * Executes the `title` step in the SDAI presentation layer.
+ *
+ * @param strings strings value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun ServerSource.title(strings: ServerSetupStrings): String = when (this) {
     ServerSource.AUTOMATIC1111 -> strings.automaticTitle
     ServerSource.SWARM_UI -> strings.swarmTitle
@@ -260,6 +296,12 @@ internal fun ServerSource.title(strings: ServerSetupStrings): String = when (thi
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeTitle
 }
 
+/**
+ * Executes the `subtitle` step in the SDAI presentation layer.
+ *
+ * @param strings strings value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun ServerSource.subtitle(strings: ServerSetupStrings): String = when (this) {
     ServerSource.AUTOMATIC1111 -> strings.automaticSubtitle
     ServerSource.SWARM_UI -> strings.swarmSubtitle
@@ -271,6 +313,12 @@ internal fun ServerSource.subtitle(strings: ServerSetupStrings): String = when (
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeSubtitle
 }
 
+/**
+ * Executes the `function` step in the SDAI presentation layer.
+ *
+ * @param strings strings value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun ServerSetupState.ValidationError.message(
     strings: ServerSetupStrings,
 ): String = when (this) {
@@ -281,6 +329,11 @@ internal fun ServerSetupState.ValidationError.message(
     ServerSetupState.ValidationError.InvalidUrl -> Localization.string("error_invalid_url")
 }
 
+/**
+ * Exposes the `ServerSetupState` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val ServerSetupState.mainButtonEnabled: Boolean
     get() = when (step) {
         ServerSetupState.Step.SOURCE -> true
@@ -295,9 +348,19 @@ internal val ServerSetupState.mainButtonEnabled: Boolean
         }
     }
 
+/**
+ * Exposes the `ServerSetupState` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val ServerSetupState.LocalModel.isCustom: Boolean
     get() = id == LocalAiModel.CustomOnnx.id || id == LocalAiModel.CustomMediaPipe.id
 
+/**
+ * Exposes the `ServerSetupState` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val ServerSetupState.LocalModel.downloadIcon: ImageVector
     get() = when (downloadState) {
         is DownloadState.Downloading -> Icons.Outlined.FileDownload

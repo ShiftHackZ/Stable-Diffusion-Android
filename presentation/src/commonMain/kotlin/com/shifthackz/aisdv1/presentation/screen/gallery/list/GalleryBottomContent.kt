@@ -99,6 +99,14 @@ import kotlin.random.Random
 import org.koin.core.parameter.parametersOf
 
 
+/**
+ * Renders the `selectionJiggle` UI for the SDAI presentation layer.
+ *
+ * @param enabled enabled value consumed by the API.
+ * @param animationStartOffset animation start offset value consumed by the API.
+ * @return Result produced by `selectionJiggle`.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun Modifier.selectionJiggle(
     enabled: Boolean,
@@ -132,6 +140,13 @@ internal fun Modifier.selectionJiggle(
     }
 }
 
+/**
+ * Renders the `GalleryBottomBars` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryBottomBars(
     state: GalleryState,
@@ -215,6 +230,13 @@ internal fun GalleryBottomBars(
     }
 }
 
+/**
+ * Renders the `GalleryDialogRenderer` UI for the SDAI presentation layer.
+ *
+ * @param dialog dialog value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryDialogRenderer(
     dialog: GalleryDialog,
@@ -267,6 +289,15 @@ internal fun GalleryDialogRenderer(
     }
 }
 
+/**
+ * Renders the `DeleteGalleryDialog` UI for the SDAI presentation layer.
+ *
+ * @param titleKey title key value consumed by the API.
+ * @param textKey text key value consumed by the API.
+ * @param onConfirm callback invoked by the component.
+ * @param onDismiss callback invoked when the UI should be dismissed.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun DeleteGalleryDialog(
     titleKey: String,
@@ -284,6 +315,13 @@ internal fun DeleteGalleryDialog(
     )
 }
 
+/**
+ * Renders the `GalleryLoadingGrid` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param grid grid value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryLoadingGrid(
     modifier: Modifier,
@@ -300,6 +338,12 @@ internal fun GalleryLoadingGrid(
     }
 }
 
+/**
+ * Executes the `galleryShimmerItems` step in the SDAI presentation layer.
+ *
+ * @param grid grid value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 internal fun LazyGridScope.galleryShimmerItems(grid: Grid) {
     val max = when (grid) {
         Grid.Fixed2 -> 6

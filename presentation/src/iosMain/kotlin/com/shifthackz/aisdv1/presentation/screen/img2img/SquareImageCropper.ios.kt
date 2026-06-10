@@ -8,6 +8,13 @@ import org.jetbrains.skia.Rect
 import org.jetbrains.skia.SamplingMode
 import org.jetbrains.skia.Surface
 
+/**
+ * Executes the `cropBase64ImageToSquare` step in the SDAI presentation layer.
+ *
+ * @param base64 Base64 image payload used by the operation.
+ * @return Result produced by `cropBase64ImageToSquare`.
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalEncodingApi::class)
 internal actual suspend fun cropBase64ImageToSquare(base64: String): String =
     runCatching {
@@ -37,5 +44,15 @@ internal actual suspend fun cropBase64ImageToSquare(base64: String): String =
         Base64.encode(data.bytes)
     }.getOrDefault(base64)
 
+/**
+ * Exposes the `MAX_CROPPED_IMAGE_SIDE` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val MAX_CROPPED_IMAGE_SIDE = 1536
+/**
+ * Exposes the `CROPPED_IMAGE_JPEG_QUALITY` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val CROPPED_IMAGE_JPEG_QUALITY = 95

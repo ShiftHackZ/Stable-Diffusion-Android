@@ -15,6 +15,16 @@ import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
 import com.shifthackz.aisdv1.presentation.theme.global.catppuccinAccentColor
 import com.shifthackz.aisdv1.presentation.theme.global.catppuccinBaseColor
 
+/**
+ * Renders the `AccentColorSelector` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param isDark is dark value consumed by the API.
+ * @param darkThemeToken dark theme token value consumed by the API.
+ * @param selectedToken selected token value consumed by the API.
+ * @param onSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun AccentColorSelector(
     modifier: Modifier = Modifier,

@@ -40,6 +40,18 @@ import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 import kotlin.math.abs
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `EditTagDialog` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param prompt positive prompt text for image generation.
+ * @param negativePrompt negative prompt text for image generation.
+ * @param tag tag value consumed by the API.
+ * @param isNegative is negative value consumed by the API.
+ * @param onDismissRequest callback invoked by the component.
+ * @param onNewPrompts callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun EditTagDialog(
     modifier: Modifier = Modifier,
@@ -83,6 +95,14 @@ fun EditTagDialog(
     }
 }
 
+/**
+ * Renders the `ScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,

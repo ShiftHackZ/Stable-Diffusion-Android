@@ -14,12 +14,39 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 
+/**
+ * Coordinates `KtorSdaiAppApi` behavior in the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class KtorSdaiAppApi(
+    /**
+     * Exposes the `httpClient` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val httpClient: HttpClient,
+    /**
+     * Exposes the `appBaseUrl` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val appBaseUrl: String,
+    /**
+     * Exposes the `reportBaseUrl` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val reportBaseUrl: String,
 ) : SdaiAppApi {
 
+    /**
+     * Creates a new SDAI component instance.
+     *
+     * @param appBaseUrl app base url value consumed by the API.
+     * @param reportBaseUrl report base url value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     constructor(
         appBaseUrl: String,
         reportBaseUrl: String,
@@ -29,6 +56,12 @@ class KtorSdaiAppApi(
         reportBaseUrl = reportBaseUrl,
     )
 
+    /**
+     * Loads SDAI data through `fetchSupporters`.
+     *
+     * @return Result produced by `fetchSupporters`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun fetchSupporters(): List<SupporterRaw> = httpClient
         .get {
             url.takeFrom(appBaseUrl)
@@ -36,6 +69,12 @@ class KtorSdaiAppApi(
         }
         .body()
 
+    /**
+     * Loads SDAI data through `fetchOnnxModels`.
+     *
+     * @return Result produced by `fetchOnnxModels`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun fetchOnnxModels(): List<DownloadableModelResponse> = httpClient
         .get {
             url.takeFrom(appBaseUrl)
@@ -43,6 +82,12 @@ class KtorSdaiAppApi(
         }
         .body()
 
+    /**
+     * Loads SDAI data through `fetchMediaPipeModels`.
+     *
+     * @return Result produced by `fetchMediaPipeModels`.
+     * @author Dmitriy Moroz
+     */
     override suspend fun fetchMediaPipeModels(): List<DownloadableModelResponse> = httpClient
         .get {
             url.takeFrom(appBaseUrl)
@@ -50,6 +95,12 @@ class KtorSdaiAppApi(
         }
         .body()
 
+    /**
+     * Executes the `postReport` step in the SDAI network layer.
+     *
+     * @param request request value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override suspend fun postReport(request: ReportRequest) {
         httpClient.post {
             url.takeFrom(reportBaseUrl)
@@ -59,10 +110,35 @@ class KtorSdaiAppApi(
         }
     }
 
+    /**
+     * Provides the `companion object` singleton used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private companion object {
+        /**
+         * Exposes the `PATH_SUPPORTERS` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
         const val PATH_SUPPORTERS = "supporters.json"
+        /**
+         * Exposes the `PATH_MODELS` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
         const val PATH_MODELS = "models.json"
+        /**
+         * Exposes the `PATH_MEDIA_PIPE` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
         const val PATH_MEDIA_PIPE = "mediapipe.json"
+        /**
+         * Exposes the `PATH_REPORT` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
         const val PATH_REPORT = "report"
     }
 }

@@ -28,6 +28,18 @@ import com.shifthackz.aisdv1.core.model.asString
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 
+/**
+ * Renders the `DropdownTextField` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param loading loading value consumed by the API.
+ * @param label label value consumed by the API.
+ * @param value value value consumed by the API.
+ * @param items items value consumed by the API.
+ * @param onItemSelected callback invoked by the component.
+ * @param displayDelegate display delegate value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun <T : Any> DropdownTextField(
     modifier: Modifier = Modifier,

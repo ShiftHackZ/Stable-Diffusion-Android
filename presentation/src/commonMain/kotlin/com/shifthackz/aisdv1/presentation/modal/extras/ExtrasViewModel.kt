@@ -11,14 +11,44 @@ import com.shifthackz.aisdv1.presentation.model.ErrorState
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.utils.ExtrasFormatter
 
+/**
+ * Coordinates `ExtrasViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class ExtrasViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `fetchAndGetLorasUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fetchAndGetLorasUseCase: FetchAndGetLorasUseCase,
+    /**
+     * Exposes the `fetchAndGetHyperNetworksUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fetchAndGetHyperNetworksUseCase: FetchAndGetHyperNetworksUseCase,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
     prompt: String,
     negativePrompt: String,
     type: ExtraType,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<ExtrasState, ExtrasIntent, ExtrasEffect>(
     initialState = ExtrasState(source = preferenceManager.source),

@@ -14,17 +14,49 @@ import com.shifthackz.aisdv1.core.common.appbuild.ActivityIntentProvider
 import com.shifthackz.aisdv1.core.common.extensions.isAppInForeground
 import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 
+/**
+ * Coordinates `NotificationWorker` behavior in the SDAI background work feature layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal abstract class NotificationWorker(
     context: Context,
     workerParameters: WorkerParameters,
+    /**
+     * Exposes the `pushNotificationManager` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val pushNotificationManager: PushNotificationManager,
+    /**
+     * Exposes the `activityIntentProvider` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val activityIntentProvider: ActivityIntentProvider,
 ) : CoroutineWorker(context, workerParameters) {
 
+    /**
+     * Exposes the `notificationId` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     abstract val notificationId: Int
 
+    /**
+     * Exposes the `genericNotificationId` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
     abstract val genericNotificationId: Int
 
+    /**
+     * Executes the `showGenericNotification` step in the SDAI background work feature layer.
+     *
+     * @param text text value consumed by the API.
+     * @param body body value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     fun showGenericNotification(text: String, body: String?) {
         pushNotificationManager.createNotificationChannel()
         val notification = pushNotificationManager.createNotification(text, body) {
@@ -46,6 +78,17 @@ internal abstract class NotificationWorker(
         pushNotificationManager.show(genericNotificationId, notification)
     }
 
+    /**
+     * Executes the `setForegroundNotification` step in the SDAI background work feature layer.
+     *
+     * @param title title value consumed by the API.
+     * @param body body value consumed by the API.
+     * @param subText sub text value consumed by the API.
+     * @param progress progress value consumed by the API.
+     * @param silent silent value consumed by the API.
+     * @param canCancel can cancel value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     fun setForegroundNotification(
         title: String,
         body: String,

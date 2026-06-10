@@ -53,6 +53,16 @@ import com.shifthackz.aisdv1.presentation.widget.source.getName
 import com.shifthackz.aisdv1.presentation.widget.toolbar.ModalDialogToolbar
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `ExtrasScreen` UI for the SDAI presentation layer.
+ *
+ * @param prompt positive prompt text for image generation.
+ * @param negativePrompt negative prompt text for image generation.
+ * @param type type value consumed by the API.
+ * @param onNewPrompts callback invoked by the component.
+ * @param onClose callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun ExtrasScreen(
     prompt: String,
@@ -92,6 +102,14 @@ fun ExtrasScreen(
     }
 }
 
+/**
+ * Renders the `ScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
@@ -197,6 +215,13 @@ private fun ScreenContent(
     }
 }
 
+/**
+ * Renders the `ExtrasEmptyState` UI for the SDAI presentation layer.
+ *
+ * @param type type value consumed by the API.
+ * @param source source value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun ExtrasEmptyState(type: ExtraType, source: ServerSource) {
     Column(
@@ -238,6 +263,14 @@ private fun ExtrasEmptyState(type: ExtraType, source: ServerSource) {
     }
 }
 
+/**
+ * Renders the `ExtrasItemComposable` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param item item value consumed by the API.
+ * @param onLoraSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun ExtrasItemComposable(
     modifier: Modifier = Modifier,

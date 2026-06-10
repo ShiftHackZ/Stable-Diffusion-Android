@@ -22,10 +22,27 @@ import java.io.File
  * - Android 13 API 33 (Google Pixel 7 Pro, Graphene OS)
  */
 internal class MediaStoreGatewayImpl(
+    /**
+     * Exposes the `context` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val context: Context,
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val fileProviderDescriptor: FileProviderDescriptor,
 ) : MediaStoreGateway {
 
+    /**
+     * Executes the `exportToFile` step in the SDAI data layer.
+     *
+     * @param fileName file name value consumed by the API.
+     * @param content content value consumed by the API.
+     * @author Dmitriy Moroz
+     */
     override fun exportToFile(fileName: String, content: ByteArray) {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
@@ -80,6 +97,12 @@ internal class MediaStoreGatewayImpl(
         }
     }
 
+    /**
+     * Loads SDAI data through `getInfo`.
+     *
+     * @return Result produced by `getInfo`.
+     * @author Dmitriy Moroz
+     */
     override fun getInfo(): MediaStoreInfo {
         try {
             val extVolumeUri: Uri = MediaStore.Files.getContentUri("external")

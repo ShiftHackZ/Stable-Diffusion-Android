@@ -5,6 +5,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 
+/**
+ * Renders the `MviComponent` UI for the SDAI presentation layer.
+ *
+ * @param viewModel view model value consumed by the API.
+ * @param processEffect process effect value consumed by the API.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun <S : MviState, I : MviIntent, E : MviEffect> MviComponent(
     viewModel: MviViewModel<S, I, E>,
@@ -18,6 +26,14 @@ fun <S : MviState, I : MviIntent, E : MviEffect> MviComponent(
     content(state)
 }
 
+/**
+ * Renders the `MviComponent` UI for the SDAI presentation layer.
+ *
+ * @param viewModel view model value consumed by the API.
+ * @param processEffect process effect value consumed by the API.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun <S : MviState, I : MviIntent, E : MviEffect> MviComponent(
     viewModel: MviViewModel<S, I, E>,

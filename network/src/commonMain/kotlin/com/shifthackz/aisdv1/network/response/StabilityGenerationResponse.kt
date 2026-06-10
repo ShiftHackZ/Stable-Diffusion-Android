@@ -3,8 +3,18 @@ package com.shifthackz.aisdv1.network.response
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Carries `StabilityGenerationResponse` data through the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 @Serializable
 data class StabilityGenerationResponse(
+    /**
+     * Exposes the `artifacts` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
     @SerialName("artifacts")
     val artifacts: List<Artifact>? = null,
 ) {

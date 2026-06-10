@@ -5,6 +5,11 @@ import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 
+/**
+ * Converts SDAI data with `mapToHordeRequest`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun TextToImagePayload.mapToHordeRequest(): HordeGenerationAsyncRequest = with(this) {
     HordeGenerationAsyncRequest(
         prompt = prompt,
@@ -22,6 +27,11 @@ fun TextToImagePayload.mapToHordeRequest(): HordeGenerationAsyncRequest = with(t
     )
 }
 
+/**
+ * Converts SDAI data with `mapToHordeRequest`.
+ *
+ * @author Dmitriy Moroz
+ */
 fun ImageToImagePayload.mapToHordeRequest(): HordeGenerationAsyncRequest = with(this) {
     HordeGenerationAsyncRequest(
         prompt = prompt,
@@ -39,6 +49,13 @@ fun ImageToImagePayload.mapToHordeRequest(): HordeGenerationAsyncRequest = with(
     )
 }
 
+/**
+ * Converts SDAI data with `mapHordeTextToImageResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @return Result produced by `mapHordeTextToImageResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<TextToImagePayload, String>.mapHordeTextToImageResult(
     createdAtMillis: Long,
 ): AiGenerationResult {
@@ -65,6 +82,13 @@ fun Pair<TextToImagePayload, String>.mapHordeTextToImageResult(
     )
 }
 
+/**
+ * Converts SDAI data with `mapHordeImageToImageResult`.
+ *
+ * @param createdAtMillis creation timestamp in milliseconds.
+ * @return Result produced by `mapHordeImageToImageResult`.
+ * @author Dmitriy Moroz
+ */
 fun Pair<ImageToImagePayload, String>.mapHordeImageToImageResult(
     createdAtMillis: Long,
 ): AiGenerationResult {

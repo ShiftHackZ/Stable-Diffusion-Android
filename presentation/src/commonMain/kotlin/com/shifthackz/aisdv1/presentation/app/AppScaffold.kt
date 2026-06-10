@@ -50,6 +50,16 @@ import com.shifthackz.aisdv1.presentation.screen.home.HomeNavigationBarItem
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
 import com.shifthackz.aisdv1.presentation.widget.source.getName
 
+/**
+ * Renders the `AppScaffold` UI for the SDAI presentation layer.
+ *
+ * @param currentRoute current route value consumed by the API.
+ * @param router router value consumed by the API.
+ * @param buildInfoProvider build info provider value consumed by the API.
+ * @param preferenceManager preference manager value consumed by the API.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun AppScaffold(
     currentRoute: AppRoute,
@@ -126,6 +136,12 @@ internal fun AppScaffold(
     }
 }
 
+/**
+ * Renders the `DrawerHeader` UI for the SDAI presentation layer.
+ *
+ * @param buildInfoProvider build info provider value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun DrawerHeader(
     buildInfoProvider: BuildInfoProvider,
@@ -155,6 +171,13 @@ private fun DrawerHeader(
     }
 }
 
+/**
+ * Renders the `appBottomNavigationItems` UI for the SDAI presentation layer.
+ *
+ * @param currentRoute current route value consumed by the API.
+ * @param router router value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun appBottomNavigationItems(
     currentRoute: AppRoute,
@@ -186,6 +209,15 @@ private fun appBottomNavigationItems(
     ),
 )
 
+/**
+ * Renders the `appDrawerItems` UI for the SDAI presentation layer.
+ *
+ * @param currentRoute current route value consumed by the API.
+ * @param settings settings value consumed by the API.
+ * @param router router value consumed by the API.
+ * @return Result produced by `appDrawerItems`.
+ * @author Dmitriy Moroz
+ */
 @Composable
 private fun appDrawerItems(
     currentRoute: AppRoute,

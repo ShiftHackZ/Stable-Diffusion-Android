@@ -6,21 +6,92 @@ import com.shifthackz.aisdv1.presentation.model.GenerationModal
 import com.shifthackz.aisdv1.presentation.model.PromptTagEditRequest
 import com.shifthackz.aisdv1.presentation.navigation.router.ImageToImageRouter
 
+/**
+ * Coordinates `ImageToImageIntentProcessor` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class ImageToImageIntentProcessor(
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: ImageToImageRouter,
+    /**
+     * Exposes the `updateState` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val updateState: (((ImageToImageState) -> ImageToImageState) -> Unit),
+    /**
+     * Exposes the `pickImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val pickImage: (ImageToImagePickSource) -> Unit,
+    /**
+     * Exposes the `pickRandomImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val pickRandomImage: () -> Unit,
+    /**
+     * Exposes the `generate` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val generate: () -> Unit,
+    /**
+     * Exposes the `cancelGeneration` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val cancelGeneration: () -> Unit,
+    /**
+     * Exposes the `saveImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val saveImage: (String) -> Unit,
+    /**
+     * Exposes the `shareImage` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val shareImage: (String) -> Unit,
+    /**
+     * Exposes the `saveGenerationResults` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val saveGenerationResults: (List<AiGenerationResult>) -> Unit,
+    /**
+     * Exposes the `viewGenerationResult` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val viewGenerationResult: (AiGenerationResult) -> Unit,
+    /**
+     * Exposes the `reportGenerationResult` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val reportGenerationResult: (AiGenerationResult) -> Unit,
+    /**
+     * Exposes the `applyGenerationResult` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val applyGenerationResult: (AiGenerationResult, Boolean) -> Unit,
 ) {
 
+    /**
+     * Executes the `process` step in the SDAI presentation layer.
+     *
+     * @param intent intent to process in the MVI workflow.
+     * @author Dmitriy Moroz
+     */
     fun process(intent: ImageToImageIntent) {
         when (intent) {
             ImageToImageIntent.OpenDrawer -> router.openDrawer()

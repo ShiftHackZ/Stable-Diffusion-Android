@@ -67,6 +67,13 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.core.parameter.parametersOf
 
 
+/**
+ * Renders the `GalleryDetailDialogRenderer` UI for the SDAI presentation layer.
+ *
+ * @param dialog dialog value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GalleryDetailDialogRenderer(
     dialog: GalleryDetailDialog,
@@ -89,6 +96,11 @@ internal fun GalleryDetailDialogRenderer(
     }
 }
 
+/**
+ * Exposes the `GalleryDetailTab` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val GalleryDetailTab.label: String
     get() = when (this) {
         GalleryDetailTab.IMAGE -> Localization.string("gallery_tab_image")
@@ -96,6 +108,11 @@ internal val GalleryDetailTab.label: String
         GalleryDetailTab.INFO -> Localization.string("gallery_tab_info")
     }
 
+/**
+ * Exposes the `GalleryDetailTab` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val GalleryDetailTab.icon: ImageVector
     get() = when (this) {
         GalleryDetailTab.IMAGE -> Icons.Default.Image

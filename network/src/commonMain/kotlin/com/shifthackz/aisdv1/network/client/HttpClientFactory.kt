@@ -12,8 +12,22 @@ import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
+/**
+ * Executes the `platformHttpClientEngine` step in the SDAI network layer.
+ *
+ * @return Result produced by `platformHttpClientEngine`.
+ * @author Dmitriy Moroz
+ */
 expect fun platformHttpClientEngine(): HttpClientEngineFactory<HttpClientEngineConfig>
 
+/**
+ * Creates the SDAI value produced by `createConfiguredHttpClient`.
+ *
+ * @param json json value consumed by the API.
+ * @param installContentNegotiation install content negotiation value consumed by the API.
+ * @param configure configure value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 fun createConfiguredHttpClient(
     json: Json = defaultNetworkJson,
     installContentNegotiation: Boolean = true,
@@ -42,6 +56,11 @@ fun createConfiguredHttpClient(
     configure()
 }
 
+/**
+ * Exposes the `defaultNetworkJson` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 val defaultNetworkJson = Json {
     ignoreUnknownKeys = true
     isLenient = true
@@ -49,4 +68,9 @@ val defaultNetworkJson = Json {
     encodeDefaults = true
 }
 
+/**
+ * Exposes the `DEFAULT_TIMEOUT_MILLIS` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val DEFAULT_TIMEOUT_MILLIS = 120_000L

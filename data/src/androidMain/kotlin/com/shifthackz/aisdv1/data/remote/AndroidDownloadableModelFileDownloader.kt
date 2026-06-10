@@ -15,12 +15,37 @@ import kotlinx.coroutines.flow.flowOn
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
+/**
+ * Coordinates `AndroidDownloadableModelFileDownloader` behavior in the SDAI data layer.
+ *
+ * @throws IllegalStateException when the delegated operation cannot complete.
+ * @author Dmitriy Moroz
+ */
 internal class AndroidDownloadableModelFileDownloader(
+    /**
+     * Exposes the `fileProviderDescriptor` value used by the SDAI data layer.
+     *
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
     private val fileProviderDescriptor: FileProviderDescriptor,
 ) : DownloadableModelFileDownloader {
 
+    /**
+     * Exposes the `httpClient` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val httpClient: OkHttpClient = createDownloadHttpClient()
 
+    /**
+     * Executes the `download` step in the SDAI data layer.
+     *
+     * @param id identifier of the target entity.
+     * @param url remote URL used by the operation.
+     * @return Result produced by `download`.
+     * @author Dmitriy Moroz
+     */
     override fun download(
         id: String,
         url: String,
@@ -49,9 +74,26 @@ internal class AndroidDownloadableModelFileDownloader(
         }
     }.flowOn(Dispatchers.IO)
 
+    /**
+     * Loads SDAI data through `getDestinationPath`.
+     *
+     * @param id identifier of the target entity.
+     * @return Result produced by `getDestinationPath`.
+     * @author Dmitriy Moroz
+     */
     private fun getDestinationPath(id: String): String =
         "${fileProviderDescriptor.localModelDirPath}/$id/model.zip"
 
+    /**
+     * Executes the `downloadToFile` step in the SDAI data layer.
+     *
+     * @param url remote URL used by the operation.
+     * @param destination destination value consumed by the API.
+     * @param onProgress callback invoked by the component.
+     * @return Result produced by `downloadToFile`.
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
     private suspend fun downloadToFile(
         url: String,
         destination: File,
@@ -102,7 +144,17 @@ internal class AndroidDownloadableModelFileDownloader(
         return destination
     }
 
+    /**
+     * Provides the `companion object` singleton used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private companion object {
+        /**
+         * Creates the SDAI value produced by `createDownloadHttpClient`.
+         *
+         * @author Dmitriy Moroz
+         */
         fun createDownloadHttpClient(): OkHttpClient = OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)

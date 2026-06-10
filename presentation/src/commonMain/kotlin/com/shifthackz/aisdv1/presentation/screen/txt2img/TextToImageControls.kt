@@ -74,6 +74,16 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlin.math.roundToInt
 
 
+/**
+ * Renders the `NumberField` UI for the SDAI presentation layer.
+ *
+ * @param value value value consumed by the API.
+ * @param label label value consumed by the API.
+ * @param error error value consumed by the API.
+ * @param onValueChange callback invoked by the component.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun NumberField(
     value: String,
@@ -95,6 +105,14 @@ internal fun NumberField(
     )
 }
 
+/**
+ * Renders the `SliderRow` UI for the SDAI presentation layer.
+ *
+ * @param label label value consumed by the API.
+ * @param value value value consumed by the API.
+ * @param content content value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SliderRow(
     label: String,
@@ -122,6 +140,14 @@ internal fun SliderRow(
     }
 }
 
+/**
+ * Renders the `BatchControl` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun BatchControl(
     state: TextToImageState,
@@ -167,6 +193,16 @@ internal fun BatchControl(
     }
 }
 
+/**
+ * Renders the `GeneratedImageItem` UI for the SDAI presentation layer.
+ *
+ * @param result result value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @param savingImage saving image value consumed by the API.
+ * @param sharingImage sharing image value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun GeneratedImageItem(
     result: AiGenerationResult,
@@ -283,9 +319,19 @@ internal fun GeneratedImageItem(
     }
 }
 
+/**
+ * Exposes the `AiGenerationResult` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val AiGenerationResult.aspectRatio: Float
     get() = if (width > 0 && height > 0) width.toFloat() / height.toFloat() else 1f
 
+/**
+ * Exposes the `ServerSource` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal val ServerSource.displayName: String
     get() = when (this) {
         ServerSource.AUTOMATIC1111 -> Localization.string("srv_type_own")
@@ -298,6 +344,12 @@ internal val ServerSource.displayName: String
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
     }
 
+/**
+ * Executes the `roundToString` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `roundToString`.
+ * @author Dmitriy Moroz
+ */
 internal fun Float.roundToString(): String {
     val rounded = (this * 10f).roundToInt() / 10f
     return rounded.toString()

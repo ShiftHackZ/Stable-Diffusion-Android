@@ -42,15 +42,60 @@ import com.shifthackz.aisdv1.core.extensions.fadedEdge
 import com.shifthackz.aisdv1.presentation.widget.item.SupporterItem
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 
+/**
+ * Carries `DonateScreenStrings` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 data class DonateScreenStrings(
+    /**
+     * Exposes the `title` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val title: String,
+    /**
+     * Exposes the `thanksTitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val thanksTitle: String,
+    /**
+     * Exposes the `bottomTitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val bottomTitle: String,
+    /**
+     * Exposes the `bottomSubtitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val bottomSubtitle: String,
+    /**
+     * Exposes the `bottomEnding` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val bottomEnding: String,
+    /**
+     * Exposes the `backContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     val backContentDescription: String,
 )
 
+/**
+ * Renders the `DonateScreenContent` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param brandIcon brand icon value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun DonateScreenContent(
     state: DonateState,

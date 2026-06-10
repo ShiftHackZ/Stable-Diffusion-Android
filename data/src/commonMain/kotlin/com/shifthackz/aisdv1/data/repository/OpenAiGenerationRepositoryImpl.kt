@@ -9,11 +9,26 @@ import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
 
+/**
+ * Implements `OpenAiGenerationRepository` behavior in the SDAI data layer.
+ *
+ * @author Dmitriy Moroz
+ */
 internal class OpenAiGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     localDataSource: GenerationResultDataSource.Local,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val preferenceManager: PreferenceManager,
     backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `remoteDataSource` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val remoteDataSource: OpenAiGenerationDataSource.Remote,
 ) : CoreGenerationRepository(
     mediaStoreGateway = mediaStoreGateway,

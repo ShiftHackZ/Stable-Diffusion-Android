@@ -98,6 +98,14 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import kotlin.random.Random
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Renders the `GalleryScreen` UI for the SDAI presentation layer.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param galleryRouter gallery router value consumed by the API.
+ * @param backHandlerEnabled back handler enabled value consumed by the API.
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun GalleryScreen(
     modifier: Modifier = Modifier,

@@ -12,11 +12,41 @@ import com.shifthackz.aisdv1.presentation.navigation.router.ConfigurationLoaderR
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 
+/**
+ * Coordinates `ConfigurationLoaderViewModel` behavior in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 class ConfigurationLoaderViewModel(
+    /**
+     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dispatchersProvider: DispatchersProvider,
+    /**
+     * Exposes the `dataPreLoaderUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val dataPreLoaderUseCase: DataPreLoaderUseCase,
+    /**
+     * Exposes the `getConfigurationUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val getConfigurationUseCase: GetConfigurationUseCase,
+    /**
+     * Exposes the `router` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val router: ConfigurationLoaderRouter,
+    /**
+     * Exposes the `onError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<ConfigurationLoaderState, EmptyIntent, EmptyEffect>(
     initialState = ConfigurationLoaderState(),
@@ -52,8 +82,18 @@ class ConfigurationLoaderViewModel(
     override fun processIntent(intent: EmptyIntent) = Unit
 }
 
+/**
+ * Exposes the `STARTUP_PRELOAD_TIMEOUT_MILLIS` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private const val STARTUP_PRELOAD_TIMEOUT_MILLIS = 3_000L
 
+/**
+ * Executes the `requiresRemotePreload` step in the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
 private fun Configuration.requiresRemotePreload(): Boolean = when (source) {
     ServerSource.AUTOMATIC1111 -> serverUrl.isMobileRemoteEndpoint()
     ServerSource.SWARM_UI -> swarmUiUrl.isMobileRemoteEndpoint()
@@ -66,6 +106,12 @@ private fun Configuration.requiresRemotePreload(): Boolean = when (source) {
     -> false
 }
 
+/**
+ * Executes the `isMobileRemoteEndpoint` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `isMobileRemoteEndpoint`.
+ * @author Dmitriy Moroz
+ */
 private fun String.isMobileRemoteEndpoint(): Boolean {
     val value = trim().lowercase()
     return value.isNotBlank() &&
