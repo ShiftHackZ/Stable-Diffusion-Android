@@ -1,0 +1,769 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>IosModelDownloadDelegate</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script><meta id="sdai-docs-seo" name="description" content="Dokka API documentation for SDAI Kotlin Multiplatform, Android, iOS, and shared modules.">
+<link rel="canonical" href="https://sdai.moroz.cc/docs/data/com.shifthackz.aisdv1.data.remote/-ios-model-download-delegate/index.html">
+<meta property="og:title" content="SDAI Documentation">
+<meta property="og:description" content="Kotlin API documentation for SDAI Android, iOS, and shared modules.">
+<meta property="og:url" content="https://sdai.moroz.cc/docs/data/com.shifthackz.aisdv1.data.remote/-ios-model-download-delegate/index.html">
+<meta property="og:site_name" content="SDAI">
+<meta property="og:type" content="website">
+<style id="sdai-docs-branding">
+  .sdai-docs-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .sdai-docs-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .sdai-docs-links a:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .sdai-docs-links svg {
+    width: 18px;
+    height: 18px;
+  }
+  @media (max-width: 760px) {
+    .sdai-docs-links {
+      width: 100%;
+      justify-content: flex-start;
+      margin-left: 0;
+      padding: 6px 0;
+    }
+    .sdai-docs-links a {
+      padding: 0 6px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
+                    SDAI
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+<nav class="sdai-docs-links" aria-label="SDAI documentation links">
+  <a href="https://sdai.moroz.cc/">Main site</a>
+  <a href="https://t.me/sdai_app" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.86 4.58 18.62 19.84c-.24 1.08-.88 1.34-1.78.83l-4.92-3.63-2.37 2.28c-.26.26-.48.48-.98.48l.35-5.02 9.14-8.26c.4-.35-.09-.55-.61-.2L6.15 13.43l-4.87-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 3c.88-.33 1.65.2 1.31 1.58Z"/></svg>
+    <span>Telegram</span>
+  </a>
+  <a href="https://discord.gg/jzdR9m8Ves" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.54 5.26A18.1 18.1 0 0 0 15.04 3.86c-.19.34-.42.8-.57 1.16a16.7 16.7 0 0 0-4.99 0 12.3 12.3 0 0 0-.58-1.16 18 18 0 0 0-4.5 1.4C1.55 9.49.78 13.61 1.16 17.68a18.3 18.3 0 0 0 5.51 2.79c.44-.6.84-1.24 1.17-1.91-.64-.24-1.25-.54-1.82-.89.15-.11.3-.23.44-.35a12.96 12.96 0 0 0 11.08 0l.44.35c-.58.35-1.19.65-1.83.89.34.67.73 1.31 1.17 1.91a18.2 18.2 0 0 0 5.52-2.79c.46-4.72-.78-8.81-3.3-12.42ZM8.68 15.18c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.08 0 1.96.99 1.95 2.19 0 1.21-.87 2.2-1.95 2.2Zm6.64 0c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.09 0 1.96.99 1.95 2.19 0 1.21-.86 2.2-1.95 2.2Z"/></svg>
+    <span>Discord</span>
+  </a>
+</nav>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector native-like" data-active="" aria-pressed="true" data-filter=":data/iosMain">ios</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option native-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":data/iosMain" data-filter=":data/iosMain">
+                                <span class="checkbox--icon"></span>
+                                ios
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    SDAI
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="data::com.shifthackz.aisdv1.data.remote/IosModelDownloadDelegate///PointingToDeclaration//1888960241">
+  <div class="breadcrumbs"><a href="../../index.html">data</a><span class="delimiter">/</span><a href="../index.html">com.shifthackz.aisdv1.data.remote</a><span class="delimiter">/</span><span class="current">IosModelDownloadDelegate</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Ios</span><wbr><span>Model</span><wbr><span>Download</span><wbr><span><span>Delegate</span></span></h1>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">class </span><a href="index.html">IosModelDownloadDelegate</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>destinationPath<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>onProgress<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>onComplete<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="platform.darwin/NSObject///PointingToDeclaration/">NSObject</span>, <span data-unresolved-link="platform.Foundation/NSURLSessionDownloadDelegateProtocol///PointingToDeclaration/">NSURLSessionDownloadDelegateProtocol</span><span class="source-link-wrapper"><span class="source-link" data-element-type="source-link">(<a href="https://github.com/ShiftHackZ/Stable-Diffusion-Android/tree/master/data/src/iosMain/kotlin/com/shifthackz/aisdv1/data/remote/IosDownloadableModelFileDownloader.kt#L124">source</a>)</span></span></div></div>    </div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="446297052%2FConstructors%2F1888960241" anchor-label="IosModelDownloadDelegate" id="446297052%2FConstructors%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-ios-model-download-delegate.html"><span>Ios</span><wbr><span>Model</span><wbr><span>Download</span><wbr><span><span>Delegate</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="446297052%2FConstructors%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">destinationPath<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">onProgress<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter ">onComplete<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-1758157885%2FProperties%2F1888960241" anchor-label="completed" id="-1758157885%2FProperties%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="completed.html"><span><span>completed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1758157885%2FProperties%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">var </span><a href="completed.html">completed</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="228684334%2FProperties%2F1888960241" anchor-label="debugDescription" id="228684334%2FProperties%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#228684334%2FProperties%2F1888960241"><span>debug</span><wbr><span><span>Description</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="228684334%2FProperties%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">val </span><a href="index.html#228684334%2FProperties%2F1888960241">debugDescription</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1692238585%2FProperties%2F1888960241" anchor-label="description" id="-1692238585%2FProperties%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1692238585%2FProperties%2F1888960241"><span><span>description</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1692238585%2FProperties%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">val </span><a href="index.html#-1692238585%2FProperties%2F1888960241">description</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1427557125%2FProperties%2F1888960241" anchor-label="destinationPath" id="-1427557125%2FProperties%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="destination-path.html"><span>destination</span><wbr><span><span>Path</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1427557125%2FProperties%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="destination-path.html">destinationPath</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-331073687%2FProperties%2F1888960241" anchor-label="hash" id="-331073687%2FProperties%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-331073687%2FProperties%2F1888960241"><span><span>hash</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-331073687%2FProperties%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">val </span><a href="index.html#-331073687%2FProperties%2F1888960241">hash</a><span class="token operator">: </span><span data-unresolved-link="platform.darwin/NSUInteger///PointingToDeclaration/">NSUInteger</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1085240961%2FProperties%2F1888960241" anchor-label="lastPercent" id="-1085240961%2FProperties%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="last-percent.html"><span>last</span><wbr><span><span>Percent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1085240961%2FProperties%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">var </span><a href="last-percent.html">lastPercent</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1630707892%2FProperties%2F1888960241" anchor-label="onComplete" id="1630707892%2FProperties%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-complete.html"><span>on</span><wbr><span><span>Complete</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1630707892%2FProperties%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="on-complete.html">onComplete</a><span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1508395584%2FProperties%2F1888960241" anchor-label="onProgress" id="1508395584%2FProperties%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-progress.html"><span>on</span><wbr><span><span>Progress</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1508395584%2FProperties%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="on-progress.html">onProgress</a><span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="487587066%2FProperties%2F1888960241" anchor-label="superclass" id="487587066%2FProperties%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#487587066%2FProperties%2F1888960241"><span><span>superclass</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="487587066%2FProperties%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">val </span><a href="index.html#487587066%2FProperties%2F1888960241">superclass</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-obj-c-class/index.html">ObjCClass</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1619767229%2FFunctions%2F1888960241" anchor-label="class" id="-1619767229%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1619767229%2FFunctions%2F1888960241"><span><span>class</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1619767229%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#-1619767229%2FFunctions%2F1888960241"><span class="token function">class</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-obj-c-class/index.html">ObjCClass</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1160117526%2FFunctions%2F1888960241" anchor-label="complete" id="1160117526%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="complete.html"><span><span>complete</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1160117526%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="complete.html"><span class="token function">complete</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">result<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2062711434%2FFunctions%2F1888960241" anchor-label="conformsToProtocol" id="-2062711434%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-2062711434%2FFunctions%2F1888960241"><span>conforms</span><wbr><span>To</span><wbr><span><span>Protocol</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2062711434%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#-2062711434%2FFunctions%2F1888960241"><span class="token function">conformsToProtocol</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aProtocol<span class="token operator">: </span><span data-unresolved-link="objcnames.classes/Protocol///PointingToDeclaration/">Protocol</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="719895338%2FFunctions%2F1888960241" anchor-label="copy" id="719895338%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#719895338%2FFunctions%2F1888960241"><span><span>copy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="719895338%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#719895338%2FFunctions%2F1888960241"><span class="token function">copy</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="228684334%2FFunctions%2F1888960241" anchor-label="debugDescription" id="228684334%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#228684334%2FFunctions%2F1888960241"><span>debug</span><wbr><span><span>Description</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="228684334%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#228684334%2FFunctions%2F1888960241"><span class="token function">debugDescription</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-400237633%2FFunctions%2F1888960241" anchor-label="description" id="-400237633%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-400237633%2FFunctions%2F1888960241"><span><span>description</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-400237633%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#-400237633%2FFunctions%2F1888960241"><span class="token function">description</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-622522961%2FFunctions%2F1888960241" anchor-label="doesNotRecognizeSelector" id="-622522961%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-622522961%2FFunctions%2F1888960241"><span>does</span><wbr><span>Not</span><wbr><span>Recognize</span><wbr><span><span>Selector</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-622522961%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-622522961%2FFunctions%2F1888960241"><span class="token function">doesNotRecognizeSelector</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aSelector<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-c-opaque-pointer/index.html">COpaquePointer</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-776372831%2FFunctions%2F1888960241" anchor-label="finalize" id="-776372831%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-776372831%2FFunctions%2F1888960241"><span><span>finalize</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-776372831%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-776372831%2FFunctions%2F1888960241"><span class="token function">finalize</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="870119066%2FFunctions%2F1888960241" anchor-label="forwardingTargetForSelector" id="870119066%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#870119066%2FFunctions%2F1888960241"><span>forwarding</span><wbr><span>Target</span><wbr><span>For</span><wbr><span><span>Selector</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="870119066%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#870119066%2FFunctions%2F1888960241"><span class="token function">forwardingTargetForSelector</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aSelector<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-c-opaque-pointer/index.html">COpaquePointer</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="895393388%2FFunctions%2F1888960241" anchor-label="forwardInvocation" id="895393388%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#895393388%2FFunctions%2F1888960241"><span>forward</span><wbr><span><span>Invocation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="895393388%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#895393388%2FFunctions%2F1888960241"><span class="token function">forwardInvocation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">anInvocation<span class="token operator">: </span><span data-unresolved-link="objcnames.classes/NSInvocation///PointingToDeclaration/">NSInvocation</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1519286193%2FFunctions%2F1888960241" anchor-label="hash" id="1519286193%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1519286193%2FFunctions%2F1888960241"><span><span>hash</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1519286193%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#1519286193%2FFunctions%2F1888960241"><span class="token function">hash</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="platform.darwin/NSUInteger///PointingToDeclaration/">NSUInteger</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1753155089%2FFunctions%2F1888960241" anchor-label="init" id="-1753155089%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1753155089%2FFunctions%2F1888960241"><span><span>init</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1753155089%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1753155089%2FFunctions%2F1888960241"><span class="token function"><strike>init</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="platform.darwin/NSObject///PointingToDeclaration/">NSObject</span><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="400700689%2FFunctions%2F1888960241" anchor-label="isEqual" id="400700689%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#400700689%2FFunctions%2F1888960241"><span>is</span><wbr><span><span>Equal</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="400700689%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#400700689%2FFunctions%2F1888960241"><span class="token function">isEqual</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">object<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1107006214%2FFunctions%2F1888960241" anchor-label="isKindOfClass" id="-1107006214%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1107006214%2FFunctions%2F1888960241"><span>is</span><wbr><span>Kind</span><wbr><span>Of</span><wbr><span><span>Class</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1107006214%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#-1107006214%2FFunctions%2F1888960241"><span class="token function">isKindOfClass</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aClass<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-obj-c-class/index.html">ObjCClass</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1261237300%2FFunctions%2F1888960241" anchor-label="isMemberOfClass" id="1261237300%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1261237300%2FFunctions%2F1888960241"><span>is</span><wbr><span>Member</span><wbr><span>Of</span><wbr><span><span>Class</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1261237300%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#1261237300%2FFunctions%2F1888960241"><span class="token function">isMemberOfClass</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aClass<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-obj-c-class/index.html">ObjCClass</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="874970199%2FFunctions%2F1888960241" anchor-label="isProxy" id="874970199%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#874970199%2FFunctions%2F1888960241"><span>is</span><wbr><span><span>Proxy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="874970199%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#874970199%2FFunctions%2F1888960241"><span class="token function">isProxy</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1508216455%2FFunctions%2F1888960241" anchor-label="methodForSelector" id="1508216455%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1508216455%2FFunctions%2F1888960241"><span>method</span><wbr><span>For</span><wbr><span><span>Selector</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1508216455%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1508216455%2FFunctions%2F1888960241"><span class="token function">methodForSelector</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aSelector<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-c-opaque-pointer/index.html">COpaquePointer</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="platform.darwin/IMP///PointingToDeclaration/">IMP</span><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1366135821%2FFunctions%2F1888960241" anchor-label="methodSignatureForSelector" id="1366135821%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1366135821%2FFunctions%2F1888960241"><span>method</span><wbr><span>Signature</span><wbr><span>For</span><wbr><span><span>Selector</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1366135821%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1366135821%2FFunctions%2F1888960241"><span class="token function">methodSignatureForSelector</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aSelector<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-c-opaque-pointer/index.html">COpaquePointer</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="objcnames.classes/NSMethodSignature///PointingToDeclaration/">NSMethodSignature</span><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1810377952%2FFunctions%2F1888960241" anchor-label="mutableCopy" id="1810377952%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1810377952%2FFunctions%2F1888960241"><span>mutable</span><wbr><span><span>Copy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1810377952%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1810377952%2FFunctions%2F1888960241"><span class="token function">mutableCopy</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="963103057%2FFunctions%2F1888960241" anchor-label="performSelector" id="963103057%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1013303680%2FFunctions%2F1888960241"><span>perform</span><wbr><span><span>Selector</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="963103057%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#1013303680%2FFunctions%2F1888960241"><span class="token function">performSelector</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aSelector<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-c-opaque-pointer/index.html">COpaquePointer</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#367831459%2FFunctions%2F1888960241"><span class="token function">performSelector</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aSelector<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-c-opaque-pointer/index.html">COpaquePointer</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">withObject<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#403533126%2FFunctions%2F1888960241"><span class="token function">performSelector</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aSelector<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-c-opaque-pointer/index.html">COpaquePointer</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">withObject<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">_withObject<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2027637748%2FFunctions%2F1888960241" anchor-label="respondsToSelector" id="2027637748%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#2027637748%2FFunctions%2F1888960241"><span>responds</span><wbr><span>To</span><wbr><span><span>Selector</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2027637748%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#2027637748%2FFunctions%2F1888960241"><span class="token function">respondsToSelector</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">aSelector<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-c-opaque-pointer/index.html">COpaquePointer</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1687492798%2FFunctions%2F1888960241" anchor-label="superclass" id="-1687492798%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1687492798%2FFunctions%2F1888960241"><span><span>superclass</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1687492798%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#-1687492798%2FFunctions%2F1888960241"><span class="token function">superclass</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlinx.cinterop/-obj-c-class/index.html">ObjCClass</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-231773114%2FFunctions%2F1888960241" anchor-label="URLSession" id="-231773114%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-r-l-session.html"><span><span>URLSession</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-231773114%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="-u-r-l-session.html"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">downloadTask<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionDownloadTask///PointingToDeclaration/">NSURLSessionDownloadTask</span><span class="token punctuation">, </span></span><span class="parameter ">didFinishDownloadingToURL<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURL///PointingToDeclaration/">NSURL</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="-u-r-l-session.html"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">task<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span><span class="token punctuation">, </span></span><span class="parameter ">didCompleteWithError<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSError///PointingToDeclaration/">NSError</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="-u-r-l-session.html"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">downloadTask<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionDownloadTask///PointingToDeclaration/">NSURLSessionDownloadTask</span><span class="token punctuation">, </span></span><span class="parameter ">didWriteData<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">totalBytesWritten<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">totalBytesExpectedToWrite<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-445116450%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">didBecomeInvalidWithError<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSError///PointingToDeclaration/">NSError</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1441199773%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">didReceiveChallenge<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLAuthenticationChallenge///PointingToDeclaration/">NSURLAuthenticationChallenge</span><span class="token punctuation">, </span></span><span class="parameter ">completionHandler<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="platform.Foundation/NSURLSessionAuthChallengeDisposition///PointingToDeclaration/">NSURLSessionAuthChallengeDisposition</span><span class="token punctuation">, </span><span data-unresolved-link="platform.Foundation/NSURLCredential///PointingToDeclaration/">NSURLCredential</span><span class="token operator">?</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1630071155%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">downloadTask<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionDownloadTask///PointingToDeclaration/">NSURLSessionDownloadTask</span><span class="token punctuation">, </span></span><span class="parameter ">didResumeAtOffset<span class="token operator">: </span><span data-unresolved-link="platform.posix/int64_t///PointingToDeclaration/">int64_t</span><span class="token punctuation">, </span></span><span class="parameter ">expectedTotalBytes<span class="token operator">: </span><span data-unresolved-link="platform.posix/int64_t///PointingToDeclaration/">int64_t</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#548834212%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">taskIsWaitingForConnectivity<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#548834212%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">didCreateTask<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1527074284%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">task<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span><span class="token punctuation">, </span></span><span class="parameter ">needNewBodyStream<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="platform.Foundation/NSInputStream///PointingToDeclaration/">NSInputStream</span><span class="token operator">?</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1580589148%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">task<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span><span class="token punctuation">, </span></span><span class="parameter ">didReceiveInformationalResponse<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSHTTPURLResponse///PointingToDeclaration/">NSHTTPURLResponse</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1542366453%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">task<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span><span class="token punctuation">, </span></span><span class="parameter ">didFinishCollectingMetrics<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTaskMetrics///PointingToDeclaration/">NSURLSessionTaskMetrics</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1153265618%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">task<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span><span class="token punctuation">, </span></span><span class="parameter ">needNewBodyStreamFromOffset<span class="token operator">: </span><span data-unresolved-link="platform.posix/int64_t///PointingToDeclaration/">int64_t</span><span class="token punctuation">, </span></span><span class="parameter ">completionHandler<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="platform.Foundation/NSInputStream///PointingToDeclaration/">NSInputStream</span><span class="token operator">?</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1953910812%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">task<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span><span class="token punctuation">, </span></span><span class="parameter ">didReceiveChallenge<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLAuthenticationChallenge///PointingToDeclaration/">NSURLAuthenticationChallenge</span><span class="token punctuation">, </span></span><span class="parameter ">completionHandler<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="platform.Foundation/NSURLSessionAuthChallengeDisposition///PointingToDeclaration/">NSURLSessionAuthChallengeDisposition</span><span class="token punctuation">, </span><span data-unresolved-link="platform.Foundation/NSURLCredential///PointingToDeclaration/">NSURLCredential</span><span class="token operator">?</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1456654966%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">task<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span><span class="token punctuation">, </span></span><span class="parameter ">willBeginDelayedRequest<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLRequest///PointingToDeclaration/">NSURLRequest</span><span class="token punctuation">, </span></span><span class="parameter ">completionHandler<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="platform.Foundation/NSURLSessionDelayedRequestDisposition///PointingToDeclaration/">NSURLSessionDelayedRequestDisposition</span><span class="token punctuation">, </span><span data-unresolved-link="platform.Foundation/NSURLRequest///PointingToDeclaration/">NSURLRequest</span><span class="token operator">?</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-374607182%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">task<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span><span class="token punctuation">, </span></span><span class="parameter ">didSendBodyData<span class="token operator">: </span><span data-unresolved-link="platform.posix/int64_t///PointingToDeclaration/">int64_t</span><span class="token punctuation">, </span></span><span class="parameter ">totalBytesSent<span class="token operator">: </span><span data-unresolved-link="platform.posix/int64_t///PointingToDeclaration/">int64_t</span><span class="token punctuation">, </span></span><span class="parameter ">totalBytesExpectedToSend<span class="token operator">: </span><span data-unresolved-link="platform.posix/int64_t///PointingToDeclaration/">int64_t</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1218277708%2FFunctions%2F1888960241"><span class="token function">URLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span><span class="token punctuation">, </span></span><span class="parameter ">task<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSessionTask///PointingToDeclaration/">NSURLSessionTask</span><span class="token punctuation">, </span></span><span class="parameter ">willPerformHTTPRedirection<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSHTTPURLResponse///PointingToDeclaration/">NSHTTPURLResponse</span><span class="token punctuation">, </span></span><span class="parameter ">newRequest<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLRequest///PointingToDeclaration/">NSURLRequest</span><span class="token punctuation">, </span></span><span class="parameter ">completionHandler<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="platform.Foundation/NSURLRequest///PointingToDeclaration/">NSURLRequest</span><span class="token operator">?</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-402970574%2FFunctions%2F1888960241" anchor-label="URLSessionDidFinishEventsForBackgroundURLSession" id="-402970574%2FFunctions%2F1888960241" data-filterable-set=":data/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-402970574%2FFunctions%2F1888960241"><span>URLSession</span><wbr><span>Did</span><wbr><span>Finish</span><wbr><span>Events</span><wbr><span>For</span><wbr><span>Background</span><wbr><span><span>URLSession</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-402970574%2FFunctions%2F1888960241"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":data/iosMain" data-filterable-set=":data/iosMain" data-active="" data-toggle=":data/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":data/iosMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-402970574%2FFunctions%2F1888960241"><span class="token function">URLSessionDidFinishEventsForBackgroundURLSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="platform.Foundation/NSURLSession///PointingToDeclaration/">NSURLSession</span></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

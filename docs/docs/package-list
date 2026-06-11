@@ -67,6 +67,7 @@ com.shifthackz.aisdv1.domain.demo
 com.shifthackz.aisdv1.domain.di
 com.shifthackz.aisdv1.domain.entity
 com.shifthackz.aisdv1.domain.feature.auth
+com.shifthackz.aisdv1.domain.feature.coreml
 com.shifthackz.aisdv1.domain.feature.diffusion
 com.shifthackz.aisdv1.domain.feature.mediapipe
 com.shifthackz.aisdv1.domain.feature.work
