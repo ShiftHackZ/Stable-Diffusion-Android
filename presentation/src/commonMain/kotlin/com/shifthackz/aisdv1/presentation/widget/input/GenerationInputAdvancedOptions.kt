@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Casino
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -128,17 +129,29 @@ internal fun GenerationInputAdvancedOptions(
                         label = { Text(Localization.string("hint_seed")) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         trailingIcon = {
-                            IconButton(onClick = {
-                                onEvent(
-                                    GenerationInputFormEvent.UpdateSeed(
-                                        "${Random.nextLong().absoluteValue}",
-                                    ),
-                                )
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.Casino,
-                                    contentDescription = Localization.string("action_image_picker_random"),
-                                )
+                            Row {
+                                if (state.seed.isNotEmpty()) {
+                                    IconButton(onClick = {
+                                        onEvent(GenerationInputFormEvent.UpdateSeed(""))
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = Localization.string("action_clear"),
+                                        )
+                                    }
+                                }
+                                IconButton(onClick = {
+                                    onEvent(
+                                        GenerationInputFormEvent.UpdateSeed(
+                                            "${Random.nextLong().absoluteValue}",
+                                        ),
+                                    )
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Casino,
+                                        contentDescription = Localization.string("action_image_picker_random"),
+                                    )
+                                }
                             }
                         },
                         colors = textFieldColors,
@@ -215,17 +228,29 @@ internal fun GenerationInputAdvancedOptions(
                         label = { Text(Localization.string("hint_sub_seed")) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         trailingIcon = {
-                            IconButton(onClick = {
-                                onEvent(
-                                    GenerationInputFormEvent.UpdateSubSeed(
-                                        "${Random.nextLong().absoluteValue}",
-                                    ),
-                                )
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.Casino,
-                                    contentDescription = Localization.string("action_image_picker_random"),
-                                )
+                            Row {
+                                if (state.subSeed.isNotEmpty()) {
+                                    IconButton(onClick = {
+                                        onEvent(GenerationInputFormEvent.UpdateSubSeed(""))
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = Localization.string("action_clear"),
+                                        )
+                                    }
+                                }
+                                IconButton(onClick = {
+                                    onEvent(
+                                        GenerationInputFormEvent.UpdateSubSeed(
+                                            "${Random.nextLong().absoluteValue}",
+                                        ),
+                                    )
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Casino,
+                                        contentDescription = Localization.string("action_image_picker_random"),
+                                    )
+                                }
                             }
                         },
                         colors = textFieldColors,

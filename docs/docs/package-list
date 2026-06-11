@@ -1,5 +1,6 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
+$dokka.location:com.shifthackz.aisdv1.data.mappers//toPngDataUri/kotlin.String#/PointingToDeclaration/data/com.shifthackz.aisdv1.data.mappers/[common]to-png-data-uri.html
 $dokka.location:com.shifthackz.aisdv1.feature.mediapipe/MediaPipeImpl///PointingToDeclaration/feature/mediapipe/com.shifthackz.aisdv1.feature.mediapipe/[android-playstore]-media-pipe-impl/index.html
 $dokka.location:com.shifthackz.aisdv1.feature.mediapipe/MediaPipeImpl/MediaPipeImpl/#/PointingToDeclaration/feature/mediapipe/com.shifthackz.aisdv1.feature.mediapipe/[android-foss]-media-pipe-impl/-media-pipe-impl.html
 $dokka.location:com.shifthackz.aisdv1.feature.mediapipe/MediaPipeImpl/MediaPipeImpl/#android.content.Context#com.shifthackz.aisdv1.domain.preference.PreferenceManager#com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor/PointingToDeclaration/feature/mediapipe/com.shifthackz.aisdv1.feature.mediapipe/[android-playstore]-media-pipe-impl/-media-pipe-impl.html
@@ -81,6 +82,7 @@ com.shifthackz.aisdv1.domain.usecase.connectivity
 com.shifthackz.aisdv1.domain.usecase.debug
 com.shifthackz.aisdv1.domain.usecase.donate
 com.shifthackz.aisdv1.domain.usecase.downloadable
+com.shifthackz.aisdv1.domain.usecase.forgemodule
 com.shifthackz.aisdv1.domain.usecase.gallery
 com.shifthackz.aisdv1.domain.usecase.generation
 com.shifthackz.aisdv1.domain.usecase.huggingface
@@ -90,6 +92,7 @@ com.shifthackz.aisdv1.domain.usecase.sdhypernet
 com.shifthackz.aisdv1.domain.usecase.sdlora
 com.shifthackz.aisdv1.domain.usecase.sdmodel
 com.shifthackz.aisdv1.domain.usecase.sdsampler
+com.shifthackz.aisdv1.domain.usecase.sdscript
 com.shifthackz.aisdv1.domain.usecase.settings
 com.shifthackz.aisdv1.domain.usecase.splash
 com.shifthackz.aisdv1.domain.usecase.stabilityai
@@ -123,6 +126,7 @@ com.shifthackz.aisdv1.work.mappers
 com.shifthackz.aisdv1.work.task
 module:network
 com.shifthackz.aisdv1.network.api.automatic1111
+com.shifthackz.aisdv1.network.api.falai
 com.shifthackz.aisdv1.network.api.horde
 com.shifthackz.aisdv1.network.api.huggingface
 com.shifthackz.aisdv1.network.api.imagecdn

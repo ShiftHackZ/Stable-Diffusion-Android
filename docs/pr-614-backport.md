@@ -176,3 +176,5 @@ This document tracks useful changes from PR #614 that are worth preserving in th
 - Live Fal.ai E2E was intentionally not pursued further:
   the configured iOS simulator API key reached Fal.ai's exhausted-balance lock, and the current official Fal.ai documentation does not expose a generic sandbox API key for API requests.
   Their Sandbox/Playground free credits are documented separately from API usage, so the remaining validation for this patch is covered by contract tests, queue-response fixtures, Android/iOS compilation, and app assembly.
+- Final documentation refresh:
+  README now lists Fal.ai in the provider/platform and feature matrices alongside Silicon Diffusion Core ML, and Dokka HTML is regenerated from the rebased PR #614 backport API surface.
