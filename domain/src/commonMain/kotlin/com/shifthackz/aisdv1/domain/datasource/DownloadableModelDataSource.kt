@@ -56,6 +56,13 @@ sealed interface DownloadableModelDataSource {
          */
         suspend fun getAllMediaPipe(): List<LocalAiModel>
         /**
+         * Loads SDAI data through `getAllCoreMl`.
+         *
+         * @return Result produced by `getAllCoreMl`.
+         * @author Dmitriy Moroz
+         */
+        suspend fun getAllCoreMl(): List<LocalAiModel>
+        /**
          * Loads SDAI data through `getById`.
          *
          * @param id identifier of the target entity.
@@ -71,12 +78,26 @@ sealed interface DownloadableModelDataSource {
          */
         suspend fun getSelectedOnnx(): LocalAiModel
         /**
+         * Loads SDAI data through `getSelectedCoreMl`.
+         *
+         * @return Result produced by `getSelectedCoreMl`.
+         * @author Dmitriy Moroz
+         */
+        suspend fun getSelectedCoreMl(): LocalAiModel
+        /**
          * Loads SDAI data through `observeAllOnnx`.
          *
          * @return Result produced by `observeAllOnnx`.
          * @author Dmitriy Moroz
          */
         fun observeAllOnnx(): Flow<List<LocalAiModel>>
+        /**
+         * Loads SDAI data through `observeAllCoreMl`.
+         *
+         * @return Result produced by `observeAllCoreMl`.
+         * @author Dmitriy Moroz
+         */
+        fun observeAllCoreMl(): Flow<List<LocalAiModel>>
         /**
          * Performs the SDAI side effect handled by `save`.
          *

@@ -6,8 +6,10 @@ import com.shifthackz.aisdv1.domain.feature.work.NoOpBackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.NoOpBackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.NoOpServerConnectivityGateway
 import com.shifthackz.aisdv1.domain.gateway.ServerConnectivityGateway
+import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.NoOpCoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpLocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpMediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.usecase.caching.AppCacheCleaner
@@ -48,12 +50,16 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalCoreMlModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalCoreMlModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
@@ -80,6 +86,8 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveCoreMlProcessStatusUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveCoreMlProcessStatusUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
@@ -105,6 +113,8 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUs
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToCoreMlUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToCoreMlUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCase
@@ -149,6 +159,7 @@ val coreDomainModule = module {
     single<BackgroundTaskManager> { NoOpBackgroundTaskManager }
     single<LocalDiffusionGenerationRepository> { NoOpLocalDiffusionGenerationRepository }
     single<MediaPipeGenerationRepository> { NoOpMediaPipeGenerationRepository }
+    single<CoreMlGenerationRepository> { NoOpCoreMlGenerationRepository }
     single<AppCacheCleaner> { NoOpAppCacheCleaner }
     factory<GetMonitorConnectivityUseCase> {
         GetMonitorConnectivityUseCaseImpl(preferenceManager = get())
@@ -233,11 +244,17 @@ val coreDomainModule = module {
     factory<ObserveLocalOnnxModelsUseCase> {
         ObserveLocalOnnxModelsUseCaseImpl(repository = get())
     }
+    factory<ObserveLocalCoreMlModelsUseCase> {
+        ObserveLocalCoreMlModelsUseCaseImpl(repository = get())
+    }
     factory<GetLocalOnnxModelsUseCase> {
         GetLocalOnnxModelsUseCaseImpl(downloadableModelRepository = get())
     }
     factory<GetLocalMediaPipeModelsUseCase> {
         GetLocalMediaPipeModelsUseCaseImpl(downloadableModelRepository = get())
+    }
+    factory<GetLocalCoreMlModelsUseCase> {
+        GetLocalCoreMlModelsUseCaseImpl(downloadableModelRepository = get())
     }
     factory<GetLocalModelUseCase> {
         GetLocalModelUseCaseImpl(localDataSource = get())
@@ -258,6 +275,7 @@ val coreDomainModule = module {
             swarmUiGenerationRepository = get(),
             localDiffusionGenerationRepository = get(),
             mediaPipeGenerationRepository = get(),
+            coreMlGenerationRepository = get(),
             preferenceManager = get(),
         )
     }
@@ -268,6 +286,7 @@ val coreDomainModule = module {
             hordeGenerationRepository = get(),
             huggingFaceGenerationRepository = get(),
             stabilityAiGenerationRepository = get(),
+            coreMlGenerationRepository = get(),
             preferenceManager = get(),
         )
     }
@@ -280,11 +299,15 @@ val coreDomainModule = module {
     factory<ObserveLocalDiffusionProcessStatusUseCase> {
         ObserveLocalDiffusionProcessStatusUseCaseImpl(localDiffusionGenerationRepository = get())
     }
+    factory<ObserveCoreMlProcessStatusUseCase> {
+        ObserveCoreMlProcessStatusUseCaseImpl(coreMlGenerationRepository = get())
+    }
     factory<InterruptGenerationUseCase> {
         InterruptGenerationUseCaseImpl(
             stableDiffusionGenerationRepository = get(),
             hordeGenerationRepository = get(),
             localDiffusionGenerationRepository = get(),
+            coreMlGenerationRepository = get(),
             preferenceManager = get(),
         )
     }
@@ -367,6 +390,12 @@ val coreDomainModule = module {
     }
     factory<ConnectToMediaPipeUseCase> {
         ConnectToMediaPipeUseCaseImpl(
+            getConfigurationUseCase = get(),
+            setServerConfigurationUseCase = get(),
+        )
+    }
+    factory<ConnectToCoreMlUseCase> {
+        ConnectToCoreMlUseCaseImpl(
             getConfigurationUseCase = get(),
             setServerConfigurationUseCase = get(),
         )

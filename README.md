@@ -21,7 +21,7 @@ No ads. No telemetry. No lock-in to a single provider.
 - Choose the backend that fits the moment: your own AUTOMATIC1111 or SwarmUI server, AI Horde, Hugging Face, OpenAI, Stability AI, or local diffusion where the platform supports it.
 - Generate with familiar Stable Diffusion controls: prompts, negative prompts where supported, seed, steps, CFG scale, image size, model selectors, LoRA, embeddings, and more.
 - Use one shared mobile experience across Android and iOS for remote generation workflows.
-- Work locally on Android when privacy or connectivity matters with Microsoft ONNX Runtime or Google AI MediaPipe builds.
+- Work locally when privacy or connectivity matters with Android ONNX / MediaPipe builds or iOS Silicon Diffusion Core ML.
 - Keep your creations in a local gallery with image details, zoom, sharing, native platform save flows, and zip export.
 - Stay in control: the project is open source and the app does not include ads or telemetry.
 
@@ -38,7 +38,7 @@ Android builds are distributed in three flavors:
 - `full`: full GitHub/release build.
 - `foss`: F-Droid friendly build.
 
-iOS uses the shared mobile experience and intentionally focuses on remote generation providers for the first iOS milestone.
+iOS uses the shared mobile experience with remote generation providers and Silicon Diffusion Core ML for on-device generation on supported devices.
 
 | Provider / backend | What it connects to | iOS | Android `playstore` | Android `full` | Android `foss` | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -50,17 +50,18 @@ iOS uses the shared mobile experience and intentionally focuses on remote genera
 | Stability AI | Stability AI / DreamStudio image API | 🟢 Yes | 🟢 Yes | 🟢 Yes | 🟢 Yes | Requires a Stability AI API key and engine selection. |
 | Local Diffusion: Microsoft ONNX Runtime | On-device ONNX model inference | 🔴 No | 🟢 Yes | 🟢 Yes | 🟢 Yes | Android-only txt2img. Custom local model paths are available outside the Play build. |
 | Local Diffusion: Google AI MediaPipe | On-device MediaPipe image generator | 🔴 No | 🟢 Yes | 🟢 Yes | 🔴 No | Android-only txt2img. Excluded from the FOSS flavor. |
+| Silicon Diffusion Core ML | On-device Core ML Stable Diffusion runtime | 🟢 Yes | 🔴 No | 🔴 No | 🔴 No | iOS-only txt2img and img2img with explicit downloadable/imported Core ML model assets. SDXL catalog entries are disabled until device-gated QA is stable. |
 
 ## AI Feature Matrix
 
 | AI-specific feature | Supported providers | iOS | Android | Notes |
 | --- | --- | --- | --- | --- |
-| Text to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | 🟡 Remote providers | 🟢 Yes | Core generation path exists for every provider exposed by the current platform/build. |
-| Image to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, Stability AI | 🟢 Yes | 🟢 Yes | OpenAI and local diffusion providers are txt2img-only in the app. |
+| Text to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe, Silicon Diffusion Core ML | 🟢 Yes | 🟢 Yes | Core generation path exists for every provider exposed by the current platform/build. |
+| Image to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, Stability AI, Silicon Diffusion Core ML | 🟢 Yes | 🟢 Yes | OpenAI and Android local diffusion providers are txt2img-only in the app. Core ML img2img requires a compatible downloaded model archive. |
 | Inpaint mask controls | AUTOMATIC1111 | 🟢 Yes | 🟢 Yes | Mask image, mask blur, mask mode, masked content, inpaint area, and only-masked padding are mapped to the A1111 img2img API. |
-| Negative prompt | AUTOMATIC1111, SwarmUI, Hugging Face, Stability AI, Local ONNX | 🟡 Remote providers | 🟢 Yes | Horde, OpenAI, and MediaPipe flows do not expose/send a negative prompt. Local ONNX is Android-only. |
+| Negative prompt | AUTOMATIC1111, SwarmUI, Hugging Face, Stability AI, Local ONNX, Silicon Diffusion Core ML | 🟢 Yes | 🟢 Yes | Horde, OpenAI, and MediaPipe flows do not expose/send a negative prompt. |
 | Batch generation | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI | 🟢 Yes | 🟢 Yes | Local providers are treated as single-image generation flows. |
-| Model or engine selection | AUTOMATIC1111, SwarmUI, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe | 🟡 Remote providers | 🟢 Yes | Depending on provider, this selects an SD checkpoint, SwarmUI model, HF model, OpenAI model, Stability engine, or local model. |
+| Model or engine selection | AUTOMATIC1111, SwarmUI, Hugging Face, OpenAI, Stability AI, Local ONNX, Local MediaPipe, Silicon Diffusion Core ML | 🟢 Yes | 🟢 Yes | Depending on provider, this selects an SD checkpoint, SwarmUI model, HF model, OpenAI model, Stability engine, or local model. |
 | LoRA picker | AUTOMATIC1111, SwarmUI | 🟢 Yes | 🟢 Yes | Remote LoRA lists are fetched from the active compatible server. |
 | Textual inversion / embeddings picker | AUTOMATIC1111, SwarmUI | 🟢 Yes | 🟢 Yes | Remote embeddings are fetched from the active compatible server. |
 | Hypernetwork picker | AUTOMATIC1111 | 🟢 Yes | 🟢 Yes | Hypernetwork discovery is implemented for A1111. |
@@ -69,8 +70,8 @@ iOS uses the shared mobile experience and intentionally focuses on remote genera
 | OpenAI model, size, and quality | OpenAI | 🟢 Yes | 🟢 Yes | Uses current GPT Image model options exposed by the Images API. |
 | Stability style preset and clip guidance | Stability AI | 🟢 Yes | 🟢 Yes | Passed to Stability AI requests when selected. |
 | NSFW flag | AI Horde | 🟢 Yes | 🟢 Yes | Exposed for Horde requests. |
-| Offline generation | Local ONNX, Local MediaPipe | 🔴 No | 🟢 Yes | Runs on Android after the selected local model is available. |
-| Generation interrupt | AUTOMATIC1111, AI Horde, Local ONNX | 🟡 Remote providers | 🟢 Yes | Local ONNX interrupt is Android-only. Other providers rely on request completion when no platform-level interrupt is exposed. |
+| Offline generation | Local ONNX, Local MediaPipe, Silicon Diffusion Core ML | 🟢 Yes | 🟢 Yes | Runs after the selected local model is available on the current platform. |
+| Generation interrupt | AUTOMATIC1111, AI Horde, Local ONNX, Silicon Diffusion Core ML | 🟢 Yes | 🟢 Yes | Other providers rely on request completion when no platform-level interrupt is exposed. |
 
 ## Core Workflow
 
@@ -94,7 +95,7 @@ iOS uses the shared mobile experience and intentionally focuses on remote genera
 - Provider setup from first launch or settings.
 - Server URL and credentials for own-server providers.
 - API keys for hosted providers.
-- Local model selection and download flow on Android local diffusion builds.
+- Local model selection and download flow for supported local diffusion providers.
 - Server availability monitoring for compatible own-server modes.
 - Cache and gallery management.
 
@@ -139,11 +140,17 @@ Use this on Android for on-device txt2img generation. Download or provide a comp
 
 Use this on Android for on-device txt2img generation through Google AI MediaPipe. This provider is available only in `playstore` and `full` Android flavors.
 
+### Option 9: Silicon Diffusion Core ML
+
+Use this on iOS for on-device Stable Diffusion generation through Core ML. Download a supported Core ML model from the in-app catalog or import a compatible local model package, select it during setup, and generate without sending prompts or source images to a remote service.
+
+The first-party catalog intentionally starts with Apple/Hugging Face Stable Diffusion 1.x and 2.x palettized Core ML archives. SDXL archives are not exposed by default until memory and execution-plan compatibility are stable across a tested device matrix.
+
 ## Build Flavor Notes
 
 Android flavor availability is driven by the Gradle flavor configuration and runtime provider filtering. Most network providers are available everywhere; Google AI MediaPipe is intentionally unavailable in `foss`. The Play build also avoids custom local model path selection for local diffusion models.
 
-The iOS app is not split into Android-style flavors. It uses the shared mobile UI and remote-provider stack, while Local Diffusion and MediaPipe stay Android-only for the first iOS milestone.
+The iOS app is not split into Android-style flavors. It uses the shared mobile UI, remote-provider stack, and Silicon Diffusion Core ML as an iOS-only local provider. Android ONNX and MediaPipe local diffusion remain Android-specific.
 
 For a historical overview of flavor policy, see the project wiki page: [Build flavor difference](https://github.com/ShiftHackZ/Stable-Diffusion-Android/wiki/Build-flavor-difference).
 

@@ -115,6 +115,16 @@ fun EngineSelectionContent(
             displayDelegate = { it.name },
         )
 
+        ServerSource.LOCAL_APPLE_CORE_ML -> DropdownTextField(
+            label = Localization.string("hint_sd_model"),
+            loading = state.loading,
+            modifier = modifier,
+            value = state.localAiModels.firstOrNull { it.id == state.selectedLocalAiModelId },
+            items = state.localAiModels,
+            onItemSelected = { processIntent(EngineSelectionIntent(it.id)) },
+            displayDelegate = { it.name },
+        )
+
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
         ServerSource.HORDE,
         ServerSource.OPEN_AI,

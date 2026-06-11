@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
 import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
 /**
@@ -86,6 +87,16 @@ internal class DownloadableModelLocalDataSource(
         .withLocalData()
 
     /**
+     * Loads SDAI data through `getAllCoreMl`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getAllCoreMl() = dao
+        .queryByType(LocalAiModel.Type.CoreMl.key)
+        .mapEntityToDomain()
+        .withLocalData()
+
+    /**
      * Loads SDAI data through `getById`.
      *
      * @param id identifier of the target entity.
@@ -96,6 +107,7 @@ internal class DownloadableModelLocalDataSource(
         val chain = when (id) {
             LocalAiModel.CustomOnnx.id -> LocalAiModel.CustomOnnx
             LocalAiModel.CustomMediaPipe.id -> LocalAiModel.CustomMediaPipe
+            LocalAiModel.CustomCoreMl.id -> LocalAiModel.CustomCoreMl
             else -> dao
                 .queryById(id)
                 .mapEntityToDomain()
@@ -110,6 +122,17 @@ internal class DownloadableModelLocalDataSource(
      */
     override suspend fun getSelectedOnnx() = runCatching {
         getById(preferenceManager.localOnnxModelId)
+    }.getOrElse {
+        throw IllegalStateException("No selected model.", it)
+    }
+
+    /**
+     * Loads SDAI data through `getSelectedCoreMl`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getSelectedCoreMl() = runCatching {
+        getById(preferenceManager.localCoreMlModelId)
     }.getOrElse {
         throw IllegalStateException("No selected model.", it)
     }
@@ -132,6 +155,20 @@ internal class DownloadableModelLocalDataSource(
         .map { models -> models.withLocalData() }
 
     /**
+     * Loads SDAI data through `observeAllCoreMl`.
+     *
+     * @return Result produced by `observeAllCoreMl`.
+     * @author Dmitriy Moroz
+     */
+    override fun observeAllCoreMl(): Flow<List<LocalAiModel>> = dao
+        .observeByType(LocalAiModel.Type.CoreMl.key)
+        .combine(preferenceManager.observe()) { entities, _ ->
+            entities
+                .mapEntityToDomain()
+                .withLocalData()
+        }
+
+    /**
      * Performs the SDAI side effect handled by `save`.
      *
      * @param list list value consumed by the API.
@@ -140,7 +177,7 @@ internal class DownloadableModelLocalDataSource(
     override suspend fun save(list: List<LocalAiModel>) {
         dao.insertList(
             list
-                .filter { it.id != LocalAiModel.CustomOnnx.id }
+                .filterNot { it.id in customModelIds }
                 .mapDomainToEntity(),
         )
     }
@@ -172,6 +209,15 @@ internal class DownloadableModelLocalDataSource(
         selected = when (this.type) {
             LocalAiModel.Type.ONNX -> preferenceManager.localOnnxModelId == id
             LocalAiModel.Type.MediaPipe -> preferenceManager.localMediaPipeModelId == id
+            LocalAiModel.Type.CoreMl -> preferenceManager.localCoreMlModelId == id
         },
     )
+
+    private companion object {
+        val customModelIds = setOf(
+            LocalAiModel.CustomOnnx.id,
+            LocalAiModel.CustomMediaPipe.id,
+            LocalAiModel.CustomCoreMl.id,
+        )
+    }
 }

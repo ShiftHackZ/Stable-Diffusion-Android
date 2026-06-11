@@ -36,6 +36,14 @@ interface SdaiAppApi {
     suspend fun fetchMediaPipeModels(): List<DownloadableModelResponse>
 
     /**
+     * Loads SDAI data through `fetchCoreMlModels`.
+     *
+     * @return Result produced by `fetchCoreMlModels`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun fetchCoreMlModels(): List<DownloadableModelResponse>
+
+    /**
      * Executes the `postReport` step in the SDAI network layer.
      *
      * @param request request value consumed by the API.

@@ -275,6 +275,7 @@
     <string name="communicating_progress_sub_title">На это может потребоваться время</string>
     <string name="communicating_random_image_title">Загружаем случайное изображение…</string>
     <string name="communicating_local_title">Генерация Local Diffusion</string>
+    <string name="communicating_core_ml_title">Генерация Silicon Diffusion</string>
     <string name="communicating_wait_time">Время ожидания: %1$s</string>
     <string name="communicating_status_queue">Позиция в очереди: %1$s</string>
     <string name="communicating_status_steps">Шаг: %1$s/%2$s</string>
@@ -411,6 +412,7 @@
     <string name="on_boarding_page_universal_ios">iOS</string>
     <string name="on_boarding_page_form_title">Расширенные функции\n[Stable Diffusion].</string>
     <string name="on_boarding_page_local_title">[Офлайн] генерация\nLocal Diffusion.</string>
+    <string name="on_boarding_page_core_ml_title">[Офлайн] генерация\nSilicon Diffusion.</string>
     <string name="on_boarding_page_ui_title">Настройте приложение,\nсделайте его [своим]!</string>
     <string name="on_boarding_page_provider_title">[Свобода] выбора\nпровайедра генерации.</string>
 

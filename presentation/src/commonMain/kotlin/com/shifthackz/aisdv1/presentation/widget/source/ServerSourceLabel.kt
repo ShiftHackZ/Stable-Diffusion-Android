@@ -26,6 +26,7 @@ fun ServerSource.getNameUiText(): UiText = Localization.string(
         ServerSource.HORDE -> "srv_type_horde"
         ServerSource.LOCAL_MICROSOFT_ONNX -> "srv_type_local"
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> "srv_type_media_pipe"
+        ServerSource.LOCAL_APPLE_CORE_ML -> return UiText.Static("Silicon Diffusion Core ML")
         ServerSource.HUGGING_FACE -> "srv_type_hugging_face"
         ServerSource.OPEN_AI -> "srv_type_open_ai"
         ServerSource.STABILITY_AI -> "srv_type_stability_ai"

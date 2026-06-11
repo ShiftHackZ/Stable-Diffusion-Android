@@ -1,0 +1,66 @@
+[
+  {
+    "id": "apple-coreml-sd-v2-1-base-palettized-split-einsum-v2",
+    "name": "SD 2.1 Base Palettized (split_einsum_v2)",
+    "size": "1.14 GB",
+    "sources": [
+      "https://huggingface.co/apple/coreml-stable-diffusion-2-1-base-palettized/resolve/main/coreml-stable-diffusion-2-1-base-palettized_split_einsum_v2_compiled.zip"
+    ]
+  },
+  {
+    "id": "apple-coreml-sd-v2-1-base-palettized-original",
+    "name": "SD 2.1 Base Palettized (original)",
+    "size": "1.14 GB",
+    "sources": [
+      "https://huggingface.co/apple/coreml-stable-diffusion-2-1-base-palettized/resolve/main/coreml-stable-diffusion-2-1-base-palettized_original_compiled.zip"
+    ]
+  },
+  {
+    "id": "apple-coreml-sd-v2-base-palettized-split-einsum-v2",
+    "name": "SD 2.0 Base Palettized (split_einsum_v2)",
+    "size": "1.14 GB",
+    "sources": [
+      "https://huggingface.co/apple/coreml-stable-diffusion-2-base-palettized/resolve/main/coreml-stable-diffusion-2-base-palettized_split_einsum_v2_compiled.zip"
+    ]
+  },
+  {
+    "id": "apple-coreml-sd-v2-base-palettized-original",
+    "name": "SD 2.0 Base Palettized",
+    "size": "1.14 GB",
+    "sources": [
+      "https://huggingface.co/apple/coreml-stable-diffusion-2-base-palettized/resolve/main/coreml-stable-diffusion-2-base-palettized_original_compiled.zip"
+    ]
+  },
+  {
+    "id": "apple-coreml-sd-v1-5-palettized-split-einsum-v2",
+    "name": "SD 1.5 Palettized (split_einsum_v2)",
+    "size": "1.57 GB",
+    "sources": [
+      "https://huggingface.co/apple/coreml-stable-diffusion-v1-5-palettized/resolve/main/coreml-stable-diffusion-v1-5-palettized_split_einsum_v2_compiled.zip"
+    ]
+  },
+  {
+    "id": "apple-coreml-sd-v1-5-palettized-original",
+    "name": "SD 1.5 Palettized",
+    "size": "1.56 GB",
+    "sources": [
+      "https://huggingface.co/apple/coreml-stable-diffusion-v1-5-palettized/resolve/main/coreml-stable-diffusion-v1-5-palettized_original_compiled.zip"
+    ]
+  },
+  {
+    "id": "apple-coreml-sd-v1-4-palettized-split-einsum-v2",
+    "name": "SD 1.4 Palettized (split_einsum_v2)",
+    "size": "1.57 GB",
+    "sources": [
+      "https://huggingface.co/apple/coreml-stable-diffusion-1-4-palettized/resolve/main/coreml-stable-diffusion-1-4-palettized_split_einsum_v2_compiled.zip"
+    ]
+  },
+  {
+    "id": "apple-coreml-sd-v1-4-palettized-original",
+    "name": "SD 1.4 Palettized",
+    "size": "1.56 GB",
+    "sources": [
+      "https://huggingface.co/apple/coreml-stable-diffusion-1-4-palettized/resolve/main/coreml-stable-diffusion-1-4-palettized_original_compiled.zip"
+    ]
+  }
+]

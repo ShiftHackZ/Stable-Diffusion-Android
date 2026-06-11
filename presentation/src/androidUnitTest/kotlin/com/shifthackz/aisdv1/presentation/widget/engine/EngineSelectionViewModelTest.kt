@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
@@ -47,12 +48,14 @@ class EngineSelectionViewModelTest {
     }
     private val stubSettings = MutableStateFlow(Settings())
     private val stubLocalAiModels = MutableStateFlow<List<LocalAiModel>>(emptyList())
+    private val stubLocalCoreMlModels = MutableStateFlow<List<LocalAiModel>>(emptyList())
     private val stubException = Throwable("Something went wrong.")
     private val stubPreferenceManager = mockk<PreferenceManager>()
     private val stubGetConfigurationUseCase = mockk<GetConfigurationUseCase>()
     private val stubSelectStableDiffusionModelUseCase = mockk<SelectStableDiffusionModelUseCase>()
     private val stubGetStableDiffusionModelsUseCase = mockk<GetStableDiffusionModelsUseCase>()
     private val stubObserveLocalAiModelsUseCase = mockk<ObserveLocalOnnxModelsUseCase>()
+    private val stubObserveLocalCoreMlModelsUseCase = mockk<ObserveLocalCoreMlModelsUseCase>()
     private val stubFetchAndGetStabilityAiEnginesUseCase = mockk<FetchAndGetStabilityAiEnginesUseCase>()
     private val stubFetchHuggingFaceModelsUseCase = mockk<FetchHuggingFaceModelsUseCase>()
     private val stubFetchAndGetSwarmUiModelsUseCase = mockk<FetchAndGetSwarmUiModelsUseCase>()
@@ -66,6 +69,10 @@ class EngineSelectionViewModelTest {
         every {
             stubObserveLocalAiModelsUseCase()
         } returns stubLocalAiModels
+
+        every {
+            stubObserveLocalCoreMlModelsUseCase()
+        } returns stubLocalCoreMlModels
     }
 
     @After
@@ -339,6 +346,7 @@ class EngineSelectionViewModelTest {
         selectStableDiffusionModelUseCase = stubSelectStableDiffusionModelUseCase,
         getStableDiffusionModelsUseCase = stubGetStableDiffusionModelsUseCase,
         observeLocalOnnxModelsUseCase = stubObserveLocalAiModelsUseCase,
+        observeLocalCoreMlModelsUseCase = stubObserveLocalCoreMlModelsUseCase,
         fetchAndGetStabilityAiEnginesUseCase = stubFetchAndGetStabilityAiEnginesUseCase,
         getHuggingFaceModelsUseCase = stubFetchHuggingFaceModelsUseCase,
         fetchAndGetSwarmUiModelsUseCase = stubFetchAndGetSwarmUiModelsUseCase,

@@ -40,7 +40,9 @@ internal object NoOpDownloadableModelFileStore : DownloadableModelFileStore {
      * @author Dmitriy Moroz
      */
     override fun isDownloaded(model: LocalAiModel): Boolean =
-        model.id == LocalAiModel.CustomOnnx.id || model.id == LocalAiModel.CustomMediaPipe.id
+        model.id == LocalAiModel.CustomOnnx.id ||
+            model.id == LocalAiModel.CustomMediaPipe.id ||
+            model.id == LocalAiModel.CustomCoreMl.id
 
     /**
      * Performs the SDAI side effect handled by `delete`.

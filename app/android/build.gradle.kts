@@ -76,6 +76,7 @@ dependencies {
     implementation(project(":storage"))
     implementation(project(":domain"))
     implementation(project(":feature:auth"))
+    implementation(project(":feature:coreml"))
     implementation(project(":feature:onnx"))
     implementation(project(":feature:mediapipe"))
     implementation(project(":feature:work"))

@@ -104,4 +104,16 @@ data class Configuration(
      * @author Dmitriy Moroz
      */
     val localMediaPipeModelPath: String = "",
+    /**
+     * Exposes the `localCoreMlModelId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localCoreMlModelId: String = "",
+    /**
+     * Exposes the `localCoreMlModelPath` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localCoreMlModelPath: String = "",
 )

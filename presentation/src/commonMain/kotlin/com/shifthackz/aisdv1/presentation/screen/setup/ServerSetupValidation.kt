@@ -84,6 +84,11 @@ internal fun ServerSetupState.validateServerSetup(
         filePathValidator = filePathValidator,
         update = { error -> copy(localCustomMediaPipePathValidationError = error) },
     )
+
+    ServerSource.LOCAL_APPLE_CORE_ML -> ServerSetupValidationResult(
+        isValid = localCoreMlModels.any { it.selected && it.downloaded },
+        state = this,
+    )
 }
 
 /**

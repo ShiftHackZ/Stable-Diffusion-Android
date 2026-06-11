@@ -200,6 +200,7 @@ internal val ServerSource.displayName: String
         ServerSource.STABILITY_AI -> Localization.string("srv_type_stability_ai")
         ServerSource.LOCAL_MICROSOFT_ONNX -> Localization.string("srv_type_local_short")
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
+        ServerSource.LOCAL_APPLE_CORE_ML -> "Core ML"
     }
 
 /**

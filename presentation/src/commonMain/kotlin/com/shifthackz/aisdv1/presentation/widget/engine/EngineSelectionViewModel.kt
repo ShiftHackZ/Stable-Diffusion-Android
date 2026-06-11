@@ -7,7 +7,9 @@ import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.feature.coreml.CoreMlModelSupport
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
@@ -47,6 +49,12 @@ class EngineSelectionViewModel(
      * @author Dmitriy Moroz
      */
     private val observeLocalOnnxModelsUseCase: ObserveLocalOnnxModelsUseCase,
+    /**
+     * Exposes the `observeLocalCoreMlModelsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val observeLocalCoreMlModelsUseCase: ObserveLocalCoreMlModelsUseCase,
     /**
      * Exposes the `fetchAndGetStabilityAiEnginesUseCase` value used by the SDAI presentation layer.
      *
@@ -111,12 +119,29 @@ class EngineSelectionViewModel(
                 onError(it)
                 emit(emptyList())
             }
+        val localCoreMlModels = observeLocalCoreMlModelsUseCase()
+            .map { models ->
+                models
+                    .filter(LocalAiModel::downloaded)
+                    .filter(CoreMlModelSupport::isSupported)
+            }
+            .catch {
+                onError(it)
+                emit(emptyList())
+            }
 
         launch(dispatchersProvider.io) {
             configuration
                 .combine(localAiModels) { config, localModels -> config to localModels }
+                .combine(localCoreMlModels) { (config, localModels), coreMlModels ->
+                    val visibleLocalModels = when (config.source) {
+                        ServerSource.LOCAL_APPLE_CORE_ML -> coreMlModels
+                        else -> localModels
+                    }
+                    Triple(config, visibleLocalModels, coreMlModels)
+                }
                 .catch { onError(it) }
-                .collectLatest { (config, localModels) ->
+                .collectLatest { (config, localModels, _) ->
                     updateState {
                         it.copy(
                             loading = true,
@@ -146,7 +171,7 @@ class EngineSelectionViewModel(
                             selectedStEngine = options.config.stabilityAiEngineId,
                             localAiModels = localModels,
                             selectedLocalAiModelId = localModels
-                                .firstOrNull { it.id == options.config.localOnnxModelId }
+                                .firstOrNull { it.id == options.config.selectedLocalModelId() }
                                 ?.id
                                 ?: state.selectedLocalAiModelId,
                         )
@@ -189,6 +214,7 @@ class EngineSelectionViewModel(
 
             ServerSource.LOCAL_MICROSOFT_ONNX,
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+            ServerSource.LOCAL_APPLE_CORE_ML,
             ServerSource.HORDE,
             ServerSource.OPEN_AI,
             -> remoteOptions
@@ -203,6 +229,7 @@ class EngineSelectionViewModel(
                 intent.value.safeHuggingFaceModelAlias()
             ServerSource.STABILITY_AI -> preferenceManager.stabilityAiEngineId = intent.value
             ServerSource.LOCAL_MICROSOFT_ONNX -> preferenceManager.localOnnxModelId = intent.value
+            ServerSource.LOCAL_APPLE_CORE_ML -> preferenceManager.localCoreMlModelId = intent.value
             else -> Unit
         }
     }
@@ -255,6 +282,17 @@ class EngineSelectionViewModel(
  * @author Dmitriy Moroz
  */
 private const val REMOTE_OPTIONS_TIMEOUT_MILLIS = 5_000L
+
+/**
+ * Executes the `selectedLocalModelId` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `selectedLocalModelId`.
+ * @author Dmitriy Moroz
+ */
+private fun Configuration.selectedLocalModelId(): String = when (source) {
+    ServerSource.LOCAL_APPLE_CORE_ML -> localCoreMlModelId
+    else -> localOnnxModelId
+}
 
 /**
  * Executes the `hasA1111Endpoint` step in the SDAI presentation layer.

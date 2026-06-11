@@ -41,6 +41,7 @@ internal class ReportRepositoryImpl(
             ServerSource.STABILITY_AI -> preferenceManager.stabilityAiEngineId
             ServerSource.LOCAL_MICROSOFT_ONNX -> preferenceManager.localOnnxModelId
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> preferenceManager.localMediaPipeModelId
+            ServerSource.LOCAL_APPLE_CORE_ML -> preferenceManager.localCoreMlModelId
             else -> ""
         }
         rds.send(text, reason, image, source.toString(), model)

@@ -88,7 +88,9 @@ internal fun ConfigurationStep(
                 )
 
                 ServerSource.LOCAL_MICROSOFT_ONNX,
-                ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LocalGenerationForm(
+                ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+                ServerSource.LOCAL_APPLE_CORE_ML,
+                -> LocalGenerationForm(
                     state = state,
                     strings = strings,
                     processIntent = processIntent,
@@ -118,20 +120,24 @@ internal fun LocalGenerationForm(
         FormTitle(
             title = when (state.mode) {
                 ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeTitle
+                ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlTitle
                 else -> strings.localDiffusionTitle
             },
             subtitle = when (state.mode) {
                 ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeSubtitle
+                ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlSubtitle
                 else -> strings.localDiffusionSubtitle
             },
         )
         HintText(text = strings.localWarning)
-        SwitchRow(
-            icon = Icons.Outlined.Landslide,
-            text = strings.localCustomSwitch,
-            checked = state.localCustomModel,
-            onCheckedChange = { processIntent(ServerSetupIntent.AllowLocalCustomModel(it)) },
-        )
+        if (state.allowLocalCustomModels && state.mode != ServerSource.LOCAL_APPLE_CORE_ML) {
+            SwitchRow(
+                icon = Icons.Outlined.Landslide,
+                text = strings.localCustomSwitch,
+                checked = state.localCustomModel,
+                onCheckedChange = { processIntent(ServerSetupIntent.AllowLocalCustomModel(it)) },
+            )
+        }
         if (state.localCustomModel) {
             LocalCustomModelPathForm(
                 state = state,

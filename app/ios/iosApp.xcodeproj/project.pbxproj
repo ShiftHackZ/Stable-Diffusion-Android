@@ -10,6 +10,8 @@
 		6A2A00000000000000000001 /* AIStableDiffusionIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000002 /* AIStableDiffusionIOSApp.swift */; };
 		6A2A00000000000000000003 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000004 /* ComposeView.swift */; };
 		6A2A00000000000000000014 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000015 /* Assets.xcassets */; };
+		6A2A00000000000000000020 /* SiliconDiffusionCoreMLRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000023 /* SiliconDiffusionCoreMLRuntime.swift */; };
+		6A2A00000000000000000021 /* SiliconDiffusionCoreML in Frameworks */ = {isa = PBXBuildFile; productRef = 6A2A00000000000000000026 /* SiliconDiffusionCoreML */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +20,7 @@
 		6A2A00000000000000000005 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A2A00000000000000000015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A2A00000000000000000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A2A00000000000000000023 /* SiliconDiffusionCoreMLRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiliconDiffusionCoreMLRuntime.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -25,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A2A00000000000000000021 /* SiliconDiffusionCoreML in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -35,6 +39,7 @@
 			isa = PBXGroup;
 			children = (
 				6A2A00000000000000000008 /* iosApp */,
+				6A2A00000000000000000028 /* CoreML Swift */,
 				6A2A00000000000000000009 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -58,6 +63,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6A2A00000000000000000028 /* CoreML Swift */ = {
+			isa = PBXGroup;
+			children = (
+				6A2A00000000000000000023 /* SiliconDiffusionCoreMLRuntime.swift */,
+			);
+			name = "CoreML Swift";
+			path = "../../feature/coreml/swift/AppBridge";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -75,6 +89,9 @@
 			dependencies = (
 			);
 			name = iosApp;
+			packageProductDependencies = (
+				6A2A00000000000000000026 /* SiliconDiffusionCoreML */,
+			);
 			productName = iosApp;
 			productReference = 6A2A00000000000000000005 /* iosApp.app */;
 			productType = "com.apple.product-type.application";
@@ -103,6 +120,9 @@
 				Base,
 			);
 			mainGroup = 6A2A00000000000000000007;
+			packageReferences = (
+				6A2A00000000000000000024 /* XCLocalSwiftPackageReference "swift" */,
+			);
 			productRefGroup = 6A2A00000000000000000009 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -152,6 +172,7 @@
 			files = (
 				6A2A00000000000000000001 /* AIStableDiffusionIOSApp.swift in Sources */,
 				6A2A00000000000000000003 /* ComposeView.swift in Sources */,
+				6A2A00000000000000000020 /* SiliconDiffusionCoreMLRuntime.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,7 +230,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -264,7 +285,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -367,6 +388,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		6A2A00000000000000000024 /* XCLocalSwiftPackageReference "swift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../feature/coreml/swift";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6A2A00000000000000000026 /* SiliconDiffusionCoreML */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6A2A00000000000000000024 /* XCLocalSwiftPackageReference "swift" */;
+			productName = SiliconDiffusionCoreML;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6A2A0000000000000000000E /* Project object */;
 }

@@ -34,7 +34,7 @@ import org.koin.dsl.module
 val coreNetworkModule = module {
     single<SdaiAppApi> {
         KtorSdaiAppApi(
-            appBaseUrl = STABLE_DIFFUSION_APP_API_URL,
+            appBaseUrl = stableDiffusionAppApiUrlOverride() ?: STABLE_DIFFUSION_APP_API_URL,
             reportBaseUrl = STABLE_DIFFUSION_REPORT_API_URL,
         )
     }

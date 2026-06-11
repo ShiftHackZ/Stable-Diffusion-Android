@@ -53,7 +53,7 @@ fun GenerationModalRenderer(
         )
 
         is GenerationModal.Generating -> ProgressDialog(
-            title = Localization.string("communicating_local_title").asUiText(),
+            title = screenModal.title ?: Localization.string("communicating_local_title").asUiText(),
             canDismiss = false,
             step = screenModal.pair,
             content = screenModal.canCancel.takeIf { it }?.let {

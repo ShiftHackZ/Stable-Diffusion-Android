@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.domain.usecase.generation
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
@@ -52,6 +53,13 @@ internal class ImageToImageUseCaseImpl(
      */
     private val stabilityAiGenerationRepository: StabilityAiGenerationRepository,
     /**
+     * Exposes the `coreMlGenerationRepository` value used by the SDAI domain layer.
+     *
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
+    private val coreMlGenerationRepository: CoreMlGenerationRepository,
+    /**
      * Exposes the `preferenceManager` value used by the SDAI domain layer.
      *
      * @throws IllegalStateException when the delegated operation cannot complete.
@@ -84,6 +92,7 @@ internal class ImageToImageUseCaseImpl(
         ServerSource.HORDE -> hordeGenerationRepository.generateFromImage(payload)
         ServerSource.HUGGING_FACE -> huggingFaceGenerationRepository.generateFromImage(payload)
         ServerSource.STABILITY_AI -> stabilityAiGenerationRepository.generateFromImage(payload)
+        ServerSource.LOCAL_APPLE_CORE_ML -> coreMlGenerationRepository.generateFromImage(payload)
         ServerSource.AUTOMATIC1111 -> error("Automatic1111 batch must be generated through generateFromImage(payload).")
         else -> throw IllegalStateException("Img2Img not yet supported on ${preferenceManager.source}!")
     }

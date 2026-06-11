@@ -48,6 +48,12 @@ sealed interface GenerationModal {
     @Immutable
     data class Generating(
         /**
+         * Exposes the `title` value used by the SDAI presentation layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        val title: UiText? = null,
+        /**
          * Exposes the `canCancel` value used by the SDAI presentation layer.
          *
          * @author Dmitriy Moroz

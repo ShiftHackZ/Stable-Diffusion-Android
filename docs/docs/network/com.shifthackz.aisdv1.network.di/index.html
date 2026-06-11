@@ -97,7 +97,9 @@
 </nav>
         <div class="navigation-controls">
         <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":network/androidMain">android</button>
                 <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":network/commonMain">common</button>
+                <button class="platform-tag platform-selector native-like" data-active="" aria-pressed="true" data-filter=":network/iosMain">ios</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
                 <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
@@ -106,11 +108,25 @@
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":network/androidMain" data-filter=":network/androidMain">
+                                <span class="checkbox--icon"></span>
+                                android
+                            </label>
+                        </li>
                         <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
                             <label class="checkbox">
                                 <input type="checkbox" class="checkbox--input" id=":network/commonMain" data-filter=":network/commonMain">
                                 <span class="checkbox--icon"></span>
                                 common
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option native-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":network/iosMain" data-filter=":network/iosMain">
+                                <span class="checkbox--icon"></span>
+                                ios
                             </label>
                         </li>
                 </ul>
@@ -144,13 +160,13 @@
         </nav>
         <div id="resizer" class="resizer" data-item-type="BAR"></div>
         <div id="main" data-item-type="SECTION" role="main">
-<div class="main-content" data-page-type="package" id="content" pageids="network::com.shifthackz.aisdv1.network.di////PointingToDeclaration//-1444144345">
+<div class="main-content" data-page-type="package" id="content" pageids="network::com.shifthackz.aisdv1.network.di////PointingToDeclaration//-363224913">
   <div class="breadcrumbs"><a href="../index.html">network</a><span class="delimiter">/</span><span class="current">com.shifthackz.aisdv1.network.di</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
   </div>
   <div class="tabbedcontent">
-    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
     <div class="tabs-section-body">
       <div data-togglable="PROPERTY">
         <h2 class="tableheader">Properties</h2>
@@ -229,6 +245,23 @@
               </div>
             </div>
           </div>
+<a data-name="-1909499462%2FProperties%2F592036387" anchor-label="KEY_STABLE_DIFFUSION_APP_API_URL" id="-1909499462%2FProperties%2F592036387" data-filterable-set=":network/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":network/iosMain" data-filterable-set=":network/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-k-e-y_-s-t-a-b-l-e_-d-i-f-f-u-s-i-o-n_-a-p-p_-a-p-i_-u-r-l.html"><span>KEY_</span><wbr><span>STABLE_</span><wbr><span>DIFFUSION_</span><wbr><span>APP_</span><wbr><span>API_</span><wbr><span>URL</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1909499462%2FProperties%2F592036387"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":network/iosMain" data-filterable-set=":network/iosMain" data-active="" data-toggle=":network/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":network/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-k-e-y_-s-t-a-b-l-e_-d-i-f-f-u-s-i-o-n_-a-p-p_-a-p-i_-u-r-l.html">KEY_STABLE_DIFFUSION_APP_API_URL</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 <a data-name="-892912968%2FProperties%2F-1444144345" anchor-label="networkModule" id="-892912968%2FProperties%2F-1444144345" data-filterable-set=":network/commonMain"></a>
           <div class="table-row table-row_content" data-filterable-current=":network/commonMain" data-filterable-set=":network/commonMain">
             <div class="main-subrow keyValue ">
@@ -300,6 +333,27 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":network/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">const </span><span class="token keyword">val </span><a href="-s-t-a-b-l-e_-d-i-f-f-u-s-i-o-n_-r-e-p-o-r-t_-a-p-i_-u-r-l.html">STABLE_DIFFUSION_REPORT_API_URL</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">STABLE_DIFFUSION_REPORT_API_URL</code> value used by the SDAI network layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1703336464%2FFunctions%2F-363224913" anchor-label="stableDiffusionAppApiUrlOverride" id="-1703336464%2FFunctions%2F-363224913" data-filterable-set=":network/commonMain,:network/androidMain,:network/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":network/commonMain,:network/androidMain,:network/iosMain" data-filterable-set=":network/commonMain,:network/androidMain,:network/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="stable-diffusion-app-api-url-override.html"><span>stable</span><wbr><span>Diffusion</span><wbr><span>App</span><wbr><span>Api</span><wbr><span>Url</span><wbr><span><span>Override</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1703336464%2FFunctions%2F-363224913"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":network/androidMain" data-filterable-set=":network/androidMain" data-active="" data-toggle=":network/androidMain">android</button><button class="platform-bookmark" data-filterable-current=":network/commonMain" data-filterable-set=":network/commonMain" data-toggle=":network/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":network/iosMain" data-filterable-set=":network/iosMain" data-toggle=":network/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":network/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="stable-diffusion-app-api-url-override.html"><span class="token function">stableDiffusionAppApiUrlOverride</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":network/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="stable-diffusion-app-api-url-override.html"><span class="token function">stableDiffusionAppApiUrlOverride</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div><div class="content sourceset-dependent-content" data-togglable=":network/iosMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="stable-diffusion-app-api-url-override.html"><span class="token function">stableDiffusionAppApiUrlOverride</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div>                  </div>
                 </div>
               </div>
             </div>

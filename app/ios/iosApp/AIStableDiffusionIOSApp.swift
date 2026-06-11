@@ -2,6 +2,10 @@ import SwiftUI
 
 @main
 struct AIStableDiffusionIOSApp: App {
+    init() {
+        SiliconDiffusionCoreMLRuntimeRegistration.registerIfAvailable()
+    }
+
     var body: some Scene {
         WindowGroup {
             ComposeView()
