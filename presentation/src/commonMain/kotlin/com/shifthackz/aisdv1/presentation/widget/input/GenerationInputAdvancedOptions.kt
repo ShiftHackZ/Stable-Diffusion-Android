@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Casino
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -44,6 +45,7 @@ import kotlin.random.Random
  * Renders the `GenerationInputAdvancedOptions` UI for the SDAI presentation layer.
  *
  * @param state state rendered or processed by the component.
+ * @param isImg2Img is img2 img value consumed by the API.
  * @param onEvent callback invoked by the component.
  * @param afterSlidersSection after sliders section value consumed by the API.
  * @author Dmitriy Moroz
@@ -51,6 +53,7 @@ import kotlin.random.Random
 @Composable
 internal fun GenerationInputAdvancedOptions(
     state: GenerationInputFormState,
+    isImg2Img: Boolean,
     onEvent: (GenerationInputFormEvent) -> Unit,
     afterSlidersSection: @Composable () -> Unit,
 ) {
@@ -126,24 +129,71 @@ internal fun GenerationInputAdvancedOptions(
                         label = { Text(Localization.string("hint_seed")) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         trailingIcon = {
-                            IconButton(onClick = {
-                                onEvent(
-                                    GenerationInputFormEvent.UpdateSeed(
-                                        "${Random.nextLong().absoluteValue}",
-                                    ),
-                                )
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.Casino,
-                                    contentDescription = Localization.string("action_image_picker_random"),
-                                )
+                            Row {
+                                if (state.seed.isNotEmpty()) {
+                                    IconButton(onClick = {
+                                        onEvent(GenerationInputFormEvent.UpdateSeed(""))
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = Localization.string("action_clear"),
+                                        )
+                                    }
+                                }
+                                IconButton(onClick = {
+                                    onEvent(
+                                        GenerationInputFormEvent.UpdateSeed(
+                                            "${Random.nextLong().absoluteValue}",
+                                        ),
+                                    )
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Casino,
+                                        contentDescription = Localization.string("action_image_picker_random"),
+                                    )
+                                }
                             }
                         },
                         colors = textFieldColors,
                     )
                 }
-                // NSFW flag is supported by Horde and local Core ML safety checker.
-                if (state.mode == ServerSource.HORDE || state.mode == ServerSource.LOCAL_APPLE_CORE_ML) {
+                if (state.mode == ServerSource.FAL_AI) {
+                    DropdownTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        label = Localization.string("hint_fal_ai_acceleration").asUiText(),
+                        value = state.falAiAcceleration,
+                        items = state.falAiModel.supportedAccelerations.toList(),
+                        onItemSelected = {
+                            onEvent(GenerationInputFormEvent.UpdateFalAiAcceleration(it))
+                        },
+                        displayDelegate = { it.displayName.asUiText() },
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Switch(
+                            checked = state.falAiSyncMode,
+                            onCheckedChange = {
+                                onEvent(GenerationInputFormEvent.UpdateFalAiSyncMode(it))
+                            },
+                        )
+                        Text(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            text = Localization.string("hint_fal_ai_sync_mode"),
+                        )
+                    }
+                }
+                // NSFW flag maps to provider-specific safety settings.
+                if (
+                    state.mode == ServerSource.HORDE ||
+                    state.mode == ServerSource.FAL_AI ||
+                    state.mode == ServerSource.LOCAL_APPLE_CORE_ML
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -178,17 +228,29 @@ internal fun GenerationInputAdvancedOptions(
                         label = { Text(Localization.string("hint_sub_seed")) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         trailingIcon = {
-                            IconButton(onClick = {
-                                onEvent(
-                                    GenerationInputFormEvent.UpdateSubSeed(
-                                        "${Random.nextLong().absoluteValue}",
-                                    ),
-                                )
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.Casino,
-                                    contentDescription = Localization.string("action_image_picker_random"),
-                                )
+                            Row {
+                                if (state.subSeed.isNotEmpty()) {
+                                    IconButton(onClick = {
+                                        onEvent(GenerationInputFormEvent.UpdateSubSeed(""))
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = Localization.string("action_clear"),
+                                        )
+                                    }
+                                }
+                                IconButton(onClick = {
+                                    onEvent(
+                                        GenerationInputFormEvent.UpdateSubSeed(
+                                            "${Random.nextLong().absoluteValue}",
+                                        ),
+                                    )
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Casino,
+                                        contentDescription = Localization.string("action_image_picker_random"),
+                                    )
+                                }
                             }
                         },
                         colors = textFieldColors,
@@ -224,22 +286,28 @@ internal fun GenerationInputAdvancedOptions(
 
                 //Steps not available for open ai
                 if (state.mode != ServerSource.OPEN_AI) {
+                    val stepsMin = if (state.mode == ServerSource.FAL_AI) {
+                        state.falAiModel.minInferenceSteps
+                    } else {
+                        SAMPLING_STEPS_RANGE_MIN
+                    }
                     val stepsMax = when (state.mode) {
                         ServerSource.LOCAL_MICROSOFT_ONNX -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
                         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
                         ServerSource.STABILITY_AI -> SAMPLING_STEPS_RANGE_STABILITY_AI_MAX
+                        ServerSource.FAL_AI -> state.falAiModel.maxInferenceSteps
                         else -> SAMPLING_STEPS_RANGE_MAX
                     }
-                    val steps = state.samplingSteps.coerceIn(SAMPLING_STEPS_RANGE_MIN, stepsMax)
+                    val steps = state.samplingSteps.coerceIn(stepsMin, stepsMax)
                     Text(
                         modifier = Modifier.padding(top = 8.dp),
                         text = Localization.string("hint_sampling_steps", "$steps"),
                     )
                     SliderTextInputField(
                         value = steps * 1f,
-                        valueRange = (SAMPLING_STEPS_RANGE_MIN * 1f)..(stepsMax * 1f),
+                        valueRange = (stepsMin * 1f)..(stepsMax * 1f),
                         valueDiff = 1f,
-                        steps = abs(stepsMax - SAMPLING_STEPS_RANGE_MIN) - 1,
+                        steps = (abs(stepsMax - stepsMin) - 1).coerceAtLeast(0),
                         sliderColors = sliderColors,
                         fractionDigits = 0,
                         onValueChange = {
@@ -255,18 +323,29 @@ internal fun GenerationInputAdvancedOptions(
                     ServerSource.OPEN_AI,
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Unit
                     else -> {
+                        val cfgMin = if (state.mode == ServerSource.FAL_AI) {
+                            state.falAiModel.minGuidanceScale
+                        } else {
+                            CFG_SCALE_RANGE_MIN * 1f
+                        }
+                        val cfgMax = if (state.mode == ServerSource.FAL_AI) {
+                            state.falAiModel.maxGuidanceScale
+                        } else {
+                            CFG_SCALE_RANGE_MAX * 1f
+                        }
+                        val cfgScale = state.cfgScale.coerceIn(cfgMin, cfgMax)
                         Text(
                             modifier = Modifier.padding(top = 8.dp),
                             text = Localization.string(
                                 "hint_cfg_scale",
-                                "${state.cfgScale.roundTo(2)}",
+                                "${cfgScale.roundTo(2)}",
                             ),
                         )
                         SliderTextInputField(
-                            value = state.cfgScale,
-                            valueRange = (CFG_SCALE_RANGE_MIN * 1f)..(CFG_SCALE_RANGE_MAX * 1f),
+                            value = cfgScale,
+                            valueRange = cfgMin..cfgMax,
                             valueDiff = 0.5f,
-                            steps = abs(CFG_SCALE_RANGE_MAX - CFG_SCALE_RANGE_MIN) * 2 - 1,
+                            steps = ((abs(cfgMax - cfgMin) * 2).roundToInt() - 1).coerceAtLeast(0),
                             sliderColors = sliderColors,
                             onValueChange = {
                                 onEvent(GenerationInputFormEvent.UpdateCfgScale(it))
@@ -285,6 +364,13 @@ internal fun GenerationInputAdvancedOptions(
                     else -> Unit
                 }
 
+                if (state.mode == ServerSource.AUTOMATIC1111) {
+                    GenerationInputA1111Options(
+                        state = state,
+                        isImg2Img = isImg2Img,
+                        onEvent = onEvent,
+                    )
+                }
                 // Batch is not available for any Local
                 when (state.mode) {
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE, ServerSource.LOCAL_MICROSOFT_ONNX -> Unit

@@ -2,8 +2,12 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.model.PromptTagEditRequest
 import com.shifthackz.aisdv1.presentation.navigation.router.TextToImageRouter
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationAspectRatio
+import kotlin.math.max
+import kotlin.math.roundToInt
 
 /**
  * Coordinates `TextToImageIntentProcessor` behavior in the SDAI presentation layer.
@@ -139,11 +143,44 @@ internal class TextToImageIntentProcessor(
                     message = null,
                 )
             }
+            TextToImageIntent.SwapDimensions -> updateState {
+                it.copy(
+                    width = it.height,
+                    height = it.width,
+                    widthValidationError = null,
+                    heightValidationError = null,
+                    error = null,
+                    message = null,
+                )
+            }
+            is TextToImageIntent.ApplyAspectRatio -> updateState {
+                val (width, height) = it.dimensionsFor(intent.ratio)
+                it.copy(
+                    width = width.toString(),
+                    height = height.toString(),
+                    widthValidationError = null,
+                    heightValidationError = null,
+                    error = null,
+                    message = null,
+                )
+            }
             is TextToImageIntent.UpdateSamplingSteps -> updateState {
-                it.copy(samplingSteps = intent.value.coerceIn(MIN_STEPS, MAX_STEPS), message = null)
+                val minSteps = it.falAiModel.minInferenceSteps.takeIf { _ ->
+                    it.mode == ServerSource.FAL_AI
+                } ?: MIN_STEPS
+                val maxSteps = it.falAiModel.maxInferenceSteps.takeIf { _ ->
+                    it.mode == ServerSource.FAL_AI
+                } ?: MAX_STEPS
+                it.copy(samplingSteps = intent.value.coerceIn(minSteps, maxSteps), message = null)
             }
             is TextToImageIntent.UpdateCfgScale -> updateState {
-                it.copy(cfgScale = intent.value.coerceIn(MIN_CFG_SCALE, MAX_CFG_SCALE), message = null)
+                val minCfg = it.falAiModel.minGuidanceScale.takeIf { _ ->
+                    it.mode == ServerSource.FAL_AI
+                } ?: MIN_CFG_SCALE
+                val maxCfg = it.falAiModel.maxGuidanceScale.takeIf { _ ->
+                    it.mode == ServerSource.FAL_AI
+                } ?: MAX_CFG_SCALE
+                it.copy(cfgScale = intent.value.coerceIn(minCfg, maxCfg), message = null)
             }
             is TextToImageIntent.UpdateRestoreFaces -> updateState {
                 it.copy(restoreFaces = intent.value, message = null)
@@ -163,11 +200,22 @@ internal class TextToImageIntentProcessor(
             is TextToImageIntent.UpdateSampler -> updateState {
                 it.copy(selectedSampler = intent.value, message = null)
             }
+            is TextToImageIntent.UpdateScheduler -> updateState {
+                it.copy(selectedScheduler = intent.value, message = null)
+            }
+            is TextToImageIntent.UpdateForgeModules -> updateState {
+                it.copy(selectedForgeModules = intent.value, message = null)
+            }
             is TextToImageIntent.UpdateNsfw -> updateState {
                 it.copy(nsfw = intent.value, message = null)
             }
             is TextToImageIntent.UpdateBatchCount -> updateState {
-                it.copy(batchCount = intent.value.coerceIn(MIN_BATCH_COUNT, MAX_BATCH_COUNT), message = null)
+                val maxBatch = if (it.mode == ServerSource.FAL_AI) {
+                    MAX_FAL_AI_BATCH_COUNT
+                } else {
+                    MAX_BATCH_COUNT
+                }
+                it.copy(batchCount = intent.value.coerceIn(MIN_BATCH_COUNT, maxBatch), message = null)
             }
             is TextToImageIntent.UpdateOpenAiModel -> updateState { state ->
                 val size = if (state.openAiSize.supportedModels.contains(intent.value)) {
@@ -185,12 +233,77 @@ internal class TextToImageIntentProcessor(
             is TextToImageIntent.UpdateOpenAiQuality -> updateState {
                 it.copy(openAiQuality = intent.value, message = null)
             }
+            is TextToImageIntent.UpdateFalAiModel -> updateState {
+                val acceleration = it.falAiAcceleration.takeIf(intent.value.supportedAccelerations::contains)
+                    ?: intent.value.supportedAccelerations.first()
+                it.copy(
+                    falAiModel = intent.value,
+                    falAiAcceleration = acceleration,
+                    samplingSteps = it.samplingSteps.coerceIn(
+                        intent.value.minInferenceSteps,
+                        intent.value.maxInferenceSteps,
+                    ),
+                    cfgScale = it.cfgScale.coerceIn(
+                        intent.value.minGuidanceScale,
+                        intent.value.maxGuidanceScale,
+                    ),
+                    message = null,
+                )
+            }
+            is TextToImageIntent.UpdateFalAiImageSize -> updateState {
+                it.copy(
+                    falAiImageSize = intent.value,
+                    width = intent.value.width.toString(),
+                    height = intent.value.height.toString(),
+                    widthValidationError = null,
+                    heightValidationError = null,
+                    message = null,
+                )
+            }
+            is TextToImageIntent.UpdateFalAiAcceleration -> updateState {
+                it.copy(falAiAcceleration = intent.value, message = null)
+            }
+            is TextToImageIntent.UpdateFalAiSyncMode -> updateState {
+                it.copy(falAiSyncMode = intent.value, message = null)
+            }
             is TextToImageIntent.UpdateStabilityAiStyle -> updateState {
                 it.copy(selectedStylePreset = intent.value, message = null)
             }
             is TextToImageIntent.UpdateStabilityAiClipGuidance -> updateState {
                 it.copy(selectedClipGuidancePreset = intent.value, message = null)
             }
+            is TextToImageIntent.UpdateHiresConfig -> updateState {
+                it.copy(hires = intent.value, message = null)
+            }
+            is TextToImageIntent.UpdateADetailerConfig -> updateState {
+                it.copy(aDetailer = intent.value, message = null)
+            }
+            TextToImageIntent.RefreshADetailerAvailability -> Unit
+            TextToImageIntent.OpenADetailerInstallInstructions -> Unit
         }
     }
 }
+
+private fun TextToImageState.dimensionsFor(ratio: GenerationAspectRatio): Pair<Int, Int> {
+    val currentWidth = width.toIntOrNull() ?: DEFAULT_SIZE
+    val currentHeight = height.toIntOrNull() ?: DEFAULT_SIZE
+    val longSide = max(currentWidth, currentHeight).coerceIn(MIN_SIZE, MAX_SIZE)
+    return if (ratio.width >= ratio.height) {
+        longSide to (longSide * ratio.height.toFloat() / ratio.width)
+            .roundToStableDiffusionSize()
+    } else {
+        (longSide * ratio.width.toFloat() / ratio.height)
+            .roundToStableDiffusionSize() to longSide
+    }
+}
+
+private fun Float.roundToStableDiffusionSize(): Int =
+    (this / SIZE_STEP).roundToInt()
+        .coerceAtLeast(1)
+        .times(SIZE_STEP)
+        .coerceIn(MIN_SIZE, MAX_SIZE)
+
+private const val MIN_SIZE = 64
+private const val MAX_SIZE = 2048
+private const val SIZE_STEP = 64
+private const val MAX_FAL_AI_BATCH_COUNT = 4

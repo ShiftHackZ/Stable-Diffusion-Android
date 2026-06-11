@@ -143,7 +143,7 @@ class SwarmUiGenerationRepositoryImplTest {
 
         val actual = repository.generateFromText(mockTextToImagePayload)
 
-        Assert.assertEquals(mockAiGenerationResult, actual)
+        Assert.assertEquals(mockAiGenerationResult.copy(modelName = MODEL), actual)
     }
 
     @Test
@@ -175,7 +175,7 @@ class SwarmUiGenerationRepositoryImplTest {
 
             val actual = repository.generateFromText(mockTextToImagePayload)
 
-            Assert.assertEquals(mockAiGenerationResult, actual)
+            Assert.assertEquals(mockAiGenerationResult.copy(modelName = MODEL), actual)
             verify {
                 stubSessionPreference.swarmUiSessionId = RENEWED_SESSION_ID
             }
@@ -206,7 +206,7 @@ class SwarmUiGenerationRepositoryImplTest {
 
         val actual = repository.generateFromImage(mockImageToImagePayload)
 
-        Assert.assertEquals(mockAiGenerationResult, actual)
+        Assert.assertEquals(mockAiGenerationResult.copy(modelName = MODEL), actual)
     }
 
     @Test

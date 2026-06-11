@@ -21,6 +21,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoFixNormal
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -152,6 +154,21 @@ fun GalleryUiItem(
                 imageVector = Icons.Default.VisibilityOff,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
+            )
+        }
+        if (item.liked) {
+            Icon(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(24.dp)
+                    .align(Alignment.TopStart),
+                imageVector = Icons.Default.Favorite,
+                contentDescription = null,
+                tint = if (item.liked) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                },
             )
         }
         if (selectionMode) {

@@ -1,8 +1,10 @@
 package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
+import com.shifthackz.aisdv1.data.mappers.withModelName
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.OpenAiGenerationDataSource
+import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
@@ -42,5 +44,6 @@ internal class OpenAiGenerationRepositoryImpl(
 
     override suspend fun generateFromText(payload: TextToImagePayload) = remoteDataSource
         .textToImage(preferenceManager.openAiApiKey, payload)
+        .withModelName((payload.openAiModel ?: OpenAiModel.default).alias)
         .let { ai -> insertGenerationResult(ai) }
 }

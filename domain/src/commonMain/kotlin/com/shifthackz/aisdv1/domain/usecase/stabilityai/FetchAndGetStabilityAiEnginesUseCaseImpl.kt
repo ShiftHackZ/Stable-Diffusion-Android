@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.domain.usecase.stabilityai
 
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiEngine
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 
@@ -30,6 +31,8 @@ internal class FetchAndGetStabilityAiEnginesUseCaseImpl(
      * @author Dmitriy Moroz
      */
     override suspend fun invoke(): List<StabilityAiEngine> {
+        if (preferenceManager.source != ServerSource.STABILITY_AI) return emptyList()
+
         val engines = fetchStabilityAiEnginesUseCase(preferenceManager.stabilityAiApiKey)
         if (!engines.map(StabilityAiEngine::id).contains(preferenceManager.stabilityAiEngineId)) {
             preferenceManager.stabilityAiEngineId = engines.firstOrNull()?.id ?: ""

@@ -1,8 +1,15 @@
 package com.shifthackz.aisdv1.presentation.widget.input
 
+import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
+import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
+import com.shifthackz.aisdv1.domain.entity.ForgeModule
+import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 
@@ -73,6 +80,19 @@ sealed interface GenerationInputFormEvent {
      */
     data class UpdateWidth(val value: String) : GenerationInputFormEvent
     /**
+     * Provides the `SwapDimensions` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object SwapDimensions : GenerationInputFormEvent
+    /**
+     * Carries `ApplyAspectRatio` data through the SDAI presentation layer.
+     *
+     * @param ratio ratio value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class ApplyAspectRatio(val ratio: GenerationAspectRatio) : GenerationInputFormEvent
+    /**
      * Carries `UpdateHeight` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.
@@ -129,6 +149,20 @@ sealed interface GenerationInputFormEvent {
      */
     data class UpdateSampler(val value: String) : GenerationInputFormEvent
     /**
+     * Carries `UpdateScheduler` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateScheduler(val value: Scheduler) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateForgeModules` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateForgeModules(val value: List<ForgeModule>) : GenerationInputFormEvent
+    /**
      * Carries `UpdateNsfw` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.
@@ -164,6 +198,34 @@ sealed interface GenerationInputFormEvent {
      */
     data class UpdateOpenAiQuality(val value: OpenAiQuality) : GenerationInputFormEvent
     /**
+     * Carries `UpdateFalAiModel` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiModel(val value: FalAiModel) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateFalAiImageSize` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiImageSize(val value: FalAiImageSize) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateFalAiAcceleration` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiAcceleration(val value: FalAiAcceleration) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateFalAiSyncMode` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiSyncMode(val value: Boolean) : GenerationInputFormEvent
+    /**
      * Carries `UpdateStabilityAiStyle` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.
@@ -177,4 +239,63 @@ sealed interface GenerationInputFormEvent {
      * @author Dmitriy Moroz
      */
     data class UpdateStabilityAiClipGuidance(val value: StabilityAiClipGuidance) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateHiresConfig` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateHiresConfig(val value: HiresConfig) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateADetailerConfig` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateADetailerConfig(val value: ADetailerConfig) : GenerationInputFormEvent
+    /**
+     * Provides the `RefreshADetailerAvailability` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object RefreshADetailerAvailability : GenerationInputFormEvent
+    /**
+     * Provides the `OpenADetailerInstallInstructions` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object OpenADetailerInstallInstructions : GenerationInputFormEvent
+}
+
+/**
+ * Carries `GenerationAspectRatio` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
+enum class GenerationAspectRatio(
+    /**
+     * Exposes the `displayName` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val displayName: String,
+    /**
+     * Exposes the `width` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val width: Int,
+    /**
+     * Exposes the `height` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val height: Int,
+) {
+    SQUARE("1:1", 1, 1),
+    PORTRAIT("2:3", 2, 3),
+    PHOTO_PORTRAIT("3:4", 3, 4),
+    WIDE("16:9", 16, 9),
+    LANDSCAPE("3:2", 3, 2),
+    PHOTO_LANDSCAPE("4:3", 4, 3),
 }

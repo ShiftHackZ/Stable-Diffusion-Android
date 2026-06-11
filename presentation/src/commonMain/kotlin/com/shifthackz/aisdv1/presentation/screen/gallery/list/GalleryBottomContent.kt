@@ -18,6 +18,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,7 +27,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -106,40 +116,52 @@ internal fun GalleryBottomBars(
         enter = fadeIn(),
         exit = fadeOut(),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surfaceTint),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                modifier = Modifier.padding(start = 16.dp),
-                text = Localization.string("gallery_menu_selected", "${state.selection.size}"),
-                style = MaterialTheme.typography.bodyLarge,
-                lineHeight = 17.sp,
-                fontWeight = FontWeight.W400,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            TextButton(
-                modifier = Modifier.padding(end = 16.dp),
-                onClick = {
-                    if (state.selection.isNotEmpty()) {
-                        processIntent(GalleryIntent.UnselectAll)
-                    } else {
-                        processIntent(GalleryIntent.ChangeSelectionMode(false))
-                    }
-                },
+        Column {
+            AnimatedVisibility(
+                visible = state.selection.isNotEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut(),
             ) {
-                val text = if (state.selection.isNotEmpty()) {
-                    Localization.string("gallery_menu_unselect_all")
-                } else {
-                    Localization.string("cancel")
-                }
-                Text(
-                    text = text.uppercase(),
-                    textAlign = TextAlign.Center,
-                    color = LocalContentColor.current,
+                GallerySelectionActionsBar(
+                    state = state,
+                    processIntent = processIntent,
                 )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceTint),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    modifier = Modifier.padding(start = 16.dp),
+                    text = Localization.string("gallery_menu_selected", "${state.selection.size}"),
+                    style = MaterialTheme.typography.bodyLarge,
+                    lineHeight = 17.sp,
+                    fontWeight = FontWeight.W400,
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                TextButton(
+                    modifier = Modifier.padding(end = 16.dp),
+                    onClick = {
+                        if (state.selection.isNotEmpty()) {
+                            processIntent(GalleryIntent.UnselectAll)
+                        } else {
+                            processIntent(GalleryIntent.ChangeSelectionMode(false))
+                        }
+                    },
+                ) {
+                    val text = if (state.selection.isNotEmpty()) {
+                        Localization.string("gallery_menu_unselect_all")
+                    } else {
+                        Localization.string("cancel")
+                    }
+                    Text(
+                        text = text.uppercase(),
+                        textAlign = TextAlign.Center,
+                        color = LocalContentColor.current,
+                    )
+                }
             }
         }
     }
@@ -175,6 +197,77 @@ internal fun GalleryBottomBars(
                     color = LocalContentColor.current,
                 )
             }
+        }
+    }
+}
+
+/**
+ * Renders selected gallery item actions above the selected-images summary bar.
+ *
+ * @param state state rendered or processed by the component.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
+@Composable
+private fun GallerySelectionActionsBar(
+    state: GalleryState,
+    processIntent: (GalleryIntent) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceTint)
+            .padding(horizontal = 8.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IconButton(
+            onClick = {
+                processIntent(GalleryIntent.ToggleSelectionLike)
+            },
+        ) {
+            Icon(
+                imageVector = if (state.shouldLikeSelection) {
+                    Icons.Default.Favorite
+                } else {
+                    Icons.Default.FavoriteBorder
+                },
+                contentDescription = null,
+            )
+        }
+        IconButton(
+            onClick = {
+                processIntent(GalleryIntent.ToggleSelectionVisibility)
+            },
+        ) {
+            Icon(
+                imageVector = if (state.shouldHideSelection) {
+                    Icons.Default.VisibilityOff
+                } else {
+                    Icons.Default.Visibility
+                },
+                contentDescription = null,
+            )
+        }
+        IconButton(
+            onClick = {
+                processIntent(GalleryIntent.Delete.Selection.Request)
+            },
+        ) {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = null,
+            )
+        }
+        IconButton(
+            onClick = {
+                processIntent(GalleryIntent.Export.Selection.Request)
+            },
+        ) {
+            Icon(
+                imageVector = Icons.Default.Share,
+                contentDescription = null,
+            )
         }
     }
 }

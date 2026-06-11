@@ -94,7 +94,7 @@ class HuggingFaceGenerationRepositoryImplTest {
 
         val actual = repository.generateFromText(mockTextToImagePayload)
 
-        Assert.assertEquals(mockAiGenerationResult, actual)
+        Assert.assertEquals(mockAiGenerationResult.copy(modelName = MODEL), actual)
     }
 
     @Test
@@ -116,7 +116,7 @@ class HuggingFaceGenerationRepositoryImplTest {
 
         val actual = repository.generateFromImage(mockImageToImagePayload)
 
-        Assert.assertEquals(mockAiGenerationResult, actual)
+        Assert.assertEquals(mockAiGenerationResult.copy(modelName = MODEL), actual)
     }
 
     @Test

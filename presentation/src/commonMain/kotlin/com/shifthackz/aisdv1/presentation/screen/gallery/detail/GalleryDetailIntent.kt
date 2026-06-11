@@ -15,6 +15,26 @@ sealed interface GalleryDetailIntent : MviIntent {
      * @author Dmitriy Moroz
      */
     data object NavigateBack : GalleryDetailIntent
+    /**
+     * Provides the `NavigatePrevious` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object NavigatePrevious : GalleryDetailIntent
+    /**
+     * Provides the `NavigateNext` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object NavigateNext : GalleryDetailIntent
+
+    /**
+     * Carries `NavigateToPage` data through the SDAI presentation layer.
+     *
+     * @param page page value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class NavigateToPage(val page: Int) : GalleryDetailIntent
 
     /**
      * Carries `SelectTab` data through the SDAI presentation layer.
@@ -78,6 +98,13 @@ sealed interface GalleryDetailIntent : MviIntent {
      * @author Dmitriy Moroz
      */
     data object ToggleVisibility : GalleryDetailIntent
+
+    /**
+     * Provides the `ToggleLike` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object ToggleLike : GalleryDetailIntent
 
     /**
      * Provides the `Report` singleton used by the SDAI presentation layer.

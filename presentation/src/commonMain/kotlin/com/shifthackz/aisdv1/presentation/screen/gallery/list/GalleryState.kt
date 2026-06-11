@@ -79,7 +79,31 @@ data class GalleryState(
      * @author Dmitriy Moroz
      */
     val grid: Grid = Grid.Fixed2,
-) : MviState
+) : MviState {
+    /**
+     * Exposes the `selectedItems` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val selectedItems: List<GalleryGridItemUi>
+        get() = items.filter { it.id in selection }
+
+    /**
+     * Exposes the `shouldHideSelection` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val shouldHideSelection: Boolean
+        get() = selectedItems.any { !it.hidden }
+
+    /**
+     * Exposes the `shouldLikeSelection` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val shouldLikeSelection: Boolean
+        get() = selectedItems.any { !it.liked }
+}
 
 /**
  * Defines the `GalleryDialog` contract for the SDAI presentation layer.
@@ -153,4 +177,10 @@ data class GalleryGridItemUi(
      * @author Dmitriy Moroz
      */
     val hidden: Boolean,
+    /**
+     * Exposes the `liked` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val liked: Boolean = false,
 )

@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.FalAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
@@ -60,6 +61,13 @@ internal class ImageToImageUseCaseImpl(
      */
     private val coreMlGenerationRepository: CoreMlGenerationRepository,
     /**
+     * Exposes the `falAiGenerationRepository` value used by the SDAI domain layer.
+     *
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
+    private val falAiGenerationRepository: FalAiGenerationRepository,
+    /**
      * Exposes the `preferenceManager` value used by the SDAI domain layer.
      *
      * @throws IllegalStateException when the delegated operation cannot complete.
@@ -76,6 +84,7 @@ internal class ImageToImageUseCaseImpl(
      */
     override suspend fun invoke(payload: ImageToImagePayload) = when (preferenceManager.source) {
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.generateFromImage(payload)
+        ServerSource.FAL_AI -> falAiGenerationRepository.generateFromImage(payload)
         else -> List(payload.batchCount.coerceAtLeast(1)) {
             generateSingle(payload)
         }
@@ -94,6 +103,7 @@ internal class ImageToImageUseCaseImpl(
         ServerSource.STABILITY_AI -> stabilityAiGenerationRepository.generateFromImage(payload)
         ServerSource.LOCAL_APPLE_CORE_ML -> coreMlGenerationRepository.generateFromImage(payload)
         ServerSource.AUTOMATIC1111 -> error("Automatic1111 batch must be generated through generateFromImage(payload).")
+        ServerSource.FAL_AI -> error("Fal.ai batch must be generated through generateFromImage(payload).")
         else -> throw IllegalStateException("Img2Img not yet supported on ${preferenceManager.source}!")
     }
 }

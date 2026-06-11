@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -116,36 +115,7 @@ fun GalleryScreenContent(
                                 transitionSpec = { fadeIn() togetherWith fadeOut() },
                                 label = "action_nav_icon_animation",
                             ) { isInSelectionMode ->
-                                if (isInSelectionMode) {
-                                    AnimatedVisibility(
-                                        visible = state.selection.isNotEmpty(),
-                                        enter = fadeIn(),
-                                        exit = fadeOut(),
-                                    ) {
-                                        Row {
-                                            IconButton(
-                                                onClick = {
-                                                    processIntent(GalleryIntent.Delete.Selection.Request)
-                                                },
-                                            ) {
-                                                Icon(
-                                                    imageVector = Icons.Default.Delete,
-                                                    contentDescription = null,
-                                                )
-                                            }
-                                            IconButton(
-                                                onClick = {
-                                                    processIntent(GalleryIntent.Export.Selection.Request)
-                                                },
-                                            ) {
-                                                Icon(
-                                                    imageVector = Icons.Default.Share,
-                                                    contentDescription = null,
-                                                )
-                                            }
-                                        }
-                                    }
-                                } else {
+                                if (!isInSelectionMode) {
                                     AnimatedVisibility(
                                         visible = state.items.isNotEmpty(),
                                         enter = fadeIn(),
@@ -263,7 +233,10 @@ fun GalleryScreenContent(
                 else -> LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = paddingValues.calculateTopPadding())
+                        .padding(
+                            top = paddingValues.calculateTopPadding(),
+                            bottom = paddingValues.calculateBottomPadding(),
+                        )
                         .verticalScrollbar(listState),
                     columns = GridCells.Fixed(state.grid.size),
                     contentPadding = PaddingValues(16.dp),

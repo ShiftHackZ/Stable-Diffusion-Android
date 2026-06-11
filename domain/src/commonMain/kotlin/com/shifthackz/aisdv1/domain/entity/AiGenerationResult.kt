@@ -114,6 +114,18 @@ data class AiGenerationResult(
      * @author Dmitriy Moroz
      */
     val hidden: Boolean,
+    /**
+     * Exposes the `liked` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val liked: Boolean = false,
+    /**
+     * Exposes the `modelName` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val modelName: String = "",
 ) {
     /**
      * Coordinates `Type` behavior in the SDAI domain layer.

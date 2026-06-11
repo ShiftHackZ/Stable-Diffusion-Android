@@ -81,6 +81,12 @@ internal fun ConfigurationStep(
                     processIntent = processIntent,
                 )
 
+                ServerSource.FAL_AI -> FalAiForm(
+                    state = state,
+                    strings = strings,
+                    processIntent = processIntent,
+                )
+
                 ServerSource.STABILITY_AI -> StabilityAiForm(
                     state = state,
                     strings = strings,

@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.FalAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
@@ -57,6 +58,13 @@ internal class TextToImageUseCaseImpl(
      */
     private val stabilityAiGenerationRepository: StabilityAiGenerationRepository,
     /**
+     * Exposes the `falAiGenerationRepository` value used by the SDAI domain layer.
+     *
+     * @throws IllegalStateException when the current state is invalid.
+     * @author Dmitriy Moroz
+     */
+    private val falAiGenerationRepository: FalAiGenerationRepository,
+    /**
      * Exposes the `swarmUiGenerationRepository` value used by the SDAI domain layer.
      *
      * @throws IllegalStateException when the current state is invalid.
@@ -103,6 +111,7 @@ internal class TextToImageUseCaseImpl(
         payload: TextToImagePayload,
     ): List<AiGenerationResult> = when (preferenceManager.source) {
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.generateFromText(payload)
+        ServerSource.FAL_AI -> falAiGenerationRepository.generateFromText(payload)
         else -> List(payload.batchCount.coerceAtLeast(1)) {
             generateSingle(payload)
         }
@@ -124,5 +133,6 @@ internal class TextToImageUseCaseImpl(
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> mediaPipeGenerationRepository.generateFromText(payload)
         ServerSource.LOCAL_APPLE_CORE_ML -> coreMlGenerationRepository.generateFromText(payload)
         ServerSource.AUTOMATIC1111 -> error("Automatic1111 batch must be generated through generateFromText(payload).")
+        ServerSource.FAL_AI -> error("Fal.ai batch must be generated through generateFromText(payload).")
     }
 }

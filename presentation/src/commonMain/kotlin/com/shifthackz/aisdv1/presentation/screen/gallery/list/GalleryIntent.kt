@@ -120,6 +120,20 @@ sealed interface GalleryIntent : MviIntent {
     data object UnselectAll : GalleryIntent
 
     /**
+     * Provides the `ToggleSelectionVisibility` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object ToggleSelectionVisibility : GalleryIntent
+
+    /**
+     * Provides the `ToggleSelectionLike` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object ToggleSelectionLike : GalleryIntent
+
+    /**
      * Carries `ToggleItemSelection` data through the SDAI presentation layer.
      *
      * @param id identifier of the target entity.

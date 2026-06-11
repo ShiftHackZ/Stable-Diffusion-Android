@@ -3,10 +3,17 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.mvi.MviState
+import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
+import com.shifthackz.aisdv1.domain.entity.ForgeModule
+import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
@@ -179,6 +186,24 @@ data class TextToImageState(
      */
     override val selectedSampler: String = "",
     /**
+     * Exposes the `selectedScheduler` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val selectedScheduler: Scheduler = Scheduler.AUTOMATIC,
+    /**
+     * Exposes the `availableForgeModules` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val availableForgeModules: List<ForgeModule> = emptyList(),
+    /**
+     * Exposes the `selectedForgeModules` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val selectedForgeModules: List<ForgeModule> = emptyList(),
+    /**
      * Exposes the `availableSamplers` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -215,6 +240,30 @@ data class TextToImageState(
      */
     override val openAiQuality: OpenAiQuality = OpenAiQuality.AUTO,
     /**
+     * Exposes the `falAiModel` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val falAiModel: FalAiModel = FalAiModel.defaultTextToImage,
+    /**
+     * Exposes the `falAiImageSize` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val falAiImageSize: FalAiImageSize = FalAiImageSize.default,
+    /**
+     * Exposes the `falAiAcceleration` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val falAiAcceleration: FalAiAcceleration = FalAiAcceleration.default,
+    /**
+     * Exposes the `falAiSyncMode` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val falAiSyncMode: Boolean = false,
+    /**
      * Exposes the `widthValidationError` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -238,6 +287,30 @@ data class TextToImageState(
      * @author Dmitriy Moroz
      */
     override val batchCount: Int = 1,
+    /**
+     * Exposes the `hires` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val hires: HiresConfig = HiresConfig.DISABLED,
+    /**
+     * Exposes the `aDetailer` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val aDetailer: ADetailerConfig = ADetailerConfig.DISABLED,
+    /**
+     * Exposes the `aDetailerAvailable` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val aDetailerAvailable: Boolean = false,
+    /**
+     * Exposes the `aDetailerRefreshing` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val aDetailerRefreshing: Boolean = false,
 ) : MviState, GenerationInputFormState {
 
     val localSourceSelected: Boolean
@@ -264,10 +337,12 @@ internal fun TextToImageState.mapToPayload(): TextToImagePayload = TextToImagePa
     cfgScale = cfgScale,
     width = when (mode) {
         ServerSource.OPEN_AI -> openAiSize.width
+        ServerSource.FAL_AI -> falAiImageSize.width
         else -> width.toIntOrNull() ?: DEFAULT_SIZE
     },
     height = when (mode) {
         ServerSource.OPEN_AI -> openAiSize.height
+        ServerSource.FAL_AI -> falAiImageSize.height
         else -> height.toIntOrNull() ?: DEFAULT_SIZE
     },
     restoreFaces = restoreFaces,
@@ -275,7 +350,14 @@ internal fun TextToImageState.mapToPayload(): TextToImagePayload = TextToImagePa
     subSeed = subSeed.trim(),
     subSeedStrength = subSeedStrength,
     sampler = selectedSampler,
-    nsfw = if (mode == ServerSource.HORDE || mode == ServerSource.LOCAL_APPLE_CORE_ML) nsfw else false,
+    scheduler = selectedScheduler.takeIf {
+        mode == ServerSource.AUTOMATIC1111
+    } ?: Scheduler.AUTOMATIC,
+    nsfw = if (
+        mode == ServerSource.HORDE ||
+        mode == ServerSource.LOCAL_APPLE_CORE_ML ||
+        mode == ServerSource.FAL_AI
+    ) nsfw else false,
     batchCount = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) 1 else batchCount,
     style = null,
     quality = openAiQuality.key.takeIf {
@@ -284,6 +366,21 @@ internal fun TextToImageState.mapToPayload(): TextToImagePayload = TextToImagePa
     openAiModel = openAiModel.takeIf { mode == ServerSource.OPEN_AI },
     stabilityAiClipGuidance = selectedClipGuidancePreset.takeIf { mode == ServerSource.STABILITY_AI },
     stabilityAiStylePreset = selectedStylePreset.takeIf { mode == ServerSource.STABILITY_AI },
+    hires = hires.takeIf {
+        mode == ServerSource.AUTOMATIC1111 && hires.enabled
+    } ?: HiresConfig.DISABLED,
+    aDetailer = aDetailer.takeIf {
+        mode == ServerSource.AUTOMATIC1111 && aDetailer.enabled && aDetailerAvailable
+    } ?: ADetailerConfig.DISABLED,
+    forgeModules = selectedForgeModules.takeIf {
+        mode == ServerSource.AUTOMATIC1111
+    }.orEmpty(),
+    falAiModel = falAiModel.takeIf {
+        mode == ServerSource.FAL_AI
+    } ?: FalAiModel.defaultTextToImage,
+    falAiImageSize = falAiImageSize,
+    falAiAcceleration = falAiAcceleration,
+    falAiSyncMode = falAiSyncMode,
 )
 
 /**

@@ -1,8 +1,12 @@
 package com.shifthackz.aisdv1.network.api.automatic1111
 
 import com.shifthackz.aisdv1.network.auth.BasicHttpAuthorization
+import com.shifthackz.aisdv1.network.model.ForgeModuleRaw
 import com.shifthackz.aisdv1.network.model.KtorStableDiffusionModelRaw
 import com.shifthackz.aisdv1.network.model.ServerConfigurationRaw
+import com.shifthackz.aisdv1.network.model.StableDiffusionExtensionRaw
+import com.shifthackz.aisdv1.network.model.StableDiffusionScriptInfoRaw
+import com.shifthackz.aisdv1.network.model.StableDiffusionScriptsRaw
 import com.shifthackz.aisdv1.network.model.StableDiffusionHyperNetworkRaw
 import com.shifthackz.aisdv1.network.model.StableDiffusionLoraRaw
 import com.shifthackz.aisdv1.network.model.StableDiffusionSamplerRaw
@@ -79,6 +83,58 @@ interface Automatic1111MetadataApi {
         baseUrl: String,
         authorization: BasicHttpAuthorization?,
     ): List<StableDiffusionSamplerRaw>
+
+    /**
+     * Loads SDAI data through `fetchForgeModules`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @return Result produced by `fetchForgeModules`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun fetchForgeModules(
+        baseUrl: String,
+        authorization: BasicHttpAuthorization?,
+    ): List<ForgeModuleRaw>
+
+    /**
+     * Loads SDAI data through `fetchScripts`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @return Result produced by `fetchScripts`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun fetchScripts(
+        baseUrl: String,
+        authorization: BasicHttpAuthorization?,
+    ): StableDiffusionScriptsRaw
+
+    /**
+     * Loads SDAI data through `fetchScriptInfo`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @return Result produced by `fetchScriptInfo`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun fetchScriptInfo(
+        baseUrl: String,
+        authorization: BasicHttpAuthorization?,
+    ): List<StableDiffusionScriptInfoRaw>
+
+    /**
+     * Loads SDAI data through `fetchExtensions`.
+     *
+     * @param baseUrl base url value consumed by the API.
+     * @param authorization authorization value consumed by the API.
+     * @return Result produced by `fetchExtensions`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun fetchExtensions(
+        baseUrl: String,
+        authorization: BasicHttpAuthorization?,
+    ): List<StableDiffusionExtensionRaw>
 
     /**
      * Loads SDAI data through `fetchConfiguration`.

@@ -75,6 +75,12 @@ data class Configuration(
      */
     val stabilityAiEngineId: String = "",
     /**
+     * Exposes the `falAiApiKey` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiApiKey: String = "",
+    /**
      * Exposes the `authCredentials` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz

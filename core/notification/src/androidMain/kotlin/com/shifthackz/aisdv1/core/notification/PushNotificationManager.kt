@@ -69,6 +69,21 @@ interface PushNotificationManager {
     ): Notification
 
     /**
+     * Creates the SDAI value produced by `createProgressNotification`.
+     *
+     * @param title title value consumed by the API.
+     * @param body body value consumed by the API.
+     * @param block block value consumed by the API.
+     * @return Result produced by `createProgressNotification`.
+     * @author Dmitriy Moroz
+     */
+    fun createProgressNotification(
+        title: String,
+        body: String?,
+        block: NotificationCompat.Builder.() -> Unit = {},
+    ): Notification
+
+    /**
      * Creates the SDAI value produced by `createNotificationChannel`.
      *
      * @author Dmitriy Moroz

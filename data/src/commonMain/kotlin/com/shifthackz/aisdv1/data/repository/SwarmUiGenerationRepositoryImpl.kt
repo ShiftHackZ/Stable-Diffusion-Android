@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
+import com.shifthackz.aisdv1.data.mappers.withModelName
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiModelsRemoteDataSource
@@ -87,7 +88,7 @@ internal class SwarmUiGenerationRepositoryImpl(
             val renewedSessionId = forceRenewSession(baseUrl, credentials)
             remoteDataSource.textToImage(baseUrl, renewedSessionId, model, credentials, payload)
         }
-        return insertGenerationResult(ai)
+        return insertGenerationResult(ai.withModelName(model))
     }
 
     override suspend fun generateFromImage(payload: ImageToImagePayload): AiGenerationResult {
@@ -101,7 +102,7 @@ internal class SwarmUiGenerationRepositoryImpl(
             val renewedSessionId = forceRenewSession(baseUrl, credentials)
             remoteDataSource.imageToImage(baseUrl, renewedSessionId, model, credentials, payload)
         }
-        return insertGenerationResult(ai)
+        return insertGenerationResult(ai.withModelName(model))
     }
 
     private suspend fun getSessionId(

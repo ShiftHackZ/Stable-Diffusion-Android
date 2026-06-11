@@ -58,6 +58,7 @@
     <string name="action_skip">Skip</string>
     <string name="action_undo">Undo</string>
     <string name="action_clear">Clear</string>
+    <string name="action_draw">Draw</string>
     <string name="action_options_show">Show advanced options</string>
     <string name="action_options_hide">Hide advanced options</string>
     <string name="action_image_picker_gallery">Choose photo</string>
@@ -68,6 +69,9 @@
     <string name="action_menu">Menu</string>
     <string name="action_copy">Copy</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_install_instructions">Install</string>
+    <string name="action_swap_dimensions">Swap width and height</string>
+    <string name="action_aspect_ratio">Aspect ratio</string>
     <string name="action_scroll_to_top">Scroll to top</string>
     <string name="action_scroll_to_bottom">Scroll to bottom</string>
     <string name="action_send">Send</string>
@@ -95,6 +99,7 @@
     <string name="error_img2img_openai_unsupported">Image-to-image is not supported by OpenAI in this app.</string>
     <string name="error_img2img_local_android_only">Local Diffusion image-to-image is available on Android only.</string>
     <string name="error_img2img_select_input">Select an input image first.</string>
+    <string name="error_generation_out_of_memory">Server ran out of GPU memory. Reduce image size, Hires scale/steps, or disable Hires.Fix.</string>
     <string name="error_source_android_only">This provider is Android-only for now.</string>
     <string name="error_source_img2img_unsupported">This provider does not support image-to-image here.</string>
     <string name="setup_localhost_url_title">Localhost URL</string>
@@ -114,10 +119,12 @@
     <string name="srv_type_hugging_face_short" translatable="false">HuggingFace</string>
     <string name="srv_type_open_ai" translatable="false">OpenAI</string>
     <string name="srv_type_stability_ai" translatable="false">Stability AI</string>
+    <string name="srv_type_fal_ai" translatable="false">Fal.ai</string>
     <string name="srv_type_swarm_ui" translatable="false">Swarm UI</string>
 
     <string name="hint_prompt">Prompt</string>
     <string name="hint_prompt_negative">Negative prompt</string>
+    <string name="hint_zoom">Zoom: %1$sx</string>
     <string name="hint_sampling_steps">Sampling steps: %1$s</string>
     <string name="hint_batch">Batch: %1$s</string>
     <string name="hint_batch_tag">Batch</string>
@@ -126,9 +133,21 @@
     <string name="hint_own_server">Own Server</string>
     <string name="hint_cfg_scale">CFG Scale: %1$s</string>
     <string name="hint_sampler">Sampling method</string>
+    <string name="hint_scheduler">Scheduler</string>
+    <string name="hint_forge_modules">Forge modules</string>
     <string name="hint_style_preset">Style preset</string>
     <string name="hint_clip_guidance_preset">Clip guidance preset</string>
     <string name="hint_restore_faces">Restore faces</string>
+    <string name="hint_hires_enabled">Hires fix</string>
+    <string name="hint_hires_upscaler">Hires upscaler</string>
+    <string name="hint_hires_scale">Hires scale: %1$s</string>
+    <string name="hint_hires_steps">Hires steps: %1$s</string>
+    <string name="hint_hires_denoising">Hires denoising: %1$s</string>
+    <string name="hint_adetailer_enabled">ADetailer</string>
+    <string name="hint_adetailer_model">ADetailer model</string>
+    <string name="hint_adetailer_confidence">ADetailer confidence: %1$s</string>
+    <string name="hint_adetailer_denoising">ADetailer denoising: %1$s</string>
+    <string name="hint_adetailer_not_installed">ADetailer is not installed</string>
     <string name="hint_seed">Seed</string>
     <string name="hint_sub_seed">Variation seed</string>
     <string name="hint_nsfw">Allow NSFW</string>
@@ -140,6 +159,9 @@
     <string name="hint_password">Password</string>
     <string name="hint_model_open_ai">OpenAI model</string>
     <string name="hint_image_size">Image size</string>
+    <string name="hint_fal_ai_endpoint">Fal.ai endpoint</string>
+    <string name="hint_fal_ai_acceleration">Acceleration</string>
+    <string name="hint_fal_ai_sync_mode">Sync mode</string>
     <string name="title_input_image">Input image</string>
     <string name="hint_quality">Quality</string>
     <string name="hint_style">Style</string>
@@ -181,6 +203,10 @@
     <string name="hint_open_ai_sub_title">OpenAI service allows image generation with GPT Image models.</string>
     <string name="hint_open_ai_about">About OpenAI</string>
 
+    <string name="hint_fal_ai_title">Connect to Fal.ai</string>
+    <string name="hint_fal_ai_sub_title">Fal.ai provides hosted image generation model APIs with queue-based inference.</string>
+    <string name="hint_fal_ai_about">Fal.ai API keys</string>
+
     <string name="hint_stability_ai_title">Connect to Stability AI</string>
     <string name="hint_stability_ai_sub_title">StabilityAI is the image generation service provided by DreamStudio.</string>
     <string name="hint_stability_ai_about">About Stability AI</string>
@@ -208,6 +234,8 @@
     <string name="gallery_tab_info">Info</string>
     <string name="gallery_action_report">Report</string>
     <string name="gallery_action_blur">Blur</string>
+    <string name="gallery_action_like">Like</string>
+    <string name="gallery_action_unlike">Unlike</string>
     <string name="gallery_action_delete">Delete</string>
 
     <string name="title_text_to_image">Text to Image</string>
@@ -232,6 +260,7 @@
     <string name="gallery_media_store_banner">You have %1$s photos saved in Download/SDAI</string>
     <string name="gallery_info_field_date">Created</string>
     <string name="gallery_info_field_type">Type</string>
+    <string name="gallery_info_field_model">Model</string>
     <string name="gallery_info_field_prompt">Prompt</string>
     <string name="gallery_info_field_negative_prompt">Negative prompt</string>
     <string name="gallery_info_field_size">Size</string>

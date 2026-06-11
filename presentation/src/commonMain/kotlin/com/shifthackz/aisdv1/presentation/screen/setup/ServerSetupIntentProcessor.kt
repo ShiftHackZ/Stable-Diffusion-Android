@@ -150,6 +150,10 @@ internal class ServerSetupIntentProcessor(
                 it.copy(stabilityAiApiKey = intent.key, stabilityAiApiKeyValidationError = null)
             }
 
+            is ServerSetupIntent.UpdateFalAiApiKey -> updateState {
+                it.copy(falAiApiKey = intent.key, falAiApiKeyValidationError = null)
+            }
+
             is ServerSetupIntent.UpdateHuggingFaceApiKey -> updateState {
                 it.copy(huggingFaceApiKey = intent.key, huggingFaceApiKeyValidationError = null)
             }

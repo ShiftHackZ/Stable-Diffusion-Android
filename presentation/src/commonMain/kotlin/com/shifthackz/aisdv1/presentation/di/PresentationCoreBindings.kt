@@ -51,7 +51,9 @@ import com.shifthackz.aisdv1.presentation.screen.gallery.list.NoOpGalleryPlatfor
 import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImagePlatformActions
 import com.shifthackz.aisdv1.presentation.screen.img2img.NoOpImageToImagePlatformActions
 import com.shifthackz.aisdv1.presentation.screen.logger.LogReader
+import com.shifthackz.aisdv1.presentation.screen.logger.LoggerPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.logger.NoOpLogReader
+import com.shifthackz.aisdv1.presentation.screen.logger.NoOpLoggerPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.settings.NoOpSettingsPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.setup.NoOpServerSetupDownloadGuard
@@ -90,6 +92,7 @@ internal fun Module.registerPresentationCoreBindings() {
     single<SettingsRouter> { NoOpSettingsRouter }
     single<WebUiRouter> { NoOpWebUiRouter }
     single<LogReader> { NoOpLogReader }
+    single<LoggerPlatformActions> { NoOpLoggerPlatformActions }
     single<DebugMenuPlatformActions> { NoOpDebugMenuPlatformActions }
     single<SettingsPlatformActions> { NoOpSettingsPlatformActions }
     single<BackgroundWorkImageLoader> { NoOpBackgroundWorkImageLoader }

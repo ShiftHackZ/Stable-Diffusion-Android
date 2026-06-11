@@ -22,7 +22,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -75,6 +77,18 @@ data class LoggerScreenStrings(
      */
     val refreshContentDescription: String = Localization.string("action_refresh"),
     /**
+     * Exposes the `copyContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val copyContentDescription: String = Localization.string("action_copy"),
+    /**
+     * Exposes the `shareContentDescription` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val shareContentDescription: String = Localization.string("action_share_prompt"),
+    /**
      * Exposes the `scrollTopContentDescription` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -121,6 +135,18 @@ sealed interface LoggerScreenAction {
      */
     data object ReadLogs : LoggerScreenAction
     /**
+     * Provides the `CopyLogs` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object CopyLogs : LoggerScreenAction
+    /**
+     * Provides the `ShareLogs` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object ShareLogs : LoggerScreenAction
+    /**
      * Provides the `NavigateBack` singleton used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -145,6 +171,8 @@ fun LoggerState.toContentState() = LoggerScreenContentState(
  */
 fun LoggerScreenAction.toIntent(): LoggerIntent = when (this) {
     LoggerScreenAction.ReadLogs -> LoggerIntent.ReadLogs
+    LoggerScreenAction.CopyLogs -> LoggerIntent.CopyLogs
+    LoggerScreenAction.ShareLogs -> LoggerIntent.ShareLogs
     LoggerScreenAction.NavigateBack -> LoggerIntent.NavigateBack
 }
 
@@ -193,15 +221,43 @@ fun LoggerScreenContent(
                         enter = fadeIn(),
                         exit = fadeOut(),
                     ) {
-                        IconButton(
-                            onClick = { processAction(LoggerScreenAction.ReadLogs) },
-                            content = {
-                                Icon(
-                                    Icons.Default.Refresh,
-                                    contentDescription = strings.refreshContentDescription,
-                                )
-                            },
-                        )
+                        Row {
+                            AnimatedVisibility(
+                                visible = state.text.isNotBlank(),
+                                enter = fadeIn(),
+                                exit = fadeOut(),
+                            ) {
+                                Row {
+                                    IconButton(
+                                        onClick = { processAction(LoggerScreenAction.CopyLogs) },
+                                        content = {
+                                            Icon(
+                                                Icons.Default.ContentCopy,
+                                                contentDescription = strings.copyContentDescription,
+                                            )
+                                        },
+                                    )
+                                    IconButton(
+                                        onClick = { processAction(LoggerScreenAction.ShareLogs) },
+                                        content = {
+                                            Icon(
+                                                Icons.Default.Share,
+                                                contentDescription = strings.shareContentDescription,
+                                            )
+                                        },
+                                    )
+                                }
+                            }
+                            IconButton(
+                                onClick = { processAction(LoggerScreenAction.ReadLogs) },
+                                content = {
+                                    Icon(
+                                        Icons.Default.Refresh,
+                                        contentDescription = strings.refreshContentDescription,
+                                    )
+                                },
+                            )
+                        }
                     }
                 },
             )

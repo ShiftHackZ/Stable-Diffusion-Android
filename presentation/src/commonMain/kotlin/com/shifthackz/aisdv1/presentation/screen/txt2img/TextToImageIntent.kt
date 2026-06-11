@@ -1,12 +1,20 @@
 package com.shifthackz.aisdv1.presentation.screen.txt2img
 
 import com.shifthackz.aisdv1.core.mvi.MviIntent
+import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
+import com.shifthackz.aisdv1.domain.entity.ForgeModule
+import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationAspectRatio
 
 /**
  * Defines the `TextToImageIntent` contract for the SDAI presentation layer.
@@ -195,6 +203,19 @@ sealed interface TextToImageIntent : MviIntent {
      */
     data class UpdateWidth(val value: String) : TextToImageIntent
     /**
+     * Provides the `SwapDimensions` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object SwapDimensions : TextToImageIntent
+    /**
+     * Carries `ApplyAspectRatio` data through the SDAI presentation layer.
+     *
+     * @param ratio ratio value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class ApplyAspectRatio(val ratio: GenerationAspectRatio) : TextToImageIntent
+    /**
      * Carries `UpdateHeight` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.
@@ -251,6 +272,20 @@ sealed interface TextToImageIntent : MviIntent {
      */
     data class UpdateSampler(val value: String) : TextToImageIntent
     /**
+     * Carries `UpdateScheduler` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateScheduler(val value: Scheduler) : TextToImageIntent
+    /**
+     * Carries `UpdateForgeModules` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateForgeModules(val value: List<ForgeModule>) : TextToImageIntent
+    /**
      * Carries `UpdateNsfw` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.
@@ -286,6 +321,34 @@ sealed interface TextToImageIntent : MviIntent {
      */
     data class UpdateOpenAiQuality(val value: OpenAiQuality) : TextToImageIntent
     /**
+     * Carries `UpdateFalAiModel` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiModel(val value: FalAiModel) : TextToImageIntent
+    /**
+     * Carries `UpdateFalAiImageSize` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiImageSize(val value: FalAiImageSize) : TextToImageIntent
+    /**
+     * Carries `UpdateFalAiAcceleration` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiAcceleration(val value: FalAiAcceleration) : TextToImageIntent
+    /**
+     * Carries `UpdateFalAiSyncMode` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiSyncMode(val value: Boolean) : TextToImageIntent
+    /**
      * Carries `UpdateStabilityAiStyle` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.
@@ -299,4 +362,30 @@ sealed interface TextToImageIntent : MviIntent {
      * @author Dmitriy Moroz
      */
     data class UpdateStabilityAiClipGuidance(val value: StabilityAiClipGuidance) : TextToImageIntent
+    /**
+     * Carries `UpdateHiresConfig` data through the SDAI presentation layer.
+     *
+     * @param value value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateHiresConfig(val value: HiresConfig) : TextToImageIntent
+    /**
+     * Carries `UpdateADetailerConfig` data through the SDAI presentation layer.
+     *
+     * @param value value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateADetailerConfig(val value: ADetailerConfig) : TextToImageIntent
+    /**
+     * Provides the `RefreshADetailerAvailability` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object RefreshADetailerAvailability : TextToImageIntent
+    /**
+     * Provides the `OpenADetailerInstallInstructions` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object OpenADetailerInstallInstructions : TextToImageIntent
 }

@@ -7,6 +7,8 @@ import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageLikeUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageVisibilityUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
@@ -42,9 +44,11 @@ class GalleryDetailViewModelTest {
         override val type = BuildType.FULL
     }
     private val getGenerationResultUseCase = mockk<GetGenerationResultUseCase>()
+    private val getAllGalleryUseCase = mockk<GetAllGalleryUseCase>()
     private val getLastResultFromCacheUseCase = mockk<GetLastResultFromCacheUseCase>()
     private val deleteGalleryItemUseCase = mockk<DeleteGalleryItemUseCase>()
     private val toggleImageVisibilityUseCase = mockk<ToggleImageVisibilityUseCase>()
+    private val toggleImageLikeUseCase = mockk<ToggleImageLikeUseCase>()
     private val generationFormUpdateEvent = mockk<GenerationFormUpdateEvent>(relaxed = true)
     private val router = mockk<GalleryDetailRouter>(relaxed = true)
     private val platformActions = mockk<GalleryDetailPlatformActions>()
@@ -52,6 +56,7 @@ class GalleryDetailViewModelTest {
     @Before
     fun initialize() {
         coEvery { getGenerationResultUseCase(ITEM_ID) } returns mockAiGenerationResult
+        coEvery { getAllGalleryUseCase() } returns listOf(mockAiGenerationResult)
         coEvery { getLastResultFromCacheUseCase() } returns mockAiGenerationResult
         coEvery { platformActions.copyText(any()) } returns GalleryDetailActionResult.Done
         coEvery { platformActions.saveImage(any()) } returns GalleryDetailActionResult.Done
@@ -73,9 +78,51 @@ class GalleryDetailViewModelTest {
                     loading = false,
                     tabs = GalleryDetailTab.consume(mockAiGenerationResult.type),
                     selectedTab = GalleryDetailTab.IMAGE,
+                    galleryItemIds = listOf(mockAiGenerationResult.id),
                     content = expectedContent,
+                    pagerContents = listOf(expectedContent),
                 ),
                 viewModel.state.value,
+            )
+        }
+
+    @Test
+    fun `given initialized with gallery items, expected pager content buffer loaded`() =
+        runTest(testDispatcher) {
+            val items = (1L..8L).map { id ->
+                mockAiGenerationResult.copy(id = id)
+            }
+            coEvery { getAllGalleryUseCase() } returns items
+            val viewModel = createViewModel(itemId = 4L)
+            advanceUntilIdle()
+
+            Assert.assertEquals(0, viewModel.state.value.pagerContentStartIndex)
+            Assert.assertEquals(3, viewModel.state.value.pagerCurrentIndex)
+            Assert.assertEquals(
+                listOf(1L, 2L, 3L, 4L, 5L, 6L, 7L),
+                viewModel.state.value.pagerContents.map(GalleryDetailContent::id),
+            )
+        }
+
+    @Test
+    fun `given navigate to buffered page, expected current content and pager buffer updated`() =
+        runTest(testDispatcher) {
+            val items = (1L..8L).map { id ->
+                mockAiGenerationResult.copy(id = id)
+            }
+            coEvery { getAllGalleryUseCase() } returns items
+            val viewModel = createViewModel(itemId = 4L)
+            advanceUntilIdle()
+
+            viewModel.processIntent(GalleryDetailIntent.NavigateToPage(5))
+            advanceUntilIdle()
+
+            Assert.assertEquals(6L, viewModel.state.value.content?.id)
+            Assert.assertEquals(2, viewModel.state.value.pagerContentStartIndex)
+            Assert.assertEquals(5, viewModel.state.value.pagerCurrentIndex)
+            Assert.assertEquals(
+                listOf(3L, 4L, 5L, 6L, 7L, 8L),
+                viewModel.state.value.pagerContents.map(GalleryDetailContent::id),
             )
         }
 
@@ -201,17 +248,36 @@ class GalleryDetailViewModelTest {
             Assert.assertEquals(true, viewModel.state.value.content?.hidden)
         }
 
-    private fun TestScope.createViewModel() = GalleryDetailViewModel(
-        itemId = ITEM_ID,
+    @Test
+    fun `given toggle like, expected liked state updated`() =
+        runTest(testDispatcher) {
+            coEvery { toggleImageLikeUseCase(ITEM_ID) } returns true
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            viewModel.processIntent(GalleryDetailIntent.ToggleLike)
+            advanceUntilIdle()
+
+            Assert.assertEquals(true, viewModel.state.value.content?.liked)
+        }
+
+    private fun TestScope.createViewModel(
+        itemId: Long = ITEM_ID,
+        pagerBuffer: Int = GALLERY_DETAIL_PAGER_BUFFER,
+    ) = GalleryDetailViewModel(
+        itemId = itemId,
         dispatchersProvider = dispatchersProvider,
         buildInfoProvider = buildInfoProvider,
         getGenerationResultUseCase = getGenerationResultUseCase,
+        getAllGalleryUseCase = getAllGalleryUseCase,
         getLastResultFromCacheUseCase = getLastResultFromCacheUseCase,
         deleteGalleryItemUseCase = deleteGalleryItemUseCase,
         toggleImageVisibilityUseCase = toggleImageVisibilityUseCase,
+        toggleImageLikeUseCase = toggleImageLikeUseCase,
         generationFormUpdateEvent = generationFormUpdateEvent,
         router = router,
         platformActions = platformActions,
+        pagerBuffer = pagerBuffer,
     )
 
     private companion object {

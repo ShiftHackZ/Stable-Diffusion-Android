@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.mvi.BaseMviViewModel
 import com.shifthackz.aisdv1.core.mvi.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
+import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
@@ -13,12 +14,14 @@ import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.forgemodule.GetForgeModulesUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveCoreMlProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdscript.IsADetailerAvailableUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
@@ -52,6 +55,18 @@ class TextToImageViewModel(
      * @author Dmitriy Moroz
      */
     private val getStableDiffusionSamplersUseCase: GetStableDiffusionSamplersUseCase,
+    /**
+     * Exposes the `getForgeModulesUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val getForgeModulesUseCase: GetForgeModulesUseCase,
+    /**
+     * Exposes the `isADetailerAvailableUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val isADetailerAvailableUseCase: IsADetailerAvailableUseCase,
     /**
      * Exposes the `textToImageUseCase` value used by the SDAI presentation layer.
      *
@@ -175,6 +190,10 @@ class TextToImageViewModel(
 
     private var stableDiffusionSamplers: List<String>? = null
     private var stableDiffusionSamplersKey: StableDiffusionSamplersKey? = null
+    private var forgeModules: List<ForgeModule>? = null
+    private var forgeModulesKey: StableDiffusionSamplersKey? = null
+    private var aDetailerAvailable: Boolean? = null
+    private var aDetailerAvailabilityKey: StableDiffusionSamplersKey? = null
 
     private val actionHandler = TextToImageActionHandler(
         dispatchersProvider = dispatchersProvider,
@@ -211,7 +230,13 @@ class TextToImageViewModel(
         applyGenerationResult = ::applyGenerationResult,
     )
 
-    override fun processIntent(intent: TextToImageIntent) = intentProcessor.process(intent)
+    override fun processIntent(intent: TextToImageIntent) {
+        when (intent) {
+            TextToImageIntent.RefreshADetailerAvailability -> loadADetailerAvailability(force = true)
+            TextToImageIntent.OpenADetailerInstallInstructions -> Unit
+            else -> intentProcessor.process(intent)
+        }
+    }
 
     private fun applyGenerationResult(ai: com.shifthackz.aisdv1.domain.entity.AiGenerationResult) {
         updateState { state ->
@@ -296,7 +321,12 @@ class TextToImageViewModel(
                         updateState {
                             it.copy(
                                 loadingConfiguration = false,
-                            ).withSource(configuration.source, stableDiffusionSamplers)
+                            ).withSource(
+                                source = configuration.source,
+                                stableDiffusionSamplers = stableDiffusionSamplers,
+                                forgeModules = forgeModules,
+                                aDetailerAvailable = aDetailerAvailable,
+                            )
                         }
                     }
                 }
@@ -323,27 +353,55 @@ class TextToImageViewModel(
                     onError(t)
                 }
                 .collect { settings ->
-                    refreshStableDiffusionSamplersIfNeeded(settings)
-                    updateState { state -> state.withSettings(settings, stableDiffusionSamplers) }
+                    refreshStableDiffusionMetadataIfNeeded(settings)
+                    updateState { state ->
+                        state.withSettings(
+                            settings = settings,
+                            stableDiffusionSamplers = stableDiffusionSamplers,
+                            forgeModules = forgeModules,
+                            aDetailerAvailable = aDetailerAvailable,
+                        )
+                    }
                 }
         }
     }
 
-    private fun refreshStableDiffusionSamplersIfNeeded(settings: Settings) {
+    private fun refreshStableDiffusionMetadataIfNeeded(settings: Settings) {
         if (settings.source != ServerSource.AUTOMATIC1111) {
             stableDiffusionSamplersKey = null
+            forgeModulesKey = null
+            forgeModules = null
+            aDetailerAvailabilityKey = null
+            aDetailerAvailable = null
             return
         }
         val key = StableDiffusionSamplersKey(
             serverUrl = settings.serverUrl,
             demoMode = settings.demoMode,
         )
-        if (stableDiffusionSamplersKey == key) return
+        if (
+            stableDiffusionSamplersKey == key &&
+            forgeModulesKey == key &&
+            aDetailerAvailabilityKey == key
+        ) return
 
         stableDiffusionSamplersKey = key
+        forgeModulesKey = key
+        aDetailerAvailabilityKey = key
         stableDiffusionSamplers = emptyList()
-        updateState { it.withSource(ServerSource.AUTOMATIC1111, stableDiffusionSamplers) }
+        forgeModules = emptyList()
+        aDetailerAvailable = null
+        updateState {
+            it.withSource(
+                source = ServerSource.AUTOMATIC1111,
+                stableDiffusionSamplers = stableDiffusionSamplers,
+                forgeModules = forgeModules,
+                aDetailerAvailable = aDetailerAvailable,
+            )
+        }
         loadSamplers()
+        loadForgeModules()
+        loadADetailerAvailability()
     }
 
     private fun loadSamplers() {
@@ -354,7 +412,14 @@ class TextToImageViewModel(
                 .onSuccess { samplers ->
                     stableDiffusionSamplers = samplers
                     withContext(dispatchersProvider.immediate) {
-                        updateState { it.withSource(it.mode, stableDiffusionSamplers) }
+                        updateState {
+                            it.withSource(
+                                source = it.mode,
+                                stableDiffusionSamplers = stableDiffusionSamplers,
+                                forgeModules = forgeModules,
+                                aDetailerAvailable = aDetailerAvailable,
+                            )
+                        }
                     }
                 }
                 .onFailure { t ->
@@ -366,4 +431,68 @@ class TextToImageViewModel(
         }
     }
 
+    private fun loadForgeModules() {
+        launch(dispatchersProvider.io) {
+            runCatching { getForgeModulesUseCase() }
+                .onSuccess { modules ->
+                    forgeModules = modules
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.withSource(
+                                source = it.mode,
+                                stableDiffusionSamplers = stableDiffusionSamplers,
+                                forgeModules = forgeModules,
+                                aDetailerAvailable = aDetailerAvailable,
+                            )
+                        }
+                    }
+                }
+                .onFailure { t ->
+                    forgeModules = emptyList()
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.withSource(
+                                source = it.mode,
+                                stableDiffusionSamplers = stableDiffusionSamplers,
+                                forgeModules = forgeModules,
+                                aDetailerAvailable = aDetailerAvailable,
+                            )
+                        }
+                    }
+                    onError(t)
+                }
+        }
+    }
+
+    private fun loadADetailerAvailability(force: Boolean = false) {
+        if (!force && aDetailerAvailable != null) return
+        updateState { it.copy(aDetailerRefreshing = true) }
+        launch(dispatchersProvider.io) {
+            runCatching { isADetailerAvailableUseCase() }
+                .onSuccess { available ->
+                    aDetailerAvailable = available
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.copy(
+                                aDetailerAvailable = available,
+                                aDetailerRefreshing = false,
+                                error = null,
+                            )
+                        }
+                    }
+                }
+                .onFailure { t ->
+                    aDetailerAvailable = false
+                    withContext(dispatchersProvider.immediate) {
+                        updateState { state ->
+                            state.copy(
+                                aDetailerAvailable = false,
+                                aDetailerRefreshing = false,
+                            )
+                        }
+                    }
+                    onError(t)
+                }
+        }
+    }
 }

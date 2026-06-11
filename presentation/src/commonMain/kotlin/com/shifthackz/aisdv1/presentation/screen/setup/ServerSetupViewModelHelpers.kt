@@ -54,6 +54,7 @@ internal fun ServerSetupLink.url(linksProvider: LinksProvider): String = when (t
     ServerSetupLink.HuggingFaceInfo -> linksProvider.huggingFaceUrl
     ServerSetupLink.OpenAiInfo -> linksProvider.openAiInfoUrl
     ServerSetupLink.StabilityAiInfo -> linksProvider.stabilityAiInfoUrl
+    ServerSetupLink.FalAiInfo -> linksProvider.falAiInfoUrl
 }
 
 /**

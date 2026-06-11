@@ -85,6 +85,14 @@ enum class ServerSource(
             FeatureTag.Batch,
         ),
     ),
+    FAL_AI(
+        key = "fal_ai",
+        featureTags = setOf(
+            FeatureTag.Txt2Img,
+            FeatureTag.Img2Img,
+            FeatureTag.Batch,
+        ),
+    ),
     LOCAL_MICROSOFT_ONNX(
         key = "local",
         featureTags = setOf(

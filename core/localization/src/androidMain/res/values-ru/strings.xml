@@ -54,6 +54,7 @@
     <string name="action_skip">Пропустить</string>
     <string name="action_undo">Отменить</string>
     <string name="action_clear">Очистить</string>
+    <string name="action_draw">Draw</string>
     <string name="action_options_show">Показать все опции</string>
     <string name="action_options_hide">Скрыть все опции</string>
     <string name="action_image_picker_gallery">Выбрать фото</string>
@@ -64,6 +65,9 @@
     <string name="action_menu">Меню</string>
     <string name="action_copy">Копировать</string>
     <string name="action_refresh">Обновить</string>
+    <string name="action_install_instructions">Инструкция</string>
+    <string name="action_swap_dimensions">Поменять ширину и высоту</string>
+    <string name="action_aspect_ratio">Соотношение сторон</string>
     <string name="action_scroll_to_top">Прокрутить вверх</string>
     <string name="action_scroll_to_bottom">Прокрутить вниз</string>
     <string name="action_send">Отправить</string>
@@ -91,6 +95,7 @@
     <string name="error_img2img_openai_unsupported">Image-to-image в этом приложении не поддерживается для OpenAI.</string>
     <string name="error_img2img_local_android_only">Local Diffusion image-to-image доступен только на Android.</string>
     <string name="error_img2img_select_input">Сначала выберите входное изображение.</string>
+    <string name="error_generation_out_of_memory">На сервере закончилась GPU-память. Уменьшите размер изображения, Hires scale/steps или отключите Hires.Fix.</string>
     <string name="error_source_android_only">Этот провайдер пока доступен только на Android.</string>
     <string name="error_source_img2img_unsupported">Этот провайдер здесь не поддерживает image-to-image.</string>
     <string name="setup_localhost_url_title">Localhost URL</string>
@@ -100,6 +105,7 @@
 
     <string name="hint_prompt">Запрос</string>
     <string name="hint_prompt_negative">Отрицательный запрос</string>
+    <string name="hint_zoom">Zoom: %1$sx</string>
     <string name="hint_sampling_steps">Этапы выборки: %1$s</string>
     <string name="hint_batch">Кол-во генераций: %1$s</string>
     <string name="hint_batch_tag">Пакетная генерация</string>
@@ -108,9 +114,21 @@
     <string name="hint_own_server">Собственный сервер</string>
     <string name="hint_cfg_scale">CFG Шкала: %1$s</string>
     <string name="hint_sampler">Метод выборки</string>
+    <string name="hint_scheduler">Планировщик</string>
+    <string name="hint_forge_modules">Модули Forge</string>
     <string name="hint_style_preset">Стиль</string>
     <string name="hint_clip_guidance_preset">Клиппинг пресет</string>
     <string name="hint_restore_faces">Восстановление лиц</string>
+    <string name="hint_hires_enabled">Hires fix</string>
+    <string name="hint_hires_upscaler">Апскейлер Hires</string>
+    <string name="hint_hires_scale">Масштаб Hires: %1$s</string>
+    <string name="hint_hires_steps">Шаги Hires: %1$s</string>
+    <string name="hint_hires_denoising">Шумоподавление Hires: %1$s</string>
+    <string name="hint_adetailer_enabled">ADetailer</string>
+    <string name="hint_adetailer_model">Модель ADetailer</string>
+    <string name="hint_adetailer_confidence">Confidence ADetailer: %1$s</string>
+    <string name="hint_adetailer_denoising">Шумоподавление ADetailer: %1$s</string>
+    <string name="hint_adetailer_not_installed">ADetailer is not installed</string>
     <string name="hint_seed">Seed идентификатор</string>
     <string name="hint_sub_seed">Seed вариации</string>
     <string name="hint_nsfw">Разрешить NSFW</string>
@@ -122,6 +140,9 @@
     <string name="hint_password">Пароль</string>
     <string name="hint_model_open_ai">Модель OpenAI</string>
     <string name="hint_image_size">Размер изображения</string>
+    <string name="hint_fal_ai_endpoint">Endpoint Fal.ai</string>
+    <string name="hint_fal_ai_acceleration">Ускорение</string>
+    <string name="hint_fal_ai_sync_mode">Синхронный режим</string>
     <string name="title_input_image">Исходное изображение</string>
     <string name="hint_quality">Качество</string>
     <string name="hint_style">Стиль</string>
@@ -162,6 +183,10 @@
     <string name="hint_open_ai_sub_title">Сервис OpenAI позволяет генерировать изображения с помощью моделей GPT Image.</string>
     <string name="hint_open_ai_about">Об OpenAI</string>
 
+    <string name="hint_fal_ai_title">Подключиться к Fal.ai</string>
+    <string name="hint_fal_ai_sub_title">Fal.ai предоставляет hosted API моделей генерации изображений с очередью выполнения.</string>
+    <string name="hint_fal_ai_about">API ключи Fal.ai</string>
+
     <string name="hint_stability_ai_title">Подключиться к Stability AI</string>
     <string name="hint_stability_ai_sub_title">StabilityAI — это сервис генерации изображений от DreamStudio.</string>
     <string name="hint_stability_ai_about">О Stability AI</string>
@@ -187,6 +212,8 @@
     <string name="gallery_tab_info">Подробности</string>
     <string name="gallery_action_report">Жалоба</string>
     <string name="gallery_action_blur">Блюр</string>
+    <string name="gallery_action_like">Лайк</string>
+    <string name="gallery_action_unlike">Убрать лайк</string>
     <string name="gallery_action_delete">Удалить</string>
 
     <string name="title_text_to_image">Текст в Картинку</string>
@@ -209,6 +236,7 @@
     <string name="gallery_media_store_banner">%1$s генераций находится в Download/SDAI</string>
     <string name="gallery_info_field_date">Создано</string>
     <string name="gallery_info_field_type">Тип</string>
+    <string name="gallery_info_field_model">Модель</string>
     <string name="gallery_info_field_prompt">Запрос</string>
     <string name="gallery_info_field_negative_prompt">Отрицательный запрос</string>
     <string name="gallery_info_field_size">Размер</string>

@@ -91,6 +91,28 @@ internal class GenerationResultLocalDataSource(
         dao.queryByIdList(idList).mapEntityToDomain()
 
     /**
+     * Performs the SDAI side effect handled by `updateHiddenByIdList`.
+     *
+     * @param idList id list value consumed by the API.
+     * @param hidden hidden value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun updateHiddenByIdList(idList: List<Long>, hidden: Boolean) {
+        dao.updateHiddenByIdList(idList, hidden)
+    }
+
+    /**
+     * Performs the SDAI side effect handled by `updateLikedByIdList`.
+     *
+     * @param idList id list value consumed by the API.
+     * @param liked liked value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun updateLikedByIdList(idList: List<Long>, liked: Boolean) {
+        dao.updateLikedByIdList(idList, liked)
+    }
+
+    /**
      * Performs the SDAI side effect handled by `deleteById`.
      *
      * @param id identifier of the target entity.

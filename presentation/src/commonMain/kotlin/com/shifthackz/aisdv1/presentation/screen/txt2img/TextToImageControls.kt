@@ -307,6 +307,7 @@ internal val ServerSource.displayName: String
         ServerSource.HUGGING_FACE -> Localization.string("srv_type_hugging_face")
         ServerSource.OPEN_AI -> Localization.string("srv_type_open_ai")
         ServerSource.STABILITY_AI -> Localization.string("srv_type_stability_ai")
+        ServerSource.FAL_AI -> Localization.string("srv_type_fal_ai")
         ServerSource.LOCAL_MICROSOFT_ONNX -> Localization.string("srv_type_local_short")
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
         ServerSource.LOCAL_APPLE_CORE_ML -> "Core ML"

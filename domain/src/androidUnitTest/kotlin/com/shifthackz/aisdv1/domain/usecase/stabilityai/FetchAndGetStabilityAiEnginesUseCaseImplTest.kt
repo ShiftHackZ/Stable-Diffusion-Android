@@ -1,8 +1,10 @@
 package com.shifthackz.aisdv1.domain.usecase.stabilityai
 
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.mocks.mockStabilityAiEngines
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -22,6 +24,10 @@ class FetchAndGetStabilityAiEnginesUseCaseImplTest {
 
     @Test
     fun `given repository returned engines list, id present in preference, expected the same engines list, id not changed`() = runTest {
+        every {
+            stubPreferenceManager.source
+        } returns ServerSource.STABILITY_AI
+
         every {
             stubPreferenceManager.stabilityAiApiKey
         } returns API_KEY
@@ -44,6 +50,10 @@ class FetchAndGetStabilityAiEnginesUseCaseImplTest {
 
     @Test
     fun `given repository returned engines list, id missing in preference, expected first id saved`() = runTest {
+        every {
+            stubPreferenceManager.source
+        } returns ServerSource.STABILITY_AI
+
         every {
             stubPreferenceManager.stabilityAiApiKey
         } returns API_KEY
@@ -69,6 +79,10 @@ class FetchAndGetStabilityAiEnginesUseCaseImplTest {
         val stubException = Throwable("Network exception")
 
         every {
+            stubPreferenceManager.source
+        } returns ServerSource.STABILITY_AI
+
+        every {
             stubPreferenceManager.stabilityAiApiKey
         } returns API_KEY
 
@@ -79,6 +93,20 @@ class FetchAndGetStabilityAiEnginesUseCaseImplTest {
         val actual = runCatching { useCase() }
 
         Assert.assertEquals(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
+    fun `given inactive source, expected empty list and no remote fetch`() = runTest {
+        every {
+            stubPreferenceManager.source
+        } returns ServerSource.AUTOMATIC1111
+
+        val actual = useCase()
+
+        Assert.assertEquals(emptyList<Any>(), actual)
+        coVerify(exactly = 0) {
+            stubFetchStabilityAiEnginesUseCase(any())
+        }
     }
 
     private companion object {

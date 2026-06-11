@@ -20,7 +20,7 @@ import kotlin.math.roundToInt
  *
  * @author Dmitriy Moroz
  */
-internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent = when (this) {
+internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent? = when (this) {
     is GenerationInputFormEvent.EditTag -> ImageToImageIntent.ShowEditTag(
         prompt = prompt,
         negativePrompt = negativePrompt,
@@ -32,6 +32,8 @@ internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent
     is GenerationInputFormEvent.UpdatePrompt -> ImageToImageIntent.UpdatePrompt(value)
     is GenerationInputFormEvent.UpdateNegativePrompt -> ImageToImageIntent.UpdateNegativePrompt(value)
     is GenerationInputFormEvent.UpdateWidth -> ImageToImageIntent.UpdateWidth(value)
+    GenerationInputFormEvent.SwapDimensions -> ImageToImageIntent.SwapDimensions
+    is GenerationInputFormEvent.ApplyAspectRatio -> ImageToImageIntent.ApplyAspectRatio(ratio)
     is GenerationInputFormEvent.UpdateHeight -> ImageToImageIntent.UpdateHeight(value)
     is GenerationInputFormEvent.UpdateSamplingSteps -> ImageToImageIntent.UpdateSamplingSteps(value)
     is GenerationInputFormEvent.UpdateCfgScale -> ImageToImageIntent.UpdateCfgScale(value)
@@ -40,14 +42,24 @@ internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent
     is GenerationInputFormEvent.UpdateSubSeed -> ImageToImageIntent.UpdateSubSeed(value)
     is GenerationInputFormEvent.UpdateSubSeedStrength -> ImageToImageIntent.UpdateSubSeedStrength(value)
     is GenerationInputFormEvent.UpdateSampler -> ImageToImageIntent.UpdateSampler(value)
+    is GenerationInputFormEvent.UpdateScheduler -> ImageToImageIntent.UpdateScheduler(value)
+    is GenerationInputFormEvent.UpdateForgeModules -> null
     is GenerationInputFormEvent.UpdateNsfw -> ImageToImageIntent.UpdateNsfw(value)
     is GenerationInputFormEvent.UpdateBatch -> ImageToImageIntent.UpdateBatchCount(value)
     is GenerationInputFormEvent.UpdateOpenAiModel -> ImageToImageIntent.UpdateOpenAiModel(value)
     is GenerationInputFormEvent.UpdateOpenAiSize -> ImageToImageIntent.UpdateOpenAiSize(value)
     is GenerationInputFormEvent.UpdateOpenAiQuality -> ImageToImageIntent.UpdateOpenAiQuality(value)
+    is GenerationInputFormEvent.UpdateFalAiModel -> ImageToImageIntent.UpdateFalAiModel(value)
+    is GenerationInputFormEvent.UpdateFalAiImageSize -> ImageToImageIntent.UpdateFalAiImageSize(value)
+    is GenerationInputFormEvent.UpdateFalAiAcceleration -> ImageToImageIntent.UpdateFalAiAcceleration(value)
+    is GenerationInputFormEvent.UpdateFalAiSyncMode -> ImageToImageIntent.UpdateFalAiSyncMode(value)
     is GenerationInputFormEvent.UpdateStabilityAiStyle -> ImageToImageIntent.UpdateStabilityAiStyle(value)
     is GenerationInputFormEvent.UpdateStabilityAiClipGuidance ->
         ImageToImageIntent.UpdateStabilityAiClipGuidance(value)
+    is GenerationInputFormEvent.UpdateHiresConfig -> null
+    is GenerationInputFormEvent.UpdateADetailerConfig -> ImageToImageIntent.UpdateADetailerConfig(value)
+    GenerationInputFormEvent.RefreshADetailerAvailability -> ImageToImageIntent.RefreshADetailerAvailability
+    GenerationInputFormEvent.OpenADetailerInstallInstructions -> ImageToImageIntent.OpenADetailerInstallInstructions
 }
 
 /**
@@ -198,6 +210,7 @@ internal val ServerSource.displayName: String
         ServerSource.HUGGING_FACE -> Localization.string("srv_type_hugging_face")
         ServerSource.OPEN_AI -> Localization.string("srv_type_open_ai")
         ServerSource.STABILITY_AI -> Localization.string("srv_type_stability_ai")
+        ServerSource.FAL_AI -> Localization.string("srv_type_fal_ai")
         ServerSource.LOCAL_MICROSOFT_ONNX -> Localization.string("srv_type_local_short")
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
         ServerSource.LOCAL_APPLE_CORE_ML -> "Core ML"

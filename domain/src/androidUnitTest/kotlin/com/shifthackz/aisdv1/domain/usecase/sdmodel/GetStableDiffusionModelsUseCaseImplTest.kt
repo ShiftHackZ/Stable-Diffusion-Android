@@ -1,11 +1,16 @@
 package com.shifthackz.aisdv1.domain.usecase.sdmodel
 
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.ServerConfiguration
+import com.shifthackz.aisdv1.domain.entity.StableDiffusionModel
 import com.shifthackz.aisdv1.domain.mocks.mockServerConfiguration
 import com.shifthackz.aisdv1.domain.mocks.mockStableDiffusionModels
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -14,16 +19,22 @@ import org.junit.Test
 
 class GetStableDiffusionModelsUseCaseImplTest {
 
+    private val stubPreferenceManager = mockk<PreferenceManager>()
     private val stubServerConfigurationRepository = mockk<ServerConfigurationRepository>()
     private val stubSdModelsRepository = mockk<StableDiffusionModelsRepository>()
 
     private val useCase = GetStableDiffusionModelsUseCaseImpl(
+        preferenceManager = stubPreferenceManager,
         serverConfigurationRepository = stubServerConfigurationRepository,
         sdModelsRepository = stubSdModelsRepository,
     )
 
     @Test
     fun `given repository returns list with value present in configuration, expected list with selected value`() = runTest {
+        every {
+            stubPreferenceManager.source
+        } returns ServerSource.AUTOMATIC1111
+
         coEvery {
             stubServerConfigurationRepository.fetchAndGetConfiguration()
         } returns mockServerConfiguration
@@ -45,6 +56,10 @@ class GetStableDiffusionModelsUseCaseImplTest {
     @Test
     fun `given repository returns list with no value present in configuration, expected list without selected value`() = runTest {
         val stubServerConfiguration = ServerConfiguration("nonsense")
+
+        every {
+            stubPreferenceManager.source
+        } returns ServerSource.AUTOMATIC1111
 
         coEvery {
             stubServerConfigurationRepository.fetchAndGetConfiguration()
@@ -68,6 +83,10 @@ class GetStableDiffusionModelsUseCaseImplTest {
     fun `given exception while fetching configuration, expected error value`() = runTest {
         val stubException = RuntimeException("Network error.")
 
+        every {
+            stubPreferenceManager.source
+        } returns ServerSource.AUTOMATIC1111
+
         coEvery {
             stubServerConfigurationRepository.fetchAndGetConfiguration()
         } throws stubException
@@ -81,6 +100,10 @@ class GetStableDiffusionModelsUseCaseImplTest {
     fun `given exception while fetching models, expected error value`() = runTest {
         val stubException = RuntimeException("Network error.")
 
+        every {
+            stubPreferenceManager.source
+        } returns ServerSource.AUTOMATIC1111
+
         coEvery {
             stubServerConfigurationRepository.fetchAndGetConfiguration()
         } returns mockServerConfiguration
@@ -92,5 +115,20 @@ class GetStableDiffusionModelsUseCaseImplTest {
         val actual = runCatching { useCase() }.exceptionOrNull()
 
         assertTrue(actual === stubException)
+    }
+
+    @Test
+    fun `given inactive source, expected empty list and no remote fetch`() = runTest {
+        every {
+            stubPreferenceManager.source
+        } returns ServerSource.HUGGING_FACE
+
+        val actual = useCase()
+
+        assertEquals(emptyList<Pair<StableDiffusionModel, Boolean>>(), actual)
+        coVerify(exactly = 0) {
+            stubServerConfigurationRepository.fetchAndGetConfiguration()
+            stubSdModelsRepository.fetchAndGetModels()
+        }
     }
 }

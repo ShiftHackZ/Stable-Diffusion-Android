@@ -1,12 +1,18 @@
 package com.shifthackz.aisdv1.presentation.screen.img2img
 
 import com.shifthackz.aisdv1.core.mvi.MviIntent
+import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationAspectRatio
 
 /**
  * Defines the `ImageToImageIntent` contract for the SDAI presentation layer.
@@ -250,6 +256,19 @@ sealed interface ImageToImageIntent : MviIntent {
      */
     data class UpdateWidth(val value: String) : ImageToImageIntent
     /**
+     * Provides the `SwapDimensions` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object SwapDimensions : ImageToImageIntent
+    /**
+     * Carries `ApplyAspectRatio` data through the SDAI presentation layer.
+     *
+     * @param ratio ratio value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class ApplyAspectRatio(val ratio: GenerationAspectRatio) : ImageToImageIntent
+    /**
      * Carries `UpdateHeight` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.
@@ -306,6 +325,13 @@ sealed interface ImageToImageIntent : MviIntent {
      */
     data class UpdateSampler(val value: String) : ImageToImageIntent
     /**
+     * Carries `UpdateScheduler` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateScheduler(val value: Scheduler) : ImageToImageIntent
+    /**
      * Carries `UpdateNsfw` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.
@@ -341,6 +367,34 @@ sealed interface ImageToImageIntent : MviIntent {
      */
     data class UpdateOpenAiQuality(val value: OpenAiQuality) : ImageToImageIntent
     /**
+     * Carries `UpdateFalAiModel` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiModel(val value: FalAiModel) : ImageToImageIntent
+    /**
+     * Carries `UpdateFalAiImageSize` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiImageSize(val value: FalAiImageSize) : ImageToImageIntent
+    /**
+     * Carries `UpdateFalAiAcceleration` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiAcceleration(val value: FalAiAcceleration) : ImageToImageIntent
+    /**
+     * Carries `UpdateFalAiSyncMode` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiSyncMode(val value: Boolean) : ImageToImageIntent
+    /**
      * Carries `UpdateStabilityAiStyle` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.
@@ -354,6 +408,25 @@ sealed interface ImageToImageIntent : MviIntent {
      * @author Dmitriy Moroz
      */
     data class UpdateStabilityAiClipGuidance(val value: StabilityAiClipGuidance) : ImageToImageIntent
+    /**
+     * Carries `UpdateADetailerConfig` data through the SDAI presentation layer.
+     *
+     * @param value value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateADetailerConfig(val value: ADetailerConfig) : ImageToImageIntent
+    /**
+     * Provides the `RefreshADetailerAvailability` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object RefreshADetailerAvailability : ImageToImageIntent
+    /**
+     * Provides the `OpenADetailerInstallInstructions` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object OpenADetailerInstallInstructions : ImageToImageIntent
     /**
      * Carries `UpdateDenoisingStrength` data through the SDAI presentation layer.
      *

@@ -128,4 +128,16 @@ internal object GenerationResultContract {
      * @author Dmitriy Moroz
      */
     const val HIDDEN = "hidden"
+    /**
+     * Exposes the `LIKED` value used by the SDAI storage layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    const val LIKED = "liked"
+    /**
+     * Exposes the `MODEL_NAME` value used by the SDAI storage layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    const val MODEL_NAME = "model_name"
 }

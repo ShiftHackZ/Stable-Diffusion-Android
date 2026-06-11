@@ -25,6 +25,12 @@ class LoggerViewModel(
      */
     private val logReader: LogReader,
     /**
+     * Exposes the `platformActions` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val platformActions: LoggerPlatformActions,
+    /**
      * Exposes the `router` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -48,6 +54,8 @@ class LoggerViewModel(
     override fun processIntent(intent: LoggerIntent) {
         when (intent) {
             LoggerIntent.ReadLogs -> readLogs()
+            LoggerIntent.CopyLogs -> runLogAction(platformActions::copyLogs)
+            LoggerIntent.ShareLogs -> runLogAction(platformActions::shareLogs)
             LoggerIntent.NavigateBack -> router.navigateBack()
         }
     }
@@ -72,6 +80,14 @@ class LoggerViewModel(
                     }
                     onError(t)
                 }
+        }
+    }
+
+    private fun runLogAction(action: suspend (String) -> Unit) {
+        val text = currentState.text.takeIf(String::isNotBlank) ?: return
+        launch(dispatchersProvider.immediate) {
+            runCatching { action(text) }
+                .onFailure(onError)
         }
     }
 }

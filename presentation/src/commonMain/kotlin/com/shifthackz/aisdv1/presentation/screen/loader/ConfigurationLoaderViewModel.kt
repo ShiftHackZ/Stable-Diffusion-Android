@@ -101,6 +101,7 @@ private fun Configuration.requiresRemotePreload(): Boolean = when (source) {
     ServerSource.HUGGING_FACE,
     ServerSource.OPEN_AI,
     ServerSource.STABILITY_AI,
+    ServerSource.FAL_AI,
     ServerSource.LOCAL_MICROSOFT_ONNX,
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
     ServerSource.LOCAL_APPLE_CORE_ML,

@@ -318,6 +318,7 @@ internal fun SelectedImageInput(
             image = image,
             state = inPaint,
             drawEnabled = false,
+            maskAlpha = 1f,
         )
         Row(
             modifier = Modifier.fillMaxWidth(),

@@ -22,6 +22,7 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCa
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToCoreMlUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToFalAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCase
@@ -167,6 +168,12 @@ class ServerSetupViewModel(
      */
     private val connectToStabilityAiUseCase: ConnectToStabilityAiUseCase,
     /**
+     * Exposes the `connectToFalAiUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val connectToFalAiUseCase: ConnectToFalAiUseCase,
+    /**
      * Exposes the `downloadModelUseCase` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -246,6 +253,7 @@ class ServerSetupViewModel(
                 }
                     .onFailure(onError)
                     .getOrElse { HuggingFaceModel.supportedHfInferenceTextToImageModels }
+                    .ifEmpty { HuggingFaceModel.supportedHfInferenceTextToImageModels }
                     .map(HuggingFaceModel::alias)
                 configuration.toServerSetupState(
                     allowedModes = allowedModes,
@@ -321,6 +329,7 @@ class ServerSetupViewModel(
                     ServerSource.HUGGING_FACE -> connectToHuggingFace()
                     ServerSource.OPEN_AI -> connectToOpenAi()
                     ServerSource.STABILITY_AI -> connectToStabilityAi()
+                    ServerSource.FAL_AI -> connectToFalAi()
                     ServerSource.LOCAL_MICROSOFT_ONNX -> connectToLocalDiffusion()
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> connectToMediaPipe()
                     ServerSource.LOCAL_APPLE_CORE_ML -> connectToCoreMl()
@@ -385,6 +394,10 @@ class ServerSetupViewModel(
 
     private suspend fun connectToStabilityAi(): Result<Unit> = connectToStabilityAiUseCase(
         apiKey = currentState.stabilityAiApiKey,
+    )
+
+    private suspend fun connectToFalAi(): Result<Unit> = connectToFalAiUseCase(
+        apiKey = currentState.falAiApiKey,
     )
 
     private suspend fun connectToLocalDiffusion(): Result<Unit> = connectToLocalDiffusionUseCase(

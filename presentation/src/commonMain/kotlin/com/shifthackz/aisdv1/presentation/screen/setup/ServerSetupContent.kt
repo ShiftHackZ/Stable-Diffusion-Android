@@ -235,6 +235,12 @@ data class ServerSetupStrings(
      */
     val openAiAbout: String = Localization.string("hint_open_ai_about"),
     /**
+     * Exposes the `falAiAbout` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiAbout: String = Localization.string("hint_fal_ai_about"),
+    /**
      * Exposes the `stabilityAbout` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -348,6 +354,18 @@ data class ServerSetupStrings(
      * @author Dmitriy Moroz
      */
     val openAiSubtitle: String = Localization.string("hint_open_ai_sub_title"),
+    /**
+     * Exposes the `falAiTitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiTitle: String = Localization.string("hint_fal_ai_title"),
+    /**
+     * Exposes the `falAiSubtitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiSubtitle: String = Localization.string("hint_fal_ai_sub_title"),
     /**
      * Exposes the `stabilityTitle` value used by the SDAI presentation layer.
      *

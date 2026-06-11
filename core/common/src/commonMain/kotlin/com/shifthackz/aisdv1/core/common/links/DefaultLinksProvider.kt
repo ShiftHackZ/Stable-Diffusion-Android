@@ -37,6 +37,12 @@ object DefaultLinksProvider : LinksProvider {
      */
     override val stabilityAiInfoUrl: String = "https://platform.stability.ai/"
     /**
+     * Exposes the `falAiInfoUrl` value used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val falAiInfoUrl: String = "https://fal.ai/dashboard/keys"
+    /**
      * Exposes the `privacyPolicyUrl` value used by the SDAI core common layer.
      *
      * @author Dmitriy Moroz

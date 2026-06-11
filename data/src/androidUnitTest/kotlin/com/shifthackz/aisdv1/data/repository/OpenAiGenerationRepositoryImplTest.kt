@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.data.mocks.mockAiGenerationResult
 import com.shifthackz.aisdv1.data.mocks.mockTextToImagePayload
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.OpenAiGenerationDataSource
+import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -88,7 +89,10 @@ class OpenAiGenerationRepositoryImplTest {
 
         val actual = repository.generateFromText(mockTextToImagePayload)
 
-        Assert.assertEquals(mockAiGenerationResult, actual)
+        Assert.assertEquals(
+            mockAiGenerationResult.copy(modelName = OpenAiModel.default.alias),
+            actual,
+        )
     }
 
     @Test

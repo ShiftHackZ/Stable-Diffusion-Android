@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
+import com.shifthackz.aisdv1.data.mappers.withModelName
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
 import com.shifthackz.aisdv1.domain.demo.ImageToImageDemo
@@ -85,7 +86,9 @@ internal class StableDiffusionGenerationRepositoryImpl(
                 payload = payload,
             )
 
-        return ai.map { insertGenerationResult(it) }
+        return ai
+            .withModelName(preferenceManager.sdModel)
+            .map { insertGenerationResult(it) }
     }
 
     override suspend fun generateFromImage(payload: ImageToImagePayload): List<AiGenerationResult> {
@@ -99,7 +102,9 @@ internal class StableDiffusionGenerationRepositoryImpl(
                 payload = payload,
             )
 
-        return ai.map { insertGenerationResult(it) }
+        return ai
+            .withModelName(preferenceManager.sdModel)
+            .map { insertGenerationResult(it) }
     }
 
     override suspend fun interruptGeneration() {

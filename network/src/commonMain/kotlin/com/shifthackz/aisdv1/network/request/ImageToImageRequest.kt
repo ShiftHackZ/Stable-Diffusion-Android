@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.network.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 
 /**
  * Carries `ImageToImageRequest` data through the SDAI network layer.
@@ -157,4 +158,18 @@ data class ImageToImageRequest(
      */
     @SerialName("sampler_index")
     val samplerIndex: String,
+    /**
+     * Exposes the `scheduler` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    @SerialName("scheduler")
+    val scheduler: String? = null,
+    /**
+     * Exposes the `alwaysOnScripts` value used by the SDAI network layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    @SerialName("alwayson_scripts")
+    val alwaysOnScripts: JsonObject? = null,
 )

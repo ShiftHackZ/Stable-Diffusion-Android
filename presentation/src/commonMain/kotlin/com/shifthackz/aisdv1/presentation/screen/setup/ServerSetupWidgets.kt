@@ -206,6 +206,7 @@ internal val ServerSource.icon: ImageVector
         ServerSource.HUGGING_FACE,
         ServerSource.OPEN_AI,
         ServerSource.STABILITY_AI,
+        ServerSource.FAL_AI,
         -> Icons.Default.Cloud
 
         ServerSource.LOCAL_MICROSOFT_ONNX,
@@ -228,6 +229,7 @@ internal fun ServerSource.title(strings: ServerSetupStrings): String = when (thi
     ServerSource.HUGGING_FACE -> strings.huggingFaceTitle
     ServerSource.OPEN_AI -> strings.openAiTitle
     ServerSource.STABILITY_AI -> strings.stabilityTitle
+    ServerSource.FAL_AI -> strings.falAiTitle
     ServerSource.LOCAL_MICROSOFT_ONNX -> strings.localDiffusionTitle
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeTitle
     ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlTitle
@@ -246,6 +248,7 @@ internal fun ServerSource.subtitle(strings: ServerSetupStrings): String = when (
     ServerSource.HUGGING_FACE -> strings.huggingFaceSubtitle
     ServerSource.OPEN_AI -> strings.openAiSubtitle
     ServerSource.STABILITY_AI -> strings.stabilitySubtitle
+    ServerSource.FAL_AI -> strings.falAiSubtitle
     ServerSource.LOCAL_MICROSOFT_ONNX -> strings.localDiffusionSubtitle
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeSubtitle
     ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlSubtitle

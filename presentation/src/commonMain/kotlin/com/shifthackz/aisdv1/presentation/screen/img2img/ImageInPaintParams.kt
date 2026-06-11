@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -56,15 +55,11 @@ internal fun BrushSizeSlider(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column(
-            modifier = Modifier
-                .weight(2f)
-                .aspectRatio(1f),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Box(
+            modifier = Modifier.size(IN_PAINT_SLIDER_LEADING_WIDTH),
+            contentAlignment = Alignment.Center,
         ) {
             Box(
                 modifier = Modifier.defaultMinSize(
@@ -87,20 +82,16 @@ internal fun BrushSizeSlider(
             }
         }
 
-        Box(
-            modifier = Modifier.weight(8f),
-            contentAlignment = Alignment.Center,
-        ) {
-            Slider(
-                value = size.toFloat(),
-                valueRange = IN_PAINT_BRUSH_SIZE_MIN.toFloat()..IN_PAINT_BRUSH_SIZE_MAX.toFloat(),
-                steps = abs(IN_PAINT_BRUSH_SIZE_MIN - IN_PAINT_BRUSH_SIZE_MAX) - 1,
-                colors = sliderColors.copy(
-                    inactiveTrackColor = MaterialTheme.colorScheme.background,
-                ),
-                onValueChange = { onValueChanged(it.roundToInt()) },
-            )
-        }
+        Slider(
+            modifier = Modifier.weight(1f),
+            value = size.toFloat(),
+            valueRange = IN_PAINT_BRUSH_SIZE_MIN.toFloat()..IN_PAINT_BRUSH_SIZE_MAX.toFloat(),
+            steps = abs(IN_PAINT_BRUSH_SIZE_MIN - IN_PAINT_BRUSH_SIZE_MAX) - 1,
+            colors = sliderColors.copy(
+                inactiveTrackColor = MaterialTheme.colorScheme.background,
+            ),
+            onValueChange = { onValueChanged(it.roundToInt()) },
+        )
     }
 }
 
@@ -203,6 +194,8 @@ internal fun ImageInPaintParamsForm(
         Spacer(modifier = Modifier.height(8.dp))
     }
 }
+
+internal val IN_PAINT_SLIDER_LEADING_WIDTH = 48.dp
 
 /**
  * Renders the `SelectableRow` UI for the SDAI presentation layer.
