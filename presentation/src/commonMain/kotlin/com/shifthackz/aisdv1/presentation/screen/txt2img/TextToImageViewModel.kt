@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
+import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.forgemodule.GetForgeModulesUseCase
@@ -128,6 +129,12 @@ class TextToImageViewModel(
      */
     private val backgroundWorkObserver: BackgroundWorkObserver,
     /**
+     * Exposes the `wakeLockInterActor` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val wakeLockInterActor: WakeLockInterActor,
+    /**
      * Exposes the `platformServices` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -204,6 +211,7 @@ class TextToImageViewModel(
         preferenceManager = preferenceManager,
         backgroundTaskManager = backgroundTaskManager,
         backgroundWorkObserver = backgroundWorkObserver,
+        wakeLockInterActor = wakeLockInterActor,
         platformServices = platformServices,
         buildInfoProvider = buildInfoProvider,
         dimensionValidator = dimensionValidator,

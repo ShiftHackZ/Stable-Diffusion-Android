@@ -40,6 +40,7 @@ kotlin {
             implementation(project(":demo"))
             implementation(project(":domain"))
             implementation(project(":feature:auth"))
+            implementation(project(":feature:work"))
             api(project(":feature:coreml"))
             implementation(project(":network"))
             implementation(compose.animation)

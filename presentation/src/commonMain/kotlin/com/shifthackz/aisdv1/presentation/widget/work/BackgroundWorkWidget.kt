@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoFixNormal
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -102,7 +102,7 @@ private fun BackgroundWorkWidgetContent(
                         .clip(RoundedCornerShape(4.dp)),
                     contentAlignment = Alignment.Center,
                 ) {
-                    if (state.visible && !state.isError && state.image == null) {
+                    if (state.visible && state.running && !state.isError && state.image == null) {
                         CircularProgressIndicator(
                             modifier = Modifier
                                 .size(40.dp)
@@ -113,6 +113,14 @@ private fun BackgroundWorkWidgetContent(
                             imageVector = Icons.Default.AutoFixNormal,
                             contentDescription = Localization.string("action_generate"),
                             tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        )
+                    }
+                    if (state.visible && !state.running && !state.isError && state.image == null) {
+                        Icon(
+                            modifier = Modifier.size(20.dp),
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = Localization.string("notification_finish_title"),
+                            tint = MaterialTheme.colorScheme.primary,
                         )
                     }
                     if (state.visible && state.isError && state.image == null) {
@@ -131,7 +139,9 @@ private fun BackgroundWorkWidgetContent(
                         )
                     }
                 }
-                Column {
+                Column(
+                    modifier = Modifier.weight(1f),
+                ) {
                     Text(
                         text = state.title.takeIf(String::isNotBlank)
                             ?: Localization.string("notification_pending_title"),
@@ -144,11 +154,11 @@ private fun BackgroundWorkWidgetContent(
                         )
                     }
                 }
-                if (state.isError || state.image != null) {
-                    Spacer(modifier = Modifier.weight(1f))
+                if (state.dismissible) {
                     TextButton(onClick = { processIntent(BackgroundWorkIntent.Dismiss) }) {
                         Text(
                             text = Localization.string("ok"),
+                            maxLines = 1,
                         )
                     }
                 }

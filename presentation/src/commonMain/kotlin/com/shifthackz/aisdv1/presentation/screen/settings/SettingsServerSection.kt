@@ -38,6 +38,7 @@ import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
  * @param headerModifier header modifier value consumed by the API.
  * @param itemModifier item modifier value consumed by the API.
  * @param warningModifier warning modifier value consumed by the API.
+ * @param backgroundGenerationWarningKey background generation warning key value consumed by the API.
  * @param processIntent process intent value consumed by the API.
  * @author Dmitriy Moroz
  */
@@ -47,6 +48,7 @@ internal fun SettingsServerSection(
     headerModifier: Modifier,
     itemModifier: Modifier,
     warningModifier: Modifier,
+    backgroundGenerationWarningKey: String,
     processIntent: (SettingsIntent) -> Unit,
 ) {
         if (!state.onBoardingDemo) {
@@ -130,7 +132,7 @@ internal fun SettingsServerSection(
                     AnimatedVisibility(visible = !state.loading) {
                         Text(
                             modifier = warningModifier,
-                            text = Localization.string("settings_item_background_generation_warning"),
+                            text = Localization.string(backgroundGenerationWarningKey),
                             style = MaterialTheme.typography.labelMedium,
                         )
                     }
@@ -264,4 +266,3 @@ internal fun SettingsServerSection(
             )
         }
 }
-

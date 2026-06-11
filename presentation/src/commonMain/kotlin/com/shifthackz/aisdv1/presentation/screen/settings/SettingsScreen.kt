@@ -123,6 +123,7 @@ fun SettingsScreenContent(
                         )
                         .padding(top = paddingValues.calculateTopPadding()),
                     state = state,
+                    platformActions = platformActions,
                     processIntent = processIntent,
                 )
             },
@@ -134,4 +135,3 @@ fun SettingsScreenContent(
         )
     }
 }
-

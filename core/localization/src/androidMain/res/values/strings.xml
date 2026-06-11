@@ -297,6 +297,7 @@
     <string name="settings_item_monitor_connection">Monitor connection</string>
     <string name="settings_item_background_generation">Background generation (Beta)*</string>
     <string name="settings_item_background_generation_warning">*Background generation may not work stable with Local Diffusion, please ensure that Local Diffusion works well on your Android device before enabling this.</string>
+    <string name="settings_item_background_generation_warning_ios">*Background generation may not work stable with Silicon Diffusion, please ensure that Silicon Diffusion works well on your iPhone before enabling this.</string>
     <string name="settings_item_auto_save">Auto save images</string>
     <string name="settings_item_auto_save_warning">*Images will always be saved to in-app gallery during background generation.</string>
     <string name="settings_item_auto_save_media_store">Save to Downloads</string>

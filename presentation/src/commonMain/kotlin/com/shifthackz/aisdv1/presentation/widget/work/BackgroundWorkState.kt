@@ -28,6 +28,18 @@ data class BackgroundWorkState(
      */
     val subTitle: String = "",
     /**
+     * Exposes the `running` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val running: Boolean = false,
+    /**
+     * Exposes the `dismissible` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val dismissible: Boolean = false,
+    /**
      * Exposes the `image` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz

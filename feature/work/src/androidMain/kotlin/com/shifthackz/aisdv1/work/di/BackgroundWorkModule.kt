@@ -18,7 +18,7 @@ import org.koin.dsl.module
  *
  * @author Dmitriy Moroz
  */
-val backgroundWorkModule = module {
+actual val backgroundWorkModule = module {
     factory {
         WorkManagerProvider { WorkManager.getInstance(androidApplication()) }
     }

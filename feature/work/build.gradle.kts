@@ -9,6 +9,13 @@ android {
 
 kotlin {
     sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core:localization"))
+            implementation(project(":domain"))
+            implementation(libs.koin.core)
+            implementation(libs.kotlinx.coroutines.core)
+        }
+
         androidMain.dependencies {
             implementation(project(":core:common"))
             implementation(project(":core:localization"))

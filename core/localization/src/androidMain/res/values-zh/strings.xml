@@ -306,6 +306,7 @@
     <string name="settings_item_monitor_connection">监控连接</string>
     <string name="settings_item_background_generation">背景生成（测试版）*</string>
     <string name="settings_item_background_generation_warning">*背景生成可能无法与 Local Diffusion 稳定配合使用，在启用此功能之前，请确保 Local Diffusion 在您的 Android 设备上正常运行。</string>
+    <string name="settings_item_background_generation_warning_ios">*背景生成可能无法与 Silicon Diffusion 稳定配合使用。启用前，请确保 Silicon Diffusion 可在您的 iPhone 上正常运行。</string>
     <string name="settings_item_auto_save">自动保存图像</string>
     <string name="settings_item_auto_save_warning">*在后台生成期间，图像将始终保存到应用程序内图库。</string>
     <string name="settings_item_auto_save_media_store">保存到 Downloads</string>

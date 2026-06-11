@@ -13,18 +13,6 @@ interface GenerationPlatformServices {
      */
     val supportsBackgroundGeneration: Boolean
     /**
-     * Performs the SDAI side effect handled by `acquireWakeLock`.
-     *
-     * @author Dmitriy Moroz
-     */
-    suspend fun acquireWakeLock()
-    /**
-     * Performs the SDAI side effect handled by `releaseWakeLock`.
-     *
-     * @author Dmitriy Moroz
-     */
-    suspend fun releaseWakeLock()
-    /**
      * Executes the `showGenerationSucceeded` step in the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -50,18 +38,6 @@ object NoOpGenerationPlatformServices : GenerationPlatformServices {
      * @author Dmitriy Moroz
      */
     override val supportsBackgroundGeneration: Boolean = false
-    /**
-     * Performs the SDAI side effect handled by `acquireWakeLock`.
-     *
-     * @author Dmitriy Moroz
-     */
-    override suspend fun acquireWakeLock() = Unit
-    /**
-     * Performs the SDAI side effect handled by `releaseWakeLock`.
-     *
-     * @author Dmitriy Moroz
-     */
-    override suspend fun releaseWakeLock() = Unit
     /**
      * Executes the `showGenerationSucceeded` step in the SDAI presentation layer.
      *

@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.feature.auth.di.authModule
 import com.shifthackz.aisdv1.feature.coreml.di.coreMlModule
 import com.shifthackz.aisdv1.network.di.coreNetworkModule
 import com.shifthackz.aisdv1.network.di.networkModule
+import com.shifthackz.aisdv1.work.di.backgroundWorkModule
 import org.koin.core.Koin
 import org.koin.core.context.startKoin
 import org.koin.mp.KoinPlatform
@@ -31,6 +32,8 @@ fun initKoin(): Koin =
             demoModule,
             authModule,
             coreMlModule,
+            backgroundWorkModule,
             corePresentationModule,
+            platformPresentationModule,
         )
     }.koin

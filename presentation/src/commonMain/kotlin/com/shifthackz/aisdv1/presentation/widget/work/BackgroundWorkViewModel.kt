@@ -51,6 +51,20 @@ class BackgroundWorkViewModel(
                 .combine(backgroundWorkObserver.observeResult(), ::Pair)
                 .catch { onError(it) }
                 .collect { (work, result) ->
+                    if (work.running) {
+                        updateState {
+                            it.copy(
+                                visible = true,
+                                running = true,
+                                dismissible = false,
+                                title = work.statusTitle,
+                                subTitle = work.statusSubTitle,
+                                isError = false,
+                                image = null,
+                            )
+                        }
+                        return@collect
+                    }
                     val resultTitle = when (result) {
                         is BackgroundWorkResult.Error -> Localization.string("notification_fail_title")
                         is BackgroundWorkResult.Success -> Localization.string("notification_finish_title")
@@ -63,10 +77,12 @@ class BackgroundWorkViewModel(
                         ?.also(::setImage)
                     updateState {
                         it.copy(
-                            visible = work.running || result !is BackgroundWorkResult.None,
-                            title = if (work.running) work.statusTitle else resultTitle,
-                            subTitle = if (work.running) work.statusSubTitle else "",
-                            isError = !work.running && result is BackgroundWorkResult.Error,
+                            visible = result !is BackgroundWorkResult.None,
+                            running = false,
+                            dismissible = result !is BackgroundWorkResult.None,
+                            title = resultTitle,
+                            subTitle = "",
+                            isError = result is BackgroundWorkResult.Error,
                             image = null,
                         )
                     }
@@ -80,6 +96,8 @@ class BackgroundWorkViewModel(
                 updateState {
                     it.copy(
                         visible = false,
+                        running = false,
+                        dismissible = false,
                         title = "",
                         subTitle = "",
                         isError = false,
@@ -96,7 +114,9 @@ class BackgroundWorkViewModel(
             runCatching { imageLoader.load(base64) }
                 .onFailure(onError)
                 .onSuccess { image ->
-                    updateState { it.copy(image = image) }
+                    updateState {
+                        if (it.running) it else it.copy(image = image)
+                    }
                 }
         }
     }

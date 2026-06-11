@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.repository
 
 import android.os.PowerManager
+import com.shifthackz.aisdv1.domain.repository.WakeLock
 import com.shifthackz.aisdv1.domain.repository.WakeLockRepository
 
 /**
@@ -22,15 +23,17 @@ internal class WakeLockRepositoryImpl(
      *
      * @author Dmitriy Moroz
      */
-    private var _wakeLock: PowerManager.WakeLock? = null
+    private var _wakeLock: WakeLock? = null
     /**
      * Exposes the `wakeLock` value used by the SDAI data layer.
      *
      * @author Dmitriy Moroz
      */
-    override val wakeLock: PowerManager.WakeLock
+    override val wakeLock: WakeLock
         get() = _wakeLock ?: run {
-            val wl = powerManager().newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG)
+            val wl = AndroidWakeLock(
+                delegate = powerManager().newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG),
+            )
             _wakeLock = wl
             wl
         }
@@ -47,5 +50,18 @@ internal class WakeLockRepositoryImpl(
          * @author Dmitriy Moroz
          */
         private const val TAG = "SDAI:WakeLock"
+    }
+}
+
+private class AndroidWakeLock(
+    private val delegate: PowerManager.WakeLock,
+) : WakeLock {
+
+    override fun acquire(timeout: Long) {
+        delegate.acquire(timeout)
+    }
+
+    override fun release() {
+        delegate.release()
     }
 }

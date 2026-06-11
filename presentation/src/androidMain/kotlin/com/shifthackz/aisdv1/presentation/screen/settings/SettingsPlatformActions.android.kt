@@ -104,6 +104,12 @@ private class AndroidSettingsPlatformActions(
      * @author Dmitriy Moroz
      */
     override val supportsBackgroundGeneration: Boolean = true
+    /**
+     * Exposes the `backgroundGenerationWarningKey` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val backgroundGenerationWarningKey = "settings_item_background_generation_warning"
 
     /**
      * Executes the `requestStoragePermission` step in the SDAI presentation layer.
