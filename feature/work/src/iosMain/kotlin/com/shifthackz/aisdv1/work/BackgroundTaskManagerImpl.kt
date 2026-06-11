@@ -16,6 +16,7 @@ import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatus
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -114,28 +115,41 @@ internal class BackgroundTaskManagerImpl(
         clearStatusSubscriptions()
         backgroundWorkObserver.dismissResult()
 
-        activeJob = coroutineScope.launch {
+        lateinit var generationJob: Job
+        generationJob = coroutineScope.launch(start = CoroutineStart.LAZY) {
             val backgroundExecution = IosBackgroundExecution(
                 name = "SDAI Generation",
-                activeJob = { activeJob },
+                activeJob = { generationJob },
             )
             try {
                 backgroundExecution.begin()
                 listenSourceStatus()
                 postRunningMessage()
                 val result = block()
-                backgroundWorkObserver.postSuccessSignal(result)
+                if (isActiveJob(generationJob)) {
+                    backgroundWorkObserver.postSuccessSignal(result)
+                }
             } catch (e: CancellationException) {
-                backgroundWorkObserver.postCancelSignal()
+                if (isActiveJob(generationJob)) {
+                    backgroundWorkObserver.postCancelSignal()
+                }
             } catch (t: Throwable) {
-                backgroundWorkObserver.postFailedSignal(t)
+                if (isActiveJob(generationJob)) {
+                    backgroundWorkObserver.postFailedSignal(t)
+                }
             } finally {
-                clearStatusSubscriptions()
+                if (isActiveJob(generationJob)) {
+                    clearStatusSubscriptions()
+                    activeJob = null
+                }
                 backgroundExecution.end()
-                activeJob = null
             }
         }
+        activeJob = generationJob
+        generationJob.start()
     }
+
+    private fun isActiveJob(job: Job): Boolean = activeJob === job
 
     private fun listenSourceStatus() {
         when (preferenceManager.source) {
