@@ -58,6 +58,20 @@ git push --force-with-lease origin feature/my-feature
 
 ## Release Flow: develop to master
 
+Before moving `develop` to `master`, regenerate Dokka in a separate docs-only PR that targets `develop`.
+
+Expected release preparation:
+
+1. Merge the planned feature PRs into `develop`.
+2. Create a docs-only branch from `develop`.
+3. Regenerate Dokka.
+4. Open and merge a docs-only PR back into `develop`.
+5. Run release validation from `develop`.
+6. Fast-forward `master` from `develop`.
+7. Tag the release from `master`.
+
+This keeps feature PR diffs reviewable and moves generated documentation conflicts into one predictable release step.
+
 The release merge from `develop` to `master` must preserve commit object IDs. Do not use GitHub's PR merge buttons for `develop -> master`.
 
 GitHub's merge UI can create new server-side commits or rewrite commits depending on the selected merge strategy:
@@ -149,61 +163,89 @@ If manual deployment is added, the job must still guard against `develop`:
 if: github.ref == 'refs/heads/master'
 ```
 
-It is fine to regenerate `docs/docs` on feature branches and `develop`; publishing is restricted to `master`.
+It is fine to run Dokka generation locally or in CI on feature branches and `develop`; committed generated output is reserved for release docs PRs, and publishing is restricted to `master`.
 
 ## Generated Dokka Documentation
 
 Generated Dokka output lives under `docs/docs`.
 
-Feature branches may include a final docs-only commit when useful, but generated docs are expected to conflict when two feature branches both change public APIs.
+Feature branches must not include generated Dokka output. Do not commit `docs/docs` changes from feature work.
 
 Preferred feature shape:
 
 1. Implementation commits.
-2. One final Dokka commit:
+2. Manual docs or README updates when they are part of the feature.
+3. No generated Dokka commit.
 
-```bash
-./gradlew dokkaGeneratePublicationHtml --no-daemon
-git add docs/docs
-git commit -m "Regenerate Dokka for <feature>"
-```
+Feature PR CI may run Dokka as a validation step, but the generated output should stay as a CI artifact or temporary local output, not as committed source.
 
-When two feature PRs both regenerate Dokka, merge one PR first. Then refresh the remaining PR:
+Preferred release documentation shape:
+
+1. Create a release docs branch from updated `develop`:
 
 ```bash
 git fetch origin
-git switch feature/remaining-feature
+git switch develop
+git pull --ff-only origin develop
+git switch -c docs/release-dokka
+```
+
+2. Regenerate and commit Dokka:
+
+```bash
+./gradlew dokkaGeneratePublicationHtml --no-daemon
+git add docs/docs
+git commit -m "Regenerate Dokka for release"
+```
+
+3. Open the docs-only PR against `develop`.
+
+When two feature PRs both change public APIs, merge them without Dokka. After both are in `develop`, the single release Dokka PR regenerates the final API documentation once.
+
+If an old feature branch already contains a generated Dokka commit, drop or skip that commit while rebasing onto `develop`:
+
+```bash
+git fetch origin
+git switch feature/old-feature
 git rebase origin/develop
 ```
 
-If the rebase conflicts only in the docs-only Dokka commit, skip that docs commit and regenerate Dokka after the rebase:
+If the rebase conflicts only in the stale Dokka commit:
 
 ```bash
 git rebase --skip
-./gradlew dokkaGeneratePublicationHtml --no-daemon
-git add docs/docs
-git commit -m "Regenerate Dokka for <feature>"
-git push --force-with-lease origin feature/remaining-feature
+git push --force-with-lease origin feature/old-feature
 ```
 
-If the rebase has source conflicts, resolve source code first, then regenerate Dokka from the final source tree. Do not hand-edit generated Dokka HTML to resolve semantic API conflicts.
+If the rebase has source conflicts, resolve source code first. Do not hand-edit generated Dokka HTML to resolve semantic API conflicts.
+
+## Root Markdown Documents
+
+Root-level Markdown files are part of the public project documentation surface.
+
+`README.md` must link to every other root-level `.md` document so users and contributors can discover repository policies and manuals from one place.
+
+When adding, removing, or renaming a root-level `.md` file:
+
+1. Update the root documentation section in `README.md`.
+2. Keep the link text human-readable.
+3. Do not include generated documentation output in this rule; it applies only to root-level Markdown files committed by maintainers.
 
 ## Current Migration Note
 
 At the time this workflow was introduced, two feature branches were already based on `master`:
 
-- `feature/backport-614-patch1`
-- `feature/ios-coreml-local-provider`
+- `feature/new-functionality-A`
+- `feature/new-functionality-B`
 
-Both contain generated Dokka updates under `docs/docs`, so their PRs are expected to conflict if both are opened against `develop`.
+Both were created before the release-only Dokka rule. If either branch contains generated Dokka updates under `docs/docs`, drop or replace those generated docs during rebase and let the release Dokka PR regenerate them once after feature integration.
 
 Recommended order:
 
 1. Rebase both branches onto `develop`.
-2. Open both PRs against `develop`.
-3. Merge one PR into `develop`.
-4. Rebase the remaining PR onto updated `develop`.
-5. Skip or replace the stale docs-only commit if needed.
-6. Regenerate Dokka and force-push the remaining branch with `--force-with-lease`.
-
-After both PRs are merged into `develop`, run the normal smoke tests and only then fast-forward `master` from `develop` for the next release.
+2. Remove generated Dokka changes from the feature branches.
+3. Open both PRs against `develop`.
+4. Merge both PRs into `develop`.
+5. Create one docs-only Dokka PR from the final `develop`.
+6. Run the normal smoke tests.
+7. Fast-forward `master` from `develop` for the next release.

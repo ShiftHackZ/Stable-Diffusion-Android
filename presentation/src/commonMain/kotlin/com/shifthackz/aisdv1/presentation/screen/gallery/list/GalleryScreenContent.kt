@@ -233,10 +233,7 @@ fun GalleryScreenContent(
                 else -> LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(
-                            top = paddingValues.calculateTopPadding(),
-                            bottom = paddingValues.calculateBottomPadding(),
-                        )
+                        .padding(top = paddingValues.calculateTopPadding())
                         .verticalScrollbar(listState),
                     columns = GridCells.Fixed(state.grid.size),
                     contentPadding = PaddingValues(16.dp),

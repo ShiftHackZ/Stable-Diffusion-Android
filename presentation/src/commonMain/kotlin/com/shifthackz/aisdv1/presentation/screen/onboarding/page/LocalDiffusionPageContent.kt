@@ -62,6 +62,8 @@ fun LocalDiffusionPageContent(
                     modifier = phoneModifier,
                     state = TextToImageState(
                         loadingConfiguration = false,
+                        onBoardingDemo = true,
+                        formPromptTaggedInput = true,
                         mode = spec.serverSource,
                         prompt = "man, photorealistic, black hair, aviator glasses, handsome, beautiful, nature background",
                         negativePrompt = "bad anatomy, bad fingers, distorted, jpeg artifacts",

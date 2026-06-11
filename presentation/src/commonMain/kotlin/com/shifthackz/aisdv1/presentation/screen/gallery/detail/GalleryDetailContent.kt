@@ -423,15 +423,14 @@ private fun SwipeableGalleryImage(
     )
     val currentImageScale = remember(content.id, selectedTab) { mutableFloatStateOf(1f) }
 
-    LaunchedEffect(content.id, selectedTab, currentPage, pagerContentStartIndex, pagerContents) {
+    LaunchedEffect(selectedTab, currentPage) {
         currentImageScale.floatValue = 1f
-        val pageContent = pagerContents.getOrNull(pagerState.currentPage - pagerContentStartIndex)
-        if (pagerState.currentPage != currentPage || pageContent?.id != content.id) {
+        if (pagerState.currentPage != currentPage) {
             pagerState.scrollToPage(currentPage)
         }
     }
 
-    LaunchedEffect(pagerState.settledPage, content.id, pagerContentStartIndex, pagerContents) {
+    LaunchedEffect(pagerState.settledPage, currentPage, pagerContentStartIndex, pagerContents) {
         val pageContent = pagerContents.getOrNull(pagerState.settledPage - pagerContentStartIndex)
         if (pagerState.settledPage != currentPage && pageContent != null) {
             onPageSelected(pagerState.settledPage)

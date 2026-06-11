@@ -16,6 +16,15 @@ SDAI is an open-source, cross-platform AI image generation client for Android an
 
 No ads. No telemetry. No lock-in to a single provider.
 
+## Project Documentation
+
+Root-level Markdown documents:
+
+- [Documentation](DOCUMENTATION.md)
+- [Screenshot generation](SCREENSHOT_GENERATION.md)
+- [Git workflow](GIT_WORKFLOW.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
+
 ## Why SDAI
 
 - Choose the backend that fits the moment: your own AUTOMATIC1111 or SwarmUI server, AI Horde, Hugging Face, OpenAI, Stability AI, Fal.ai, or local diffusion where the platform supports it.

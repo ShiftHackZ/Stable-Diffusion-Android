@@ -119,6 +119,10 @@ class GalleryDetailViewModel(
 
     private var currentItemId: Long = itemId
     private val safePagerBuffer = pagerBuffer.coerceAtLeast(0)
+    private var galleryItems: List<AiGenerationResult> = emptyList()
+    private val contentCache = mutableMapOf<Long, GalleryDetailContent>()
+    private val showReportButton: Boolean
+        get() = buildInfoProvider.type != BuildType.FOSS
 
     override fun processIntent(intent: GalleryDetailIntent) {
         when (intent) {
@@ -150,38 +154,21 @@ class GalleryDetailViewModel(
     private fun load() {
         launch(dispatchersProvider.io) {
             runCatching {
-                val galleryItems = getGalleryItems()
-                val result = galleryItems.firstOrNull { it.id == currentItemId }
+                val items = getGalleryItems()
+                val result = items.firstOrNull { it.id == currentItemId }
                     ?: getGenerationResult(currentItemId)
-                Triple(result, galleryItems, galleryItems.map(AiGenerationResult::id))
+                val itemIndex = items.indexOfFirst { it.id == result.id }
+                galleryItems = items
+                result.cachedContent() to itemIndex
             }
                 .onFailure(::handleFailure)
-                .onSuccess { (result, galleryItems, galleryItemIds) ->
-                    val tabs = GalleryDetailTab.consume(result.type)
-                    val selectedTab = currentState.selectedTab.takeIf(tabs::contains) ?: tabs.first()
-                    val itemIndex = galleryItems.indexOfFirst { it.id == result.id }
-                    val content = result.toGalleryDetailContent(
-                        showReportButton = buildInfoProvider.type != BuildType.FOSS,
-                    )
-                    val pagerWindow = createPagerWindow(
-                        galleryItems = galleryItems,
-                        itemIndex = itemIndex,
-                        content = content,
-                        showReportButton = buildInfoProvider.type != BuildType.FOSS,
-                    )
+                .onSuccess { (content, itemIndex) ->
                     withContext(dispatchersProvider.immediate) {
-                        updateState {
-                            it.copy(
-                                loading = false,
-                                tabs = tabs,
-                                selectedTab = selectedTab,
-                                galleryItemIds = galleryItemIds,
-                                content = content,
-                                pagerContents = pagerWindow.contents,
-                                pagerContentStartIndex = pagerWindow.startIndex,
-                                pagerCurrentIndex = pagerWindow.currentIndex,
-                            )
-                        }
+                        setCurrentContent(
+                            content = content,
+                            itemIndex = itemIndex,
+                            decodeMissing = true,
+                        )
                     }
                 }
         }
@@ -219,14 +206,58 @@ class GalleryDetailViewModel(
     private fun delete() {
         setActiveDialog(GalleryDetailDialog.None)
         val id = currentState.content?.id ?: return
+        val itemIndex = galleryItems.indexOfFirst { it.id == id }
+        if (itemIndex == -1) {
+            launch(dispatchersProvider.io) {
+                runCatching { deleteGalleryItemUseCase(id) }
+                    .onFailure(::handleFailure)
+                    .onSuccess {
+                        withContext(dispatchersProvider.immediate) {
+                            router.navigateBack()
+                        }
+                    }
+            }
+            return
+        }
+
+        val updatedItems = galleryItems.toMutableList().apply { removeAt(itemIndex) }
+        contentCache.remove(id)
+        galleryItems = updatedItems
+
+        if (updatedItems.isEmpty()) {
+            launch(dispatchersProvider.io) {
+                runCatching { deleteGalleryItemUseCase(id) }
+                    .onFailure(::handleFailure)
+                    .onSuccess {
+                        withContext(dispatchersProvider.immediate) {
+                            updateState {
+                                it.copy(
+                                    content = null,
+                                    pagerContents = emptyList(),
+                                    galleryItemIds = emptyList(),
+                                    tabs = emptyList(),
+                                )
+                            }
+                            router.navigateBack()
+                        }
+                    }
+            }
+            return
+        }
+
+        val nextItemIndex = itemIndex.coerceAtMost(updatedItems.lastIndex)
+        val nextItem = updatedItems[nextItemIndex]
+        currentItemId = nextItem.id
+        setCurrentContent(
+            content = nextItem.cachedContent(),
+            itemIndex = nextItemIndex,
+            decodeMissing = false,
+        )
+        prefetchPagerWindow(nextItemIndex)
+
         launch(dispatchersProvider.io) {
             runCatching { deleteGalleryItemUseCase(id) }
                 .onFailure(::handleFailure)
-                .onSuccess {
-                    withContext(dispatchersProvider.immediate) {
-                        router.navigateBack()
-                    }
-                }
         }
     }
 
@@ -254,43 +285,43 @@ class GalleryDetailViewModel(
 
     private fun toggleVisibility() {
         val id = currentState.content?.id ?: return
+        val hidden = currentState.content?.hidden?.not() ?: return
+        setHidden(id, hidden)
         launch(dispatchersProvider.io) {
-            runCatching { toggleImageVisibilityUseCase(id) }
-                .onFailure(::handleFailure)
-                .onSuccess { hidden ->
-                    withContext(dispatchersProvider.immediate) {
-                        updateState { state ->
-                            state.copy(
-                                content = state.content?.copy(hidden = hidden),
-                                pagerContents = state.pagerContents.updateContent(
-                                    id = id,
-                                    update = { content -> content.copy(hidden = hidden) },
-                                ),
-                            )
+            val result = runCatching { toggleImageVisibilityUseCase(id) }
+            withContext(dispatchersProvider.immediate) {
+                result
+                    .onFailure {
+                        setHidden(id, !hidden)
+                        handleFailure(it)
+                    }
+                    .onSuccess { hidden ->
+                        if (currentState.content?.hidden != hidden) {
+                            setHidden(id, hidden)
                         }
                     }
-                }
+            }
         }
     }
 
     private fun toggleLike() {
         val id = currentState.content?.id ?: return
+        val liked = currentState.content?.liked?.not() ?: return
+        setLiked(id, liked)
         launch(dispatchersProvider.io) {
-            runCatching { toggleImageLikeUseCase(id) }
-                .onFailure(::handleFailure)
-                .onSuccess { liked ->
-                    withContext(dispatchersProvider.immediate) {
-                        updateState { state ->
-                            state.copy(
-                                content = state.content?.copy(liked = liked),
-                                pagerContents = state.pagerContents.updateContent(
-                                    id = id,
-                                    update = { content -> content.copy(liked = liked) },
-                                ),
-                            )
+            val result = runCatching { toggleImageLikeUseCase(id) }
+            withContext(dispatchersProvider.immediate) {
+                result
+                    .onFailure {
+                        setLiked(id, !liked)
+                        handleFailure(it)
+                    }
+                    .onSuccess { liked ->
+                        if (currentState.content?.liked != liked) {
+                            setLiked(id, liked)
                         }
                     }
-                }
+            }
         }
     }
 
@@ -303,10 +334,23 @@ class GalleryDetailViewModel(
     }
 
     private fun navigateToPage(page: Int) {
-        val targetId = currentState.galleryItemIds.getOrNull(page) ?: return
+        val targetId = galleryItems.getOrNull(page)?.id
+            ?: currentState.galleryItemIds.getOrNull(page)
+            ?: return
         if (targetId == currentState.content?.id) return
         currentItemId = targetId
-        load()
+        val targetItem = galleryItems.getOrNull(page)
+        val cachedContent = contentCache[targetId]
+        if (targetItem != null && cachedContent != null) {
+            setCurrentContent(
+                content = cachedContent,
+                itemIndex = page,
+                decodeMissing = false,
+            )
+            prefetchPagerWindow(page)
+        } else {
+            load()
+        }
     }
 
     private suspend fun GalleryDetailActionResult.handlePlatformResult() {
@@ -348,7 +392,7 @@ class GalleryDetailViewModel(
         galleryItems: List<AiGenerationResult>,
         itemIndex: Int,
         content: GalleryDetailContent,
-        showReportButton: Boolean,
+        decodeMissing: Boolean,
     ): GalleryDetailPagerWindow {
         if (itemIndex == -1 || galleryItems.isEmpty()) {
             return GalleryDetailPagerWindow(
@@ -360,12 +404,37 @@ class GalleryDetailViewModel(
 
         val startIndex = (itemIndex - safePagerBuffer).coerceAtLeast(0)
         val endIndex = (itemIndex + safePagerBuffer + 1).coerceAtMost(galleryItems.size)
+        if (!decodeMissing) {
+            contentCache[content.id] = content
+            var cachedStartIndex = itemIndex
+            while (
+                cachedStartIndex > startIndex &&
+                contentCache.containsKey(galleryItems[cachedStartIndex - 1].id)
+            ) {
+                cachedStartIndex -= 1
+            }
+
+            var cachedEndIndex = itemIndex + 1
+            while (
+                cachedEndIndex < endIndex &&
+                contentCache.containsKey(galleryItems[cachedEndIndex].id)
+            ) {
+                cachedEndIndex += 1
+            }
+
+            return GalleryDetailPagerWindow(
+                contents = galleryItems
+                    .subList(cachedStartIndex, cachedEndIndex)
+                    .mapNotNull { item -> contentCache[item.id] },
+                startIndex = cachedStartIndex,
+                currentIndex = itemIndex,
+            )
+        }
+
         return GalleryDetailPagerWindow(
             contents = galleryItems
                 .subList(startIndex, endIndex)
-                .map { item ->
-                    item.toGalleryDetailContent(showReportButton = showReportButton)
-                },
+                .map { item -> item.cachedContent() },
             startIndex = startIndex,
             currentIndex = itemIndex,
         )
@@ -376,6 +445,104 @@ class GalleryDetailViewModel(
         update: (GalleryDetailContent) -> GalleryDetailContent,
     ): List<GalleryDetailContent> = map { content ->
         if (content.id == id) update(content) else content
+    }
+
+    private fun AiGenerationResult.cachedContent(): GalleryDetailContent =
+        contentCache.getOrPut(id) {
+            toGalleryDetailContent(showReportButton = showReportButton)
+        }
+
+    private fun setCurrentContent(
+        content: GalleryDetailContent,
+        itemIndex: Int,
+        decodeMissing: Boolean,
+    ) {
+        val tabs = GalleryDetailTab.consume(content.generationType)
+        val selectedTab = currentState.selectedTab.takeIf(tabs::contains) ?: tabs.first()
+        val pagerWindow = createPagerWindow(
+            galleryItems = galleryItems,
+            itemIndex = itemIndex,
+            content = content,
+            decodeMissing = decodeMissing,
+        )
+        updateState {
+            it.copy(
+                loading = false,
+                tabs = tabs,
+                selectedTab = selectedTab,
+                galleryItemIds = galleryItems.map(AiGenerationResult::id),
+                content = content,
+                pagerContents = pagerWindow.contents,
+                pagerContentStartIndex = pagerWindow.startIndex,
+                pagerCurrentIndex = pagerWindow.currentIndex,
+            )
+        }
+    }
+
+    private fun prefetchPagerWindow(itemIndex: Int) {
+        if (itemIndex == -1 || galleryItems.isEmpty()) return
+        val snapshot = galleryItems
+        launch(dispatchersProvider.io) {
+            val startIndex = (itemIndex - safePagerBuffer).coerceAtLeast(0)
+            val endIndex = (itemIndex + safePagerBuffer + 1).coerceAtMost(snapshot.size)
+            val changed = snapshot
+                .subList(startIndex, endIndex)
+                .fold(false) { hasChanges, item ->
+                    if (contentCache.containsKey(item.id)) {
+                        hasChanges
+                    } else {
+                        item.cachedContent()
+                        true
+                    }
+                }
+
+            val currentContent = contentCache[currentItemId] ?: return@launch
+            val currentIndex = galleryItems.indexOfFirst { it.id == currentItemId }
+            if (changed && currentIndex != -1) {
+                withContext(dispatchersProvider.immediate) {
+                    setCurrentContent(
+                        content = currentContent,
+                        itemIndex = currentIndex,
+                        decodeMissing = false,
+                    )
+                }
+            }
+        }
+    }
+
+    private fun setHidden(id: Long, hidden: Boolean) {
+        galleryItems = galleryItems.updateItem(id) { item -> item.copy(hidden = hidden) }
+        updateCachedContent(id) { content -> content.copy(hidden = hidden) }
+    }
+
+    private fun setLiked(id: Long, liked: Boolean) {
+        galleryItems = galleryItems.updateItem(id) { item -> item.copy(liked = liked) }
+        updateCachedContent(id) { content -> content.copy(liked = liked) }
+    }
+
+    private fun updateCachedContent(
+        id: Long,
+        update: (GalleryDetailContent) -> GalleryDetailContent,
+    ) {
+        contentCache[id] = contentCache[id]?.let(update) ?: return
+        updateState { state ->
+            state.copy(
+                content = state.content?.let { content ->
+                    if (content.id == id) update(content) else content
+                },
+                pagerContents = state.pagerContents.updateContent(
+                    id = id,
+                    update = update,
+                ),
+            )
+        }
+    }
+
+    private fun List<AiGenerationResult>.updateItem(
+        id: Long,
+        update: (AiGenerationResult) -> AiGenerationResult,
+    ): List<AiGenerationResult> = map { item ->
+        if (item.id == id) update(item) else item
     }
 
     private data class GalleryDetailPagerWindow(

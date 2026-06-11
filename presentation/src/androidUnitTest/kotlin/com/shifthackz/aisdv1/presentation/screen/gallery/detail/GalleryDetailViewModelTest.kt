@@ -165,6 +165,27 @@ class GalleryDetailViewModelTest {
         }
 
     @Test
+    fun `given delete confirmed with neighbour item, expected neighbour opened`() =
+        runTest(testDispatcher) {
+            val items = (1L..3L).map { id ->
+                mockAiGenerationResult.copy(id = id)
+            }
+            coEvery { getAllGalleryUseCase() } returns items
+            coEvery { deleteGalleryItemUseCase(2L) } returns Unit
+            val viewModel = createViewModel(itemId = 2L)
+            advanceUntilIdle()
+
+            viewModel.processIntent(GalleryDetailIntent.Delete.Confirm)
+
+            Assert.assertEquals(3L, viewModel.state.value.content?.id)
+            Assert.assertEquals(listOf(1L, 3L), viewModel.state.value.galleryItemIds)
+            verify(exactly = 0) { router.navigateBack() }
+
+            advanceUntilIdle()
+            coVerify { deleteGalleryItemUseCase(2L) }
+        }
+
+    @Test
     fun `given image export on original tab, expected original image saved`() =
         runTest(testDispatcher) {
             val viewModel = createViewModel()
@@ -256,6 +277,9 @@ class GalleryDetailViewModelTest {
             advanceUntilIdle()
 
             viewModel.processIntent(GalleryDetailIntent.ToggleLike)
+
+            Assert.assertEquals(true, viewModel.state.value.content?.liked)
+
             advanceUntilIdle()
 
             Assert.assertEquals(true, viewModel.state.value.content?.liked)
