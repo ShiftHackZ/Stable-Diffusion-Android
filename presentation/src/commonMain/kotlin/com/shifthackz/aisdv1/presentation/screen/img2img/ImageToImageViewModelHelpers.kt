@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.entity.StabilityAiSampler
@@ -199,8 +200,10 @@ internal fun ValidationResult<DimensionValidator.Error>.errorText(): UiText? {
 internal fun ImageToImageState.withSettings(
     settings: Settings,
     stableDiffusionSamplers: List<String>?,
+    forgeModules: List<ForgeModule>?,
+    aDetailerAvailable: Boolean?,
 ): ImageToImageState =
-    withSource(settings.source, stableDiffusionSamplers).copy(
+    withSource(settings.source, stableDiffusionSamplers, forgeModules, aDetailerAvailable).copy(
         advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow,
         advancedOptionsVisible = if (settings.formAdvancedOptionsAlwaysShow) {
             true
@@ -215,23 +218,41 @@ internal fun ImageToImageState.withSettings(
  *
  * @param source source value consumed by the API.
  * @param stableDiffusionSamplers stable diffusion samplers value consumed by the API.
+ * @param forgeModules forge modules value consumed by the API.
  * @return Result produced by `withSource`.
  * @author Dmitriy Moroz
  */
 internal fun ImageToImageState.withSource(
     source: ServerSource,
     stableDiffusionSamplers: List<String>?,
+    forgeModules: List<ForgeModule>?,
+    aDetailerAvailable: Boolean?,
 ): ImageToImageState {
     val samplers = when (source) {
         ServerSource.STABILITY_AI -> StabilityAiSampler.entries.map { "$it" }
         else -> stableDiffusionSamplers.orEmpty()
     }
+    val modules = forgeModules.orEmpty().takeIf {
+        source == ServerSource.AUTOMATIC1111
+    }.orEmpty()
     return copy(
         mode = source,
         availableSamplers = samplers,
         selectedSampler = selectedSampler.takeIf { sampler -> samplers.contains(sampler) }
             ?: samplers.firstOrNull()
             ?: selectedSampler,
+        availableForgeModules = modules,
+        selectedForgeModules = selectedForgeModules.filter(modules::contains),
+        aDetailerAvailable = if (source == ServerSource.AUTOMATIC1111) {
+            aDetailerAvailable ?: this.aDetailerAvailable
+        } else {
+            true
+        },
+        aDetailerRefreshing = if (source == ServerSource.AUTOMATIC1111) {
+            aDetailerRefreshing
+        } else {
+            false
+        },
     )
 }
 
@@ -241,5 +262,31 @@ internal fun ImageToImageState.withSource(
  * @return Result produced by `localizedMessageText`.
  * @author Dmitriy Moroz
  */
-internal fun Throwable.localizedMessageText(): UiText =
-    UiText.Static(message ?: Localization.string("error_invalid"))
+internal fun Throwable.localizedMessageText(): UiText {
+    val message = message
+    val text = when {
+        message == null -> Localization.string("error_invalid")
+        message.contains("out of memory", ignoreCase = true) ||
+            message.contains("OutOfMemoryError", ignoreCase = true) ->
+            Localization.string("error_generation_out_of_memory")
+        else -> message
+    }
+    return UiText.Static(text)
+}
+
+/**
+ * Executes the `localizedMessageString` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `localizedMessageString`.
+ * @author Dmitriy Moroz
+ */
+internal fun Throwable.localizedMessageString(): String {
+    val message = message
+    return when {
+        message == null -> Localization.string("error_invalid")
+        message.contains("out of memory", ignoreCase = true) ||
+            message.contains("OutOfMemoryError", ignoreCase = true) ->
+            Localization.string("error_generation_out_of_memory")
+        else -> message
+    }
+}

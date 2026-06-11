@@ -33,6 +33,12 @@ data class GalleryDetailState(
      */
     val selectedTab: GalleryDetailTab = GalleryDetailTab.IMAGE,
     /**
+     * Exposes the `galleryItemIds` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val galleryItemIds: List<Long> = emptyList(),
+    /**
      * Exposes the `dialog` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -44,6 +50,24 @@ data class GalleryDetailState(
      * @author Dmitriy Moroz
      */
     val content: GalleryDetailContent? = null,
+    /**
+     * Exposes the `pagerContents` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val pagerContents: List<GalleryDetailContent> = emptyList(),
+    /**
+     * Exposes the `pagerContentStartIndex` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val pagerContentStartIndex: Int = 0,
+    /**
+     * Exposes the `pagerCurrentIndex` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val pagerCurrentIndex: Int = 0,
 ) : MviState
 
 /**
@@ -107,6 +131,12 @@ data class GalleryDetailContent(
      * @author Dmitriy Moroz
      */
     val type: String,
+    /**
+     * Exposes the `modelName` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val modelName: String = "",
     /**
      * Exposes the `prompt` value used by the SDAI presentation layer.
      *
@@ -179,6 +209,12 @@ data class GalleryDetailContent(
      * @author Dmitriy Moroz
      */
     val hidden: Boolean,
+    /**
+     * Exposes the `liked` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val liked: Boolean = false,
 )
 
 /**
@@ -260,6 +296,7 @@ internal fun AiGenerationResult.toGalleryDetailContent(
             ?.decodeBase64ImageBitmap(),
         createdAt = formatGalleryCreatedAt(createdAt),
         type = type.key,
+        modelName = modelName,
         prompt = prompt,
         negativePrompt = negativePrompt,
         size = "$width X $height",
@@ -272,6 +309,7 @@ internal fun AiGenerationResult.toGalleryDetailContent(
         subSeedStrength = subSeedStrength.toString(),
         denoisingStrength = denoisingStrength.toString(),
         hidden = hidden,
+        liked = liked,
     )
 
 /**
@@ -282,6 +320,10 @@ internal fun AiGenerationResult.toGalleryDetailContent(
  */
 internal fun GalleryDetailContent.paramsText(): String = buildString {
     appendLine("${Localization.string("gallery_info_field_type")}: $type")
+
+    if (modelName.isNotBlank()) {
+        appendLine("${Localization.string("gallery_info_field_model")}: $modelName")
+    }
 
     if (prompt.isNotEmpty()) {
         appendLine("${Localization.string("gallery_info_field_prompt")}: $prompt")

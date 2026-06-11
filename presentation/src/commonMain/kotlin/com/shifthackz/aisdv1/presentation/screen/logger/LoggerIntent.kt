@@ -15,6 +15,18 @@ sealed interface LoggerIntent : MviIntent {
      */
     data object ReadLogs : LoggerIntent
     /**
+     * Provides the `CopyLogs` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object CopyLogs : LoggerIntent
+    /**
+     * Provides the `ShareLogs` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object ShareLogs : LoggerIntent
+    /**
      * Provides the `NavigateBack` singleton used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz

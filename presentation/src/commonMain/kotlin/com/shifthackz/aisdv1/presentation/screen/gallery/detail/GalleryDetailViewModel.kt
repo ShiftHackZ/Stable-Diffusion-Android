@@ -9,6 +9,8 @@ import com.shifthackz.aisdv1.core.mvi.EmptyEffect
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageLikeUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageVisibilityUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultUseCase
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
@@ -47,6 +49,12 @@ class GalleryDetailViewModel(
      */
     private val getGenerationResultUseCase: GetGenerationResultUseCase,
     /**
+     * Exposes the `getAllGalleryUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val getAllGalleryUseCase: GetAllGalleryUseCase,
+    /**
      * Exposes the `getLastResultFromCacheUseCase` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -64,6 +72,12 @@ class GalleryDetailViewModel(
      * @author Dmitriy Moroz
      */
     private val toggleImageVisibilityUseCase: ToggleImageVisibilityUseCase,
+    /**
+     * Exposes the `toggleImageLikeUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val toggleImageLikeUseCase: ToggleImageLikeUseCase,
     /**
      * Exposes the `generationFormUpdateEvent` value used by the SDAI presentation layer.
      *
@@ -83,6 +97,12 @@ class GalleryDetailViewModel(
      */
     private val platformActions: GalleryDetailPlatformActions,
     /**
+     * Exposes the `pagerBuffer` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val pagerBuffer: Int = GALLERY_DETAIL_PAGER_BUFFER,
+    /**
      * Exposes the `onError` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -97,6 +117,9 @@ class GalleryDetailViewModel(
         load()
     }
 
+    private var currentItemId: Long = itemId
+    private val safePagerBuffer = pagerBuffer.coerceAtLeast(0)
+
     override fun processIntent(intent: GalleryDetailIntent) {
         when (intent) {
             is GalleryDetailIntent.CopyToClipboard -> copyToClipboard(intent.content)
@@ -106,6 +129,9 @@ class GalleryDetailViewModel(
             GalleryDetailIntent.Export.Image -> saveImage()
             GalleryDetailIntent.Export.Params -> shareParams()
             GalleryDetailIntent.NavigateBack -> router.navigateBack()
+            GalleryDetailIntent.NavigatePrevious -> navigateToAdjacent(delta = -1)
+            GalleryDetailIntent.NavigateNext -> navigateToAdjacent(delta = 1)
+            is GalleryDetailIntent.NavigateToPage -> navigateToPage(intent.page)
             GalleryDetailIntent.Report -> currentState.content?.id?.let(router::navigateToReportImage)
             is GalleryDetailIntent.SelectTab -> updateState { it.copy(selectedTab = intent.tab) }
             GalleryDetailIntent.SendTo.Img2Img -> sendPromptToGenerationScreen(
@@ -116,18 +142,31 @@ class GalleryDetailViewModel(
             )
             GalleryDetailIntent.Share.Image -> shareImage()
             GalleryDetailIntent.Share.Params -> shareParams()
+            GalleryDetailIntent.ToggleLike -> toggleLike()
             GalleryDetailIntent.ToggleVisibility -> toggleVisibility()
         }
     }
 
     private fun load() {
         launch(dispatchersProvider.io) {
-            runCatching { getGenerationResult(itemId) }
+            runCatching {
+                val galleryItems = getGalleryItems()
+                val result = galleryItems.firstOrNull { it.id == currentItemId }
+                    ?: getGenerationResult(currentItemId)
+                Triple(result, galleryItems, galleryItems.map(AiGenerationResult::id))
+            }
                 .onFailure(::handleFailure)
-                .onSuccess { result ->
+                .onSuccess { (result, galleryItems, galleryItemIds) ->
                     val tabs = GalleryDetailTab.consume(result.type)
                     val selectedTab = currentState.selectedTab.takeIf(tabs::contains) ?: tabs.first()
+                    val itemIndex = galleryItems.indexOfFirst { it.id == result.id }
                     val content = result.toGalleryDetailContent(
+                        showReportButton = buildInfoProvider.type != BuildType.FOSS,
+                    )
+                    val pagerWindow = createPagerWindow(
+                        galleryItems = galleryItems,
+                        itemIndex = itemIndex,
+                        content = content,
                         showReportButton = buildInfoProvider.type != BuildType.FOSS,
                     )
                     withContext(dispatchersProvider.immediate) {
@@ -136,7 +175,11 @@ class GalleryDetailViewModel(
                                 loading = false,
                                 tabs = tabs,
                                 selectedTab = selectedTab,
+                                galleryItemIds = galleryItemIds,
                                 content = content,
+                                pagerContents = pagerWindow.contents,
+                                pagerContentStartIndex = pagerWindow.startIndex,
+                                pagerCurrentIndex = pagerWindow.currentIndex,
                             )
                         }
                     }
@@ -189,8 +232,9 @@ class GalleryDetailViewModel(
 
     private fun sendPromptToGenerationScreen(screenType: AiGenerationResult.Type) {
         val selectedTab = currentState.selectedTab
+        val id = currentState.content?.id ?: currentItemId
         launch(dispatchersProvider.io) {
-            runCatching { getGenerationResult(itemId) }
+            runCatching { getGenerationResult(id) }
                 .onFailure(::handleFailure)
                 .onSuccess { result ->
                     generationFormUpdateEvent.update(
@@ -218,6 +262,31 @@ class GalleryDetailViewModel(
                         updateState { state ->
                             state.copy(
                                 content = state.content?.copy(hidden = hidden),
+                                pagerContents = state.pagerContents.updateContent(
+                                    id = id,
+                                    update = { content -> content.copy(hidden = hidden) },
+                                ),
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun toggleLike() {
+        val id = currentState.content?.id ?: return
+        launch(dispatchersProvider.io) {
+            runCatching { toggleImageLikeUseCase(id) }
+                .onFailure(::handleFailure)
+                .onSuccess { liked ->
+                    withContext(dispatchersProvider.immediate) {
+                        updateState { state ->
+                            state.copy(
+                                content = state.content?.copy(liked = liked),
+                                pagerContents = state.pagerContents.updateContent(
+                                    id = id,
+                                    update = { content -> content.copy(liked = liked) },
+                                ),
                             )
                         }
                     }
@@ -227,6 +296,17 @@ class GalleryDetailViewModel(
 
     private fun setActiveDialog(dialog: GalleryDetailDialog) {
         updateState { it.copy(dialog = dialog) }
+    }
+
+    private fun navigateToAdjacent(delta: Int) {
+        navigateToPage(currentState.pagerCurrentIndex + delta)
+    }
+
+    private fun navigateToPage(page: Int) {
+        val targetId = currentState.galleryItemIds.getOrNull(page) ?: return
+        if (targetId == currentState.content?.id) return
+        currentItemId = targetId
+        load()
     }
 
     private suspend fun GalleryDetailActionResult.handlePlatformResult() {
@@ -260,4 +340,49 @@ class GalleryDetailViewModel(
         if (id <= 0) return getLastResultFromCacheUseCase()
         return getGenerationResultUseCase(id)
     }
+
+    private suspend fun getGalleryItems(): List<AiGenerationResult> =
+        if (currentItemId <= 0) emptyList() else getAllGalleryUseCase()
+
+    private fun createPagerWindow(
+        galleryItems: List<AiGenerationResult>,
+        itemIndex: Int,
+        content: GalleryDetailContent,
+        showReportButton: Boolean,
+    ): GalleryDetailPagerWindow {
+        if (itemIndex == -1 || galleryItems.isEmpty()) {
+            return GalleryDetailPagerWindow(
+                contents = listOf(content),
+                startIndex = 0,
+                currentIndex = 0,
+            )
+        }
+
+        val startIndex = (itemIndex - safePagerBuffer).coerceAtLeast(0)
+        val endIndex = (itemIndex + safePagerBuffer + 1).coerceAtMost(galleryItems.size)
+        return GalleryDetailPagerWindow(
+            contents = galleryItems
+                .subList(startIndex, endIndex)
+                .map { item ->
+                    item.toGalleryDetailContent(showReportButton = showReportButton)
+                },
+            startIndex = startIndex,
+            currentIndex = itemIndex,
+        )
+    }
+
+    private fun List<GalleryDetailContent>.updateContent(
+        id: Long,
+        update: (GalleryDetailContent) -> GalleryDetailContent,
+    ): List<GalleryDetailContent> = map { content ->
+        if (content.id == id) update(content) else content
+    }
+
+    private data class GalleryDetailPagerWindow(
+        val contents: List<GalleryDetailContent>,
+        val startIndex: Int,
+        val currentIndex: Int,
+    )
 }
+
+internal const val GALLERY_DETAIL_PAGER_BUFFER = 3

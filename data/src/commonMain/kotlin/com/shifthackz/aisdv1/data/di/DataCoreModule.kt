@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
 import com.shifthackz.aisdv1.data.remote.DownloadableModelFileDownloader
 import com.shifthackz.aisdv1.data.remote.DownloadableModelRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HordeStatusSource
+import com.shifthackz.aisdv1.data.remote.KtorForgeModulesRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorHordeGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorHuggingFaceGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorHuggingFaceModelsRemoteDataSource
@@ -33,6 +34,7 @@ import com.shifthackz.aisdv1.data.remote.KtorStableDiffusionHyperNetworksRemoteD
 import com.shifthackz.aisdv1.data.remote.KtorStableDiffusionLorasRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorStableDiffusionModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorStableDiffusionSamplersRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.KtorStableDiffusionScriptsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorSupportersRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorSwarmUiEmbeddingsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorSwarmUiGenerationRemoteDataSource
@@ -43,6 +45,7 @@ import com.shifthackz.aisdv1.data.remote.RandomImageRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.ReportRemoteDataSource
 import com.shifthackz.aisdv1.data.repository.DownloadableModelRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.EmbeddingsRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.ForgeModulesRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.GenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.CoreMlGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HordeGenerationRepositoryImpl
@@ -60,11 +63,13 @@ import com.shifthackz.aisdv1.data.repository.StableDiffusionGenerationRepository
 import com.shifthackz.aisdv1.data.repository.StableDiffusionHyperNetworksRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionSamplersRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.StableDiffusionScriptsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.SupportersRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.SwarmUiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.TemporaryGenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.EmbeddingsDataSource
+import com.shifthackz.aisdv1.domain.datasource.ForgeModulesDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceGenerationDataSource
@@ -83,6 +88,7 @@ import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSour
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionHyperNetworksDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionSamplersDataSource
+import com.shifthackz.aisdv1.domain.datasource.StableDiffusionScriptsDataSource
 import com.shifthackz.aisdv1.domain.datasource.SupportersDataSource
 import com.shifthackz.aisdv1.domain.datasource.SupportersRemoteDataSource
 import com.shifthackz.aisdv1.domain.datasource.SwarmUiGenerationDataSource
@@ -98,6 +104,7 @@ import com.shifthackz.aisdv1.domain.gateway.ServerConnectivityGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
 import com.shifthackz.aisdv1.domain.repository.EmbeddingsRepository
+import com.shifthackz.aisdv1.domain.repository.ForgeModulesRepository
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
@@ -115,6 +122,7 @@ import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationReposito
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionHyperNetworksRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionSamplersRepository
+import com.shifthackz.aisdv1.domain.repository.StableDiffusionScriptsRepository
 import com.shifthackz.aisdv1.domain.repository.SupportersRepository
 import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.TemporaryGenerationResultRepository
@@ -361,6 +369,26 @@ val coreDataModule = module {
         StableDiffusionSamplersRepositoryImpl(
             remoteDataSource = get(),
             localDataSource = get(),
+            preferenceManager = get(),
+            authorizationStore = get(),
+        )
+    }
+    single<ForgeModulesDataSource> {
+        KtorForgeModulesRemoteDataSource(api = get())
+    }
+    single<ForgeModulesRepository> {
+        ForgeModulesRepositoryImpl(
+            remoteDataSource = get(),
+            preferenceManager = get(),
+            authorizationStore = get(),
+        )
+    }
+    single<StableDiffusionScriptsDataSource> {
+        KtorStableDiffusionScriptsRemoteDataSource(api = get())
+    }
+    single<StableDiffusionScriptsRepository> {
+        StableDiffusionScriptsRepositoryImpl(
+            remoteDataSource = get(),
             preferenceManager = get(),
             authorizationStore = get(),
         )

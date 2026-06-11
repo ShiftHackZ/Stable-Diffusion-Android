@@ -1,6 +1,8 @@
 package com.shifthackz.aisdv1.domain.usecase.huggingface
 
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
+import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceModelsRepository
 
 /**
@@ -9,6 +11,12 @@ import com.shifthackz.aisdv1.domain.repository.HuggingFaceModelsRepository
  * @author Dmitriy Moroz
  */
 class FetchHuggingFaceModelsUseCaseImpl(
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val preferenceManager: PreferenceManager,
     /**
      * Exposes the `repository` value used by the SDAI domain layer.
      *
@@ -23,6 +31,9 @@ class FetchHuggingFaceModelsUseCaseImpl(
      * @return Result produced by `invoke`.
      * @author Dmitriy Moroz
      */
-    override suspend fun invoke(): List<HuggingFaceModel> =
-        repository.fetchAndGetHuggingFaceModels()
+    override suspend fun invoke(): List<HuggingFaceModel> {
+        if (preferenceManager.source != ServerSource.HUGGING_FACE) return emptyList()
+
+        return repository.fetchAndGetHuggingFaceModels()
+    }
 }

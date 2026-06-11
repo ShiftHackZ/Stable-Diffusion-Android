@@ -107,7 +107,7 @@ class StabilityAiGenerationRepositoryImplTest {
 
         val actual = repository.generateFromText(mockTextToImagePayload)
 
-        Assert.assertEquals(mockAiGenerationResult, actual)
+        Assert.assertEquals(mockAiGenerationResult.copy(modelName = ENGINE_ID), actual)
     }
 
     @Test
@@ -129,7 +129,7 @@ class StabilityAiGenerationRepositoryImplTest {
 
         val actual = repository.generateFromImage(mockImageToImagePayload)
 
-        Assert.assertEquals(mockAiGenerationResult, actual)
+        Assert.assertEquals(mockAiGenerationResult.copy(modelName = ENGINE_ID), actual)
     }
 
     @Test
@@ -155,7 +155,7 @@ class StabilityAiGenerationRepositoryImplTest {
 
         val actual = repository.generateFromText(mockTextToImagePayload)
 
-        Assert.assertEquals(mockAiGenerationResult, actual)
+        Assert.assertEquals(mockAiGenerationResult.copy(modelName = ENGINE_ID), actual)
     }
 
     private companion object {

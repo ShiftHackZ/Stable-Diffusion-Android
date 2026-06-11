@@ -148,4 +148,18 @@ data class GenerationResultEntity(
      */
     @ColumnInfo(name = GenerationResultContract.HIDDEN, defaultValue = "0")
     val hidden: Boolean,
+    /**
+     * Exposes the `liked` value used by the SDAI storage layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    @ColumnInfo(name = GenerationResultContract.LIKED, defaultValue = "0")
+    val liked: Boolean = false,
+    /**
+     * Exposes the `modelName` value used by the SDAI storage layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    @ColumnInfo(name = GenerationResultContract.MODEL_NAME, defaultValue = "")
+    val modelName: String = "",
 )

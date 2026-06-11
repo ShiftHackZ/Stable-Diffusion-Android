@@ -200,6 +200,50 @@ class GenerationResultRepositoryImplTest {
     }
 
     @Test
+    fun `given attempt to set visibility by ids, local update succeeds, expected complete value`() = runTest {
+        coEvery {
+            stubLocalDataSource.updateHiddenByIdList(listOf(5598L), true)
+        } returns Unit
+
+        val actual = runCatching { repository.setVisibilityByIds(listOf(5598L), true) }
+
+        Assert.assertTrue(actual.isSuccess)
+    }
+
+    @Test
+    fun `given attempt to set visibility by ids, local update fails, expected error value`() = runTest {
+        coEvery {
+            stubLocalDataSource.updateHiddenByIdList(any(), any())
+        } throws stubException
+
+        val actual = runCatching { repository.setVisibilityByIds(listOf(5598L), false) }
+
+        Assert.assertSame(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
+    fun `given attempt to set liked by ids, local update succeeds, expected complete value`() = runTest {
+        coEvery {
+            stubLocalDataSource.updateLikedByIdList(listOf(5598L), true)
+        } returns Unit
+
+        val actual = runCatching { repository.setLikedByIds(listOf(5598L), true) }
+
+        Assert.assertTrue(actual.isSuccess)
+    }
+
+    @Test
+    fun `given attempt to set liked by ids, local update fails, expected error value`() = runTest {
+        coEvery {
+            stubLocalDataSource.updateLikedByIdList(any(), any())
+        } throws stubException
+
+        val actual = runCatching { repository.setLikedByIds(listOf(5598L), false) }
+
+        Assert.assertSame(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
     fun `given attempt to insert data, local insert success, expected id of inserted model value`() = runTest {
         coEvery {
             stubLocalDataSource.insert(any())
@@ -250,6 +294,39 @@ class GenerationResultRepositoryImplTest {
         } throws stubException
 
         val actual = runCatching { repository.toggleVisibility(5598L) }
+
+        Assert.assertSame(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
+    fun `given attempt to toggle image like, process succeeds, expected boolean value`() = runTest {
+        coEvery {
+            stubLocalDataSource.queryById(any())
+        } returnsMany listOf(
+            mockAiGenerationResult.copy(liked = false),
+            mockAiGenerationResult.copy(liked = true),
+        )
+
+        coEvery {
+            stubLocalDataSource.insert(any())
+        } returns 5598L
+
+        val actual = repository.toggleLike(5598L)
+
+        Assert.assertTrue(actual)
+    }
+
+    @Test
+    fun `given attempt to toggle image like, error occurs, expected boolean value`() = runTest {
+        coEvery {
+            stubLocalDataSource.queryById(any())
+        } returns mockAiGenerationResult
+
+        coEvery {
+            stubLocalDataSource.insert(any())
+        } throws stubException
+
+        val actual = runCatching { repository.toggleLike(5598L) }
 
         Assert.assertSame(stubException, actual.exceptionOrNull())
     }

@@ -4,6 +4,9 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.presentation.model.PromptTagEditRequest
 import com.shifthackz.aisdv1.presentation.navigation.router.TextToImageRouter
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationAspectRatio
+import kotlin.math.max
+import kotlin.math.roundToInt
 
 /**
  * Coordinates `TextToImageIntentProcessor` behavior in the SDAI presentation layer.
@@ -139,6 +142,27 @@ internal class TextToImageIntentProcessor(
                     message = null,
                 )
             }
+            TextToImageIntent.SwapDimensions -> updateState {
+                it.copy(
+                    width = it.height,
+                    height = it.width,
+                    widthValidationError = null,
+                    heightValidationError = null,
+                    error = null,
+                    message = null,
+                )
+            }
+            is TextToImageIntent.ApplyAspectRatio -> updateState {
+                val (width, height) = it.dimensionsFor(intent.ratio)
+                it.copy(
+                    width = width.toString(),
+                    height = height.toString(),
+                    widthValidationError = null,
+                    heightValidationError = null,
+                    error = null,
+                    message = null,
+                )
+            }
             is TextToImageIntent.UpdateSamplingSteps -> updateState {
                 it.copy(samplingSteps = intent.value.coerceIn(MIN_STEPS, MAX_STEPS), message = null)
             }
@@ -162,6 +186,12 @@ internal class TextToImageIntentProcessor(
             }
             is TextToImageIntent.UpdateSampler -> updateState {
                 it.copy(selectedSampler = intent.value, message = null)
+            }
+            is TextToImageIntent.UpdateScheduler -> updateState {
+                it.copy(selectedScheduler = intent.value, message = null)
+            }
+            is TextToImageIntent.UpdateForgeModules -> updateState {
+                it.copy(selectedForgeModules = intent.value, message = null)
             }
             is TextToImageIntent.UpdateNsfw -> updateState {
                 it.copy(nsfw = intent.value, message = null)
@@ -191,6 +221,37 @@ internal class TextToImageIntentProcessor(
             is TextToImageIntent.UpdateStabilityAiClipGuidance -> updateState {
                 it.copy(selectedClipGuidancePreset = intent.value, message = null)
             }
+            is TextToImageIntent.UpdateHiresConfig -> updateState {
+                it.copy(hires = intent.value, message = null)
+            }
+            is TextToImageIntent.UpdateADetailerConfig -> updateState {
+                it.copy(aDetailer = intent.value, message = null)
+            }
+            TextToImageIntent.RefreshADetailerAvailability -> Unit
+            TextToImageIntent.OpenADetailerInstallInstructions -> Unit
         }
     }
 }
+
+private fun TextToImageState.dimensionsFor(ratio: GenerationAspectRatio): Pair<Int, Int> {
+    val currentWidth = width.toIntOrNull() ?: DEFAULT_SIZE
+    val currentHeight = height.toIntOrNull() ?: DEFAULT_SIZE
+    val longSide = max(currentWidth, currentHeight).coerceIn(MIN_SIZE, MAX_SIZE)
+    return if (ratio.width >= ratio.height) {
+        longSide to (longSide * ratio.height.toFloat() / ratio.width)
+            .roundToStableDiffusionSize()
+    } else {
+        (longSide * ratio.width.toFloat() / ratio.height)
+            .roundToStableDiffusionSize() to longSide
+    }
+}
+
+private fun Float.roundToStableDiffusionSize(): Int =
+    (this / SIZE_STEP).roundToInt()
+        .coerceAtLeast(1)
+        .times(SIZE_STEP)
+        .coerceIn(MIN_SIZE, MAX_SIZE)
+
+private const val MIN_SIZE = 64
+private const val MAX_SIZE = 2048
+private const val SIZE_STEP = 64

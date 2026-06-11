@@ -124,6 +124,28 @@ internal class GenerationResultRepositoryImpl(
     }
 
     /**
+     * Performs the SDAI side effect handled by `setVisibilityByIds`.
+     *
+     * @param ids ids value consumed by the API.
+     * @param hidden hidden value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun setVisibilityByIds(ids: List<Long>, hidden: Boolean) {
+        localDataSource.updateHiddenByIdList(ids, hidden)
+    }
+
+    /**
+     * Performs the SDAI side effect handled by `setLikedByIds`.
+     *
+     * @param ids ids value consumed by the API.
+     * @param liked liked value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun setLikedByIds(ids: List<Long>, liked: Boolean) {
+        localDataSource.updateLikedByIdList(ids, liked)
+    }
+
+    /**
      * Converts SDAI data with `toggleVisibility`.
      *
      * @param id identifier of the target entity.
@@ -134,5 +156,18 @@ internal class GenerationResultRepositoryImpl(
         val updated = localDataSource.queryById(id).let { it.copy(hidden = !it.hidden) }
         localDataSource.insert(updated)
         return localDataSource.queryById(id).hidden
+    }
+
+    /**
+     * Converts SDAI data with `toggleLike`.
+     *
+     * @param id identifier of the target entity.
+     * @return Result produced by `toggleLike`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun toggleLike(id: Long): Boolean {
+        val updated = localDataSource.queryById(id).let { it.copy(liked = !it.liked) }
+        localDataSource.insert(updated)
+        return localDataSource.queryById(id).liked
     }
 }

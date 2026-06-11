@@ -77,6 +77,26 @@ interface GenerationResultDao {
     suspend fun queryByIdList(idList: List<Long>): List<GenerationResultEntity>
 
     /**
+     * Performs the SDAI side effect handled by `updateHiddenByIdList`.
+     *
+     * @param idList id list value consumed by the API.
+     * @param hidden hidden value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    @Query("UPDATE ${GenerationResultContract.TABLE} SET ${GenerationResultContract.HIDDEN} = :hidden WHERE ${GenerationResultContract.ID} IN (:idList)")
+    suspend fun updateHiddenByIdList(idList: List<Long>, hidden: Boolean)
+
+    /**
+     * Performs the SDAI side effect handled by `updateLikedByIdList`.
+     *
+     * @param idList id list value consumed by the API.
+     * @param liked liked value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    @Query("UPDATE ${GenerationResultContract.TABLE} SET ${GenerationResultContract.LIKED} = :liked WHERE ${GenerationResultContract.ID} IN (:idList)")
+    suspend fun updateLikedByIdList(idList: List<Long>, liked: Boolean)
+
+    /**
      * Performs the SDAI side effect handled by `insert`.
      *
      * @param item item value consumed by the API.

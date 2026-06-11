@@ -1,8 +1,10 @@
 package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
+import com.shifthackz.aisdv1.data.mappers.withModelName
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceGenerationDataSource
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
@@ -42,21 +44,29 @@ internal class HuggingFaceGenerationRepositoryImpl(
     override suspend fun validateApiKey() =
         remoteDataSource.validateApiKey(preferenceManager.huggingFaceApiKey)
 
-    override suspend fun generateFromText(payload: TextToImagePayload) = remoteDataSource
-        .textToImage(
-            apiKey = preferenceManager.huggingFaceApiKey,
-            modelName = preferenceManager.safeHuggingFaceModel,
-            payload = payload,
-        )
-        .let { insertGenerationResult(it) }
+    override suspend fun generateFromText(payload: TextToImagePayload): AiGenerationResult {
+        val model = preferenceManager.safeHuggingFaceModel
+        return remoteDataSource
+            .textToImage(
+                apiKey = preferenceManager.huggingFaceApiKey,
+                modelName = model,
+                payload = payload,
+            )
+            .withModelName(model)
+            .let { insertGenerationResult(it) }
+    }
 
-    override suspend fun generateFromImage(payload: ImageToImagePayload) = remoteDataSource
-        .imageToImage(
-            apiKey = preferenceManager.huggingFaceApiKey,
-            modelName = preferenceManager.safeHuggingFaceModel,
-            payload = payload,
-        )
-        .let { insertGenerationResult(it) }
+    override suspend fun generateFromImage(payload: ImageToImagePayload): AiGenerationResult {
+        val model = preferenceManager.safeHuggingFaceModel
+        return remoteDataSource
+            .imageToImage(
+                apiKey = preferenceManager.huggingFaceApiKey,
+                modelName = model,
+                payload = payload,
+            )
+            .withModelName(model)
+            .let { insertGenerationResult(it) }
+    }
 
     private val PreferenceManager.safeHuggingFaceModel: String
         get() = huggingFaceModel

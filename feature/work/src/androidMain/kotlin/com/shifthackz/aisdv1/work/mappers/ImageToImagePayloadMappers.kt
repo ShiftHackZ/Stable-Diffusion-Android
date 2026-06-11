@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.work.mappers
 
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
+import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import kotlinx.serialization.Serializable
@@ -123,6 +124,12 @@ private data class ImageToImagePayloadDto(
      */
     val sampler: String,
     /**
+     * Exposes the `scheduler` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val scheduler: String? = null,
+    /**
      * Exposes the `nsfw` value used by the SDAI background work feature layer.
      *
      * @author Dmitriy Moroz
@@ -176,6 +183,12 @@ private data class ImageToImagePayloadDto(
      * @author Dmitriy Moroz
      */
     val stabilityAiStylePreset: String?,
+    /**
+     * Exposes the `aDetailer` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val aDetailer: ADetailerConfigDto = ADetailerConfigDto(),
 ) {
     /**
      * Converts SDAI data with `toPayload`.
@@ -197,6 +210,7 @@ private data class ImageToImagePayloadDto(
         subSeed = subSeed,
         subSeedStrength = subSeedStrength,
         sampler = sampler,
+        scheduler = scheduler?.let(Scheduler::fromAlias) ?: Scheduler.AUTOMATIC,
         nsfw = nsfw,
         batchCount = batchCount,
         inPaintingMaskInvert = inPaintingMaskInvert,
@@ -206,6 +220,7 @@ private data class ImageToImagePayloadDto(
         maskBlur = maskBlur,
         stabilityAiClipGuidance = stabilityAiClipGuidance.parseEnumOrNull<StabilityAiClipGuidance>(),
         stabilityAiStylePreset = stabilityAiStylePreset.parseEnumOrNull<StabilityAiStylePreset>(),
+        aDetailer = aDetailer.toDomain(),
     )
 
     /**
@@ -235,6 +250,7 @@ private data class ImageToImagePayloadDto(
             subSeed = payload.subSeed,
             subSeedStrength = payload.subSeedStrength,
             sampler = payload.sampler,
+            scheduler = payload.scheduler.alias,
             nsfw = payload.nsfw,
             batchCount = payload.batchCount,
             inPaintingMaskInvert = payload.inPaintingMaskInvert,
@@ -244,6 +260,7 @@ private data class ImageToImagePayloadDto(
             maskBlur = payload.maskBlur,
             stabilityAiClipGuidance = payload.stabilityAiClipGuidance?.name,
             stabilityAiStylePreset = payload.stabilityAiStylePreset?.name,
+            aDetailer = ADetailerConfigDto.from(payload.aDetailer),
         )
     }
 }

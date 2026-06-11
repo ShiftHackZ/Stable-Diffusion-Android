@@ -10,6 +10,8 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.SetGalleryItemsLikedUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.SetGalleryItemsVisibilityUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.GalleryRouter
 import io.mockk.coEvery
@@ -44,6 +46,8 @@ class GalleryViewModelTest {
     private val preferenceManager = mockk<PreferenceManager>()
     private val deleteAllGalleryUseCase = mockk<DeleteAllGalleryUseCase>()
     private val deleteGalleryItemsUseCase = mockk<DeleteGalleryItemsUseCase>()
+    private val setGalleryItemsVisibilityUseCase = mockk<SetGalleryItemsVisibilityUseCase>()
+    private val setGalleryItemsLikedUseCase = mockk<SetGalleryItemsLikedUseCase>()
     private val getGenerationResultPagedUseCase = mockk<GetGenerationResultPagedUseCase>()
     private val galleryExportService = mockk<GalleryExportService>()
     private val galleryRouter = mockk<GalleryRouter>(relaxed = true)
@@ -132,6 +136,84 @@ class GalleryViewModelTest {
             coVerify(atLeast = 2) { getMediaStoreInfoUseCase() }
         }
 
+    @Test
+    fun `given visible selection visibility toggled, expected items hidden and selection cleared`() =
+        runTest(testDispatcher) {
+            coEvery { setGalleryItemsVisibilityUseCase(listOf(1L), true) } returns Unit
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            viewModel.processIntent(GalleryIntent.ChangeSelectionMode(true))
+            viewModel.processIntent(GalleryIntent.ToggleItemSelection(1L))
+            viewModel.processIntent(GalleryIntent.ToggleSelectionVisibility)
+            advanceUntilIdle()
+
+            Assert.assertFalse(viewModel.state.value.selectionMode)
+            Assert.assertTrue(viewModel.state.value.selection.isEmpty())
+            coVerify { setGalleryItemsVisibilityUseCase(listOf(1L), true) }
+            coVerify(atLeast = 2) { getMediaStoreInfoUseCase() }
+        }
+
+    @Test
+    fun `given hidden selection visibility toggled, expected items unhidden and selection cleared`() =
+        runTest(testDispatcher) {
+            every {
+                getGenerationResultPagedUseCase.observe(limit = PAGE_SIZE, offset = 0)
+            } returns flowOf(listOf(generationResult(id = 1L, hidden = true)))
+            coEvery { setGalleryItemsVisibilityUseCase(listOf(1L), false) } returns Unit
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            viewModel.processIntent(GalleryIntent.ChangeSelectionMode(true))
+            viewModel.processIntent(GalleryIntent.ToggleItemSelection(1L))
+            viewModel.processIntent(GalleryIntent.ToggleSelectionVisibility)
+            advanceUntilIdle()
+
+            Assert.assertFalse(viewModel.state.value.selectionMode)
+            Assert.assertTrue(viewModel.state.value.selection.isEmpty())
+            coVerify { setGalleryItemsVisibilityUseCase(listOf(1L), false) }
+            coVerify(atLeast = 2) { getMediaStoreInfoUseCase() }
+        }
+
+    @Test
+    fun `given unliked selection like toggled, expected items liked and selection cleared`() =
+        runTest(testDispatcher) {
+            coEvery { setGalleryItemsLikedUseCase(listOf(1L), true) } returns Unit
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            viewModel.processIntent(GalleryIntent.ChangeSelectionMode(true))
+            viewModel.processIntent(GalleryIntent.ToggleItemSelection(1L))
+            viewModel.processIntent(GalleryIntent.ToggleSelectionLike)
+            advanceUntilIdle()
+
+            Assert.assertFalse(viewModel.state.value.selectionMode)
+            Assert.assertTrue(viewModel.state.value.selection.isEmpty())
+            coVerify { setGalleryItemsLikedUseCase(listOf(1L), true) }
+            coVerify(atLeast = 2) { getMediaStoreInfoUseCase() }
+        }
+
+    @Test
+    fun `given liked selection like toggled, expected items unliked and selection cleared`() =
+        runTest(testDispatcher) {
+            every {
+                getGenerationResultPagedUseCase.observe(limit = PAGE_SIZE, offset = 0)
+            } returns flowOf(listOf(generationResult(id = 1L, hidden = false, liked = true)))
+            coEvery { setGalleryItemsLikedUseCase(listOf(1L), false) } returns Unit
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            viewModel.processIntent(GalleryIntent.ChangeSelectionMode(true))
+            viewModel.processIntent(GalleryIntent.ToggleItemSelection(1L))
+            viewModel.processIntent(GalleryIntent.ToggleSelectionLike)
+            advanceUntilIdle()
+
+            Assert.assertFalse(viewModel.state.value.selectionMode)
+            Assert.assertTrue(viewModel.state.value.selection.isEmpty())
+            coVerify { setGalleryItemsLikedUseCase(listOf(1L), false) }
+            coVerify(atLeast = 2) { getMediaStoreInfoUseCase() }
+        }
+
     private fun TestScope.createViewModel() = GalleryViewModel(
         dispatchersProvider = dispatchersProvider,
         getMediaStoreInfoUseCase = getMediaStoreInfoUseCase,
@@ -139,12 +221,14 @@ class GalleryViewModelTest {
         preferenceManager = preferenceManager,
         deleteAllGalleryUseCase = deleteAllGalleryUseCase,
         deleteGalleryItemsUseCase = deleteGalleryItemsUseCase,
+        setGalleryItemsVisibilityUseCase = setGalleryItemsVisibilityUseCase,
+        setGalleryItemsLikedUseCase = setGalleryItemsLikedUseCase,
         getGenerationResultPagedUseCase = getGenerationResultPagedUseCase,
         galleryExportService = galleryExportService,
         galleryRouter = galleryRouter,
     )
 
-    private fun generationResult(id: Long, hidden: Boolean) = AiGenerationResult(
+    private fun generationResult(id: Long, hidden: Boolean, liked: Boolean = false) = AiGenerationResult(
         id = id,
         image = "",
         inputImage = "",
@@ -163,6 +247,7 @@ class GalleryViewModelTest {
         subSeedStrength = 0f,
         denoisingStrength = 0f,
         hidden = hidden,
+        liked = liked,
     )
 
     private companion object {

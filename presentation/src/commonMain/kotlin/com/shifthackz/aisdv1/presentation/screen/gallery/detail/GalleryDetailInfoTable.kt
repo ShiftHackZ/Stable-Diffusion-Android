@@ -50,95 +50,13 @@ internal fun GalleryDetailsTable(
         val colorOddBg = MaterialTheme.colorScheme.surface
         val colorEvenBg = MaterialTheme.colorScheme.surfaceTint
         val colorText = MaterialTheme.colorScheme.onSurface
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorOddBg),
-            name = Localization.string("gallery_info_field_date"),
-            value = content.createdAt,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorEvenBg),
-            name = Localization.string("gallery_info_field_type"),
-            value = content.type,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorOddBg),
-            name = Localization.string("gallery_info_field_prompt"),
-            value = content.prompt,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorEvenBg),
-            name = Localization.string("gallery_info_field_negative_prompt"),
-            value = content.negativePrompt,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorOddBg),
-            name = Localization.string("gallery_info_field_size"),
-            value = content.size,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorEvenBg),
-            name = Localization.string("gallery_info_field_sampling_steps"),
-            value = content.samplingSteps,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorOddBg),
-            name = Localization.string("gallery_info_field_cfg"),
-            value = content.cfgScale,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorEvenBg),
-            name = Localization.string("gallery_info_field_restore_faces"),
-            value = content.restoreFaces,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorOddBg),
-            name = Localization.string("gallery_info_field_sampler"),
-            value = content.sampler,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorEvenBg),
-            name = Localization.string("gallery_info_field_seed"),
-            value = content.seed,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorOddBg),
-            name = Localization.string("gallery_info_field_sub_seed"),
-            value = content.subSeed,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        GalleryDetailRow(
-            modifier = Modifier.background(color = colorEvenBg),
-            name = Localization.string("gallery_info_field_sub_seed_strength"),
-            value = content.subSeedStrength,
-            color = colorText,
-            onCopyTextClick = onCopyTextClick,
-        )
-        if (content.generationType == AiGenerationResult.Type.IMAGE_TO_IMAGE) {
+        content.detailRows().forEachIndexed { index, row ->
             GalleryDetailRow(
-                modifier = Modifier.background(color = colorOddBg),
-                name = Localization.string("gallery_info_field_denoising_strength"),
-                value = content.denoisingStrength,
+                modifier = Modifier.background(
+                    color = if (index % 2 == 0) colorOddBg else colorEvenBg,
+                ),
+                name = row.name,
+                value = row.value,
                 color = colorText,
                 onCopyTextClick = onCopyTextClick,
             )
@@ -216,3 +134,100 @@ internal fun GalleryDetailCell(
         color = color,
     )
 }
+
+private fun GalleryDetailContent.detailRows(): List<GalleryDetailField> =
+    buildList {
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_date"),
+                value = createdAt,
+            )
+        )
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_type"),
+                value = type,
+            )
+        )
+        if (modelName.isNotBlank()) {
+            add(
+                GalleryDetailField(
+                    name = Localization.string("gallery_info_field_model"),
+                    value = modelName,
+                )
+            )
+        }
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_prompt"),
+                value = prompt,
+            )
+        )
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_negative_prompt"),
+                value = negativePrompt,
+            )
+        )
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_size"),
+                value = this@detailRows.size,
+            )
+        )
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_sampling_steps"),
+                value = samplingSteps,
+            )
+        )
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_cfg"),
+                value = cfgScale,
+            )
+        )
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_restore_faces"),
+                value = restoreFaces,
+            )
+        )
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_sampler"),
+                value = sampler,
+            )
+        )
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_seed"),
+                value = seed,
+            )
+        )
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_sub_seed"),
+                value = subSeed,
+            )
+        )
+        add(
+            GalleryDetailField(
+                name = Localization.string("gallery_info_field_sub_seed_strength"),
+                value = subSeedStrength,
+            )
+        )
+        if (generationType == AiGenerationResult.Type.IMAGE_TO_IMAGE) {
+            add(
+                GalleryDetailField(
+                    name = Localization.string("gallery_info_field_denoising_strength"),
+                    value = denoisingStrength,
+                )
+            )
+        }
+    }
+
+private data class GalleryDetailField(
+    val name: String,
+    val value: String,
+)

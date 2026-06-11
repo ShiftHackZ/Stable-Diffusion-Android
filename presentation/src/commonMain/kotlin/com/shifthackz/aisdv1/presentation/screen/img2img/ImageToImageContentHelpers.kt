@@ -20,7 +20,7 @@ import kotlin.math.roundToInt
  *
  * @author Dmitriy Moroz
  */
-internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent = when (this) {
+internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent? = when (this) {
     is GenerationInputFormEvent.EditTag -> ImageToImageIntent.ShowEditTag(
         prompt = prompt,
         negativePrompt = negativePrompt,
@@ -32,6 +32,8 @@ internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent
     is GenerationInputFormEvent.UpdatePrompt -> ImageToImageIntent.UpdatePrompt(value)
     is GenerationInputFormEvent.UpdateNegativePrompt -> ImageToImageIntent.UpdateNegativePrompt(value)
     is GenerationInputFormEvent.UpdateWidth -> ImageToImageIntent.UpdateWidth(value)
+    GenerationInputFormEvent.SwapDimensions -> ImageToImageIntent.SwapDimensions
+    is GenerationInputFormEvent.ApplyAspectRatio -> ImageToImageIntent.ApplyAspectRatio(ratio)
     is GenerationInputFormEvent.UpdateHeight -> ImageToImageIntent.UpdateHeight(value)
     is GenerationInputFormEvent.UpdateSamplingSteps -> ImageToImageIntent.UpdateSamplingSteps(value)
     is GenerationInputFormEvent.UpdateCfgScale -> ImageToImageIntent.UpdateCfgScale(value)
@@ -40,6 +42,8 @@ internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent
     is GenerationInputFormEvent.UpdateSubSeed -> ImageToImageIntent.UpdateSubSeed(value)
     is GenerationInputFormEvent.UpdateSubSeedStrength -> ImageToImageIntent.UpdateSubSeedStrength(value)
     is GenerationInputFormEvent.UpdateSampler -> ImageToImageIntent.UpdateSampler(value)
+    is GenerationInputFormEvent.UpdateScheduler -> ImageToImageIntent.UpdateScheduler(value)
+    is GenerationInputFormEvent.UpdateForgeModules -> null
     is GenerationInputFormEvent.UpdateNsfw -> ImageToImageIntent.UpdateNsfw(value)
     is GenerationInputFormEvent.UpdateBatch -> ImageToImageIntent.UpdateBatchCount(value)
     is GenerationInputFormEvent.UpdateOpenAiModel -> ImageToImageIntent.UpdateOpenAiModel(value)
@@ -48,6 +52,10 @@ internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent
     is GenerationInputFormEvent.UpdateStabilityAiStyle -> ImageToImageIntent.UpdateStabilityAiStyle(value)
     is GenerationInputFormEvent.UpdateStabilityAiClipGuidance ->
         ImageToImageIntent.UpdateStabilityAiClipGuidance(value)
+    is GenerationInputFormEvent.UpdateHiresConfig -> null
+    is GenerationInputFormEvent.UpdateADetailerConfig -> ImageToImageIntent.UpdateADetailerConfig(value)
+    GenerationInputFormEvent.RefreshADetailerAvailability -> ImageToImageIntent.RefreshADetailerAvailability
+    GenerationInputFormEvent.OpenADetailerInstallInstructions -> ImageToImageIntent.OpenADetailerInstallInstructions
 }
 
 /**

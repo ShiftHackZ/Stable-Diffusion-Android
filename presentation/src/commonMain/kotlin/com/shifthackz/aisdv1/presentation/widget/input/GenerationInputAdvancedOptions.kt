@@ -44,6 +44,7 @@ import kotlin.random.Random
  * Renders the `GenerationInputAdvancedOptions` UI for the SDAI presentation layer.
  *
  * @param state state rendered or processed by the component.
+ * @param isImg2Img is img2 img value consumed by the API.
  * @param onEvent callback invoked by the component.
  * @param afterSlidersSection after sliders section value consumed by the API.
  * @author Dmitriy Moroz
@@ -51,6 +52,7 @@ import kotlin.random.Random
 @Composable
 internal fun GenerationInputAdvancedOptions(
     state: GenerationInputFormState,
+    isImg2Img: Boolean,
     onEvent: (GenerationInputFormEvent) -> Unit,
     afterSlidersSection: @Composable () -> Unit,
 ) {
@@ -285,6 +287,13 @@ internal fun GenerationInputAdvancedOptions(
                     else -> Unit
                 }
 
+                if (state.mode == ServerSource.AUTOMATIC1111) {
+                    GenerationInputA1111Options(
+                        state = state,
+                        isImg2Img = isImg2Img,
+                        onEvent = onEvent,
+                    )
+                }
                 // Batch is not available for any Local
                 when (state.mode) {
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE, ServerSource.LOCAL_MICROSOFT_ONNX -> Unit

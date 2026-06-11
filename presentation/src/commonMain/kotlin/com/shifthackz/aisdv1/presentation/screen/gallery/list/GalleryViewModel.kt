@@ -9,6 +9,8 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemsUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.SetGalleryItemsLikedUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.SetGalleryItemsVisibilityUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.GalleryRouter
 import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
@@ -74,6 +76,18 @@ class GalleryViewModel(
      * @author Dmitriy Moroz
      */
     private val deleteGalleryItemsUseCase: DeleteGalleryItemsUseCase,
+    /**
+     * Exposes the `setGalleryItemsVisibilityUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val setGalleryItemsVisibilityUseCase: SetGalleryItemsVisibilityUseCase,
+    /**
+     * Exposes the `setGalleryItemsLikedUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val setGalleryItemsLikedUseCase: SetGalleryItemsLikedUseCase,
     /**
      * Exposes the `getGenerationResultPagedUseCase` value used by the SDAI presentation layer.
      *
@@ -162,6 +176,10 @@ class GalleryViewModel(
                 it.copy(selection = emptyList())
             }
 
+            GalleryIntent.ToggleSelectionVisibility -> launchSelectionVisibilityToggle()
+
+            GalleryIntent.ToggleSelectionLike -> launchSelectionLikeToggle()
+
             GalleryIntent.Dropdown.Toggle -> updateState {
                 it.copy(dropdownMenuShow = !it.dropdownMenuShow)
             }
@@ -213,6 +231,7 @@ class GalleryViewModel(
                                 id = result.id,
                                 image = result.image.decodeBase64ImageBitmap(),
                                 hidden = result.hidden,
+                                liked = result.liked,
                             )
                         }
                         GalleryPageSnapshot(
@@ -274,6 +293,56 @@ class GalleryViewModel(
         setActiveDialog(GalleryDialog.None)
         launch(dispatchersProvider.io) {
             runCatching { action() }
+                .onFailure { t ->
+                    onError(t)
+                    setActiveDialog(
+                        GalleryDialog.Error(t.message ?: Localization.string("error_generic")),
+                    )
+                }
+                .onSuccess {
+                    updateState {
+                        it.copy(
+                            selectionMode = false,
+                            selection = emptyList(),
+                        )
+                    }
+                    refreshGallery()
+                }
+        }
+    }
+
+    private fun launchSelectionVisibilityToggle() {
+        val state = currentState
+        val ids = state.selection
+        if (ids.isEmpty()) return
+        val hidden = state.shouldHideSelection
+        launch(dispatchersProvider.io) {
+            runCatching { setGalleryItemsVisibilityUseCase(ids, hidden) }
+                .onFailure { t ->
+                    onError(t)
+                    setActiveDialog(
+                        GalleryDialog.Error(t.message ?: Localization.string("error_generic")),
+                    )
+                }
+                .onSuccess {
+                    updateState {
+                        it.copy(
+                            selectionMode = false,
+                            selection = emptyList(),
+                        )
+                    }
+                    refreshGallery()
+                }
+        }
+    }
+
+    private fun launchSelectionLikeToggle() {
+        val state = currentState
+        val ids = state.selection
+        if (ids.isEmpty()) return
+        val liked = state.shouldLikeSelection
+        launch(dispatchersProvider.io) {
+            runCatching { setGalleryItemsLikedUseCase(ids, liked) }
                 .onFailure { t ->
                     onError(t)
                     setActiveDialog(

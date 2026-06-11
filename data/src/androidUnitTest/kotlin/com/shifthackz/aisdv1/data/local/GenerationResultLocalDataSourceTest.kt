@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.data.mocks.mockGenerationResultEntity
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.storage.db.persistent.dao.GenerationResultDao
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -120,6 +121,56 @@ class GenerationResultLocalDataSourceTest {
         } throws stubException
 
         val actual = runCatching { localDataSource.queryById(5598L) }
+
+        Assert.assertSame(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
+    fun `given attempt to update visibility by id list, dao update succeeds, expected complete value`() = runTest {
+        coEvery {
+            stubDao.updateHiddenByIdList(listOf(5598L), true)
+        } returns Unit
+
+        val actual = runCatching { localDataSource.updateHiddenByIdList(listOf(5598L), true) }
+
+        Assert.assertTrue(actual.isSuccess)
+        coVerify {
+            stubDao.updateHiddenByIdList(listOf(5598L), true)
+        }
+    }
+
+    @Test
+    fun `given attempt to update visibility by id list, dao update fails, expected error value`() = runTest {
+        coEvery {
+            stubDao.updateHiddenByIdList(any(), any())
+        } throws stubException
+
+        val actual = runCatching { localDataSource.updateHiddenByIdList(listOf(5598L), false) }
+
+        Assert.assertSame(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
+    fun `given attempt to update liked by id list, dao update succeeds, expected complete value`() = runTest {
+        coEvery {
+            stubDao.updateLikedByIdList(listOf(5598L), true)
+        } returns Unit
+
+        val actual = runCatching { localDataSource.updateLikedByIdList(listOf(5598L), true) }
+
+        Assert.assertTrue(actual.isSuccess)
+        coVerify {
+            stubDao.updateLikedByIdList(listOf(5598L), true)
+        }
+    }
+
+    @Test
+    fun `given attempt to update liked by id list, dao update fails, expected error value`() = runTest {
+        coEvery {
+            stubDao.updateLikedByIdList(any(), any())
+        } throws stubException
+
+        val actual = runCatching { localDataSource.updateLikedByIdList(listOf(5598L), false) }
 
         Assert.assertSame(stubException, actual.exceptionOrNull())
     }

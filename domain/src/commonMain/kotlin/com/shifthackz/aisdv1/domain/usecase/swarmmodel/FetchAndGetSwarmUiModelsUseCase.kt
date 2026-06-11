@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.domain.usecase.swarmmodel
 
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.SwarmUiModel
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.SwarmUiModelsRepository
@@ -47,6 +48,8 @@ internal class FetchAndGetSwarmUiModelsUseCaseImpl(
      * @author Dmitriy Moroz
      */
     override suspend fun invoke(): List<SwarmUiModel> {
+        if (preferenceManager.source != ServerSource.SWARM_UI) return emptyList()
+
         val models = repository.fetchAndGetModels()
         if (!models.map(SwarmUiModel::name).contains(preferenceManager.swarmUiModel)) {
             preferenceManager.swarmUiModel = models.firstOrNull()?.name ?: ""

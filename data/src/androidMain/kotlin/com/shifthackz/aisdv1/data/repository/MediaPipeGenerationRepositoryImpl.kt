@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.data.repository
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
 import com.shifthackz.aisdv1.data.mappers.mapLocalDiffusionToAiGenResult
+import com.shifthackz.aisdv1.data.mappers.withModelName
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
@@ -23,7 +24,7 @@ internal class MediaPipeGenerationRepositoryImpl(
     mediaStoreGateway: MediaStoreGateway,
     localDataSource: GenerationResultDataSource.Local,
     backgroundWorkObserver: BackgroundWorkObserver,
-    preferenceManager: PreferenceManager,
+    private val preferenceManager: PreferenceManager,
     /**
      * Exposes the `mediaPipe` value used by the SDAI data layer.
      *
@@ -51,6 +52,10 @@ internal class MediaPipeGenerationRepositoryImpl(
             .base64ImageString
             .let { base64 -> payload to base64 }
             .mapLocalDiffusionToAiGenResult()
+            .withModelName(
+                preferenceManager.localMediaPipeModelId
+                    .ifBlank { preferenceManager.localMediaPipeCustomModelPath },
+            )
     }
         .let { result -> insertGenerationResult(result) }
 }

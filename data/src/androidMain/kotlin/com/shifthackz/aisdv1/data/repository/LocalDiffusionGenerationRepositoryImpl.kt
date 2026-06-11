@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.data.repository
 import com.shifthackz.aisdv1.core.imageprocessing.BitmapToBase64Converter
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
 import com.shifthackz.aisdv1.data.mappers.mapLocalDiffusionToAiGenResult
+import com.shifthackz.aisdv1.data.mappers.withModelName
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
@@ -57,15 +58,20 @@ internal class LocalDiffusionGenerationRepositoryImpl(
     override fun observeStatus() = localDiffusion.observeStatus()
 
     override suspend fun generateFromText(payload: TextToImagePayload) =
-        if (downloadableLocalDataSource.getSelectedOnnx().downloaded) {
-            generate(payload)
-        } else {
-            throw IllegalStateException("Model not downloaded.")
+        downloadableLocalDataSource.getSelectedOnnx().let { model ->
+            if (model.downloaded) {
+                generate(payload, model.name.ifBlank { model.id })
+            } else {
+                throw IllegalStateException("Model not downloaded.")
+            }
         }
 
     override suspend fun interruptGeneration() = localDiffusion.interrupt()
 
-    private suspend fun generate(payload: TextToImagePayload) = withContext(Dispatchers.Default) {
+    private suspend fun generate(
+        payload: TextToImagePayload,
+        modelName: String,
+    ) = withContext(Dispatchers.Default) {
         localDiffusion
             .process(payload)
             .let(BitmapToBase64Converter::Input)
@@ -73,6 +79,7 @@ internal class LocalDiffusionGenerationRepositoryImpl(
             .base64ImageString
             .let { base64 -> payload to base64 }
             .mapLocalDiffusionToAiGenResult()
+            .withModelName(modelName)
     }
         .let { result -> insertGenerationResult(result) }
 }

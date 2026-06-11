@@ -1,9 +1,13 @@
 package com.shifthackz.aisdv1.presentation.widget.input
 
 import com.shifthackz.aisdv1.core.model.UiText
+import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
+import com.shifthackz.aisdv1.domain.entity.ForgeModule
+import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
@@ -111,6 +115,24 @@ interface GenerationInputFormState {
      */
     val selectedSampler: String
     /**
+     * Exposes the `selectedScheduler` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val selectedScheduler: Scheduler
+    /**
+     * Exposes the `availableForgeModules` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val availableForgeModules: List<ForgeModule>
+    /**
+     * Exposes the `selectedForgeModules` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val selectedForgeModules: List<ForgeModule>
+    /**
      * Exposes the `availableSamplers` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -170,6 +192,30 @@ interface GenerationInputFormState {
      * @author Dmitriy Moroz
      */
     val batchCount: Int
+    /**
+     * Exposes the `hires` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val hires: HiresConfig
+    /**
+     * Exposes the `aDetailer` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val aDetailer: ADetailerConfig
+    /**
+     * Exposes the `aDetailerAvailable` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val aDetailerAvailable: Boolean
+    /**
+     * Exposes the `aDetailerRefreshing` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val aDetailerRefreshing: Boolean
 
     /**
      * Exposes the `promptKeywords` value used by the SDAI presentation layer.

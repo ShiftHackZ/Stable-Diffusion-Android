@@ -58,6 +58,10 @@ class StableDiffusionGenerationRepositoryImplTest {
         } returns BASE_URL
 
         every {
+            stubPreferenceManager.sdModel
+        } returns SD_MODEL
+
+        every {
             stubAuthorizationStore.getAuthorizationCredentials()
         } returns AUTHORIZATION_CREDENTIALS
     }
@@ -118,7 +122,10 @@ class StableDiffusionGenerationRepositoryImplTest {
 
         val actual = repository.generateFromText(mockTextToImagePayload)
 
-        Assert.assertEquals(listOf(mockAiGenerationResult), actual)
+        Assert.assertEquals(
+            listOf(mockAiGenerationResult.copy(modelName = SD_MODEL)),
+            actual,
+        )
     }
 
     @Test
@@ -148,7 +155,10 @@ class StableDiffusionGenerationRepositoryImplTest {
 
         val actual = repository.generateFromText(mockTextToImagePayload)
 
-        Assert.assertEquals(listOf(mockAiGenerationResult), actual)
+        Assert.assertEquals(
+            listOf(mockAiGenerationResult.copy(modelName = SD_MODEL)),
+            actual,
+        )
     }
 
     @Test
@@ -178,7 +188,10 @@ class StableDiffusionGenerationRepositoryImplTest {
 
         val actual = repository.generateFromImage(mockImageToImagePayload)
 
-        Assert.assertEquals(listOf(mockAiGenerationResult), actual)
+        Assert.assertEquals(
+            listOf(mockAiGenerationResult.copy(modelName = SD_MODEL)),
+            actual,
+        )
     }
 
     @Test
@@ -208,7 +221,10 @@ class StableDiffusionGenerationRepositoryImplTest {
 
         val actual = repository.generateFromImage(mockImageToImagePayload)
 
-        Assert.assertEquals(listOf(mockAiGenerationResult), actual)
+        Assert.assertEquals(
+            listOf(mockAiGenerationResult.copy(modelName = SD_MODEL)),
+            actual,
+        )
     }
 
     @Test
@@ -251,6 +267,7 @@ class StableDiffusionGenerationRepositoryImplTest {
     private companion object {
         const val BASE_URL = "http://192.168.0.1:7860"
         const val CUSTOM_BASE_URL = "https://5598.is.my.favourite.com"
+        const val SD_MODEL = "sd-model"
         val AUTHORIZATION_CREDENTIALS = AuthorizationCredentials.HttpBasic(
             login = "5598",
             password = "151297",

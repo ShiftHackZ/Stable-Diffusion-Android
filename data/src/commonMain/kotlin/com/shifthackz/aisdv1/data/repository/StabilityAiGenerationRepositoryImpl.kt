@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.data.core.CoreGenerationRepository
+import com.shifthackz.aisdv1.data.mappers.withModelName
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiCreditsDataSource
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiCreditsRemoteDataSource
@@ -62,6 +63,7 @@ internal class StabilityAiGenerationRepositoryImpl(
             engineId = preferenceManager.stabilityAiEngineId,
             payload = payload,
         )
+        .withModelName(preferenceManager.stabilityAiEngineId)
         .let { insertGenerationResult(it) }
         .let { refreshCredits(it) }
 
@@ -71,6 +73,7 @@ internal class StabilityAiGenerationRepositoryImpl(
             engineId = preferenceManager.stabilityAiEngineId,
             payload = payload,
         )
+        .withModelName(preferenceManager.stabilityAiEngineId)
         .let { insertGenerationResult(it) }
         .let { refreshCredits(it) }
 

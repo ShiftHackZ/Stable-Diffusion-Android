@@ -3,11 +3,15 @@ package com.shifthackz.aisdv1.presentation.screen.img2img
 import androidx.compose.runtime.Immutable
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.mvi.MviState
+import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.ForgeModule
+import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
@@ -203,6 +207,24 @@ data class ImageToImageState(
      */
     override val selectedSampler: String = "",
     /**
+     * Exposes the `selectedScheduler` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val selectedScheduler: Scheduler = Scheduler.AUTOMATIC,
+    /**
+     * Exposes the `availableForgeModules` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val availableForgeModules: List<ForgeModule> = emptyList(),
+    /**
+     * Exposes the `selectedForgeModules` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val selectedForgeModules: List<ForgeModule> = emptyList(),
+    /**
      * Exposes the `availableSamplers` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -262,6 +284,30 @@ data class ImageToImageState(
      * @author Dmitriy Moroz
      */
     override val batchCount: Int = 1,
+    /**
+     * Exposes the `hires` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val hires: HiresConfig = HiresConfig.DISABLED,
+    /**
+     * Exposes the `aDetailer` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val aDetailer: ADetailerConfig = ADetailerConfig.DISABLED,
+    /**
+     * Exposes the `aDetailerAvailable` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val aDetailerAvailable: Boolean = false,
+    /**
+     * Exposes the `aDetailerRefreshing` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val aDetailerRefreshing: Boolean = false,
 ) : MviState, GenerationInputFormState {
 
     val hasInputImage: Boolean
@@ -315,6 +361,9 @@ internal fun ImageToImageState.mapToPayload(
     subSeed = subSeed.trim(),
     subSeedStrength = subSeedStrength,
     sampler = selectedSampler,
+    scheduler = selectedScheduler.takeIf {
+        mode == ServerSource.AUTOMATIC1111
+    } ?: Scheduler.AUTOMATIC,
     nsfw = if (mode == ServerSource.HORDE || mode == ServerSource.LOCAL_APPLE_CORE_ML) nsfw else false,
     batchCount = batchCount,
     inPaintingMaskInvert = inPaint.maskMode.inverse,
@@ -324,6 +373,9 @@ internal fun ImageToImageState.mapToPayload(
     maskBlur = inPaint.maskBlur,
     stabilityAiClipGuidance = selectedClipGuidancePreset.takeIf { mode == ServerSource.STABILITY_AI },
     stabilityAiStylePreset = selectedStylePreset.takeIf { mode == ServerSource.STABILITY_AI },
+    aDetailer = aDetailer.takeIf {
+        mode == ServerSource.AUTOMATIC1111 && aDetailer.enabled && aDetailerAvailable
+    } ?: ADetailerConfig.DISABLED,
 )
 
 /**

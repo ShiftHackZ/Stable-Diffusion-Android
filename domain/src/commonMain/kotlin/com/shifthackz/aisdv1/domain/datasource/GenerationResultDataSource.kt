@@ -73,6 +73,22 @@ sealed interface GenerationResultDataSource {
          */
         suspend fun queryByIdList(idList: List<Long>): List<AiGenerationResult>
         /**
+         * Performs the SDAI side effect handled by `updateHiddenByIdList`.
+         *
+         * @param idList id list value consumed by the API.
+         * @param hidden hidden value consumed by the API.
+         * @author Dmitriy Moroz
+         */
+        suspend fun updateHiddenByIdList(idList: List<Long>, hidden: Boolean)
+        /**
+         * Performs the SDAI side effect handled by `updateLikedByIdList`.
+         *
+         * @param idList id list value consumed by the API.
+         * @param liked liked value consumed by the API.
+         * @author Dmitriy Moroz
+         */
+        suspend fun updateLikedByIdList(idList: List<Long>, liked: Boolean)
+        /**
          * Performs the SDAI side effect handled by `deleteById`.
          *
          * @param id identifier of the target entity.

@@ -73,6 +73,12 @@ data class TextToImagePayload(
      */
     val sampler: String,
     /**
+     * Exposes the `scheduler` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val scheduler: Scheduler = Scheduler.AUTOMATIC,
+    /**
      * Exposes the `nsfw` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz
@@ -114,4 +120,22 @@ data class TextToImagePayload(
      * @author Dmitriy Moroz
      */
     val stabilityAiStylePreset: StabilityAiStylePreset?,
+    /**
+     * Exposes the `aDetailer` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val aDetailer: ADetailerConfig = ADetailerConfig.DISABLED,
+    /**
+     * Exposes the `hires` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val hires: HiresConfig = HiresConfig.DISABLED,
+    /**
+     * Exposes the `forgeModules` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val forgeModules: List<ForgeModule> = emptyList(),
 )

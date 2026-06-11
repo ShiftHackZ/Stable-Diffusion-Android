@@ -62,6 +62,8 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalCoreMlModel
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalCoreMlModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.forgemodule.GetForgeModulesUseCase
+import com.shifthackz.aisdv1.domain.usecase.forgemodule.GetForgeModulesUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteAllGalleryUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.DeleteGalleryItemUseCase
@@ -74,6 +76,12 @@ import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemsUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetGalleryItemsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.GetMediaStoreInfoUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.gallery.SetGalleryItemsLikedUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.SetGalleryItemsLikedUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.gallery.SetGalleryItemsVisibilityUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.SetGalleryItemsVisibilityUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageLikeUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageLikeUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageVisibilityUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.ToggleImageVisibilityUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
@@ -110,6 +118,8 @@ import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseC
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.sdscript.IsADetailerAvailableUseCase
+import com.shifthackz.aisdv1.domain.usecase.sdscript.IsADetailerAvailableUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCase
@@ -335,11 +345,20 @@ val coreDomainModule = module {
     factory<DeleteAllGalleryUseCase> {
         DeleteAllGalleryUseCaseImpl(generationResultRepository = get())
     }
+    factory<SetGalleryItemsVisibilityUseCase> {
+        SetGalleryItemsVisibilityUseCaseImpl(generationResultRepository = get())
+    }
+    factory<SetGalleryItemsLikedUseCase> {
+        SetGalleryItemsLikedUseCaseImpl(generationResultRepository = get())
+    }
     factory<GetMediaStoreInfoUseCase> {
         GetMediaStoreInfoUseCaseImpl(mediaStoreGateway = get())
     }
     factory<ToggleImageVisibilityUseCase> {
         ToggleImageVisibilityUseCaseImpl(repository = get())
+    }
+    factory<ToggleImageLikeUseCase> {
+        ToggleImageLikeUseCaseImpl(repository = get())
     }
     factory<GetConfigurationUseCase> {
         DefaultGetConfigurationUseCaseImpl(
@@ -418,7 +437,10 @@ val coreDomainModule = module {
         FetchSupportersUseCaseImpl(repository = get())
     }
     factory<FetchHuggingFaceModelsUseCase> {
-        FetchHuggingFaceModelsUseCaseImpl(repository = get())
+        FetchHuggingFaceModelsUseCaseImpl(
+            preferenceManager = get(),
+            repository = get(),
+        )
     }
     factory<SendReportUseCase> {
         SendReportUseCaseImpl(repository = get())
@@ -455,6 +477,7 @@ val coreDomainModule = module {
     }
     factory<GetStableDiffusionModelsUseCase> {
         GetStableDiffusionModelsUseCaseImpl(
+            preferenceManager = get(),
             serverConfigurationRepository = get(),
             sdModelsRepository = get(),
         )
@@ -467,5 +490,17 @@ val coreDomainModule = module {
     }
     factory<GetStableDiffusionSamplersUseCase> {
         GetStableDiffusionSamplersUseCaseImpl(repository = get())
+    }
+    factory<GetForgeModulesUseCase> {
+        GetForgeModulesUseCaseImpl(
+            preferenceManager = get(),
+            repository = get(),
+        )
+    }
+    factory<IsADetailerAvailableUseCase> {
+        IsADetailerAvailableUseCaseImpl(
+            preferenceManager = get(),
+            repository = get(),
+        )
     }
 }

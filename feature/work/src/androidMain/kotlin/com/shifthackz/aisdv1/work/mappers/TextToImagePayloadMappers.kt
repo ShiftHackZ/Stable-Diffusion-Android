@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.work.mappers
 
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
+import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
@@ -119,6 +120,12 @@ private data class TextToImagePayloadDto(
      */
     val sampler: String,
     /**
+     * Exposes the `scheduler` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val scheduler: String? = null,
+    /**
      * Exposes the `nsfw` value used by the SDAI background work feature layer.
      *
      * @author Dmitriy Moroz
@@ -160,6 +167,24 @@ private data class TextToImagePayloadDto(
      * @author Dmitriy Moroz
      */
     val stabilityAiStylePreset: String?,
+    /**
+     * Exposes the `aDetailer` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val aDetailer: ADetailerConfigDto = ADetailerConfigDto(),
+    /**
+     * Exposes the `hires` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val hires: HiresConfigDto = HiresConfigDto(),
+    /**
+     * Exposes the `forgeModules` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val forgeModules: List<ForgeModuleDto> = emptyList(),
 ) {
     /**
      * Converts SDAI data with `toPayload`.
@@ -178,6 +203,7 @@ private data class TextToImagePayloadDto(
         subSeed = subSeed,
         subSeedStrength = subSeedStrength,
         sampler = sampler,
+        scheduler = scheduler?.let(Scheduler::fromAlias) ?: Scheduler.AUTOMATIC,
         nsfw = nsfw,
         batchCount = batchCount,
         style = style,
@@ -185,6 +211,9 @@ private data class TextToImagePayloadDto(
         openAiModel = openAiModel?.let(OpenAiModel::parse),
         stabilityAiClipGuidance = stabilityAiClipGuidance.parseEnumOrNull<StabilityAiClipGuidance>(),
         stabilityAiStylePreset = stabilityAiStylePreset.parseEnumOrNull<StabilityAiStylePreset>(),
+        aDetailer = aDetailer.toDomain(),
+        hires = hires.toDomain(),
+        forgeModules = forgeModules.map(ForgeModuleDto::toDomain),
     )
 
     /**
@@ -211,6 +240,7 @@ private data class TextToImagePayloadDto(
             subSeed = payload.subSeed,
             subSeedStrength = payload.subSeedStrength,
             sampler = payload.sampler,
+            scheduler = payload.scheduler.alias,
             nsfw = payload.nsfw,
             batchCount = payload.batchCount,
             style = payload.style,
@@ -218,6 +248,9 @@ private data class TextToImagePayloadDto(
             openAiModel = payload.openAiModel?.alias,
             stabilityAiClipGuidance = payload.stabilityAiClipGuidance?.name,
             stabilityAiStylePreset = payload.stabilityAiStylePreset?.name,
+            aDetailer = ADetailerConfigDto.from(payload.aDetailer),
+            hires = HiresConfigDto.from(payload.hires),
+            forgeModules = payload.forgeModules.map(ForgeModuleDto::from),
         )
     }
 }

@@ -13,7 +13,9 @@ import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryExportServi
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryExporter
 import com.shifthackz.aisdv1.presentation.screen.gallery.list.GalleryPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.logger.AndroidLogReader
+import com.shifthackz.aisdv1.presentation.screen.logger.AndroidLoggerPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.logger.LogReader
+import com.shifthackz.aisdv1.presentation.screen.logger.LoggerPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.setup.AndroidServerSetupDownloadGuard
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupDownloadGuard
 import com.shifthackz.aisdv1.presentation.screen.txt2img.AndroidImageSaver
@@ -46,6 +48,7 @@ internal val uiUtilsModule = module {
         )
     } bind GalleryDetailPlatformActions::class
     factoryOf(::AndroidLogReader) bind LogReader::class
+    factory { AndroidLoggerPlatformActions(androidContext()) } bind LoggerPlatformActions::class
     factoryOf(::AndroidDebugMenuPlatformActions) bind DebugMenuPlatformActions::class
     factoryOf(::AndroidBackgroundWorkImageLoader) bind BackgroundWorkImageLoader::class
     factoryOf(::AndroidServerSetupDownloadGuard) bind ServerSetupDownloadGuard::class

@@ -168,6 +168,7 @@ fun GenerationInputForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             val localModifier = Modifier.weight(1f)
 
@@ -255,6 +256,7 @@ fun GenerationInputForm(
 
         GenerationInputAdvancedOptions(
             state = state,
+            isImg2Img = isImg2Img,
             onEvent = onEvent,
             afterSlidersSection = afterSlidersSection,
         )

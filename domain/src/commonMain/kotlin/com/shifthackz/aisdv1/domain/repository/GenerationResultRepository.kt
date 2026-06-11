@@ -97,6 +97,24 @@ interface GenerationResultRepository {
     suspend fun deleteAll()
 
     /**
+     * Performs the SDAI side effect handled by `setVisibilityByIds`.
+     *
+     * @param ids ids value consumed by the API.
+     * @param hidden hidden value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    suspend fun setVisibilityByIds(ids: List<Long>, hidden: Boolean)
+
+    /**
+     * Performs the SDAI side effect handled by `setLikedByIds`.
+     *
+     * @param ids ids value consumed by the API.
+     * @param liked liked value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    suspend fun setLikedByIds(ids: List<Long>, liked: Boolean)
+
+    /**
      * Converts SDAI data with `toggleVisibility`.
      *
      * @param id identifier of the target entity.
@@ -104,4 +122,13 @@ interface GenerationResultRepository {
      * @author Dmitriy Moroz
      */
     suspend fun toggleVisibility(id: Long): Boolean
+
+    /**
+     * Converts SDAI data with `toggleLike`.
+     *
+     * @param id identifier of the target entity.
+     * @return Result produced by `toggleLike`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun toggleLike(id: Long): Boolean
 }

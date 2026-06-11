@@ -385,6 +385,8 @@ internal fun GenerationInputFormEvent.toTextToImageIntent(): TextToImageIntent? 
         TextToImageIntent.UpdateAdvancedOptionsVisibility(visible)
     is GenerationInputFormEvent.UpdateBatch -> TextToImageIntent.UpdateBatchCount(value)
     is GenerationInputFormEvent.UpdateCfgScale -> TextToImageIntent.UpdateCfgScale(value)
+    is GenerationInputFormEvent.ApplyAspectRatio -> TextToImageIntent.ApplyAspectRatio(ratio)
+    GenerationInputFormEvent.SwapDimensions -> TextToImageIntent.SwapDimensions
     is GenerationInputFormEvent.UpdateHeight -> TextToImageIntent.UpdateHeight(value)
     is GenerationInputFormEvent.UpdateNegativePrompt -> TextToImageIntent.UpdateNegativePrompt(value)
     is GenerationInputFormEvent.UpdateNsfw -> TextToImageIntent.UpdateNsfw(value)
@@ -394,6 +396,8 @@ internal fun GenerationInputFormEvent.toTextToImageIntent(): TextToImageIntent? 
     is GenerationInputFormEvent.UpdatePrompt -> TextToImageIntent.UpdatePrompt(value)
     is GenerationInputFormEvent.UpdateRestoreFaces -> TextToImageIntent.UpdateRestoreFaces(value)
     is GenerationInputFormEvent.UpdateSampler -> TextToImageIntent.UpdateSampler(value)
+    is GenerationInputFormEvent.UpdateScheduler -> TextToImageIntent.UpdateScheduler(value)
+    is GenerationInputFormEvent.UpdateForgeModules -> TextToImageIntent.UpdateForgeModules(value)
     is GenerationInputFormEvent.UpdateSamplingSteps -> TextToImageIntent.UpdateSamplingSteps(value)
     is GenerationInputFormEvent.UpdateSeed -> TextToImageIntent.UpdateSeed(value)
     is GenerationInputFormEvent.UpdateStabilityAiClipGuidance ->
@@ -402,6 +406,10 @@ internal fun GenerationInputFormEvent.toTextToImageIntent(): TextToImageIntent? 
     is GenerationInputFormEvent.UpdateSubSeed -> TextToImageIntent.UpdateSubSeed(value)
     is GenerationInputFormEvent.UpdateSubSeedStrength -> TextToImageIntent.UpdateSubSeedStrength(value)
     is GenerationInputFormEvent.UpdateWidth -> TextToImageIntent.UpdateWidth(value)
+    is GenerationInputFormEvent.UpdateHiresConfig -> TextToImageIntent.UpdateHiresConfig(value)
+    is GenerationInputFormEvent.UpdateADetailerConfig -> TextToImageIntent.UpdateADetailerConfig(value)
+    GenerationInputFormEvent.RefreshADetailerAvailability -> TextToImageIntent.RefreshADetailerAvailability
+    GenerationInputFormEvent.OpenADetailerInstallInstructions -> TextToImageIntent.OpenADetailerInstallInstructions
 }
 
 /**

@@ -22,7 +22,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asString
+import com.shifthackz.aisdv1.presentation.platform.rememberExternalUrlLauncher
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormEvent
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 
 
@@ -84,6 +86,7 @@ internal fun TextToImageForm(
     negativePromptChipTextFieldState: androidx.compose.runtime.MutableState<TextFieldValue>,
     processIntent: (TextToImageIntent) -> Unit,
 ) {
+    val urlLauncher = rememberExternalUrlLauncher()
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -107,7 +110,11 @@ internal fun TextToImageForm(
                 promptChipTextFieldState = promptChipTextFieldState,
                 negativePromptChipTextFieldState = negativePromptChipTextFieldState,
                 onEvent = { event ->
-                    event.toTextToImageIntent()?.let(processIntent)
+                    if (event == GenerationInputFormEvent.OpenADetailerInstallInstructions) {
+                        urlLauncher.openUrl(ADETAILER_INSTALL_URL)
+                    } else {
+                        event.toTextToImageIntent()?.let(processIntent)
+                    }
                 },
             )
 
@@ -133,3 +140,5 @@ internal fun TextToImageForm(
         }
     }
 }
+
+private const val ADETAILER_INSTALL_URL = "https://github.com/Bing-su/adetailer#install"

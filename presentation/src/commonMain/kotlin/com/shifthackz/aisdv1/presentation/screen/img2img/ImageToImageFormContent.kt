@@ -34,8 +34,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.presentation.platform.rememberExternalUrlLauncher
 import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormEvent
 
 
 /**
@@ -56,6 +58,7 @@ internal fun ImageToImageForm(
     negativePromptChipTextFieldState: androidx.compose.runtime.MutableState<TextFieldValue>,
     processIntent: (ImageToImageIntent) -> Unit,
 ) {
+    val urlLauncher = rememberExternalUrlLauncher()
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -72,7 +75,13 @@ internal fun ImageToImageForm(
                 textFieldContainerColor = MaterialTheme.colorScheme.surface,
                 promptChipTextFieldState = promptChipTextFieldState,
                 negativePromptChipTextFieldState = negativePromptChipTextFieldState,
-                onEvent = { event -> processIntent(event.toImageToImageIntent()) },
+                onEvent = { event ->
+                    if (event == GenerationInputFormEvent.OpenADetailerInstallInstructions) {
+                        urlLauncher.openUrl(ADETAILER_INSTALL_URL)
+                    } else {
+                        event.toImageToImageIntent()?.let(processIntent)
+                    }
+                },
                 afterSlidersSection = {
                     DenoisingStrengthSlider(
                         state = state,
@@ -120,6 +129,8 @@ internal fun ImageToImageForm(
         }
     }
 }
+
+private const val ADETAILER_INSTALL_URL = "https://github.com/Bing-su/adetailer#install"
 
 /**
  * Renders the `DenoisingStrengthSlider` UI for the SDAI presentation layer.

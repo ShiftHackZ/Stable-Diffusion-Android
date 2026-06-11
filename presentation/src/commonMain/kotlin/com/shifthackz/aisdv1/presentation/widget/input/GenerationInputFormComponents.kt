@@ -1,12 +1,26 @@
 package com.shifthackz.aisdv1.presentation.widget.input
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AspectRatio
+import androidx.compose.material.icons.filled.SwapHoriz
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -32,21 +46,21 @@ internal fun GenerationBatchComponent(
     state: GenerationInputFormState,
     onEvent: (GenerationInputFormEvent) -> Unit,
 ) {
-        Text(
-            modifier = Modifier.padding(top = 8.dp),
-            text = Localization.string("hint_batch", "${state.batchCount}"),
-        )
-        SliderTextInputField(
-            value = state.batchCount * 1f,
-            valueRange = (BATCH_RANGE_MIN * 1f)..(BATCH_RANGE_MAX * 1f),
-            valueDiff = 1f,
-            fractionDigits = 0,
-            steps = abs(BATCH_RANGE_MIN - BATCH_RANGE_MAX) - 1,
-            sliderColors = sliderColors,
-            onValueChange = {
-                onEvent(GenerationInputFormEvent.UpdateBatch(it.roundToInt()))
-            },
-        )
+    Text(
+        modifier = Modifier.padding(top = 8.dp),
+        text = Localization.string("hint_batch", "${state.batchCount}"),
+    )
+    SliderTextInputField(
+        value = state.batchCount * 1f,
+        valueRange = (BATCH_RANGE_MIN * 1f)..(BATCH_RANGE_MAX * 1f),
+        valueDiff = 1f,
+        fractionDigits = 0,
+        steps = abs(BATCH_RANGE_MIN - BATCH_RANGE_MAX) - 1,
+        sliderColors = sliderColors,
+        onValueChange = {
+            onEvent(GenerationInputFormEvent.UpdateBatch(it.roundToInt()))
+        },
+    )
 }
 
 /**
@@ -63,48 +77,83 @@ internal fun RowScope.GenerationSizeTextFieldsComponent(
     state: GenerationInputFormState,
     onEvent: (GenerationInputFormEvent) -> Unit,
 ) {
-        OutlinedTextField(
-            modifier = modifier.padding(end = 4.dp),
-            value = state.width,
-            onValueChange = { value ->
-                if (value.length <= 4) {
-                    onEvent(GenerationInputFormEvent.UpdateWidth(value.filter { it.isDigit() }))
-                }
-            },
-            isError = state.widthValidationError != null,
-            supportingText = {
-                state.widthValidationError?.let {
-                    Text(
-                        it.asString(),
-                        color = MaterialTheme.colorScheme.error
+    var ratioMenuExpanded by remember { mutableStateOf(false) }
+    OutlinedTextField(
+        modifier = modifier.padding(end = 4.dp),
+        value = state.width,
+        onValueChange = { value ->
+            if (value.length <= 4) {
+                onEvent(GenerationInputFormEvent.UpdateWidth(value.filter { it.isDigit() }))
+            }
+        },
+        isError = state.widthValidationError != null,
+        supportingText = {
+            state.widthValidationError?.let {
+                Text(
+                    it.asString(),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        label = { Text(Localization.string("width")) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        colors = textFieldColors,
+    )
+    OutlinedTextField(
+        modifier = modifier.padding(horizontal = 4.dp),
+        value = state.height,
+        onValueChange = { value ->
+            if (value.length <= 4) {
+                onEvent(GenerationInputFormEvent.UpdateHeight(value.filter { it.isDigit() }))
+            }
+        },
+        isError = state.heightValidationError != null,
+        supportingText = {
+            state.heightValidationError?.let {
+                Text(
+                    it.asString(),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        label = { Text(Localization.string("height")) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        colors = textFieldColors,
+    )
+    Row(modifier = Modifier.padding(start = 4.dp, bottom = 8.dp)) {
+        IconButton(
+            onClick = { onEvent(GenerationInputFormEvent.SwapDimensions) },
+        ) {
+            Icon(
+                imageVector = Icons.Default.SwapHoriz,
+                contentDescription = Localization.string("action_swap_dimensions"),
+            )
+        }
+        Box {
+            IconButton(
+                onClick = { ratioMenuExpanded = true },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AspectRatio,
+                    contentDescription = Localization.string("action_aspect_ratio"),
+                )
+            }
+            DropdownMenu(
+                expanded = ratioMenuExpanded,
+                onDismissRequest = { ratioMenuExpanded = false },
+            ) {
+                GenerationAspectRatio.entries.forEach { ratio ->
+                    DropdownMenuItem(
+                        text = { Text(ratio.displayName) },
+                        onClick = {
+                            ratioMenuExpanded = false
+                            onEvent(GenerationInputFormEvent.ApplyAspectRatio(ratio))
+                        },
                     )
                 }
-            },
-            label = { Text(Localization.string("width")) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = textFieldColors,
-        )
-        OutlinedTextField(
-            modifier = modifier.padding(start = 4.dp),
-            value = state.height,
-            onValueChange = { value ->
-                if (value.length <= 4) {
-                    onEvent(GenerationInputFormEvent.UpdateHeight(value.filter { it.isDigit() }))
-                }
-            },
-            isError = state.heightValidationError != null,
-            supportingText = {
-                state.heightValidationError?.let {
-                    Text(
-                        it.asString(),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            },
-            label = { Text(Localization.string("height")) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = textFieldColors,
-        )
+            }
+        }
+    }
 }
 
 /**
@@ -115,7 +164,10 @@ internal fun RowScope.GenerationSizeTextFieldsComponent(
  * @return Result produced by `processTaggedPrompt`.
  * @author Dmitriy Moroz
  */
-internal fun processTaggedPrompt(keywords: List<String>, event: ChipTextFieldEvent<String>): String {
+internal fun processTaggedPrompt(
+    keywords: List<String>,
+    event: ChipTextFieldEvent<String>
+): String {
     val newKeywords = when (event) {
         is ChipTextFieldEvent.Add -> buildList {
             addAll(keywords)

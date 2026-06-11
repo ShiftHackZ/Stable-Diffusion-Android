@@ -246,6 +246,7 @@ class ServerSetupViewModel(
                 }
                     .onFailure(onError)
                     .getOrElse { HuggingFaceModel.supportedHfInferenceTextToImageModels }
+                    .ifEmpty { HuggingFaceModel.supportedHfInferenceTextToImageModels }
                     .map(HuggingFaceModel::alias)
                 configuration.toServerSetupState(
                     allowedModes = allowedModes,

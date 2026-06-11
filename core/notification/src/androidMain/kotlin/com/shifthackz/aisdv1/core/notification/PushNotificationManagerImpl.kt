@@ -129,6 +129,30 @@ internal class PushNotificationManagerImpl(
     }
 
     /**
+     * Creates the SDAI value produced by `createProgressNotification`.
+     *
+     * @param title title value consumed by the API.
+     * @param body body value consumed by the API.
+     * @param block block value consumed by the API.
+     * @return Result produced by `createProgressNotification`.
+     * @author Dmitriy Moroz
+     */
+    override fun createProgressNotification(
+        title: String,
+        body: String?,
+        block: NotificationCompat.Builder.() -> Unit
+    ): Notification = with(
+        NotificationCompat.Builder(context, SDAI_PROGRESS_CHANNEL_ID)
+    ) {
+        setSmallIcon(R.drawable.ic_notification)
+        setContentTitle(title)
+        body?.let(::setContentText)
+        priority = NotificationCompat.PRIORITY_LOW
+        apply(block)
+        build()
+    }
+
+    /**
      * Creates the SDAI value produced by `createNotificationChannel`.
      *
      * @author Dmitriy Moroz
@@ -145,6 +169,21 @@ internal class PushNotificationManagerImpl(
                         NotificationManager.IMPORTANCE_HIGH,
                     ).also { channel ->
                         channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                    }
+                )
+            }
+            if (manager.getNotificationChannel(SDAI_PROGRESS_CHANNEL_ID) == null) {
+                debugLog("Creating progress notification channel")
+
+                manager.createNotificationChannel(
+                    NotificationChannel(
+                        SDAI_PROGRESS_CHANNEL_ID,
+                        "SDAI Progress",
+                        NotificationManager.IMPORTANCE_LOW,
+                    ).also { channel ->
+                        channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                        channel.setSound(null, null)
+                        channel.enableVibration(false)
                     }
                 )
             }
@@ -177,5 +216,11 @@ internal class PushNotificationManagerImpl(
          * @author Dmitriy Moroz
          */
         private const val SDAI_NOTIFICATION_CHANNEL_ID = "SDAI_NOTIFICATION_CHANNEL"
+        /**
+         * Exposes the `SDAI_PROGRESS_CHANNEL_ID` value used by the SDAI notification layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        private const val SDAI_PROGRESS_CHANNEL_ID = "SDAI_PROGRESS_CHANNEL"
     }
 }

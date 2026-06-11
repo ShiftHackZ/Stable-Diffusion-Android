@@ -1,12 +1,23 @@
 package com.shifthackz.aisdv1.data.mappers
 
+import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
+import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.network.request.ImageToImageRequest
+import com.shifthackz.aisdv1.network.request.OverrideSettings
 import com.shifthackz.aisdv1.network.request.TextToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.add
+import kotlinx.serialization.json.buildJsonArray
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonArray
+import kotlinx.serialization.json.putJsonObject
 
 /**
  * Converts SDAI data with `mapToStableDiffusionRequest`.
@@ -27,6 +38,19 @@ fun TextToImagePayload.mapToStableDiffusionRequest(): TextToImageRequest = with(
         subSeed = subSeed.trim().ifEmpty { null },
         subSeedStrength = subSeedStrength,
         samplerIndex = sampler,
+        scheduler = scheduler.mapToRequestScheduler(),
+        alwaysOnScripts = aDetailer.mapToAlwaysOnScripts(),
+        enableHr = true.takeIf { hires.enabled },
+        hrUpscaler = hires.upscaler.takeIf { hires.enabled },
+        hrScale = hires.scale.takeIf { hires.enabled },
+        hrSecondPassSteps = hires.steps.takeIf { hires.enabled },
+        hrCfg = hires.hrCfg.takeIf { hires.enabled },
+        hrDistilledCfg = hires.hrDistilledCfg.takeIf { hires.enabled },
+        denoisingStrength = hires.denoisingStrength.takeIf { hires.enabled },
+        overrideSettings = forgeModules
+            .map { it.path }
+            .takeIf(List<String>::isNotEmpty)
+            ?.let(::OverrideSettings),
     )
 }
 
@@ -58,7 +82,49 @@ fun ImageToImagePayload.mapToStableDiffusionRequest(): ImageToImageRequest = wit
         subSeed = subSeed.trim().ifEmpty { null },
         subSeedStrength = subSeedStrength,
         samplerIndex = sampler,
+        scheduler = scheduler.mapToRequestScheduler(),
+        alwaysOnScripts = aDetailer.mapToAlwaysOnScripts(),
     )
+}
+
+/**
+ * Converts SDAI data with `mapToRequestScheduler`.
+ *
+ * @return Result produced by `mapToRequestScheduler`.
+ * @author Dmitriy Moroz
+ */
+fun Scheduler.mapToRequestScheduler(): String? =
+    alias.takeIf { this != Scheduler.AUTOMATIC }
+
+/**
+ * Converts SDAI data with `mapToAlwaysOnScripts`.
+ *
+ * @return Result produced by `mapToAlwaysOnScripts`.
+ * @author Dmitriy Moroz
+ */
+fun ADetailerConfig.mapToAlwaysOnScripts(): JsonObject? {
+    if (!enabled) return null
+    return buildJsonObject {
+        putJsonObject("ADetailer") {
+            putJsonArray("args") {
+                add(true)
+                add(false)
+                add(
+                    buildJsonObject {
+                        put("ad_model", model)
+                        put("ad_prompt", prompt)
+                        put("ad_negative_prompt", negativePrompt)
+                        put("ad_confidence", JsonPrimitive(confidence))
+                        put("ad_dilate_erode", maskBlur)
+                        put("ad_denoising_strength", JsonPrimitive(denoisingStrength))
+                        put("ad_inpaint_only_masked", inpaintOnlyMasked)
+                        put("ad_inpaint_only_masked_padding", inpaintPadding)
+                        put("is_api", true)
+                    }
+                )
+            }
+        }
+    }
 }
 
 /**

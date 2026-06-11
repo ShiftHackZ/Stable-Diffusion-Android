@@ -6,6 +6,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,8 +38,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
@@ -174,6 +178,7 @@ internal fun ImageInPaintSection(
  * @param image image value consumed by the API.
  * @param state state rendered or processed by the component.
  * @param drawEnabled draw enabled value consumed by the API.
+ * @param maskAlpha mask alpha value consumed by the API.
  * @param onStrokeDrawn callback invoked by the component.
  * @author Dmitriy Moroz
  */
@@ -183,42 +188,91 @@ internal fun ImageInPaintCanvas(
     image: ImageBitmap,
     state: ImageInPaintState,
     drawEnabled: Boolean = true,
+    maskAlpha: Float = 1f,
+    zoom: Float = 1f,
+    pan: Offset = Offset.Zero,
+    transformEnabled: Boolean = false,
+    onZoomChange: (Float) -> Unit = {},
+    onPanChange: (Offset) -> Unit = {},
     onStrokeDrawn: (InPaintStroke) -> Unit = {},
 ) {
     var canvasSize by remember { mutableStateOf(IntSize.Zero) }
     var activeStroke by remember { mutableStateOf<InPaintStroke?>(null) }
+    val currentZoom by rememberUpdatedState(zoom)
+    val currentPan by rememberUpdatedState(pan)
 
     Box(
         modifier = modifier
             .aspectRatio(1f)
             .background(MaterialTheme.colorScheme.surface),
     ) {
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            bitmap = image,
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-        )
-        Canvas(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .onSizeChanged { canvasSize = it }
+                .graphicsLayer {
+                    scaleX = zoom
+                    scaleY = zoom
+                    translationX = pan.x
+                    translationY = pan.y
+                    transformOrigin = TransformOrigin.Center
+                },
+        ) {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                bitmap = image,
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds,
+            )
+            Canvas(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                val drawStroke: (InPaintStroke, Color) -> Unit = { stroke, color ->
+                    drawPath(
+                        color = color,
+                        path = stroke.toPath(
+                            targetWidth = size.width,
+                            targetHeight = size.height,
+                        ),
+                        style = Stroke(
+                            width = stroke.brushSize.dp.toPx(),
+                            cap = StrokeCap.Round,
+                            join = StrokeJoin.Round,
+                        ),
+                    )
+                }
+                clipRect {
+                    state.strokes.forEach { stroke ->
+                        drawStroke(stroke, Color.White.copy(alpha = maskAlpha))
+                    }
+                    activeStroke?.let { stroke ->
+                        drawStroke(stroke, Color.White.copy(alpha = 0.7f))
+                    }
+                }
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
                 .then(
                     if (drawEnabled) {
                         Modifier.pointerInput(state.brushSize, canvasSize) {
-                            fun Offset.coerceToCanvas(): InPaintPoint {
-                                val maxX = (canvasSize.width - 1).coerceAtLeast(0).toFloat()
-                                val maxY = (canvasSize.height - 1).coerceAtLeast(0).toFloat()
-                                return copy(
-                                    x = x.coerceIn(0f, maxX),
-                                    y = y.coerceIn(0f, maxY),
-                                ).toInPaintPoint()
+                            fun Offset.toCanvasPoint(): InPaintPoint {
+                                val center = Offset(
+                                    x = canvasSize.width / 2f,
+                                    y = canvasSize.height / 2f,
+                                )
+                                val unscaled = Offset(
+                                    x = (x - center.x - currentPan.x) / currentZoom + center.x,
+                                    y = (y - center.y - currentPan.y) / currentZoom + center.y,
+                                )
+                                return unscaled.coerceToCanvas(canvasSize).toInPaintPoint()
                             }
                             detectDragGestures(
                                 onDragStart = { offset ->
                                     if (canvasSize.width > 0 && canvasSize.height > 0) {
                                         activeStroke = InPaintStroke(
-                                            points = listOf(offset.coerceToCanvas()),
+                                            points = listOf(offset.toCanvasPoint()),
                                             brushSize = state.brushSize,
                                             canvasWidth = canvasSize.width,
                                             canvasHeight = canvasSize.height,
@@ -227,7 +281,7 @@ internal fun ImageInPaintCanvas(
                                 },
                                 onDrag = { change, _ ->
                                     activeStroke = activeStroke?.let { stroke ->
-                                        stroke.copy(points = stroke.points + change.position.coerceToCanvas())
+                                        stroke.copy(points = stroke.points + change.position.toCanvasPoint())
                                     }
                                 },
                                 onDragEnd = {
@@ -241,33 +295,57 @@ internal fun ImageInPaintCanvas(
                                 },
                             )
                         }
+                    } else if (transformEnabled) {
+                        Modifier.pointerInput(canvasSize) {
+                            detectTransformGestures { centroid, panChange, zoomChange, _ ->
+                                val oldZoom = currentZoom
+                                val newZoom = (oldZoom * zoomChange).coerceIn(
+                                    MIN_IN_PAINT_ZOOM,
+                                    MAX_IN_PAINT_ZOOM,
+                                )
+                                val actualZoomChange = newZoom / oldZoom
+                                val canvasCenter = Offset(
+                                    x = canvasSize.width / 2f,
+                                    y = canvasSize.height / 2f,
+                                )
+                                val centroidFromCenter = centroid - canvasCenter
+                                val newPan = if (newZoom <= MIN_IN_PAINT_ZOOM) {
+                                    Offset.Zero
+                                } else {
+                                    currentPan * actualZoomChange +
+                                        centroidFromCenter * (1f - actualZoomChange) +
+                                        panChange
+                                }
+                                onZoomChange(newZoom)
+                                onPanChange(newPan.coercePan(newZoom, canvasSize))
+                            }
+                        }
                     } else {
                         Modifier
                     },
                 ),
-        ) {
-            val drawStroke: (InPaintStroke, Color) -> Unit = { stroke, color ->
-                drawPath(
-                    color = color,
-                    path = stroke.toPath(
-                        targetWidth = size.width,
-                        targetHeight = size.height,
-                    ),
-                    style = Stroke(
-                        width = stroke.brushSize.dp.toPx(),
-                        cap = StrokeCap.Round,
-                        join = StrokeJoin.Round,
-                    ),
-                )
-            }
-            clipRect {
-                state.strokes.forEach { stroke ->
-                    drawStroke(stroke, Color.White)
-                }
-                activeStroke?.let { stroke ->
-                    drawStroke(stroke, Color.White.copy(alpha = 0.7f))
-                }
-            }
-        }
+        )
     }
 }
+
+private fun Offset.coerceToCanvas(canvasSize: IntSize): Offset {
+    val maxX = (canvasSize.width - 1).coerceAtLeast(0).toFloat()
+    val maxY = (canvasSize.height - 1).coerceAtLeast(0).toFloat()
+    return copy(
+        x = x.coerceIn(0f, maxX),
+        y = y.coerceIn(0f, maxY),
+    )
+}
+
+private fun Offset.coercePan(zoom: Float, canvasSize: IntSize): Offset {
+    if (canvasSize.width <= 0 || canvasSize.height <= 0 || zoom <= MIN_IN_PAINT_ZOOM) return Offset.Zero
+    val maxX = canvasSize.width * (zoom - MIN_IN_PAINT_ZOOM) / 2f
+    val maxY = canvasSize.height * (zoom - MIN_IN_PAINT_ZOOM) / 2f
+    return Offset(
+        x = x.coerceIn(-maxX, maxX),
+        y = y.coerceIn(-maxY, maxY),
+    )
+}
+
+internal const val MIN_IN_PAINT_ZOOM = 1f
+internal const val MAX_IN_PAINT_ZOOM = 5f

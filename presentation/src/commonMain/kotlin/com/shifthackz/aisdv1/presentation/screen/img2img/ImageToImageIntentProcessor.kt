@@ -5,6 +5,9 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.presentation.model.GenerationModal
 import com.shifthackz.aisdv1.presentation.model.PromptTagEditRequest
 import com.shifthackz.aisdv1.presentation.navigation.router.ImageToImageRouter
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationAspectRatio
+import kotlin.math.max
+import kotlin.math.roundToInt
 
 /**
  * Coordinates `ImageToImageIntentProcessor` behavior in the SDAI presentation layer.
@@ -189,6 +192,27 @@ internal class ImageToImageIntentProcessor(
                     message = null,
                 )
             }
+            ImageToImageIntent.SwapDimensions -> updateState {
+                it.copy(
+                    width = it.height,
+                    height = it.width,
+                    widthValidationError = null,
+                    heightValidationError = null,
+                    error = null,
+                    message = null,
+                )
+            }
+            is ImageToImageIntent.ApplyAspectRatio -> updateState {
+                val (width, height) = it.dimensionsFor(intent.ratio)
+                it.copy(
+                    width = width.toString(),
+                    height = height.toString(),
+                    widthValidationError = null,
+                    heightValidationError = null,
+                    error = null,
+                    message = null,
+                )
+            }
             is ImageToImageIntent.UpdateSamplingSteps -> updateState {
                 it.copy(samplingSteps = intent.value.coerceIn(MIN_STEPS, MAX_STEPS), message = null)
             }
@@ -212,6 +236,9 @@ internal class ImageToImageIntentProcessor(
             }
             is ImageToImageIntent.UpdateSampler -> updateState {
                 it.copy(selectedSampler = intent.value, message = null)
+            }
+            is ImageToImageIntent.UpdateScheduler -> updateState {
+                it.copy(selectedScheduler = intent.value, message = null)
             }
             is ImageToImageIntent.UpdateNsfw -> updateState {
                 it.copy(nsfw = intent.value, message = null)
@@ -239,6 +266,11 @@ internal class ImageToImageIntentProcessor(
             is ImageToImageIntent.UpdateStabilityAiClipGuidance -> updateState {
                 it.copy(selectedClipGuidancePreset = intent.value, message = null)
             }
+            is ImageToImageIntent.UpdateADetailerConfig -> updateState {
+                it.copy(aDetailer = intent.value, message = null)
+            }
+            ImageToImageIntent.RefreshADetailerAvailability -> Unit
+            ImageToImageIntent.OpenADetailerInstallInstructions -> Unit
             is ImageToImageIntent.UpdateDenoisingStrength -> updateState {
                 it.copy(
                     denoisingStrength = intent.value.coerceIn(MIN_DENOISING_STRENGTH, MAX_DENOISING_STRENGTH),
@@ -290,3 +322,26 @@ internal class ImageToImageIntentProcessor(
         }
     }
 }
+
+private fun ImageToImageState.dimensionsFor(ratio: GenerationAspectRatio): Pair<Int, Int> {
+    val currentWidth = width.toIntOrNull() ?: DEFAULT_SIZE
+    val currentHeight = height.toIntOrNull() ?: DEFAULT_SIZE
+    val longSide = max(currentWidth, currentHeight).coerceIn(MIN_SIZE, MAX_SIZE)
+    return if (ratio.width >= ratio.height) {
+        longSide to (longSide * ratio.height.toFloat() / ratio.width)
+            .roundToStableDiffusionSize()
+    } else {
+        (longSide * ratio.width.toFloat() / ratio.height)
+            .roundToStableDiffusionSize() to longSide
+    }
+}
+
+private fun Float.roundToStableDiffusionSize(): Int =
+    (this / SIZE_STEP).roundToInt()
+        .coerceAtLeast(1)
+        .times(SIZE_STEP)
+        .coerceIn(MIN_SIZE, MAX_SIZE)
+
+private const val MIN_SIZE = 64
+private const val MAX_SIZE = 2048
+private const val SIZE_STEP = 64

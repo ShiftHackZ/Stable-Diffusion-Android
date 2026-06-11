@@ -68,6 +68,16 @@ import com.shifthackz.aisdv1.storage.db.persistent.entity.SupporterEntity
          * - [GenerationResultContract.CREATED_AT_INDEX]
          */
         AutoMigration(from = 7, to = 8),
+        /**
+         * Added 1 field to [GenerationResultEntity]:
+         * - [GenerationResultContract.MODEL_NAME]
+         */
+        AutoMigration(from = 8, to = 9),
+        /**
+         * Added 1 field to [GenerationResultEntity]:
+         * - [GenerationResultContract.LIKED]
+         */
+        AutoMigration(from = 9, to = 10),
     ],
 )
 @TypeConverters(
@@ -121,7 +131,7 @@ internal abstract class PersistentDatabase : RoomDatabase() {
          *
          * @author Dmitriy Moroz
          */
-        const val DB_VERSION = 8
+        const val DB_VERSION = 10
     }
 }
 

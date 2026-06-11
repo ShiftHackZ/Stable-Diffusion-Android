@@ -11,16 +11,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Share
@@ -40,6 +43,9 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -116,6 +122,9 @@ fun GalleryDetailScreenContent(
                         onCopyTextClick = { value ->
                             processIntent(GalleryDetailIntent.CopyToClipboard(value))
                         },
+                        onPageSelected = { page ->
+                            processIntent(GalleryDetailIntent.NavigateToPage(page))
+                        },
                     )
                 }
             },
@@ -153,10 +162,44 @@ internal fun GalleryDetailNavigationBar(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         state.content?.let { content ->
+            if (content.showReportButton) {
+                GalleryDetailActionButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    icon = {
+                        Icon(
+                            modifier = Modifier.size(ButtonDefaults.IconSize),
+                            imageVector = Icons.Default.Report,
+                            contentDescription = Localization.string("report_title"),
+                        )
+                    },
+                    label = Localization.string("gallery_action_report"),
+                    onClick = { processIntent(GalleryDetailIntent.Report) },
+                )
+            }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
+                GalleryDetailActionButton(
+                    modifier = Modifier.weight(1f),
+                    icon = {
+                        Icon(
+                            modifier = Modifier.size(ButtonDefaults.IconSize),
+                            imageVector = if (content.liked) {
+                                Icons.Default.Favorite
+                            } else {
+                                Icons.Default.FavoriteBorder
+                            },
+                            contentDescription = Localization.string(
+                                if (content.liked) "gallery_action_unlike" else "gallery_action_like",
+                            ),
+                        )
+                    },
+                    label = Localization.string(
+                        if (content.liked) "gallery_action_unlike" else "gallery_action_like",
+                    ),
+                    onClick = { processIntent(GalleryDetailIntent.ToggleLike) },
+                )
                 GalleryDetailActionButton(
                     modifier = Modifier.weight(1f),
                     icon = {
@@ -181,22 +224,6 @@ internal fun GalleryDetailNavigationBar(
                     label = Localization.string("home_tab_img_to_img"),
                     onClick = { processIntent(GalleryDetailIntent.SendTo.Img2Img) },
                 )
-                if (content.showReportButton) {
-                    GalleryDetailActionButton(
-                        modifier = Modifier.weight(1f),
-                        icon = {
-                            Icon(
-                                modifier = Modifier.size(ButtonDefaults.IconSize),
-                                imageVector = Icons.Default.Report,
-                                contentDescription = Localization.string("report_title"),
-                            )
-                        },
-                        label = Localization.string("gallery_action_report"),
-                        onClick = { processIntent(GalleryDetailIntent.Report) },
-                    )
-                } else {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -323,26 +350,36 @@ internal fun GalleryDetailContentState(
     state: GalleryDetailState,
     content: GalleryDetailContent,
     onCopyTextClick: (String) -> Unit = {},
+    onPageSelected: (Int) -> Unit = {},
 ) {
     when (state.selectedTab) {
         GalleryDetailTab.IMAGE -> {
             val image = content.image
             if (image != null) {
-                ZoomableImage(
+                SwipeableGalleryImage(
                     modifier = modifier,
-                    source = ZoomableImageSource.Bitmap(image),
-                    hideImage = content.hidden,
-                    fitToWidth = true,
+                    selectedTab = state.selectedTab,
+                    content = content,
+                    pagerContents = state.pagerContents,
+                    pagerContentStartIndex = state.pagerContentStartIndex,
+                    pagerCurrentIndex = state.pagerCurrentIndex,
+                    pagerPageCount = state.galleryItemIds.size,
+                    onPageSelected = onPageSelected,
                 )
             }
         }
         GalleryDetailTab.ORIGINAL -> {
             val inputImage = content.inputImage
             if (inputImage != null) {
-                ZoomableImage(
+                SwipeableGalleryImage(
                     modifier = modifier,
-                    source = ZoomableImageSource.Bitmap(inputImage),
-                    fitToWidth = true,
+                    selectedTab = state.selectedTab,
+                    content = content,
+                    pagerContents = state.pagerContents,
+                    pagerContentStartIndex = state.pagerContentStartIndex,
+                    pagerCurrentIndex = state.pagerCurrentIndex,
+                    pagerPageCount = state.galleryItemIds.size,
+                    onPageSelected = onPageSelected,
                 )
             }
         }
@@ -353,3 +390,114 @@ internal fun GalleryDetailContentState(
         )
     }
 }
+
+/**
+ * Renders swipe navigation over a zoomable gallery image.
+ *
+ * @param modifier Compose modifier applied to the rendered UI.
+ * @param selectedTab selected tab value consumed by the API.
+ * @param content content value consumed by the API.
+ * @param pagerContents pager contents value consumed by the API.
+ * @param pagerContentStartIndex pager content start index value consumed by the API.
+ * @param pagerCurrentIndex pager current index value consumed by the API.
+ * @param pagerPageCount pager page count value consumed by the API.
+ * @param onPageSelected callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
+@Composable
+private fun SwipeableGalleryImage(
+    modifier: Modifier = Modifier,
+    selectedTab: GalleryDetailTab,
+    content: GalleryDetailContent,
+    pagerContents: List<GalleryDetailContent>,
+    pagerContentStartIndex: Int,
+    pagerCurrentIndex: Int,
+    pagerPageCount: Int,
+    onPageSelected: (Int) -> Unit = {},
+) {
+    val pageCount = pagerPageCount.takeIf { it > 0 } ?: pagerContents.size.coerceAtLeast(1)
+    val currentPage = pagerCurrentIndex.coerceIn(0, pageCount - 1)
+    val pagerState = rememberPagerState(
+        initialPage = currentPage,
+        pageCount = { pageCount },
+    )
+    val currentImageScale = remember(content.id, selectedTab) { mutableFloatStateOf(1f) }
+
+    LaunchedEffect(content.id, selectedTab, currentPage, pagerContentStartIndex, pagerContents) {
+        currentImageScale.floatValue = 1f
+        val pageContent = pagerContents.getOrNull(pagerState.currentPage - pagerContentStartIndex)
+        if (pagerState.currentPage != currentPage || pageContent?.id != content.id) {
+            pagerState.scrollToPage(currentPage)
+        }
+    }
+
+    LaunchedEffect(pagerState.settledPage, content.id, pagerContentStartIndex, pagerContents) {
+        val pageContent = pagerContents.getOrNull(pagerState.settledPage - pagerContentStartIndex)
+        if (pagerState.settledPage != currentPage && pageContent != null) {
+            onPageSelected(pagerState.settledPage)
+        }
+    }
+
+    HorizontalPager(
+        modifier = modifier,
+        state = pagerState,
+        userScrollEnabled = currentImageScale.floatValue <= GALLERY_PAGER_ZOOM_LOCK_SCALE,
+    ) { page ->
+        val pageContent = pagerContents.getOrNull(page - pagerContentStartIndex)
+        if (pageContent == null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
+            )
+            return@HorizontalPager
+        }
+        val source = pageContent.zoomableSource(selectedTab)
+        if (source == null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
+            )
+            return@HorizontalPager
+        }
+
+        val isCurrentPage = pageContent.id == content.id
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+        ) {
+            ZoomableImage(
+                modifier = Modifier.fillMaxSize(),
+                source = source,
+                hideImage = pageContent.hidden && selectedTab == GalleryDetailTab.IMAGE,
+                fitToWidth = true,
+                gesturesEnabled = isCurrentPage,
+                onScaleChange = { scale ->
+                    if (isCurrentPage) {
+                        currentImageScale.floatValue = scale
+                    }
+                },
+            )
+        }
+    }
+}
+
+/**
+ * Exposes the `zoomableSource` value used by the SDAI presentation layer.
+ *
+ * @param selectedTab selected tab value consumed by the API.
+ * @return Result produced by `zoomableSource`.
+ * @author Dmitriy Moroz
+ */
+private fun GalleryDetailContent.zoomableSource(selectedTab: GalleryDetailTab): ZoomableImageSource? {
+    val bitmap = when (selectedTab) {
+        GalleryDetailTab.IMAGE -> image
+        GalleryDetailTab.ORIGINAL -> inputImage
+        GalleryDetailTab.INFO -> null
+    } ?: return null
+    return ZoomableImageSource.Bitmap(bitmap)
+}
+
+private const val GALLERY_PAGER_ZOOM_LOCK_SCALE = 1.01f
