@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHuggingFaceApiKeyUseCase
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestFalAiApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestOpenAiApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestStabilityAiApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestSwarmUiConnectivityUseCase
@@ -257,6 +258,53 @@ internal class DefaultConnectToStabilityAiUseCaseImpl(
             configuration.copy(
                 source = ServerSource.STABILITY_AI,
                 stabilityAiApiKey = apiKey,
+                authCredentials = AuthorizationCredentials.None,
+            )
+        }
+}
+
+/**
+ * Implements `DefaultConnectToFalAiUseCase` behavior in the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
+internal class DefaultConnectToFalAiUseCaseImpl(
+    /**
+     * Exposes the `getConfigurationUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val getConfigurationUseCase: GetConfigurationUseCase,
+    /**
+     * Exposes the `setServerConfigurationUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
+    /**
+     * Exposes the `testFalAiApiKeyUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val testFalAiApiKeyUseCase: TestFalAiApiKeyUseCase,
+) : ConnectToFalAiUseCase {
+
+    /**
+     * Executes the `invoke` step in the SDAI domain layer.
+     *
+     * @param apiKey api key value consumed by the API.
+     * @return Result produced by `invoke`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun invoke(apiKey: String): Result<Unit> =
+        connectWithApiKey(
+            getConfigurationUseCase = getConfigurationUseCase,
+            setServerConfigurationUseCase = setServerConfigurationUseCase,
+            testApiKey = testFalAiApiKeyUseCase::invoke,
+        ) { configuration ->
+            configuration.copy(
+                source = ServerSource.FAL_AI,
+                falAiApiKey = apiKey,
                 authCredentials = AuthorizationCredentials.None,
             )
         }

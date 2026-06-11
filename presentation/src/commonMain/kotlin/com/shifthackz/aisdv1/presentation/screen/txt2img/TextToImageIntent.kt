@@ -3,6 +3,9 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 import com.shifthackz.aisdv1.core.mvi.MviIntent
 import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
@@ -317,6 +320,34 @@ sealed interface TextToImageIntent : MviIntent {
      * @author Dmitriy Moroz
      */
     data class UpdateOpenAiQuality(val value: OpenAiQuality) : TextToImageIntent
+    /**
+     * Carries `UpdateFalAiModel` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiModel(val value: FalAiModel) : TextToImageIntent
+    /**
+     * Carries `UpdateFalAiImageSize` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiImageSize(val value: FalAiImageSize) : TextToImageIntent
+    /**
+     * Carries `UpdateFalAiAcceleration` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiAcceleration(val value: FalAiAcceleration) : TextToImageIntent
+    /**
+     * Carries `UpdateFalAiSyncMode` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiSyncMode(val value: Boolean) : TextToImageIntent
     /**
      * Carries `UpdateStabilityAiStyle` data through the SDAI presentation layer.
      *

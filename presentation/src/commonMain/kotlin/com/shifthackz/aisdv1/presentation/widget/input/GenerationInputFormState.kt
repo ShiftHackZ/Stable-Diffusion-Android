@@ -2,6 +2,9 @@ package com.shifthackz.aisdv1.presentation.widget.input
 
 import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
+import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
@@ -168,6 +171,30 @@ interface GenerationInputFormState {
      * @author Dmitriy Moroz
      */
     val openAiQuality: OpenAiQuality
+    /**
+     * Exposes the `falAiModel` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiModel: FalAiModel
+    /**
+     * Exposes the `falAiImageSize` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiImageSize: FalAiImageSize
+    /**
+     * Exposes the `falAiAcceleration` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiAcceleration: FalAiAcceleration
+    /**
+     * Exposes the `falAiSyncMode` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiSyncMode: Boolean
     /**
      * Exposes the `widthValidationError` value used by the SDAI presentation layer.
      *

@@ -4,6 +4,8 @@ import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111GenerationAp
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111MetadataApi
 import com.shifthackz.aisdv1.network.api.automatic1111.KtorAutomatic1111GenerationApi
 import com.shifthackz.aisdv1.network.api.automatic1111.KtorAutomatic1111MetadataApi
+import com.shifthackz.aisdv1.network.api.falai.FalAiGenerationApi
+import com.shifthackz.aisdv1.network.api.falai.KtorFalAiGenerationApi
 import com.shifthackz.aisdv1.network.api.horde.HordeGenerationApi
 import com.shifthackz.aisdv1.network.api.horde.KtorHordeGenerationApi
 import com.shifthackz.aisdv1.network.api.huggingface.HuggingFaceGenerationApi
@@ -58,6 +60,9 @@ val coreNetworkModule = module {
     }
     single<HuggingFaceModelsApi> {
         KtorHuggingFaceModelsApi(HUGGING_FACE_API_URL)
+    }
+    single<FalAiGenerationApi> {
+        KtorFalAiGenerationApi(FAL_AI_API_URL, FAL_AI_QUEUE_API_URL)
     }
     single<SwarmUiModelsApi> {
         KtorSwarmUiModelsApi()
@@ -121,3 +126,15 @@ private const val HUGGING_FACE_API_URL = "https://huggingface.co"
  * @author Dmitriy Moroz
  */
 private const val HUGGING_FACE_INFERENCE_API_URL = "https://router.huggingface.co/hf-inference"
+/**
+ * Exposes the `FAL_AI_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
+private const val FAL_AI_API_URL = "https://api.fal.ai"
+/**
+ * Exposes the `FAL_AI_QUEUE_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
+private const val FAL_AI_QUEUE_API_URL = "https://queue.fal.run"

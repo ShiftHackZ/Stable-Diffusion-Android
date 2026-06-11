@@ -38,6 +38,12 @@ internal object GenerationInputFormConstants {
      */
     const val SAMPLING_STEPS_RANGE_STABILITY_AI_MAX = 50
     /**
+     * Exposes the `SAMPLING_STEPS_RANGE_FAL_AI_MAX` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    const val SAMPLING_STEPS_RANGE_FAL_AI_MAX = 12
+    /**
      * Exposes the `SAMPLING_STEPS_LOCAL_DIFFUSION_MAX` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz

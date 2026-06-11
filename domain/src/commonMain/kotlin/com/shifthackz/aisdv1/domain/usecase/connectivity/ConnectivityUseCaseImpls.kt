@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.connectivity
 
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.HuggingFaceGenerationDataSource
+import com.shifthackz.aisdv1.domain.datasource.FalAiGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.OpenAiGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StabilityAiGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.StableDiffusionGenerationDataSource
@@ -195,4 +196,34 @@ internal class DefaultTestStabilityAiApiKeyUseCaseImpl(
      */
     override suspend fun invoke(): Boolean =
         remoteDataSource.validateApiKey(configurationStore.stabilityAiApiKey)
+}
+
+/**
+ * Implements `DefaultTestFalAiApiKeyUseCase` behavior in the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
+internal class DefaultTestFalAiApiKeyUseCaseImpl(
+    /**
+     * Exposes the `configurationStore` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val configurationStore: ConfigurationStore,
+    /**
+     * Exposes the `remoteDataSource` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val remoteDataSource: FalAiGenerationDataSource.Remote,
+) : TestFalAiApiKeyUseCase {
+
+    /**
+     * Executes the `invoke` step in the SDAI domain layer.
+     *
+     * @return Result produced by `invoke`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun invoke(): Boolean =
+        remoteDataSource.validateApiKey(configurationStore.falAiApiKey)
 }

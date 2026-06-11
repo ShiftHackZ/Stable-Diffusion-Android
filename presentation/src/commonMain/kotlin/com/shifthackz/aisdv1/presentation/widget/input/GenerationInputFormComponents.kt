@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asString
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.theme.sliderColors
 import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormConstants.BATCH_RANGE_MAX
@@ -46,16 +47,22 @@ internal fun GenerationBatchComponent(
     state: GenerationInputFormState,
     onEvent: (GenerationInputFormEvent) -> Unit,
 ) {
+    val maxBatchCount = if (state.mode == ServerSource.FAL_AI) {
+        BATCH_RANGE_FAL_AI_MAX
+    } else {
+        BATCH_RANGE_MAX
+    }
+    val batchCount = state.batchCount.coerceIn(BATCH_RANGE_MIN, maxBatchCount)
     Text(
         modifier = Modifier.padding(top = 8.dp),
-        text = Localization.string("hint_batch", "${state.batchCount}"),
+        text = Localization.string("hint_batch", "$batchCount"),
     )
     SliderTextInputField(
-        value = state.batchCount * 1f,
-        valueRange = (BATCH_RANGE_MIN * 1f)..(BATCH_RANGE_MAX * 1f),
+        value = batchCount * 1f,
+        valueRange = (BATCH_RANGE_MIN * 1f)..(maxBatchCount * 1f),
         valueDiff = 1f,
         fractionDigits = 0,
-        steps = abs(BATCH_RANGE_MIN - BATCH_RANGE_MAX) - 1,
+        steps = abs(BATCH_RANGE_MIN - maxBatchCount) - 1,
         sliderColors = sliderColors,
         onValueChange = {
             onEvent(GenerationInputFormEvent.UpdateBatch(it.roundToInt()))
@@ -155,6 +162,8 @@ internal fun RowScope.GenerationSizeTextFieldsComponent(
         }
     }
 }
+
+private const val BATCH_RANGE_FAL_AI_MAX = 4
 
 /**
  * Executes the `processTaggedPrompt` step in the SDAI presentation layer.

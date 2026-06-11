@@ -49,6 +49,10 @@ internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent
     is GenerationInputFormEvent.UpdateOpenAiModel -> ImageToImageIntent.UpdateOpenAiModel(value)
     is GenerationInputFormEvent.UpdateOpenAiSize -> ImageToImageIntent.UpdateOpenAiSize(value)
     is GenerationInputFormEvent.UpdateOpenAiQuality -> ImageToImageIntent.UpdateOpenAiQuality(value)
+    is GenerationInputFormEvent.UpdateFalAiModel -> ImageToImageIntent.UpdateFalAiModel(value)
+    is GenerationInputFormEvent.UpdateFalAiImageSize -> ImageToImageIntent.UpdateFalAiImageSize(value)
+    is GenerationInputFormEvent.UpdateFalAiAcceleration -> ImageToImageIntent.UpdateFalAiAcceleration(value)
+    is GenerationInputFormEvent.UpdateFalAiSyncMode -> ImageToImageIntent.UpdateFalAiSyncMode(value)
     is GenerationInputFormEvent.UpdateStabilityAiStyle -> ImageToImageIntent.UpdateStabilityAiStyle(value)
     is GenerationInputFormEvent.UpdateStabilityAiClipGuidance ->
         ImageToImageIntent.UpdateStabilityAiClipGuidance(value)
@@ -206,6 +210,7 @@ internal val ServerSource.displayName: String
         ServerSource.HUGGING_FACE -> Localization.string("srv_type_hugging_face")
         ServerSource.OPEN_AI -> Localization.string("srv_type_open_ai")
         ServerSource.STABILITY_AI -> Localization.string("srv_type_stability_ai")
+        ServerSource.FAL_AI -> Localization.string("srv_type_fal_ai")
         ServerSource.LOCAL_MICROSOFT_ONNX -> Localization.string("srv_type_local_short")
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
         ServerSource.LOCAL_APPLE_CORE_ML -> "Core ML"

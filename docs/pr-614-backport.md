@@ -12,7 +12,7 @@ This document tracks useful changes from PR #614 that are worth preserving in th
 | Inpaint UX | `9ebbe972`, `e43b4642` | Better mask drawing ergonomics, pan/zoom handling, and visible mask overlay on the source image. | Backported in KMP form. The standalone inpaint screen now has draw mode, gesture zoom when draw is off, zoom reset, and a synchronized zoom slider; the img2img preview keeps an opaque mask overlay. |
 | Gallery UX | `9ebbe972`, `96289bd6`, `3cca660e`, `9a7c3468`, `55826b37`, `27cd2b43`, `e43b4642`, `91a62d29` | Selection mode, batch like/hide/unlike/unhide, detail navigation improvements, thumbnail/blurhash placeholders, and save selected images. | Mostly backported. Batch hide/unhide, batch like/unlike, single-image like toggle, liked badges, full-width report action, and swipe navigation in gallery detail are ported. Save-selected export already existed in current master. Thumbnails/blurhash were reviewed and deferred because they require a KMP storage/cache migration. |
 | Media storage performance | `30dd4d3e`, `96289bd6`, `9a7c3468`, `55826b37` | Move generated image payloads out of Room rows where feasible, add thumbnails/cache metadata, and keep migration compatibility. | Deferred. High-risk because current master is KMP Room with Android/iOS targets and the PR implementation was Android/file-store oriented. |
-| Fal.AI backend | `509fae69`, `2c358643`, later Fal.AI fixes | Fal.AI source, endpoint catalog parsing, FLUX request/response mapping, dynamic generation form, and tests. | Deferred. The PR implementation is a 100+ file Android/Retrofit/Rx feature with a separate dynamic generation screen. It needs a dedicated KMP provider port against current fal.ai API docs. |
+| Fal.AI backend | `509fae69`, `2c358643`, later Fal.AI fixes | Fal.AI source, endpoint catalog parsing, FLUX request/response mapping, dynamic generation form, and tests. | Backported in KMP architecture for compatible FLUX txt2img/img2img endpoints. Current master now has setup/API-key validation, endpoint selection in the universal generation form, predefined Fal image sizes, acceleration/sync/safety options, native `num_images` batch handling, queue polling, txt2img/img2img repository routes, and tests. Dynamic platform endpoint discovery, redux/variation endpoints, Flux 2 endpoints with divergent schemas, and Fal inpainting remain deferred. |
 | Inactive-source network guard | `c027b8f7` | Avoid fetching remote model lists/engine lists for providers that are not the active generation source. | Backported. |
 | Gallery model name | `127580e5` | Persist and display the model/engine name used for a generation result. | Backported. |
 | Local Qualcomm QNN and MNN | `373edf15`, `1f3dc388`, `5dc3f84f` | QNN/MNN local backend ideas, model scanning, runtime selection, progress reporting, and square-resolution Hires.Fix presets. | Deferred. QNN is Android-only and expects proprietary native artifacts; MNN in this PR only adds model configuration JSON without integrating a runtime in current master. |
@@ -146,3 +146,33 @@ This document tracks useful changes from PR #614 that are worth preserving in th
   confirmed Width/Height fields keep the PDAI-style two-field row with `Swap width and height` and `Aspect ratio` icons to the right of Height;
   confirmed ADetailer toggle on the active A1111 infra shows `ADetailer is not installed` with `Install` and `Refresh` instead of advanced ADetailer fields;
   confirmed gallery detail swipes horizontally from one image to the next through the new pager, repeated fast left swipes advance across the buffered pages, and liked/unliked icons render filled/outlined respectively.
+- Added Fal.ai as a current-master KMP provider using the fork only as a contract reference:
+  added `ServerSource.FAL_AI`, Fal.ai API-key storage/configuration, setup form/link/localization, connectivity use cases, Koin bindings, txt2img routing, data repository, Ktor network API, request/response DTOs, and mapper/remote/repository/domain tests.
+- Verified against current Fal.ai documentation before porting:
+  authentication uses `Authorization: Key <api key>`;
+  long-running inference uses `https://queue.fal.run/{model}` with `status_url`/`response_url` polling and `IN_QUEUE`/`IN_PROGRESS`/`COMPLETED` states;
+  the initial model is `fal-ai/flux/schnell`, using `prompt`, custom `image_size`, `num_inference_steps` clamped to `1..12`, `guidance_scale`, optional non-negative `seed`, `num_images = 1`, `sync_mode = false`, safety checker, and PNG output.
+- Kept this as a KMP-native provider instead of copying the old Android/Retrofit/Rx dynamic endpoint screen from PR #614.
+  Inpaint remains deferred because it needs endpoint-specific form semantics and a clearer upload/input pipeline decision in the shared architecture.
+- Verification for Fal.ai provider:
+  `./gradlew :domain:testDebugUnitTest --tests '*TextToImageUseCaseImplTest' --tests '*TestFalAiApiKeyUseCaseImplTest' --tests '*ConnectToFalAiUseCaseImplTest' :data:testDebugUnitTest --tests '*KtorFalAiGenerationMappersTest' --tests '*KtorFalAiGenerationRemoteDataSourceTest' --tests '*FalAiGenerationRepositoryImplTest' :presentation:compileDebugKotlinAndroid --no-daemon` passed;
+  `./gradlew :app:assembleFossDebug --no-daemon` passed.
+  Mobile MCP simulators were not touched during this Fal.ai pass.
+- Expanded Fal.ai from an initial txt2img provider into the universal generation form:
+  added a first-field endpoint selector for Fal, predefined `image_size` presets, model-specific sampling step/guidance ranges, acceleration, sync mode, and Fal safety-checker mapping through the existing Allow NSFW toggle.
+- Added docs-verified compatible endpoints instead of copying the fork's standalone form wholesale:
+  `fal-ai/flux/schnell`, `fal-ai/flux/dev`, `fal-ai/flux-lora`, `fal-ai/flux/dev/image-to-image`, and `fal-ai/flux-lora/image-to-image`.
+  The fork-visible redux/variation endpoints and Flux 2 endpoints are left out until their schemas can be represented cleanly by the shared form.
+- Reworked Fal batch handling to use Fal's native `num_images` contract (`1..4`) and return a list of generated results from one queue request instead of repeating single-image calls in the use case.
+- Added Fal img2img routing through `ImageToImageUseCase`, `FalAiGenerationRepository`, Ktor queue API, and data URI image inputs so regular img2img works without introducing a Fal CDN upload pipeline in this patch.
+- Updated background-work payload DTOs so Fal endpoint, image size, acceleration, and sync mode survive scheduled generation.
+- Verification for Fal.ai form/img2img follow-up:
+  `./gradlew :domain:testDebugUnitTest :data:testDebugUnitTest --no-daemon` passed;
+  `./gradlew :presentation:compileDebugKotlinAndroid :feature:work:compileDebugKotlinAndroid --no-daemon` passed;
+  `./gradlew :presentation:testDebugUnitTest --no-daemon` passed;
+  `git diff --check` passed;
+  `./gradlew :app:assembleFossDebug --no-daemon` passed;
+  `./gradlew :domain:compileKotlinIosSimulatorArm64 :network:compileKotlinIosSimulatorArm64 :data:compileKotlinIosSimulatorArm64 :presentation:compileKotlinIosSimulatorArm64 --no-daemon` passed.
+- Live Fal.ai E2E was intentionally not pursued further:
+  the configured iOS simulator API key reached Fal.ai's exhausted-balance lock, and the current official Fal.ai documentation does not expose a generic sandbox API key for API requests.
+  Their Sandbox/Playground free credits are documented separately from API usage, so the remaining validation for this patch is covered by contract tests, queue-response fixtures, Android/iOS compilation, and app assembly.

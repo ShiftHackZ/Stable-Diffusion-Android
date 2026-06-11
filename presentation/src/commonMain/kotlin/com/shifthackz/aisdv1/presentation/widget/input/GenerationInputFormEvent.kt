@@ -1,6 +1,9 @@
 package com.shifthackz.aisdv1.presentation.widget.input
 
 import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
+import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
@@ -194,6 +197,34 @@ sealed interface GenerationInputFormEvent {
      * @author Dmitriy Moroz
      */
     data class UpdateOpenAiQuality(val value: OpenAiQuality) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateFalAiModel` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiModel(val value: FalAiModel) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateFalAiImageSize` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiImageSize(val value: FalAiImageSize) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateFalAiAcceleration` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiAcceleration(val value: FalAiAcceleration) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateFalAiSyncMode` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiSyncMode(val value: Boolean) : GenerationInputFormEvent
     /**
      * Carries `UpdateStabilityAiStyle` data through the SDAI presentation layer.
      *

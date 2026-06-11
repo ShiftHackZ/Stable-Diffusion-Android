@@ -140,6 +140,9 @@
     <string name="hint_password">Пароль</string>
     <string name="hint_model_open_ai">Модель OpenAI</string>
     <string name="hint_image_size">Розмір зображення</string>
+    <string name="hint_fal_ai_endpoint">Endpoint Fal.ai</string>
+    <string name="hint_fal_ai_acceleration">Прискорення</string>
+    <string name="hint_fal_ai_sync_mode">Синхронний режим</string>
     <string name="title_input_image">Вхідне зображення</string>
     <string name="hint_quality">Якість</string>
     <string name="hint_style">Стиль</string>
@@ -179,6 +182,10 @@
     <string name="hint_open_ai_title">Підключитися до OpenAI</string>
     <string name="hint_open_ai_sub_title">Сервіс OpenAI дає змогу генерувати зображення за допомогою моделей GPT Image.</string>
     <string name="hint_open_ai_about">Про OpenAI</string>
+
+    <string name="hint_fal_ai_title">Підключитися до Fal.ai</string>
+    <string name="hint_fal_ai_sub_title">Fal.ai надає hosted API моделей генерації зображень із чергою виконання.</string>
+    <string name="hint_fal_ai_about">API ключі Fal.ai</string>
 
     <string name="hint_stability_ai_title">Підключитися до Stability AI</string>
     <string name="hint_stability_ai_sub_title">StabilityAI — це сервіс генерації зображень від DreamStudio.</string>

@@ -239,6 +239,42 @@ internal fun OpenAiForm(
 }
 
 /**
+ * Renders the `FalAiForm` UI for the SDAI presentation layer.
+ *
+ * @param state state rendered or processed by the component.
+ * @param strings strings value consumed by the API.
+ * @param processIntent process intent value consumed by the API.
+ * @author Dmitriy Moroz
+ */
+@Composable
+internal fun FalAiForm(
+    state: ServerSetupState,
+    strings: ServerSetupStrings,
+    processIntent: (ServerSetupIntent) -> Unit,
+) {
+    RemoteFormScaffold(
+        title = strings.falAiTitle,
+        subtitle = strings.falAiSubtitle,
+    ) {
+        SetupTextField(
+            value = state.falAiApiKey,
+            onValueChange = { processIntent(ServerSetupIntent.UpdateFalAiApiKey(it)) },
+            label = strings.apiKey,
+            keyboardType = KeyboardType.Password,
+            error = state.falAiApiKeyValidationError?.message(strings),
+        )
+        SettingsItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            startIcon = Icons.Default.Cloud,
+            text = strings.falAiAbout.asUiText(),
+            onClick = { processIntent(ServerSetupIntent.LaunchUrl(ServerSetupLink.FalAiInfo)) },
+        )
+    }
+}
+
+/**
  * Renders the `StabilityAiForm` UI for the SDAI presentation layer.
  *
  * @param state state rendered or processed by the component.

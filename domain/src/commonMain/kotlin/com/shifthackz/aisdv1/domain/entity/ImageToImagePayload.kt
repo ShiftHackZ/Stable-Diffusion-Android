@@ -156,4 +156,28 @@ data class ImageToImagePayload(
      * @author Dmitriy Moroz
      */
     val aDetailer: ADetailerConfig = ADetailerConfig.DISABLED,
+    /**
+     * Exposes the `falAiModel` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiModel: FalAiModel = FalAiModel.defaultImageToImage,
+    /**
+     * Exposes the `falAiImageSize` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiImageSize: FalAiImageSize = FalAiImageSize.default,
+    /**
+     * Exposes the `falAiAcceleration` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiAcceleration: FalAiAcceleration = FalAiAcceleration.default,
+    /**
+     * Exposes the `falAiSyncMode` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiSyncMode: Boolean = false,
 )

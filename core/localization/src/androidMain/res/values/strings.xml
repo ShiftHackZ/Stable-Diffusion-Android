@@ -119,6 +119,7 @@
     <string name="srv_type_hugging_face_short" translatable="false">HuggingFace</string>
     <string name="srv_type_open_ai" translatable="false">OpenAI</string>
     <string name="srv_type_stability_ai" translatable="false">Stability AI</string>
+    <string name="srv_type_fal_ai" translatable="false">Fal.ai</string>
     <string name="srv_type_swarm_ui" translatable="false">Swarm UI</string>
 
     <string name="hint_prompt">Prompt</string>
@@ -158,6 +159,9 @@
     <string name="hint_password">Password</string>
     <string name="hint_model_open_ai">OpenAI model</string>
     <string name="hint_image_size">Image size</string>
+    <string name="hint_fal_ai_endpoint">Fal.ai endpoint</string>
+    <string name="hint_fal_ai_acceleration">Acceleration</string>
+    <string name="hint_fal_ai_sync_mode">Sync mode</string>
     <string name="title_input_image">Input image</string>
     <string name="hint_quality">Quality</string>
     <string name="hint_style">Style</string>
@@ -198,6 +202,10 @@
     <string name="hint_open_ai_title">Connect to OpenAI</string>
     <string name="hint_open_ai_sub_title">OpenAI service allows image generation with GPT Image models.</string>
     <string name="hint_open_ai_about">About OpenAI</string>
+
+    <string name="hint_fal_ai_title">Connect to Fal.ai</string>
+    <string name="hint_fal_ai_sub_title">Fal.ai provides hosted image generation model APIs with queue-based inference.</string>
+    <string name="hint_fal_ai_about">Fal.ai API keys</string>
 
     <string name="hint_stability_ai_title">Connect to Stability AI</string>
     <string name="hint_stability_ai_sub_title">StabilityAI is the image generation service provided by DreamStudio.</string>

@@ -128,6 +128,7 @@ fun EngineSelectionContent(
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
         ServerSource.HORDE,
         ServerSource.OPEN_AI,
+        ServerSource.FAL_AI,
         -> Unit
     }
 }

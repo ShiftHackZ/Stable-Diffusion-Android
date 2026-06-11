@@ -80,6 +80,13 @@ sealed interface ServerSetupIntent : MviIntent {
      */
     data class UpdateStabilityAiApiKey(val key: String) : ServerSetupIntent
     /**
+     * Carries `UpdateFalAiApiKey` data through the SDAI presentation layer.
+     *
+     * @param key key value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateFalAiApiKey(val key: String) : ServerSetupIntent
+    /**
      * Carries `UpdateHuggingFaceApiKey` data through the SDAI presentation layer.
      *
      * @param key key value consumed by the API.
@@ -210,4 +217,5 @@ enum class ServerSetupLink {
     HuggingFaceInfo,
     OpenAiInfo,
     StabilityAiInfo,
+    FalAiInfo,
 }

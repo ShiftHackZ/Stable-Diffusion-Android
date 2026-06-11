@@ -69,6 +69,12 @@ internal fun ServerSetupState.validateServerSetup(
         update = { error -> copy(stabilityAiApiKeyValidationError = error) },
     )
 
+    ServerSource.FAL_AI -> validateApiKey(
+        key = falAiApiKey,
+        stringValidator = stringValidator,
+        update = { error -> copy(falAiApiKeyValidationError = error) },
+    )
+
     ServerSource.LOCAL_MICROSOFT_ONNX -> validateLocalModel(
         customModel = localOnnxCustomModel,
         customModelPath = localOnnxCustomModelPath,

@@ -138,4 +138,28 @@ data class TextToImagePayload(
      * @author Dmitriy Moroz
      */
     val forgeModules: List<ForgeModule> = emptyList(),
+    /**
+     * Exposes the `falAiModel` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiModel: FalAiModel = FalAiModel.defaultTextToImage,
+    /**
+     * Exposes the `falAiImageSize` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiImageSize: FalAiImageSize = FalAiImageSize.default,
+    /**
+     * Exposes the `falAiAcceleration` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiAcceleration: FalAiAcceleration = FalAiAcceleration.default,
+    /**
+     * Exposes the `falAiSyncMode` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiSyncMode: Boolean = false,
 )

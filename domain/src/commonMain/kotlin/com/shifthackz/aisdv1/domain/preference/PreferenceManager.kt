@@ -145,6 +145,12 @@ interface PreferenceManager {
      */
     var stabilityAiApiKey: String
     /**
+     * Exposes the `falAiApiKey` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var falAiApiKey: String
+    /**
      * Exposes the `stabilityAiEngineId` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz

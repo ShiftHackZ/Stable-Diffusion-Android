@@ -23,6 +23,7 @@ import com.shifthackz.aisdv1.domain.usecase.caching.NoOpAppCacheCleaner
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.DefaultTestConnectivityUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.connectivity.DefaultTestFalAiApiKeyUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.DefaultTestHordeApiKeyUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.DefaultTestHuggingFaceApiKeyUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.DefaultTestOpenAiApiKeyUseCaseImpl
@@ -37,6 +38,7 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.ObserveSeverConnectivit
 import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.PingStableDiffusionServiceUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestConnectivityUseCase
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestFalAiApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHuggingFaceApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestOpenAiApiKeyUseCase
@@ -125,6 +127,7 @@ import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplers
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToCoreMlUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToCoreMlUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToFalAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCase
@@ -135,6 +138,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToOpenAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToStabilityAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSwarmUiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.DefaultConnectToA1111UseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.DefaultConnectToFalAiUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.DefaultConnectToHordeUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.DefaultConnectToHuggingFaceUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.DefaultConnectToOpenAiUseCaseImpl
@@ -219,6 +223,12 @@ val coreDomainModule = module {
             remoteDataSource = get(),
         )
     }
+    factory<TestFalAiApiKeyUseCase> {
+        DefaultTestFalAiApiKeyUseCaseImpl(
+            configurationStore = get(),
+            remoteDataSource = get(),
+        )
+    }
     factory<DataPreLoaderUseCase> {
         DataPreLoaderUseCaseImpl(
             serverConfigurationRepository = get(),
@@ -282,6 +292,7 @@ val coreDomainModule = module {
             huggingFaceGenerationRepository = get(),
             openAiGenerationRepository = get(),
             stabilityAiGenerationRepository = get(),
+            falAiGenerationRepository = get(),
             swarmUiGenerationRepository = get(),
             localDiffusionGenerationRepository = get(),
             mediaPipeGenerationRepository = get(),
@@ -297,6 +308,7 @@ val coreDomainModule = module {
             huggingFaceGenerationRepository = get(),
             stabilityAiGenerationRepository = get(),
             coreMlGenerationRepository = get(),
+            falAiGenerationRepository = get(),
             preferenceManager = get(),
         )
     }
@@ -431,6 +443,13 @@ val coreDomainModule = module {
             getConfigurationUseCase = get(),
             setServerConfigurationUseCase = get(),
             testStabilityAiApiKeyUseCase = get(),
+        )
+    }
+    factory<ConnectToFalAiUseCase> {
+        DefaultConnectToFalAiUseCaseImpl(
+            getConfigurationUseCase = get(),
+            setServerConfigurationUseCase = get(),
+            testFalAiApiKeyUseCase = get(),
         )
     }
     factory<FetchSupportersUseCase> {

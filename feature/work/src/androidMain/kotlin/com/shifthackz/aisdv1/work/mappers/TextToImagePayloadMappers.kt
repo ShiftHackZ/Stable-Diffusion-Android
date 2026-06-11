@@ -1,6 +1,9 @@
 package com.shifthackz.aisdv1.work.mappers
 
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
+import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
@@ -185,6 +188,30 @@ private data class TextToImagePayloadDto(
      * @author Dmitriy Moroz
      */
     val forgeModules: List<ForgeModuleDto> = emptyList(),
+    /**
+     * Exposes the `falAiModel` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiModel: String? = null,
+    /**
+     * Exposes the `falAiImageSize` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiImageSize: String? = null,
+    /**
+     * Exposes the `falAiAcceleration` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiAcceleration: String? = null,
+    /**
+     * Exposes the `falAiSyncMode` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiSyncMode: Boolean = false,
 ) {
     /**
      * Converts SDAI data with `toPayload`.
@@ -214,6 +241,10 @@ private data class TextToImagePayloadDto(
         aDetailer = aDetailer.toDomain(),
         hires = hires.toDomain(),
         forgeModules = forgeModules.map(ForgeModuleDto::toDomain),
+        falAiModel = FalAiModel.parse(falAiModel, FalAiModel.defaultTextToImage),
+        falAiImageSize = FalAiImageSize.parse(falAiImageSize),
+        falAiAcceleration = FalAiAcceleration.parse(falAiAcceleration),
+        falAiSyncMode = falAiSyncMode,
     )
 
     /**
@@ -251,6 +282,10 @@ private data class TextToImagePayloadDto(
             aDetailer = ADetailerConfigDto.from(payload.aDetailer),
             hires = HiresConfigDto.from(payload.hires),
             forgeModules = payload.forgeModules.map(ForgeModuleDto::from),
+            falAiModel = payload.falAiModel.alias,
+            falAiImageSize = payload.falAiImageSize.key,
+            falAiAcceleration = payload.falAiAcceleration.key,
+            falAiSyncMode = payload.falAiSyncMode,
         )
     }
 }

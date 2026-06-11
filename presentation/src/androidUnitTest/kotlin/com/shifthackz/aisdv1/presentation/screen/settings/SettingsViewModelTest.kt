@@ -223,6 +223,7 @@ private class TestLinksProvider : LinksProvider {
     override val huggingFaceUrl = ""
     override val openAiInfoUrl = ""
     override val stabilityAiInfoUrl = ""
+    override val falAiInfoUrl = ""
     override val privacyPolicyUrl = "https://policy.test"
     override val donateUrl = ""
     override val projectWebsiteUrl = "https://project.test"

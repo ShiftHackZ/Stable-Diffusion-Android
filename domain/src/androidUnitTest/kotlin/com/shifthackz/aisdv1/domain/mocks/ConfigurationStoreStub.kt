@@ -18,6 +18,7 @@ class ConfigurationStoreStub(
     override var huggingFaceModel: String = configuration.huggingFaceModel
     override var stabilityAiApiKey: String = configuration.stabilityAiApiKey
     override var stabilityAiEngineId: String = configuration.stabilityAiEngineId
+    override var falAiApiKey: String = configuration.falAiApiKey
     override var localOnnxModelId: String = configuration.localOnnxModelId
     override var localOnnxModelPath: String = configuration.localOnnxModelPath
     override var localMediaPipeModelId: String = configuration.localMediaPipeModelId

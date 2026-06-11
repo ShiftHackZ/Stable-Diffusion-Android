@@ -5,6 +5,9 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.core.mvi.MviState
 import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
@@ -261,6 +264,30 @@ data class ImageToImageState(
      */
     override val openAiQuality: OpenAiQuality = OpenAiQuality.AUTO,
     /**
+     * Exposes the `falAiModel` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val falAiModel: FalAiModel = FalAiModel.defaultImageToImage,
+    /**
+     * Exposes the `falAiImageSize` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val falAiImageSize: FalAiImageSize = FalAiImageSize.default,
+    /**
+     * Exposes the `falAiAcceleration` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val falAiAcceleration: FalAiAcceleration = FalAiAcceleration.default,
+    /**
+     * Exposes the `falAiSyncMode` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val falAiSyncMode: Boolean = false,
+    /**
      * Exposes the `widthValidationError` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -319,7 +346,8 @@ data class ImageToImageState(
             mode == ServerSource.HORDE ||
             mode == ServerSource.HUGGING_FACE ||
             mode == ServerSource.STABILITY_AI ||
-            mode == ServerSource.LOCAL_APPLE_CORE_ML
+            mode == ServerSource.LOCAL_APPLE_CORE_ML ||
+            mode == ServerSource.FAL_AI
 
     val sourceSupportsInPaint: Boolean
         get() = mode != ServerSource.LOCAL_APPLE_CORE_ML
@@ -354,8 +382,14 @@ internal fun ImageToImageState.mapToPayload(
     negativePrompt = negativePrompt.trim(),
     samplingSteps = samplingSteps,
     cfgScale = cfgScale,
-    width = width.toIntOrNull() ?: DEFAULT_SIZE,
-    height = height.toIntOrNull() ?: DEFAULT_SIZE,
+    width = when (mode) {
+        ServerSource.FAL_AI -> falAiImageSize.width
+        else -> width.toIntOrNull() ?: DEFAULT_SIZE
+    },
+    height = when (mode) {
+        ServerSource.FAL_AI -> falAiImageSize.height
+        else -> height.toIntOrNull() ?: DEFAULT_SIZE
+    },
     restoreFaces = restoreFaces,
     seed = seed.trim(),
     subSeed = subSeed.trim(),
@@ -364,7 +398,11 @@ internal fun ImageToImageState.mapToPayload(
     scheduler = selectedScheduler.takeIf {
         mode == ServerSource.AUTOMATIC1111
     } ?: Scheduler.AUTOMATIC,
-    nsfw = if (mode == ServerSource.HORDE || mode == ServerSource.LOCAL_APPLE_CORE_ML) nsfw else false,
+    nsfw = if (
+        mode == ServerSource.HORDE ||
+        mode == ServerSource.LOCAL_APPLE_CORE_ML ||
+        mode == ServerSource.FAL_AI
+    ) nsfw else false,
     batchCount = batchCount,
     inPaintingMaskInvert = inPaint.maskMode.inverse,
     inPaintFullResPadding = inPaint.onlyMaskedPaddingPx,
@@ -376,6 +414,12 @@ internal fun ImageToImageState.mapToPayload(
     aDetailer = aDetailer.takeIf {
         mode == ServerSource.AUTOMATIC1111 && aDetailer.enabled && aDetailerAvailable
     } ?: ADetailerConfig.DISABLED,
+    falAiModel = falAiModel.takeIf {
+        mode == ServerSource.FAL_AI
+    } ?: FalAiModel.defaultImageToImage,
+    falAiImageSize = falAiImageSize,
+    falAiAcceleration = falAiAcceleration,
+    falAiSyncMode = falAiSyncMode,
 )
 
 /**

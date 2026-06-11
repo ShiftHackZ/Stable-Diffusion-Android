@@ -20,6 +20,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
@@ -72,6 +74,19 @@ fun GenerationInputForm(
                     items = OpenAiModel.entries,
                     onItemSelected = { onEvent(GenerationInputFormEvent.UpdateOpenAiModel(it)) },
                     displayDelegate = { it.alias.asUiText() },
+                )
+
+                ServerSource.FAL_AI -> DropdownTextField(
+                    modifier = Modifier.padding(top = 8.dp),
+                    label = Localization.string("hint_fal_ai_endpoint").asUiText(),
+                    value = state.falAiModel,
+                    items = if (isImg2Img) {
+                        FalAiModel.imageToImage
+                    } else {
+                        FalAiModel.textToImage
+                    },
+                    onItemSelected = { onEvent(GenerationInputFormEvent.UpdateFalAiModel(it)) },
+                    displayDelegate = { it.displayName.asUiText() },
                 )
 
                 else -> Unit
@@ -163,8 +178,9 @@ fun GenerationInputForm(
             else -> Unit
         }
 
+        val sizeInputVisible = state.mode != ServerSource.FAL_AI || state.falAiModel.supportsImageSize
         // Size input fields
-        Row(
+        if (sizeInputVisible) Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
@@ -195,6 +211,16 @@ fun GenerationInputForm(
                 ServerSource.SWARM_UI,
                 ServerSource.HUGGING_FACE -> {
                     GenerationSizeTextFieldsComponent(modifier = localModifier, state = state, onEvent = onEvent)
+                }
+
+                ServerSource.FAL_AI -> {
+                    DropdownTextField(
+                        label = Localization.string("hint_image_size").asUiText(),
+                        value = state.falAiImageSize,
+                        items = FalAiImageSize.entries,
+                        onItemSelected = { onEvent(GenerationInputFormEvent.UpdateFalAiImageSize(it)) },
+                        displayDelegate = { it.displayName.asUiText() },
+                    )
                 }
 
                 ServerSource.STABILITY_AI -> {

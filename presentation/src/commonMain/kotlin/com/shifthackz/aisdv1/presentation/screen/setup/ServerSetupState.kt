@@ -95,6 +95,12 @@ data class ServerSetupState(
      */
     val stabilityAiApiKey: String = "",
     /**
+     * Exposes the `falAiApiKey` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiApiKey: String = "",
+    /**
      * Exposes the `hordeDefaultApiKey` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -244,6 +250,12 @@ data class ServerSetupState(
      * @author Dmitriy Moroz
      */
     val stabilityAiApiKeyValidationError: ValidationError? = null,
+    /**
+     * Exposes the `falAiApiKeyValidationError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiApiKeyValidationError: ValidationError? = null,
     /**
      * Exposes the `localCustomOnnxPathValidationError` value used by the SDAI presentation layer.
      *
@@ -453,6 +465,7 @@ data class ServerSetupState(
             ServerSource.HUGGING_FACE,
             ServerSource.OPEN_AI,
             ServerSource.STABILITY_AI,
+            ServerSource.FAL_AI,
         )
     }
 }
@@ -516,6 +529,7 @@ fun Configuration.toServerSetupState(
         localCoreMlCustomModelPath = localCoreMlModelPath,
         openAiApiKey = openAiApiKey,
         stabilityAiApiKey = stabilityAiApiKey,
+        falAiApiKey = falAiApiKey,
         demoMode = demoMode,
         demoModeUrl = demoModeUrl,
     ).withCredentials(

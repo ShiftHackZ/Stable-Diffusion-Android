@@ -20,6 +20,7 @@ import com.shifthackz.aisdv1.data.remote.DownloadableModelFileDownloader
 import com.shifthackz.aisdv1.data.remote.DownloadableModelRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HordeStatusSource
 import com.shifthackz.aisdv1.data.remote.KtorForgeModulesRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.KtorFalAiGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorHordeGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorHuggingFaceGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorHuggingFaceModelsRemoteDataSource
@@ -45,6 +46,7 @@ import com.shifthackz.aisdv1.data.remote.RandomImageRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.ReportRemoteDataSource
 import com.shifthackz.aisdv1.data.repository.DownloadableModelRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.EmbeddingsRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.FalAiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.ForgeModulesRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.GenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.CoreMlGenerationRepositoryImpl
@@ -69,6 +71,7 @@ import com.shifthackz.aisdv1.data.repository.SwarmUiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.TemporaryGenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.EmbeddingsDataSource
+import com.shifthackz.aisdv1.domain.datasource.FalAiGenerationDataSource
 import com.shifthackz.aisdv1.domain.datasource.ForgeModulesDataSource
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.datasource.HordeGenerationDataSource
@@ -104,6 +107,7 @@ import com.shifthackz.aisdv1.domain.gateway.ServerConnectivityGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
 import com.shifthackz.aisdv1.domain.repository.EmbeddingsRepository
+import com.shifthackz.aisdv1.domain.repository.FalAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.ForgeModulesRepository
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
@@ -304,6 +308,18 @@ val coreDataModule = module {
     }
     single<HuggingFaceGenerationRepository> {
         HuggingFaceGenerationRepositoryImpl(
+            mediaStoreGateway = get(),
+            localDataSource = get(),
+            backgroundWorkObserver = get(),
+            preferenceManager = get(),
+            remoteDataSource = get(),
+        )
+    }
+    single<FalAiGenerationDataSource.Remote> {
+        KtorFalAiGenerationRemoteDataSource(api = get())
+    }
+    single<FalAiGenerationRepository> {
+        FalAiGenerationRepositoryImpl(
             mediaStoreGateway = get(),
             localDataSource = get(),
             backgroundWorkObserver = get(),

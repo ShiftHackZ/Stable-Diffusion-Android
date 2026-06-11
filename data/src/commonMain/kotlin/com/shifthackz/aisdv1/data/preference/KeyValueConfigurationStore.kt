@@ -109,6 +109,15 @@ internal class KeyValueConfigurationStore(
         set(value) = keyValueStore.putString(KEY_STABILITY_AI_API_KEY, value)
 
     /**
+     * Exposes the `falAiApiKey` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var falAiApiKey: String
+        get() = keyValueStore.getString(KEY_FAL_AI_API_KEY)
+        set(value) = keyValueStore.putString(KEY_FAL_AI_API_KEY, value)
+
+    /**
      * Exposes the `stabilityAiEngineId` value used by the SDAI data layer.
      *
      * @author Dmitriy Moroz
@@ -269,6 +278,12 @@ internal class KeyValueConfigurationStore(
          * @author Dmitriy Moroz
          */
         const val KEY_STABILITY_AI_API_KEY = "key_stability_ai_api_key"
+        /**
+         * Exposes the `KEY_FAL_AI_API_KEY` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_FAL_AI_API_KEY = "key_fal_ai_api_key"
         /**
          * Exposes the `KEY_STABILITY_AI_ENGINE_ID_KEY` value used by the SDAI data layer.
          *

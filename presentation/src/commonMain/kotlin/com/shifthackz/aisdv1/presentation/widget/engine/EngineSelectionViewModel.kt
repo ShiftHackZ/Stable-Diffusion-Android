@@ -217,6 +217,7 @@ class EngineSelectionViewModel(
             ServerSource.LOCAL_APPLE_CORE_ML,
             ServerSource.HORDE,
             ServerSource.OPEN_AI,
+            ServerSource.FAL_AI,
             -> remoteOptions
         }
     }

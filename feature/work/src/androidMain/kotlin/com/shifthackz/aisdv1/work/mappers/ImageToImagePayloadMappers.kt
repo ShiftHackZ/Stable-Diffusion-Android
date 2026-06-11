@@ -1,5 +1,8 @@
 package com.shifthackz.aisdv1.work.mappers
 
+import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
+import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
+import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.Scheduler
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
@@ -189,6 +192,30 @@ private data class ImageToImagePayloadDto(
      * @author Dmitriy Moroz
      */
     val aDetailer: ADetailerConfigDto = ADetailerConfigDto(),
+    /**
+     * Exposes the `falAiModel` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiModel: String? = null,
+    /**
+     * Exposes the `falAiImageSize` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiImageSize: String? = null,
+    /**
+     * Exposes the `falAiAcceleration` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiAcceleration: String? = null,
+    /**
+     * Exposes the `falAiSyncMode` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val falAiSyncMode: Boolean = false,
 ) {
     /**
      * Converts SDAI data with `toPayload`.
@@ -221,6 +248,10 @@ private data class ImageToImagePayloadDto(
         stabilityAiClipGuidance = stabilityAiClipGuidance.parseEnumOrNull<StabilityAiClipGuidance>(),
         stabilityAiStylePreset = stabilityAiStylePreset.parseEnumOrNull<StabilityAiStylePreset>(),
         aDetailer = aDetailer.toDomain(),
+        falAiModel = FalAiModel.parse(falAiModel, FalAiModel.defaultImageToImage),
+        falAiImageSize = FalAiImageSize.parse(falAiImageSize),
+        falAiAcceleration = FalAiAcceleration.parse(falAiAcceleration),
+        falAiSyncMode = falAiSyncMode,
     )
 
     /**
@@ -261,6 +292,10 @@ private data class ImageToImagePayloadDto(
             stabilityAiClipGuidance = payload.stabilityAiClipGuidance?.name,
             stabilityAiStylePreset = payload.stabilityAiStylePreset?.name,
             aDetailer = ADetailerConfigDto.from(payload.aDetailer),
+            falAiModel = payload.falAiModel.alias,
+            falAiImageSize = payload.falAiImageSize.key,
+            falAiAcceleration = payload.falAiAcceleration.key,
+            falAiSyncMode = payload.falAiSyncMode,
         )
     }
 }
