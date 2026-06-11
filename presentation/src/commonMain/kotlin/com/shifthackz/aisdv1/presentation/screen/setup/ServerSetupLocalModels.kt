@@ -5,19 +5,27 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -68,12 +77,7 @@ internal fun LocalModelItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                Icon(
-                    modifier = Modifier.size(36.dp),
-                    imageVector = model.downloadIcon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                )
+                LocalModelStatusIcon(model = model)
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = model.name,
@@ -93,17 +97,11 @@ internal fun LocalModelItem(
                     }
                 }
                 if (!model.isCustom) {
-                    Button(onClick = onAction) {
-                        Text(
-                            text = when (model.downloadState) {
-                                is DownloadState.Downloading -> strings.cancel
-                                is DownloadState.Error -> strings.retry
-                                else -> if (model.downloaded) strings.delete else strings.download
-                            },
-                            color = LocalContentColor.current,
-                            maxLines = 1,
-                        )
-                    }
+                    LocalModelActionButton(
+                        model = model,
+                        strings = strings,
+                        onClick = onAction,
+                    )
                 }
             }
             if (model.isCustom) {
@@ -142,6 +140,140 @@ internal fun LocalModelItem(
         }
     }
 }
+
+/**
+ * Renders the `LocalModelStatusIcon` UI for the SDAI presentation layer.
+ *
+ * @param model model value consumed by the API.
+ * @author Dmitriy Moroz
+ */
+@Composable
+private fun LocalModelStatusIcon(model: ServerSetupState.LocalModel) {
+    val foregroundColor = if (model.downloaded) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
+
+    Box(
+        modifier = Modifier.size(44.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Surface(
+            modifier = Modifier.matchParentSize(),
+            shape = RoundedCornerShape(12.dp),
+            color = Color.Transparent,
+            border = BorderStroke(1.dp, foregroundColor.copy(alpha = 0.48f)),
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    modifier = Modifier.size(26.dp),
+                    imageVector = Icons.Outlined.AutoAwesome,
+                    contentDescription = null,
+                    tint = foregroundColor,
+                )
+            }
+        }
+        if (model.downloaded) {
+            Surface(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(x = 3.dp, y = 3.dp)
+                    .size(18.dp),
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.primary,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceTint),
+            ) {
+                Icon(
+                    modifier = Modifier.padding(3.dp),
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Renders the `LocalModelActionButton` UI for the SDAI presentation layer.
+ *
+ * @param model model value consumed by the API.
+ * @param strings strings value consumed by the API.
+ * @param onClick callback invoked by the component.
+ * @author Dmitriy Moroz
+ */
+@Composable
+private fun LocalModelActionButton(
+    model: ServerSetupState.LocalModel,
+    strings: ServerSetupStrings,
+    onClick: () -> Unit,
+) {
+    val action = model.action(strings)
+
+    OutlinedIconButton(
+        modifier = Modifier.size(40.dp),
+        onClick = onClick,
+    ) {
+        Icon(
+            modifier = Modifier.size(20.dp),
+            imageVector = action.icon,
+            contentDescription = action.label,
+        )
+    }
+}
+
+/**
+ * Executes the `action` step in the SDAI presentation layer.
+ *
+ * @param strings strings value consumed by the API.
+ * @return Result produced by `action`.
+ * @author Dmitriy Moroz
+ */
+private fun ServerSetupState.LocalModel.action(strings: ServerSetupStrings): LocalModelAction =
+    when (downloadState) {
+        is DownloadState.Downloading -> LocalModelAction(
+            icon = Icons.Outlined.Close,
+            label = strings.cancel,
+        )
+
+        is DownloadState.Error -> LocalModelAction(
+            icon = Icons.Outlined.Download,
+            label = strings.retry,
+        )
+
+        else -> if (downloaded) {
+            LocalModelAction(
+                icon = Icons.Outlined.Delete,
+                label = strings.delete,
+            )
+        } else {
+            LocalModelAction(
+                icon = Icons.Outlined.Download,
+                label = strings.download,
+            )
+        }
+    }
+
+/**
+ * Carries `LocalModelAction` data through the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
+private data class LocalModelAction(
+    /**
+     * Exposes the `icon` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val icon: ImageVector,
+    /**
+     * Exposes the `label` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val label: String,
+)
 
 /**
  * Renders the `LocalOnnxFolderStructure` UI for the SDAI presentation layer.

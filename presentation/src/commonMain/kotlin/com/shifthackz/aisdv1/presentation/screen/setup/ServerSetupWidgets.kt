@@ -9,10 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Computer
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.FileDownloadDone
-import androidx.compose.material.icons.outlined.FileDownloadOff
-import androidx.compose.material.icons.outlined.Landslide
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedButton
@@ -25,10 +21,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.feature.coreml.CoreMlModelSupport
 import com.shifthackz.aisdv1.presentation.modal.download.DownloadDialog
+import com.shifthackz.aisdv1.presentation.widget.icon.BrandIcons
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialogContent
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
@@ -214,6 +211,8 @@ internal val ServerSource.icon: ImageVector
         ServerSource.LOCAL_MICROSOFT_ONNX,
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
         -> Icons.Default.Android
+
+        ServerSource.LOCAL_APPLE_CORE_ML -> BrandIcons.Apple
     }
 
 /**
@@ -231,6 +230,7 @@ internal fun ServerSource.title(strings: ServerSetupStrings): String = when (thi
     ServerSource.STABILITY_AI -> strings.stabilityTitle
     ServerSource.LOCAL_MICROSOFT_ONNX -> strings.localDiffusionTitle
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeTitle
+    ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlTitle
 }
 
 /**
@@ -248,6 +248,7 @@ internal fun ServerSource.subtitle(strings: ServerSetupStrings): String = when (
     ServerSource.STABILITY_AI -> strings.stabilitySubtitle
     ServerSource.LOCAL_MICROSOFT_ONNX -> strings.localDiffusionSubtitle
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeSubtitle
+    ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlSubtitle
 }
 
 /**
@@ -281,6 +282,12 @@ internal val ServerSetupState.mainButtonEnabled: Boolean
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeCustomModel ||
                 localMediaPipeModels.any { it.selected && it.downloaded }
 
+            ServerSource.LOCAL_APPLE_CORE_ML -> localCoreMlModels.any { model ->
+                model.selected &&
+                    model.downloaded &&
+                    model.id !in CoreMlModelSupport.unsupportedModelIds
+            }
+
             else -> true
         }
     }
@@ -291,19 +298,6 @@ internal val ServerSetupState.mainButtonEnabled: Boolean
  * @author Dmitriy Moroz
  */
 internal val ServerSetupState.LocalModel.isCustom: Boolean
-    get() = id == LocalAiModel.CustomOnnx.id || id == LocalAiModel.CustomMediaPipe.id
-
-/**
- * Exposes the `ServerSetupState` value used by the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
-internal val ServerSetupState.LocalModel.downloadIcon: ImageVector
-    get() = when (downloadState) {
-        is DownloadState.Downloading -> Icons.Outlined.FileDownload
-        else -> when {
-            isCustom -> Icons.Outlined.Landslide
-            downloaded -> Icons.Outlined.FileDownloadDone
-            else -> Icons.Outlined.FileDownloadOff
-        }
-    }
+    get() = id == LocalAiModel.CustomOnnx.id ||
+        id == LocalAiModel.CustomMediaPipe.id ||
+        id == LocalAiModel.CustomCoreMl.id

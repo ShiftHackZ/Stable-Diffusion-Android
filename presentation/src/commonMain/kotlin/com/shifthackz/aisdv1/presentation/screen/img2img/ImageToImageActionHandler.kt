@@ -316,10 +316,15 @@ internal class ImageToImageActionHandler(
         generationJob = launch(dispatchersProvider.io, CoroutineStart.DEFAULT) {
             runCatching {
                 val maskBase64 = validatedState.inPaint
-                    .takeIf(ImageInPaintState::hasMask)
+                    .takeIf { validatedState.sourceSupportsInPaint }
+                    ?.takeIf(ImageInPaintState::hasMask)
                     ?.let { encodeInPaintMaskBase64(validatedState.imageBase64, it.strokes) }
                     ?: ""
-                if (validatedState.inPaint.hasMask && maskBase64.isBlank()) {
+                if (
+                    validatedState.sourceSupportsInPaint &&
+                    validatedState.inPaint.hasMask &&
+                    maskBase64.isBlank()
+                ) {
                     error(Localization.string("error_invalid"))
                 }
                 val payload = validatedState.mapToPayload(maskBase64)

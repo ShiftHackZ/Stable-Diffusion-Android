@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.screen.setup
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 
 /**
  * Renders the `ServerSetupLocalPathPickerButton` UI for the SDAI presentation layer.
@@ -25,3 +26,12 @@ internal expect fun ServerSetupLocalPathPickerButton(
  * @author Dmitriy Moroz
  */
 internal expect fun isLocalGenerationSetupAvailable(): Boolean
+
+/**
+ * Executes the `isServerSourceAvailableOnPlatform` step in the SDAI presentation layer.
+ *
+ * @param source source value consumed by the API.
+ * @return Result produced by `isServerSourceAvailableOnPlatform`.
+ * @author Dmitriy Moroz
+ */
+internal expect fun isServerSourceAvailableOnPlatform(source: ServerSource): Boolean

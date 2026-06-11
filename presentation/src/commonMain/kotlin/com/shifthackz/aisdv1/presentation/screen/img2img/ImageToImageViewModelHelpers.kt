@@ -101,9 +101,18 @@ internal data class StableDiffusionSamplersKey(
 internal fun ImageToImageState.progressModal(
     canCancelLocalGeneration: Boolean,
 ): GenerationModal = if (
-    mode == ServerSource.LOCAL_MICROSOFT_ONNX || mode == ServerSource.LOCAL_GOOGLE_MEDIA_PIPE
+    mode == ServerSource.LOCAL_MICROSOFT_ONNX ||
+    mode == ServerSource.LOCAL_GOOGLE_MEDIA_PIPE ||
+    mode == ServerSource.LOCAL_APPLE_CORE_ML
 ) {
-    GenerationModal.Generating(canCancel = canCancelLocalGeneration)
+    GenerationModal.Generating(
+        title = if (mode == ServerSource.LOCAL_APPLE_CORE_ML) {
+            Localization.string("communicating_core_ml_title").asUiText()
+        } else {
+            null
+        },
+        canCancel = canCancelLocalGeneration,
+    )
 } else {
     GenerationModal.Communicating()
 }

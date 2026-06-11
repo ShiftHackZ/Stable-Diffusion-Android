@@ -142,8 +142,8 @@ internal fun GenerationInputAdvancedOptions(
                         colors = textFieldColors,
                     )
                 }
-                // NSFW flag specifically for Horde API
-                if (state.mode == ServerSource.HORDE) {
+                // NSFW flag is supported by Horde and local Core ML safety checker.
+                if (state.mode == ServerSource.HORDE || state.mode == ServerSource.LOCAL_APPLE_CORE_ML) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -279,7 +279,8 @@ internal fun GenerationInputAdvancedOptions(
                     ServerSource.AUTOMATIC1111,
                     ServerSource.SWARM_UI,
                     ServerSource.STABILITY_AI,
-                    ServerSource.HORDE -> afterSlidersSection()
+                    ServerSource.HORDE,
+                    ServerSource.LOCAL_APPLE_CORE_ML -> afterSlidersSection()
 
                     else -> Unit
                 }

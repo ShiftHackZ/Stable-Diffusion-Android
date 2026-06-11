@@ -24,6 +24,7 @@ internal const val HUGGING_FACE_MODELS_TIMEOUT_MILLIS = 5_000L
 private val localGenerationSources = setOf(
     ServerSource.LOCAL_MICROSOFT_ONNX,
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+    ServerSource.LOCAL_APPLE_CORE_ML,
 )
 
 /**
@@ -34,7 +35,9 @@ private val localGenerationSources = setOf(
  */
 internal fun BuildInfoProvider.setupAllowedModes(): List<ServerSource> =
     allowedModes.filter { source ->
-        source !in localGenerationSources || isLocalGenerationSetupAvailable()
+        isServerSourceAvailableOnPlatform(source) &&
+            (source !in localGenerationSources || source == ServerSource.LOCAL_APPLE_CORE_ML ||
+                isLocalGenerationSetupAvailable())
     }
 
 /**

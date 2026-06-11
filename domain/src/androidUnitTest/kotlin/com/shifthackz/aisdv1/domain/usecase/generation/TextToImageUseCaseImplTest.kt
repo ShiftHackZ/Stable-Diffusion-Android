@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.mocks.mockAiGenerationResult
 import com.shifthackz.aisdv1.domain.mocks.mockTextToImagePayload
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
@@ -32,6 +33,7 @@ class TextToImageUseCaseImplTest {
     private val stubSwarmUiGenerationRepository = mockk<SwarmUiGenerationRepository>()
     private val stubLocalDiffusionGenerationRepository = mockk<LocalDiffusionGenerationRepository>()
     private val stubMediaPipeGenerationRepository = mockk<MediaPipeGenerationRepository>()
+    private val stubCoreMlGenerationRepository = mockk<CoreMlGenerationRepository>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
 
     private val useCase = TextToImageUseCaseImpl(
@@ -43,6 +45,7 @@ class TextToImageUseCaseImplTest {
         localDiffusionGenerationRepository = stubLocalDiffusionGenerationRepository,
         swarmUiGenerationRepository = stubSwarmUiGenerationRepository,
         mediaPipeGenerationRepository = stubMediaPipeGenerationRepository,
+        coreMlGenerationRepository = stubCoreMlGenerationRepository,
         preferenceManager = stubPreferenceManager,
     )
 
@@ -132,6 +135,17 @@ class TextToImageUseCaseImplTest {
 
         assertEquals(listOf(mockAiGenerationResult), actual)
         coVerify(exactly = 1) { stubMediaPipeGenerationRepository.generateFromText(any()) }
+    }
+
+    @Test
+    fun `given source is LOCAL_APPLE_CORE_ML, expected core ml generation`() = runTest {
+        every { stubPreferenceManager.source } returns ServerSource.LOCAL_APPLE_CORE_ML
+        coEvery { stubCoreMlGenerationRepository.generateFromText(any()) } returns mockAiGenerationResult
+
+        val actual = useCase(mockTextToImagePayload.copy(batchCount = 1))
+
+        assertEquals(listOf(mockAiGenerationResult), actual)
+        coVerify(exactly = 1) { stubCoreMlGenerationRepository.generateFromText(any()) }
     }
 
     @Test

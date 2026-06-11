@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.presentation.screen.onboarding
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 
 /**
  * Executes the `isLocalDiffusionOnBoardingAvailable` step in the SDAI presentation layer.
@@ -10,6 +11,18 @@ import androidx.compose.runtime.Composable
  * @author Dmitriy Moroz
  */
 actual fun isLocalDiffusionOnBoardingAvailable(): Boolean = true
+
+/**
+ * Executes the `localDiffusionOnBoardingSpec` step in the SDAI presentation layer.
+ *
+ * @return Result produced by `localDiffusionOnBoardingSpec`.
+ * @author Dmitriy Moroz
+ */
+actual fun localDiffusionOnBoardingSpec() = LocalDiffusionOnBoardingSpec(
+    serverSource = ServerSource.LOCAL_MICROSOFT_ONNX,
+    titleKey = "on_boarding_page_local_title",
+    progressTitleKey = "communicating_local_title",
+)
 
 /**
  * Renders the `OnBoardingBackHandler` UI for the SDAI presentation layer.

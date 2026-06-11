@@ -242,7 +242,8 @@ data class TextToImageState(
 
     val localSourceSelected: Boolean
         get() = mode == ServerSource.LOCAL_MICROSOFT_ONNX ||
-            mode == ServerSource.LOCAL_GOOGLE_MEDIA_PIPE
+            mode == ServerSource.LOCAL_GOOGLE_MEDIA_PIPE ||
+            mode == ServerSource.LOCAL_APPLE_CORE_ML
 
     val hasValidationErrors: Boolean
         get() = promptValidationError != null ||
@@ -274,7 +275,7 @@ internal fun TextToImageState.mapToPayload(): TextToImagePayload = TextToImagePa
     subSeed = subSeed.trim(),
     subSeedStrength = subSeedStrength,
     sampler = selectedSampler,
-    nsfw = if (mode == ServerSource.HORDE) nsfw else false,
+    nsfw = if (mode == ServerSource.HORDE || mode == ServerSource.LOCAL_APPLE_CORE_ML) nsfw else false,
     batchCount = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) 1 else batchCount,
     style = null,
     quality = openAiQuality.key.takeIf {

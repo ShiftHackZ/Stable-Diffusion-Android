@@ -272,7 +272,11 @@ data class ImageToImageState(
             mode == ServerSource.SWARM_UI ||
             mode == ServerSource.HORDE ||
             mode == ServerSource.HUGGING_FACE ||
-            mode == ServerSource.STABILITY_AI
+            mode == ServerSource.STABILITY_AI ||
+            mode == ServerSource.LOCAL_APPLE_CORE_ML
+
+    val sourceSupportsInPaint: Boolean
+        get() = mode != ServerSource.LOCAL_APPLE_CORE_ML
 
     val hasValidationErrors: Boolean
         get() = promptValidationError != null ||
@@ -311,7 +315,7 @@ internal fun ImageToImageState.mapToPayload(
     subSeed = subSeed.trim(),
     subSeedStrength = subSeedStrength,
     sampler = selectedSampler,
-    nsfw = if (mode == ServerSource.HORDE) nsfw else false,
+    nsfw = if (mode == ServerSource.HORDE || mode == ServerSource.LOCAL_APPLE_CORE_ML) nsfw else false,
     batchCount = batchCount,
     inPaintingMaskInvert = inPaint.maskMode.inverse,
     inPaintFullResPadding = inPaint.onlyMaskedPaddingPx,

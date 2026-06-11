@@ -298,6 +298,7 @@
     <string name="communicating_progress_sub_title">This could take some time</string>
     <string name="communicating_random_image_title">Fetching random image…</string>
     <string name="communicating_local_title">Running Local Diffusion generation</string>
+    <string name="communicating_core_ml_title">Silicon Diffusion generation</string>
     <string name="communicating_wait_time">Wait time: %1$s</string>
     <string name="communicating_status_queue">Position in queue: %1$s</string>
     <string name="communicating_status_steps">Processing step: %1$s/%2$s</string>
@@ -438,6 +439,7 @@
     <string name="on_boarding_page_universal_ios">iOS</string>
     <string name="on_boarding_page_form_title">Advanced [Stable Diffusion]\nAI generation features.</string>
     <string name="on_boarding_page_local_title">[Offline] Local Diffusion\nAI generation.</string>
+    <string name="on_boarding_page_core_ml_title">[Offline] Silicon Diffusion\nAI generation.</string>
     <string name="on_boarding_page_ui_title">Configure, customize,\nmake it [yours]!</string>
     <string name="on_boarding_page_provider_title">[Freedom] to choose your\nAI generation provider.</string>
 

@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.shifthackz.aisdv1.core.extensions.getRealPath
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 
 /**
  * Renders the `ServerSetupLocalPathPickerButton` UI for the SDAI presentation layer.
@@ -59,3 +60,13 @@ internal actual fun ServerSetupLocalPathPickerButton(
  * @author Dmitriy Moroz
  */
 internal actual fun isLocalGenerationSetupAvailable(): Boolean = true
+
+/**
+ * Executes the `isServerSourceAvailableOnPlatform` step in the SDAI presentation layer.
+ *
+ * @param source source value consumed by the API.
+ * @return Result produced by `isServerSourceAvailableOnPlatform`.
+ * @author Dmitriy Moroz
+ */
+internal actual fun isServerSourceAvailableOnPlatform(source: ServerSource): Boolean =
+    source != ServerSource.LOCAL_APPLE_CORE_ML

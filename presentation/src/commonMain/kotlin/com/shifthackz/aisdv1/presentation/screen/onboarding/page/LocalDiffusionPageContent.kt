@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.extensions.gesturesDisabled
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
-import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.screen.onboarding.buildOnBoardingText
+import com.shifthackz.aisdv1.presentation.screen.onboarding.localDiffusionOnBoardingSpec
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneWidthFraction
@@ -43,9 +43,10 @@ fun LocalDiffusionPageContent(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
+    val spec = localDiffusionOnBoardingSpec()
     Spacer(modifier = Modifier.weight(1f))
     Text(
-        text = buildOnBoardingText(Localization.string("on_boarding_page_local_title")),
+        text = buildOnBoardingText(Localization.string(spec.titleKey)),
         fontSize = 24.sp,
         textAlign = TextAlign.Center,
         fontWeight = FontWeight(450),
@@ -61,7 +62,7 @@ fun LocalDiffusionPageContent(
                     modifier = phoneModifier,
                     state = TextToImageState(
                         loadingConfiguration = false,
-                        mode = ServerSource.LOCAL_MICROSOFT_ONNX,
+                        mode = spec.serverSource,
                         prompt = "man, photorealistic, black hair, aviator glasses, handsome, beautiful, nature background",
                         negativePrompt = "bad anatomy, bad fingers, distorted, jpeg artifacts",
                     ),
@@ -79,7 +80,7 @@ fun LocalDiffusionPageContent(
                         contentAlignment = Alignment.Center,
                     ) {
                         GeneratingProgressDialogContent(
-                            title = Localization.string("communicating_local_title").asUiText(),
+                            title = Localization.string(spec.progressTitleKey).asUiText(),
                             step = 3 to 20,
                         )
                     }

@@ -49,6 +49,12 @@ interface PreferenceManager {
      */
     var localMediaPipeCustomModelPath: String
     /**
+     * Exposes the `localCoreMlCustomModelPath` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localCoreMlCustomModelPath: String
+    /**
      * Exposes the `localOnnxCustomModelPath` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz
@@ -174,6 +180,12 @@ interface PreferenceManager {
      * @author Dmitriy Moroz
      */
     var localMediaPipeModelId: String
+    /**
+     * Exposes the `localCoreMlModelId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localCoreMlModelId: String
     /**
      * Exposes the `designUseSystemColorPalette` value used by the SDAI domain layer.
      *

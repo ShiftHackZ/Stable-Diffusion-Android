@@ -51,7 +51,8 @@ data class LocalAiModel(
 ) {
     enum class Type(val key: String) {
         ONNX("onnx"),
-        MediaPipe("mediapipe");
+        MediaPipe("mediapipe"),
+        CoreMl("coreml");
 
         companion object {
             fun parse(value: String?) = entries.find { it.key == value } ?: ONNX
@@ -70,6 +71,14 @@ data class LocalAiModel(
         val CustomMediaPipe = LocalAiModel(
             id = "CUSTOM_MP",
             type = Type.MediaPipe,
+            name = "Custom",
+            size = "NaN",
+            sources = emptyList(),
+        )
+
+        val CustomCoreMl = LocalAiModel(
+            id = "CUSTOM_CORE_ML",
+            type = Type.CoreMl,
             name = "Custom",
             size = "NaN",
             sources = emptyList(),

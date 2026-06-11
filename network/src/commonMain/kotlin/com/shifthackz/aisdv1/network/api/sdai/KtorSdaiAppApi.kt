@@ -96,6 +96,19 @@ class KtorSdaiAppApi(
         .body()
 
     /**
+     * Loads SDAI data through `fetchCoreMlModels`.
+     *
+     * @return Result produced by `fetchCoreMlModels`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun fetchCoreMlModels(): List<DownloadableModelResponse> = httpClient
+        .get {
+            url.takeFrom(appBaseUrl)
+            url.appendPathSegments(PATH_CORE_ML)
+        }
+        .body()
+
+    /**
      * Executes the `postReport` step in the SDAI network layer.
      *
      * @param request request value consumed by the API.
@@ -134,6 +147,12 @@ class KtorSdaiAppApi(
          * @author Dmitriy Moroz
          */
         const val PATH_MEDIA_PIPE = "mediapipe.json"
+        /**
+         * Exposes the `PATH_CORE_ML` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val PATH_CORE_ML = "coreml.json"
         /**
          * Exposes the `PATH_REPORT` value used by the SDAI network layer.
          *

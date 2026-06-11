@@ -385,6 +385,18 @@ data class ServerSetupStrings(
      */
     val mediaPipeSubtitle: String = Localization.string("hint_mediapipe_sub_title"),
     /**
+     * Exposes the `coreMlTitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val coreMlTitle: String = "Silicon Diffusion Core ML",
+    /**
+     * Exposes the `coreMlSubtitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val coreMlSubtitle: String = "Local generation on iPhone and iPad.",
+    /**
      * Exposes the `localWarning` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz

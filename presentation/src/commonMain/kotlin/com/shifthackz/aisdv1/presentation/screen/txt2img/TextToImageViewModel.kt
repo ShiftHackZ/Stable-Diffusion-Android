@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.mvi.BaseMviViewModel
 import com.shifthackz.aisdv1.core.mvi.EmptyEffect
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
+import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
@@ -13,6 +14,7 @@ import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveCoreMlProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
@@ -86,6 +88,12 @@ class TextToImageViewModel(
      * @author Dmitriy Moroz
      */
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    /**
+     * Exposes the `observeCoreMlProcessStatusUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val observeCoreMlProcessStatusUseCase: ObserveCoreMlProcessStatusUseCase,
     /**
      * Exposes the `preferenceManager` value used by the SDAI presentation layer.
      *
@@ -258,14 +266,23 @@ class TextToImageViewModel(
         }
         launch(dispatchersProvider.immediate) {
             observeLocalDiffusionProcessStatusUseCase().collect { status ->
-                updateState { state ->
-                    val modal = state.screenModal
-                    if (modal is GenerationModal.Generating) {
-                        state.copy(screenModal = modal.copy(status = status))
-                    } else {
-                        state
-                    }
-                }
+                updateLocalGenerationStatus(status)
+            }
+        }
+        launch(dispatchersProvider.immediate) {
+            observeCoreMlProcessStatusUseCase().collect { status ->
+                updateLocalGenerationStatus(status)
+            }
+        }
+    }
+
+    private fun updateLocalGenerationStatus(status: LocalDiffusionStatus) {
+        updateState { state ->
+            val modal = state.screenModal
+            if (modal is GenerationModal.Generating) {
+                state.copy(screenModal = modal.copy(status = status))
+            } else {
+                state
             }
         }
     }

@@ -75,11 +75,29 @@ internal class DownloadableModelRepositoryImpl(
     }
 
     /**
+     * Loads SDAI data through `getAllCoreMl`.
+     *
+     * @return Result produced by `getAllCoreMl`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getAllCoreMl(): List<LocalAiModel> {
+        refreshCache()
+        return localDataSource.getAllCoreMl()
+    }
+
+    /**
      * Loads SDAI data through `observeAllOnnx`.
      *
      * @author Dmitriy Moroz
      */
     override fun observeAllOnnx() = localDataSource.observeAllOnnx()
+
+    /**
+     * Loads SDAI data through `observeAllCoreMl`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override fun observeAllCoreMl() = localDataSource.observeAllCoreMl()
 
     /**
      * Executes the `refreshCache` step in the SDAI data layer.

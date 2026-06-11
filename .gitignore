@@ -142,3 +142,10 @@ jacoco.exec
 # Fastlane
 fastlane/report.xml
 .kotlin
+
+# Swift Package Manager / Xcode user state
+**/.swiftpm/
+**/.build/
+xcuserdata/
+*.xcuserdatad/
+*.xcuserstate

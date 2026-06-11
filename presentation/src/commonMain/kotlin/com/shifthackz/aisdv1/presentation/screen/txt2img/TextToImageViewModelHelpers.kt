@@ -88,10 +88,13 @@ internal data class StableDiffusionSamplersKey(
  */
 internal fun TextToImageState.progressModal(
     canCancelLocalGeneration: Boolean,
-): GenerationModal = if (localSourceSelected) {
-    GenerationModal.Generating(canCancel = canCancelLocalGeneration)
-} else {
-    GenerationModal.Communicating()
+): GenerationModal = when {
+    mode == ServerSource.LOCAL_APPLE_CORE_ML -> GenerationModal.Generating(
+        title = Localization.string("communicating_core_ml_title").asUiText(),
+        canCancel = canCancelLocalGeneration,
+    )
+    localSourceSelected -> GenerationModal.Generating(canCancel = canCancelLocalGeneration)
+    else -> GenerationModal.Communicating()
 }
 
 /**

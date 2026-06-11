@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.domain.repository
 
 import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
+import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -53,4 +54,46 @@ object NoOpMediaPipeGenerationRepository : MediaPipeGenerationRepository {
      */
     override suspend fun generateFromText(payload: TextToImagePayload) =
         error("MediaPipe generation is available on Android only.")
+}
+
+/**
+ * Provides the `NoOpCoreMlGenerationRepository` singleton used by the SDAI domain layer.
+ *
+ * @throws IllegalStateException when the current state is invalid.
+ * @author Dmitriy Moroz
+ */
+object NoOpCoreMlGenerationRepository : CoreMlGenerationRepository {
+    /**
+     * Loads SDAI data through `observeStatus`.
+     *
+     * @return Result produced by `observeStatus`.
+     * @author Dmitriy Moroz
+     */
+    override fun observeStatus(): Flow<LocalDiffusionStatus> =
+        flowOf(LocalDiffusionStatus(current = 0, total = 0))
+
+    /**
+     * Executes the `generateFromText` step in the SDAI domain layer.
+     *
+     * @param payload generation payload used by the operation.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun generateFromText(payload: TextToImagePayload) =
+        error("Silicon Diffusion Core ML generation is available on iOS only.")
+
+    /**
+     * Executes the `generateFromImage` step in the SDAI domain layer.
+     *
+     * @param payload generation payload used by the operation.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun generateFromImage(payload: ImageToImagePayload) =
+        error("Silicon Diffusion Core ML generation is available on iOS only.")
+
+    /**
+     * Performs the SDAI side effect handled by `interruptGeneration`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override suspend fun interruptGeneration() = Unit
 }

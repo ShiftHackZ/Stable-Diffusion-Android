@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.mocks.mockAiGenerationResult
 import com.shifthackz.aisdv1.domain.mocks.mockImageToImagePayload
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
@@ -27,6 +28,7 @@ class ImageToImageUseCaseImplTest {
     private val stubHordeGenerationRepository = mockk<HordeGenerationRepository>()
     private val stubHuggingFaceGenerationRepository = mockk<HuggingFaceGenerationRepository>()
     private val stubStabilityAiGenerationRepository = mockk<StabilityAiGenerationRepository>()
+    private val stubCoreMlGenerationRepository = mockk<CoreMlGenerationRepository>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
 
     private val useCase = ImageToImageUseCaseImpl(
@@ -35,6 +37,7 @@ class ImageToImageUseCaseImplTest {
         hordeGenerationRepository = stubHordeGenerationRepository,
         huggingFaceGenerationRepository = stubHuggingFaceGenerationRepository,
         stabilityAiGenerationRepository = stubStabilityAiGenerationRepository,
+        coreMlGenerationRepository = stubCoreMlGenerationRepository,
         preferenceManager = stubPreferenceManager,
     )
 
@@ -91,6 +94,17 @@ class ImageToImageUseCaseImplTest {
 
         assertEquals(listOf(mockAiGenerationResult), actual)
         coVerify(exactly = 1) { stubStabilityAiGenerationRepository.generateFromImage(any()) }
+    }
+
+    @Test
+    fun `given source is LOCAL_APPLE_CORE_ML, expected core ml generation`() = runTest {
+        every { stubPreferenceManager.source } returns ServerSource.LOCAL_APPLE_CORE_ML
+        coEvery { stubCoreMlGenerationRepository.generateFromImage(any()) } returns mockAiGenerationResult
+
+        val actual = useCase(mockImageToImagePayload.copy(batchCount = 1))
+
+        assertEquals(listOf(mockAiGenerationResult), actual)
+        coVerify(exactly = 1) { stubCoreMlGenerationRepository.generateFromImage(any()) }
     }
 
     @Test

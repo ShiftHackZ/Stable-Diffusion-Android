@@ -7,13 +7,17 @@ import com.shifthackz.aisdv1.data.mocks.mockLocalAiModels
 import com.shifthackz.aisdv1.data.mocks.mockLocalModelEntities
 import com.shifthackz.aisdv1.data.mocks.mockLocalModelEntity
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
+import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -43,6 +47,10 @@ class DownloadableModelLocalDataSourceTest {
 
         every {
             stubPreferenceManager.localMediaPipeModelId
+        } returns ""
+
+        every {
+            stubPreferenceManager.localCoreMlModelId
         } returns ""
 
         every { stubFileStore.isDownloaded(any()) } returns false
@@ -252,6 +260,47 @@ class DownloadableModelLocalDataSourceTest {
         val actual = runCatching { localDataSource.observeAllOnnx().toList() }
 
         Assert.assertSame(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
+    fun `given attempt to observe all core ml models, preference changes, expected local state refreshed`() = runTest {
+        val coreMlEntity = mockLocalModelEntity.copy(type = LocalAiModel.Type.CoreMl.key)
+        val coreMlModel = coreMlEntity.mapEntityToDomain()
+        var selectedModelId = ""
+
+        every {
+            stubDao.observeByType(LocalAiModel.Type.CoreMl.key)
+        } returns flow {
+            emit(listOf(coreMlEntity))
+            awaitCancellation()
+        }
+
+        every {
+            stubPreferenceManager.observe()
+        } returns flow {
+            emit(Settings())
+            delay(1L)
+            selectedModelId = coreMlEntity.id
+            emit(Settings(languageCode = "refresh"))
+        }
+
+        every {
+            stubPreferenceManager.localCoreMlModelId
+        } answers { selectedModelId }
+
+        every {
+            stubFileStore.isDownloaded(match { model -> model.id == coreMlEntity.id })
+        } answers { selectedModelId == coreMlEntity.id }
+
+        val actual = localDataSource.observeAllCoreMl().take(2).toList()
+
+        Assert.assertEquals(
+            listOf(
+                listOf(coreMlModel),
+                listOf(coreMlModel.copy(downloaded = true, selected = true)),
+            ),
+            actual,
+        )
     }
 
     @Test

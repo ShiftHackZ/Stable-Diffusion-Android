@@ -58,7 +58,8 @@ fun GenerationInputForm(
                 ServerSource.SWARM_UI,
                 ServerSource.STABILITY_AI,
                 ServerSource.HUGGING_FACE,
-                ServerSource.LOCAL_MICROSOFT_ONNX -> EngineSelectionComponent(
+                ServerSource.LOCAL_MICROSOFT_ONNX,
+                ServerSource.LOCAL_APPLE_CORE_ML -> EngineSelectionComponent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
@@ -118,7 +119,8 @@ fun GenerationInputForm(
             ServerSource.SWARM_UI,
             ServerSource.HUGGING_FACE,
             ServerSource.STABILITY_AI,
-            ServerSource.LOCAL_MICROSOFT_ONNX -> {
+            ServerSource.LOCAL_MICROSOFT_ONNX,
+            ServerSource.LOCAL_APPLE_CORE_ML -> {
                 if (state.formPromptTaggedInput) {
                     ChipTextFieldWithItem(
                         modifier = Modifier

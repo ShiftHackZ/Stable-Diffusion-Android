@@ -179,6 +179,18 @@ data class ServerSetupState(
      */
     val localMediaPipeCustomModelPath: String = "",
     /**
+     * Exposes the `localCoreMlModels` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localCoreMlModels: List<LocalModel> = emptyList(),
+    /**
+     * Exposes the `localCoreMlCustomModelPath` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localCoreMlCustomModelPath: String = "",
+    /**
      * Exposes the `passwordVisible` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -247,31 +259,33 @@ data class ServerSetupState(
 ) : MviState {
 
     val localCustomModel: Boolean
-        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
-            localOnnxCustomModel
-        } else {
-            localMediaPipeCustomModel
+        get() = when (mode) {
+            ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxCustomModel
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeCustomModel
+            else -> false
         }
 
     val localCustomModelPath: String
-        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
-            localOnnxCustomModelPath
-        } else {
-            localMediaPipeCustomModelPath
+        get() = when (mode) {
+            ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxCustomModelPath
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeCustomModelPath
+            ServerSource.LOCAL_APPLE_CORE_ML -> localCoreMlCustomModelPath
+            else -> ""
         }
 
     val localModels: List<LocalModel>
-        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
-            localOnnxModels
-        } else {
-            localMediaPipeModels
+        get() = when (mode) {
+            ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxModels
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeModels
+            ServerSource.LOCAL_APPLE_CORE_ML -> localCoreMlModels
+            else -> emptyList()
         }
 
     val localCustomModelPathValidationError: ValidationError?
-        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
-            localCustomOnnxPathValidationError
-        } else {
-            localCustomMediaPipePathValidationError
+        get() = when (mode) {
+            ServerSource.LOCAL_MICROSOFT_ONNX -> localCustomOnnxPathValidationError
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localCustomMediaPipePathValidationError
+            else -> null
         }
 
     fun withCredentials(value: AuthorizationCredentials): ServerSetupState = when (value) {
@@ -300,6 +314,8 @@ data class ServerSetupState(
             localCustomMediaPipePathValidationError = null,
         )
 
+        ServerSource.LOCAL_APPLE_CORE_ML -> copy(localCoreMlCustomModelPath = value)
+
         else -> this
     }
 
@@ -310,6 +326,10 @@ data class ServerSetupState(
 
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
             localMediaPipeModels = localMediaPipeModels.withCommonNewState(value),
+        )
+
+        ServerSource.LOCAL_APPLE_CORE_ML -> copy(
+            localCoreMlModels = localCoreMlModels.withCommonNewState(value),
         )
 
         else -> this
@@ -336,6 +356,16 @@ data class ServerSetupState(
             ),
         )
 
+        ServerSource.LOCAL_APPLE_CORE_ML -> copy(
+            modal = Modal.None,
+            localCoreMlModels = localCoreMlModels.withCommonNewState(
+                value.copy(
+                    downloadState = DownloadState.Unknown,
+                    downloaded = false,
+                ),
+            ),
+        )
+
         else -> copy(modal = Modal.None)
     }
 
@@ -346,6 +376,10 @@ data class ServerSetupState(
 
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
             localMediaPipeModels = localMediaPipeModels.withCommonNewState(value.copy(selected = true)),
+        )
+
+        ServerSource.LOCAL_APPLE_CORE_ML -> copy(
+            localCoreMlModels = localCoreMlModels.withCommonNewState(value.copy(selected = true)),
         )
 
         else -> this
@@ -430,6 +464,7 @@ data class ServerSetupState(
  * @param huggingFaceModels hugging face models value consumed by the API.
  * @param localOnnxModels local onnx models value consumed by the API.
  * @param localMediaPipeModels local media pipe models value consumed by the API.
+ * @param localCoreMlModels local core ml models value consumed by the API.
  * @param allowLocalCustomModels allow local custom models value consumed by the API.
  * @param demoModeUrl demo mode url value consumed by the API.
  * @param showBackNavArrow show back nav arrow value consumed by the API.
@@ -441,6 +476,7 @@ fun Configuration.toServerSetupState(
     huggingFaceModels: List<String>,
     localOnnxModels: List<LocalAiModel> = emptyList(),
     localMediaPipeModels: List<LocalAiModel> = emptyList(),
+    localCoreMlModels: List<LocalAiModel> = emptyList(),
     allowLocalCustomModels: Boolean = true,
     demoModeUrl: String = "",
     showBackNavArrow: Boolean = false,
@@ -476,6 +512,8 @@ fun Configuration.toServerSetupState(
         localMediaPipeModels = localMediaPipeModels.mapToCommonSetupModels(),
         localMediaPipeCustomModel = localMediaPipeModels.hasCommonSelectedCustomModel(LocalAiModel.CustomMediaPipe.id),
         localMediaPipeCustomModelPath = localMediaPipeModelPath,
+        localCoreMlModels = localCoreMlModels.mapToCommonSetupModels(),
+        localCoreMlCustomModelPath = localCoreMlModelPath,
         openAiApiKey = openAiApiKey,
         stabilityAiApiKey = stabilityAiApiKey,
         demoMode = demoMode,

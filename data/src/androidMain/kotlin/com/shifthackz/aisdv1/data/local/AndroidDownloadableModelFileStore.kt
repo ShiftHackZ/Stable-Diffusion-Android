@@ -28,7 +28,9 @@ internal class AndroidDownloadableModelFileStore(
     override fun isDownloaded(model: LocalAiModel): Boolean = try {
         when (model.id) {
             LocalAiModel.CustomOnnx.id,
-            LocalAiModel.CustomMediaPipe.id -> true
+            LocalAiModel.CustomMediaPipe.id,
+            LocalAiModel.CustomCoreMl.id,
+            -> true
 
             else -> when (model.type) {
                 LocalAiModel.Type.ONNX -> {
@@ -37,6 +39,11 @@ internal class AndroidDownloadableModelFileStore(
                 }
 
                 LocalAiModel.Type.MediaPipe -> {
+                    val files = getLocalModelFiles(model.id)
+                    files.isNotEmpty()
+                }
+
+                LocalAiModel.Type.CoreMl -> {
                     val files = getLocalModelFiles(model.id)
                     files.isNotEmpty()
                 }

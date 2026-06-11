@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.generation
 
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
@@ -19,12 +20,14 @@ class InterruptGenerationUseCaseImplTest {
     private val stubStableDiffusionGenerationRepository = mockk<StableDiffusionGenerationRepository>()
     private val stubHordeGenerationRepository = mockk<HordeGenerationRepository>()
     private val stubLocalDiffusionGenerationRepository = mockk<LocalDiffusionGenerationRepository>()
+    private val stubCoreMlGenerationRepository = mockk<CoreMlGenerationRepository>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
 
     private val useCase = InterruptGenerationUseCaseImpl(
         stableDiffusionGenerationRepository = stubStableDiffusionGenerationRepository,
         hordeGenerationRepository = stubHordeGenerationRepository,
         localDiffusionGenerationRepository = stubLocalDiffusionGenerationRepository,
+        coreMlGenerationRepository = stubCoreMlGenerationRepository,
         preferenceManager = stubPreferenceManager,
     )
 
@@ -59,6 +62,16 @@ class InterruptGenerationUseCaseImplTest {
     }
 
     @Test
+    fun `given source is LOCAL_APPLE_CORE_ML, expected core ml interrupt`() = runTest {
+        every { stubPreferenceManager.source } returns ServerSource.LOCAL_APPLE_CORE_ML
+        coEvery { stubCoreMlGenerationRepository.interruptGeneration() } returns Unit
+
+        useCase()
+
+        coVerify(exactly = 1) { stubCoreMlGenerationRepository.interruptGeneration() }
+    }
+
+    @Test
     fun `given interrupt fails, expected error propagated`() = runTest {
         every { stubPreferenceManager.source } returns ServerSource.AUTOMATIC1111
         coEvery { stubStableDiffusionGenerationRepository.interruptGeneration() } throws stubException
@@ -77,5 +90,6 @@ class InterruptGenerationUseCaseImplTest {
         coVerify(exactly = 0) { stubStableDiffusionGenerationRepository.interruptGeneration() }
         coVerify(exactly = 0) { stubHordeGenerationRepository.interruptGeneration() }
         coVerify(exactly = 0) { stubLocalDiffusionGenerationRepository.interruptGeneration() }
+        coVerify(exactly = 0) { stubCoreMlGenerationRepository.interruptGeneration() }
     }
 }

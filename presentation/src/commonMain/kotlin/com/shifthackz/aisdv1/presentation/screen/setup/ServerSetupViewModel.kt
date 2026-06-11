@@ -16,10 +16,12 @@ import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToCoreMlUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCase
@@ -81,6 +83,12 @@ class ServerSetupViewModel(
      */
     private val getLocalMediaPipeModelsUseCase: GetLocalMediaPipeModelsUseCase,
     /**
+     * Exposes the `getLocalCoreMlModelsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val getLocalCoreMlModelsUseCase: GetLocalCoreMlModelsUseCase,
+    /**
      * Exposes the `fetchHuggingFaceModelsUseCase` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -140,6 +148,12 @@ class ServerSetupViewModel(
      * @author Dmitriy Moroz
      */
     private val connectToMediaPipeUseCase: ConnectToMediaPipeUseCase,
+    /**
+     * Exposes the `connectToCoreMlUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val connectToCoreMlUseCase: ConnectToCoreMlUseCase,
     /**
      * Exposes the `connectToOpenAiUseCase` value used by the SDAI presentation layer.
      *
@@ -220,6 +234,11 @@ class ServerSetupViewModel(
                 } else {
                     emptyList()
                 }
+                val coreMlModels = if (ServerSource.LOCAL_APPLE_CORE_ML in allowedModes) {
+                    getLocalCoreMlModelsUseCase()
+                } else {
+                    emptyList()
+                }
                 val models = runCatching {
                     withTimeout(HUGGING_FACE_MODELS_TIMEOUT_MILLIS) {
                         fetchHuggingFaceModelsUseCase()
@@ -233,6 +252,7 @@ class ServerSetupViewModel(
                     huggingFaceModels = models,
                     localOnnxModels = onnxModels,
                     localMediaPipeModels = mediaPipeModels,
+                    localCoreMlModels = coreMlModels,
                     allowLocalCustomModels = buildInfoProvider.type != BuildType.PLAY,
                     demoModeUrl = linksProvider.demoModeUrl,
                     showBackNavArrow = launchSource == LaunchSource.SETTINGS,
@@ -303,6 +323,7 @@ class ServerSetupViewModel(
                     ServerSource.STABILITY_AI -> connectToStabilityAi()
                     ServerSource.LOCAL_MICROSOFT_ONNX -> connectToLocalDiffusion()
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> connectToMediaPipe()
+                    ServerSource.LOCAL_APPLE_CORE_ML -> connectToCoreMl()
                 }
             } catch (t: Throwable) {
                 if (t is CancellationException) throw t
@@ -374,6 +395,11 @@ class ServerSetupViewModel(
     private suspend fun connectToMediaPipe(): Result<Unit> = connectToMediaPipeUseCase(
         modelId = currentState.localMediaPipeModels.find { it.selected }?.id.orEmpty(),
         modelPath = currentState.localMediaPipeCustomModelPath,
+    )
+
+    private suspend fun connectToCoreMl(): Result<Unit> = connectToCoreMlUseCase(
+        modelId = currentState.localCoreMlModels.find { it.selected }?.id.orEmpty(),
+        modelPath = currentState.localCoreMlCustomModelPath,
     )
 
     private fun localModelDownloadClickReducer(value: ServerSetupState.LocalModel) {

@@ -23,7 +23,7 @@ The recommended direction is to proceed with an iOS-first local provider. The sa
 - avoids external paid unlocking for models or features unless routed through Apple's in-app purchase rules;
 - includes App Review notes explaining the local generation flow and how reviewers can exercise it.
 
-For public UI/metadata, prefer Apple's official spelling `Core ML` over `CoreML`.
+For framework references, prefer Apple's official spelling `Core ML`. For the app provider branding, use `Silicon Diffusion Core ML`.
 
 ## Evidence
 
@@ -59,6 +59,16 @@ Use IAP if monetizing. Free model downloads from the app or user imports are low
 
 Document review access. App Review notes should explain that this is an offline Core ML provider, what device/iOS version is needed, how to download/import a test model, and whether a demo model is bundled.
 
+## Initial Model Catalog Policy
+
+The first downloadable Core ML catalog should stay limited to official Apple/Hugging Face Core ML Stable Diffusion archives that are published as compiled zip packages for Swift apps. This keeps the distribution story narrow: base Stable Diffusion models, converted to Core ML by Apple/Hugging Face, with visible model cards and license metadata.
+
+The catalog can include the Apple Core ML Stable Diffusion palettized 1.4, 1.5, 2.0, and 2.1 base models. These are still content-generating models and can produce objectionable output depending on prompt and safety settings, so keep safety filtering enabled by default and keep the app's age-rating and generated-content reporting flow aligned with App Store metadata.
+
+SDXL should stay out of the first-party catalog for now. Device testing on an iPhone18,1 showed that `SDXL Base Mixed-Bit Palettized` can terminate the process under memory pressure, while `SDXL Base` fails Core ML execution-plan compilation for `Unet.mlmodelc/model.mil` with error code `-14`. Keep both ids disabled until the runtime has a tested reduced-memory path or a device-gated compatibility policy.
+
+Do not add random community anime, realistic, celebrity, adult, or merged checkpoints to the first-party catalog unless their license, redistribution rights, training/content profile, and App Store safety posture are reviewed separately. User-import remains the lower-risk path for unknown third-party models.
+
 ## Risk Register
 
 | Area | Risk | Level | Mitigation |
@@ -75,11 +85,11 @@ Document review access. App Review notes should explain that this is an offline 
 ## Recommended Implementation Path
 
 1. Add an iOS-only `Local Core ML` provider shell behind provider availability checks.
-2. Start with text-to-image using the Apple/Hugging Face documented Stable Diffusion 2.1 Core ML path before SDXL.
+2. Start with text-to-image using the Apple/Hugging Face documented Stable Diffusion 2.1 Core ML path.
 3. Add model manager UX: download/import, verify, delete, show license/source/size/device requirements.
 4. Keep prompts/images on device and avoid telemetry in the first version.
 5. Add img2img/inpaint only after text-to-image is stable, because image preprocessing and memory pressure add review and QA surface.
-6. Keep SDXL as a later option: Apple benchmarks show it works on iOS, but latency/model size make it a heavier first release.
+6. Keep SDXL as a later option only after device-gated QA proves it does not crash or fail execution-plan compilation.
 
 ## Sources
 

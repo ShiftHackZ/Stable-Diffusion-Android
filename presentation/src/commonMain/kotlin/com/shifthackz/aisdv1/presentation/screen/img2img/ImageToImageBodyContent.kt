@@ -211,9 +211,14 @@ internal fun ImageInputSection(
             if (image != null) {
                 SelectedImageInput(
                     image = image,
-                    inPaint = state.inPaint,
+                    inPaint = if (state.sourceSupportsInPaint) {
+                        state.inPaint
+                    } else {
+                        ImageInPaintState()
+                    },
                     strings = strings,
                     enabled = !state.generating,
+                    inPaintVisible = state.sourceSupportsInPaint,
                     onInPaintClick = onInPaintClick,
                     onClearClick = { processIntent(ImageToImageIntent.ClearImageInput) },
                 )
@@ -287,6 +292,7 @@ internal fun EmptyImageInputActions(
  * @param inPaint in paint value consumed by the API.
  * @param strings strings value consumed by the API.
  * @param enabled enabled value consumed by the API.
+ * @param inPaintVisible whether inpaint controls are available for the active provider.
  * @param onInPaintClick callback invoked by the component.
  * @param onClearClick callback invoked by the component.
  * @author Dmitriy Moroz
@@ -297,6 +303,7 @@ internal fun SelectedImageInput(
     inPaint: ImageInPaintState,
     strings: ImageToImageStrings,
     enabled: Boolean,
+    inPaintVisible: Boolean,
     onInPaintClick: () -> Unit,
     onClearClick: () -> Unit,
 ) {
@@ -316,23 +323,25 @@ internal fun SelectedImageInput(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            OutlinedButton(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(48.dp),
-                enabled = enabled,
-                onClick = onInPaintClick,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Brush,
-                    contentDescription = null,
-                )
-                Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = strings.inPaint,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+            if (inPaintVisible) {
+                OutlinedButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(48.dp),
+                    enabled = enabled,
+                    onClick = onInPaintClick,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Brush,
+                        contentDescription = null,
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = strings.inPaint,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
             OutlinedButton(
                 modifier = Modifier
@@ -355,4 +364,3 @@ internal fun SelectedImageInput(
         }
     }
 }
-

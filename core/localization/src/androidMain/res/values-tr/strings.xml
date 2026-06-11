@@ -275,6 +275,7 @@
     <string name="communicating_progress_sub_title">Bu biraz zaman alabilir.</string>
     <string name="communicating_random_image_title">Rastgele resim getiriliyor…</string>
     <string name="communicating_local_title">Çalışan Local Diffusion</string>
+    <string name="communicating_core_ml_title">Silicon Diffusion üretimi</string>
     <string name="communicating_wait_time">Bekleme zamanı: %1$s</string>
     <string name="communicating_status_queue">Sıradaki konumu: %1$s</string>
     <string name="communicating_status_steps">Adım: %1$s/%2$s</string>
@@ -411,6 +412,7 @@
     <string name="on_boarding_page_universal_ios">iOS</string>
     <string name="on_boarding_page_form_title">Gelişmiş Özellikler\n[Kararlı Dağıtım].</string>
     <string name="on_boarding_page_local_title">[Çevrimdışı] nesil\nYerel Dağıtım.</string>
+    <string name="on_boarding_page_core_ml_title">[Çevrimdışı] Silicon Diffusion\nüretimi.</string>
     <string name="on_boarding_page_ui_title">Uygulamayı özelleştirin,\n[kendinizin] yapın!</string>
     <string name="on_boarding_page_provider_title">Nesil sağlayıcıyı\nseçme [Özgürlüğü].</string>
 

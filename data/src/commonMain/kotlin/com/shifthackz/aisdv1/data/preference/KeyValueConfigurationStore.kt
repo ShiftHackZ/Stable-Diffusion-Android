@@ -154,6 +154,24 @@ internal class KeyValueConfigurationStore(
         set(value) = keyValueStore.putString(KEY_MEDIA_PIPE_CUSTOM_MODEL_PATH, value)
 
     /**
+     * Exposes the `localCoreMlModelId` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var localCoreMlModelId: String
+        get() = keyValueStore.getString(KEY_CORE_ML_MODEL_ID)
+        set(value) = keyValueStore.putString(KEY_CORE_ML_MODEL_ID, value)
+
+    /**
+     * Exposes the `localCoreMlModelPath` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var localCoreMlModelPath: String
+        get() = keyValueStore.getString(KEY_CORE_ML_CUSTOM_MODEL_PATH)
+        set(value) = keyValueStore.putString(KEY_CORE_ML_CUSTOM_MODEL_PATH, value)
+
+    /**
      * Executes the `fixUrlSlashes` step in the SDAI data layer.
      *
      * @return Result produced by `fixUrlSlashes`.
@@ -210,6 +228,12 @@ internal class KeyValueConfigurationStore(
          */
         const val KEY_MEDIA_PIPE_CUSTOM_MODEL_PATH = "key_mediapipe_custom_model_path"
         /**
+         * Exposes the `KEY_CORE_ML_CUSTOM_MODEL_PATH` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_CORE_ML_CUSTOM_MODEL_PATH = "key_core_ml_custom_model_path"
+        /**
          * Exposes the `KEY_SERVER_SOURCE` value used by the SDAI data layer.
          *
          * @author Dmitriy Moroz
@@ -257,6 +281,12 @@ internal class KeyValueConfigurationStore(
          * @author Dmitriy Moroz
          */
         const val KEY_MEDIA_PIPE_MODEL_ID = "key_mediapipe_model_id"
+        /**
+         * Exposes the `KEY_CORE_ML_MODEL_ID` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_CORE_ML_MODEL_ID = "key_core_ml_model_id"
         /**
          * Exposes the `KEY_LOCAL_MODEL_ID` value used by the SDAI data layer.
          *
