@@ -413,7 +413,7 @@ data class ServerSetupStrings(
      *
      * @author Dmitriy Moroz
      */
-    val coreMlSubtitle: String = "Local generation on iPhone and iPad.",
+    val coreMlSubtitle: String = Localization.string("hint_core_ml_sub_title"),
     /**
      * Exposes the `localWarning` value used by the SDAI presentation layer.
      *

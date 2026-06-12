@@ -221,6 +221,7 @@
 
     <string name="hint_mediapipe_title" translatable="false">Local Diffusion Google AI MediaPipe</string>
     <string name="hint_mediapipe_sub_title">This configuration uses Google AI MediaPipe and allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud.</string>
+    <string name="hint_core_ml_sub_title">Local generation on iPhone.</string>
 
     <string name="drawer_web_ui">Web UI</string>
 

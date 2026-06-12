@@ -63,6 +63,7 @@
     <string name="action_skip">跳过</string>
     <string name="action_undo">撤销</string>
     <string name="action_clear">清除</string>
+    <string name="action_draw">绘制</string>
     <string name="action_options_show">显示高级选项</string>
     <string name="action_options_hide">隐藏高级选项</string>
     <string name="action_image_picker_gallery">选择照片</string>
@@ -73,6 +74,9 @@
     <string name="action_menu">菜单</string>
     <string name="action_copy">复制</string>
     <string name="action_refresh">刷新</string>
+    <string name="action_install_instructions">安装</string>
+    <string name="action_swap_dimensions">交换宽度和高度</string>
+    <string name="action_aspect_ratio">宽高比</string>
     <string name="action_scroll_to_top">滚动到顶部</string>
     <string name="action_scroll_to_bottom">滚动到底部</string>
     <string name="action_send">发送</string>
@@ -100,6 +104,7 @@
     <string name="error_img2img_openai_unsupported">此应用不支持 OpenAI 的 image-to-image。</string>
     <string name="error_img2img_local_android_only">Local Diffusion image-to-image 仅在 Android 上可用。</string>
     <string name="error_img2img_select_input">请先选择输入图像。</string>
+    <string name="error_generation_out_of_memory">服务器的 GPU 内存不足。请减小图像尺寸、Hires 缩放/步数，或关闭 Hires.Fix。</string>
     <string name="error_source_android_only">此提供商目前仅支持 Android。</string>
     <string name="error_source_img2img_unsupported">此提供商在这里不支持 image-to-image。</string>
     <string name="setup_localhost_url_title">Localhost URL</string>
@@ -116,6 +121,7 @@
     <!-- 提示信息 -->
     <string name="hint_prompt">提示文本</string>
     <string name="hint_prompt_negative">负面提示文本</string>
+    <string name="hint_zoom">缩放: %1$sx</string>
     <string name="hint_sampling_steps">采样步数: %1$s</string>
     <string name="hint_batch">批量: %1$s</string>
     <string name="hint_batch_tag">批量</string>
@@ -124,9 +130,21 @@
     <string name="hint_own_server">个人服务器</string>
     <string name="hint_cfg_scale">CFG 缩放: %1$s</string>
     <string name="hint_sampler">采样方法</string>
+    <string name="hint_scheduler">调度器</string>
+    <string name="hint_forge_modules">Forge 模块</string>
     <string name="hint_style_preset">风格预设</string>
     <string name="hint_clip_guidance_preset">Clip 引导预设</string>
     <string name="hint_restore_faces">恢复面孔</string>
+    <string name="hint_hires_enabled">Hires 修复</string>
+    <string name="hint_hires_upscaler">Hires 放大器</string>
+    <string name="hint_hires_scale">Hires 缩放: %1$s</string>
+    <string name="hint_hires_steps">Hires 步数: %1$s</string>
+    <string name="hint_hires_denoising">Hires 降噪: %1$s</string>
+    <string name="hint_adetailer_enabled">ADetailer</string>
+    <string name="hint_adetailer_model">ADetailer 模型</string>
+    <string name="hint_adetailer_confidence">ADetailer 置信度: %1$s</string>
+    <string name="hint_adetailer_denoising">ADetailer 降噪: %1$s</string>
+    <string name="hint_adetailer_not_installed">未安装 ADetailer</string>
     <string name="hint_seed">种子</string>
     <string name="hint_sub_seed">变体种子</string>
     <string name="hint_nsfw">允许 NSFW 内容</string>
@@ -138,6 +156,9 @@
     <string name="hint_password">密码</string>
     <string name="hint_model_open_ai">OpenAI 模型</string>
     <string name="hint_image_size">图像大小</string>
+    <string name="hint_fal_ai_endpoint">Fal.ai 端点</string>
+    <string name="hint_fal_ai_acceleration">加速</string>
+    <string name="hint_fal_ai_sync_mode">同步模式</string>
     <string name="title_input_image">输入图像</string>
     <string name="hint_quality">质量</string>
     <string name="hint_style">风格</string>
@@ -183,6 +204,11 @@
     <string name="hint_open_ai_sub_title">OpenAI 服务支持使用 GPT Image 模型生成图像。</string>
     <string name="hint_open_ai_about">关于 OpenAI</string>
 
+    <!-- Fal.ai连接提示 -->
+    <string name="hint_fal_ai_title">连接到 Fal.ai</string>
+    <string name="hint_fal_ai_sub_title">Fal.ai 提供托管的图像生成模型 API，并使用基于队列的推理。</string>
+    <string name="hint_fal_ai_about">Fal.ai API 密钥</string>
+
     <!-- Stability AI连接提示 -->
     <string name="hint_stability_ai_title">连接到 Stability AI</string>
     <string name="hint_stability_ai_sub_title">StabilityAI 是由 DreamStudio 提供的图像生成服务。</string>
@@ -198,6 +224,7 @@
     <string name="hint_local_diffusion_warning">警告！Local Diffusion 功能处于测试版。可能无法获得高质量图像。\n\n此功能在资源受限设备上可能不及预期。生成性能和速度取决于您的手机资源（CPU、RAM）和生成的图像大小（图像越小，生成越快）。</string>
 
     <string name="hint_mediapipe_sub_title">此配置使用 Google AI MediaPipe 运行时，您可以在手机端运行 Stable Diffusion AI 的生成功能，而无需连接至远程服务器/云。</string>
+    <string name="hint_core_ml_sub_title">在 iPhone 上进行本地生成。</string>
 
     <!-- 抽屉 -->
     <string name="drawer_web_ui">网络界面</string>
@@ -214,6 +241,8 @@
     <string name="gallery_tab_info">信息</string>
     <string name="gallery_action_report">举报</string>
     <string name="gallery_action_blur">模糊</string>
+    <string name="gallery_action_like">点赞</string>
+    <string name="gallery_action_unlike">取消点赞</string>
     <string name="gallery_action_delete">删除</string>
 
     <!-- 界面标题 -->
@@ -238,6 +267,7 @@
     <string name="gallery_media_store_banner">您在 Download/SDAI 中保存了%1$s张照片。</string>
     <string name="gallery_info_field_date">创建日期</string>
     <string name="gallery_info_field_type">类型</string>
+    <string name="gallery_info_field_model">模型</string>
     <string name="gallery_info_field_prompt">提示文本</string>
     <string name="gallery_info_field_negative_prompt">负面提示文本</string>
     <string name="gallery_info_field_size">大小</string>

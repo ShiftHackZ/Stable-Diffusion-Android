@@ -54,7 +54,7 @@
     <string name="action_skip">Пропустити</string>
     <string name="action_undo">Скасувати</string>
     <string name="action_clear">Очистити</string>
-    <string name="action_draw">Draw</string>
+    <string name="action_draw">Малювати</string>
     <string name="action_options_show">Показати всі опції</string>
     <string name="action_options_hide">Сховати всі опції</string>
     <string name="action_image_picker_gallery">Вибрати фото</string>
@@ -105,7 +105,7 @@
 
     <string name="hint_prompt">Запит</string>
     <string name="hint_prompt_negative">Негативний запит</string>
-    <string name="hint_zoom">Zoom: %1$sx</string>
+    <string name="hint_zoom">Масштаб: %1$sx</string>
     <string name="hint_sampling_steps">Етапи вибірки: %1$s</string>
     <string name="hint_batch">Кількість генерацій: %1$s</string>
     <string name="hint_batch_tag">Пакетна генерація</string>
@@ -128,7 +128,7 @@
     <string name="hint_adetailer_model">Модель ADetailer</string>
     <string name="hint_adetailer_confidence">Confidence ADetailer: %1$s</string>
     <string name="hint_adetailer_denoising">Шумозаглушення ADetailer: %1$s</string>
-    <string name="hint_adetailer_not_installed">ADetailer is not installed</string>
+    <string name="hint_adetailer_not_installed">ADetailer не встановлено</string>
     <string name="hint_seed">Seed ідентифікатор</string>
     <string name="hint_sub_seed">Seed варіації</string>
     <string name="hint_nsfw">Дозволити NSFW</string>
@@ -192,13 +192,14 @@
     <string name="hint_stability_ai_about">Про Stability AI</string>
     <string name="hint_stability_ai_engine">Stability AI двигун</string>
 
-    <string name="hint_swarm_ui_title">Provide your Swarm UI URL</string>
+    <string name="hint_swarm_ui_title">Вкажіть URL-адресу Swarm UI</string>
     <string name="hint_swarm_ui_sub_title">Модульний веб-інтерфейс Stable Diffusion з наголосом на полегшення доступу до інструментів, високу продуктивність і розширюваність.</string>
 
     <string name="hint_local_diffusion_sub_title">Ця конфігурація використовує Microsoft ONNX та дозволяє запускати генерації Stable Diffusion на вашому телефоні без необхідності підключатися до віддаленого сервера/хмари.</string>
     <string name="hint_local_diffusion_warning">УВАГА! Функціональність Local Diffusion у бета-тестуванні. Не очікуйте високоякісних зображень у локальному режимі. \n\nЦя реалізація може не працювати належним чином на телефонах із слабкою потужністю. Продуктивність і швидкість генерації залежать від ресурсів вашого телефону (ЦП, ОЗУ) і розміру згенерованого зображення (чим менший розмір зображення, тим швидше генерується).</string>
 
     <string name="hint_mediapipe_sub_title">Ця конфігурація використовує Google AI MediaPipe та дозволяє запускати генерації Stable Diffusion на вашому телефоні без необхідності підключатися до віддаленого сервера/хмари.</string>
+    <string name="hint_core_ml_sub_title">Локальна генерація на iPhone.</string>
 
     <string name="drawer_web_ui">Веб</string>
 

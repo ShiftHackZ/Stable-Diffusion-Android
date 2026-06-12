@@ -52,6 +52,33 @@ enum class ServerSource(
             FeatureTag.Batch,
         ),
     ),
+    LOCAL_MICROSOFT_ONNX(
+        key = "local",
+        featureTags = setOf(
+            FeatureTag.Offline,
+            FeatureTag.Txt2Img,
+            FeatureTag.MultipleModels,
+        ),
+    ),
+    LOCAL_GOOGLE_MEDIA_PIPE(
+        key = "local_google_media_pipe",
+        featureTags = setOf(
+            FeatureTag.Offline,
+            FeatureTag.Txt2Img,
+            FeatureTag.MultipleModels,
+        ),
+        allowedInBuilds = setOf(BuildType.PLAY, BuildType.FULL),
+    ),
+    LOCAL_APPLE_CORE_ML(
+        key = "local_apple_core_ml",
+        featureTags = setOf(
+            FeatureTag.Offline,
+            FeatureTag.Txt2Img,
+            FeatureTag.Img2Img,
+            FeatureTag.MultipleModels,
+            FeatureTag.Batch,
+        ),
+    ),
     HORDE(
         key = "horde",
         featureTags = setOf(
@@ -91,32 +118,6 @@ enum class ServerSource(
             FeatureTag.Txt2Img,
             FeatureTag.Img2Img,
             FeatureTag.Batch,
-        ),
-    ),
-    LOCAL_MICROSOFT_ONNX(
-        key = "local",
-        featureTags = setOf(
-            FeatureTag.Offline,
-            FeatureTag.Txt2Img,
-            FeatureTag.MultipleModels,
-        ),
-    ),
-    LOCAL_GOOGLE_MEDIA_PIPE(
-        key = "local_google_media_pipe",
-        featureTags = setOf(
-            FeatureTag.Offline,
-            FeatureTag.Txt2Img,
-            FeatureTag.MultipleModels,
-        ),
-        allowedInBuilds = setOf(BuildType.PLAY, BuildType.FULL),
-    ),
-    LOCAL_APPLE_CORE_ML(
-        key = "local_apple_core_ml",
-        featureTags = setOf(
-            FeatureTag.Offline,
-            FeatureTag.Txt2Img,
-            FeatureTag.Img2Img,
-            FeatureTag.MultipleModels,
         ),
     );
 

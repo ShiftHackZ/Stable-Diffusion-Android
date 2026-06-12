@@ -54,7 +54,7 @@
     <string name="action_skip">Пропустить</string>
     <string name="action_undo">Отменить</string>
     <string name="action_clear">Очистить</string>
-    <string name="action_draw">Draw</string>
+    <string name="action_draw">Рисовать</string>
     <string name="action_options_show">Показать все опции</string>
     <string name="action_options_hide">Скрыть все опции</string>
     <string name="action_image_picker_gallery">Выбрать фото</string>
@@ -105,7 +105,7 @@
 
     <string name="hint_prompt">Запрос</string>
     <string name="hint_prompt_negative">Отрицательный запрос</string>
-    <string name="hint_zoom">Zoom: %1$sx</string>
+    <string name="hint_zoom">Масштаб: %1$sx</string>
     <string name="hint_sampling_steps">Этапы выборки: %1$s</string>
     <string name="hint_batch">Кол-во генераций: %1$s</string>
     <string name="hint_batch_tag">Пакетная генерация</string>
@@ -128,7 +128,7 @@
     <string name="hint_adetailer_model">Модель ADetailer</string>
     <string name="hint_adetailer_confidence">Confidence ADetailer: %1$s</string>
     <string name="hint_adetailer_denoising">Шумоподавление ADetailer: %1$s</string>
-    <string name="hint_adetailer_not_installed">ADetailer is not installed</string>
+    <string name="hint_adetailer_not_installed">ADetailer не установлен</string>
     <string name="hint_seed">Seed идентификатор</string>
     <string name="hint_sub_seed">Seed вариации</string>
     <string name="hint_nsfw">Разрешить NSFW</string>
@@ -199,6 +199,7 @@
     <string name="hint_local_diffusion_warning">ВНИМАНИЕ! Функциональность Local Diffusion в бета-тестировании. Не ожидайте высококачественных изображений в локальном режиме. \n\nЭта реализация может не работать должным образом на мобильных телефонах. Производительность и скорость генерации зависят от ресурсов вашего телефона (ЦП, ОЗУ) и размера сгенерированного изображения (чем меньше размер изображения, тем быстрее генерируется).</string>
 
     <string name="hint_mediapipe_sub_title">Эта конфигурация использует Google AI MediaPipe и позволяет запускать генерации Stable Diffusion на вашем телефоне без необходимости подключаться к удаленному серверу/облаку.</string>
+    <string name="hint_core_ml_sub_title">Локальная генерация на iPhone.</string>
 
     <string name="drawer_web_ui">Веб</string>
 

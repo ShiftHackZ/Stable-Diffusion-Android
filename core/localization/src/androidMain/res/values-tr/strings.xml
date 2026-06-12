@@ -54,6 +54,7 @@
     <string name="action_skip">Atla</string>
     <string name="action_undo">Geri alma</string>
     <string name="action_clear">Temizlemek</string>
+    <string name="action_draw">Çiz</string>
     <string name="action_options_show">Gelişmiş seçenekleri göster</string>
     <string name="action_options_hide">Gelişmiş seçenekleri gizle</string>
     <string name="action_image_picker_gallery">Fotoğraf seç</string>
@@ -64,6 +65,9 @@
     <string name="action_menu">Menü</string>
     <string name="action_copy">Kopyala</string>
     <string name="action_refresh">Yenile</string>
+    <string name="action_install_instructions">Yükle</string>
+    <string name="action_swap_dimensions">Genişlik ve yüksekliği değiştir</string>
+    <string name="action_aspect_ratio">En-boy oranı</string>
     <string name="action_scroll_to_top">Yukarı kaydır</string>
     <string name="action_scroll_to_bottom">Aşağı kaydır</string>
     <string name="action_send">Gönder</string>
@@ -91,6 +95,7 @@
     <string name="error_img2img_openai_unsupported">Bu uygulamada OpenAI için image-to-image desteklenmiyor.</string>
     <string name="error_img2img_local_android_only">Local Diffusion image-to-image yalnızca Android üzerinde kullanılabilir.</string>
     <string name="error_img2img_select_input">Önce bir giriş görüntüsü seçin.</string>
+    <string name="error_generation_out_of_memory">Sunucunun GPU belleği tükendi. Görüntü boyutunu, Hires ölçeğini/adımlarını azaltın veya Hires.Fix\'i devre dışı bırakın.</string>
     <string name="error_source_android_only">Bu sağlayıcı şimdilik yalnızca Android üzerinde kullanılabilir.</string>
     <string name="error_source_img2img_unsupported">Bu sağlayıcı burada image-to-image desteklemiyor.</string>
     <string name="setup_localhost_url_title">Localhost URL</string>
@@ -100,6 +105,7 @@
 
     <string name="hint_prompt">İstem (prompt)</string>
     <string name="hint_prompt_negative">Negatif istem</string>
+    <string name="hint_zoom">Yakınlaştırma: %1$sx</string>
     <string name="hint_sampling_steps">Örnekleme Adım Sayısı: %1$s</string>
     <string name="hint_batch">Grup: %1$s</string>
     <string name="hint_batch_tag">Toplu üretim</string>
@@ -108,9 +114,21 @@
     <string name="hint_own_server">Kendi Sunucumuz</string>
     <string name="hint_cfg_scale">CFG Scale: %1$s</string>
     <string name="hint_sampler">Örneklerme Yöntemi</string>
+    <string name="hint_scheduler">Zamanlayıcı</string>
+    <string name="hint_forge_modules">Forge modülleri</string>
     <string name="hint_style_preset">Stil ön ayarı</string>
     <string name="hint_clip_guidance_preset">Klip yönlendirme ön ayarı</string>
     <string name="hint_restore_faces">Yüzleri Düzelt</string>
+    <string name="hint_hires_enabled">Hires düzeltmesi</string>
+    <string name="hint_hires_upscaler">Hires ölçekleyici</string>
+    <string name="hint_hires_scale">Hires ölçeği: %1$s</string>
+    <string name="hint_hires_steps">Hires adımları: %1$s</string>
+    <string name="hint_hires_denoising">Hires gürültü giderme: %1$s</string>
+    <string name="hint_adetailer_enabled">ADetailer</string>
+    <string name="hint_adetailer_model">ADetailer modeli</string>
+    <string name="hint_adetailer_confidence">ADetailer güveni: %1$s</string>
+    <string name="hint_adetailer_denoising">ADetailer gürültü giderme: %1$s</string>
+    <string name="hint_adetailer_not_installed">ADetailer yüklü değil</string>
     <string name="hint_seed">Başlangıç Noktası (Seed)</string>
     <string name="hint_sub_seed">Varyasyon Noktası (Variation seed)</string>
     <string name="hint_nsfw">İzin vermek NSFW</string>
@@ -122,6 +140,9 @@
     <string name="hint_password">Şifre</string>
     <string name="hint_model_open_ai">OpenAI modeli</string>
     <string name="hint_image_size">Görüntü boyutu</string>
+    <string name="hint_fal_ai_endpoint">Fal.ai uç noktası</string>
+    <string name="hint_fal_ai_acceleration">Hızlandırma</string>
+    <string name="hint_fal_ai_sync_mode">Senkronizasyon modu</string>
     <string name="title_input_image">Girdi görüntüsü</string>
     <string name="hint_quality">Kalite</string>
     <string name="hint_style">Stil</string>
@@ -162,6 +183,10 @@
     <string name="hint_open_ai_sub_title">OpenAI hizmeti GPT Image modelleriyle görüntü oluşturmayı sağlar.</string>
     <string name="hint_open_ai_about">OpenAI hakkında</string>
 
+    <string name="hint_fal_ai_title">Fal.ai\'ye bağlanın</string>
+    <string name="hint_fal_ai_sub_title">Fal.ai, kuyruk tabanlı çıkarım kullanan barındırılan görüntü oluşturma modeli API\'leri sağlar.</string>
+    <string name="hint_fal_ai_about">Fal.ai API anahtarları</string>
+
     <string name="hint_stability_ai_title">Stability AI\'ya bağlanın</string>
     <string name="hint_stability_ai_sub_title">StabilityAI - DreamStudio tarafından sağlanan görüntü oluşturma hizmetidir.</string>
     <string name="hint_stability_ai_about">Hakkında Stability AI</string>
@@ -174,6 +199,7 @@
     <string name="hint_local_diffusion_warning">Uyarı! Yerel Yayılma işlevi beta testindedir. Yerel modu kullanarak yüksek kaliteli görüntüler beklemeyin. \n\nBu uygulama, güçlü olmayan telefonlarda iyi çalışmayabilir. Oluşturma performansı ve hızı, telefonunuzun kaynaklarına (CPU, RAM) ve oluşturulan görüntünün boyutuna bağlıdır (görüntü boyutu ne kadar küçükse, oluşturma o kadar hızlı olur).</string>
 
     <string name="hint_mediapipe_sub_title">Bu yapılandırma Google AI MediaPipe çalışma zamanını kullanır ve uzak bir sunucuya/buluta bağlanmaya gerek kalmadan telefonunuzda Stable Diffusion AI nesillerini çalıştırmanıza olanak tanır.</string>
+    <string name="hint_core_ml_sub_title">iPhone üzerinde yerel üretim.</string>
 
     <string name="drawer_web_ui">Web arayüzü</string>
 
@@ -187,6 +213,8 @@
     <string name="gallery_tab_info">Bilgi</string>
     <string name="gallery_action_report">Bildir</string>
     <string name="gallery_action_blur">Bulanık</string>
+    <string name="gallery_action_like">Beğen</string>
+    <string name="gallery_action_unlike">Beğeniyi kaldır</string>
     <string name="gallery_action_delete">Sil</string>
 
     <string name="title_text_to_image">Yazıdan Resime</string>
@@ -209,6 +237,7 @@
     <string name="gallery_media_store_banner">Kayıtlı %1$s fotoğrafınız var Download/SDAI</string>
     <string name="gallery_info_field_date">Oluşturulma</string>
     <string name="gallery_info_field_type">Tür</string>
+    <string name="gallery_info_field_model">Model</string>
     <string name="gallery_info_field_prompt">İstem</string>
     <string name="gallery_info_field_negative_prompt">Negatif istem</string>
     <string name="gallery_info_field_size">Boyut</string>
