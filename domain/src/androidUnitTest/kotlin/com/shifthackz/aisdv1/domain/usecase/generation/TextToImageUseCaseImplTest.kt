@@ -12,6 +12,7 @@ import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepositor
 import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.StableDiffusionCppGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
 import io.mockk.coEvery
@@ -35,6 +36,7 @@ class TextToImageUseCaseImplTest {
     private val stubSwarmUiGenerationRepository = mockk<SwarmUiGenerationRepository>()
     private val stubLocalDiffusionGenerationRepository = mockk<LocalDiffusionGenerationRepository>()
     private val stubMediaPipeGenerationRepository = mockk<MediaPipeGenerationRepository>()
+    private val stubStableDiffusionCppGenerationRepository = mockk<StableDiffusionCppGenerationRepository>()
     private val stubCoreMlGenerationRepository = mockk<CoreMlGenerationRepository>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
 
@@ -48,6 +50,7 @@ class TextToImageUseCaseImplTest {
         localDiffusionGenerationRepository = stubLocalDiffusionGenerationRepository,
         swarmUiGenerationRepository = stubSwarmUiGenerationRepository,
         mediaPipeGenerationRepository = stubMediaPipeGenerationRepository,
+        stableDiffusionCppGenerationRepository = stubStableDiffusionCppGenerationRepository,
         coreMlGenerationRepository = stubCoreMlGenerationRepository,
         preferenceManager = stubPreferenceManager,
     )
@@ -149,6 +152,17 @@ class TextToImageUseCaseImplTest {
 
         assertEquals(listOf(mockAiGenerationResult), actual)
         coVerify(exactly = 1) { stubMediaPipeGenerationRepository.generateFromText(any()) }
+    }
+
+    @Test
+    fun `given source is LOCAL_STABLE_DIFFUSION_CPP, expected stable diffusion cpp generation`() = runTest {
+        every { stubPreferenceManager.source } returns ServerSource.LOCAL_STABLE_DIFFUSION_CPP
+        coEvery { stubStableDiffusionCppGenerationRepository.generateFromText(any()) } returns mockAiGenerationResult
+
+        val actual = useCase(mockTextToImagePayload.copy(batchCount = 1))
+
+        assertEquals(listOf(mockAiGenerationResult), actual)
+        coVerify(exactly = 1) { stubStableDiffusionCppGenerationRepository.generateFromText(any()) }
     }
 
     @Test

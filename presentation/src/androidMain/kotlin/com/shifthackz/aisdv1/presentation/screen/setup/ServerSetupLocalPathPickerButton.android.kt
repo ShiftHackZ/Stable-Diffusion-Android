@@ -1,6 +1,8 @@
 package com.shifthackz.aisdv1.presentation.screen.setup
 
 import android.content.Intent
+import android.os.Build
+import android.os.Environment
 import android.provider.DocumentsContract
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -59,7 +61,8 @@ internal actual fun ServerSetupLocalPathPickerButton(
  * @return Result produced by `isLocalGenerationSetupAvailable`.
  * @author Dmitriy Moroz
  */
-internal actual fun isLocalGenerationSetupAvailable(): Boolean = true
+internal actual fun isLocalGenerationSetupAvailable(): Boolean =
+    Build.VERSION.SDK_INT < Build.VERSION_CODES.R || Environment.isExternalStorageManager()
 
 /**
  * Executes the `isServerSourceAvailableOnPlatform` step in the SDAI presentation layer.

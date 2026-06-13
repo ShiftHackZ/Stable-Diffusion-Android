@@ -85,6 +85,7 @@ scripts/*.local
 *.swp
 
 # External native build folder generated in Android Studio 2.2 and later
+.cxx/
 
 # NDK
 obj/

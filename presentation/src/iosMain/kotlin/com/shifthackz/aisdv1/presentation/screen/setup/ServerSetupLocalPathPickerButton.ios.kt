@@ -48,6 +48,7 @@ internal actual fun isLocalGenerationSetupAvailable(): Boolean = false
 internal actual fun isServerSourceAvailableOnPlatform(source: ServerSource): Boolean = when (source) {
     ServerSource.LOCAL_MICROSOFT_ONNX,
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+    ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
     -> false
 
     ServerSource.LOCAL_APPLE_CORE_ML -> isCoreMlRuntimeAvailable()

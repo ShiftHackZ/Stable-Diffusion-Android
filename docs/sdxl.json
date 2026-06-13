@@ -1,0 +1,42 @@
+[
+  {
+    "id": "lcm-ssd-1b-q4-k-gguf",
+    "name": "LCM SSD-1B Q4_K GGUF",
+    "size": "2.23 GB",
+    "sources": [
+      "https://huggingface.co/OlegSkutte/LCM-SSD-1B-GGUF/resolve/main/lcm-ssd-1b.q4_k.gguf"
+    ]
+  },
+  {
+    "id": "sdxl-lightning-4step-q8-gguf",
+    "name": "SDXL Lightning 4-Step Q8_0 GGUF",
+    "size": "4.10 GB",
+    "sources": [
+      "https://huggingface.co/OlegSkutte/SDXL-Lightning-GGUF/resolve/main/sdxl_lightning_4step.q8_0.gguf"
+    ]
+  },
+  {
+    "id": "sdxl-turbo-q8-gguf",
+    "name": "SDXL Turbo Q8_0 GGUF",
+    "size": "4.10 GB",
+    "sources": [
+      "https://huggingface.co/OlegSkutte/sdxl-turbo-GGUF/resolve/main/sd_xl_turbo_1.0.q8_0.gguf"
+    ]
+  },
+  {
+    "id": "segmind-ssd-1b-a1111",
+    "name": "Segmind SSD-1B A1111 Safetensors",
+    "size": "4.47 GB",
+    "sources": [
+      "https://huggingface.co/segmind/SSD-1B/resolve/main/SSD-1B-A1111.safetensors"
+    ]
+  },
+  {
+    "id": "stabilityai-sdxl-turbo-fp16",
+    "name": "SDXL Turbo FP16 Safetensors",
+    "size": "6.94 GB",
+    "sources": [
+      "https://huggingface.co/stabilityai/sdxl-turbo/resolve/main/sd_xl_turbo_1.0_fp16.safetensors"
+    ]
+  }
+]

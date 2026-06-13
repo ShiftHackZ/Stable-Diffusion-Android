@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalSdxlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToCoreMlUseCase
@@ -28,6 +29,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToMediaPipeUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToOpenAiUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSdxlUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToStabilityAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSwarmUiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
@@ -83,6 +85,12 @@ class ServerSetupViewModel(
      * @author Dmitriy Moroz
      */
     private val getLocalMediaPipeModelsUseCase: GetLocalMediaPipeModelsUseCase,
+    /**
+     * Exposes the `getLocalSdxlModelsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val getLocalSdxlModelsUseCase: GetLocalSdxlModelsUseCase,
     /**
      * Exposes the `getLocalCoreMlModelsUseCase` value used by the SDAI presentation layer.
      *
@@ -149,6 +157,12 @@ class ServerSetupViewModel(
      * @author Dmitriy Moroz
      */
     private val connectToMediaPipeUseCase: ConnectToMediaPipeUseCase,
+    /**
+     * Exposes the `connectToSdxlUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val connectToSdxlUseCase: ConnectToSdxlUseCase,
     /**
      * Exposes the `connectToCoreMlUseCase` value used by the SDAI presentation layer.
      *
@@ -241,6 +255,11 @@ class ServerSetupViewModel(
                 } else {
                     emptyList()
                 }
+                val sdxlModels = if (ServerSource.LOCAL_STABLE_DIFFUSION_CPP in allowedModes) {
+                    getLocalSdxlModelsUseCase()
+                } else {
+                    emptyList()
+                }
                 val coreMlModels = if (ServerSource.LOCAL_APPLE_CORE_ML in allowedModes) {
                     getLocalCoreMlModelsUseCase()
                 } else {
@@ -260,6 +279,7 @@ class ServerSetupViewModel(
                     huggingFaceModels = models,
                     localOnnxModels = onnxModels,
                     localMediaPipeModels = mediaPipeModels,
+                    localSdxlModels = sdxlModels,
                     localCoreMlModels = coreMlModels,
                     allowLocalCustomModels = buildInfoProvider.type != BuildType.PLAY,
                     demoModeUrl = linksProvider.demoModeUrl,
@@ -332,6 +352,7 @@ class ServerSetupViewModel(
                     ServerSource.FAL_AI -> connectToFalAi()
                     ServerSource.LOCAL_MICROSOFT_ONNX -> connectToLocalDiffusion()
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> connectToMediaPipe()
+                    ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> connectToSdxl()
                     ServerSource.LOCAL_APPLE_CORE_ML -> connectToCoreMl()
                 }
             } catch (t: Throwable) {
@@ -408,6 +429,11 @@ class ServerSetupViewModel(
     private suspend fun connectToMediaPipe(): Result<Unit> = connectToMediaPipeUseCase(
         modelId = currentState.localMediaPipeModels.find { it.selected }?.id.orEmpty(),
         modelPath = currentState.localMediaPipeCustomModelPath,
+    )
+
+    private suspend fun connectToSdxl(): Result<Unit> = connectToSdxlUseCase(
+        modelId = currentState.localSdxlModels.find { it.selected }?.id.orEmpty(),
+        modelPath = currentState.localSdxlCustomModelPath,
     )
 
     private suspend fun connectToCoreMl(): Result<Unit> = connectToCoreMlUseCase(

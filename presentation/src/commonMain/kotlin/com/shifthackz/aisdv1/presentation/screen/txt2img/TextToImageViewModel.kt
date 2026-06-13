@@ -20,6 +20,7 @@ import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCas
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveCoreMlProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveStableDiffusionCppProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdscript.IsADetailerAvailableUseCase
@@ -104,6 +105,12 @@ class TextToImageViewModel(
      * @author Dmitriy Moroz
      */
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    /**
+     * Exposes the `observeStableDiffusionCppProcessStatusUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val observeStableDiffusionCppProcessStatusUseCase: ObserveStableDiffusionCppProcessStatusUseCase,
     /**
      * Exposes the `observeCoreMlProcessStatusUseCase` value used by the SDAI presentation layer.
      *
@@ -299,6 +306,11 @@ class TextToImageViewModel(
         }
         launch(dispatchersProvider.immediate) {
             observeLocalDiffusionProcessStatusUseCase().collect { status ->
+                updateLocalGenerationStatus(status)
+            }
+        }
+        launch(dispatchersProvider.immediate) {
+            observeStableDiffusionCppProcessStatusUseCase().collect { status ->
                 updateLocalGenerationStatus(status)
             }
         }

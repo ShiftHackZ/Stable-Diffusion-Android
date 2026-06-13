@@ -216,7 +216,9 @@ internal fun SourceSelectionStep(
                 strings = strings,
                 onClick = {
                     coroutineScope.launch {
-                        listState.animateScrollToItem(index)
+                        if (!listState.isItemFullyVisible(index)) {
+                            listState.animateScrollToItem(index)
+                        }
                     }
                     processIntent(ServerSetupIntent.UpdateServerMode(source))
                 },

@@ -158,6 +158,7 @@
     <string name="hint_image_size">图像大小</string>
     <string name="hint_fal_ai_endpoint">Fal.ai 端点</string>
     <string name="hint_fal_ai_acceleration">加速</string>
+    <string name="hint_sdxl_backend">运行时后端</string>
     <string name="hint_fal_ai_sync_mode">同步模式</string>
     <string name="title_input_image">输入图像</string>
     <string name="hint_quality">质量</string>
@@ -224,6 +225,7 @@
     <string name="hint_local_diffusion_warning">警告！Local Diffusion 功能处于测试版。可能无法获得高质量图像。\n\n此功能在资源受限设备上可能不及预期。生成性能和速度取决于您的手机资源（CPU、RAM）和生成的图像大小（图像越小，生成越快）。</string>
 
     <string name="hint_mediapipe_sub_title">此配置使用 Google AI MediaPipe 运行时，您可以在手机端运行 Stable Diffusion AI 的生成功能，而无需连接至远程服务器/云。</string>
+    <string name="hint_sdxl_sub_title">此配置使用 stable-diffusion.cpp，可在手机上运行 SDXL、SDXL-Turbo、LCM 或量化 GGUF 模型。</string>
     <string name="hint_core_ml_sub_title">在 iPhone 上进行本地生成。</string>
 
     <!-- 抽屉 -->

@@ -263,6 +263,9 @@ internal class TextToImageIntentProcessor(
             is TextToImageIntent.UpdateFalAiAcceleration -> updateState {
                 it.copy(falAiAcceleration = intent.value, message = null)
             }
+            is TextToImageIntent.UpdateSdxlBackend -> updateState {
+                it.copy(sdxlBackend = intent.value, message = null)
+            }
             is TextToImageIntent.UpdateFalAiSyncMode -> updateState {
                 it.copy(falAiSyncMode = intent.value, message = null)
             }

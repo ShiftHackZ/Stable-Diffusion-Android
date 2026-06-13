@@ -109,6 +109,15 @@ internal class PreferenceManagerImpl(
         set(value) = keyValueStore.putString(KEY_LOCAL_DIFFUSION_CUSTOM_MODEL_PATH, value)
 
     /**
+     * Exposes the `localSdxlCustomModelPath` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var localSdxlCustomModelPath: String
+        get() = keyValueStore.getString(KEY_SDXL_CUSTOM_MODEL_PATH, LOCAL_DIFFUSION_CUSTOM_PATH)
+        set(value) = keyValueStore.putString(KEY_SDXL_CUSTOM_MODEL_PATH, value)
+
+    /**
      * Exposes the `localOnnxAllowCancel` value used by the SDAI data layer.
      *
      * @author Dmitriy Moroz
@@ -302,6 +311,15 @@ internal class PreferenceManagerImpl(
     override var localMediaPipeModelId: String
         get() = keyValueStore.getString(KEY_MEDIA_PIPE_MODEL_ID)
         set(value) = putString(KEY_MEDIA_PIPE_MODEL_ID, value)
+
+    /**
+     * Exposes the `localSdxlModelId` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var localSdxlModelId: String
+        get() = keyValueStore.getString(KEY_SDXL_MODEL_ID)
+        set(value) = putString(KEY_SDXL_MODEL_ID, value)
 
     /**
      * Exposes the `localCoreMlModelId` value used by the SDAI data layer.
@@ -550,6 +568,12 @@ internal class PreferenceManagerImpl(
          */
         const val KEY_CORE_ML_CUSTOM_MODEL_PATH = "key_core_ml_custom_model_path"
         /**
+         * Exposes the `KEY_SDXL_CUSTOM_MODEL_PATH` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_SDXL_CUSTOM_MODEL_PATH = "key_sdxl_custom_model_path"
+        /**
          * Exposes the `KEY_ALLOW_LOCAL_DIFFUSION_CANCEL` value used by the SDAI data layer.
          *
          * @author Dmitriy Moroz
@@ -669,6 +693,12 @@ internal class PreferenceManagerImpl(
          * @author Dmitriy Moroz
          */
         const val KEY_CORE_ML_MODEL_ID = "key_core_ml_model_id"
+        /**
+         * Exposes the `KEY_SDXL_MODEL_ID` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_SDXL_MODEL_ID = "key_sdxl_model_id"
         /**
          * Exposes the `KEY_LOCAL_MODEL_ID` value used by the SDAI data layer.
          *

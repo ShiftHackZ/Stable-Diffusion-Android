@@ -26,6 +26,7 @@ internal class IosDownloadableModelFileStore(
         when (model.id) {
             LocalAiModel.CustomOnnx.id,
             LocalAiModel.CustomMediaPipe.id,
+            LocalAiModel.CustomSdxl.id,
             LocalAiModel.CustomCoreMl.id -> true
 
             else -> model.hasDownloadedArchive(
@@ -35,6 +36,11 @@ internal class IosDownloadableModelFileStore(
     } catch (_: Exception) {
         false
     }
+
+    override fun resolvePath(model: LocalAiModel): String =
+        "${fileProviderDescriptor.localModelDirPath}/${model.id}"
+
+    override fun resolveSingleFilePath(path: String): String = path
 
     override fun delete(id: String) {
         NSFileManager.defaultManager.removeItemAtPath(

@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.StableDiffusionCppGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
@@ -86,6 +87,13 @@ internal class TextToImageUseCaseImpl(
      */
     private val mediaPipeGenerationRepository: MediaPipeGenerationRepository,
     /**
+     * Exposes the `stableDiffusionCppGenerationRepository` value used by the SDAI domain layer.
+     *
+     * @throws IllegalStateException when the current state is invalid.
+     * @author Dmitriy Moroz
+     */
+    private val stableDiffusionCppGenerationRepository: StableDiffusionCppGenerationRepository,
+    /**
      * Exposes the `coreMlGenerationRepository` value used by the SDAI domain layer.
      *
      * @throws IllegalStateException when the current state is invalid.
@@ -131,6 +139,7 @@ internal class TextToImageUseCaseImpl(
         ServerSource.STABILITY_AI -> stabilityAiGenerationRepository.generateFromText(payload)
         ServerSource.SWARM_UI -> swarmUiGenerationRepository.generateFromText(payload)
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> mediaPipeGenerationRepository.generateFromText(payload)
+        ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> stableDiffusionCppGenerationRepository.generateFromText(payload)
         ServerSource.LOCAL_APPLE_CORE_ML -> coreMlGenerationRepository.generateFromText(payload)
         ServerSource.AUTOMATIC1111 -> error("Automatic1111 batch must be generated through generateFromText(payload).")
         ServerSource.FAL_AI -> error("Fal.ai batch must be generated through generateFromText(payload).")

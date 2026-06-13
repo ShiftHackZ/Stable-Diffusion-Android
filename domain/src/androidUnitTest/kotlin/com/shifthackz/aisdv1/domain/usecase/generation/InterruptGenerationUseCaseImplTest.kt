@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.StableDiffusionCppGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,6 +21,7 @@ class InterruptGenerationUseCaseImplTest {
     private val stubStableDiffusionGenerationRepository = mockk<StableDiffusionGenerationRepository>()
     private val stubHordeGenerationRepository = mockk<HordeGenerationRepository>()
     private val stubLocalDiffusionGenerationRepository = mockk<LocalDiffusionGenerationRepository>()
+    private val stubStableDiffusionCppGenerationRepository = mockk<StableDiffusionCppGenerationRepository>()
     private val stubCoreMlGenerationRepository = mockk<CoreMlGenerationRepository>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
 
@@ -27,6 +29,7 @@ class InterruptGenerationUseCaseImplTest {
         stableDiffusionGenerationRepository = stubStableDiffusionGenerationRepository,
         hordeGenerationRepository = stubHordeGenerationRepository,
         localDiffusionGenerationRepository = stubLocalDiffusionGenerationRepository,
+        stableDiffusionCppGenerationRepository = stubStableDiffusionCppGenerationRepository,
         coreMlGenerationRepository = stubCoreMlGenerationRepository,
         preferenceManager = stubPreferenceManager,
     )
@@ -62,6 +65,16 @@ class InterruptGenerationUseCaseImplTest {
     }
 
     @Test
+    fun `given source is LOCAL_STABLE_DIFFUSION_CPP, expected stable diffusion cpp interrupt`() = runTest {
+        every { stubPreferenceManager.source } returns ServerSource.LOCAL_STABLE_DIFFUSION_CPP
+        coEvery { stubStableDiffusionCppGenerationRepository.interruptGeneration() } returns Unit
+
+        useCase()
+
+        coVerify(exactly = 1) { stubStableDiffusionCppGenerationRepository.interruptGeneration() }
+    }
+
+    @Test
     fun `given source is LOCAL_APPLE_CORE_ML, expected core ml interrupt`() = runTest {
         every { stubPreferenceManager.source } returns ServerSource.LOCAL_APPLE_CORE_ML
         coEvery { stubCoreMlGenerationRepository.interruptGeneration() } returns Unit
@@ -90,6 +103,7 @@ class InterruptGenerationUseCaseImplTest {
         coVerify(exactly = 0) { stubStableDiffusionGenerationRepository.interruptGeneration() }
         coVerify(exactly = 0) { stubHordeGenerationRepository.interruptGeneration() }
         coVerify(exactly = 0) { stubLocalDiffusionGenerationRepository.interruptGeneration() }
+        coVerify(exactly = 0) { stubStableDiffusionCppGenerationRepository.interruptGeneration() }
         coVerify(exactly = 0) { stubCoreMlGenerationRepository.interruptGeneration() }
     }
 }

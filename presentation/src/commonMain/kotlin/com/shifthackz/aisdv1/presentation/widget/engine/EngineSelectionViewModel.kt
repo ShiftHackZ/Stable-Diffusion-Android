@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.feature.coreml.CoreMlModelSupport
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalSdxlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
@@ -55,6 +56,12 @@ class EngineSelectionViewModel(
      * @author Dmitriy Moroz
      */
     private val observeLocalCoreMlModelsUseCase: ObserveLocalCoreMlModelsUseCase,
+    /**
+     * Exposes the `observeLocalSdxlModelsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val observeLocalSdxlModelsUseCase: ObserveLocalSdxlModelsUseCase,
     /**
      * Exposes the `fetchAndGetStabilityAiEnginesUseCase` value used by the SDAI presentation layer.
      *
@@ -119,6 +126,14 @@ class EngineSelectionViewModel(
                 onError(it)
                 emit(emptyList())
             }
+        val localSdxlModels = observeLocalSdxlModelsUseCase()
+            .map { models ->
+                models.filter(LocalAiModel::downloaded)
+            }
+            .catch {
+                onError(it)
+                emit(emptyList())
+            }
         val localCoreMlModels = observeLocalCoreMlModelsUseCase()
             .map { models ->
                 models
@@ -133,8 +148,12 @@ class EngineSelectionViewModel(
         launch(dispatchersProvider.io) {
             configuration
                 .combine(localAiModels) { config, localModels -> config to localModels }
-                .combine(localCoreMlModels) { (config, localModels), coreMlModels ->
+                .combine(localSdxlModels) { (config, localModels), sdxlModels ->
+                    Triple(config, localModels, sdxlModels)
+                }
+                .combine(localCoreMlModels) { (config, localModels, sdxlModels), coreMlModels ->
                     val visibleLocalModels = when (config.source) {
+                        ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> sdxlModels
                         ServerSource.LOCAL_APPLE_CORE_ML -> coreMlModels
                         else -> localModels
                     }
@@ -214,6 +233,7 @@ class EngineSelectionViewModel(
 
             ServerSource.LOCAL_MICROSOFT_ONNX,
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+            ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
             ServerSource.LOCAL_APPLE_CORE_ML,
             ServerSource.HORDE,
             ServerSource.OPEN_AI,
@@ -230,6 +250,7 @@ class EngineSelectionViewModel(
                 intent.value.safeHuggingFaceModelAlias()
             ServerSource.STABILITY_AI -> preferenceManager.stabilityAiEngineId = intent.value
             ServerSource.LOCAL_MICROSOFT_ONNX -> preferenceManager.localOnnxModelId = intent.value
+            ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> preferenceManager.localSdxlModelId = intent.value
             ServerSource.LOCAL_APPLE_CORE_ML -> preferenceManager.localCoreMlModelId = intent.value
             else -> Unit
         }
@@ -291,6 +312,7 @@ private const val REMOTE_OPTIONS_TIMEOUT_MILLIS = 5_000L
  * @author Dmitriy Moroz
  */
 private fun Configuration.selectedLocalModelId(): String = when (source) {
+    ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> localSdxlModelId
     ServerSource.LOCAL_APPLE_CORE_ML -> localCoreMlModelId
     else -> localOnnxModelId
 }

@@ -36,6 +36,14 @@ class DownloadableModelRemoteDataSourceTest {
             stubApi.fetchMediaPipeModels()
         } returns mockDownloadableModelsResponse
 
+        coEvery {
+            stubApi.fetchSdxlModels()
+        } returns emptyList()
+
+        coEvery {
+            stubApi.fetchCoreMlModels()
+        } returns emptyList()
+
         val expected = listOf(
             mockDownloadableModelsResponse.mapRawToCheckpointDomain(LocalAiModel.Type.ONNX),
             mockDownloadableModelsResponse.mapRawToCheckpointDomain(LocalAiModel.Type.MediaPipe),
@@ -56,9 +64,69 @@ class DownloadableModelRemoteDataSourceTest {
             stubApi.fetchMediaPipeModels()
         } returns emptyList()
 
+        coEvery {
+            stubApi.fetchSdxlModels()
+        } returns emptyList()
+
+        coEvery {
+            stubApi.fetchCoreMlModels()
+        } returns emptyList()
+
         val actual = remoteDataSource.fetch()
 
         Assert.assertEquals(emptyList<LocalAiModel>(), actual)
+    }
+
+    @Test
+    fun `given attempt to fetch models list, sdxl api returns data, expected sdxl models included`() = runTest {
+        coEvery {
+            stubApi.fetchOnnxModels()
+        } returns emptyList()
+
+        coEvery {
+            stubApi.fetchMediaPipeModels()
+        } returns emptyList()
+
+        coEvery {
+            stubApi.fetchSdxlModels()
+        } returns mockDownloadableModelsResponse
+
+        coEvery {
+            stubApi.fetchCoreMlModels()
+        } returns emptyList()
+
+        val expected = mockDownloadableModelsResponse
+            .mapRawToCheckpointDomain(LocalAiModel.Type.Sdxl)
+
+        val actual = remoteDataSource.fetch()
+
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `given attempt to fetch models list, sdxl api throws error, expected other models returned`() = runTest {
+        coEvery {
+            stubApi.fetchOnnxModels()
+        } returns mockDownloadableModelsResponse
+
+        coEvery {
+            stubApi.fetchMediaPipeModels()
+        } returns emptyList()
+
+        coEvery {
+            stubApi.fetchSdxlModels()
+        } throws stubException
+
+        coEvery {
+            stubApi.fetchCoreMlModels()
+        } returns emptyList()
+
+        val expected = mockDownloadableModelsResponse
+            .mapRawToCheckpointDomain(LocalAiModel.Type.ONNX)
+
+        val actual = remoteDataSource.fetch()
+
+        Assert.assertEquals(expected, actual)
     }
 
     @Test

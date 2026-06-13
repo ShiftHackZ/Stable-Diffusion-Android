@@ -111,6 +111,18 @@ data class Configuration(
      */
     val localMediaPipeModelPath: String = "",
     /**
+     * Exposes the `localSdxlModelId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localSdxlModelId: String = "",
+    /**
+     * Exposes the `localSdxlModelPath` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localSdxlModelPath: String = "",
+    /**
      * Exposes the `localCoreMlModelId` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz

@@ -61,6 +61,12 @@ interface PreferenceManager {
      */
     var localOnnxCustomModelPath: String
     /**
+     * Exposes the `localSdxlCustomModelPath` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localSdxlCustomModelPath: String
+    /**
      * Exposes the `localOnnxAllowCancel` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz
@@ -186,6 +192,12 @@ interface PreferenceManager {
      * @author Dmitriy Moroz
      */
     var localMediaPipeModelId: String
+    /**
+     * Exposes the `localSdxlModelId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localSdxlModelId: String
     /**
      * Exposes the `localCoreMlModelId` value used by the SDAI domain layer.
      *

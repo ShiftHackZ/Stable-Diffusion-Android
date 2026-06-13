@@ -80,6 +80,7 @@ dependencies {
     implementation(project(":feature:coreml"))
     implementation(project(":feature:onnx"))
     implementation(project(":feature:mediapipe"))
+    implementation(project(":feature:sdxl"))
     implementation(project(":feature:work"))
     implementation(project(":data"))
     implementation(project(":demo"))

@@ -30,6 +30,7 @@ internal fun ServerSource.shortTitle(): String = when (this) {
     ServerSource.FAL_AI -> Localization.string("srv_type_fal_ai")
     ServerSource.LOCAL_MICROSOFT_ONNX -> Localization.string("srv_type_local_short")
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
+    ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> Localization.string("srv_type_sdxl_short")
     ServerSource.LOCAL_APPLE_CORE_ML -> "Core ML"
     ServerSource.SWARM_UI -> Localization.string("srv_type_swarm_ui")
 }

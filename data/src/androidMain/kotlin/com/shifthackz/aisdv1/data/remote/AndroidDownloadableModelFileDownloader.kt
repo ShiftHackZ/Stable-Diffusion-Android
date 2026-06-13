@@ -10,6 +10,7 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
@@ -51,7 +52,7 @@ internal class AndroidDownloadableModelFileDownloader(
         url: String,
     ): Flow<DownloadState> = flow {
         val dir = File("${fileProviderDescriptor.localModelDirPath}/$id")
-        val destination = File(getDestinationPath(id))
+        val destination = File(getDestinationPath(id, url))
         if (destination.exists()) destination.delete()
         if (!dir.exists()) dir.mkdirs()
 
@@ -62,8 +63,10 @@ internal class AndroidDownloadableModelFileDownloader(
                 destination = destination,
                 onProgress = { progress -> emit(DownloadState.Downloading(progress)) },
             )
-            complete.unzip()
-            complete.delete()
+            if (complete.extension.equals(ZIP_EXTENSION, ignoreCase = true)) {
+                complete.unzip()
+                complete.delete()
+            }
             emit(DownloadState.Complete(complete.path))
         } catch (e: CancellationException) {
             destination.delete()
@@ -81,8 +84,14 @@ internal class AndroidDownloadableModelFileDownloader(
      * @return Result produced by `getDestinationPath`.
      * @author Dmitriy Moroz
      */
-    private fun getDestinationPath(id: String): String =
-        "${fileProviderDescriptor.localModelDirPath}/$id/model.zip"
+    private fun getDestinationPath(id: String, url: String): String {
+        val fileName = url.toHttpUrlOrNull()
+            ?.pathSegments
+            ?.lastOrNull()
+            ?.takeIf(String::isNotBlank)
+            ?: DEFAULT_MODEL_ARCHIVE
+        return "${fileProviderDescriptor.localModelDirPath}/$id/$fileName"
+    }
 
     /**
      * Executes the `downloadToFile` step in the SDAI data layer.
@@ -109,9 +118,7 @@ internal class AndroidDownloadableModelFileDownloader(
                 throw IllegalStateException("Failed to download model: HTTP ${response.code}")
             }
 
-            val body = response.body ?: throw IllegalStateException(
-                "Failed to download model: empty response body",
-            )
+            val body = response.body
             val totalBytes = body.contentLength()
             val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
             var downloadedBytes = 0L
@@ -163,3 +170,6 @@ internal class AndroidDownloadableModelFileDownloader(
             .build()
     }
 }
+
+private const val ZIP_EXTENSION = "zip"
+private const val DEFAULT_MODEL_ARCHIVE = "model.zip"

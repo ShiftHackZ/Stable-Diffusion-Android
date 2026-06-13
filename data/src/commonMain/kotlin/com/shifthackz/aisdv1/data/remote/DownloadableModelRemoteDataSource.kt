@@ -38,12 +38,17 @@ internal class DownloadableModelRemoteDataSource(
         val mediaPipe = api
             .fetchMediaPipeModels()
             .mapRawToCheckpointDomain(LocalAiModel.Type.MediaPipe)
+        val sdxl = runCatching {
+            api
+                .fetchSdxlModels()
+                .mapRawToCheckpointDomain(LocalAiModel.Type.Sdxl)
+        }.getOrElse { emptyList() }
         val coreMl = runCatching {
             api
                 .fetchCoreMlModels()
                 .mapRawToCheckpointDomain(LocalAiModel.Type.CoreMl)
         }.getOrElse { emptyList() }
-        return onnx + mediaPipe + coreMl
+        return onnx + mediaPipe + sdxl + coreMl
     }
 
     /**

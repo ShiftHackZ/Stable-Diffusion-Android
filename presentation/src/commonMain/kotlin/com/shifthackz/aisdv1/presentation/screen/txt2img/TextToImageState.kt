@@ -14,6 +14,7 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.Scheduler
+import com.shifthackz.aisdv1.domain.entity.SdxlBackend
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
@@ -264,6 +265,12 @@ data class TextToImageState(
      */
     override val falAiSyncMode: Boolean = false,
     /**
+     * Exposes the `sdxlBackend` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val sdxlBackend: SdxlBackend = SdxlBackend.AUTO,
+    /**
      * Exposes the `widthValidationError` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -316,6 +323,7 @@ data class TextToImageState(
     val localSourceSelected: Boolean
         get() = mode == ServerSource.LOCAL_MICROSOFT_ONNX ||
             mode == ServerSource.LOCAL_GOOGLE_MEDIA_PIPE ||
+            mode == ServerSource.LOCAL_STABLE_DIFFUSION_CPP ||
             mode == ServerSource.LOCAL_APPLE_CORE_ML
 
     val hasValidationErrors: Boolean
@@ -358,7 +366,14 @@ internal fun TextToImageState.mapToPayload(): TextToImagePayload = TextToImagePa
         mode == ServerSource.LOCAL_APPLE_CORE_ML ||
         mode == ServerSource.FAL_AI
     ) nsfw else false,
-    batchCount = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) 1 else batchCount,
+    batchCount = if (
+        mode == ServerSource.LOCAL_MICROSOFT_ONNX ||
+        mode == ServerSource.LOCAL_STABLE_DIFFUSION_CPP
+    ) {
+        1
+    } else {
+        batchCount
+    },
     style = null,
     quality = openAiQuality.key.takeIf {
         mode == ServerSource.OPEN_AI && openAiQuality != OpenAiQuality.AUTO
@@ -380,6 +395,9 @@ internal fun TextToImageState.mapToPayload(): TextToImagePayload = TextToImagePa
     } ?: FalAiModel.defaultTextToImage,
     falAiImageSize = falAiImageSize,
     falAiAcceleration = falAiAcceleration,
+    sdxlBackend = sdxlBackend.takeIf {
+        mode == ServerSource.LOCAL_STABLE_DIFFUSION_CPP
+    } ?: SdxlBackend.AUTO,
     falAiSyncMode = falAiSyncMode,
 )
 

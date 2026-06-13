@@ -17,6 +17,22 @@ internal interface DownloadableModelFileStore {
      */
     fun isDownloaded(model: LocalAiModel): Boolean
     /**
+     * Loads SDAI data through `resolvePath`.
+     *
+     * @param model model value consumed by the API.
+     * @return Result produced by `resolvePath`.
+     * @author Dmitriy Moroz
+     */
+    fun resolvePath(model: LocalAiModel): String
+    /**
+     * Loads SDAI data through `resolveSingleFilePath`.
+     *
+     * @param path raw file or directory path used by the operation.
+     * @return Result produced by `resolveSingleFilePath`.
+     * @author Dmitriy Moroz
+     */
+    fun resolveSingleFilePath(path: String): String
+    /**
      * Performs the SDAI side effect handled by `delete`.
      *
      * @param id identifier of the target entity.
@@ -42,7 +58,26 @@ internal object NoOpDownloadableModelFileStore : DownloadableModelFileStore {
     override fun isDownloaded(model: LocalAiModel): Boolean =
         model.id == LocalAiModel.CustomOnnx.id ||
             model.id == LocalAiModel.CustomMediaPipe.id ||
+            model.id == LocalAiModel.CustomSdxl.id ||
             model.id == LocalAiModel.CustomCoreMl.id
+
+    /**
+     * Loads SDAI data through `resolvePath`.
+     *
+     * @param model model value consumed by the API.
+     * @return Result produced by `resolvePath`.
+     * @author Dmitriy Moroz
+     */
+    override fun resolvePath(model: LocalAiModel): String = ""
+
+    /**
+     * Loads SDAI data through `resolveSingleFilePath`.
+     *
+     * @param path raw file or directory path used by the operation.
+     * @return Result produced by `resolveSingleFilePath`.
+     * @author Dmitriy Moroz
+     */
+    override fun resolveSingleFilePath(path: String): String = path
 
     /**
      * Performs the SDAI side effect handled by `delete`.

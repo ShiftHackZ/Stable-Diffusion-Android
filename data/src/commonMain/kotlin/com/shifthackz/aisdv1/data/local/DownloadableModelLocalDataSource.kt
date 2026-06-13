@@ -87,6 +87,24 @@ internal class DownloadableModelLocalDataSource(
         .withLocalData()
 
     /**
+     * Loads SDAI data through `getAllSdxl`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getAllSdxl() = dao
+        .queryByType(LocalAiModel.Type.Sdxl.key)
+        .mapEntityToDomain()
+        .let { models ->
+            buildList {
+                addAll(models)
+                if (buildInfoProvider.type != BuildType.PLAY) {
+                    add(LocalAiModel.CustomSdxl)
+                }
+            }
+        }
+        .withLocalData()
+
+    /**
      * Loads SDAI data through `getAllCoreMl`.
      *
      * @author Dmitriy Moroz
@@ -107,6 +125,7 @@ internal class DownloadableModelLocalDataSource(
         val chain = when (id) {
             LocalAiModel.CustomOnnx.id -> LocalAiModel.CustomOnnx
             LocalAiModel.CustomMediaPipe.id -> LocalAiModel.CustomMediaPipe
+            LocalAiModel.CustomSdxl.id -> LocalAiModel.CustomSdxl
             LocalAiModel.CustomCoreMl.id -> LocalAiModel.CustomCoreMl
             else -> dao
                 .queryById(id)
@@ -122,6 +141,17 @@ internal class DownloadableModelLocalDataSource(
      */
     override suspend fun getSelectedOnnx() = runCatching {
         getById(preferenceManager.localOnnxModelId)
+    }.getOrElse {
+        throw IllegalStateException("No selected model.", it)
+    }
+
+    /**
+     * Loads SDAI data through `getSelectedSdxl`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getSelectedSdxl() = runCatching {
+        getById(preferenceManager.localSdxlModelId)
     }.getOrElse {
         throw IllegalStateException("No selected model.", it)
     }
@@ -153,6 +183,24 @@ internal class DownloadableModelLocalDataSource(
             }
         }
         .map { models -> models.withLocalData() }
+
+    /**
+     * Loads SDAI data through `observeAllSdxl`.
+     *
+     * @return Result produced by `observeAllSdxl`.
+     * @author Dmitriy Moroz
+     */
+    override fun observeAllSdxl(): Flow<List<LocalAiModel>> = dao
+        .observeByType(LocalAiModel.Type.Sdxl.key)
+        .combine(preferenceManager.observe()) { entities, _ ->
+            buildList {
+                addAll(entities.mapEntityToDomain())
+                if (buildInfoProvider.type != BuildType.PLAY) {
+                    add(LocalAiModel.CustomSdxl)
+                }
+            }
+                .withLocalData()
+        }
 
     /**
      * Loads SDAI data through `observeAllCoreMl`.
@@ -209,6 +257,7 @@ internal class DownloadableModelLocalDataSource(
         selected = when (this.type) {
             LocalAiModel.Type.ONNX -> preferenceManager.localOnnxModelId == id
             LocalAiModel.Type.MediaPipe -> preferenceManager.localMediaPipeModelId == id
+            LocalAiModel.Type.Sdxl -> preferenceManager.localSdxlModelId == id
             LocalAiModel.Type.CoreMl -> preferenceManager.localCoreMlModelId == id
         },
     )
@@ -217,6 +266,7 @@ internal class DownloadableModelLocalDataSource(
         val customModelIds = setOf(
             LocalAiModel.CustomOnnx.id,
             LocalAiModel.CustomMediaPipe.id,
+            LocalAiModel.CustomSdxl.id,
             LocalAiModel.CustomCoreMl.id,
         )
     }

@@ -15,6 +15,7 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.Scheduler
+import com.shifthackz.aisdv1.domain.entity.SdxlBackend
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
@@ -287,6 +288,12 @@ data class ImageToImageState(
      * @author Dmitriy Moroz
      */
     override val falAiSyncMode: Boolean = false,
+    /**
+     * Exposes the `sdxlBackend` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val sdxlBackend: SdxlBackend = SdxlBackend.AUTO,
     /**
      * Exposes the `widthValidationError` value used by the SDAI presentation layer.
      *

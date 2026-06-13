@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
 import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.Scheduler
+import com.shifthackz.aisdv1.domain.entity.SdxlBackend
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import org.junit.Assert
 import org.junit.Test
@@ -71,5 +72,25 @@ class TextToImageStateTest {
         ).mapToPayload()
 
         Assert.assertEquals(ADetailerConfig.DISABLED, payload.aDetailer)
+    }
+
+    @Test
+    fun `given SDXL state with Vulkan backend, expected payload preserves backend`() {
+        val payload = TextToImageState(
+            mode = ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
+            sdxlBackend = SdxlBackend.VULKAN,
+        ).mapToPayload()
+
+        Assert.assertEquals(SdxlBackend.VULKAN, payload.sdxlBackend)
+    }
+
+    @Test
+    fun `given non SDXL state with Vulkan backend, expected payload uses Auto backend`() {
+        val payload = TextToImageState(
+            mode = ServerSource.AUTOMATIC1111,
+            sdxlBackend = SdxlBackend.VULKAN,
+        ).mapToPayload()
+
+        Assert.assertEquals(SdxlBackend.AUTO, payload.sdxlBackend)
     }
 }

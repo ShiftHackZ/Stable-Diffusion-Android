@@ -52,6 +52,7 @@ internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent
     is GenerationInputFormEvent.UpdateFalAiModel -> ImageToImageIntent.UpdateFalAiModel(value)
     is GenerationInputFormEvent.UpdateFalAiImageSize -> ImageToImageIntent.UpdateFalAiImageSize(value)
     is GenerationInputFormEvent.UpdateFalAiAcceleration -> ImageToImageIntent.UpdateFalAiAcceleration(value)
+    is GenerationInputFormEvent.UpdateSdxlBackend -> null
     is GenerationInputFormEvent.UpdateFalAiSyncMode -> ImageToImageIntent.UpdateFalAiSyncMode(value)
     is GenerationInputFormEvent.UpdateStabilityAiStyle -> ImageToImageIntent.UpdateStabilityAiStyle(value)
     is GenerationInputFormEvent.UpdateStabilityAiClipGuidance ->
@@ -213,6 +214,7 @@ internal val ServerSource.displayName: String
         ServerSource.FAL_AI -> Localization.string("srv_type_fal_ai")
         ServerSource.LOCAL_MICROSOFT_ONNX -> Localization.string("srv_type_local_short")
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
+        ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> Localization.string("srv_type_sdxl_short")
         ServerSource.LOCAL_APPLE_CORE_ML -> "Core ML"
     }
 
