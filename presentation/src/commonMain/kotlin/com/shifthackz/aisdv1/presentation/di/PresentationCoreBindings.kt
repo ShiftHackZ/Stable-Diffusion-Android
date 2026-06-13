@@ -54,10 +54,10 @@ import com.shifthackz.aisdv1.presentation.screen.logger.LogReader
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.logger.NoOpLogReader
 import com.shifthackz.aisdv1.presentation.screen.logger.NoOpLoggerPlatformActions
-import com.shifthackz.aisdv1.presentation.screen.settings.NoOpSettingsPlatformActions
-import com.shifthackz.aisdv1.presentation.screen.settings.SettingsPlatformActions
-import com.shifthackz.aisdv1.presentation.screen.setup.NoOpServerSetupDownloadGuard
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupDownloadGuard
+import com.shifthackz.aisdv1.presentation.screen.settings.platform.NoOpSettingsPlatformActions
+import com.shifthackz.aisdv1.presentation.screen.settings.platform.SettingsPlatformActions
+import com.shifthackz.aisdv1.presentation.screen.setup.platform.NoOpServerSetupDownloadGuard
+import com.shifthackz.aisdv1.presentation.screen.setup.platform.ServerSetupDownloadGuard
 import com.shifthackz.aisdv1.presentation.screen.txt2img.ImageSaver
 import com.shifthackz.aisdv1.presentation.screen.txt2img.ImageSharer
 import com.shifthackz.aisdv1.presentation.screen.txt2img.createPlatformImageSaver
@@ -66,11 +66,6 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkImageLoader
 import com.shifthackz.aisdv1.presentation.widget.work.NoOpBackgroundWorkImageLoader
 import org.koin.core.module.Module
 
-/**
- * Executes the `registerPresentationCoreBindings` step in the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 internal fun Module.registerPresentationCoreBindings() {
     single<LinksProvider> { DefaultLinksProvider }
     single<BuildInfoProvider> { createPlatformBuildInfoProvider() }

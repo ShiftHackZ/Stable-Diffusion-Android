@@ -4,20 +4,18 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.domain.entity.FeatureTag
 
 /**
- * Converts SDAI data with `mapToUi`.
- *
- * @author Dmitriy Moroz
+ * Maps provider capability tags to localized chip labels.
  */
 fun FeatureTag.mapToUi(): String = Localization.string(
     when (this) {
-        FeatureTag.Txt2Img -> "home_tab_txt_to_img"
-        FeatureTag.Img2Img -> "home_tab_img_to_img"
-        FeatureTag.OwnServer -> "hint_own_server"
-        FeatureTag.Lora -> "title_lora"
-        FeatureTag.TextualInversion -> "title_txt_inversion"
-        FeatureTag.HyperNetworks -> "title_hyper_net"
-        FeatureTag.Batch -> "hint_batch_tag"
-        FeatureTag.MultipleModels -> "hint_multiple_models"
-        FeatureTag.Offline -> "hint_offline_generation"
+        FeatureTag.Txt2Img -> "provider_tag_text_to_image"
+        FeatureTag.Img2Img -> "provider_tag_image_to_image"
+        FeatureTag.OwnServer -> "provider_tag_own_server"
+        FeatureTag.Lora -> "provider_tag_lora"
+        FeatureTag.TextualInversion -> "provider_tag_textual_inversion"
+        FeatureTag.HyperNetworks -> "provider_tag_hypernetworks"
+        FeatureTag.Batch -> "provider_tag_batch"
+        FeatureTag.MultipleModels -> "provider_tag_multiple_models"
+        FeatureTag.Offline -> "provider_tag_offline"
     },
 )

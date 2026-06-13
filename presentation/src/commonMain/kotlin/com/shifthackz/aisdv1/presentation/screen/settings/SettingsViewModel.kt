@@ -20,6 +20,10 @@ import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.SettingsRouter
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
+import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsIntent
+import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsModal
+import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsState
+import com.shifthackz.aisdv1.presentation.screen.settings.platform.SettingsPlatformActions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -30,69 +34,19 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeout
 
-/**
- * Coordinates `SettingsViewModel` behavior in the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 @OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModel(
     dispatchersProvider: DispatchersProvider,
     getStableDiffusionModelsUseCase: GetStableDiffusionModelsUseCase,
     observeStabilityAiCreditsUseCase: ObserveStabilityAiCreditsUseCase,
-    /**
-     * Exposes the `selectStableDiffusionModelUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
-    /**
-     * Exposes the `clearAppCacheUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val clearAppCacheUseCase: ClearAppCacheUseCase,
-    /**
-     * Exposes the `preferenceManager` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val preferenceManager: PreferenceManager,
-    /**
-     * Exposes the `debugMenuAccessor` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val debugMenuAccessor: DebugMenuAccessor,
-    /**
-     * Exposes the `buildInfoProvider` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val buildInfoProvider: BuildInfoProvider,
-    /**
-     * Exposes the `linksProvider` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val linksProvider: LinksProvider,
-    /**
-     * Exposes the `router` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val router: SettingsRouter,
-    /**
-     * Exposes the `platformActions` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val platformActions: SettingsPlatformActions,
-    /**
-     * Exposes the `onError` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<SettingsState, SettingsIntent, EmptyEffect>(
     initialState = SettingsState(),
@@ -413,34 +367,9 @@ class SettingsViewModel(
     }
 }
 
-/**
- * Carries `SdModelsRefreshKey` data through the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 private data class SdModelsRefreshKey(
-    /**
-     * Exposes the `source` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val source: com.shifthackz.aisdv1.domain.entity.ServerSource,
-    /**
-     * Exposes the `serverUrl` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val serverUrl: String,
-    /**
-     * Exposes the `demoMode` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val demoMode: Boolean,
-    /**
-     * Exposes the `sdModel` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val sdModel: String,
 )

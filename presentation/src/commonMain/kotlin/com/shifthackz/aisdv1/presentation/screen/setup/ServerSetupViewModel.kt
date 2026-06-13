@@ -35,6 +35,19 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSwarmUiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.ServerSetupRouter
+import com.shifthackz.aisdv1.presentation.screen.setup.model.HORDE_DEFAULT_API_KEY
+import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupEffect
+import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupIntent
+import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupState
+import com.shifthackz.aisdv1.presentation.screen.setup.model.toServerSetupState
+import com.shifthackz.aisdv1.presentation.screen.setup.platform.ServerSetupDownloadGuard
+import com.shifthackz.aisdv1.presentation.screen.setup.reducer.ServerSetupIntentProcessor
+import com.shifthackz.aisdv1.presentation.screen.setup.validation.validateServerSetup
+import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.HUGGING_FACE_MODELS_TIMEOUT_MILLIS
+import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.mapFilePathToValidationError
+import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.mapStringToValidationError
+import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.mapUrlToValidationError
+import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.setupAllowedModes
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
@@ -44,190 +57,38 @@ import kotlinx.coroutines.withTimeout
 import kotlin.coroutines.cancellation.CancellationException
 
 /**
- * Coordinates `ServerSetupViewModel` behavior in the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
+ * Owns provider setup state, validation, local model downloads, and final connection side effects.
  */
 class ServerSetupViewModel(
-    /**
-     * Exposes the `launchSource` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val launchSource: LaunchSource = LaunchSource.SPLASH,
-    /**
-     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val dispatchersProvider: DispatchersProvider,
-    /**
-     * Exposes the `buildInfoProvider` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val buildInfoProvider: BuildInfoProvider,
-    /**
-     * Exposes the `getConfigurationUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val getConfigurationUseCase: GetConfigurationUseCase,
-    /**
-     * Exposes the `getLocalOnnxModelsUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val getLocalOnnxModelsUseCase: GetLocalOnnxModelsUseCase,
-    /**
-     * Exposes the `getLocalMediaPipeModelsUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val getLocalMediaPipeModelsUseCase: GetLocalMediaPipeModelsUseCase,
-    /**
-     * Exposes the `getLocalSdxlModelsUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val getLocalSdxlModelsUseCase: GetLocalSdxlModelsUseCase,
-    /**
-     * Exposes the `getLocalCoreMlModelsUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val getLocalCoreMlModelsUseCase: GetLocalCoreMlModelsUseCase,
-    /**
-     * Exposes the `fetchHuggingFaceModelsUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val fetchHuggingFaceModelsUseCase: FetchHuggingFaceModelsUseCase,
-    /**
-     * Exposes the `urlValidator` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val urlValidator: UrlValidator,
-    /**
-     * Exposes the `stringValidator` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val stringValidator: CommonStringValidator,
-    /**
-     * Exposes the `filePathValidator` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val filePathValidator: FilePathValidator,
-    /**
-     * Exposes the `connectToA1111UseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToA1111UseCase: ConnectToA1111UseCase,
-    /**
-     * Exposes the `connectToSwarmUiUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToSwarmUiUseCase: ConnectToSwarmUiUseCase,
-    /**
-     * Exposes the `connectToHordeUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToHordeUseCase: ConnectToHordeUseCase,
-    /**
-     * Exposes the `connectToHuggingFaceUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToHuggingFaceUseCase: ConnectToHuggingFaceUseCase,
-    /**
-     * Exposes the `connectToLocalDiffusionUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToLocalDiffusionUseCase: ConnectToLocalDiffusionUseCase,
-    /**
-     * Exposes the `connectToMediaPipeUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToMediaPipeUseCase: ConnectToMediaPipeUseCase,
-    /**
-     * Exposes the `connectToSdxlUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToSdxlUseCase: ConnectToSdxlUseCase,
-    /**
-     * Exposes the `connectToCoreMlUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToCoreMlUseCase: ConnectToCoreMlUseCase,
-    /**
-     * Exposes the `connectToOpenAiUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToOpenAiUseCase: ConnectToOpenAiUseCase,
-    /**
-     * Exposes the `connectToStabilityAiUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToStabilityAiUseCase: ConnectToStabilityAiUseCase,
-    /**
-     * Exposes the `connectToFalAiUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val connectToFalAiUseCase: ConnectToFalAiUseCase,
-    /**
-     * Exposes the `downloadModelUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val downloadModelUseCase: DownloadModelUseCase,
-    /**
-     * Exposes the `deleteModelUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val deleteModelUseCase: DeleteModelUseCase,
-    /**
-     * Exposes the `downloadGuard` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val downloadGuard: ServerSetupDownloadGuard,
-    /**
-     * Exposes the `linksProvider` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val linksProvider: LinksProvider,
-    /**
-     * Exposes the `preferenceManager` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val preferenceManager: PreferenceManager,
-    /**
-     * Exposes the `router` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val router: ServerSetupRouter,
-    /**
-     * Exposes the `onError` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val onError: (Throwable) -> Unit = {},
 ) : BaseMviViewModel<ServerSetupState, ServerSetupIntent, ServerSetupEffect>(
     initialState = ServerSetupState(

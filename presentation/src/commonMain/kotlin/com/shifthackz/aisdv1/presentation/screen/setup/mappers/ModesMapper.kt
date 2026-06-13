@@ -4,9 +4,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 
 /**
- * Exposes the `BuildInfoProvider` value used by the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
+ * Flavor-aware provider list before platform-specific availability filtering is applied.
  */
 val BuildInfoProvider.allowedModes: List<ServerSource>
     get() = ServerSource

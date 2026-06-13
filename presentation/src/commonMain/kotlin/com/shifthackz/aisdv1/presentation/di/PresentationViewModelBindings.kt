@@ -35,8 +35,8 @@ import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderViewM
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerViewModel
 import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingViewModel
 import com.shifthackz.aisdv1.presentation.screen.report.ReportViewModel
-import com.shifthackz.aisdv1.presentation.screen.settings.SettingsPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsViewModel
+import com.shifthackz.aisdv1.presentation.screen.settings.platform.SettingsPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashViewModel
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageViewModel
@@ -47,11 +47,6 @@ import com.shifthackz.aisdv1.presentation.widget.engine.EngineSelectionViewModel
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkViewModel
 import org.koin.core.module.Module
 
-/**
- * Executes the `registerPresentationViewModelBindings` step in the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 internal fun Module.registerPresentationViewModelBindings() {
     factory {
         AiSdAppThemeViewModel(

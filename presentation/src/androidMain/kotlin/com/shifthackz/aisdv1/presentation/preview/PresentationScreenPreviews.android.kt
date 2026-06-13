@@ -21,21 +21,16 @@ import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailSta
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailTab
 import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageContent
 import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageState
-import com.shifthackz.aisdv1.presentation.screen.settings.ContentSettingsState
-import com.shifthackz.aisdv1.presentation.screen.settings.SettingsState
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupContent
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
+import com.shifthackz.aisdv1.presentation.screen.settings.content.ContentSettingsState
+import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsState
+import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupContent
+import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupState
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageContent
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageState
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppTheme
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppThemeState
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 
-/**
- * Renders the `TextToImageContentPreview` UI for the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 @Preview(name = "Txt2Img screen", widthDp = 360, heightDp = 740, showBackground = true)
 @Composable
 private fun TextToImageContentPreview() {
@@ -48,11 +43,6 @@ private fun TextToImageContentPreview() {
     }
 }
 
-/**
- * Renders the `ImageToImageUnsupportedPreview` UI for the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 @Preview(name = "Img2Img unsupported", widthDp = 360, heightDp = 740, showBackground = true)
 @Composable
 private fun ImageToImageUnsupportedPreview() {
@@ -65,11 +55,6 @@ private fun ImageToImageUnsupportedPreview() {
     }
 }
 
-/**
- * Renders the `GenerationInputFormPreview` UI for the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 @Preview(name = "Generation form", widthDp = 360, heightDp = 560, showBackground = true)
 @Composable
 private fun GenerationInputFormPreview() {
@@ -83,11 +68,6 @@ private fun GenerationInputFormPreview() {
     }
 }
 
-/**
- * Renders the `ServerSetupContentPreview` UI for the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 @Preview(name = "Configuration", widthDp = 360, heightDp = 740, showBackground = true)
 @Composable
 private fun ServerSetupContentPreview() {
@@ -105,11 +85,6 @@ private fun ServerSetupContentPreview() {
     }
 }
 
-/**
- * Renders the `SettingsContentPreview` UI for the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 @Preview(name = "Settings content", widthDp = 360, heightDp = 740, showBackground = true)
 @Composable
 private fun SettingsContentPreview() {
@@ -131,11 +106,6 @@ private fun SettingsContentPreview() {
     }
 }
 
-/**
- * Renders the `GalleryDetailInfoPreview` UI for the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 @Preview(name = "Gallery details info", widthDp = 360, heightDp = 740, showBackground = true)
 @Composable
 private fun GalleryDetailInfoPreview() {
@@ -173,13 +143,6 @@ private fun GalleryDetailInfoPreview() {
     }
 }
 
-/**
- * Renders the `PreviewTheme` UI for the SDAI presentation layer.
- *
- * @param darkTheme dark theme value consumed by the API.
- * @param content content value consumed by the API.
- * @author Dmitriy Moroz
- */
 @Composable
 private fun PreviewTheme(
     darkTheme: Boolean = false,
@@ -200,11 +163,6 @@ private fun PreviewTheme(
     }
 }
 
-/**
- * Executes the `previewTextToImageState` step in the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 private fun previewTextToImageState() = TextToImageState(
     loadingConfiguration = false,
     onBoardingDemo = true,
@@ -216,11 +174,6 @@ private fun previewTextToImageState() = TextToImageState(
     batchCount = 2,
 )
 
-/**
- * Executes the `previewImageToImageState` step in the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 private fun previewImageToImageState() = ImageToImageState(
     loadingConfiguration = false,
     onBoardingDemo = true,

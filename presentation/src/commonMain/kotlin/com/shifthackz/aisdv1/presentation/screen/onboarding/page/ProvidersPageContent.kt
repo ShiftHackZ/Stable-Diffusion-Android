@@ -53,19 +53,12 @@ import com.shifthackz.aisdv1.presentation.screen.onboarding.buildOnBoardingText
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneWidthFraction
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupStrings
+import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/**
- * Renders the `ProviderPageContent` UI for the SDAI presentation layer.
- *
- * @param modifier Compose modifier applied to the rendered UI.
- * @param isPageVisible is page visible value consumed by the API.
- * @author Dmitriy Moroz
- */
 @Composable
 fun ProviderPageContent(
     modifier: Modifier = Modifier,
@@ -120,15 +113,6 @@ fun ProviderPageContent(
     }
 }
 
-/**
- * Renders the `ProviderPreviewScreen` UI for the SDAI presentation layer.
- *
- * @param strings strings value consumed by the API.
- * @param sources sources value consumed by the API.
- * @param selectedSource selected source value consumed by the API.
- * @param modifier Compose modifier applied to the rendered UI.
- * @author Dmitriy Moroz
- */
 @Composable
 private fun ProviderPreviewScreen(
     strings: ServerSetupStrings,
@@ -187,13 +171,6 @@ private fun ProviderPreviewScreen(
     }
 }
 
-/**
- * Renders the `ProviderPreviewStepBar` UI for the SDAI presentation layer.
- *
- * @param strings strings value consumed by the API.
- * @param modifier Compose modifier applied to the rendered UI.
- * @author Dmitriy Moroz
- */
 @Composable
 private fun ProviderPreviewStepBar(
     strings: ServerSetupStrings,
@@ -243,15 +220,6 @@ private fun ProviderPreviewStepBar(
     }
 }
 
-/**
- * Renders the `PreviewStep` UI for the SDAI presentation layer.
- *
- * @param label label value consumed by the API.
- * @param active active value consumed by the API.
- * @param icon icon value consumed by the API.
- * @param modifier Compose modifier applied to the rendered UI.
- * @author Dmitriy Moroz
- */
 @Composable
 private fun PreviewStep(
     label: String,
@@ -289,15 +257,6 @@ private fun PreviewStep(
     }
 }
 
-/**
- * Renders the `ProviderPreviewItem` UI for the SDAI presentation layer.
- *
- * @param source source value consumed by the API.
- * @param strings strings value consumed by the API.
- * @param selected selected value consumed by the API.
- * @param modifier Compose modifier applied to the rendered UI.
- * @author Dmitriy Moroz
- */
 @Composable
 private fun ProviderPreviewItem(
     source: ServerSource,
@@ -363,12 +322,6 @@ private fun ProviderPreviewItem(
     }
 }
 
-/**
- * Executes the `previewTitle` step in the SDAI presentation layer.
- *
- * @param strings strings value consumed by the API.
- * @author Dmitriy Moroz
- */
 private fun ServerSource.previewTitle(strings: ServerSetupStrings): String = when (this) {
     ServerSource.HUGGING_FACE -> strings.huggingFaceTitle
     ServerSource.OPEN_AI -> strings.openAiTitle
@@ -376,12 +329,6 @@ private fun ServerSource.previewTitle(strings: ServerSetupStrings): String = whe
     else -> strings.automaticTitle
 }
 
-/**
- * Executes the `previewSubtitle` step in the SDAI presentation layer.
- *
- * @param strings strings value consumed by the API.
- * @author Dmitriy Moroz
- */
 private fun ServerSource.previewSubtitle(strings: ServerSetupStrings): String = when (this) {
     ServerSource.HUGGING_FACE -> strings.huggingFaceSubtitle
     ServerSource.OPEN_AI -> strings.openAiSubtitle
