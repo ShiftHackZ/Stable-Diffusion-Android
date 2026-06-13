@@ -42,6 +42,10 @@ class DownloadableModelRepositoryImplTest {
         } returns flowOf(mockLocalAiModels)
 
         every {
+            stubLocalDataSource.observeAllSdxl()
+        } returns flowOf(mockLocalAiModels)
+
+        every {
             stubRemoteDataSource.download(any(), any())
         } returns flowOf(DownloadState.Unknown)
     }
@@ -145,6 +149,25 @@ class DownloadableModelRepositoryImplTest {
     }
 
     @Test
+    fun `given attempt to get all sdxl, remote returns list, save success, local query success, expected valid domain model list value`() = runTest {
+        coEvery {
+            stubRemoteDataSource.fetch()
+        } returns mockLocalAiModels
+
+        coEvery {
+            stubLocalDataSource.save(any())
+        } returns Unit
+
+        coEvery {
+            stubLocalDataSource.getAllSdxl()
+        } returns mockLocalAiModels
+
+        val actual = repository.getAllSdxl()
+
+        Assert.assertEquals(mockLocalAiModels, actual)
+    }
+
+    @Test
     fun `given observe all models, local data source emits empty list, then another list, expected empty value, then valid domain models list value`() = runTest {
         every {
             stubLocalDataSource.observeAllOnnx()
@@ -175,6 +198,17 @@ class DownloadableModelRepositoryImplTest {
         val actual = runCatching { repository.observeAllOnnx().toList() }
 
         Assert.assertSame(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
+    fun `given observe all sdxl models, local data source emits list, expected valid domain models list value`() = runTest {
+        every {
+            stubLocalDataSource.observeAllSdxl()
+        } returns flowOf(mockLocalAiModels)
+
+        val actual = repository.observeAllSdxl().toList()
+
+        Assert.assertEquals(listOf(mockLocalAiModels), actual)
     }
 
     @Test

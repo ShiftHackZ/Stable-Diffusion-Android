@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
 import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
 import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.Scheduler
+import com.shifthackz.aisdv1.domain.entity.SdxlBackend
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
@@ -207,6 +208,12 @@ private data class TextToImagePayloadDto(
      */
     val falAiAcceleration: String? = null,
     /**
+     * Exposes the `sdxlBackend` value used by the SDAI background work feature layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val sdxlBackend: String? = null,
+    /**
      * Exposes the `falAiSyncMode` value used by the SDAI background work feature layer.
      *
      * @author Dmitriy Moroz
@@ -244,6 +251,7 @@ private data class TextToImagePayloadDto(
         falAiModel = FalAiModel.parse(falAiModel, FalAiModel.defaultTextToImage),
         falAiImageSize = FalAiImageSize.parse(falAiImageSize),
         falAiAcceleration = FalAiAcceleration.parse(falAiAcceleration),
+        sdxlBackend = SdxlBackend.parse(sdxlBackend),
         falAiSyncMode = falAiSyncMode,
     )
 
@@ -285,6 +293,7 @@ private data class TextToImagePayloadDto(
             falAiModel = payload.falAiModel.alias,
             falAiImageSize = payload.falAiImageSize.key,
             falAiAcceleration = payload.falAiAcceleration.key,
+            sdxlBackend = payload.sdxlBackend.key,
             falAiSyncMode = payload.falAiSyncMode,
         )
     }

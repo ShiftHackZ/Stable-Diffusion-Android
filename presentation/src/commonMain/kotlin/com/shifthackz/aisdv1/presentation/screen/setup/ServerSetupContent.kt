@@ -403,6 +403,18 @@ data class ServerSetupStrings(
      */
     val mediaPipeSubtitle: String = Localization.string("hint_mediapipe_sub_title"),
     /**
+     * Exposes the `sdxlTitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val sdxlTitle: String = Localization.string("hint_sdxl_title"),
+    /**
+     * Exposes the `sdxlSubtitle` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val sdxlSubtitle: String = Localization.string("hint_sdxl_sub_title"),
+    /**
      * Exposes the `coreMlTitle` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -583,6 +595,7 @@ fun ServerSetupContent(
                             ServerSetupState.Step.CONFIGURE -> when (state.mode) {
                                 ServerSource.LOCAL_MICROSOFT_ONNX,
                                 ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+                                ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
                                 -> strings.setup
 
                                 else -> strings.connect

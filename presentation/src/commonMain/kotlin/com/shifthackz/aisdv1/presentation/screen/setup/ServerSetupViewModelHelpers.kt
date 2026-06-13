@@ -17,28 +17,13 @@ import com.shifthackz.aisdv1.presentation.screen.setup.mappers.allowedModes
 internal const val HUGGING_FACE_MODELS_TIMEOUT_MILLIS = 5_000L
 
 /**
- * Exposes the `localGenerationSources` value used by the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
-private val localGenerationSources = setOf(
-    ServerSource.LOCAL_MICROSOFT_ONNX,
-    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
-    ServerSource.LOCAL_APPLE_CORE_ML,
-)
-
-/**
  * Executes the `setupAllowedModes` step in the SDAI presentation layer.
  *
  * @return Result produced by `setupAllowedModes`.
  * @author Dmitriy Moroz
  */
 internal fun BuildInfoProvider.setupAllowedModes(): List<ServerSource> =
-    allowedModes.filter { source ->
-        isServerSourceAvailableOnPlatform(source) &&
-            (source !in localGenerationSources || source == ServerSource.LOCAL_APPLE_CORE_ML ||
-                isLocalGenerationSetupAvailable())
-    }
+    allowedModes.filter(::isServerSourceAvailableOnPlatform)
 
 /**
  * Executes the `url` step in the SDAI presentation layer.

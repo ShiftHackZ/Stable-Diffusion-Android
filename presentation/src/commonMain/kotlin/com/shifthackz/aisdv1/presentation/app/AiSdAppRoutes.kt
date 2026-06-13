@@ -32,8 +32,8 @@ import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingViewModel
 import com.shifthackz.aisdv1.presentation.screen.report.ReportScreen
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsScreen
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupContent
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupEffect
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
+import com.shifthackz.aisdv1.presentation.screen.setup.rememberServerSetupEffectHandler
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreenContent
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashViewModel
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageContent
@@ -221,15 +221,10 @@ internal fun OverlayRouteContent(
                     parametersOf(source, router)
                 }
             }
+            val effectHandler = rememberServerSetupEffectHandler(urlLauncher)
             MviComponent(
                 viewModel = setupViewModel,
-                processEffect = { effect ->
-                    when (effect) {
-                        ServerSetupEffect.HideKeyboard -> Unit
-                        ServerSetupEffect.LaunchManageStoragePermission -> Unit
-                        is ServerSetupEffect.OpenUrl -> urlLauncher.openUrl(effect.url)
-                    }
-                },
+                processEffect = effectHandler,
             ) { state, processIntent ->
                 ServerSetupContent(
                     state = state,

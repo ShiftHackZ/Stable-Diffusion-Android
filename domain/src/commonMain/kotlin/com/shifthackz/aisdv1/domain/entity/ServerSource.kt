@@ -69,6 +69,14 @@ enum class ServerSource(
         ),
         allowedInBuilds = setOf(BuildType.PLAY, BuildType.FULL),
     ),
+    LOCAL_STABLE_DIFFUSION_CPP(
+        key = "local_stable_diffusion_cpp",
+        featureTags = setOf(
+            FeatureTag.Offline,
+            FeatureTag.Txt2Img,
+            FeatureTag.MultipleModels,
+        ),
+    ),
     LOCAL_APPLE_CORE_ML(
         key = "local_apple_core_ml",
         featureTags = setOf(

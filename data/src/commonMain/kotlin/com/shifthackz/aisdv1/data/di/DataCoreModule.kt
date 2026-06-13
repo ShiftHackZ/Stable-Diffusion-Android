@@ -61,6 +61,7 @@ import com.shifthackz.aisdv1.data.repository.ReportRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.ServerConfigurationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StabilityAiCreditsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StabilityAiGenerationRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.StableDiffusionCppGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionHyperNetworksRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.StableDiffusionModelsRepositoryImpl
@@ -122,6 +123,7 @@ import com.shifthackz.aisdv1.domain.repository.ServerConfigurationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiCreditsRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiEnginesRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.StableDiffusionCppGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionHyperNetworksRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionModelsRepository
@@ -350,6 +352,17 @@ val coreDataModule = module {
             coreMlDiffusion = get(),
             downloadableLocalDataSource = get(),
             fileProviderDescriptor = get(),
+        )
+    }
+    single<StableDiffusionCppGenerationRepository> {
+        StableDiffusionCppGenerationRepositoryImpl(
+            mediaStoreGateway = get(),
+            localDataSource = get(),
+            backgroundWorkObserver = get(),
+            preferenceManager = get(),
+            stableDiffusionCpp = get(),
+            downloadableLocalDataSource = get(),
+            modelFileStore = get(),
         )
     }
     single<StableDiffusionGenerationDataSource.Remote> {

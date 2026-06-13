@@ -157,6 +157,12 @@ data class TextToImagePayload(
      */
     val falAiAcceleration: FalAiAcceleration = FalAiAcceleration.default,
     /**
+     * Exposes the `sdxlBackend` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val sdxlBackend: SdxlBackend = SdxlBackend.AUTO,
+    /**
      * Exposes the `falAiSyncMode` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz

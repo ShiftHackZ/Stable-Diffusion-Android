@@ -52,6 +52,7 @@ data class LocalAiModel(
     enum class Type(val key: String) {
         ONNX("onnx"),
         MediaPipe("mediapipe"),
+        Sdxl("sdxl"),
         CoreMl("coreml");
 
         companion object {
@@ -71,6 +72,14 @@ data class LocalAiModel(
         val CustomMediaPipe = LocalAiModel(
             id = "CUSTOM_MP",
             type = Type.MediaPipe,
+            name = "Custom",
+            size = "NaN",
+            sources = emptyList(),
+        )
+
+        val CustomSdxl = LocalAiModel(
+            id = "CUSTOM_SDXL",
+            type = Type.Sdxl,
             name = "Custom",
             size = "NaN",
             sources = emptyList(),

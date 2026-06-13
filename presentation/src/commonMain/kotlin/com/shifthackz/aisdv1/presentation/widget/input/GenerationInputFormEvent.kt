@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
 import com.shifthackz.aisdv1.domain.entity.Scheduler
+import com.shifthackz.aisdv1.domain.entity.SdxlBackend
 import com.shifthackz.aisdv1.domain.entity.StabilityAiClipGuidance
 import com.shifthackz.aisdv1.domain.entity.StabilityAiStylePreset
 
@@ -218,6 +219,13 @@ sealed interface GenerationInputFormEvent {
      * @author Dmitriy Moroz
      */
     data class UpdateFalAiAcceleration(val value: FalAiAcceleration) : GenerationInputFormEvent
+    /**
+     * Carries `UpdateSdxlBackend` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateSdxlBackend(val value: SdxlBackend) : GenerationInputFormEvent
     /**
      * Carries `UpdateFalAiSyncMode` data through the SDAI presentation layer.
      *

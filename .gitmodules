@@ -1,0 +1,15 @@
+[submodule "feature/sdxl/src/androidMain/cpp/vendor/stable-diffusion.cpp"]
+	path = feature/sdxl/src/androidMain/cpp/vendor/stable-diffusion.cpp
+	url = https://github.com/leejet/stable-diffusion.cpp.git
+[submodule "feature/sdxl/src/androidMain/cpp/vendor/Vulkan-Headers"]
+	path = feature/sdxl/src/androidMain/cpp/vendor/Vulkan-Headers
+	url = https://github.com/KhronosGroup/Vulkan-Headers.git
+[submodule "feature/sdxl/src/androidMain/cpp/vendor/SPIRV-Headers"]
+	path = feature/sdxl/src/androidMain/cpp/vendor/SPIRV-Headers
+	url = https://github.com/KhronosGroup/SPIRV-Headers.git
+[submodule "feature/sdxl/src/androidMain/cpp/vendor/OpenCL-Headers"]
+	path = feature/sdxl/src/androidMain/cpp/vendor/OpenCL-Headers
+	url = https://github.com/KhronosGroup/OpenCL-Headers.git
+[submodule "feature/sdxl/src/androidMain/cpp/vendor/OpenCL-ICD-Loader"]
+	path = feature/sdxl/src/androidMain/cpp/vendor/OpenCL-ICD-Loader
+	url = https://github.com/KhronosGroup/OpenCL-ICD-Loader.git

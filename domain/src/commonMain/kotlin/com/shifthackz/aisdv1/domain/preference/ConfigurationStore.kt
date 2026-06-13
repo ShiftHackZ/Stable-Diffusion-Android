@@ -107,6 +107,18 @@ interface ConfigurationStore {
      */
     var localMediaPipeModelPath: String
     /**
+     * Exposes the `localSdxlModelId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localSdxlModelId: String
+    /**
+     * Exposes the `localSdxlModelPath` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localSdxlModelPath: String
+    /**
      * Exposes the `localCoreMlModelId` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz
@@ -145,6 +157,8 @@ interface ConfigurationStore {
         localOnnxModelPath = localOnnxModelPath,
         localMediaPipeModelId = localMediaPipeModelId,
         localMediaPipeModelPath = localMediaPipeModelPath,
+        localSdxlModelId = localSdxlModelId,
+        localSdxlModelPath = localSdxlModelPath,
         localCoreMlModelId = localCoreMlModelId,
         localCoreMlModelPath = localCoreMlModelPath,
     )
@@ -172,6 +186,8 @@ interface ConfigurationStore {
         localOnnxModelPath = configuration.localOnnxModelPath
         localMediaPipeModelId = configuration.localMediaPipeModelId
         localMediaPipeModelPath = configuration.localMediaPipeModelPath
+        localSdxlModelId = configuration.localSdxlModelId
+        localSdxlModelPath = configuration.localSdxlModelPath
         localCoreMlModelId = configuration.localCoreMlModelId
         localCoreMlModelPath = configuration.localCoreMlModelPath
     }

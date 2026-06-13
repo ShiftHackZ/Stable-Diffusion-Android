@@ -142,6 +142,7 @@
     <string name="hint_image_size">Розмір зображення</string>
     <string name="hint_fal_ai_endpoint">Endpoint Fal.ai</string>
     <string name="hint_fal_ai_acceleration">Прискорення</string>
+    <string name="hint_sdxl_backend">Рантайм бекенд</string>
     <string name="hint_fal_ai_sync_mode">Синхронний режим</string>
     <string name="title_input_image">Вхідне зображення</string>
     <string name="hint_quality">Якість</string>
@@ -199,6 +200,7 @@
     <string name="hint_local_diffusion_warning">УВАГА! Функціональність Local Diffusion у бета-тестуванні. Не очікуйте високоякісних зображень у локальному режимі. \n\nЦя реалізація може не працювати належним чином на телефонах із слабкою потужністю. Продуктивність і швидкість генерації залежать від ресурсів вашого телефону (ЦП, ОЗУ) і розміру згенерованого зображення (чим менший розмір зображення, тим швидше генерується).</string>
 
     <string name="hint_mediapipe_sub_title">Ця конфігурація використовує Google AI MediaPipe та дозволяє запускати генерації Stable Diffusion на вашому телефоні без необхідності підключатися до віддаленого сервера/хмари.</string>
+    <string name="hint_sdxl_sub_title">Ця конфігурація використовує stable-diffusion.cpp і дає змогу запускати SDXL, SDXL-Turbo, LCM або квантовані GGUF-моделі на телефоні.</string>
     <string name="hint_core_ml_sub_title">Локальна генерація на iPhone.</string>
 
     <string name="drawer_web_ui">Веб</string>

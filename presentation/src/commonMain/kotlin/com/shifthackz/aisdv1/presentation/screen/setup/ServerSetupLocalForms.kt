@@ -95,6 +95,7 @@ internal fun ConfigurationStep(
 
                 ServerSource.LOCAL_MICROSOFT_ONNX,
                 ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+                ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
                 ServerSource.LOCAL_APPLE_CORE_ML,
                 -> LocalGenerationForm(
                     state = state,
@@ -126,17 +127,22 @@ internal fun LocalGenerationForm(
         FormTitle(
             title = when (state.mode) {
                 ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeTitle
+                ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlTitle
                 ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlTitle
                 else -> strings.localDiffusionTitle
             },
             subtitle = when (state.mode) {
                 ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeSubtitle
+                ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlSubtitle
                 ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlSubtitle
                 else -> strings.localDiffusionSubtitle
             },
         )
         HintText(text = strings.localWarning)
-        if (state.allowLocalCustomModels && state.mode != ServerSource.LOCAL_APPLE_CORE_ML) {
+        if (
+            state.allowLocalCustomModels &&
+            state.mode != ServerSource.LOCAL_APPLE_CORE_ML
+        ) {
             SwitchRow(
                 icon = Icons.Outlined.Landslide,
                 text = strings.localCustomSwitch,

@@ -23,6 +23,8 @@ class ConfigurationStoreStub(
     override var localOnnxModelPath: String = configuration.localOnnxModelPath
     override var localMediaPipeModelId: String = configuration.localMediaPipeModelId
     override var localMediaPipeModelPath: String = configuration.localMediaPipeModelPath
+    override var localSdxlModelId: String = configuration.localSdxlModelId
+    override var localSdxlModelPath: String = configuration.localSdxlModelPath
     override var localCoreMlModelId: String = configuration.localCoreMlModelId
     override var localCoreMlModelPath: String = configuration.localCoreMlModelPath
 }

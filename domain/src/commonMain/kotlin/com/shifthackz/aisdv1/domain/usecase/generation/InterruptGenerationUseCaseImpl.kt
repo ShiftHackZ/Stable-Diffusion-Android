@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.StableDiffusionCppGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 
 /**
@@ -32,6 +33,12 @@ internal class InterruptGenerationUseCaseImpl(
      */
     private val localDiffusionGenerationRepository: LocalDiffusionGenerationRepository,
     /**
+     * Exposes the `stableDiffusionCppGenerationRepository` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val stableDiffusionCppGenerationRepository: StableDiffusionCppGenerationRepository,
+    /**
      * Exposes the `coreMlGenerationRepository` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz
@@ -55,6 +62,7 @@ internal class InterruptGenerationUseCaseImpl(
             ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.interruptGeneration()
             ServerSource.HORDE -> hordeGenerationRepository.interruptGeneration()
             ServerSource.LOCAL_MICROSOFT_ONNX -> localDiffusionGenerationRepository.interruptGeneration()
+            ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> stableDiffusionCppGenerationRepository.interruptGeneration()
             ServerSource.LOCAL_APPLE_CORE_ML -> coreMlGenerationRepository.interruptGeneration()
             else -> Unit
         }

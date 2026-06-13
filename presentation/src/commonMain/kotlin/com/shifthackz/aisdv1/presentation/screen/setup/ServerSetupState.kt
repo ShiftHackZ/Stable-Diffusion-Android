@@ -185,6 +185,24 @@ data class ServerSetupState(
      */
     val localMediaPipeCustomModelPath: String = "",
     /**
+     * Exposes the `localSdxlModels` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localSdxlModels: List<LocalModel> = emptyList(),
+    /**
+     * Exposes the `localSdxlCustomModel` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localSdxlCustomModel: Boolean = false,
+    /**
+     * Exposes the `localSdxlCustomModelPath` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localSdxlCustomModelPath: String = "",
+    /**
      * Exposes the `localCoreMlModels` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -268,12 +286,19 @@ data class ServerSetupState(
      * @author Dmitriy Moroz
      */
     val localCustomMediaPipePathValidationError: ValidationError? = null,
+    /**
+     * Exposes the `localCustomSdxlPathValidationError` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localCustomSdxlPathValidationError: ValidationError? = null,
 ) : MviState {
 
     val localCustomModel: Boolean
         get() = when (mode) {
             ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxCustomModel
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeCustomModel
+            ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> localSdxlCustomModel
             else -> false
         }
 
@@ -281,6 +306,7 @@ data class ServerSetupState(
         get() = when (mode) {
             ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxCustomModelPath
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeCustomModelPath
+            ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> localSdxlCustomModelPath
             ServerSource.LOCAL_APPLE_CORE_ML -> localCoreMlCustomModelPath
             else -> ""
         }
@@ -289,6 +315,7 @@ data class ServerSetupState(
         get() = when (mode) {
             ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxModels
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeModels
+            ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> localSdxlModels
             ServerSource.LOCAL_APPLE_CORE_ML -> localCoreMlModels
             else -> emptyList()
         }
@@ -297,6 +324,7 @@ data class ServerSetupState(
         get() = when (mode) {
             ServerSource.LOCAL_MICROSOFT_ONNX -> localCustomOnnxPathValidationError
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localCustomMediaPipePathValidationError
+            ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> localCustomSdxlPathValidationError
             else -> null
         }
 
@@ -326,6 +354,11 @@ data class ServerSetupState(
             localCustomMediaPipePathValidationError = null,
         )
 
+        ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> copy(
+            localSdxlCustomModelPath = value,
+            localCustomSdxlPathValidationError = null,
+        )
+
         ServerSource.LOCAL_APPLE_CORE_ML -> copy(localCoreMlCustomModelPath = value)
 
         else -> this
@@ -338,6 +371,10 @@ data class ServerSetupState(
 
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
             localMediaPipeModels = localMediaPipeModels.withCommonNewState(value),
+        )
+
+        ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> copy(
+            localSdxlModels = localSdxlModels.withCommonNewState(value),
         )
 
         ServerSource.LOCAL_APPLE_CORE_ML -> copy(
@@ -368,6 +405,16 @@ data class ServerSetupState(
             ),
         )
 
+        ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> copy(
+            modal = Modal.None,
+            localSdxlModels = localSdxlModels.withCommonNewState(
+                value.copy(
+                    downloadState = DownloadState.Unknown,
+                    downloaded = false,
+                ),
+            ),
+        )
+
         ServerSource.LOCAL_APPLE_CORE_ML -> copy(
             modal = Modal.None,
             localCoreMlModels = localCoreMlModels.withCommonNewState(
@@ -388,6 +435,10 @@ data class ServerSetupState(
 
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
             localMediaPipeModels = localMediaPipeModels.withCommonNewState(value.copy(selected = true)),
+        )
+
+        ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> copy(
+            localSdxlModels = localSdxlModels.withCommonNewState(value.copy(selected = true)),
         )
 
         ServerSource.LOCAL_APPLE_CORE_ML -> copy(
@@ -413,6 +464,13 @@ data class ServerSetupState(
                 localMediaPipeCustomModel = value,
                 localMediaPipeModels = localMediaPipeModels.updateCustomModelSelection(
                     id = LocalAiModel.CustomMediaPipe.id,
+                ),
+            )
+
+            ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> copy(
+                localSdxlCustomModel = value,
+                localSdxlModels = localSdxlModels.updateCustomModelSelection(
+                    id = LocalAiModel.CustomSdxl.id,
                 ),
             )
 
@@ -477,6 +535,7 @@ data class ServerSetupState(
  * @param huggingFaceModels hugging face models value consumed by the API.
  * @param localOnnxModels local onnx models value consumed by the API.
  * @param localMediaPipeModels local media pipe models value consumed by the API.
+ * @param localSdxlModels local sdxl models value consumed by the API.
  * @param localCoreMlModels local core ml models value consumed by the API.
  * @param allowLocalCustomModels allow local custom models value consumed by the API.
  * @param demoModeUrl demo mode url value consumed by the API.
@@ -489,6 +548,7 @@ fun Configuration.toServerSetupState(
     huggingFaceModels: List<String>,
     localOnnxModels: List<LocalAiModel> = emptyList(),
     localMediaPipeModels: List<LocalAiModel> = emptyList(),
+    localSdxlModels: List<LocalAiModel> = emptyList(),
     localCoreMlModels: List<LocalAiModel> = emptyList(),
     allowLocalCustomModels: Boolean = true,
     demoModeUrl: String = "",
@@ -525,6 +585,9 @@ fun Configuration.toServerSetupState(
         localMediaPipeModels = localMediaPipeModels.mapToCommonSetupModels(),
         localMediaPipeCustomModel = localMediaPipeModels.hasCommonSelectedCustomModel(LocalAiModel.CustomMediaPipe.id),
         localMediaPipeCustomModelPath = localMediaPipeModelPath,
+        localSdxlModels = localSdxlModels.mapToCommonSetupModels(),
+        localSdxlCustomModel = localSdxlModels.hasCommonSelectedCustomModel(LocalAiModel.CustomSdxl.id),
+        localSdxlCustomModelPath = localSdxlModelPath,
         localCoreMlModels = localCoreMlModels.mapToCommonSetupModels(),
         localCoreMlCustomModelPath = localCoreMlModelPath,
         openAiApiKey = openAiApiKey,

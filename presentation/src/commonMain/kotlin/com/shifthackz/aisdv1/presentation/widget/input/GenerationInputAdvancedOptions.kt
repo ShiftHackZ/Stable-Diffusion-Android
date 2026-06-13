@@ -294,6 +294,7 @@ internal fun GenerationInputAdvancedOptions(
                     val stepsMax = when (state.mode) {
                         ServerSource.LOCAL_MICROSOFT_ONNX -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
                         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
+                        ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
                         ServerSource.STABILITY_AI -> SAMPLING_STEPS_RANGE_STABILITY_AI_MAX
                         ServerSource.FAL_AI -> state.falAiModel.maxInferenceSteps
                         else -> SAMPLING_STEPS_RANGE_MAX
@@ -373,7 +374,10 @@ internal fun GenerationInputAdvancedOptions(
                 }
                 // Batch is not available for any Local
                 when (state.mode) {
-                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE, ServerSource.LOCAL_MICROSOFT_ONNX -> Unit
+                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+                    ServerSource.LOCAL_MICROSOFT_ONNX,
+                    ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
+                    -> Unit
                     else -> GenerationBatchComponent(state = state, onEvent = onEvent)
                 }
                 //Restore faces available only for A1111

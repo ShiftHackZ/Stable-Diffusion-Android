@@ -115,6 +115,8 @@
     <string name="srv_type_local_short" translatable="false">ONNX</string>
     <string name="srv_type_media_pipe" translatable="false">Local Diffusion Google AI MediaPipe (Beta)</string>
     <string name="srv_type_media_pipe_short" translatable="false">MediaPipe</string>
+    <string name="srv_type_sdxl" translatable="false">Local Diffusion stable-diffusion.cpp SDXL (Experimental)</string>
+    <string name="srv_type_sdxl_short" translatable="false">SDXL</string>
     <string name="srv_type_hugging_face" translatable="false">Hugging Face Inference</string>
     <string name="srv_type_hugging_face_short" translatable="false">HuggingFace</string>
     <string name="srv_type_open_ai" translatable="false">OpenAI</string>
@@ -161,6 +163,7 @@
     <string name="hint_image_size">Image size</string>
     <string name="hint_fal_ai_endpoint">Fal.ai endpoint</string>
     <string name="hint_fal_ai_acceleration">Acceleration</string>
+    <string name="hint_sdxl_backend">Runtime backend</string>
     <string name="hint_fal_ai_sync_mode">Sync mode</string>
     <string name="title_input_image">Input image</string>
     <string name="hint_quality">Quality</string>
@@ -221,6 +224,8 @@
 
     <string name="hint_mediapipe_title" translatable="false">Local Diffusion Google AI MediaPipe</string>
     <string name="hint_mediapipe_sub_title">This configuration uses Google AI MediaPipe and allows to run Stable Diffusion AI generations on your phone, with no need to connect to remote server/cloud.</string>
+    <string name="hint_sdxl_title" translatable="false">Local Diffusion SDXL</string>
+    <string name="hint_sdxl_sub_title">This configuration uses stable-diffusion.cpp and allows to run SDXL, SDXL-Turbo, LCM, or quantized GGUF models on your phone.</string>
     <string name="hint_core_ml_sub_title">Local generation on iPhone.</string>
 
     <string name="drawer_web_ui">Web UI</string>

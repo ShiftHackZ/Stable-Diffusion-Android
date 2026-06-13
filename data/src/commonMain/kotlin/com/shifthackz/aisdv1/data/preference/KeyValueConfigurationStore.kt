@@ -163,6 +163,24 @@ internal class KeyValueConfigurationStore(
         set(value) = keyValueStore.putString(KEY_MEDIA_PIPE_CUSTOM_MODEL_PATH, value)
 
     /**
+     * Exposes the `localSdxlModelId` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var localSdxlModelId: String
+        get() = keyValueStore.getString(KEY_SDXL_MODEL_ID)
+        set(value) = keyValueStore.putString(KEY_SDXL_MODEL_ID, value)
+
+    /**
+     * Exposes the `localSdxlModelPath` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var localSdxlModelPath: String
+        get() = keyValueStore.getString(KEY_SDXL_CUSTOM_MODEL_PATH)
+        set(value) = keyValueStore.putString(KEY_SDXL_CUSTOM_MODEL_PATH, value)
+
+    /**
      * Exposes the `localCoreMlModelId` value used by the SDAI data layer.
      *
      * @author Dmitriy Moroz
@@ -243,6 +261,12 @@ internal class KeyValueConfigurationStore(
          */
         const val KEY_CORE_ML_CUSTOM_MODEL_PATH = "key_core_ml_custom_model_path"
         /**
+         * Exposes the `KEY_SDXL_CUSTOM_MODEL_PATH` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_SDXL_CUSTOM_MODEL_PATH = "key_sdxl_custom_model_path"
+        /**
          * Exposes the `KEY_SERVER_SOURCE` value used by the SDAI data layer.
          *
          * @author Dmitriy Moroz
@@ -302,6 +326,12 @@ internal class KeyValueConfigurationStore(
          * @author Dmitriy Moroz
          */
         const val KEY_CORE_ML_MODEL_ID = "key_core_ml_model_id"
+        /**
+         * Exposes the `KEY_SDXL_MODEL_ID` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_SDXL_MODEL_ID = "key_sdxl_model_id"
         /**
          * Exposes the `KEY_LOCAL_MODEL_ID` value used by the SDAI data layer.
          *

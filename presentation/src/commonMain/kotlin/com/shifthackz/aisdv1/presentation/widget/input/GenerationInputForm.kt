@@ -25,6 +25,7 @@ import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiQuality
 import com.shifthackz.aisdv1.domain.entity.OpenAiSize
+import com.shifthackz.aisdv1.domain.entity.SdxlBackend
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.widget.engine.EngineSelectionComponent
 import com.shifthackz.aisdv1.presentation.widget.input.chip.ChipTextFieldWithItem
@@ -61,6 +62,7 @@ fun GenerationInputForm(
                 ServerSource.STABILITY_AI,
                 ServerSource.HUGGING_FACE,
                 ServerSource.LOCAL_MICROSOFT_ONNX,
+                ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
                 ServerSource.LOCAL_APPLE_CORE_ML -> EngineSelectionComponent(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -90,6 +92,17 @@ fun GenerationInputForm(
                 )
 
                 else -> Unit
+            }
+
+            if (state.mode == ServerSource.LOCAL_STABLE_DIFFUSION_CPP) {
+                DropdownTextField(
+                    modifier = Modifier.padding(top = 8.dp),
+                    label = Localization.string("hint_sdxl_backend").asUiText(),
+                    value = state.sdxlBackend,
+                    items = SdxlBackend.entries,
+                    onItemSelected = { onEvent(GenerationInputFormEvent.UpdateSdxlBackend(it)) },
+                    displayDelegate = { it.displayName.asUiText() },
+                )
             }
         }
         if (state.formPromptTaggedInput) {
@@ -135,6 +148,7 @@ fun GenerationInputForm(
             ServerSource.HUGGING_FACE,
             ServerSource.STABILITY_AI,
             ServerSource.LOCAL_MICROSOFT_ONNX,
+            ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
             ServerSource.LOCAL_APPLE_CORE_ML -> {
                 if (state.formPromptTaggedInput) {
                     ChipTextFieldWithItem(
@@ -190,7 +204,8 @@ fun GenerationInputForm(
 
             when (state.mode) {
                 ServerSource.HORDE,
-                ServerSource.LOCAL_MICROSOFT_ONNX -> {
+                ServerSource.LOCAL_MICROSOFT_ONNX,
+                ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> {
                     DropdownTextField(
                         modifier = localModifier.padding(end = 4.dp),
                         label = Localization.string("width").asUiText(),

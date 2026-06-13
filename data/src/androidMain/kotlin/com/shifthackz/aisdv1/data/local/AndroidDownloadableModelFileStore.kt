@@ -29,6 +29,7 @@ internal class AndroidDownloadableModelFileStore(
         when (model.id) {
             LocalAiModel.CustomOnnx.id,
             LocalAiModel.CustomMediaPipe.id,
+            LocalAiModel.CustomSdxl.id,
             LocalAiModel.CustomCoreMl.id,
             -> true
 
@@ -43,6 +44,11 @@ internal class AndroidDownloadableModelFileStore(
                     files.isNotEmpty()
                 }
 
+                LocalAiModel.Type.Sdxl -> {
+                    val files = getLocalModelFiles(model.id)
+                    files.isNotEmpty()
+                }
+
                 LocalAiModel.Type.CoreMl -> {
                     val files = getLocalModelFiles(model.id)
                     files.isNotEmpty()
@@ -51,6 +57,39 @@ internal class AndroidDownloadableModelFileStore(
         }
     } catch (_: Exception) {
         false
+    }
+
+    /**
+     * Loads SDAI data through `resolvePath`.
+     *
+     * @param model model value consumed by the API.
+     * @return Result produced by `resolvePath`.
+     * @author Dmitriy Moroz
+     */
+    override fun resolvePath(model: LocalAiModel): String {
+        val directory = getLocalModelDirectory(model.id)
+        if (model.type != LocalAiModel.Type.Sdxl) return directory.path
+
+        return resolveSingleFilePath(directory.path)
+    }
+
+    /**
+     * Loads SDAI data through `resolveSingleFilePath`.
+     *
+     * @param path raw file or directory path used by the operation.
+     * @return Result produced by `resolveSingleFilePath`.
+     * @author Dmitriy Moroz
+     */
+    override fun resolveSingleFilePath(path: String): String {
+        val file = File(path)
+        if (file.isFile) return file.path
+
+        return file
+            .listFiles()
+            ?.filter { file -> file.isFile && file.extension.lowercase() in singleFileModelExtensions }
+            ?.maxByOrNull(File::length)
+            ?.path
+            ?: file.path
     }
 
     /**
@@ -85,5 +124,9 @@ internal class AndroidDownloadableModelFileStore(
         val localModelDir = getLocalModelDirectory(id)
         if (!localModelDir.exists()) return emptyList()
         return localModelDir.listFiles()?.toList() ?: emptyList()
+    }
+
+    private companion object {
+        val singleFileModelExtensions = setOf("ckpt", "gguf", "safetensors")
     }
 }

@@ -53,12 +53,17 @@ class DownloadableModelLocalDataSourceTest {
             stubPreferenceManager.localCoreMlModelId
         } returns ""
 
+        every {
+            stubPreferenceManager.localSdxlModelId
+        } returns ""
+
         every { stubFileStore.isDownloaded(any()) } returns false
         every {
             stubFileStore.isDownloaded(
                 match { model ->
                     model.id == LocalAiModel.CustomOnnx.id ||
-                        model.id == LocalAiModel.CustomMediaPipe.id
+                        model.id == LocalAiModel.CustomMediaPipe.id ||
+                        model.id == LocalAiModel.CustomSdxl.id
                 },
             )
         } returns true
@@ -140,6 +145,50 @@ class DownloadableModelLocalDataSourceTest {
         val actual = runCatching { localDataSource.getAllOnnx() }
 
         Assert.assertSame(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
+    fun `given attempt to get all sdxl models, dao returns models list, app build type is PLAY, expected custom model excluded`() = runTest {
+        val sdxlEntities = listOf(mockLocalModelEntity.copy(type = LocalAiModel.Type.Sdxl.key))
+        coEvery {
+            stubDao.queryByType(LocalAiModel.Type.Sdxl.key)
+        } returns sdxlEntities
+
+        every {
+            stubBuildInfoProvider.type
+        } returns BuildType.PLAY
+
+        val expected = sdxlEntities.mapEntityToDomain()
+
+        val actual = localDataSource.getAllSdxl()
+
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `given attempt to get all sdxl models, dao returns empty list, app build type is FULL, expected custom model included`() = runTest {
+        coEvery {
+            stubDao.queryByType(LocalAiModel.Type.Sdxl.key)
+        } returns emptyList()
+
+        every {
+            stubBuildInfoProvider.type
+        } returns BuildType.FULL
+
+        val actual = localDataSource.getAllSdxl()
+
+        Assert.assertEquals(listOf(LocalAiModel.CustomSdxl.copy(downloaded = true)), actual)
+    }
+
+    @Test
+    fun `given attempt to get selected sdxl model, preference points to custom sdxl, expected custom selected`() = runTest {
+        every {
+            stubPreferenceManager.localSdxlModelId
+        } returns LocalAiModel.CustomSdxl.id
+
+        val actual = localDataSource.getSelectedSdxl()
+
+        Assert.assertEquals(LocalAiModel.CustomSdxl.copy(downloaded = true, selected = true), actual)
     }
 
     @Test

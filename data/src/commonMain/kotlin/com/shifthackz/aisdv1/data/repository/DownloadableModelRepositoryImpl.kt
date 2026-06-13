@@ -75,6 +75,17 @@ internal class DownloadableModelRepositoryImpl(
     }
 
     /**
+     * Loads SDAI data through `getAllSdxl`.
+     *
+     * @return Result produced by `getAllSdxl`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getAllSdxl(): List<LocalAiModel> {
+        refreshCache()
+        return localDataSource.getAllSdxl()
+    }
+
+    /**
      * Loads SDAI data through `getAllCoreMl`.
      *
      * @return Result produced by `getAllCoreMl`.
@@ -91,6 +102,13 @@ internal class DownloadableModelRepositoryImpl(
      * @author Dmitriy Moroz
      */
     override fun observeAllOnnx() = localDataSource.observeAllOnnx()
+
+    /**
+     * Loads SDAI data through `observeAllSdxl`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override fun observeAllSdxl() = localDataSource.observeAllSdxl()
 
     /**
      * Loads SDAI data through `observeAllCoreMl`.

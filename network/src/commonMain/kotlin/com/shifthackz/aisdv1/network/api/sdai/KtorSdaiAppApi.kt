@@ -96,6 +96,19 @@ class KtorSdaiAppApi(
         .body()
 
     /**
+     * Loads SDAI data through `fetchSdxlModels`.
+     *
+     * @return Result produced by `fetchSdxlModels`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun fetchSdxlModels(): List<DownloadableModelResponse> = httpClient
+        .get {
+            url.takeFrom(appBaseUrl)
+            url.appendPathSegments(PATH_SDXL)
+        }
+        .body()
+
+    /**
      * Loads SDAI data through `fetchCoreMlModels`.
      *
      * @return Result produced by `fetchCoreMlModels`.
@@ -147,6 +160,12 @@ class KtorSdaiAppApi(
          * @author Dmitriy Moroz
          */
         const val PATH_MEDIA_PIPE = "mediapipe.json"
+        /**
+         * Exposes the `PATH_SDXL` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val PATH_SDXL = "sdxl.json"
         /**
          * Exposes the `PATH_CORE_ML` value used by the SDAI network layer.
          *

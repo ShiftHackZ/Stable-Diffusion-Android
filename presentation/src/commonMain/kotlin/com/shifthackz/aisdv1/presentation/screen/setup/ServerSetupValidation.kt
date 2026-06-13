@@ -91,6 +91,14 @@ internal fun ServerSetupState.validateServerSetup(
         update = { error -> copy(localCustomMediaPipePathValidationError = error) },
     )
 
+    ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> validateLocalModel(
+        customModel = localSdxlCustomModel,
+        customModelPath = localSdxlCustomModelPath,
+        hasDownloadedSelection = localSdxlModels.any { it.selected && it.downloaded },
+        filePathValidator = filePathValidator,
+        update = { error -> copy(localCustomSdxlPathValidationError = error) },
+    )
+
     ServerSource.LOCAL_APPLE_CORE_ML -> ServerSetupValidationResult(
         isValid = localCoreMlModels.any { it.selected && it.downloaded },
         state = this,
