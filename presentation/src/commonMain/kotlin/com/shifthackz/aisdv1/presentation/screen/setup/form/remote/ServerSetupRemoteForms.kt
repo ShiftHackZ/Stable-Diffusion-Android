@@ -234,6 +234,34 @@ internal fun FalAiForm(
 }
 
 @Composable
+internal fun ArliAiForm(
+    state: ServerSetupState,
+    strings: ServerSetupStrings,
+    processIntent: (ServerSetupIntent) -> Unit,
+) {
+    RemoteFormScaffold(
+        title = strings.arliAiTitle,
+        subtitle = strings.arliAiSubtitle,
+    ) {
+        SetupTextField(
+            value = state.arliAiApiKey,
+            onValueChange = { processIntent(ServerSetupIntent.UpdateArliAiApiKey(it)) },
+            label = strings.apiKey,
+            keyboardType = KeyboardType.Password,
+            error = state.arliAiApiKeyValidationError?.message(strings),
+        )
+        SettingsItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            startIcon = Icons.Default.Cloud,
+            text = strings.arliAiAbout.asUiText(),
+            onClick = { processIntent(ServerSetupIntent.LaunchUrl(ServerSetupLink.ArliAiInfo)) },
+        )
+    }
+}
+
+@Composable
 internal fun StabilityAiForm(
     state: ServerSetupState,
     strings: ServerSetupStrings,

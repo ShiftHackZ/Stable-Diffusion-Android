@@ -40,6 +40,7 @@ data class ServerSetupState(
     val openAiApiKey: String = "",
     val stabilityAiApiKey: String = "",
     val falAiApiKey: String = "",
+    val arliAiApiKey: String = "",
     val hordeDefaultApiKey: Boolean = false,
     val demoMode: Boolean = false,
     val demoModeUrl: String = "",
@@ -69,6 +70,7 @@ data class ServerSetupState(
     val openAiApiKeyValidationError: ValidationError? = null,
     val stabilityAiApiKeyValidationError: ValidationError? = null,
     val falAiApiKeyValidationError: ValidationError? = null,
+    val arliAiApiKeyValidationError: ValidationError? = null,
     val localCustomOnnxPathValidationError: ValidationError? = null,
     val localCustomMediaPipePathValidationError: ValidationError? = null,
     val localCustomSdxlPathValidationError: ValidationError? = null,
@@ -312,6 +314,7 @@ data class ServerSetupState(
             ServerSource.OPEN_AI,
             ServerSource.STABILITY_AI,
             ServerSource.FAL_AI,
+            ServerSource.ARLI_AI,
         )
     }
 }
@@ -366,6 +369,7 @@ fun Configuration.toServerSetupState(
         openAiApiKey = openAiApiKey,
         stabilityAiApiKey = stabilityAiApiKey,
         falAiApiKey = falAiApiKey,
+        arliAiApiKey = arliAiApiKey,
         demoMode = demoMode,
         demoModeUrl = demoModeUrl,
     ).withCredentials(

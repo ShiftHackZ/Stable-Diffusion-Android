@@ -239,6 +239,11 @@
     <string name="hint_fal_ai_sub_title">Fal.ai 提供托管的图像生成模型 API，并使用基于队列的推理。</string>
     <string name="hint_fal_ai_about">Fal.ai API 密钥</string>
 
+    <string name="hint_arli_ai_title">连接到 ArliAI</string>
+    <string name="hint_arli_ai_sub_title">ArliAI 提供兼容 SDNext 的云端图像生成 API。</string>
+    <string name="hint_arli_ai_about">ArliAI API 文档</string>
+    <string name="hint_arli_ai_model">ArliAI 模型 checkpoint</string>
+
     <!-- Stability AI连接提示 -->
     <string name="hint_stability_ai_title">连接到 Stability AI</string>
     <string name="hint_stability_ai_sub_title">StabilityAI 是由 DreamStudio 提供的图像生成服务。</string>

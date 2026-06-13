@@ -217,6 +217,11 @@
     <string name="hint_fal_ai_sub_title">Fal.ai надає hosted API моделей генерації зображень із чергою виконання.</string>
     <string name="hint_fal_ai_about">API ключі Fal.ai</string>
 
+    <string name="hint_arli_ai_title">Підключитися до ArliAI</string>
+    <string name="hint_arli_ai_sub_title">ArliAI надає хмарний API генерації зображень, сумісний із SDNext.</string>
+    <string name="hint_arli_ai_about">Документація API ArliAI</string>
+    <string name="hint_arli_ai_model">Checkpoint моделі ArliAI</string>
+
     <string name="hint_stability_ai_title">Підключитися до Stability AI</string>
     <string name="hint_stability_ai_sub_title">StabilityAI — це сервіс генерації зображень від DreamStudio.</string>
     <string name="hint_stability_ai_about">Про Stability AI</string>

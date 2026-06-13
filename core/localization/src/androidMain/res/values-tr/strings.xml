@@ -217,6 +217,11 @@
     <string name="hint_fal_ai_sub_title">Fal.ai, kuyruk tabanlı çıkarım kullanan barındırılan görüntü oluşturma modeli API\'leri sağlar.</string>
     <string name="hint_fal_ai_about">Fal.ai API anahtarları</string>
 
+    <string name="hint_arli_ai_title">ArliAI\'ye bağlanın</string>
+    <string name="hint_arli_ai_sub_title">ArliAI, SDNext uyumlu bulut görüntü oluşturma API\'leri sağlar.</string>
+    <string name="hint_arli_ai_about">ArliAI API belgeleri</string>
+    <string name="hint_arli_ai_model">ArliAI model checkpoint</string>
+
     <string name="hint_stability_ai_title">Stability AI\'ya bağlanın</string>
     <string name="hint_stability_ai_sub_title">StabilityAI - DreamStudio tarafından sağlanan görüntü oluşturma hizmetidir.</string>
     <string name="hint_stability_ai_about">Hakkında Stability AI</string>

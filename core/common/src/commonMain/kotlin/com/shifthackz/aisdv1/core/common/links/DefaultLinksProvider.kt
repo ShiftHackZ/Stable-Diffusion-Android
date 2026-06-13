@@ -43,6 +43,12 @@ object DefaultLinksProvider : LinksProvider {
      */
     override val falAiInfoUrl: String = "https://fal.ai/dashboard/keys"
     /**
+     * Exposes the `arliAiInfoUrl` value used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val arliAiInfoUrl: String = "https://www.arliai.com/quick-start"
+    /**
      * Exposes the `privacyPolicyUrl` value used by the SDAI core common layer.
      *
      * @author Dmitriy Moroz

@@ -155,6 +155,18 @@ enum class ServerSource(
             FeatureTag.MultipleModels,
             FeatureTag.Batch,
         ),
+    ),
+    ARLI_AI(
+        key = "arli_ai",
+        type = ServerSourceType.CLOUD,
+        readiness = ServerSourceReadiness.ALPHA,
+        version = "2026.6.13",
+        featureTags = setOf(
+            FeatureTag.Txt2Img,
+            FeatureTag.Img2Img,
+            FeatureTag.MultipleModels,
+            FeatureTag.Batch,
+        ),
     );
 
     companion object {

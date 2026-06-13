@@ -234,6 +234,13 @@ sealed interface GenerationInputFormEvent {
      */
     data class UpdateFalAiSyncMode(val value: Boolean) : GenerationInputFormEvent
     /**
+     * Carries `UpdateArliAiModel` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateArliAiModel(val value: String) : GenerationInputFormEvent
+    /**
      * Carries `UpdateStabilityAiStyle` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.

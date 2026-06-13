@@ -26,6 +26,7 @@ internal fun ServerSetupLink.url(linksProvider: LinksProvider): String = when (t
     ServerSetupLink.OpenAiInfo -> linksProvider.openAiInfoUrl
     ServerSetupLink.StabilityAiInfo -> linksProvider.stabilityAiInfoUrl
     ServerSetupLink.FalAiInfo -> linksProvider.falAiInfoUrl
+    ServerSetupLink.ArliAiInfo -> linksProvider.arliAiInfoUrl
 }
 
 internal fun ValidationResult<CommonStringValidator.Error>.mapStringToValidationError():

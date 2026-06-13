@@ -41,6 +41,7 @@ val cacheDatabaseModule = module {
     single { get<CacheDatabase>().sdEmbeddingDao() }
     single { get<CacheDatabase>().serverConfigurationDao() }
     single { get<CacheDatabase>().swarmUiModelDao() }
+    single { get<CacheDatabase>().arliAiModelDao() }
 }
 
 /**

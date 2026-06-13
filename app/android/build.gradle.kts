@@ -32,6 +32,7 @@ android {
         buildConfigField("String", "OPEN_AI_INFO_URL", "\"https://platform.openai.com/api-keys\"")
         buildConfigField("String", "STABILITY_AI_INFO_URL", "\"https://platform.stability.ai/\"")
         buildConfigField("String", "FAL_AI_INFO_URL", "\"https://fal.ai/dashboard/keys\"")
+        buildConfigField("String", "ARLI_AI_INFO_URL", "\"https://www.arliai.com/quick-start\"")
         buildConfigField("String", "UPDATE_API_URL", "\"https://sdai.moroz.cc\"")
         buildConfigField("String", "REPORT_API_URL", "\"https://sdai-report.moroz.cc\"")
         buildConfigField("String", "DEMO_MODE_API_URL", "\"https://sdai.moroz.cc\"")

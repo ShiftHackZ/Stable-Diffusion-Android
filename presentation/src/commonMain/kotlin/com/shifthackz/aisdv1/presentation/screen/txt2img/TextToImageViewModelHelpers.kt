@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.ArliAiSampler
 import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
@@ -133,11 +134,15 @@ internal fun TextToImageState.validated(
     val validateDimensions = mode != ServerSource.OPEN_AI
     val widthResult = dimensionValidator(width).takeIf { validateDimensions }
     val heightResult = dimensionValidator(height).takeIf { validateDimensions }
+    val sourceError = when {
+        mode == ServerSource.ARLI_AI && arliAiModel.isBlank() -> Localization.string("error_invalid").asUiText()
+        else -> null
+    }
     return copy(
         promptValidationError = null,
         widthValidationError = widthResult?.errorMessage(),
         heightValidationError = heightResult?.errorMessage(),
-        error = null,
+        error = sourceError,
     )
 }
 
@@ -186,8 +191,11 @@ internal fun TextToImageState.withSettings(
     stableDiffusionSamplers: List<String>?,
     forgeModules: List<ForgeModule>?,
     aDetailerAvailable: Boolean?,
+    arliAiModels: List<String>?,
 ): TextToImageState =
-    withSource(settings.source, stableDiffusionSamplers, forgeModules, aDetailerAvailable).copy(
+    copy(arliAiModel = settings.arliAiModel)
+        .withSource(settings.source, stableDiffusionSamplers, forgeModules, aDetailerAvailable, arliAiModels)
+        .copy(
         advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow,
         advancedOptionsVisible = if (settings.formAdvancedOptionsAlwaysShow) {
             true
@@ -211,14 +219,17 @@ internal fun TextToImageState.withSource(
     stableDiffusionSamplers: List<String>?,
     forgeModules: List<ForgeModule>?,
     aDetailerAvailable: Boolean?,
+    arliAiModels: List<String>?,
 ): TextToImageState {
     val samplers = when (source) {
         ServerSource.STABILITY_AI -> StabilityAiSampler.entries.map { "$it" }
+        ServerSource.ARLI_AI -> ArliAiSampler.supported
         else -> stableDiffusionSamplers.orEmpty()
     }
     val modules = forgeModules.orEmpty().takeIf {
         source == ServerSource.AUTOMATIC1111
     }.orEmpty()
+    val arliModels = arliAiModels.orEmpty()
     return copy(
         mode = source,
         availableSamplers = samplers,
@@ -227,6 +238,14 @@ internal fun TextToImageState.withSource(
             ?: selectedSampler,
         availableForgeModules = modules,
         selectedForgeModules = selectedForgeModules.filter(modules::contains),
+        arliAiModels = arliModels.takeIf { source == ServerSource.ARLI_AI }.orEmpty(),
+        arliAiModel = if (source == ServerSource.ARLI_AI) {
+            arliAiModel.takeIf(arliModels::contains)
+                ?: arliModels.firstOrNull()
+                ?: arliAiModel
+        } else {
+            arliAiModel
+        },
         aDetailerAvailable = if (source == ServerSource.AUTOMATIC1111) {
             aDetailerAvailable ?: this.aDetailerAvailable
         } else {

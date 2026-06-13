@@ -81,6 +81,12 @@ data class Configuration(
      */
     val falAiApiKey: String = "",
     /**
+     * Exposes the `arliAiApiKey` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val arliAiApiKey: String = "",
+    /**
      * Exposes the `authCredentials` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz

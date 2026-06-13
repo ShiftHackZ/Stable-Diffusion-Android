@@ -4,6 +4,8 @@ import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111GenerationAp
 import com.shifthackz.aisdv1.network.api.automatic1111.Automatic1111MetadataApi
 import com.shifthackz.aisdv1.network.api.automatic1111.KtorAutomatic1111GenerationApi
 import com.shifthackz.aisdv1.network.api.automatic1111.KtorAutomatic1111MetadataApi
+import com.shifthackz.aisdv1.network.api.arliai.ArliAiGenerationApi
+import com.shifthackz.aisdv1.network.api.arliai.KtorArliAiGenerationApi
 import com.shifthackz.aisdv1.network.api.falai.FalAiGenerationApi
 import com.shifthackz.aisdv1.network.api.falai.KtorFalAiGenerationApi
 import com.shifthackz.aisdv1.network.api.horde.HordeGenerationApi
@@ -63,6 +65,9 @@ val coreNetworkModule = module {
     }
     single<FalAiGenerationApi> {
         KtorFalAiGenerationApi(FAL_AI_API_URL, FAL_AI_QUEUE_API_URL)
+    }
+    single<ArliAiGenerationApi> {
+        KtorArliAiGenerationApi(ARLI_AI_API_URL)
     }
     single<SwarmUiModelsApi> {
         KtorSwarmUiModelsApi()
@@ -138,3 +143,9 @@ private const val FAL_AI_API_URL = "https://api.fal.ai"
  * @author Dmitriy Moroz
  */
 private const val FAL_AI_QUEUE_API_URL = "https://queue.fal.run"
+/**
+ * Exposes the `ARLI_AI_API_URL` value used by the SDAI network layer.
+ *
+ * @author Dmitriy Moroz
+ */
+private const val ARLI_AI_API_URL = "https://api.arliai.com"

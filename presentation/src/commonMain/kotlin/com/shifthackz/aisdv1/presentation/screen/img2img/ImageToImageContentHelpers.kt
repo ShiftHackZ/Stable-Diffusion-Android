@@ -4,7 +4,6 @@ package com.shifthackz.aisdv1.presentation.screen.img2img
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.input.TextFieldValue
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
@@ -54,6 +53,7 @@ internal fun GenerationInputFormEvent.toImageToImageIntent(): ImageToImageIntent
     is GenerationInputFormEvent.UpdateFalAiAcceleration -> ImageToImageIntent.UpdateFalAiAcceleration(value)
     is GenerationInputFormEvent.UpdateSdxlBackend -> null
     is GenerationInputFormEvent.UpdateFalAiSyncMode -> ImageToImageIntent.UpdateFalAiSyncMode(value)
+    is GenerationInputFormEvent.UpdateArliAiModel -> ImageToImageIntent.UpdateArliAiModel(value)
     is GenerationInputFormEvent.UpdateStabilityAiStyle -> ImageToImageIntent.UpdateStabilityAiStyle(value)
     is GenerationInputFormEvent.UpdateStabilityAiClipGuidance ->
         ImageToImageIntent.UpdateStabilityAiClipGuidance(value)
@@ -191,14 +191,6 @@ internal val AiGenerationResult.aspectRatio: Float
     get() = if (width > 0 && height > 0) width.toFloat() / height.toFloat() else 1f
 
 /**
- * Exposes the `ImageBitmap` value used by the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
-internal val ImageBitmap.safeAspectRatio: Float
-    get() = if (width > 0 && height > 0) width.toFloat() / height.toFloat() else 1f
-
-/**
  * Exposes the `ServerSource` value used by the SDAI presentation layer.
  *
  * @author Dmitriy Moroz
@@ -212,6 +204,7 @@ internal val ServerSource.displayName: String
         ServerSource.OPEN_AI -> Localization.string("srv_type_open_ai")
         ServerSource.STABILITY_AI -> Localization.string("srv_type_stability_ai")
         ServerSource.FAL_AI -> Localization.string("srv_type_fal_ai")
+        ServerSource.ARLI_AI -> Localization.string("srv_type_arli_ai")
         ServerSource.LOCAL_MICROSOFT_ONNX -> Localization.string("srv_type_local_short")
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
         ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> Localization.string("srv_type_sdxl_short")

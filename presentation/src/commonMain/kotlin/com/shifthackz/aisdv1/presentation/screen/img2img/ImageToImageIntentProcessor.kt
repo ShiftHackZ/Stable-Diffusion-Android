@@ -224,7 +224,7 @@ internal class ImageToImageIntentProcessor(
                 } ?: MIN_STEPS
                 val maxSteps = it.falAiModel.maxInferenceSteps.takeIf { _ ->
                     it.mode == ServerSource.FAL_AI
-                } ?: MAX_STEPS
+                } ?: if (it.mode == ServerSource.ARLI_AI) MAX_ARLI_AI_STEPS else MAX_STEPS
                 it.copy(samplingSteps = intent.value.coerceIn(minSteps, maxSteps), message = null)
             }
             is ImageToImageIntent.UpdateCfgScale -> updateState {
@@ -315,6 +315,9 @@ internal class ImageToImageIntentProcessor(
             is ImageToImageIntent.UpdateFalAiSyncMode -> updateState {
                 it.copy(falAiSyncMode = intent.value, message = null)
             }
+            is ImageToImageIntent.UpdateArliAiModel -> updateState {
+                it.copy(arliAiModel = intent.value, message = null, error = null)
+            }
             is ImageToImageIntent.UpdateStabilityAiStyle -> updateState {
                 it.copy(selectedStylePreset = intent.value, message = null)
             }
@@ -401,3 +404,4 @@ private const val MIN_SIZE = 64
 private const val MAX_SIZE = 2048
 private const val SIZE_STEP = 64
 private const val MAX_FAL_AI_BATCH_COUNT = 4
+private const val MAX_ARLI_AI_STEPS = 40

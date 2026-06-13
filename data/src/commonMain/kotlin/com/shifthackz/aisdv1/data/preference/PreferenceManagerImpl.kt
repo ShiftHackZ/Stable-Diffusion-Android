@@ -259,6 +259,24 @@ internal class PreferenceManagerImpl(
         set(value) = putString(KEY_FAL_AI_API_KEY, value)
 
     /**
+     * Exposes the `arliAiApiKey` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var arliAiApiKey: String
+        get() = keyValueStore.getString(KEY_ARLI_AI_API_KEY)
+        set(value) = putString(KEY_ARLI_AI_API_KEY, value)
+
+    /**
+     * Exposes the `arliAiModel` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var arliAiModel: String
+        get() = keyValueStore.getString(KEY_ARLI_AI_MODEL_KEY)
+        set(value) = putString(KEY_ARLI_AI_MODEL_KEY, value)
+
+    /**
      * Exposes the `stabilityAiEngineId` value used by the SDAI data layer.
      *
      * @author Dmitriy Moroz
@@ -455,6 +473,7 @@ internal class PreferenceManagerImpl(
                 formPromptTaggedInput = formPromptTaggedInput,
                 source = source,
                 hordeApiKey = hordeApiKey,
+                arliAiModel = arliAiModel,
                 localUseNNAPI = localOnnxUseNNAPI,
                 designUseSystemColorPalette = designUseSystemColorPalette,
                 designUseSystemDarkTheme = designUseSystemDarkTheme,
@@ -681,6 +700,18 @@ internal class PreferenceManagerImpl(
          * @author Dmitriy Moroz
          */
         const val KEY_FAL_AI_API_KEY = "key_fal_ai_api_key"
+        /**
+         * Exposes the `KEY_ARLI_AI_API_KEY` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_ARLI_AI_API_KEY = "key_arli_ai_api_key"
+        /**
+         * Exposes the `KEY_ARLI_AI_MODEL_KEY` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_ARLI_AI_MODEL_KEY = "key_arli_ai_model_key"
         /**
          * Exposes the `KEY_STABILITY_AI_ENGINE_ID_KEY` value used by the SDAI data layer.
          *

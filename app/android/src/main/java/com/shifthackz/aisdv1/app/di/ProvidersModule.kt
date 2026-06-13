@@ -31,6 +31,7 @@ val providersModule = module {
             override val openAiInfoUrl: String = BuildConfig.OPEN_AI_INFO_URL
             override val stabilityAiInfoUrl: String = BuildConfig.STABILITY_AI_INFO_URL
             override val falAiInfoUrl: String = BuildConfig.FAL_AI_INFO_URL
+            override val arliAiInfoUrl: String = BuildConfig.ARLI_AI_INFO_URL
             override val privacyPolicyUrl: String = BuildConfig.POLICY_URL
             override val donateUrl: String = BuildConfig.DONATE_URL
             override val projectWebsiteUrl: String = BuildConfig.PROJECT_WEBSITE_URL

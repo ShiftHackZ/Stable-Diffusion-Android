@@ -39,6 +39,7 @@ internal class ReportRepositoryImpl(
         val model = when (source) {
             ServerSource.HUGGING_FACE -> preferenceManager.huggingFaceModel
             ServerSource.STABILITY_AI -> preferenceManager.stabilityAiEngineId
+            ServerSource.ARLI_AI -> preferenceManager.arliAiModel
             ServerSource.LOCAL_MICROSOFT_ONNX -> preferenceManager.localOnnxModelId
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> preferenceManager.localMediaPipeModelId
             ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> preferenceManager.localSdxlModelId

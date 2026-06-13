@@ -122,6 +122,7 @@
     <string name="srv_type_open_ai" translatable="false">OpenAI</string>
     <string name="srv_type_stability_ai" translatable="false">Stability AI</string>
     <string name="srv_type_fal_ai" translatable="false">Fal.ai</string>
+    <string name="srv_type_arli_ai" translatable="false">ArliAI</string>
     <string name="srv_type_swarm_ui" translatable="false">Swarm UI</string>
 
     <string name="hint_prompt">Prompt</string>
@@ -238,6 +239,11 @@
     <string name="hint_fal_ai_title">Connect to Fal.ai</string>
     <string name="hint_fal_ai_sub_title">Fal.ai provides hosted image generation model APIs with queue-based inference.</string>
     <string name="hint_fal_ai_about">Fal.ai API keys</string>
+
+    <string name="hint_arli_ai_title">Connect to ArliAI</string>
+    <string name="hint_arli_ai_sub_title">ArliAI provides SDNext-compatible cloud image generation APIs.</string>
+    <string name="hint_arli_ai_about">ArliAI API docs</string>
+    <string name="hint_arli_ai_model">ArliAI model checkpoint</string>
 
     <string name="hint_stability_ai_title">Connect to Stability AI</string>
     <string name="hint_stability_ai_sub_title">StabilityAI is the image generation service provided by DreamStudio.</string>

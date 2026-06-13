@@ -91,6 +91,16 @@ fun GenerationInputForm(
                     displayDelegate = { it.displayName.asUiText() },
                 )
 
+                ServerSource.ARLI_AI -> DropdownTextField(
+                    modifier = Modifier.padding(top = 8.dp),
+                    label = Localization.string("hint_arli_ai_model").asUiText(),
+                    value = state.arliAiModel.takeIf(String::isNotBlank),
+                    items = state.arliAiModels.ifEmpty {
+                        listOfNotNull(state.arliAiModel.takeIf(String::isNotBlank))
+                    },
+                    onItemSelected = { onEvent(GenerationInputFormEvent.UpdateArliAiModel(it)) },
+                )
+
                 else -> Unit
             }
 
@@ -147,6 +157,7 @@ fun GenerationInputForm(
             ServerSource.SWARM_UI,
             ServerSource.HUGGING_FACE,
             ServerSource.STABILITY_AI,
+            ServerSource.ARLI_AI,
             ServerSource.LOCAL_MICROSOFT_ONNX,
             ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
             ServerSource.LOCAL_APPLE_CORE_ML -> {
@@ -225,7 +236,9 @@ fun GenerationInputForm(
 
                 ServerSource.AUTOMATIC1111,
                 ServerSource.SWARM_UI,
-                ServerSource.HUGGING_FACE -> {
+                ServerSource.HUGGING_FACE,
+                ServerSource.ARLI_AI,
+                -> {
                     GenerationSizeTextFieldsComponent(modifier = localModifier, state = state, onEvent = onEvent)
                 }
 

@@ -7,6 +7,9 @@ import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.entity.StabilityAiEngine
+import com.shifthackz.aisdv1.domain.entity.StableDiffusionModel
+import com.shifthackz.aisdv1.domain.entity.SwarmUiModel
 import com.shifthackz.aisdv1.domain.feature.coreml.CoreMlModelSupport
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalCoreMlModelsUseCase
@@ -24,6 +27,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Coordinates `EngineSelectionViewModel` behavior in the SDAI presentation layer.
@@ -238,6 +242,7 @@ class EngineSelectionViewModel(
             ServerSource.HORDE,
             ServerSource.OPEN_AI,
             ServerSource.FAL_AI,
+            ServerSource.ARLI_AI,
             -> remoteOptions
         }
     }
@@ -290,7 +295,7 @@ class EngineSelectionViewModel(
     }
 
     private suspend fun <T> loadList(block: suspend () -> List<T>): List<T> = runCatching {
-        withTimeoutOrNull(REMOTE_OPTIONS_TIMEOUT_MILLIS) {
+        withTimeoutOrNull(REMOTE_OPTIONS_TIMEOUT_MILLIS.milliseconds) {
             block()
         } ?: emptyList()
     }
@@ -375,23 +380,23 @@ private data class RemoteOptions(
      *
      * @author Dmitriy Moroz
      */
-    val sdModels: List<Pair<com.shifthackz.aisdv1.domain.entity.StableDiffusionModel, Boolean>> = emptyList(),
+    val sdModels: List<Pair<StableDiffusionModel, Boolean>> = emptyList(),
     /**
      * Exposes the `swarmModels` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
      */
-    val swarmModels: List<com.shifthackz.aisdv1.domain.entity.SwarmUiModel> = emptyList(),
+    val swarmModels: List<SwarmUiModel> = emptyList(),
     /**
      * Exposes the `hfModels` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
      */
-    val hfModels: List<com.shifthackz.aisdv1.domain.entity.HuggingFaceModel> = emptyList(),
+    val hfModels: List<HuggingFaceModel> = emptyList(),
     /**
      * Exposes the `stEngines` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
      */
-    val stEngines: List<com.shifthackz.aisdv1.domain.entity.StabilityAiEngine> = emptyList(),
+    val stEngines: List<StabilityAiEngine> = emptyList(),
 )

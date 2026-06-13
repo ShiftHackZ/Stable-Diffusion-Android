@@ -419,6 +419,13 @@ sealed interface ImageToImageIntent : MviIntent {
      */
     data class UpdateFalAiSyncMode(val value: Boolean) : ImageToImageIntent
     /**
+     * Carries `UpdateArliAiModel` data through the SDAI presentation layer.
+     *
+     * @param value value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    data class UpdateArliAiModel(val value: String) : ImageToImageIntent
+    /**
      * Carries `UpdateStabilityAiStyle` data through the SDAI presentation layer.
      *
      * @param value value value consumed by the API.

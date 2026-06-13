@@ -28,6 +28,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.component.SwitchRow
 import com.shifthackz.aisdv1.presentation.screen.setup.component.isCustom
 import com.shifthackz.aisdv1.presentation.screen.setup.component.message
 import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
+import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.ArliAiForm
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.Automatic1111Form
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.FalAiForm
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.FormTitle
@@ -91,6 +92,12 @@ internal fun ConfigurationStep(
                 )
 
                 ServerSource.FAL_AI -> FalAiForm(
+                    state = state,
+                    strings = strings,
+                    processIntent = processIntent,
+                )
+
+                ServerSource.ARLI_AI -> ArliAiForm(
                     state = state,
                     strings = strings,
                     processIntent = processIntent,

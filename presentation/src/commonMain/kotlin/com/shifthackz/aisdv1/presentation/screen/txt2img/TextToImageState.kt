@@ -264,12 +264,9 @@ data class TextToImageState(
      * @author Dmitriy Moroz
      */
     override val falAiSyncMode: Boolean = false,
-    /**
-     * Exposes the `sdxlBackend` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     override val sdxlBackend: SdxlBackend = SdxlBackend.AUTO,
+    override val arliAiModels: List<String> = emptyList(),
+    override val arliAiModel: String = "",
     /**
      * Exposes the `widthValidationError` value used by the SDAI presentation layer.
      *
@@ -399,6 +396,7 @@ internal fun TextToImageState.mapToPayload(): TextToImagePayload = TextToImagePa
         mode == ServerSource.LOCAL_STABLE_DIFFUSION_CPP
     } ?: SdxlBackend.AUTO,
     falAiSyncMode = falAiSyncMode,
+    arliAiModel = arliAiModel.takeIf { mode == ServerSource.ARLI_AI }.orEmpty(),
 )
 
 /**
