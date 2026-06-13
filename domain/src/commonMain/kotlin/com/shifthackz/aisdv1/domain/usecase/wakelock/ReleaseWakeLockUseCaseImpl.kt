@@ -1,31 +1,27 @@
 package com.shifthackz.aisdv1.domain.usecase.wakelock
 
-import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.domain.repository.WakeLockRepository
 
 /**
- * Implements `AcquireWakelockUseCase` behavior in the SDAI domain layer.
+ * Implements `ReleaseWakeLockUseCase` behavior in the SDAI domain layer.
  *
  * @author Dmitriy Moroz
  */
-internal class AcquireWakelockUseCaseImpl(
+internal class ReleaseWakeLockUseCaseImpl(
     /**
      * Exposes the `wakeLockRepository` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz
      */
     private val wakeLockRepository: WakeLockRepository,
-) : AcquireWakelockUseCase {
+) : ReleaseWakeLockUseCase {
 
     /**
      * Executes the `invoke` step in the SDAI domain layer.
      *
-     * @param timeout timeout value consumed by the API.
      * @author Dmitriy Moroz
      */
-    override fun invoke(timeout: Long) = runCatching {
-        wakeLockRepository.wakeLock.acquire(timeout)
-    }.onFailure { t ->
-        errorLog(t)
+    override fun invoke() = runCatching {
+        wakeLockRepository.wakeLock.release()
     }
 }

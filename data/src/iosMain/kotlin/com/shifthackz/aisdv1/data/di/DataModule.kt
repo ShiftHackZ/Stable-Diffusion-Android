@@ -6,7 +6,9 @@ import com.shifthackz.aisdv1.data.local.DownloadableModelFileStore
 import com.shifthackz.aisdv1.data.local.IosDownloadableModelFileStore
 import com.shifthackz.aisdv1.data.remote.DownloadableModelFileDownloader
 import com.shifthackz.aisdv1.data.remote.IosDownloadableModelFileDownloader
+import com.shifthackz.aisdv1.data.repository.IosWakeLockRepository
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
+import com.shifthackz.aisdv1.domain.repository.WakeLockRepository
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -24,6 +26,9 @@ private val iosDataOverridesModule = module {
     }
     single<MediaStoreGateway> {
         IosMediaStoreGateway()
+    }
+    single<WakeLockRepository> {
+        IosWakeLockRepository()
     }
     factoryOf(::IosDownloadableModelFileDownloader) bind DownloadableModelFileDownloader::class
     factoryOf(::IosDownloadableModelFileStore) bind DownloadableModelFileStore::class

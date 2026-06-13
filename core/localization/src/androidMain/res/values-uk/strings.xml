@@ -214,7 +214,7 @@
     <string name="gallery_action_report">Скарга</string>
     <string name="gallery_action_blur">Блюр</string>
     <string name="gallery_action_like">Лайк</string>
-    <string name="gallery_action_unlike">Прибрати лайк</string>
+    <string name="gallery_action_unlike">Не лайк</string>
     <string name="gallery_action_delete">Видалити</string>
 
     <string name="title_text_to_image">Текст в Картинку</string>
@@ -273,6 +273,7 @@
     <string name="settings_item_monitor_connection">Моніторинг сервера</string>
     <string name="settings_item_background_generation">Фонова генерація (Beta)*</string>
     <string name="settings_item_background_generation_warning">*Генерація фону може працювати нестабільно з Local Diffusion, будь ласка, переконайтеся, що Local Diffusion добре працює на вашому пристрої Android, перш ніж увімкнути це.</string>
+    <string name="settings_item_background_generation_warning_ios">*Фонова генерація може працювати нестабільно з Silicon Diffusion. Перед увімкненням переконайтеся, що Silicon Diffusion працює на вашому iPhone.</string>
     <string name="settings_item_auto_save">Авто-збереження фото</string>
     <string name="settings_item_auto_save_warning">*Зображення завжди зберігаються в галереї додатку під час фонової генерації.</string>
     <string name="settings_item_auto_save_media_store">Зберігати в Завантажене</string>

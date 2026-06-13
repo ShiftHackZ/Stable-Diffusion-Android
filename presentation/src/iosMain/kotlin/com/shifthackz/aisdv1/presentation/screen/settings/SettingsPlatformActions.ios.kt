@@ -33,7 +33,13 @@ private object IosSettingsPlatformActions : SettingsPlatformActions {
      *
      * @author Dmitriy Moroz
      */
-    override val supportsBackgroundGeneration: Boolean = false
+    override val supportsBackgroundGeneration: Boolean = true
+    /**
+     * Exposes the `backgroundGenerationWarningKey` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val backgroundGenerationWarningKey = "settings_item_background_generation_warning_ios"
 
     /**
      * Executes the `requestStoragePermission` step in the SDAI presentation layer.

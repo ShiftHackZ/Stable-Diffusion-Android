@@ -37,6 +37,7 @@ class BackgroundWorkViewModelTest {
     fun initialize() {
         Localization.setLanguageCode("en")
         observer.reset()
+        imageLoader.reset()
     }
 
     @Test
@@ -56,6 +57,7 @@ class BackgroundWorkViewModelTest {
             Assert.assertEquals(
                 BackgroundWorkState(
                     visible = true,
+                    running = true,
                     title = "Running",
                     subTitle = "Almost there",
                 ),
@@ -78,12 +80,63 @@ class BackgroundWorkViewModelTest {
             Assert.assertEquals(
                 BackgroundWorkState(
                     visible = true,
+                    dismissible = true,
                     title = Localization.string("notification_finish_title", languageCode = "en"),
                     image = imageBitmap,
                 ),
                 viewModel.state.value,
             )
             Assert.assertEquals("base64-result", imageLoader.lastBase64)
+        }
+
+    @Test
+    fun `given background work success without preview image, expected finish title and dismiss action`() =
+        runTest(testDispatcher) {
+            observer.result = flowOf(BackgroundWorkResult.Success(emptyList()))
+
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            Assert.assertEquals(
+                BackgroundWorkState(
+                    visible = true,
+                    dismissible = true,
+                    title = Localization.string("notification_finish_title", languageCode = "en"),
+                ),
+                viewModel.state.value,
+            )
+            Assert.assertEquals(null, imageLoader.lastBase64)
+        }
+
+    @Test
+    fun `given running background work with stale success result, expected loading state without old image`() =
+        runTest(testDispatcher) {
+            observer.status = flowOf(
+                BackgroundWorkStatus(
+                    running = true,
+                    statusTitle = "Running",
+                    statusSubTitle = "Please wait",
+                ),
+            )
+            observer.result = flowOf(
+                BackgroundWorkResult.Success(
+                    listOf(aiGenerationResult(image = "old-base64-result")),
+                ),
+            )
+
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            Assert.assertEquals(
+                BackgroundWorkState(
+                    visible = true,
+                    running = true,
+                    title = "Running",
+                    subTitle = "Please wait",
+                ),
+                viewModel.state.value,
+            )
+            Assert.assertEquals(null, imageLoader.lastBase64)
         }
 
     @Test
@@ -157,6 +210,10 @@ class BackgroundWorkViewModelTest {
         private val imageBitmap: ImageBitmap,
     ) : BackgroundWorkImageLoader {
         var lastBase64: String? = null
+
+        fun reset() {
+            lastBase64 = null
+        }
 
         override suspend fun load(base64: String): ImageBitmap {
             lastBase64 = base64

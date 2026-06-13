@@ -20,6 +20,12 @@ interface SettingsPlatformActions {
      * @author Dmitriy Moroz
      */
     val supportsBackgroundGeneration: Boolean
+    /**
+     * Exposes the `backgroundGenerationWarningKey` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val backgroundGenerationWarningKey: String
 
     /**
      * Executes the `requestStoragePermission` step in the SDAI presentation layer.
@@ -85,6 +91,12 @@ object NoOpSettingsPlatformActions : SettingsPlatformActions {
      * @author Dmitriy Moroz
      */
     override val supportsBackgroundGeneration = false
+    /**
+     * Exposes the `backgroundGenerationWarningKey` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override val backgroundGenerationWarningKey = "settings_item_background_generation_warning"
 
     /**
      * Executes the `requestStoragePermission` step in the SDAI presentation layer.

@@ -2,7 +2,6 @@ package com.shifthackz.aisdv1.presentation.core
 
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.notification.PushNotificationManager
-import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 /**
@@ -17,12 +16,6 @@ class AndroidGenerationPlatformServices(
      * @author Dmitriy Moroz
      */
     private val notificationManager: PushNotificationManager,
-    /**
-     * Exposes the `wakeLockInterActor` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
-    private val wakeLockInterActor: WakeLockInterActor,
 ) : GenerationPlatformServices {
 
     /**
@@ -31,24 +24,6 @@ class AndroidGenerationPlatformServices(
      * @author Dmitriy Moroz
      */
     override val supportsBackgroundGeneration: Boolean = true
-
-    /**
-     * Performs the SDAI side effect handled by `acquireWakeLock`.
-     *
-     * @author Dmitriy Moroz
-     */
-    override suspend fun acquireWakeLock() {
-        wakeLockInterActor.acquireWakelockUseCase()
-    }
-
-    /**
-     * Performs the SDAI side effect handled by `releaseWakeLock`.
-     *
-     * @author Dmitriy Moroz
-     */
-    override suspend fun releaseWakeLock() {
-        wakeLockInterActor.releaseWakeLockUseCase()
-    }
 
     /**
      * Executes the `showGenerationSucceeded` step in the SDAI presentation layer.

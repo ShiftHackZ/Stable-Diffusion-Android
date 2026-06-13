@@ -26,6 +26,6 @@ interface AcquireWakelockUseCase {
          *
          * @author Dmitriy Moroz
          */
-        const val DEFAULT_TIMEOUT = 10 * 60 * 1000L // 60 minutes
+        const val DEFAULT_TIMEOUT = 10 * 60 * 1000L
     }
 }

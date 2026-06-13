@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
  *
  * @param modifier Compose modifier applied to the rendered UI.
  * @param state state rendered or processed by the component.
+ * @param platformActions platform actions value consumed by the API.
  * @param processIntent process intent value consumed by the API.
  * @author Dmitriy Moroz
  */
@@ -26,6 +27,7 @@ import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 internal fun ContentSettingsState(
     modifier: Modifier = Modifier,
     state: SettingsState,
+    platformActions: SettingsPlatformActions = NoOpSettingsPlatformActions,
     processIntent: (SettingsIntent) -> Unit = {},
 ) {
     val isDark = if (state.useSystemDarkTheme) {
@@ -53,6 +55,7 @@ internal fun ContentSettingsState(
             headerModifier = headerModifier,
             itemModifier = itemModifier,
             warningModifier = warningModifier,
+            backgroundGenerationWarningKey = platformActions.backgroundGenerationWarningKey,
             processIntent = processIntent,
         )
         SettingsLookAndFeelSection(

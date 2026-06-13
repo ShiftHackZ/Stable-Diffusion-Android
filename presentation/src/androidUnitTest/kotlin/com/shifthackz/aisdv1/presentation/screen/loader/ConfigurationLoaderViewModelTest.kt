@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.ConfigurationLoaderRouter
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineDispatcher
@@ -34,6 +35,7 @@ class ConfigurationLoaderViewModelTest {
     @Test
     fun `initialized, data loaded successfully, expected launching state and router navigateToHomeScreen called`() =
         runTest(testDispatcher) {
+            val events = mutableListOf<String>()
             coEvery {
                 stubGetConfigurationUseCase()
             } returns Configuration(
@@ -42,7 +44,14 @@ class ConfigurationLoaderViewModelTest {
             )
             coEvery {
                 stubDataPreLoaderUseCase()
-            } returns Unit
+            } coAnswers {
+                events += "preload"
+            }
+            every {
+                stubRouter.navigateToHomeScreen()
+            } answers {
+                events += "navigate"
+            }
 
             val viewModel = createViewModel()
             advanceUntilIdle()
@@ -54,6 +63,7 @@ class ConfigurationLoaderViewModelTest {
             verify {
                 stubRouter.navigateToHomeScreen()
             }
+            Assert.assertEquals(listOf("preload", "navigate"), events)
         }
 
     @Test

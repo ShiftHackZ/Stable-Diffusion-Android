@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
+import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
@@ -99,6 +100,13 @@ internal class ImageToImageActionHandler(
      * @author Dmitriy Moroz
      */
     private val backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `wakeLockInterActor` value used by the SDAI presentation layer.
+     *
+     * @throws IllegalStateException when the current state is invalid.
+     * @author Dmitriy Moroz
+     */
+    private val wakeLockInterActor: WakeLockInterActor,
     /**
      * Exposes the `platformServices` value used by the SDAI presentation layer.
      *
@@ -333,7 +341,7 @@ internal class ImageToImageActionHandler(
                     backgroundWorkObserver.refreshStatus()
                     return@runCatching emptyList()
                 }
-                platformServices.acquireWakeLock()
+                wakeLockInterActor.acquireWakelockUseCase()
                 try {
                     imageToImageUseCase(payload).let { results ->
                         if (preferenceManager.autoSaveAiResults) {
@@ -343,7 +351,7 @@ internal class ImageToImageActionHandler(
                         }
                     }
                 } finally {
-                    platformServices.releaseWakeLock()
+                    wakeLockInterActor.releaseWakeLockUseCase()
                 }
             }
                 .onSuccess { results ->

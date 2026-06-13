@@ -1,8 +1,11 @@
 package com.shifthackz.aisdv1.data.repository
 
 import android.os.PowerManager
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Assert
 import org.junit.Test
 
@@ -20,8 +23,7 @@ class WakeLockRepositoryImplTest {
         } returns stubWakeLock
 
         val actual = repository.wakeLock
-        val expected = stubWakeLock
-        Assert.assertEquals(expected, actual)
+        Assert.assertNotNull(actual)
     }
 
     @Test
@@ -31,13 +33,29 @@ class WakeLockRepositoryImplTest {
         } returns stubWakeLock
 
         val actualBeforeInit = repository.wakeLock
-        val expectedBeforeInit = stubWakeLock
-        Assert.assertEquals(expectedBeforeInit, actualBeforeInit)
-
         val actualAfterInit = repository.wakeLock
-        val expectedAfterInit = stubWakeLock
-        Assert.assertEquals(expectedAfterInit, actualAfterInit)
 
         Assert.assertEquals(actualBeforeInit, actualAfterInit)
+    }
+
+    @Test
+    fun `given repository wake lock, acquire and release, expected calls delegated to android wake lock`() {
+        every {
+            stubPowerManager.newWakeLock(any(), any())
+        } returns stubWakeLock
+        every {
+            stubWakeLock.acquire(any<Long>())
+        } just Runs
+        every {
+            stubWakeLock.release()
+        } just Runs
+
+        repository.wakeLock.acquire(1000L)
+        repository.wakeLock.release()
+
+        verify {
+            stubWakeLock.acquire(1000L)
+            stubWakeLock.release()
+        }
     }
 }

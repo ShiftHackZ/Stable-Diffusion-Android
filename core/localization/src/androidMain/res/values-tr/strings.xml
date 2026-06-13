@@ -273,6 +273,7 @@
     <string name="settings_item_monitor_connection">Bağlantıyı incele</string>
     <string name="settings_item_background_generation">Arkaplan oluşturma (Beta)*</string>
     <string name="settings_item_background_generation_warning">*Arka plan oluşturma işlemi Yerel Yayılım ile stabil çalışmayabilir, lütfen bunu etkinleştirmeden önce Yerel Yayılımın Android cihazınızda düzgün çalıştığından emin olun.</string>
+    <string name="settings_item_background_generation_warning_ios">*Arka plan oluşturma Silicon Diffusion ile kararlı çalışmayabilir. Etkinleştirmeden önce Silicon Diffusion\'ın iPhone\'unuzda çalıştığından emin olun.</string>
     <string name="settings_item_auto_save">Resimeleri otomatik kaydet</string>
     <string name="settings_item_auto_save_warning">*Arka planda oluşturma sırasında görseller her zaman uygulama içi galeriye kaydedilecektir.</string>
     <string name="settings_item_auto_save_media_store">İndirilenlere Kaydet</string>

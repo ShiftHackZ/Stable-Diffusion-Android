@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.domain.usecase.settings
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
 import com.shifthackz.aisdv1.domain.preference.ConfigurationStore
+import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 
 /**
  * Implements `DefaultGetConfigurationUseCase` behavior in the SDAI domain layer.
@@ -54,6 +55,12 @@ internal class DefaultSetServerConfigurationUseCaseImpl(
      * @author Dmitriy Moroz
      */
     private val authorizationStore: AuthorizationStore,
+    /**
+     * Exposes the `preferenceManager` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val preferenceManager: PreferenceManager,
 ) : SetServerConfigurationUseCase {
 
     /**
@@ -65,5 +72,6 @@ internal class DefaultSetServerConfigurationUseCaseImpl(
     override suspend fun invoke(configuration: Configuration) {
         authorizationStore.storeAuthorizationCredentials(configuration.authCredentials)
         configurationStore.setConfiguration(configuration)
+        preferenceManager.refresh()
     }
 }

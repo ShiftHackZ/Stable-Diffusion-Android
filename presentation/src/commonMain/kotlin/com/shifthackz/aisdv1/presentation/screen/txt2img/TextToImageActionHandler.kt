@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
+import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
@@ -77,6 +78,12 @@ internal class TextToImageActionHandler(
      * @author Dmitriy Moroz
      */
     private val backgroundWorkObserver: BackgroundWorkObserver,
+    /**
+     * Exposes the `wakeLockInterActor` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val wakeLockInterActor: WakeLockInterActor,
     /**
      * Exposes the `platformServices` value used by the SDAI presentation layer.
      *
@@ -191,7 +198,7 @@ internal class TextToImageActionHandler(
         generationJob?.cancel()
         generationJob = launch(dispatchersProvider.io, CoroutineStart.DEFAULT) {
             runCatching {
-                platformServices.acquireWakeLock()
+                wakeLockInterActor.acquireWakelockUseCase()
                 try {
                     textToImageUseCase(payload).let { results ->
                         if (preferenceManager.autoSaveAiResults) {
@@ -201,7 +208,7 @@ internal class TextToImageActionHandler(
                         }
                     }
                 } finally {
-                    platformServices.releaseWakeLock()
+                    wakeLockInterActor.releaseWakeLockUseCase()
                 }
             }
                 .onSuccess { results ->

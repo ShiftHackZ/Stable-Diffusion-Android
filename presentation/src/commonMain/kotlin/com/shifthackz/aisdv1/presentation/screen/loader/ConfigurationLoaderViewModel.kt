@@ -61,13 +61,14 @@ class ConfigurationLoaderViewModel(
 
             runCatching {
                 val configuration = getConfigurationUseCase()
+                if (configuration.requiresRemotePreload()) {
+                    withTimeout(STARTUP_PRELOAD_TIMEOUT_MILLIS) {
+                        dataPreLoaderUseCase()
+                    }
+                }
                 withContext(dispatchersProvider.immediate) {
                     emitState(ConfigurationLoaderState(ConfigurationLoaderState.Status.Launching))
                     router.navigateToHomeScreen()
-                }
-                if (!configuration.requiresRemotePreload()) return@runCatching
-                withTimeout(STARTUP_PRELOAD_TIMEOUT_MILLIS) {
-                    dataPreLoaderUseCase()
                 }
             }.onFailure { t ->
                 withContext(dispatchersProvider.immediate) {

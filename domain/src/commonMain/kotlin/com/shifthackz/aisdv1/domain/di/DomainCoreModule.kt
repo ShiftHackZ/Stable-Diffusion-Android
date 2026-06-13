@@ -6,12 +6,16 @@ import com.shifthackz.aisdv1.domain.feature.work.NoOpBackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.NoOpBackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.gateway.NoOpServerConnectivityGateway
 import com.shifthackz.aisdv1.domain.gateway.ServerConnectivityGateway
+import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
+import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActorImpl
 import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpCoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpLocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpMediaPipeGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.NoOpWakeLockRepository
+import com.shifthackz.aisdv1.domain.repository.WakeLockRepository
 import com.shifthackz.aisdv1.domain.usecase.caching.AppCacheCleaner
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCaseImpl
@@ -160,6 +164,10 @@ import com.shifthackz.aisdv1.domain.usecase.swarmmodel.FetchAndGetSwarmUiModelsU
 import com.shifthackz.aisdv1.domain.usecase.swarmmodel.FetchAndGetSwarmUiModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.swarmmodel.FetchSwarmUiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.swarmmodel.FetchSwarmUiModelsUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.wakelock.AcquireWakelockUseCase
+import com.shifthackz.aisdv1.domain.usecase.wakelock.AcquireWakelockUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.wakelock.ReleaseWakeLockUseCase
+import com.shifthackz.aisdv1.domain.usecase.wakelock.ReleaseWakeLockUseCaseImpl
 import org.koin.dsl.module
 
 /**
@@ -174,7 +182,20 @@ val coreDomainModule = module {
     single<LocalDiffusionGenerationRepository> { NoOpLocalDiffusionGenerationRepository }
     single<MediaPipeGenerationRepository> { NoOpMediaPipeGenerationRepository }
     single<CoreMlGenerationRepository> { NoOpCoreMlGenerationRepository }
+    single<WakeLockRepository> { NoOpWakeLockRepository }
     single<AppCacheCleaner> { NoOpAppCacheCleaner }
+    factory<AcquireWakelockUseCase> {
+        AcquireWakelockUseCaseImpl(wakeLockRepository = get())
+    }
+    factory<ReleaseWakeLockUseCase> {
+        ReleaseWakeLockUseCaseImpl(wakeLockRepository = get())
+    }
+    factory<WakeLockInterActor> {
+        WakeLockInterActorImpl(
+            acquireWakelockUseCase = get(),
+            releaseWakeLockUseCase = get(),
+        )
+    }
     factory<GetMonitorConnectivityUseCase> {
         GetMonitorConnectivityUseCaseImpl(preferenceManager = get())
     }
@@ -382,6 +403,7 @@ val coreDomainModule = module {
         DefaultSetServerConfigurationUseCaseImpl(
             configurationStore = get(),
             authorizationStore = get(),
+            preferenceManager = get(),
         )
     }
     factory<ConnectToA1111UseCase> {
