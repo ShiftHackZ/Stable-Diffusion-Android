@@ -31,22 +31,13 @@ import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneWidthFraction
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsScreenContent
-import com.shifthackz.aisdv1.presentation.screen.settings.SettingsState
+import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsState
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppTheme
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppThemeState
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/**
- * Renders the `LookAndFeelPageContent` UI for the SDAI presentation layer.
- *
- * @param modifier Compose modifier applied to the rendered UI.
- * @param darkThemeToken dark theme token value consumed by the API.
- * @param appVersion app version value consumed by the API.
- * @param isPageVisible is page visible value consumed by the API.
- * @author Dmitriy Moroz
- */
 @Composable
 fun LookAndFeelPageContent(
     modifier: Modifier = Modifier,

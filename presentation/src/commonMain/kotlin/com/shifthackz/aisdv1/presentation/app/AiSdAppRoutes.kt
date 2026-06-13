@@ -31,9 +31,9 @@ import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingContent
 import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingViewModel
 import com.shifthackz.aisdv1.presentation.screen.report.ReportScreen
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsScreen
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupContent
+import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupContent
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
-import com.shifthackz.aisdv1.presentation.screen.setup.rememberServerSetupEffectHandler
+import com.shifthackz.aisdv1.presentation.screen.setup.platform.rememberServerSetupEffectHandler
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreenContent
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashViewModel
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageContent
@@ -44,19 +44,6 @@ import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
 
 
-/**
- * Renders the `HomeRoutesScaffold` UI for the SDAI presentation layer.
- *
- * @param languageCode BCP-47 language code handled by the platform layer.
- * @param activeRoute active route value consumed by the API.
- * @param renderedRoutes rendered routes value consumed by the API.
- * @param router router value consumed by the API.
- * @param buildInfoProvider build info provider value consumed by the API.
- * @param preferenceManager preference manager value consumed by the API.
- * @param textToImageViewModel text to image view model value consumed by the API.
- * @param imageToImageViewModel image to image view model value consumed by the API.
- * @author Dmitriy Moroz
- */
 @Composable
 internal fun HomeRoutesScaffold(
     languageCode: String,
@@ -128,15 +115,6 @@ internal fun HomeRoutesScaffold(
     }
 }
 
-/**
- * Renders the `HomeRouteSlot` UI for the SDAI presentation layer.
- *
- * @param route route value consumed by the API.
- * @param activeRoute active route value consumed by the API.
- * @param renderedRoutes rendered routes value consumed by the API.
- * @param content content value consumed by the API.
- * @author Dmitriy Moroz
- */
 @Composable
 internal fun HomeRouteSlot(
     route: AppRoute,
@@ -157,17 +135,6 @@ internal fun HomeRouteSlot(
     }
 }
 
-/**
- * Renders the `OverlayRouteContent` UI for the SDAI presentation layer.
- *
- * @param languageCode BCP-47 language code handled by the platform layer.
- * @param route route value consumed by the API.
- * @param koin koin value consumed by the API.
- * @param router router value consumed by the API.
- * @param urlLauncher url launcher value consumed by the API.
- * @param imageToImageViewModel image to image view model value consumed by the API.
- * @author Dmitriy Moroz
- */
 @Composable
 internal fun OverlayRouteContent(
     languageCode: String,
@@ -316,11 +283,6 @@ internal fun OverlayRouteContent(
     }
 }
 
-/**
- * Executes the `asHomeTabRoute` step in the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 internal fun AppRoute.asHomeTabRoute(): AppRoute? = when (this) {
     AppRoute.Home,
     AppRoute.TextToImage,

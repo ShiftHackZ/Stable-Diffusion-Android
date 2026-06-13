@@ -43,26 +43,20 @@ import com.shifthackz.aisdv1.presentation.di.initKoin
 import org.koin.core.parameter.parametersOf
 
 /**
- * Exposes the `GITHUB_WEB_RESOURCE` value used by the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
+ * Hostname used to detect GitHub-backed model mirrors in download source rows.
  */
 internal const val GITHUB_WEB_RESOURCE = "github.com"
-/**
- * Exposes the `SDAI_WEB_RESOURCE` value used by the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
-internal const val SDAI_WEB_RESOURCE = "share.moroz.cc"
 
 /**
- * Renders the `DownloadDialog` UI for the SDAI presentation layer.
+ * Hostname for SDAI-maintained model mirrors.
+ */
+internal const val SDAI_WEB_RESOURCE = "sdai-models.moroz.cc"
+
+/**
+ * Dialog-scoped MVI entry point for selecting one download URL for a local model.
  *
- * @param modifier Compose modifier applied to the rendered UI.
- * @param modelId model id value consumed by the API.
- * @param onDismissRequest callback invoked by the component.
- * @param onDownloadSourceSelected callback invoked by the component.
- * @author Dmitriy Moroz
+ * @param modelId downloadable model id used by `DownloadDialogViewModel` to load candidate URLs.
+ * @param onDownloadSourceSelected called with the selected URL when the user confirms.
  */
 @Composable
 fun DownloadDialog(
@@ -95,14 +89,6 @@ fun DownloadDialog(
     }
 }
 
-/**
- * Renders the `DownloadDialogContent` UI for the SDAI presentation layer.
- *
- * @param modifier Compose modifier applied to the rendered UI.
- * @param state state rendered or processed by the component.
- * @param processIntent process intent value consumed by the API.
- * @author Dmitriy Moroz
- */
 @Composable
 private fun DownloadDialogContent(
     modifier: Modifier = Modifier,
@@ -226,11 +212,7 @@ private fun DownloadDialogContent(
 }
 
 /**
- * Renders the `DownloadSourceIcon` UI for the SDAI presentation layer.
- *
- * @param host host value consumed by the API.
- * @param modifier Compose modifier applied to the rendered UI.
- * @author Dmitriy Moroz
+ * Platform icon for a download source hostname.
  */
 @Composable
 internal expect fun DownloadSourceIcon(

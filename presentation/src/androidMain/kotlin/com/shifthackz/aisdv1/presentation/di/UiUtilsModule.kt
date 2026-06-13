@@ -16,8 +16,8 @@ import com.shifthackz.aisdv1.presentation.screen.logger.AndroidLogReader
 import com.shifthackz.aisdv1.presentation.screen.logger.AndroidLoggerPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.logger.LogReader
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerPlatformActions
-import com.shifthackz.aisdv1.presentation.screen.setup.AndroidServerSetupDownloadGuard
-import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupDownloadGuard
+import com.shifthackz.aisdv1.presentation.screen.setup.platform.AndroidServerSetupDownloadGuard
+import com.shifthackz.aisdv1.presentation.screen.setup.platform.ServerSetupDownloadGuard
 import com.shifthackz.aisdv1.presentation.screen.txt2img.AndroidImageSaver
 import com.shifthackz.aisdv1.presentation.screen.txt2img.AndroidImageSharer
 import com.shifthackz.aisdv1.presentation.screen.txt2img.ImageSaver
@@ -30,11 +30,6 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-/**
- * Exposes the `uiUtilsModule` value used by the SDAI presentation layer.
- *
- * @author Dmitriy Moroz
- */
 internal val uiUtilsModule = module {
     factoryOf(::GalleryExporter) bind GalleryExportService::class
     factory { AndroidGalleryPlatformActions(androidContext(), get()) } bind GalleryPlatformActions::class

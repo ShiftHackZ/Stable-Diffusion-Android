@@ -27,16 +27,16 @@ import com.shifthackz.aisdv1.core.mvi.MviComponent
 import com.shifthackz.aisdv1.presentation.di.initKoin
 import com.shifthackz.aisdv1.presentation.navigation.router.SettingsRouter
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerIntent
+import com.shifthackz.aisdv1.presentation.screen.settings.content.ContentSettingsState
+import com.shifthackz.aisdv1.presentation.screen.settings.modal.SettingsModalRenderer
+import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsIntent
+import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsState
+import com.shifthackz.aisdv1.presentation.screen.settings.platform.NoOpSettingsPlatformActions
+import com.shifthackz.aisdv1.presentation.screen.settings.platform.SettingsPlatformActions
+import com.shifthackz.aisdv1.presentation.screen.settings.platform.rememberSettingsPlatformActions
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import org.koin.core.parameter.parametersOf
 
-/**
- * Renders the `SettingsScreen` UI for the SDAI presentation layer.
- *
- * @param modifier Compose modifier applied to the rendered UI.
- * @param router router value consumed by the API.
- * @author Dmitriy Moroz
- */
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
@@ -67,15 +67,6 @@ fun SettingsScreen(
     }
 }
 
-/**
- * Renders the `SettingsScreenContent` UI for the SDAI presentation layer.
- *
- * @param modifier Compose modifier applied to the rendered UI.
- * @param state state rendered or processed by the component.
- * @param platformActions platform actions value consumed by the API.
- * @param processIntent process intent value consumed by the API.
- * @author Dmitriy Moroz
- */
 @Composable
 fun SettingsScreenContent(
     modifier: Modifier = Modifier,

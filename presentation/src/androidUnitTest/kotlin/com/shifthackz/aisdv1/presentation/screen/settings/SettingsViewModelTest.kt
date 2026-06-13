@@ -16,6 +16,9 @@ import com.shifthackz.aisdv1.presentation.mocks.mockStableDiffusionModels
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.SettingsRouter
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
+import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsIntent
+import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsModal
+import com.shifthackz.aisdv1.presentation.screen.settings.platform.SettingsPlatformActions
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
