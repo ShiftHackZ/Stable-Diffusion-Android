@@ -1,7 +1,6 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.graphics.ImageBitmap
 import com.shifthackz.aisdv1.core.mvi.MviState
 import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
@@ -170,7 +169,7 @@ data class GalleryGridItemUi(
      *
      * @author Dmitriy Moroz
      */
-    val image: ImageBitmap?,
+    val imageBase64: String,
     /**
      * Exposes the `hidden` value used by the SDAI presentation layer.
      *

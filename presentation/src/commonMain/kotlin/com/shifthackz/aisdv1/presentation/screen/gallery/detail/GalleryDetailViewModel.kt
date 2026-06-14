@@ -119,7 +119,7 @@ class GalleryDetailViewModel(
 
     private var currentItemId: Long = itemId
     private val safePagerBuffer = pagerBuffer.coerceAtLeast(0)
-    private var galleryItems: List<AiGenerationResult> = emptyList()
+    private var galleryItemIds: List<Long> = emptyList()
     private val contentCache = mutableMapOf<Long, GalleryDetailContent>()
     private val showReportButton: Boolean
         get() = buildInfoProvider.type != BuildType.FOSS
@@ -154,11 +154,15 @@ class GalleryDetailViewModel(
     private fun load() {
         launch(dispatchersProvider.io) {
             runCatching {
-                val items = getGalleryItems()
-                val result = items.firstOrNull { it.id == currentItemId }
-                    ?: getGenerationResult(currentItemId)
-                val itemIndex = items.indexOfFirst { it.id == result.id }
-                galleryItems = items
+                val ids = getGalleryItemIds()
+                val result = getGenerationResult(currentItemId)
+                val resolvedIds = when {
+                    ids.isEmpty() -> ids
+                    result.id in ids -> ids
+                    else -> listOf(result.id)
+                }
+                val itemIndex = resolvedIds.indexOf(result.id)
+                galleryItemIds = resolvedIds
                 result.cachedContent() to itemIndex
             }
                 .onFailure(::handleFailure)
@@ -170,6 +174,7 @@ class GalleryDetailViewModel(
                             decodeMissing = true,
                         )
                     }
+                    prefetchPagerWindow(itemIndex)
                 }
         }
     }
@@ -206,7 +211,7 @@ class GalleryDetailViewModel(
     private fun delete() {
         setActiveDialog(GalleryDetailDialog.None)
         val id = currentState.content?.id ?: return
-        val itemIndex = galleryItems.indexOfFirst { it.id == id }
+        val itemIndex = galleryItemIds.indexOf(id)
         if (itemIndex == -1) {
             launch(dispatchersProvider.io) {
                 runCatching { deleteGalleryItemUseCase(id) }
@@ -220,11 +225,11 @@ class GalleryDetailViewModel(
             return
         }
 
-        val updatedItems = galleryItems.toMutableList().apply { removeAt(itemIndex) }
+        val updatedIds = galleryItemIds.toMutableList().apply { removeAt(itemIndex) }
         contentCache.remove(id)
-        galleryItems = updatedItems
+        galleryItemIds = updatedIds
 
-        if (updatedItems.isEmpty()) {
+        if (updatedIds.isEmpty()) {
             launch(dispatchersProvider.io) {
                 runCatching { deleteGalleryItemUseCase(id) }
                     .onFailure(::handleFailure)
@@ -245,15 +250,19 @@ class GalleryDetailViewModel(
             return
         }
 
-        val nextItemIndex = itemIndex.coerceAtMost(updatedItems.lastIndex)
-        val nextItem = updatedItems[nextItemIndex]
-        currentItemId = nextItem.id
-        setCurrentContent(
-            content = nextItem.cachedContent(),
-            itemIndex = nextItemIndex,
-            decodeMissing = false,
-        )
-        prefetchPagerWindow(nextItemIndex)
+        val nextItemIndex = itemIndex.coerceAtMost(updatedIds.lastIndex)
+        val nextItemId = updatedIds[nextItemIndex]
+        currentItemId = nextItemId
+        contentCache[nextItemId]
+            ?.let { content ->
+                setCurrentContent(
+                    content = content,
+                    itemIndex = nextItemIndex,
+                    decodeMissing = false,
+                )
+                prefetchPagerWindow(nextItemIndex)
+            }
+            ?: loadPage(nextItemIndex, nextItemId)
 
         launch(dispatchersProvider.io) {
             runCatching { deleteGalleryItemUseCase(id) }
@@ -334,14 +343,11 @@ class GalleryDetailViewModel(
     }
 
     private fun navigateToPage(page: Int) {
-        val targetId = galleryItems.getOrNull(page)?.id
-            ?: currentState.galleryItemIds.getOrNull(page)
-            ?: return
+        val targetId = galleryItemIds.getOrNull(page) ?: currentState.galleryItemIds.getOrNull(page) ?: return
         if (targetId == currentState.content?.id) return
         currentItemId = targetId
-        val targetItem = galleryItems.getOrNull(page)
         val cachedContent = contentCache[targetId]
-        if (targetItem != null && cachedContent != null) {
+        if (cachedContent != null) {
             setCurrentContent(
                 content = cachedContent,
                 itemIndex = page,
@@ -349,7 +355,7 @@ class GalleryDetailViewModel(
             )
             prefetchPagerWindow(page)
         } else {
-            load()
+            loadPage(page, targetId)
         }
     }
 
@@ -385,16 +391,16 @@ class GalleryDetailViewModel(
         return getGenerationResultUseCase(id)
     }
 
-    private suspend fun getGalleryItems(): List<AiGenerationResult> =
-        if (currentItemId <= 0) emptyList() else getAllGalleryUseCase()
+    private suspend fun getGalleryItemIds(): List<Long> =
+        if (currentItemId <= 0) emptyList() else getAllGalleryUseCase.ids()
 
     private fun createPagerWindow(
-        galleryItems: List<AiGenerationResult>,
+        galleryItemIds: List<Long>,
         itemIndex: Int,
         content: GalleryDetailContent,
         decodeMissing: Boolean,
     ): GalleryDetailPagerWindow {
-        if (itemIndex == -1 || galleryItems.isEmpty()) {
+        if (itemIndex == -1 || galleryItemIds.isEmpty()) {
             return GalleryDetailPagerWindow(
                 contents = listOf(content),
                 startIndex = 0,
@@ -403,39 +409,38 @@ class GalleryDetailViewModel(
         }
 
         val startIndex = (itemIndex - safePagerBuffer).coerceAtLeast(0)
-        val endIndex = (itemIndex + safePagerBuffer + 1).coerceAtMost(galleryItems.size)
-        if (!decodeMissing) {
+        val endIndex = (itemIndex + safePagerBuffer + 1).coerceAtMost(galleryItemIds.size)
+        if (decodeMissing) {
             contentCache[content.id] = content
-            var cachedStartIndex = itemIndex
-            while (
-                cachedStartIndex > startIndex &&
-                contentCache.containsKey(galleryItems[cachedStartIndex - 1].id)
-            ) {
-                cachedStartIndex -= 1
-            }
-
-            var cachedEndIndex = itemIndex + 1
-            while (
-                cachedEndIndex < endIndex &&
-                contentCache.containsKey(galleryItems[cachedEndIndex].id)
-            ) {
-                cachedEndIndex += 1
-            }
-
             return GalleryDetailPagerWindow(
-                contents = galleryItems
-                    .subList(cachedStartIndex, cachedEndIndex)
-                    .mapNotNull { item -> contentCache[item.id] },
-                startIndex = cachedStartIndex,
+                contents = listOf(content),
+                startIndex = itemIndex,
                 currentIndex = itemIndex,
             )
         }
 
+        contentCache[content.id] = content
+        var cachedStartIndex = itemIndex
+        while (
+            cachedStartIndex > startIndex &&
+            contentCache.containsKey(galleryItemIds[cachedStartIndex - 1])
+        ) {
+            cachedStartIndex -= 1
+        }
+
+        var cachedEndIndex = itemIndex + 1
+        while (
+            cachedEndIndex < endIndex &&
+            contentCache.containsKey(galleryItemIds[cachedEndIndex])
+        ) {
+            cachedEndIndex += 1
+        }
+
         return GalleryDetailPagerWindow(
-            contents = galleryItems
-                .subList(startIndex, endIndex)
-                .map { item -> item.cachedContent() },
-            startIndex = startIndex,
+            contents = galleryItemIds
+                .subList(cachedStartIndex, cachedEndIndex)
+                .mapNotNull(contentCache::get),
+            startIndex = cachedStartIndex,
             currentIndex = itemIndex,
         )
     }
@@ -460,7 +465,7 @@ class GalleryDetailViewModel(
         val tabs = GalleryDetailTab.consume(content.generationType)
         val selectedTab = currentState.selectedTab.takeIf(tabs::contains) ?: tabs.first()
         val pagerWindow = createPagerWindow(
-            galleryItems = galleryItems,
+            galleryItemIds = galleryItemIds,
             itemIndex = itemIndex,
             content = content,
             decodeMissing = decodeMissing,
@@ -470,7 +475,7 @@ class GalleryDetailViewModel(
                 loading = false,
                 tabs = tabs,
                 selectedTab = selectedTab,
-                galleryItemIds = galleryItems.map(AiGenerationResult::id),
+                galleryItemIds = galleryItemIds,
                 content = content,
                 pagerContents = pagerWindow.contents,
                 pagerContentStartIndex = pagerWindow.startIndex,
@@ -480,24 +485,24 @@ class GalleryDetailViewModel(
     }
 
     private fun prefetchPagerWindow(itemIndex: Int) {
-        if (itemIndex == -1 || galleryItems.isEmpty()) return
-        val snapshot = galleryItems
+        if (itemIndex == -1 || galleryItemIds.isEmpty()) return
+        val snapshot = galleryItemIds
         launch(dispatchersProvider.io) {
             val startIndex = (itemIndex - safePagerBuffer).coerceAtLeast(0)
             val endIndex = (itemIndex + safePagerBuffer + 1).coerceAtMost(snapshot.size)
             val changed = snapshot
                 .subList(startIndex, endIndex)
-                .fold(false) { hasChanges, item ->
-                    if (contentCache.containsKey(item.id)) {
+                .fold(false) { hasChanges, id ->
+                    if (contentCache.containsKey(id)) {
                         hasChanges
                     } else {
-                        item.cachedContent()
+                        getGenerationResult(id).cachedContent()
                         true
                     }
                 }
 
             val currentContent = contentCache[currentItemId] ?: return@launch
-            val currentIndex = galleryItems.indexOfFirst { it.id == currentItemId }
+            val currentIndex = galleryItemIds.indexOf(currentItemId)
             if (changed && currentIndex != -1) {
                 withContext(dispatchersProvider.immediate) {
                     setCurrentContent(
@@ -511,12 +516,10 @@ class GalleryDetailViewModel(
     }
 
     private fun setHidden(id: Long, hidden: Boolean) {
-        galleryItems = galleryItems.updateItem(id) { item -> item.copy(hidden = hidden) }
         updateCachedContent(id) { content -> content.copy(hidden = hidden) }
     }
 
     private fun setLiked(id: Long, liked: Boolean) {
-        galleryItems = galleryItems.updateItem(id) { item -> item.copy(liked = liked) }
         updateCachedContent(id) { content -> content.copy(liked = liked) }
     }
 
@@ -538,11 +541,22 @@ class GalleryDetailViewModel(
         }
     }
 
-    private fun List<AiGenerationResult>.updateItem(
-        id: Long,
-        update: (AiGenerationResult) -> AiGenerationResult,
-    ): List<AiGenerationResult> = map { item ->
-        if (item.id == id) update(item) else item
+    private fun loadPage(page: Int, id: Long) {
+        launch(dispatchersProvider.io) {
+            runCatching { getGenerationResult(id).cachedContent() }
+                .onFailure(::handleFailure)
+                .onSuccess { content ->
+                    withContext(dispatchersProvider.immediate) {
+                        val itemIndex = galleryItemIds.indexOf(id).takeIf { it != -1 } ?: page
+                        setCurrentContent(
+                            content = content,
+                            itemIndex = itemIndex,
+                            decodeMissing = false,
+                        )
+                        prefetchPagerWindow(itemIndex)
+                    }
+                }
+        }
     }
 
     private data class GalleryDetailPagerWindow(

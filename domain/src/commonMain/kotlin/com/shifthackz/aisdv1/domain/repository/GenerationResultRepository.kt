@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.domain.repository
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResultPreview
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -19,6 +20,14 @@ interface GenerationResultRepository {
     suspend fun getAll(): List<AiGenerationResult>
 
     /**
+     * Loads SDAI data through `getAllIds`.
+     *
+     * @return Result produced by `getAllIds`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun getAllIds(): List<Long>
+
+    /**
      * Loads SDAI data through `getPage`.
      *
      * @param limit limit value consumed by the API.
@@ -29,6 +38,16 @@ interface GenerationResultRepository {
     suspend fun getPage(limit: Int, offset: Int): List<AiGenerationResult>
 
     /**
+     * Loads SDAI data through `getPagePreview`.
+     *
+     * @param limit limit value consumed by the API.
+     * @param offset offset value consumed by the API.
+     * @return Result produced by `getPagePreview`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun getPagePreview(limit: Int, offset: Int): List<AiGenerationResultPreview>
+
+    /**
      * Loads SDAI data through `observePage`.
      *
      * @param limit limit value consumed by the API.
@@ -37,6 +56,16 @@ interface GenerationResultRepository {
      * @author Dmitriy Moroz
      */
     fun observePage(limit: Int, offset: Int): Flow<List<AiGenerationResult>>
+
+    /**
+     * Loads SDAI data through `observePagePreview`.
+     *
+     * @param limit limit value consumed by the API.
+     * @param offset offset value consumed by the API.
+     * @return Result produced by `observePagePreview`.
+     * @author Dmitriy Moroz
+     */
+    fun observePagePreview(limit: Int, offset: Int): Flow<List<AiGenerationResultPreview>>
 
     /**
      * Loads SDAI data through `observeCount`.

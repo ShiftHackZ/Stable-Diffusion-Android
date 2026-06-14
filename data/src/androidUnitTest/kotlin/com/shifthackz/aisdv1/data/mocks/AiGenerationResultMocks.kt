@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.mocks
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResultPreview
 
 val mockAiGenerationResult = AiGenerationResult(
     id = 5598L,
@@ -24,3 +25,12 @@ val mockAiGenerationResult = AiGenerationResult(
 )
 
 val mockAiGenerationResults = listOf(mockAiGenerationResult)
+
+val mockAiGenerationResultPreview = AiGenerationResultPreview(
+    id = 5598L,
+    image = "img",
+    hidden = false,
+    liked = true,
+)
+
+val mockAiGenerationResultPreviews = listOf(mockAiGenerationResultPreview)

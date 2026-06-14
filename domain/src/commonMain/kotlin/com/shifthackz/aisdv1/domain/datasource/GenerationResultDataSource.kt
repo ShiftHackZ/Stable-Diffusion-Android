@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.domain.datasource
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResultPreview
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -41,6 +42,15 @@ sealed interface GenerationResultDataSource {
          */
         suspend fun queryPage(limit: Int, offset: Int): List<AiGenerationResult>
         /**
+         * Executes the `queryPagePreview` step in the SDAI domain layer.
+         *
+         * @param limit limit value consumed by the API.
+         * @param offset offset value consumed by the API.
+         * @return Result produced by `queryPagePreview`.
+         * @author Dmitriy Moroz
+         */
+        suspend fun queryPagePreview(limit: Int, offset: Int): List<AiGenerationResultPreview>
+        /**
          * Loads SDAI data through `observePage`.
          *
          * @param limit limit value consumed by the API.
@@ -50,12 +60,28 @@ sealed interface GenerationResultDataSource {
          */
         fun observePage(limit: Int, offset: Int): Flow<List<AiGenerationResult>>
         /**
+         * Loads SDAI data through `observePagePreview`.
+         *
+         * @param limit limit value consumed by the API.
+         * @param offset offset value consumed by the API.
+         * @return Result produced by `observePagePreview`.
+         * @author Dmitriy Moroz
+         */
+        fun observePagePreview(limit: Int, offset: Int): Flow<List<AiGenerationResultPreview>>
+        /**
          * Loads SDAI data through `observeCount`.
          *
          * @return Result produced by `observeCount`.
          * @author Dmitriy Moroz
          */
         fun observeCount(): Flow<Int>
+        /**
+         * Executes the `queryIds` step in the SDAI domain layer.
+         *
+         * @return Result produced by `queryIds`.
+         * @author Dmitriy Moroz
+         */
+        suspend fun queryIds(): List<Long>
         /**
          * Executes the `queryById` step in the SDAI domain layer.
          *

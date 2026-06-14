@@ -1,14 +1,20 @@
 package com.shifthackz.aisdv1.data.local
 
 import com.shifthackz.aisdv1.data.mocks.mockAiGenerationResult
+import com.shifthackz.aisdv1.data.mocks.mockAiGenerationResultPreviews
 import com.shifthackz.aisdv1.data.mocks.mockAiGenerationResults
 import com.shifthackz.aisdv1.data.mocks.mockGenerationResultEntities
 import com.shifthackz.aisdv1.data.mocks.mockGenerationResultEntity
+import com.shifthackz.aisdv1.data.mocks.mockGenerationResultPreviewEntities
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResultPreview
 import com.shifthackz.aisdv1.storage.db.persistent.dao.GenerationResultDao
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
@@ -101,6 +107,50 @@ class GenerationResultLocalDataSourceTest {
         val actual = runCatching { localDataSource.queryPage(20, 0) }
 
         Assert.assertSame(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
+    fun `given attempt to query preview page, dao returns projections, expected valid preview list value`() = runTest {
+        coEvery {
+            stubDao.queryPagePreview(30, 0)
+        } returns mockGenerationResultPreviewEntities
+
+        val actual = localDataSource.queryPagePreview(30, 0)
+
+        Assert.assertEquals(mockAiGenerationResultPreviews, actual)
+    }
+
+    @Test
+    fun `given attempt to query preview page, dao returns empty list, expected empty preview list value`() = runTest {
+        coEvery {
+            stubDao.queryPagePreview(30, 0)
+        } returns emptyList()
+
+        val actual = localDataSource.queryPagePreview(30, 0)
+
+        Assert.assertEquals(emptyList<AiGenerationResultPreview>(), actual)
+    }
+
+    @Test
+    fun `given attempt to observe preview page, dao emits projections, expected valid preview list value`() = runTest {
+        every {
+            stubDao.observePagePreview(30, 0)
+        } returns flowOf(mockGenerationResultPreviewEntities)
+
+        val actual = localDataSource.observePagePreview(30, 0).first()
+
+        Assert.assertEquals(mockAiGenerationResultPreviews, actual)
+    }
+
+    @Test
+    fun `given attempt to query ids, dao returns ids, expected ids value`() = runTest {
+        coEvery {
+            stubDao.queryIds()
+        } returns listOf(5598L, 1504L)
+
+        val actual = localDataSource.queryIds()
+
+        Assert.assertEquals(listOf(5598L, 1504L), actual)
     }
 
     @Test

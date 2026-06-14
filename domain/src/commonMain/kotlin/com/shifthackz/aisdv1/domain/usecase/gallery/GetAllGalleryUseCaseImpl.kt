@@ -22,4 +22,11 @@ internal class GetAllGalleryUseCaseImpl(
      * @author Dmitriy Moroz
      */
     override suspend operator fun invoke() = repository.getAll()
+
+    /**
+     * Executes the `ids` step in the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override suspend fun ids() = repository.getAllIds()
 }

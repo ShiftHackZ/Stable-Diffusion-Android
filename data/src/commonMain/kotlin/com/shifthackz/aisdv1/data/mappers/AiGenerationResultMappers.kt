@@ -1,7 +1,9 @@
 package com.shifthackz.aisdv1.data.mappers
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResultPreview
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
+import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultPreviewEntity
 
 //region DOMAIN --> ENTITY
 /**
@@ -81,6 +83,29 @@ fun GenerationResultEntity.mapEntityToDomain(): AiGenerationResult = with(this) 
         hidden = hidden,
         liked = liked,
         modelName = modelName,
+    )
+}
+
+/**
+ * Converts SDAI data with `mapPreviewEntityToDomain`.
+ *
+ * @return Result produced by `mapPreviewEntityToDomain`.
+ * @author Dmitriy Moroz
+ */
+fun List<GenerationResultPreviewEntity>.mapPreviewEntityToDomain(): List<AiGenerationResultPreview> =
+    map(GenerationResultPreviewEntity::mapPreviewEntityToDomain)
+
+/**
+ * Converts SDAI data with `mapPreviewEntityToDomain`.
+ *
+ * @author Dmitriy Moroz
+ */
+fun GenerationResultPreviewEntity.mapPreviewEntityToDomain(): AiGenerationResultPreview = with(this) {
+    AiGenerationResultPreview(
+        id = id,
+        image = imageBase64,
+        hidden = hidden,
+        liked = liked,
     )
 }
 //endregion

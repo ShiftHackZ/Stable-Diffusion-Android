@@ -47,6 +47,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.localization.Localization
+import com.shifthackz.aisdv1.presentation.widget.image.DecodedImageBitmap
+import com.shifthackz.aisdv1.presentation.widget.image.rememberDecodedImageBitmap
 
 
 /**
@@ -80,11 +82,37 @@ fun GalleryUiItem(
         },
         label = "border_color",
     )
+    val decodedImage by rememberDecodedImageBitmap(
+        key = item.id,
+        base64 = item.imageBase64,
+    )
     Box(
-        modifier = modifier.clip(shape),
+        modifier = modifier
+            .clip(shape)
+            .combinedClickable(
+                onLongClick = if (!selectionMode) onLongClick else null,
+                onClick = {
+                    if (!selectionMode) {
+                        onClick(item)
+                    } else {
+                        onCheckedChange(!checked)
+                    }
+                },
+            ),
     ) {
-        if (item.image != null) {
-            Image(
+        when (val image = decodedImage) {
+            DecodedImageBitmap.Loading -> Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .border(
+                        width = 4.dp,
+                        color = borderColor,
+                        shape = shape,
+                    )
+                    .shimmer(),
+            )
+            is DecodedImageBitmap.Ready -> Image(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
@@ -101,23 +129,12 @@ fun GalleryUiItem(
                                 radiusY = 100f,
                             )
                         }
-                    )
-                    .combinedClickable(
-                        onLongClick = if (!selectionMode) onLongClick else null,
-                        onClick = {
-                            if (!selectionMode) {
-                                onClick(item)
-                            } else {
-                                onCheckedChange(!checked)
-                            }
-                        },
                     ),
-                bitmap = item.image,
+                bitmap = image.image,
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
             )
-        } else {
-            Box(
+            DecodedImageBitmap.Unavailable -> Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
@@ -125,16 +142,6 @@ fun GalleryUiItem(
                         width = 4.dp,
                         color = borderColor,
                         shape = shape,
-                    )
-                    .combinedClickable(
-                        onLongClick = if (!selectionMode) onLongClick else null,
-                        onClick = {
-                            if (!selectionMode) {
-                                onClick(item)
-                            } else {
-                                onCheckedChange(!checked)
-                            }
-                        },
                     ),
                 contentAlignment = Alignment.Center,
             ) {

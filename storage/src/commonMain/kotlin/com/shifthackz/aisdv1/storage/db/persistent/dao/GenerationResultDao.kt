@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.shifthackz.aisdv1.storage.db.persistent.contract.GenerationResultContract
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
+import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultPreviewEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -37,6 +38,28 @@ interface GenerationResultDao {
     suspend fun queryPage(limit: Int, offset: Int): List<GenerationResultEntity>
 
     /**
+     * Executes the `queryPagePreview` step in the SDAI storage layer.
+     *
+     * @param limit limit value consumed by the API.
+     * @param offset offset value consumed by the API.
+     * @return Result produced by `queryPagePreview`.
+     * @author Dmitriy Moroz
+     */
+    @Query(
+        """
+        SELECT
+            ${GenerationResultContract.ID},
+            ${GenerationResultContract.IMAGE_BASE_64},
+            ${GenerationResultContract.HIDDEN},
+            ${GenerationResultContract.LIKED}
+        FROM ${GenerationResultContract.TABLE}
+        ORDER BY ${GenerationResultContract.CREATED_AT} DESC
+        LIMIT :limit OFFSET :offset
+        """,
+    )
+    suspend fun queryPagePreview(limit: Int, offset: Int): List<GenerationResultPreviewEntity>
+
+    /**
      * Loads SDAI data through `observePage`.
      *
      * @param limit limit value consumed by the API.
@@ -48,6 +71,28 @@ interface GenerationResultDao {
     fun observePage(limit: Int, offset: Int): Flow<List<GenerationResultEntity>>
 
     /**
+     * Loads SDAI data through `observePagePreview`.
+     *
+     * @param limit limit value consumed by the API.
+     * @param offset offset value consumed by the API.
+     * @return Result produced by `observePagePreview`.
+     * @author Dmitriy Moroz
+     */
+    @Query(
+        """
+        SELECT
+            ${GenerationResultContract.ID},
+            ${GenerationResultContract.IMAGE_BASE_64},
+            ${GenerationResultContract.HIDDEN},
+            ${GenerationResultContract.LIKED}
+        FROM ${GenerationResultContract.TABLE}
+        ORDER BY ${GenerationResultContract.CREATED_AT} DESC
+        LIMIT :limit OFFSET :offset
+        """,
+    )
+    fun observePagePreview(limit: Int, offset: Int): Flow<List<GenerationResultPreviewEntity>>
+
+    /**
      * Loads SDAI data through `observeCount`.
      *
      * @return Result produced by `observeCount`.
@@ -55,6 +100,15 @@ interface GenerationResultDao {
      */
     @Query("SELECT COUNT(*) FROM ${GenerationResultContract.TABLE}")
     fun observeCount(): Flow<Int>
+
+    /**
+     * Executes the `queryIds` step in the SDAI storage layer.
+     *
+     * @return Result produced by `queryIds`.
+     * @author Dmitriy Moroz
+     */
+    @Query("SELECT ${GenerationResultContract.ID} FROM ${GenerationResultContract.TABLE} ORDER BY ${GenerationResultContract.CREATED_AT} DESC")
+    suspend fun queryIds(): List<Long>
 
     /**
      * Executes the `queryById` step in the SDAI storage layer.

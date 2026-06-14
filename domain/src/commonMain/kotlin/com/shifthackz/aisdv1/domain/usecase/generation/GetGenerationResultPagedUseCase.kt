@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.domain.usecase.generation
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResultPreview
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -27,6 +28,15 @@ interface GetGenerationResultPagedUseCase {
      * @author Dmitriy Moroz
      */
     fun observe(limit: Int, offset: Int): Flow<List<AiGenerationResult>>
+    /**
+     * Loads SDAI data through `observePreview`.
+     *
+     * @param limit limit value consumed by the API.
+     * @param offset offset value consumed by the API.
+     * @return Result produced by `observePreview`.
+     * @author Dmitriy Moroz
+     */
+    fun observePreview(limit: Int, offset: Int): Flow<List<AiGenerationResultPreview>>
     /**
      * Loads SDAI data through `observeCount`.
      *
