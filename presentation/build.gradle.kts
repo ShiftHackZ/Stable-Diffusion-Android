@@ -40,6 +40,7 @@ kotlin {
             implementation(project(":demo"))
             implementation(project(":domain"))
             implementation(project(":feature:auth"))
+            implementation(project(":feature:benchmark"))
             implementation(project(":feature:work"))
             api(project(":feature:coreml"))
             implementation(project(":network"))
@@ -87,6 +88,10 @@ kotlin {
             implementation(libs.apache.stringutils)
 
             implementation(libs.kotlinx.serialization.json)
+        }
+
+        iosMain.dependencies {
+            implementation(project(":feature:sdxl"))
         }
 
         androidUnitTest.dependencies {

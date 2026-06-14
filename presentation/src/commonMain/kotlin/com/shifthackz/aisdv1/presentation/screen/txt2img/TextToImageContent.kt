@@ -366,6 +366,10 @@ fun TextToImageContent(
         onSaveRequest = { processIntent(TextToImageIntent.SaveGenerationResults(it)) },
         onReportRequest = { processIntent(TextToImageIntent.ReportGenerationResult(it)) },
         onViewDetailRequest = { processIntent(TextToImageIntent.ViewGenerationResult(it)) },
+        onBenchmarkRequest = { processIntent(TextToImageIntent.RunBenchmarkFromPrompt) },
+        onSkipBenchmarkRequest = { processIntent(TextToImageIntent.SkipBenchmarkPrompt) },
+        onBenchmarkContinueRequest = { processIntent(TextToImageIntent.ContinueAfterBenchmarkWarning) },
+        onBenchmarkDoNotAskRequest = { processIntent(TextToImageIntent.SuppressBenchmarkWarningAndContinue) },
     )
 }
 

@@ -26,6 +26,7 @@ val documentedProjects = listOf(
     ":demo",
     ":domain",
     ":feature:auth",
+    ":feature:benchmark",
     ":feature:onnx",
     ":feature:mediapipe",
     ":feature:work",

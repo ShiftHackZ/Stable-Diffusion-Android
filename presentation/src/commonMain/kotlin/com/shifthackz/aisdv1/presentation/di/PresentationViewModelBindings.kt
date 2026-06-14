@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.presentation.modal.tag.EditTagViewModel
 import com.shifthackz.aisdv1.presentation.model.ExtraType
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.ConfigurationLoaderRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.BenchmarkRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.DebugMenuRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.DonateRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.GalleryDetailRouter
@@ -22,6 +23,7 @@ import com.shifthackz.aisdv1.presentation.navigation.router.SettingsRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.SplashRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.TextToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.WebUiRouter
+import com.shifthackz.aisdv1.presentation.screen.benchmark.BenchmarkViewModel
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuViewModel
 import com.shifthackz.aisdv1.presentation.screen.donate.DonateViewModel
@@ -77,6 +79,14 @@ internal fun Module.registerPresentationViewModelBindings() {
             dataPreLoaderUseCase = get(),
             getConfigurationUseCase = get(),
             router = router,
+        )
+    }
+    factory { (router: BenchmarkRouter) ->
+        BenchmarkViewModel(
+            dispatchersProvider = get(),
+            benchmarkManager = get(),
+            router = router,
+            platformActions = get(),
         )
     }
     factory { (router: DonateRouter) ->
@@ -195,6 +205,7 @@ internal fun Module.registerPresentationViewModelBindings() {
             buildInfoProvider = get(),
             generationFormUpdateEvent = get(),
             dimensionValidator = get(),
+            localGenerationBenchmarkGateProvider = { get() },
             imageSaver = get(),
             imageSharer = get(),
             router = router,
@@ -222,6 +233,7 @@ internal fun Module.registerPresentationViewModelBindings() {
             buildInfoProvider = get(),
             generationFormUpdateEvent = get(),
             dimensionValidator = get(),
+            localGenerationBenchmarkGateProvider = { get() },
             imageSaver = get(),
             imageSharer = get(),
             router = router,

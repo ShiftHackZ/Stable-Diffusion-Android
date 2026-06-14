@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
@@ -15,6 +16,10 @@ import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
+import com.shifthackz.aisdv1.feature.benchmark.LocalGenerationBenchmarkGate
+import com.shifthackz.aisdv1.feature.benchmark.LocalGenerationGateResult
+import com.shifthackz.aisdv1.feature.benchmark.LocalGenerationRequest
+import com.shifthackz.aisdv1.feature.benchmark.isLocalGenerationSource
 import com.shifthackz.aisdv1.presentation.core.GenerationPlatformServices
 import com.shifthackz.aisdv1.presentation.core.ViewModelLauncher
 import com.shifthackz.aisdv1.presentation.model.GenerationModal
@@ -129,6 +134,13 @@ internal class ImageToImageActionHandler(
      */
     private val dimensionValidator: DimensionValidator,
     /**
+     * Exposes the `localGenerationBenchmarkGateProvider` value used by the SDAI presentation layer.
+     *
+     * @throws IllegalStateException when the current state is invalid.
+     * @author Dmitriy Moroz
+     */
+    private val localGenerationBenchmarkGateProvider: () -> LocalGenerationBenchmarkGate,
+    /**
      * Exposes the `imageSaver` value used by the SDAI presentation layer.
      *
      * @throws IllegalStateException when the current state is invalid.
@@ -199,6 +211,8 @@ internal class ImageToImageActionHandler(
      * @author Dmitriy Moroz
      */
     private var generationJob: Job? = null
+
+    private var pendingGenerationState: ImageToImageState? = null
 
     /**
      * Executes the `pickImage` step in the SDAI presentation layer.
@@ -299,6 +313,89 @@ internal class ImageToImageActionHandler(
         emitState(validatedState)
         if (!validatedState.canGenerate) return
 
+        if (backgroundWorkObserver.hasActiveTasks()) {
+            updateState {
+                it.copy(screenModal = GenerationModal.Background.Running)
+            }
+            return
+        }
+
+        if (validatedState.mode.isLocalGenerationSource()) {
+            evaluateBenchmarkGate(validatedState)
+            return
+        }
+
+        startGeneration(validatedState)
+    }
+
+    fun runBenchmarkFromPrompt() {
+        localGenerationBenchmarkGateProvider().markFirstBenchmarkPromptAnswered()
+        pendingGenerationState = null
+        updateState { it.copy(screenModal = GenerationModal.None) }
+        router.navigateToBenchmark()
+    }
+
+    fun skipBenchmarkPrompt() {
+        localGenerationBenchmarkGateProvider().markFirstBenchmarkPromptAnswered()
+        val pending = pendingGenerationState ?: return updateState { it.copy(screenModal = GenerationModal.None) }
+        pendingGenerationState = null
+        updateState { it.copy(screenModal = GenerationModal.None) }
+        startGeneration(pending)
+    }
+
+    fun continueAfterBenchmarkWarning(suppressFutureWarnings: Boolean) {
+        if (suppressFutureWarnings) {
+            localGenerationBenchmarkGateProvider().suppressRecommendationWarnings()
+        }
+        val pending = pendingGenerationState ?: return updateState { it.copy(screenModal = GenerationModal.None) }
+        pendingGenerationState = null
+        updateState { it.copy(screenModal = GenerationModal.None) }
+        startGeneration(pending)
+    }
+
+    fun dismissBenchmarkDialog() {
+        pendingGenerationState = null
+        updateState { it.copy(screenModal = GenerationModal.None) }
+    }
+
+    private fun evaluateBenchmarkGate(validatedState: ImageToImageState) {
+        pendingGenerationState = validatedState
+        launch(dispatchersProvider.io, CoroutineStart.DEFAULT) {
+            val requestPayload = validatedState.mapToPayload()
+            runCatching { localGenerationBenchmarkGateProvider().evaluate(validatedState.toBenchmarkRequest(requestPayload)) }
+                .onSuccess { result ->
+                    withContext(dispatchersProvider.immediate) {
+                        when (result) {
+                            LocalGenerationGateResult.Ready -> {
+                                pendingGenerationState = null
+                                startGeneration(validatedState)
+                            }
+                            LocalGenerationGateResult.AskRunBenchmark -> updateState {
+                                it.copy(screenModal = GenerationModal.Benchmark.FirstLocalGeneration)
+                            }
+                            is LocalGenerationGateResult.ConfirmExceedsRecommendation -> updateState {
+                                it.copy(
+                                    screenModal = GenerationModal.Benchmark.ExceedsRecommendation(
+                                        reasons = result.reasons,
+                                        recommendation = result.recommendation,
+                                    ),
+                                )
+                            }
+                        }
+                    }
+                }
+                .onFailure { t ->
+                    if (t is CancellationException) throw t
+                    onError(t)
+                    withContext(dispatchersProvider.immediate) {
+                        pendingGenerationState = null
+                        startGeneration(validatedState)
+                    }
+                }
+        }
+    }
+
+    private fun startGeneration(validatedState: ImageToImageState) {
         if (backgroundWorkObserver.hasActiveTasks()) {
             updateState {
                 it.copy(screenModal = GenerationModal.Background.Running)
@@ -604,3 +701,12 @@ internal class ImageToImageActionHandler(
     private suspend fun cacheResultIfNeeded(result: AiGenerationResult): AiGenerationResult =
         saveLastResultToCacheUseCase(result)
 }
+
+private fun ImageToImageState.toBenchmarkRequest(payload: ImageToImagePayload): LocalGenerationRequest =
+    LocalGenerationRequest(
+        source = mode,
+        width = payload.width,
+        height = payload.height,
+        samplingSteps = payload.samplingSteps,
+        batchCount = payload.batchCount,
+    )

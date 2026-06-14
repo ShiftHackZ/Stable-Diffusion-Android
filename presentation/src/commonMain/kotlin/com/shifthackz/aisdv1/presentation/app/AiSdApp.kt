@@ -33,7 +33,9 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun AiSdApp() {
     val koin = remember { initKoin() }
-    val preferenceManager = remember(koin) { koin.get<PreferenceManager>() }
+    val preferenceManager = remember(koin) {
+        koin.get<PreferenceManager>()
+    }
     remember(preferenceManager) {
         Localization.setLanguageCode(preferenceManager.languageCode.takeIf(String::isNotBlank))
         Unit
@@ -112,4 +114,3 @@ fun AiSdApp() {
         }
     }
 }
-

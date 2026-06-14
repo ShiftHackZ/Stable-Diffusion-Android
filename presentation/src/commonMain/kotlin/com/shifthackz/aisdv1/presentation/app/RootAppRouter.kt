@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.app
 
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
+import com.shifthackz.aisdv1.presentation.navigation.router.BenchmarkRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ConfigurationLoaderRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.DebugMenuRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.DonateRouter
@@ -96,6 +97,12 @@ sealed interface AppRoute {
      */
     data object Settings : AppRoute
     /**
+     * Provides the `Benchmark` singleton used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object Benchmark : AppRoute
+    /**
      * Provides the `History` singleton used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -156,6 +163,7 @@ class RootAppRouter(
     LoggerRouter,
     ReportRouter,
     SettingsRouter,
+    BenchmarkRouter,
     WebUiRouter,
     OnBoardingRouter {
 
@@ -234,6 +242,10 @@ class RootAppRouter(
 
     override fun navigateToSettings() {
         navigateToHomeRoute(AppRoute.Settings)
+    }
+
+    override fun navigateToBenchmark() {
+        navigateTo(AppRoute.Benchmark)
     }
 
     override fun navigateToHistory() {
@@ -345,6 +357,7 @@ fun AppRoute.isHomeRoute(): Boolean = when (this) {
     is AppRoute.GalleryDetail,
     AppRoute.ImageInPaint,
     AppRoute.History,
+    AppRoute.Benchmark,
     is AppRoute.Report,
     AppRoute.Debug,
     AppRoute.Logger,
@@ -364,6 +377,7 @@ private fun AppRoute.canFallBackToTextToImage(): Boolean = when (this) {
     AppRoute.Gallery,
     AppRoute.Settings,
     AppRoute.History,
+    AppRoute.Benchmark,
     is AppRoute.GalleryDetail,
     is AppRoute.Report,
     AppRoute.Debug,

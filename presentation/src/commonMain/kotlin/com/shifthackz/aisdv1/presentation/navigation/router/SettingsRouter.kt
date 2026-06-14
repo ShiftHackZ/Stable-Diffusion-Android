@@ -28,6 +28,12 @@ interface SettingsRouter {
      */
     fun navigateToServerSetup(source: LaunchSource)
     /**
+     * Opens the hardware benchmark screen.
+     *
+     * @author Dmitriy Moroz
+     */
+    fun navigateToBenchmark()
+    /**
      * Executes the `navigateToDebugMenu` step in the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -73,6 +79,12 @@ object NoOpSettingsRouter : SettingsRouter {
      * @author Dmitriy Moroz
      */
     override fun navigateToServerSetup(source: LaunchSource) = Unit
+    /**
+     * Opens the hardware benchmark screen.
+     *
+     * @author Dmitriy Moroz
+     */
+    override fun navigateToBenchmark() = Unit
     /**
      * Executes the `navigateToDebugMenu` step in the SDAI presentation layer.
      *

@@ -14,6 +14,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.presentation.platform.ExternalUrlLauncher
+import com.shifthackz.aisdv1.presentation.screen.benchmark.BenchmarkScreen
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuScreen
 import com.shifthackz.aisdv1.presentation.screen.donate.DonateScreen
 import com.shifthackz.aisdv1.presentation.screen.gallery.detail.GalleryDetailScreen
@@ -258,6 +259,10 @@ internal fun OverlayRouteContent(
             }
         }
 
+        AppRoute.Benchmark -> {
+            BenchmarkScreen(router = router)
+        }
+
         is AppRoute.Report -> {
             ReportScreen(
                 itemId = route.itemId,
@@ -293,6 +298,7 @@ internal fun AppRoute.asHomeTabRoute(): AppRoute? = when (this) {
     AppRoute.Settings -> AppRoute.Settings
 
     AppRoute.ImageInPaint,
+    AppRoute.Benchmark,
     AppRoute.Splash,
     is AppRoute.OnBoarding,
     is AppRoute.Setup,

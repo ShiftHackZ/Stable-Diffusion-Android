@@ -2,7 +2,10 @@ package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.domain.repository.WakeLock
 import com.shifthackz.aisdv1.domain.repository.WakeLockRepository
+import platform.Foundation.NSThread
 import platform.UIKit.UIApplication
+import platform.darwin.dispatch_get_main_queue
+import platform.darwin.dispatch_sync
 
 /**
  * Implements `WakeLockRepository` behavior for iOS.
@@ -20,10 +23,24 @@ internal class IosWakeLockRepository : WakeLockRepository {
 
 private object IosWakeLock : WakeLock {
     override fun acquire(timeout: Long) {
-        UIApplication.sharedApplication.idleTimerDisabled = true
+        runOnMainThread {
+            UIApplication.sharedApplication.idleTimerDisabled = true
+        }
     }
 
     override fun release() {
-        UIApplication.sharedApplication.idleTimerDisabled = false
+        runOnMainThread {
+            UIApplication.sharedApplication.idleTimerDisabled = false
+        }
+    }
+
+    private inline fun runOnMainThread(crossinline block: () -> Unit) {
+        if (NSThread.isMainThread) {
+            block()
+        } else {
+            dispatch_sync(dispatch_get_main_queue()) {
+                block()
+            }
+        }
     }
 }

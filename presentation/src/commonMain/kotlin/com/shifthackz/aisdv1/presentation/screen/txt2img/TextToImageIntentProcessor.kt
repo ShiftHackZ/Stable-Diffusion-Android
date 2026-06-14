@@ -89,6 +89,10 @@ internal class TextToImageIntentProcessor(
             TextToImageIntent.NavigateBack -> router.navigateBack()
             TextToImageIntent.ConfigureProvider -> router.navigateToServerSetup()
             TextToImageIntent.Generate -> generate()
+            TextToImageIntent.RunBenchmarkFromPrompt -> Unit
+            TextToImageIntent.SkipBenchmarkPrompt -> Unit
+            TextToImageIntent.ContinueAfterBenchmarkWarning -> Unit
+            TextToImageIntent.SuppressBenchmarkWarningAndContinue -> Unit
             TextToImageIntent.DismissModal -> updateState { it.copy(screenModal = com.shifthackz.aisdv1.presentation.model.GenerationModal.None) }
             TextToImageIntent.CancelGeneration -> cancelGeneration()
             TextToImageIntent.DismissError -> updateState { it.copy(error = null) }

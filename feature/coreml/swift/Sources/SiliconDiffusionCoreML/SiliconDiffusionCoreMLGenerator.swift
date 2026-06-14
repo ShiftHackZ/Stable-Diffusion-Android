@@ -93,9 +93,13 @@ public final class SiliconDiffusionCoreMLGenerator {
                 )
                 try pipeline.loadResources()
 
-                let startingImage = try request.startingImageBase64?.decodedCoreMlImage(
+                let targetSize = Self.normalizedImageSize(
                     width: Int(request.width),
                     height: Int(request.height)
+                )
+                let startingImage = try request.startingImageBase64?.decodedCoreMlImage(
+                    width: targetSize.width,
+                    height: targetSize.height
                 )
                 var configuration = StableDiffusionPipeline.Configuration(prompt: request.prompt)
                 configuration.negativePrompt = request.negativePrompt
@@ -107,6 +111,8 @@ public final class SiliconDiffusionCoreMLGenerator {
                 configuration.seed = Self.seed(from: request.seed)
                 configuration.disableSafety = request.allowNsfw
                 configuration.schedulerType = .dpmSolverMultistepScheduler
+                configuration.originalSize = targetSize.conditioningSide
+                configuration.targetSize = targetSize.conditioningSide
 
                 let maxAttempts = request.allowNsfw ? 1 : 3
                 for attempt in 0..<maxAttempts {
@@ -133,9 +139,13 @@ public final class SiliconDiffusionCoreMLGenerator {
                     }
 
                     if let image = images.compactMap({ $0 }).first {
+                        let outputImage = try image.resizedCoreMlImage(
+                            width: targetSize.width,
+                            height: targetSize.height
+                        )
                         completion(
                             Response(
-                                imageBase64: try image.base64Jpeg(),
+                                imageBase64: try outputImage.base64Jpeg(),
                                 errorMessage: nil
                             )
                         )
@@ -203,6 +213,15 @@ public final class SiliconDiffusionCoreMLGenerator {
 
 @available(iOS 16.2, *)
 private extension SiliconDiffusionCoreMLGenerator {
+    struct CoreMlImageSize {
+        let width: Int
+        let height: Int
+
+        var conditioningSide: Float32 {
+            Float32(max(width, height))
+        }
+    }
+
     static func resolveResourcesURL(modelPath: String) throws -> URL {
         let modelURL = URL(fileURLWithPath: modelPath, isDirectory: true)
         if let resourcesURL = findResourcesURL(in: modelURL) {
@@ -311,6 +330,21 @@ private extension SiliconDiffusionCoreMLGenerator {
         min(max(value, 0.01), 0.99)
     }
 
+    static func normalizedImageSize(width: Int, height: Int) -> CoreMlImageSize {
+        CoreMlImageSize(
+            width: normalizedDimension(width),
+            height: normalizedDimension(height)
+        )
+    }
+
+    static func normalizedDimension(_ value: Int) -> Int {
+        guard value > 0 else {
+            return defaultImageSide
+        }
+        let clamped = min(max(value, minImageSide), maxImageSide)
+        return max(minImageSide, clamped / imageSideStep * imageSideStep)
+    }
+
     static func errorMessage(for error: Error) -> String {
         if let pipelineError = error as? PipelineError,
            pipelineError == .startingImageProvidedWithoutEncoder {
@@ -318,10 +352,22 @@ private extension SiliconDiffusionCoreMLGenerator {
         }
         return error.localizedDescription
     }
+
+    static let defaultImageSide = 512
+    static let minImageSide = 64
+    static let maxImageSide = 1024
+    static let imageSideStep = 64
 }
 
 @available(iOS 16.2, *)
 private extension CGImage {
+    func resizedCoreMlImage(width: Int, height: Int) throws -> CGImage {
+        if self.width == width && self.height == height {
+            return self
+        }
+        return try UIImage(cgImage: self).resizedCoreMlImage(width: width, height: height)
+    }
+
     func base64Jpeg() throws -> String {
         guard let data = UIImage(cgImage: self).jpegData(compressionQuality: 0.95) else {
             throw SiliconDiffusionCoreMLError.imageEncodingFailed

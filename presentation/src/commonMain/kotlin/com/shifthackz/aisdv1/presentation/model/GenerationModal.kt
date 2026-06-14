@@ -5,6 +5,8 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
+import com.shifthackz.aisdv1.feature.benchmark.BenchmarkLimitExceeded
+import com.shifthackz.aisdv1.feature.benchmark.BenchmarkRecommendation
 
 /**
  * Defines the `GenerationModal` contract for the SDAI presentation layer.
@@ -38,6 +40,33 @@ sealed interface GenerationModal {
          * @author Dmitriy Moroz
          */
         data object Scheduled : Background
+    }
+
+    /**
+     * Defines benchmark-related decisions shown before local generation starts.
+     *
+     * @author Dmitriy Moroz
+     */
+    sealed interface Benchmark : GenerationModal {
+        /**
+         * Asks the user whether to run a benchmark before first local generation.
+         *
+         * @author Dmitriy Moroz
+         */
+        data object FirstLocalGeneration : Benchmark
+
+        /**
+         * Warns that the selected local parameters exceed the benchmark guidance.
+         *
+         * @param reasons exceeded recommendation limits.
+         * @param recommendation latest benchmark recommendation.
+         * @author Dmitriy Moroz
+         */
+        @Immutable
+        data class ExceedsRecommendation(
+            val reasons: List<BenchmarkLimitExceeded>,
+            val recommendation: BenchmarkRecommendation,
+        ) : Benchmark
     }
 
     /**

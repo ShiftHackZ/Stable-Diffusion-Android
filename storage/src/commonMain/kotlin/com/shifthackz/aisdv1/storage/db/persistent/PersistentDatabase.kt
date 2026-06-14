@@ -8,12 +8,14 @@ import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import com.shifthackz.aisdv1.storage.converters.ListConverters
 import com.shifthackz.aisdv1.storage.db.persistent.PersistentDatabase.Companion.DB_VERSION
+import com.shifthackz.aisdv1.storage.db.persistent.dao.BenchmarkResultDao
 import com.shifthackz.aisdv1.storage.db.persistent.contract.GenerationResultContract
 import com.shifthackz.aisdv1.storage.db.persistent.contract.LocalModelContract
 import com.shifthackz.aisdv1.storage.db.persistent.dao.GenerationResultDao
 import com.shifthackz.aisdv1.storage.db.persistent.dao.HuggingFaceModelDao
 import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
 import com.shifthackz.aisdv1.storage.db.persistent.dao.SupporterDao
+import com.shifthackz.aisdv1.storage.db.persistent.entity.BenchmarkResultEntity
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
 import com.shifthackz.aisdv1.storage.db.persistent.entity.HuggingFaceModelEntity
 import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
@@ -32,6 +34,7 @@ import com.shifthackz.aisdv1.storage.db.persistent.entity.SupporterEntity
         LocalModelEntity::class,
         HuggingFaceModelEntity::class,
         SupporterEntity::class,
+        BenchmarkResultEntity::class,
     ],
     autoMigrations = [
         /**
@@ -78,6 +81,10 @@ import com.shifthackz.aisdv1.storage.db.persistent.entity.SupporterEntity
          * - [GenerationResultContract.LIKED]
          */
         AutoMigration(from = 9, to = 10),
+        /**
+         * Added [BenchmarkResultEntity].
+         */
+        AutoMigration(from = 10, to = 11),
     ],
 )
 @TypeConverters(
@@ -113,6 +120,13 @@ internal abstract class PersistentDatabase : RoomDatabase() {
      * @author Dmitriy Moroz
      */
     abstract fun supporterDao(): SupporterDao
+    /**
+     * Executes the `benchmarkResultDao` step in the SDAI storage layer.
+     *
+     * @return Result produced by `benchmarkResultDao`.
+     * @author Dmitriy Moroz
+     */
+    abstract fun benchmarkResultDao(): BenchmarkResultDao
 
     /**
      * Provides the `companion object` singleton used by the SDAI storage layer.
@@ -131,7 +145,7 @@ internal abstract class PersistentDatabase : RoomDatabase() {
          *
          * @author Dmitriy Moroz
          */
-        const val DB_VERSION = 10
+        const val DB_VERSION = 11
     }
 }
 

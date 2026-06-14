@@ -3,6 +3,8 @@ package com.shifthackz.aisdv1.presentation.di
 import com.shifthackz.aisdv1.presentation.core.AndroidGenerationPlatformServices
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationPlatformServices
+import com.shifthackz.aisdv1.presentation.screen.benchmark.AndroidBenchmarkPlatformActions
+import com.shifthackz.aisdv1.presentation.screen.benchmark.BenchmarkPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.debug.AndroidDebugMenuPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuPlatformActions
@@ -43,6 +45,7 @@ internal val uiUtilsModule = module {
         )
     } bind GalleryDetailPlatformActions::class
     factoryOf(::AndroidLogReader) bind LogReader::class
+    factory { AndroidBenchmarkPlatformActions(androidContext(), get()) } bind BenchmarkPlatformActions::class
     factory { AndroidLoggerPlatformActions(androidContext()) } bind LoggerPlatformActions::class
     factoryOf(::AndroidDebugMenuPlatformActions) bind DebugMenuPlatformActions::class
     factoryOf(::AndroidBackgroundWorkImageLoader) bind BackgroundWorkImageLoader::class
