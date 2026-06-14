@@ -676,6 +676,76 @@ a:hover {
   gap: 24px;
 }
 
+.nightly-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.nightly-panel,
+.nightly-facts {
+  padding: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.nightly-panel h2 {
+  max-width: 720px;
+  margin: 0;
+}
+
+.nightly-panel p {
+  max-width: 720px;
+  margin: 18px 0 0;
+  color: var(--muted);
+}
+
+.nightly-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-top: 26px;
+}
+
+.nightly-secondary-link {
+  font-weight: 800;
+}
+
+.nightly-facts dl {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.nightly-facts div {
+  display: grid;
+  gap: 2px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.nightly-facts div:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.nightly-facts dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.nightly-facts dd {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 800;
+}
+
 .supporters-heading {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -900,7 +970,8 @@ a:hover {
 
   .split,
   .community-grid,
-  .cta-grid {
+  .cta-grid,
+  .nightly-grid {
     grid-template-columns: 1fr;
   }
 
@@ -988,6 +1059,8 @@ a:hover {
 
   .donate-status-card,
   .donate-info-card,
+  .nightly-panel,
+  .nightly-facts,
   .supporters-panel {
     padding: 24px;
   }
