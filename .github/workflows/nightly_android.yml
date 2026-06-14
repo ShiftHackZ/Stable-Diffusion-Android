@@ -48,6 +48,7 @@ jobs:
         with:
           ref: ${{ github.event_name == 'workflow_dispatch' && inputs.target_ref || 'develop' }}
           fetch-depth: 0
+          submodules: recursive
 
       - name: Check whether a nightly is needed
         id: plan
