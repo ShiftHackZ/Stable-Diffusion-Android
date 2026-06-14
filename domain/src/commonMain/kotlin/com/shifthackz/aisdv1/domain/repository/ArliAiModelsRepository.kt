@@ -3,30 +3,35 @@ package com.shifthackz.aisdv1.domain.repository
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionModel
 
 /**
- * Defines the `ArliAiModelsRepository` contract for the SDAI domain layer.
+ * Synchronizes and reads ArliAI checkpoint metadata.
+ *
+ * Remote models are cached locally so setup and generation screens can keep showing the last
+ * known ArliAI list when a refresh fails.
  *
  * @author Dmitriy Moroz
  */
 interface ArliAiModelsRepository {
     /**
-     * Loads SDAI data through `fetchModels`.
+     * Refreshes ArliAI checkpoint metadata from the provider and stores it locally.
      *
      * @author Dmitriy Moroz
      */
     suspend fun fetchModels()
 
     /**
-     * Loads SDAI data through `fetchAndGetModels`.
+     * Attempts a provider refresh and then returns the locally cached checkpoint list.
      *
-     * @return Result produced by `fetchAndGetModels`.
+     * @return cached ArliAI checkpoints after the refresh attempt.
+     *
      * @author Dmitriy Moroz
      */
     suspend fun fetchAndGetModels(): List<StableDiffusionModel>
 
     /**
-     * Loads SDAI data through `getModels`.
+     * Reads cached ArliAI checkpoint metadata.
      *
-     * @return Result produced by `getModels`.
+     * @return locally stored ArliAI checkpoints.
+     *
      * @author Dmitriy Moroz
      */
     suspend fun getModels(): List<StableDiffusionModel>

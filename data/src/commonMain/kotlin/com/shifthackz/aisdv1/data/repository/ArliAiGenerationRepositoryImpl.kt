@@ -13,7 +13,10 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.ArliAiGenerationRepository
 
 /**
- * Implements `ArliAiGenerationRepository` behavior in the SDAI data layer.
+ * Generates images through ArliAI and persists returned gallery records.
+ *
+ * Each generation uses a payload model override when present, otherwise it falls back to the
+ * selected ArliAI model saved in preferences.
  *
  * @author Dmitriy Moroz
  */
@@ -30,9 +33,24 @@ internal class ArliAiGenerationRepositoryImpl(
     backgroundWorkObserver = backgroundWorkObserver,
 ), ArliAiGenerationRepository {
 
+    /**
+     * Validates the currently saved ArliAI API key.
+     *
+     * @return `true` when ArliAI accepts the key.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun validateApiKey(): Boolean =
         remoteDataSource.validateApiKey(preferenceManager.arliAiApiKey)
 
+    /**
+     * Generates text-to-image results and saves each returned image to local history.
+     *
+     * @param payload generation settings and optional ArliAI model override.
+     * @return persisted generation records.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun generateFromText(payload: TextToImagePayload): List<AiGenerationResult> {
         val model = payload.arliAiModel.ifBlank { preferenceManager.arliAiModel }
         return remoteDataSource
@@ -42,6 +60,14 @@ internal class ArliAiGenerationRepositoryImpl(
             }
     }
 
+    /**
+     * Generates image-to-image results and saves each returned image to local history.
+     *
+     * @param payload generation settings, source image data, and optional ArliAI model override.
+     * @return persisted generation records.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun generateFromImage(payload: ImageToImagePayload): List<AiGenerationResult> {
         val model = payload.arliAiModel.ifBlank { preferenceManager.arliAiModel }
         return remoteDataSource

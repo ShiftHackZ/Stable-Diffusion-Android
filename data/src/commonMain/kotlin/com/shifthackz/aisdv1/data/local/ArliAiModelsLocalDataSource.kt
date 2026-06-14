@@ -8,23 +8,21 @@ import com.shifthackz.aisdv1.storage.db.cache.dao.ArliAiModelDao
 import com.shifthackz.aisdv1.storage.db.cache.entity.ArliAiModelEntity
 
 /**
- * Coordinates `ArliAiModelsLocalDataSource` behavior in the SDAI data layer.
+ * Reads and writes cached ArliAI checkpoint metadata.
+ *
+ * @param dao Room DAO for the ArliAI model cache table.
  *
  * @author Dmitriy Moroz
  */
 internal class ArliAiModelsLocalDataSource(
-    /**
-     * Exposes the `dao` value used by the SDAI data layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val dao: ArliAiModelDao,
 ) : ArliAiModelsDataSource.Local {
 
     /**
-     * Loads SDAI data through `getModels`.
+     * Reads all cached ArliAI checkpoints.
      *
-     * @return Result produced by `getModels`.
+     * @return locally stored ArliAI checkpoints mapped into domain models.
+     *
      * @author Dmitriy Moroz
      */
     override suspend fun getModels(): List<StableDiffusionModel> = dao
@@ -32,9 +30,10 @@ internal class ArliAiModelsLocalDataSource(
         .let(List<ArliAiModelEntity>::mapArliAiEntityToDomain)
 
     /**
-     * Performs the SDAI side effect handled by `insertModels`.
+     * Replaces the cached ArliAI checkpoint list.
      *
-     * @param models models value consumed by the API.
+     * @param models latest checkpoint metadata returned by the provider.
+     *
      * @author Dmitriy Moroz
      */
     override suspend fun insertModels(models: List<StableDiffusionModel>) {

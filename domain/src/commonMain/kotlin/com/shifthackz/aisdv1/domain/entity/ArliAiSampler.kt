@@ -1,7 +1,9 @@
 package com.shifthackz.aisdv1.domain.entity
 
 /**
- * Carries ArliAI sampler aliases through the SDAI domain layer.
+ * Lists ArliAI sampler names supported by the setup and generation forms.
+ *
+ * @property key sampler name sent to ArliAI.
  *
  * @author Dmitriy Moroz
  */
@@ -32,7 +34,18 @@ enum class ArliAiSampler(
     ;
 
     companion object {
+        /**
+         * Default sampler used when the payload does not specify one.
+         *
+         * @author Dmitriy Moroz
+         */
         val default: ArliAiSampler = DPM_PLUS_PLUS_2M_KARRAS
+
+        /**
+         * Provider-facing sampler names shown in UI selectors.
+         *
+         * @author Dmitriy Moroz
+         */
         val supported: List<String> = entries.map(ArliAiSampler::key)
     }
 }

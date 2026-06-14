@@ -1,56 +1,56 @@
 package com.shifthackz.aisdv1.storage.db.cache.contract
 
 /**
- * Provides the `ArliAiModelContract` singleton used by the SDAI storage layer.
+ * Defines the Room table and columns for cached ArliAI checkpoints.
  *
  * @author Dmitriy Moroz
  */
 internal object ArliAiModelContract {
     /**
-     * Exposes the `TABLE` value used by the SDAI storage layer.
+     * Room table containing ArliAI checkpoint metadata.
      *
      * @author Dmitriy Moroz
      */
     const val TABLE = "arli_ai_models"
 
     /**
-     * Exposes the `ID` value used by the SDAI storage layer.
+     * Stable checkpoint identifier used as the primary key.
      *
      * @author Dmitriy Moroz
      */
     const val ID = "id"
     /**
-     * Exposes the `TITLE` value used by the SDAI storage layer.
+     * Provider-facing checkpoint title.
      *
      * @author Dmitriy Moroz
      */
     const val TITLE = "title"
     /**
-     * Exposes the `NAME` value used by the SDAI storage layer.
+     * Provider-facing checkpoint model name.
      *
      * @author Dmitriy Moroz
      */
     const val NAME = "name"
     /**
-     * Exposes the `HASH` value used by the SDAI storage layer.
+     * Short provider hash when ArliAI returns one.
      *
      * @author Dmitriy Moroz
      */
     const val HASH = "hash"
     /**
-     * Exposes the `SHA256` value used by the SDAI storage layer.
+     * Full SHA-256 model hash when ArliAI returns one.
      *
      * @author Dmitriy Moroz
      */
     const val SHA256 = "sha256"
     /**
-     * Exposes the `FILENAME` value used by the SDAI storage layer.
+     * Provider checkpoint filename.
      *
      * @author Dmitriy Moroz
      */
     const val FILENAME = "filename"
     /**
-     * Exposes the `CONFIG` value used by the SDAI storage layer.
+     * Provider checkpoint config filename.
      *
      * @author Dmitriy Moroz
      */

@@ -18,7 +18,13 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
 
 /**
- * Coordinates `KtorArliAiGenerationApi` behavior in the SDAI network layer.
+ * Ktor implementation of ArliAI validation, model discovery, and image generation.
+ *
+ * Model-list traffic is counted as [NetworkUsageCategory.CONFIGS]. Text-to-image and
+ * image-to-image request and response bodies are counted as [NetworkUsageCategory.INFERENCE].
+ *
+ * @param httpClient configured Ktor client used to send provider requests.
+ * @param baseUrl ArliAI SDNext-compatible API base URL.
  *
  * @author Dmitriy Moroz
  */
@@ -28,9 +34,10 @@ class KtorArliAiGenerationApi(
 ) : ArliAiGenerationApi {
 
     /**
-     * Creates a new SDAI component instance.
+     * Creates an ArliAI API client with the shared application HTTP configuration.
      *
-     * @param baseUrl base url value consumed by the API.
+     * @param baseUrl ArliAI SDNext-compatible API base URL.
+     *
      * @author Dmitriy Moroz
      */
     constructor(baseUrl: String) : this(
@@ -38,10 +45,25 @@ class KtorArliAiGenerationApi(
         baseUrl = baseUrl,
     )
 
+    /**
+     * Validates the key by loading the ArliAI model list.
+     *
+     * @param apiKey ArliAI API key sent as bearer authorization.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun validateApiKey(apiKey: String) {
         fetchModels(apiKey)
     }
 
+    /**
+     * Loads available ArliAI checkpoints and records the response as configuration traffic.
+     *
+     * @param apiKey ArliAI API key sent as bearer authorization.
+     * @return raw checkpoint metadata returned by the provider.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun fetchModels(apiKey: String): List<KtorStableDiffusionModelRaw> = httpClient.get {
         url.takeFrom(baseUrl)
         url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_SD_MODELS)
@@ -49,6 +71,15 @@ class KtorArliAiGenerationApi(
         trackUsage(NetworkUsageCategory.CONFIGS)
     }.trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
+    /**
+     * Sends text-to-image generation and records request plus response bytes as inference traffic.
+     *
+     * @param apiKey ArliAI API key sent as bearer authorization.
+     * @param request SDNext-compatible text-to-image payload.
+     * @return generated image payload returned by ArliAI.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun textToImage(
         apiKey: String,
         request: ArliAiTextToImageRequest,
@@ -61,6 +92,15 @@ class KtorArliAiGenerationApi(
         }
         .trackedJsonBody(NetworkUsageCategory.INFERENCE)
 
+    /**
+     * Sends image-to-image generation and records request plus response bytes as inference traffic.
+     *
+     * @param apiKey ArliAI API key sent as bearer authorization.
+     * @param request SDNext-compatible image-to-image payload.
+     * @return generated image payload returned by ArliAI.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun imageToImage(
         apiKey: String,
         request: ArliAiImageToImageRequest,

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.shifthackz.aisdv1.storage.db.cache.contract.ArliAiModelContract
 
 /**
- * Carries `ArliAiModelEntity` data through the SDAI storage layer.
+ * Stores one ArliAI checkpoint in the local cache database.
  *
  * @author Dmitriy Moroz
  */

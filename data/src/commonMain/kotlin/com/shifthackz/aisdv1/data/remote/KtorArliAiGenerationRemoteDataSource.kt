@@ -11,7 +11,12 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 /**
- * Coordinates `KtorArliAiGenerationRemoteDataSource` behavior in the SDAI data layer.
+ * Maps ArliAI network responses into domain generation results.
+ *
+ * The provider response is Automatic1111-compatible, so this data source reuses the Stable
+ * Diffusion response mappers after converting domain payloads into ArliAI requests.
+ *
+ * @param api ArliAI network API used for validation and generation calls.
  *
  * @author Dmitriy Moroz
  */
@@ -20,6 +25,14 @@ class KtorArliAiGenerationRemoteDataSource(
     private val api: ArliAiGenerationApi,
 ) : ArliAiGenerationDataSource.Remote {
 
+    /**
+     * Treats any successful model-list request as a valid API key check.
+     *
+     * @param apiKey ArliAI API key entered by the user.
+     * @return `true` when the provider request succeeds.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun validateApiKey(apiKey: String): Boolean = try {
         api.validateApiKey(apiKey)
         true
@@ -27,6 +40,16 @@ class KtorArliAiGenerationRemoteDataSource(
         false
     }
 
+    /**
+     * Sends text-to-image generation and maps returned images with the current timestamp.
+     *
+     * @param apiKey ArliAI API key entered by the user.
+     * @param model checkpoint name sent to ArliAI.
+     * @param payload domain generation settings.
+     * @return mapped generation records returned by the provider.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun textToImage(
         apiKey: String,
         model: String,
@@ -34,6 +57,16 @@ class KtorArliAiGenerationRemoteDataSource(
     ) = (payload to api.textToImage(apiKey, payload.mapToArliAiRequest(model)))
         .mapStableDiffusionTextToImageResult(Clock.System.now().toEpochMilliseconds())
 
+    /**
+     * Sends image-to-image generation and maps returned images with the current timestamp.
+     *
+     * @param apiKey ArliAI API key entered by the user.
+     * @param model checkpoint name sent to ArliAI.
+     * @param payload domain generation settings and source image data.
+     * @return mapped generation records returned by the provider.
+     *
+     * @author Dmitriy Moroz
+     */
     override suspend fun imageToImage(
         apiKey: String,
         model: String,

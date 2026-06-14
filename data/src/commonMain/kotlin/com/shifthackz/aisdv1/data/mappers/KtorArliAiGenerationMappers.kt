@@ -8,10 +8,14 @@ import com.shifthackz.aisdv1.network.request.ArliAiImageToImageRequest
 import com.shifthackz.aisdv1.network.request.ArliAiTextToImageRequest
 
 /**
- * Converts SDAI data with `mapToArliAiRequest`.
+ * Converts text-to-image settings into an ArliAI SDNext payload.
  *
- * @param model model checkpoint value consumed by the API.
- * @return Result produced by `mapToArliAiRequest`.
+ * Sampling steps are clamped to the ArliAI-supported range and ADetailer fields are sent only
+ * when the feature is enabled.
+ *
+ * @param model checkpoint name sent as `sd_model_checkpoint`.
+ * @return provider request payload ready for JSON serialization.
+ *
  * @author Dmitriy Moroz
  */
 fun TextToImagePayload.mapToArliAiRequest(model: String): ArliAiTextToImageRequest = with(this) {
@@ -40,10 +44,14 @@ fun TextToImagePayload.mapToArliAiRequest(model: String): ArliAiTextToImageReque
 }
 
 /**
- * Converts SDAI data with `mapToArliAiRequest`.
+ * Converts image-to-image settings into an ArliAI SDNext payload.
  *
- * @param model model checkpoint value consumed by the API.
- * @return Result produced by `mapToArliAiRequest`.
+ * Sampling steps are clamped to the ArliAI-supported range, the optional mask is omitted when
+ * blank, and ADetailer fields are sent only when the feature is enabled.
+ *
+ * @param model checkpoint name sent as `sd_model_checkpoint`.
+ * @return provider request payload ready for JSON serialization.
+ *
  * @author Dmitriy Moroz
  */
 fun ImageToImagePayload.mapToArliAiRequest(model: String): ArliAiImageToImageRequest = with(this) {

@@ -8,7 +8,7 @@ import com.shifthackz.aisdv1.storage.db.cache.contract.ArliAiModelContract
 import com.shifthackz.aisdv1.storage.db.cache.entity.ArliAiModelEntity
 
 /**
- * Defines the `ArliAiModelDao` contract for the SDAI storage layer.
+ * Provides Room access to cached ArliAI checkpoint metadata.
  *
  * @author Dmitriy Moroz
  */
@@ -16,25 +16,27 @@ import com.shifthackz.aisdv1.storage.db.cache.entity.ArliAiModelEntity
 interface ArliAiModelDao {
 
     /**
-     * Executes the `queryAll` step in the SDAI storage layer.
+     * Reads all cached ArliAI checkpoints.
      *
-     * @return Result produced by `queryAll`.
+     * @return rows currently stored in the ArliAI model cache table.
+     *
      * @author Dmitriy Moroz
      */
     @Query("SELECT * FROM ${ArliAiModelContract.TABLE}")
     suspend fun queryAll(): List<ArliAiModelEntity>
 
     /**
-     * Performs the SDAI side effect handled by `insertList`.
+     * Inserts or replaces cached ArliAI checkpoints.
      *
-     * @param items items value consumed by the API.
+     * @param items rows produced from the latest provider model list.
+     *
      * @author Dmitriy Moroz
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertList(items: List<ArliAiModelEntity>)
 
     /**
-     * Performs the SDAI side effect handled by `deleteAll`.
+     * Clears all cached ArliAI checkpoints before a refresh writes the new list.
      *
      * @author Dmitriy Moroz
      */

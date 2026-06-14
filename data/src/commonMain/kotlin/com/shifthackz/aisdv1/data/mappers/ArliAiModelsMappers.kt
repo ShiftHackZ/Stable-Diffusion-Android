@@ -4,9 +4,10 @@ import com.shifthackz.aisdv1.domain.entity.StableDiffusionModel
 import com.shifthackz.aisdv1.storage.db.cache.entity.ArliAiModelEntity
 
 /**
- * Converts SDAI data with `mapDomainToArliAiEntity`.
+ * Converts domain checkpoint metadata into distinct ArliAI cache rows.
  *
- * @return Result produced by `mapDomainToArliAiEntity`.
+ * @return Room entities keyed by the best available ArliAI checkpoint name.
+ *
  * @author Dmitriy Moroz
  */
 fun List<StableDiffusionModel>.mapDomainToArliAiEntity(): List<ArliAiModelEntity> =
@@ -14,7 +15,7 @@ fun List<StableDiffusionModel>.mapDomainToArliAiEntity(): List<ArliAiModelEntity
         .map(StableDiffusionModel::mapDomainToArliAiEntity)
 
 /**
- * Converts SDAI data with `mapDomainToArliAiEntity`.
+ * Converts one domain checkpoint into an ArliAI cache row.
  *
  * @author Dmitriy Moroz
  */
@@ -31,16 +32,17 @@ fun StableDiffusionModel.mapDomainToArliAiEntity(): ArliAiModelEntity = with(thi
 }
 
 /**
- * Converts SDAI data with `mapArliAiEntityToDomain`.
+ * Converts cached ArliAI model rows into domain checkpoint metadata.
  *
- * @return Result produced by `mapArliAiEntityToDomain`.
+ * @return domain models shown by setup and generation screens.
+ *
  * @author Dmitriy Moroz
  */
 fun List<ArliAiModelEntity>.mapArliAiEntityToDomain(): List<StableDiffusionModel> =
     map(ArliAiModelEntity::mapArliAiEntityToDomain)
 
 /**
- * Converts SDAI data with `mapArliAiEntityToDomain`.
+ * Converts one cached ArliAI model row into domain checkpoint metadata.
  *
  * @author Dmitriy Moroz
  */
@@ -56,7 +58,7 @@ fun ArliAiModelEntity.mapArliAiEntityToDomain(): StableDiffusionModel = with(thi
 }
 
 /**
- * Exposes the `StableDiffusionModel` value used by the SDAI data layer.
+ * Returns the stable key used for ArliAI model cache de-duplication.
  *
  * @author Dmitriy Moroz
  */

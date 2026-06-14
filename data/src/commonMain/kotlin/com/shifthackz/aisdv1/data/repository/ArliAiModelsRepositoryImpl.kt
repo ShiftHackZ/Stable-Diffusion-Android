@@ -6,33 +6,22 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.ArliAiModelsRepository
 
 /**
- * Implements `ArliAiModelsRepository` behavior in the SDAI data layer.
+ * Synchronizes ArliAI checkpoint metadata between the provider and local cache.
+ *
+ * @param remoteDataSource ArliAI model-list source backed by the network API.
+ * @param localDataSource ArliAI model-list source backed by the cache database.
+ * @param preferenceManager supplies the saved ArliAI API key.
  *
  * @author Dmitriy Moroz
  */
 internal class ArliAiModelsRepositoryImpl(
-    /**
-     * Exposes the `remoteDataSource` value used by the SDAI data layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val remoteDataSource: ArliAiModelsDataSource.Remote,
-    /**
-     * Exposes the `localDataSource` value used by the SDAI data layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val localDataSource: ArliAiModelsDataSource.Local,
-    /**
-     * Exposes the `preferenceManager` value used by the SDAI data layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val preferenceManager: PreferenceManager,
 ) : ArliAiModelsRepository {
 
     /**
-     * Loads SDAI data through `fetchModels`.
+     * Refreshes provider checkpoints and replaces the local cache.
      *
      * @author Dmitriy Moroz
      */
@@ -42,9 +31,12 @@ internal class ArliAiModelsRepositoryImpl(
     }
 
     /**
-     * Loads SDAI data through `fetchAndGetModels`.
+     * Attempts a refresh and always returns the cached checkpoint list.
      *
-     * @return Result produced by `fetchAndGetModels`.
+     * Network errors are ignored here so UI can continue using stale cached models.
+     *
+     * @return cached ArliAI checkpoints after the refresh attempt.
+     *
      * @author Dmitriy Moroz
      */
     override suspend fun fetchAndGetModels(): List<StableDiffusionModel> {
@@ -53,9 +45,10 @@ internal class ArliAiModelsRepositoryImpl(
     }
 
     /**
-     * Loads SDAI data through `getModels`.
+     * Reads cached ArliAI checkpoint metadata.
      *
-     * @return Result produced by `getModels`.
+     * @return locally stored ArliAI checkpoints.
+     *
      * @author Dmitriy Moroz
      */
     override suspend fun getModels(): List<StableDiffusionModel> =

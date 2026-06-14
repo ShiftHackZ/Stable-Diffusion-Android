@@ -6,23 +6,26 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.ArliAiModelsRepository
 
 /**
- * Defines the `FetchAndGetArliAiModelsUseCase` contract for the SDAI domain layer.
+ * Refreshes and returns ArliAI checkpoints for active ArliAI sessions.
  *
  * @author Dmitriy Moroz
  */
 interface FetchAndGetArliAiModelsUseCase {
 
     /**
-     * Executes the `invoke` step in the SDAI domain layer.
+     * Loads ArliAI models when ArliAI is the selected source.
      *
-     * @return Result produced by `invoke`.
+     * @return cached ArliAI checkpoints, or an empty list for other server sources.
+     *
      * @author Dmitriy Moroz
      */
     suspend operator fun invoke(): List<StableDiffusionModel>
 }
 
 /**
- * Implements `FetchAndGetArliAiModelsUseCase` behavior in the SDAI domain layer.
+ * Keeps the selected ArliAI checkpoint valid after model-list refreshes.
+ *
+ * If the saved model no longer exists, the first available checkpoint becomes the selected model.
  *
  * @author Dmitriy Moroz
  */
@@ -42,9 +45,10 @@ internal class FetchAndGetArliAiModelsUseCaseImpl(
 ) : FetchAndGetArliAiModelsUseCase {
 
     /**
-     * Executes the `invoke` step in the SDAI domain layer.
+     * Loads ArliAI models and updates the persisted selected checkpoint if needed.
      *
-     * @return Result produced by `invoke`.
+     * @return cached ArliAI checkpoints, or an empty list for other server sources.
+     *
      * @author Dmitriy Moroz
      */
     override suspend fun invoke(): List<StableDiffusionModel> {
@@ -60,7 +64,7 @@ internal class FetchAndGetArliAiModelsUseCaseImpl(
 }
 
 /**
- * Exposes the `StableDiffusionModel` value used by the SDAI domain layer.
+ * Returns the best checkpoint identifier available in ArliAI model metadata.
  *
  * @author Dmitriy Moroz
  */

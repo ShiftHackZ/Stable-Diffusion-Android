@@ -3,46 +3,49 @@ package com.shifthackz.aisdv1.domain.datasource
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionModel
 
 /**
- * Defines the `ArliAiModelsDataSource` contract for the SDAI domain layer.
+ * Groups ArliAI model-list data sources.
  *
  * @author Dmitriy Moroz
  */
 sealed interface ArliAiModelsDataSource {
 
     /**
-     * Defines the `Remote` contract for the SDAI domain layer.
+     * Loads ArliAI checkpoint metadata from the provider.
      *
      * @author Dmitriy Moroz
      */
     interface Remote : ArliAiModelsDataSource {
         /**
-         * Loads SDAI data through `fetchModels`.
+         * Fetches the checkpoint list available to the supplied API key.
          *
-         * @param apiKey api key value consumed by the API.
-         * @return Result produced by `fetchModels`.
+         * @param apiKey ArliAI API key entered by the user.
+         * @return checkpoint metadata mapped into the domain model.
+         *
          * @author Dmitriy Moroz
          */
         suspend fun fetchModels(apiKey: String): List<StableDiffusionModel>
     }
 
     /**
-     * Defines the `Local` contract for the SDAI domain layer.
+     * Stores ArliAI checkpoint metadata in the local cache.
      *
      * @author Dmitriy Moroz
      */
     interface Local : ArliAiModelsDataSource {
         /**
-         * Loads SDAI data through `getModels`.
+         * Reads cached ArliAI checkpoint metadata.
          *
-         * @return Result produced by `getModels`.
+         * @return locally stored checkpoint metadata.
+         *
          * @author Dmitriy Moroz
          */
         suspend fun getModels(): List<StableDiffusionModel>
 
         /**
-         * Performs the SDAI side effect handled by `insertModels`.
+         * Replaces cached ArliAI checkpoint metadata.
          *
-         * @param models models value consumed by the API.
+         * @param models checkpoint metadata returned by the provider.
+         *
          * @author Dmitriy Moroz
          */
         suspend fun insertModels(models: List<StableDiffusionModel>)

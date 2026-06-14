@@ -4,7 +4,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Carries `ArliAiTextToImageRequest` data through the SDAI network layer.
+ * JSON payload for ArliAI text-to-image generation.
+ *
+ * The field names follow the SDNext-compatible ArliAI API. Optional detailer fields are omitted
+ * unless ADetailer is enabled in the domain payload mapper.
  *
  * @author Dmitriy Moroz
  */
@@ -53,7 +56,10 @@ data class ArliAiTextToImageRequest(
 )
 
 /**
- * Carries `ArliAiImageToImageRequest` data through the SDAI network layer.
+ * JSON payload for ArliAI image-to-image generation.
+ *
+ * The field names follow the SDNext-compatible ArliAI API. Optional mask and detailer fields are
+ * omitted when the source payload does not provide them.
  *
  * @author Dmitriy Moroz
  */

@@ -6,24 +6,22 @@ import com.shifthackz.aisdv1.domain.entity.StableDiffusionModel
 import com.shifthackz.aisdv1.network.api.arliai.ArliAiGenerationApi
 
 /**
- * Coordinates `KtorArliAiModelsRemoteDataSource` behavior in the SDAI data layer.
+ * Loads ArliAI checkpoint metadata from the network API.
+ *
+ * @param api ArliAI network API used for model discovery.
  *
  * @author Dmitriy Moroz
  */
 class KtorArliAiModelsRemoteDataSource(
-    /**
-     * Exposes the `api` value used by the SDAI data layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val api: ArliAiGenerationApi,
 ) : ArliAiModelsDataSource.Remote {
 
     /**
-     * Loads SDAI data through `fetchModels`.
+     * Fetches ArliAI checkpoints and maps them into shared Stable Diffusion model metadata.
      *
-     * @param apiKey api key value consumed by the API.
-     * @return Result produced by `fetchModels`.
+     * @param apiKey ArliAI API key entered by the user.
+     * @return checkpoint metadata available to the supplied key.
+     *
      * @author Dmitriy Moroz
      */
     override suspend fun fetchModels(apiKey: String): List<StableDiffusionModel> =
