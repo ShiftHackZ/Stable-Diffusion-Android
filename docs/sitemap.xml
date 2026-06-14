@@ -13,6 +13,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://sdai.moroz.cc/nightly.html</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://sdai.moroz.cc/privacy.html</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>yearly</changefreq>

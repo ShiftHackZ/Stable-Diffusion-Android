@@ -3,7 +3,7 @@
 ![Google Play](https://img.shields.io/endpoint?color=blue&logo=google-play&logoColor=white&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.shifthackz.aisdv1.app%26l%3DGoogle%2520Play%26m%3D%24version)
 ![F-Droid](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Ff-droid.org%2Fapi%2Fv1%2Fpackages%2Fcom.shifthackz.aisdv1.app.foss&query=%24.packages%5B0%5D.versionName&label=F-Droid&link=https%3A%2F%2Ff-droid.org%2Fpackages%2Fcom.shifthackz.aisdv1.app.foss%2F)
 
-[Website](https://sdai.moroz.cc) | [Telegram](https://t.me/sdai_app) | [Discord](https://discord.gg/jzdR9m8Ves)
+[Website](https://sdai.moroz.cc) | [Nightly Android Full](https://github.com/ShiftHackZ/Stable-Diffusion-Android/releases/download/nightly/sdai-full-nightly.apk) | [Telegram](https://t.me/sdai_app) | [Discord](https://discord.gg/jzdR9m8Ves)
 
 <p>
   <a href="https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app"><img src="docs/assets/badge-google-play.svg" alt="Get it on Google Play" height="54"></a>
@@ -15,6 +15,16 @@
 SDAI is an open-source, cross-platform AI image generation client for Android and iOS. It gives you one clean mobile workflow for self-hosted Stable Diffusion servers, hosted image APIs, crowdsourced generation, and platform-specific local generation where supported.
 
 No ads. No telemetry. No lock-in to a single provider.
+
+## Project Documentation
+
+Root-level Markdown documents:
+
+- [Documentation](DOCUMENTATION.md)
+- [Screenshot generation](SCREENSHOT_GENERATION.md)
+- [Nightly Android builds](NIGHTLY_BUILDS.md)
+- [Git workflow](GIT_WORKFLOW.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
 
 ## Why SDAI
 

@@ -1,0 +1,257 @@
+name: Android Full Nightly
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_ref:
+        description: Branch, tag, or SHA to build.
+        required: true
+        default: develop
+      force:
+        description: Build even when no functional files changed since the previous nightly.
+        required: true
+        type: boolean
+        default: false
+      publish:
+        description: Publish or update the public nightly GitHub prerelease.
+        required: true
+        type: boolean
+        default: true
+  schedule:
+    - cron: "37 2 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-full-nightly
+  cancel-in-progress: false
+
+env:
+  APK_NAME: sdai-full-nightly.apk
+  NIGHTLY_TAG: nightly
+  NIGHTLY_RELEASE_NAME: Android Full Nightly
+
+jobs:
+  nightly:
+    name: Build Android full nightly
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      TARGET_REF: ${{ github.event_name == 'workflow_dispatch' && inputs.target_ref || 'develop' }}
+      FORCE_NIGHTLY: ${{ github.event_name == 'workflow_dispatch' && inputs.force || false }}
+      PUBLISH_NIGHTLY: ${{ github.event_name != 'workflow_dispatch' || inputs.publish }}
+
+    steps:
+      - name: Checkout target ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.target_ref || 'develop' }}
+          fetch-depth: 0
+
+      - name: Check whether a nightly is needed
+        id: plan
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git fetch --force origin "refs/tags/${NIGHTLY_TAG}:refs/tags/${NIGHTLY_TAG}" || true
+
+          target_sha="$(git rev-parse HEAD)"
+          echo "target_sha=${target_sha}" >> "${GITHUB_OUTPUT}"
+
+          if ! git rev-parse --verify "${NIGHTLY_TAG}^{commit}" >/dev/null 2>&1; then
+            echo "should_build=true" >> "${GITHUB_OUTPUT}"
+            echo "reason=No previous nightly tag exists." >> "${GITHUB_OUTPUT}"
+            {
+              echo "### Android full nightly"
+              echo
+              echo "No previous nightly tag exists. Building ${target_sha}."
+            } >> "${GITHUB_STEP_SUMMARY}"
+            exit 0
+          fi
+
+          if [[ "${FORCE_NIGHTLY}" == "true" ]]; then
+            echo "should_build=true" >> "${GITHUB_OUTPUT}"
+            echo "reason=Manual force build was requested." >> "${GITHUB_OUTPUT}"
+            {
+              echo "### Android full nightly"
+              echo
+              echo "Manual force build requested for ${target_sha}."
+            } >> "${GITHUB_STEP_SUMMARY}"
+            exit 0
+          fi
+
+          git diff --name-only "${NIGHTLY_TAG}..HEAD" > "${RUNNER_TEMP}/nightly-changed-files.txt"
+
+          functional_pattern='^(app/|core/|data/|demo/|domain/|feature/|network/|presentation/|storage/|build-logic/|gradle/|build\.gradle\.kts$|settings\.gradle\.kts$|gradle\.properties$|gradlew$|gradlew\.bat$)'
+          if grep -Eq "${functional_pattern}" "${RUNNER_TEMP}/nightly-changed-files.txt"; then
+            echo "should_build=true" >> "${GITHUB_OUTPUT}"
+            echo "reason=Functional files changed since the previous nightly." >> "${GITHUB_OUTPUT}"
+          else
+            echo "should_build=false" >> "${GITHUB_OUTPUT}"
+            echo "reason=Only documentation, website, or repository metadata changed since the previous nightly." >> "${GITHUB_OUTPUT}"
+          fi
+
+          {
+            echo "### Android full nightly"
+            echo
+            echo "Target ref: \`${TARGET_REF}\`"
+            echo "Target commit: \`${target_sha}\`"
+            echo "Decision: \`$(grep '^should_build=' "${GITHUB_OUTPUT}" | tail -n 1 | cut -d= -f2)\`"
+            echo
+            echo "Changed files since \`${NIGHTLY_TAG}\`:"
+            echo
+            sed 's/^/- `/' "${RUNNER_TEMP}/nightly-changed-files.txt" | sed 's/$/`/' || true
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Set up JDK 17
+        if: steps.plan.outputs.should_build == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        if: steps.plan.outputs.should_build == 'true'
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build unsigned full release APK
+        if: steps.plan.outputs.should_build == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ./gradlew :app:assembleFullRelease \
+            --no-daemon \
+            -Dkotlin.native.ignoreDisabledTargets=true \
+            -Pkotlin.native.ignoreDisabledTargets=true
+
+      - name: Sign APK with apksigner key and certificate
+        if: steps.plan.outputs.should_build == 'true'
+        id: sign
+        shell: bash
+        env:
+          ANDROID_NIGHTLY_CERT_PEM_BASE64: ${{ secrets.ANDROID_NIGHTLY_CERT_PEM_BASE64 }}
+          ANDROID_NIGHTLY_KEY_PASSWORD: ${{ secrets.ANDROID_NIGHTLY_KEY_PASSWORD }}
+          ANDROID_NIGHTLY_KEY_PK8_BASE64: ${{ secrets.ANDROID_NIGHTLY_KEY_PK8_BASE64 }}
+        run: |
+          set -euo pipefail
+
+          : "${ANDROID_NIGHTLY_CERT_PEM_BASE64:?Missing ANDROID_NIGHTLY_CERT_PEM_BASE64 secret.}"
+          : "${ANDROID_NIGHTLY_KEY_PK8_BASE64:?Missing ANDROID_NIGHTLY_KEY_PK8_BASE64 secret.}"
+
+          unsigned_apk="$(find app/android/build/outputs/apk/full/release -type f -name '*-unsigned.apk' -print -quit)"
+          if [[ -z "${unsigned_apk}" ]]; then
+            echo "Could not find unsigned full release APK." >&2
+            find app/android/build/outputs/apk/full/release -type f -print >&2 || true
+            exit 1
+          fi
+
+          build_tools="$(find "${ANDROID_HOME}/build-tools" -mindepth 1 -maxdepth 1 -type d -print | sort -V | tail -n 1)"
+          apksigner="${build_tools}/apksigner"
+          zipalign="${build_tools}/zipalign"
+
+          signing_dir="${RUNNER_TEMP}/nightly-signing"
+          output_dir="${RUNNER_TEMP}/nightly-output"
+          install -m 700 -d "${signing_dir}" "${output_dir}"
+
+          key_file="${signing_dir}/nightly.pk8"
+          cert_file="${signing_dir}/nightly.x509.pem"
+          aligned_apk="${output_dir}/sdai-full-nightly-aligned.apk"
+          signed_apk="${output_dir}/${APK_NAME}"
+
+          printf "%s" "${ANDROID_NIGHTLY_KEY_PK8_BASE64}" | base64 --decode > "${key_file}"
+          printf "%s" "${ANDROID_NIGHTLY_CERT_PEM_BASE64}" | base64 --decode > "${cert_file}"
+          chmod 600 "${key_file}" "${cert_file}"
+
+          "${zipalign}" -p -f 4 "${unsigned_apk}" "${aligned_apk}"
+
+          sign_args=(sign --key "${key_file}" --cert "${cert_file}" --out "${signed_apk}")
+          if [[ -n "${ANDROID_NIGHTLY_KEY_PASSWORD:-}" ]]; then
+            sign_args+=(--key-pass "pass:${ANDROID_NIGHTLY_KEY_PASSWORD}")
+          fi
+          "${apksigner}" "${sign_args[@]}" "${aligned_apk}"
+          "${apksigner}" verify --print-certs "${signed_apk}" > "${output_dir}/apksigner.txt"
+
+          sha256sum "${signed_apk}" > "${output_dir}/${APK_NAME}.sha256"
+          echo "signed_apk=${signed_apk}" >> "${GITHUB_OUTPUT}"
+          echo "sha256_file=${output_dir}/${APK_NAME}.sha256" >> "${GITHUB_OUTPUT}"
+          echo "apksigner_report=${output_dir}/apksigner.txt" >> "${GITHUB_OUTPUT}"
+
+      - name: Prepare nightly release notes
+        if: steps.plan.outputs.should_build == 'true'
+        id: metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          output_dir="${RUNNER_TEMP}/nightly-output"
+          release_notes="${output_dir}/release-notes.md"
+          target_sha="${{ steps.plan.outputs.target_sha }}"
+          version_name="$(awk -F '"' '/^versionName = / { print $2; exit }' gradle/libs.versions.toml)"
+          version_code="$(awk -F '"' '/^versionCode = / { print $2; exit }' gradle/libs.versions.toml)"
+          apk_sha256="$(cut -d ' ' -f 1 "${{ steps.sign.outputs.sha256_file }}")"
+          cert_sha256="$(awk -F': ' '/Signer #1 certificate SHA-256 digest:/ { print $2; exit }' "${{ steps.sign.outputs.apksigner_report }}")"
+          download_url="https://github.com/${GITHUB_REPOSITORY}/releases/download/${NIGHTLY_TAG}/${APK_NAME}"
+
+          cat > "${release_notes}" <<EOF
+          Automated Android full nightly build.
+
+          - Target ref: \`${TARGET_REF}\`
+          - Commit: \`${target_sha}\`
+          - Version: \`${version_name} (${version_code})\`
+          - APK SHA-256: \`${apk_sha256}\`
+          - Signing certificate SHA-256: \`${cert_sha256}\`
+
+          This is a prerelease build from the moving \`${NIGHTLY_TAG}\` tag. It is not a Play Store, F-Droid, or stable project release.
+          EOF
+
+          echo "release_notes=${release_notes}" >> "${GITHUB_OUTPUT}"
+          {
+            echo "### Nightly artifact"
+            echo
+            echo "Static APK URL: ${download_url}"
+            echo "APK SHA-256: \`${apk_sha256}\`"
+            echo "Signing certificate SHA-256: \`${cert_sha256}\`"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Publish GitHub prerelease
+        if: steps.plan.outputs.should_build == 'true' && env.PUBLISH_NIGHTLY == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          target_sha="${{ steps.plan.outputs.target_sha }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -f "${NIGHTLY_TAG}" "${target_sha}"
+          git push --force origin "refs/tags/${NIGHTLY_TAG}"
+
+          if gh release view "${NIGHTLY_TAG}" >/dev/null 2>&1; then
+            while IFS= read -r asset_name; do
+              case "${asset_name}" in
+                "${APK_NAME}"|"${APK_NAME}.sha256") ;;
+                *) gh release delete-asset "${NIGHTLY_TAG}" "${asset_name}" --yes ;;
+              esac
+            done < <(gh release view "${NIGHTLY_TAG}" --json assets --jq '.assets[].name')
+
+            gh release upload "${NIGHTLY_TAG}" \
+              "${{ steps.sign.outputs.signed_apk }}" \
+              "${{ steps.sign.outputs.sha256_file }}" \
+              --clobber
+            gh release edit "${NIGHTLY_TAG}" \
+              --title "${NIGHTLY_RELEASE_NAME}" \
+              --notes-file "${{ steps.metadata.outputs.release_notes }}" \
+              --prerelease
+          else
+            gh release create "${NIGHTLY_TAG}" \
+              "${{ steps.sign.outputs.signed_apk }}" \
+              "${{ steps.sign.outputs.sha256_file }}" \
+              --title "${NIGHTLY_RELEASE_NAME}" \
+              --notes-file "${{ steps.metadata.outputs.release_notes }}" \
+              --prerelease \
+              --verify-tag
+          fi
