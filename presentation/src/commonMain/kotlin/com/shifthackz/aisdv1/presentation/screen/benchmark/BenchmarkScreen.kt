@@ -483,21 +483,15 @@ private fun ProviderRecommendationBlock(
     pending: Boolean,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(
+        ProviderRecommendationTitle(
             text = Localization.string(
                 "benchmark_provider_recommended_settings",
                 recommendation.provider.displayName(),
             ),
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
         )
         when {
-            pending -> Text(
+            pending -> ProviderRecommendationNote(
                 text = Localization.string("benchmark_recommendations_empty"),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             !recommendation.recommended -> {
                 InfoRow(
@@ -507,11 +501,7 @@ private fun ProviderRecommendationBlock(
                 recommendation.issues.ifEmpty {
                     listOf(BenchmarkProviderIssue.LOW_SCORE)
                 }.forEach { issue ->
-                    Text(
-                        text = issue.localizedText(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                    ProviderRecommendationNote(text = issue.localizedText())
                 }
             }
             else -> {
@@ -546,15 +536,35 @@ private fun ProviderRecommendationBlock(
                     )
                 }
                 recommendation.issues.forEach { issue ->
-                    Text(
-                        text = issue.localizedText(),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                    ProviderRecommendationNote(text = issue.localizedText())
                 }
             }
         }
     }
+}
+
+@Composable
+private fun ProviderRecommendationTitle(
+    text: String,
+) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.SemiBold,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+    )
+}
+
+@Composable
+private fun ProviderRecommendationNote(
+    text: String,
+) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
 }
 
 @Composable
