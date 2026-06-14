@@ -13,6 +13,7 @@
       company: "https://moroz.cc",
       telegram: "https://t.me/sdai_app",
       discord: "https://discord.gg/jzdR9m8Ves",
+      nightly: "nightly.html",
       googlePlay: "https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app",
       fdroid: "https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss",
       appStore: ""
@@ -119,6 +120,7 @@
             <a href="${site.links.googlePlay}" ${external}>Google Play</a>
             <a href="${site.links.fdroid}" ${external}>F-Droid</a>
             ${footerAppStoreLink()}
+            <a href="${site.links.nightly}">Nightly Build</a>
           </nav>
           <div class="footer-brand">
             <a class="footer-brand-row" href="${site.links.home}" aria-label="${site.name} home">
