@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -148,34 +147,29 @@ fun BenchmarkScreenContent(
             )
         },
         bottomBar = {
-            Surface(
+            Button(
                 modifier = Modifier
                     .navigationBarsPadding()
-                    .fillMaxWidth(),
-                color = MaterialTheme.colorScheme.background,
+                    .fillMaxWidth()
+                    .height(68.dp)
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp, top = 8.dp),
+                enabled = !state.running,
+                onClick = { processIntent(BenchmarkIntent.RunBenchmark) },
             ) {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(68.dp)
-                        .padding(horizontal = 16.dp)
-                        .padding(bottom = 16.dp, top = 8.dp),
-                    enabled = !state.running,
-                    onClick = { processIntent(BenchmarkIntent.RunBenchmark) },
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = null,
-                    )
-                    Text(
-                        modifier = Modifier.padding(start = 8.dp),
-                        text = if (state.running) {
-                            Localization.string("benchmark_running")
-                        } else {
-                            Localization.string("benchmark_run")
-                        },
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Default.PlayArrow,
+                    contentDescription = null,
+                )
+                Text(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = if (state.running) {
+                        Localization.string("benchmark_running")
+                    } else {
+                        Localization.string("benchmark_run")
+                    },
+                )
             }
         },
     ) { paddingValues ->
@@ -187,14 +181,13 @@ fun BenchmarkScreenContent(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 16.dp)
                     .verticalScrollbar(listState),
                 state = listState,
                 contentPadding = PaddingValues(
                     start = 16.dp,
                     top = 16.dp,
                     end = 16.dp,
-                    bottom = 144.dp,
+                    bottom = 32.dp,
                 ),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
@@ -223,9 +216,6 @@ fun BenchmarkScreenContent(
                         deviceInfo = state.deviceInfo ?: state.latestResult?.deviceInfo,
                         recommendations = state.latestResult?.providerRecommendations.orEmpty(),
                     )
-                }
-                item {
-                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
             AnimatedVisibility(
@@ -420,7 +410,7 @@ private fun CapabilitiesSection(
             TableRowsSkeleton(count = 6)
         } else {
             val capabilities = deviceInfo?.accelerationCapabilities().orEmpty()
-            BenchmarkAccelerator.values().forEach { accelerator ->
+            BenchmarkAccelerator.entries.forEach { accelerator ->
                 val capability = capabilities.firstOrNull { it.accelerator == accelerator }
                 InfoRowContent(label = accelerator.displayName()) {
                     AccelerationStatusChip(status = capability?.status)

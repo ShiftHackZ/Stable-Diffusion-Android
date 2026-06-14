@@ -2,14 +2,20 @@
 
 package com.shifthackz.aisdv1.presentation.modal
 
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
@@ -128,17 +134,11 @@ fun GenerationModalRenderer(
         is GenerationModal.Benchmark.ExceedsRecommendation -> AlertDialog(
             onDismissRequest = onDismissRequest,
             confirmButton = {
-                TextButton(onClick = onBenchmarkContinueRequest) {
-                    Text(Localization.string("yes"))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = onDismissRequest) {
-                    Text(Localization.string("no"))
-                }
-                TextButton(onClick = onBenchmarkDoNotAskRequest) {
-                    Text(Localization.string("benchmark_exceeded_do_not_ask"))
-                }
+                BenchmarkExceedsActions(
+                    onContinueRequest = onBenchmarkContinueRequest,
+                    onDismissRequest = onDismissRequest,
+                    onDoNotAskRequest = onBenchmarkDoNotAskRequest,
+                )
             },
             title = {
                 Text(Localization.string("benchmark_exceeded_title"))
@@ -152,6 +152,29 @@ fun GenerationModalRenderer(
                 )
             },
         )
+    }
+}
+
+@Composable
+private fun BenchmarkExceedsActions(
+    onContinueRequest: () -> Unit,
+    onDismissRequest: () -> Unit,
+    onDoNotAskRequest: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        TextButton(onClick = onContinueRequest) {
+            Text(Localization.string("yes"))
+        }
+        TextButton(onClick = onDismissRequest) {
+            Text(Localization.string("no"))
+        }
+        TextButton(onClick = onDoNotAskRequest) {
+            Text(Localization.string("benchmark_exceeded_do_not_ask"))
+        }
     }
 }
 
