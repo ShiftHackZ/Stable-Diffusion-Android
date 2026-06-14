@@ -134,7 +134,6 @@ jobs:
         shell: bash
         env:
           ANDROID_NIGHTLY_CERT_PEM_BASE64: ${{ secrets.ANDROID_NIGHTLY_CERT_PEM_BASE64 }}
-          ANDROID_NIGHTLY_KEY_PASSWORD: ${{ secrets.ANDROID_NIGHTLY_KEY_PASSWORD }}
           ANDROID_NIGHTLY_KEY_PK8_BASE64: ${{ secrets.ANDROID_NIGHTLY_KEY_PK8_BASE64 }}
         run: |
           set -euo pipefail
@@ -168,11 +167,7 @@ jobs:
 
           "${zipalign}" -p -f 4 "${unsigned_apk}" "${aligned_apk}"
 
-          sign_args=(sign --key "${key_file}" --cert "${cert_file}" --out "${signed_apk}")
-          if [[ -n "${ANDROID_NIGHTLY_KEY_PASSWORD:-}" ]]; then
-            sign_args+=(--key-pass "pass:${ANDROID_NIGHTLY_KEY_PASSWORD}")
-          fi
-          "${apksigner}" "${sign_args[@]}" "${aligned_apk}"
+          "${apksigner}" sign --key "${key_file}" --cert "${cert_file}" --out "${signed_apk}" "${aligned_apk}"
           "${apksigner}" verify --print-certs "${signed_apk}" > "${output_dir}/apksigner.txt"
 
           sha256sum "${signed_apk}" > "${output_dir}/${APK_NAME}.sha256"
