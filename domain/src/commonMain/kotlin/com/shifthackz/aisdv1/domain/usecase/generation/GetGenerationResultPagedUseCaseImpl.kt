@@ -35,6 +35,15 @@ internal class GetGenerationResultPagedUseCaseImpl(
     override fun observe(limit: Int, offset: Int) = repository.observePage(limit, offset)
 
     /**
+     * Loads SDAI data through `observePreview`.
+     *
+     * @param limit limit value consumed by the API.
+     * @param offset offset value consumed by the API.
+     * @author Dmitriy Moroz
+     */
+    override fun observePreview(limit: Int, offset: Int) = repository.observePagePreview(limit, offset)
+
+    /**
      * Loads SDAI data through `observeCount`.
      *
      * @author Dmitriy Moroz

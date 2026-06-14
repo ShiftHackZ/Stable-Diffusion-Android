@@ -1,7 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.gallery.list
 
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
-import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResultPreview
 import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.domain.entity.MediaStoreInfo
 import com.shifthackz.aisdv1.domain.entity.Settings
@@ -62,8 +62,8 @@ class GalleryViewModelTest {
             folderUri = "content://gallery",
         )
         every {
-            getGenerationResultPagedUseCase.observe(limit = PAGE_SIZE, offset = 0)
-        } returns flowOf(listOf(generationResult(id = 1L, hidden = false)))
+            getGenerationResultPagedUseCase.observePreview(limit = PAGE_SIZE, offset = 0)
+        } returns flowOf(listOf(generationResultPreview(id = 1L, hidden = false)))
         every { getGenerationResultPagedUseCase.observeCount() } returns flowOf(5)
     }
 
@@ -77,7 +77,7 @@ class GalleryViewModelTest {
                 GalleryState(
                     loading = false,
                     items = listOf(
-                        GalleryGridItemUi(id = 1L, image = null, hidden = false),
+                        GalleryGridItemUi(id = 1L, imageBase64 = "", hidden = false),
                     ),
                     nextPage = 1,
                     canLoadMore = true,
@@ -158,8 +158,8 @@ class GalleryViewModelTest {
     fun `given hidden selection visibility toggled, expected items unhidden and selection cleared`() =
         runTest(testDispatcher) {
             every {
-                getGenerationResultPagedUseCase.observe(limit = PAGE_SIZE, offset = 0)
-            } returns flowOf(listOf(generationResult(id = 1L, hidden = true)))
+                getGenerationResultPagedUseCase.observePreview(limit = PAGE_SIZE, offset = 0)
+            } returns flowOf(listOf(generationResultPreview(id = 1L, hidden = true)))
             coEvery { setGalleryItemsVisibilityUseCase(listOf(1L), false) } returns Unit
             val viewModel = createViewModel()
             advanceUntilIdle()
@@ -197,8 +197,8 @@ class GalleryViewModelTest {
     fun `given liked selection like toggled, expected items unliked and selection cleared`() =
         runTest(testDispatcher) {
             every {
-                getGenerationResultPagedUseCase.observe(limit = PAGE_SIZE, offset = 0)
-            } returns flowOf(listOf(generationResult(id = 1L, hidden = false, liked = true)))
+                getGenerationResultPagedUseCase.observePreview(limit = PAGE_SIZE, offset = 0)
+            } returns flowOf(listOf(generationResultPreview(id = 1L, hidden = false, liked = true)))
             coEvery { setGalleryItemsLikedUseCase(listOf(1L), false) } returns Unit
             val viewModel = createViewModel()
             advanceUntilIdle()
@@ -228,29 +228,14 @@ class GalleryViewModelTest {
         galleryRouter = galleryRouter,
     )
 
-    private fun generationResult(id: Long, hidden: Boolean, liked: Boolean = false) = AiGenerationResult(
+    private fun generationResultPreview(id: Long, hidden: Boolean, liked: Boolean = false) = AiGenerationResultPreview(
         id = id,
         image = "",
-        inputImage = "",
-        createdAt = 0L,
-        type = AiGenerationResult.Type.TEXT_TO_IMAGE,
-        prompt = "Prompt $id",
-        negativePrompt = "",
-        width = 512,
-        height = 512,
-        samplingSteps = 20,
-        cfgScale = 7f,
-        restoreFaces = false,
-        sampler = "Euler",
-        seed = "seed-$id",
-        subSeed = "",
-        subSeedStrength = 0f,
-        denoisingStrength = 0f,
         hidden = hidden,
         liked = liked,
     )
 
     private companion object {
-        const val PAGE_SIZE = 60
+        const val PAGE_SIZE = 30
     }
 }

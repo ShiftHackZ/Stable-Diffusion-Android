@@ -5,7 +5,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.mvi.MviState
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
-import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
 
 /**
  * Carries `GalleryDetailState` data through the SDAI presentation layer.
@@ -289,11 +288,9 @@ internal fun AiGenerationResult.toGalleryDetailContent(
         generationType = type,
         id = id,
         imageBase64 = image,
-        image = image.decodeBase64ImageBitmap(),
+        image = null,
         inputImageBase64 = inputImage.takeIf { type == AiGenerationResult.Type.IMAGE_TO_IMAGE },
-        inputImage = inputImage
-            .takeIf { type == AiGenerationResult.Type.IMAGE_TO_IMAGE }
-            ?.decodeBase64ImageBitmap(),
+        inputImage = null,
         createdAt = formatGalleryCreatedAt(createdAt),
         type = type.key,
         modelName = modelName,

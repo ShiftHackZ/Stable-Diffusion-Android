@@ -15,4 +15,11 @@ interface GetAllGalleryUseCase {
      * @author Dmitriy Moroz
      */
     suspend operator fun invoke(): List<AiGenerationResult>
+    /**
+     * Executes the `ids` step in the SDAI domain layer.
+     *
+     * @return Result produced by `ids`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun ids(): List<Long>
 }

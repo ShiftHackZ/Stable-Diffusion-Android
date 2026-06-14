@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.data.repository
 import com.shifthackz.aisdv1.data.core.CoreMediaStoreRepository
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResultPreview
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
@@ -35,6 +36,13 @@ internal class GenerationResultRepositoryImpl(
     override suspend fun getAll(): List<AiGenerationResult> = localDataSource.queryAll()
 
     /**
+     * Loads SDAI data through `getAllIds`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getAllIds(): List<Long> = localDataSource.queryIds()
+
+    /**
      * Loads SDAI data through `getPage`.
      *
      * @param limit limit value consumed by the API.
@@ -46,6 +54,17 @@ internal class GenerationResultRepositoryImpl(
         localDataSource.queryPage(limit, offset)
 
     /**
+     * Loads SDAI data through `getPagePreview`.
+     *
+     * @param limit limit value consumed by the API.
+     * @param offset offset value consumed by the API.
+     * @return Result produced by `getPagePreview`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getPagePreview(limit: Int, offset: Int): List<AiGenerationResultPreview> =
+        localDataSource.queryPagePreview(limit, offset)
+
+    /**
      * Loads SDAI data through `observePage`.
      *
      * @param limit limit value consumed by the API.
@@ -55,6 +74,17 @@ internal class GenerationResultRepositoryImpl(
      */
     override fun observePage(limit: Int, offset: Int): Flow<List<AiGenerationResult>> =
         localDataSource.observePage(limit, offset)
+
+    /**
+     * Loads SDAI data through `observePagePreview`.
+     *
+     * @param limit limit value consumed by the API.
+     * @param offset offset value consumed by the API.
+     * @return Result produced by `observePagePreview`.
+     * @author Dmitriy Moroz
+     */
+    override fun observePagePreview(limit: Int, offset: Int): Flow<List<AiGenerationResultPreview>> =
+        localDataSource.observePagePreview(limit, offset)
 
     /**
      * Loads SDAI data through `observeCount`.

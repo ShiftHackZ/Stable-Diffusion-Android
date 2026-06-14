@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.data.mocks
 
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
+import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultPreviewEntity
 
 val mockGenerationResultEntity = GenerationResultEntity(
     id = 5598L,
@@ -25,3 +26,12 @@ val mockGenerationResultEntity = GenerationResultEntity(
 )
 
 val mockGenerationResultEntities = listOf(mockGenerationResultEntity)
+
+val mockGenerationResultPreviewEntity = GenerationResultPreviewEntity(
+    id = 5598L,
+    imageBase64 = "img",
+    hidden = false,
+    liked = true,
+)
+
+val mockGenerationResultPreviewEntities = listOf(mockGenerationResultPreviewEntity)

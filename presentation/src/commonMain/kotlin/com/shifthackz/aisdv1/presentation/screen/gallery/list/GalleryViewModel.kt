@@ -13,7 +13,6 @@ import com.shifthackz.aisdv1.domain.usecase.gallery.SetGalleryItemsLikedUseCase
 import com.shifthackz.aisdv1.domain.usecase.gallery.SetGalleryItemsVisibilityUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetGenerationResultPagedUseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.GalleryRouter
-import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -31,7 +30,7 @@ private const val GALLERY_FIRST_PAGE = 0
  *
  * @author Dmitriy Moroz
  */
-private const val GALLERY_PAGE_SIZE = 60
+private const val GALLERY_PAGE_SIZE = 30
 
 /**
  * Coordinates `GalleryViewModel` behavior in the SDAI presentation layer.
@@ -220,7 +219,7 @@ class GalleryViewModel(
             requestedLimit
                 .flatMapLatest { limit ->
                     combine(
-                        getGenerationResultPagedUseCase.observe(
+                        getGenerationResultPagedUseCase.observePreview(
                             limit = limit,
                             offset = GALLERY_FIRST_PAGE,
                         ),
@@ -229,7 +228,7 @@ class GalleryViewModel(
                         val items = results.map { result ->
                             GalleryGridItemUi(
                                 id = result.id,
-                                image = result.image.decodeBase64ImageBitmap(),
+                                imageBase64 = result.image,
                                 hidden = result.hidden,
                                 liked = result.liked,
                             )

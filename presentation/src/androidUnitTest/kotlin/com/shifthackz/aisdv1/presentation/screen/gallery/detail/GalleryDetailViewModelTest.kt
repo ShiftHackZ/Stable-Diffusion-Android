@@ -55,8 +55,10 @@ class GalleryDetailViewModelTest {
 
     @Before
     fun initialize() {
-        coEvery { getGenerationResultUseCase(ITEM_ID) } returns mockAiGenerationResult
-        coEvery { getAllGalleryUseCase() } returns listOf(mockAiGenerationResult)
+        coEvery { getGenerationResultUseCase(any()) } answers {
+            mockAiGenerationResult.copy(id = invocation.args.first() as Long)
+        }
+        coEvery { getAllGalleryUseCase.ids() } returns listOf(mockAiGenerationResult.id)
         coEvery { getLastResultFromCacheUseCase() } returns mockAiGenerationResult
         coEvery { platformActions.copyText(any()) } returns GalleryDetailActionResult.Done
         coEvery { platformActions.saveImage(any()) } returns GalleryDetailActionResult.Done
@@ -92,7 +94,7 @@ class GalleryDetailViewModelTest {
             val items = (1L..8L).map { id ->
                 mockAiGenerationResult.copy(id = id)
             }
-            coEvery { getAllGalleryUseCase() } returns items
+            coEvery { getAllGalleryUseCase.ids() } returns items.map(AiGenerationResult::id)
             val viewModel = createViewModel(itemId = 4L)
             advanceUntilIdle()
 
@@ -110,7 +112,7 @@ class GalleryDetailViewModelTest {
             val items = (1L..8L).map { id ->
                 mockAiGenerationResult.copy(id = id)
             }
-            coEvery { getAllGalleryUseCase() } returns items
+            coEvery { getAllGalleryUseCase.ids() } returns items.map(AiGenerationResult::id)
             val viewModel = createViewModel(itemId = 4L)
             advanceUntilIdle()
 
@@ -170,7 +172,7 @@ class GalleryDetailViewModelTest {
             val items = (1L..3L).map { id ->
                 mockAiGenerationResult.copy(id = id)
             }
-            coEvery { getAllGalleryUseCase() } returns items
+            coEvery { getAllGalleryUseCase.ids() } returns items.map(AiGenerationResult::id)
             coEvery { deleteGalleryItemUseCase(2L) } returns Unit
             val viewModel = createViewModel(itemId = 2L)
             advanceUntilIdle()

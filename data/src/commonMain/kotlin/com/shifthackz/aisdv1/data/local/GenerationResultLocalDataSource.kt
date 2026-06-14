@@ -2,8 +2,10 @@ package com.shifthackz.aisdv1.data.local
 
 import com.shifthackz.aisdv1.data.mappers.mapDomainToEntity
 import com.shifthackz.aisdv1.data.mappers.mapEntityToDomain
+import com.shifthackz.aisdv1.data.mappers.mapPreviewEntityToDomain
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResultPreview
 import com.shifthackz.aisdv1.storage.db.persistent.dao.GenerationResultDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -53,6 +55,17 @@ internal class GenerationResultLocalDataSource(
         dao.queryPage(limit, offset).mapEntityToDomain()
 
     /**
+     * Executes the `queryPagePreview` step in the SDAI data layer.
+     *
+     * @param limit limit value consumed by the API.
+     * @param offset offset value consumed by the API.
+     * @return Result produced by `queryPagePreview`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun queryPagePreview(limit: Int, offset: Int): List<AiGenerationResultPreview> =
+        dao.queryPagePreview(limit, offset).mapPreviewEntityToDomain()
+
+    /**
      * Loads SDAI data through `observePage`.
      *
      * @param limit limit value consumed by the API.
@@ -64,11 +77,30 @@ internal class GenerationResultLocalDataSource(
         dao.observePage(limit, offset).map { it.mapEntityToDomain() }
 
     /**
+     * Loads SDAI data through `observePagePreview`.
+     *
+     * @param limit limit value consumed by the API.
+     * @param offset offset value consumed by the API.
+     * @return Result produced by `observePagePreview`.
+     * @author Dmitriy Moroz
+     */
+    override fun observePagePreview(limit: Int, offset: Int): Flow<List<AiGenerationResultPreview>> =
+        dao.observePagePreview(limit, offset).map { it.mapPreviewEntityToDomain() }
+
+    /**
      * Loads SDAI data through `observeCount`.
      *
      * @author Dmitriy Moroz
      */
     override fun observeCount(): Flow<Int> = dao.observeCount()
+
+    /**
+     * Executes the `queryIds` step in the SDAI data layer.
+     *
+     * @return Result produced by `queryIds`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun queryIds(): List<Long> = dao.queryIds()
 
     /**
      * Executes the `queryById` step in the SDAI data layer.

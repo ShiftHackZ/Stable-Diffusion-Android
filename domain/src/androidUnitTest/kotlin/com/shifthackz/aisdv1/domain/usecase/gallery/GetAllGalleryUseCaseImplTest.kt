@@ -28,6 +28,17 @@ class GetAllGalleryUseCaseImplTest {
     }
 
     @Test
+    fun `given repository returned ids of generations, expected valid id list value`() = runTest {
+        coEvery {
+            stubRepository.getAllIds()
+        } returns listOf(5598L, 1504L)
+
+        val actual = useCase.ids()
+
+        assertEquals(listOf(5598L, 1504L), actual)
+    }
+
+    @Test
     fun `given repository returned empty list of generations, expected empty list value`() = runTest {
         coEvery {
             stubRepository.getAll()

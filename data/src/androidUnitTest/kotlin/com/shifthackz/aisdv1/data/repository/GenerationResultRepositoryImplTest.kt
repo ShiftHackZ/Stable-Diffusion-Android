@@ -1,14 +1,18 @@
 package com.shifthackz.aisdv1.data.repository
 
 import com.shifthackz.aisdv1.data.mocks.mockAiGenerationResult
+import com.shifthackz.aisdv1.data.mocks.mockAiGenerationResultPreviews
 import com.shifthackz.aisdv1.data.mocks.mockAiGenerationResults
 import com.shifthackz.aisdv1.domain.datasource.GenerationResultDataSource
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.AiGenerationResultPreview
 import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -68,6 +72,17 @@ class GenerationResultRepositoryImplTest {
     }
 
     @Test
+    fun `given attempt to get all ids, local returns ids, expected valid id list value`() = runTest {
+        coEvery {
+            stubLocalDataSource.queryIds()
+        } returns listOf(5598L, 1504L)
+
+        val actual = repository.getAllIds()
+
+        Assert.assertEquals(listOf(5598L, 1504L), actual)
+    }
+
+    @Test
     fun `given attempt to get page, local returns data, expected valid domain model list value`() = runTest {
         coEvery {
             stubLocalDataSource.queryPage(any(), any())
@@ -98,6 +113,39 @@ class GenerationResultRepositoryImplTest {
         val actual = runCatching { repository.getPage(20, 0) }
 
         Assert.assertSame(stubException, actual.exceptionOrNull())
+    }
+
+    @Test
+    fun `given attempt to get preview page, local returns data, expected valid preview list value`() = runTest {
+        coEvery {
+            stubLocalDataSource.queryPagePreview(any(), any())
+        } returns mockAiGenerationResultPreviews
+
+        val actual = repository.getPagePreview(30, 0)
+
+        Assert.assertEquals(mockAiGenerationResultPreviews, actual)
+    }
+
+    @Test
+    fun `given attempt to get preview page, local returns empty data, expected empty preview list value`() = runTest {
+        coEvery {
+            stubLocalDataSource.queryPagePreview(any(), any())
+        } returns emptyList()
+
+        val actual = repository.getPagePreview(30, 0)
+
+        Assert.assertEquals(emptyList<AiGenerationResultPreview>(), actual)
+    }
+
+    @Test
+    fun `given attempt to observe preview page, local emits data, expected valid preview list value`() = runTest {
+        every {
+            stubLocalDataSource.observePagePreview(any(), any())
+        } returns flowOf(mockAiGenerationResultPreviews)
+
+        val actual = repository.observePagePreview(30, 0).first()
+
+        Assert.assertEquals(mockAiGenerationResultPreviews, actual)
     }
 
     @Test
