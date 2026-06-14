@@ -16,11 +16,13 @@ import com.shifthackz.aisdv1.presentation.navigation.router.GalleryRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.HistoryRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ImageToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.LoggerRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.NetworkUsageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.OnBoardingRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ReportRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ServerSetupRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.SettingsRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.SplashRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.StorageUsageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.TextToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.WebUiRouter
 import com.shifthackz.aisdv1.presentation.screen.benchmark.BenchmarkViewModel
@@ -35,12 +37,16 @@ import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImagePlatformAct
 import com.shifthackz.aisdv1.presentation.screen.img2img.ImageToImageViewModel
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderViewModel
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerViewModel
+import com.shifthackz.aisdv1.presentation.screen.networkusage.NetworkUsageViewModel
 import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingViewModel
 import com.shifthackz.aisdv1.presentation.screen.report.ReportViewModel
 import com.shifthackz.aisdv1.presentation.screen.settings.SettingsViewModel
 import com.shifthackz.aisdv1.presentation.screen.settings.platform.SettingsPlatformActions
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashViewModel
+import com.shifthackz.aisdv1.presentation.screen.storageusage.StorageUsageObserver
+import com.shifthackz.aisdv1.presentation.screen.storageusage.StorageUsageViewModel
+import com.shifthackz.aisdv1.presentation.screen.storageusage.platform.StorageUsagePlatformActions
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageViewModel
 import com.shifthackz.aisdv1.presentation.screen.web.webui.WebUiViewModel
 import com.shifthackz.aisdv1.presentation.theme.global.AiSdAppThemeViewModel
@@ -49,7 +55,20 @@ import com.shifthackz.aisdv1.presentation.widget.engine.EngineSelectionViewModel
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkViewModel
 import org.koin.core.module.Module
 
+/**
+ * Registers ViewModel factories and shared presentation observers.
+ *
+ * The usage screens intentionally have separate ViewModels, while Settings receives only summary
+ * observers so the app settings list stays lightweight and never owns destructive usage actions.
+ *
+ * @receiver Koin module receiving presentation ViewModel factories.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun Module.registerPresentationViewModelBindings() {
+    single {
+        StorageUsageObserver()
+    }
     factory {
         AiSdAppThemeViewModel(
             dispatchersProvider = get(),
@@ -121,12 +140,43 @@ internal fun Module.registerPresentationViewModelBindings() {
             observeStabilityAiCreditsUseCase = get(),
             selectStableDiffusionModelUseCase = get(),
             clearAppCacheUseCase = get(),
+            getAllGalleryUseCase = get(),
+            getLocalOnnxModelsUseCase = get(),
+            getLocalMediaPipeModelsUseCase = get(),
+            getLocalSdxlModelsUseCase = get(),
+            getLocalCoreMlModelsUseCase = get(),
+            observeNetworkUsageUseCase = get(),
+            storageUsageObserver = get(),
             preferenceManager = get(),
             debugMenuAccessor = get(),
             buildInfoProvider = get(),
             linksProvider = get(),
             router = router,
             platformActions = platformActions,
+        )
+    }
+    factory { (router: StorageUsageRouter, platformActions: StorageUsagePlatformActions) ->
+        StorageUsageViewModel(
+            dispatchersProvider = get(),
+            getAllGalleryUseCase = get(),
+            deleteAllGalleryUseCase = get(),
+            getLocalOnnxModelsUseCase = get(),
+            getLocalMediaPipeModelsUseCase = get(),
+            getLocalSdxlModelsUseCase = get(),
+            getLocalCoreMlModelsUseCase = get(),
+            deleteModelUseCase = get(),
+            storageUsageObserver = get(),
+            buildInfoProvider = get(),
+            router = router,
+            platformActions = platformActions,
+        )
+    }
+    factory { (router: NetworkUsageRouter) ->
+        NetworkUsageViewModel(
+            dispatchersProvider = get(),
+            observeNetworkUsageUseCase = get(),
+            resetNetworkUsageUseCase = get(),
+            router = router,
         )
     }
     factory { (itemId: Long, router: ReportRouter) ->
@@ -306,6 +356,7 @@ internal fun Module.registerPresentationViewModelBindings() {
             downloadModelUseCase = get(),
             deleteModelUseCase = get(),
             downloadGuard = get(),
+            storageUsageObserver = get(),
             linksProvider = get(),
             preferenceManager = get(),
             router = router,

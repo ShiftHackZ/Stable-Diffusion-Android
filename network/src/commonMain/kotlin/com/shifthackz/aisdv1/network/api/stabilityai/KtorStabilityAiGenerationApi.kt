@@ -1,7 +1,12 @@
 package com.shifthackz.aisdv1.network.api.stabilityai
 
 import com.shifthackz.aisdv1.network.client.createConfiguredHttpClient
+import com.shifthackz.aisdv1.network.client.NetworkUsageCategory
 import com.shifthackz.aisdv1.network.client.defaultNetworkJson
+import com.shifthackz.aisdv1.network.client.recordUsageBytes
+import com.shifthackz.aisdv1.network.client.setTrackedTextBody
+import com.shifthackz.aisdv1.network.client.trackUsage
+import com.shifthackz.aisdv1.network.client.trackedBodyAsText
 import com.shifthackz.aisdv1.network.request.StabilityTextToImageRequest
 import com.shifthackz.aisdv1.network.response.StabilityAiErrorResponse
 import com.shifthackz.aisdv1.network.response.StabilityCreditsResponse
@@ -19,13 +24,15 @@ import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.appendPathSegments
-import io.ktor.http.content.TextContent
-import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import kotlinx.serialization.json.Json
 
 /**
- * Coordinates `KtorStabilityAiGenerationApi` behavior in the SDAI network layer.
+ * Ktor implementation of Stability AI generation calls with counted inference traffic.
+ *
+ * @param httpClient Configured Ktor client used to send provider requests.
+ * @param baseUrl Stability AI API base URL.
+ * @param json JSON codec used for counted request/response payloads.
  *
  * @author Dmitriy Moroz
  */
@@ -51,7 +58,9 @@ class KtorStabilityAiGenerationApi(
 ) : StabilityAiGenerationApi {
 
     constructor(baseUrl: String) : this(
-        httpClient = createConfiguredHttpClient(installContentNegotiation = false),
+        httpClient = createConfiguredHttpClient(
+            installContentNegotiation = false,
+        ),
         baseUrl = baseUrl,
     )
 
@@ -71,10 +80,11 @@ class KtorStabilityAiGenerationApi(
             .get {
                 url.takeFrom(baseUrl)
                 url.appendPathSegments(PATH_API_VERSION, PATH_USER, PATH_BALANCE)
+                trackUsage(NetworkUsageCategory.CONFIGS)
                 header(HttpHeaders.Authorization, "Bearer $apiKey")
                 header(HttpHeaders.Accept, ContentType.Application.Json.toString())
             }
-            .bodyAsText()
+            .trackedBodyAsText(NetworkUsageCategory.CONFIGS)
             .let { json.decodeFromString<StabilityCreditsResponse>(it) }
     }
 
@@ -89,10 +99,12 @@ class KtorStabilityAiGenerationApi(
                 url.appendPathSegments(PATH_API_VERSION, PATH_GENERATION, engineId, PATH_TEXT_TO_IMAGE)
                 header(HttpHeaders.Authorization, "Bearer $apiKey")
                 header(HttpHeaders.Accept, ContentType.Application.Json.toString())
-                contentType(ContentType.Application.Json)
-                setBody(TextContent(json.encodeToString(request), ContentType.Application.Json))
+                setTrackedTextBody(
+                    category = NetworkUsageCategory.INFERENCE,
+                    body = json.encodeToString(request),
+                )
             }
-            .bodyAsText()
+            .trackedBodyAsText(NetworkUsageCategory.INFERENCE)
             .let { json.decodeFromString<StabilityGenerationResponse>(it) }
     }
 
@@ -106,6 +118,11 @@ class KtorStabilityAiGenerationApi(
             .post {
                 url.takeFrom(baseUrl)
                 url.appendPathSegments(PATH_API_VERSION, PATH_GENERATION, engineId, PATH_IMAGE_TO_IMAGE)
+                trackUsage(NetworkUsageCategory.INFERENCE)
+                recordUsageBytes(
+                    category = NetworkUsageCategory.INFERENCE,
+                    bytes = imageBytes.size.toLong() + parameters.multipartTextBytes(),
+                )
                 header(HttpHeaders.Authorization, "Bearer $apiKey")
                 header(HttpHeaders.Accept, ContentType.Application.Json.toString())
                 setBody(
@@ -126,7 +143,7 @@ class KtorStabilityAiGenerationApi(
                     ),
                 )
             }
-            .bodyAsText()
+            .trackedBodyAsText(NetworkUsageCategory.INFERENCE)
             .let { json.decodeFromString<StabilityGenerationResponse>(it) }
     }
 
@@ -150,4 +167,8 @@ class KtorStabilityAiGenerationApi(
         const val PATH_TEXT_TO_IMAGE = "text-to-image"
         const val PATH_IMAGE_TO_IMAGE = "image-to-image"
     }
+}
+
+private fun Map<String, String>.multipartTextBytes(): Long = entries.sumOf { (key, value) ->
+    key.encodeToByteArray().size.toLong() + value.encodeToByteArray().size.toLong()
 }

@@ -21,6 +21,12 @@ interface SettingsRouter {
      */
     fun closeDrawer()
     /**
+     * Navigates back from a standalone Settings child screen.
+     *
+     * @author Dmitriy Moroz
+     */
+    fun navigateBack()
+    /**
      * Executes the `navigateToServerSetup` step in the SDAI presentation layer.
      *
      * @param source source value consumed by the API.
@@ -33,6 +39,9 @@ interface SettingsRouter {
      * @author Dmitriy Moroz
      */
     fun navigateToBenchmark()
+    fun navigateToStorageUsage()
+
+    fun navigateToNetworkUsage()
     /**
      * Executes the `navigateToDebugMenu` step in the SDAI presentation layer.
      *
@@ -73,6 +82,12 @@ object NoOpSettingsRouter : SettingsRouter {
      */
     override fun closeDrawer() = Unit
     /**
+     * Navigates back from a standalone Settings child screen.
+     *
+     * @author Dmitriy Moroz
+     */
+    override fun navigateBack() = Unit
+    /**
      * Executes the `navigateToServerSetup` step in the SDAI presentation layer.
      *
      * @param source source value consumed by the API.
@@ -85,6 +100,9 @@ object NoOpSettingsRouter : SettingsRouter {
      * @author Dmitriy Moroz
      */
     override fun navigateToBenchmark() = Unit
+    override fun navigateToStorageUsage() = Unit
+
+    override fun navigateToNetworkUsage() = Unit
     /**
      * Executes the `navigateToDebugMenu` step in the SDAI presentation layer.
      *

@@ -1,7 +1,11 @@
 package com.shifthackz.aisdv1.network.api.automatic1111
 
 import com.shifthackz.aisdv1.network.auth.BasicHttpAuthorization
+import com.shifthackz.aisdv1.network.client.NetworkUsageCategory
 import com.shifthackz.aisdv1.network.client.createConfiguredHttpClient
+import com.shifthackz.aisdv1.network.client.setTrackedJsonBody
+import com.shifthackz.aisdv1.network.client.trackUsage
+import com.shifthackz.aisdv1.network.client.trackedJsonBody
 import com.shifthackz.aisdv1.network.model.ForgeModuleRaw
 import com.shifthackz.aisdv1.network.model.KtorStableDiffusionModelRaw
 import com.shifthackz.aisdv1.network.model.ServerConfigurationRaw
@@ -13,19 +17,17 @@ import com.shifthackz.aisdv1.network.model.StableDiffusionLoraRaw
 import com.shifthackz.aisdv1.network.model.StableDiffusionSamplerRaw
 import com.shifthackz.aisdv1.network.response.KtorSdEmbeddingsResponse
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
-import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 
 /**
- * Coordinates `KtorAutomatic1111MetadataApi` behavior in the SDAI network layer.
+ * Ktor implementation of Automatic1111 metadata calls counted as configuration sync traffic.
+ *
+ * @param httpClient Configured Ktor client used to send provider requests.
  *
  * @author Dmitriy Moroz
  */
@@ -45,9 +47,9 @@ class KtorAutomatic1111MetadataApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_LORAS)
-            applyAuthorization(authorization)
+            applyMetadataRequest(authorization)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun fetchEmbeddings(
         baseUrl: String,
@@ -56,9 +58,9 @@ class KtorAutomatic1111MetadataApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_EMBEDDINGS)
-            applyAuthorization(authorization)
+            applyMetadataRequest(authorization)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun fetchHyperNetworks(
         baseUrl: String,
@@ -67,9 +69,9 @@ class KtorAutomatic1111MetadataApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_HYPER_NETWORKS)
-            applyAuthorization(authorization)
+            applyMetadataRequest(authorization)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun fetchModels(
         baseUrl: String,
@@ -78,9 +80,9 @@ class KtorAutomatic1111MetadataApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_SD_MODELS)
-            applyAuthorization(authorization)
+            applyMetadataRequest(authorization)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun fetchSamplers(
         baseUrl: String,
@@ -89,9 +91,9 @@ class KtorAutomatic1111MetadataApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_SAMPLERS)
-            applyAuthorization(authorization)
+            applyMetadataRequest(authorization)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun fetchForgeModules(
         baseUrl: String,
@@ -100,9 +102,9 @@ class KtorAutomatic1111MetadataApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_SD_MODULES)
-            applyAuthorization(authorization)
+            applyMetadataRequest(authorization)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun fetchScripts(
         baseUrl: String,
@@ -111,9 +113,9 @@ class KtorAutomatic1111MetadataApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_SCRIPTS)
-            applyAuthorization(authorization)
+            applyMetadataRequest(authorization)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun fetchScriptInfo(
         baseUrl: String,
@@ -122,9 +124,9 @@ class KtorAutomatic1111MetadataApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_SCRIPT_INFO)
-            applyAuthorization(authorization)
+            applyMetadataRequest(authorization)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun fetchExtensions(
         baseUrl: String,
@@ -133,9 +135,9 @@ class KtorAutomatic1111MetadataApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_EXTENSIONS)
-            applyAuthorization(authorization)
+            applyMetadataRequest(authorization)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun fetchConfiguration(
         baseUrl: String,
@@ -144,9 +146,9 @@ class KtorAutomatic1111MetadataApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_OPTIONS)
-            applyAuthorization(authorization)
+            applyMetadataRequest(authorization)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun updateConfiguration(
         baseUrl: String,
@@ -156,10 +158,14 @@ class KtorAutomatic1111MetadataApi(
         httpClient.post {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_OPTIONS)
-            applyAuthorization(authorization)
-            contentType(ContentType.Application.Json)
-            setBody(request)
+            applyMetadataRequest(authorization)
+            setTrackedJsonBody(NetworkUsageCategory.CONFIGS, request)
         }
+    }
+
+    private fun HttpRequestBuilder.applyMetadataRequest(authorization: BasicHttpAuthorization?) {
+        trackUsage(NetworkUsageCategory.CONFIGS)
+        applyAuthorization(authorization)
     }
 
     private fun HttpRequestBuilder.applyAuthorization(authorization: BasicHttpAuthorization?) {

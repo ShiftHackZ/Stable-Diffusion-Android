@@ -24,6 +24,11 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
+/**
+ * Verifies downloadable local model queries, selected model refreshes, and build-type filtering.
+ *
+ * @author Dmitriy Moroz
+ */
 class DownloadableModelLocalDataSourceTest {
 
     private val stubException = Throwable("Database error.")
@@ -56,6 +61,14 @@ class DownloadableModelLocalDataSourceTest {
         every {
             stubPreferenceManager.localSdxlModelId
         } returns ""
+
+        every {
+            stubPreferenceManager.observe()
+        } returns flowOf(Settings())
+
+        every {
+            stubBuildInfoProvider.type
+        } returns BuildType.PLAY
 
         every { stubFileStore.isDownloaded(any()) } returns false
         every {
@@ -229,7 +242,7 @@ class DownloadableModelLocalDataSourceTest {
 
         val actual = runCatching { localDataSource.getById("5598") }
 
-        Assert.assertSame(stubException, actual.exceptionOrNull())
+        Assert.assertEquals(stubException.message, actual.exceptionOrNull()?.message)
     }
 
     @Test
@@ -305,10 +318,56 @@ class DownloadableModelLocalDataSourceTest {
         every {
             stubDao.observeByType(any())
         } returns flow { throw stubException }
+        every {
+            stubPreferenceManager.observe()
+        } returns flow {
+            emit(Settings())
+            awaitCancellation()
+        }
 
         val actual = runCatching { localDataSource.observeAllOnnx().toList() }
 
-        Assert.assertSame(stubException, actual.exceptionOrNull())
+        Assert.assertEquals(stubException.message, actual.exceptionOrNull()?.message)
+    }
+
+    @Test
+    fun `given attempt to observe all onnx models, preference changes, expected local state refreshed`() = runTest {
+        val onnxModel = mockLocalModelEntity.mapEntityToDomain()
+        var selectedModelId = ""
+
+        every {
+            stubDao.observeByType(LocalAiModel.Type.ONNX.key)
+        } returns flow {
+            emit(listOf(mockLocalModelEntity))
+            awaitCancellation()
+        }
+
+        every {
+            stubPreferenceManager.observe()
+        } returns flow {
+            emit(Settings())
+            delay(1L)
+            selectedModelId = mockLocalModelEntity.id
+            emit(Settings(languageCode = "refresh"))
+        }
+
+        every {
+            stubPreferenceManager.localOnnxModelId
+        } answers { selectedModelId }
+
+        every {
+            stubFileStore.isDownloaded(match { model -> model.id == mockLocalModelEntity.id })
+        } answers { selectedModelId == mockLocalModelEntity.id }
+
+        val actual = localDataSource.observeAllOnnx().take(2).toList()
+
+        Assert.assertEquals(
+            listOf(
+                listOf(onnxModel),
+                listOf(onnxModel.copy(downloaded = true, selected = true)),
+            ),
+            actual,
+        )
     }
 
     @Test

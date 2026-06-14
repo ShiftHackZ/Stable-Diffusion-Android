@@ -3,6 +3,8 @@ package com.shifthackz.aisdv1.data.remote
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.file.unzip
 import com.shifthackz.aisdv1.domain.entity.DownloadState
+import com.shifthackz.aisdv1.domain.entity.NetworkUsageBucket
+import com.shifthackz.aisdv1.domain.repository.NetworkUsageRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
@@ -17,34 +19,43 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 /**
- * Coordinates `AndroidDownloadableModelFileDownloader` behavior in the SDAI data layer.
+ * Downloads local model archives into Android app-private storage and reports real downloaded bytes.
  *
- * @throws IllegalStateException when the delegated operation cannot complete.
+ * @param fileProviderDescriptor Provides the app-private local model directory path.
+ * @param networkUsageRepository Persists downloaded byte deltas for network usage statistics.
+ * @throws IllegalStateException when OkHttp returns a non-successful download response.
+ *
  * @author Dmitriy Moroz
  */
 internal class AndroidDownloadableModelFileDownloader(
     /**
-     * Exposes the `fileProviderDescriptor` value used by the SDAI data layer.
+     * Provides the app-private local model directory path.
      *
-     * @throws IllegalStateException when the delegated operation cannot complete.
      * @author Dmitriy Moroz
      */
     private val fileProviderDescriptor: FileProviderDescriptor,
+    /**
+     * Persists downloaded byte deltas for network usage statistics.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val networkUsageRepository: NetworkUsageRepository,
 ) : DownloadableModelFileDownloader {
 
     /**
-     * Exposes the `httpClient` value used by the SDAI data layer.
+     * Long-running OkHttp client used for model archive downloads.
      *
      * @author Dmitriy Moroz
      */
     private val httpClient: OkHttpClient = createDownloadHttpClient()
 
     /**
-     * Executes the `download` step in the SDAI data layer.
+     * Downloads a local model archive, unpacks zip files, and emits progress states.
      *
-     * @param id identifier of the target entity.
-     * @param url remote URL used by the operation.
-     * @return Result produced by `download`.
+     * @param id Local model identifier that also names the destination directory.
+     * @param url Remote model archive URL.
+     * @return Download progress, completion, or error state stream.
+     *
      * @author Dmitriy Moroz
      */
     override fun download(
@@ -78,10 +89,12 @@ internal class AndroidDownloadableModelFileDownloader(
     }.flowOn(Dispatchers.IO)
 
     /**
-     * Loads SDAI data through `getDestinationPath`.
+     * Resolves the concrete file path used before optional zip extraction.
      *
-     * @param id identifier of the target entity.
-     * @return Result produced by `getDestinationPath`.
+     * @param id Local model identifier that also names the destination directory.
+     * @param url Remote URL whose last path segment is reused as the archive file name when present.
+     * @return Absolute destination path under the local model directory.
+     *
      * @author Dmitriy Moroz
      */
     private fun getDestinationPath(id: String, url: String): String {
@@ -94,13 +107,14 @@ internal class AndroidDownloadableModelFileDownloader(
     }
 
     /**
-     * Executes the `downloadToFile` step in the SDAI data layer.
+     * Streams a remote model file to disk and records the exact received byte count.
      *
-     * @param url remote URL used by the operation.
-     * @param destination destination value consumed by the API.
-     * @param onProgress callback invoked by the component.
-     * @return Result produced by `downloadToFile`.
-     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @param url Remote model archive URL.
+     * @param destination File that receives the streamed response body.
+     * @param onProgress Callback invoked with integer percent progress when content length is known.
+     * @return The completed destination file.
+     * @throws IllegalStateException when OkHttp returns a non-successful response.
+     *
      * @author Dmitriy Moroz
      */
     private suspend fun downloadToFile(
@@ -113,52 +127,56 @@ internal class AndroidDownloadableModelFileDownloader(
             .get()
             .build()
 
-        httpClient.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw IllegalStateException("Failed to download model: HTTP ${response.code}")
-            }
+        var downloadedBytes = 0L
+        try {
+            httpClient.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    throw IllegalStateException("Failed to download model: HTTP ${response.code}")
+                }
 
-            val body = response.body
-            val totalBytes = body.contentLength()
-            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-            var downloadedBytes = 0L
-            var lastPercent = 0
+                val body = response.body
+                val totalBytes = body.contentLength()
+                val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                var lastPercent = 0
 
-            body.byteStream().use { inputStream ->
-                destination.outputStream().buffered().use { outputStream ->
-                    while (true) {
-                        currentCoroutineContext().ensureActive()
-                        val bytes = inputStream.read(buffer)
-                        if (bytes == -1) break
+                body.byteStream().use { inputStream ->
+                    destination.outputStream().buffered().use { outputStream ->
+                        while (true) {
+                            currentCoroutineContext().ensureActive()
+                            val bytes = inputStream.read(buffer)
+                            if (bytes == -1) break
 
-                        outputStream.write(buffer, 0, bytes)
-                        downloadedBytes += bytes
+                            outputStream.write(buffer, 0, bytes)
+                            downloadedBytes += bytes
 
-                        if (totalBytes > 0L) {
-                            val percent = ((downloadedBytes * 100L) / totalBytes)
-                                .toInt()
-                                .coerceIn(0, 100)
-                            if (percent != lastPercent) {
-                                lastPercent = percent
-                                onProgress(percent)
+                            if (totalBytes > 0L) {
+                                val percent = ((downloadedBytes * 100L) / totalBytes)
+                                    .toInt()
+                                    .coerceIn(0, 100)
+                                if (percent != lastPercent) {
+                                    lastPercent = percent
+                                    onProgress(percent)
+                                }
                             }
                         }
                     }
                 }
             }
+        } finally {
+            networkUsageRepository.increment(NetworkUsageBucket.MODEL_DOWNLOADS, downloadedBytes)
         }
 
         return destination
     }
 
     /**
-     * Provides the `companion object` singleton used by the SDAI data layer.
+     * Download constants and client factory scoped to this downloader.
      *
      * @author Dmitriy Moroz
      */
     private companion object {
         /**
-         * Creates the SDAI value produced by `createDownloadHttpClient`.
+         * Creates an OkHttp client without a total call timeout for large model files.
          *
          * @author Dmitriy Moroz
          */

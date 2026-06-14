@@ -1,6 +1,9 @@
 package com.shifthackz.aisdv1.network.api.sdai
 
 import com.shifthackz.aisdv1.network.client.createConfiguredHttpClient
+import com.shifthackz.aisdv1.network.client.NetworkUsageCategory
+import com.shifthackz.aisdv1.network.client.trackUsage
+import com.shifthackz.aisdv1.network.client.trackedJsonBody
 import com.shifthackz.aisdv1.network.model.SupporterRaw
 import com.shifthackz.aisdv1.network.request.ReportRequest
 import com.shifthackz.aisdv1.network.response.DownloadableModelResponse
@@ -15,7 +18,11 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 
 /**
- * Coordinates `KtorSdaiAppApi` behavior in the SDAI network layer.
+ * Ktor implementation of SDAI app metadata, model catalog, and report calls.
+ *
+ * @param httpClient Configured Ktor client used to send SDAI service requests.
+ * @param appBaseUrl Base URL for SDAI app metadata and model catalogs.
+ * @param reportBaseUrl Base URL for problem report submissions.
  *
  * @author Dmitriy Moroz
  */
@@ -79,8 +86,9 @@ class KtorSdaiAppApi(
         .get {
             url.takeFrom(appBaseUrl)
             url.appendPathSegments(PATH_MODELS)
+            trackUsage(NetworkUsageCategory.CONFIGS)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     /**
      * Loads SDAI data through `fetchMediaPipeModels`.
@@ -92,8 +100,9 @@ class KtorSdaiAppApi(
         .get {
             url.takeFrom(appBaseUrl)
             url.appendPathSegments(PATH_MEDIA_PIPE)
+            trackUsage(NetworkUsageCategory.CONFIGS)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     /**
      * Loads SDAI data through `fetchSdxlModels`.
@@ -105,8 +114,9 @@ class KtorSdaiAppApi(
         .get {
             url.takeFrom(appBaseUrl)
             url.appendPathSegments(PATH_SDXL)
+            trackUsage(NetworkUsageCategory.CONFIGS)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     /**
      * Loads SDAI data through `fetchCoreMlModels`.
@@ -118,8 +128,9 @@ class KtorSdaiAppApi(
         .get {
             url.takeFrom(appBaseUrl)
             url.appendPathSegments(PATH_CORE_ML)
+            trackUsage(NetworkUsageCategory.CONFIGS)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     /**
      * Executes the `postReport` step in the SDAI network layer.

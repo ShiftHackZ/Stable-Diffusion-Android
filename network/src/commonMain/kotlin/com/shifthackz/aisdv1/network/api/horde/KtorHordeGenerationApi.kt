@@ -1,26 +1,30 @@
 package com.shifthackz.aisdv1.network.api.horde
 
 import com.shifthackz.aisdv1.network.client.createConfiguredHttpClient
+import com.shifthackz.aisdv1.network.client.NetworkUsageCategory
+import com.shifthackz.aisdv1.network.client.setTrackedJsonBody
+import com.shifthackz.aisdv1.network.client.trackUsage
+import com.shifthackz.aisdv1.network.client.trackedByteArrayBody
+import com.shifthackz.aisdv1.network.client.trackedJsonBody
 import com.shifthackz.aisdv1.network.request.HordeGenerationAsyncRequest
 import com.shifthackz.aisdv1.network.response.HordeGenerationAsyncResponse
 import com.shifthackz.aisdv1.network.response.HordeGenerationCheckFullResponse
 import com.shifthackz.aisdv1.network.response.HordeGenerationCheckResponse
 import com.shifthackz.aisdv1.network.response.HordeUserResponse
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.appendPathSegments
-import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 
 /**
- * Coordinates `KtorHordeGenerationApi` behavior in the SDAI network layer.
+ * Ktor implementation of Horde generation, status polling, and image download calls.
+ *
+ * @param httpClient Configured Ktor client used to send provider requests.
+ * @param baseUrl Horde API base URL.
  *
  * @author Dmitriy Moroz
  */
@@ -66,10 +70,9 @@ class KtorHordeGenerationApi(
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_API, PATH_VERSION, PATH_GENERATE, PATH_ASYNC)
             hordeApiKey(apiKey)
-            contentType(ContentType.Application.Json)
-            setBody(request)
+            setTrackedJsonBody(NetworkUsageCategory.INFERENCE, request)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.INFERENCE)
 
     /**
      * Executes the `checkGeneration` step in the SDAI network layer.
@@ -86,9 +89,10 @@ class KtorHordeGenerationApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_API, PATH_VERSION, PATH_GENERATE, PATH_CHECK, id)
+            trackUsage(NetworkUsageCategory.INFERENCE)
             hordeApiKey(apiKey)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.INFERENCE)
 
     /**
      * Executes the `checkStatus` step in the SDAI network layer.
@@ -105,9 +109,10 @@ class KtorHordeGenerationApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_API, PATH_VERSION, PATH_GENERATE, PATH_STATUS, id)
+            trackUsage(NetworkUsageCategory.INFERENCE)
             hordeApiKey(apiKey)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.INFERENCE)
 
     /**
      * Executes the `checkHordeApiKey` step in the SDAI network layer.
@@ -120,9 +125,10 @@ class KtorHordeGenerationApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_API, PATH_VERSION, PATH_FIND_USER)
+            trackUsage(NetworkUsageCategory.CONFIGS)
             hordeApiKey(apiKey)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     /**
      * Executes the `cancelRequest` step in the SDAI network layer.
@@ -150,8 +156,11 @@ class KtorHordeGenerationApi(
      * @author Dmitriy Moroz
      */
     override suspend fun downloadImage(url: String): ByteArray = httpClient
-        .get(url)
-        .body()
+        .get {
+            this.url.takeFrom(url)
+            trackUsage(NetworkUsageCategory.INFERENCE)
+        }
+        .trackedByteArrayBody(NetworkUsageCategory.INFERENCE)
 
     /**
      * Executes the `function` step in the SDAI network layer.

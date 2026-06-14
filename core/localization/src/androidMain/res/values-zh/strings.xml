@@ -344,6 +344,44 @@
     <string name="settings_item_tagged_input">标记输入</string>
     <string name="settings_item_advanced_form_default">始终显示高级选项</string>
     <string name="settings_item_clear_cache">清除应用和图库缓存</string>
+    <string name="settings_item_storage_usage">存储使用情况</string>
+    <string name="settings_item_network_usage">流量使用情况</string>
+
+    <string name="settings_usage_storage_title">存储使用情况</string>
+    <string name="settings_usage_storage_subtitle">%2$s 已使用 %1$s。</string>
+    <string name="settings_usage_storage_subtitle_empty">暂无可清理的应用存储。</string>
+    <string name="settings_usage_network_title">流量使用情况</string>
+    <string name="settings_usage_network_subtitle">自上次重置以来已传输 %1$s。</string>
+    <string name="settings_usage_category_cache">缓存</string>
+    <string name="settings_usage_category_gallery">图库</string>
+    <string name="settings_usage_category_models_onnx">ONNX 模型</string>
+    <string name="settings_usage_category_models_mediapipe">MediaPipe 模型</string>
+    <string name="settings_usage_category_models_sdxl">SDXL 模型</string>
+    <string name="settings_usage_category_models_core_ml">Core ML 模型</string>
+    <string name="settings_usage_category_traffic_models">AI 模型下载</string>
+    <string name="settings_usage_category_traffic_configs">配置同步</string>
+    <string name="settings_usage_category_traffic_inference">推理</string>
+    <string name="settings_usage_total">总计</string>
+    <string name="settings_usage_empty">空</string>
+    <string name="settings_usage_list_separator">、</string>
+    <string name="settings_usage_list_last_separator">和</string>
+    <string name="settings_usage_summary_cache">缓存</string>
+    <string name="settings_usage_summary_gallery">图库</string>
+    <string name="settings_usage_summary_models_onnx">ONNX 模型</string>
+    <string name="settings_usage_summary_models_mediapipe">MediaPipe 模型</string>
+    <string name="settings_usage_summary_models_sdxl">SDXL 模型</string>
+    <string name="settings_usage_summary_models_core_ml">Core ML 模型</string>
+    <string name="settings_usage_clear_category">清除 %1$s</string>
+    <string name="settings_usage_clear_all_storage">全部清除 %1$s</string>
+    <string name="settings_usage_reset_network">重置统计</string>
+    <string name="settings_usage_delete_category_title">删除存储数据？</string>
+    <string name="settings_usage_delete_all_title">删除全部存储数据？</string>
+    <string name="settings_usage_delete_cache_text">应用缓存（%1$s）将被删除。应用稍后可以重新生成。</string>
+    <string name="settings_usage_delete_gallery_text">应用内图库中的所有项目（%1$s）将被永久删除。</string>
+    <string name="settings_usage_delete_models_text">已下载的 %2$s（%1$s）将从此设备删除。之后可在提供方设置中重新下载。</string>
+    <string name="settings_usage_delete_all_text">这里显示的所有内容（%1$s）都将被删除：%2$s。</string>
+    <string name="settings_usage_storage_note">图库项目会从应用内图库中删除。本地模型可在提供商设置中重新下载。</string>
+    <string name="settings_usage_network_note">包括模型下载、配置同步和推理请求。</string>
 
     <!-- 外观和感觉设置 -->
     <string name="settings_item_lf_lang">语言</string>

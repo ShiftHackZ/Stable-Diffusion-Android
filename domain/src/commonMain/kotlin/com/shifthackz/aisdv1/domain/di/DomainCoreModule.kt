@@ -14,8 +14,10 @@ import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpCoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpLocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpMediaPipeGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.NoOpNetworkUsageRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpStableDiffusionCppGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpWakeLockRepository
+import com.shifthackz.aisdv1.domain.repository.NetworkUsageRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionCppGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.WakeLockRepository
 import com.shifthackz.aisdv1.domain.usecase.caching.AppCacheCleaner
@@ -161,6 +163,10 @@ import com.shifthackz.aisdv1.domain.usecase.settings.DefaultConnectToSwarmUiUseC
 import com.shifthackz.aisdv1.domain.usecase.settings.DefaultGetConfigurationUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.DefaultSetServerConfigurationUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ObserveNetworkUsageUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ObserveNetworkUsageUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ResetNetworkUsageUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ResetNetworkUsageUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCase
 import com.shifthackz.aisdv1.domain.usecase.splash.SplashNavigationUseCaseImpl
@@ -181,7 +187,10 @@ import com.shifthackz.aisdv1.domain.usecase.wakelock.ReleaseWakeLockUseCaseImpl
 import org.koin.dsl.module
 
 /**
- * Exposes the `coreDomainModule` value used by the SDAI domain layer.
+ * Domain-layer Koin module that provides default repositories and use case implementations.
+ *
+ * Network usage receives a no-op repository here so common presentation can resolve its contracts
+ * before platform data modules override the binding with a persistent implementation.
  *
  * @author Dmitriy Moroz
  */
@@ -194,6 +203,7 @@ val coreDomainModule = module {
     single<StableDiffusionCppGenerationRepository> { NoOpStableDiffusionCppGenerationRepository }
     single<CoreMlGenerationRepository> { NoOpCoreMlGenerationRepository }
     single<WakeLockRepository> { NoOpWakeLockRepository }
+    single<NetworkUsageRepository> { NoOpNetworkUsageRepository }
     single<AppCacheCleaner> { NoOpAppCacheCleaner }
     factory<AcquireWakelockUseCase> {
         AcquireWakelockUseCaseImpl(wakeLockRepository = get())
@@ -429,6 +439,12 @@ val coreDomainModule = module {
             authorizationStore = get(),
             preferenceManager = get(),
         )
+    }
+    factory<ObserveNetworkUsageUseCase> {
+        ObserveNetworkUsageUseCaseImpl(repository = get())
+    }
+    factory<ResetNetworkUsageUseCase> {
+        ResetNetworkUsageUseCaseImpl(repository = get())
     }
     factory<ConnectToA1111UseCase> {
         DefaultConnectToA1111UseCaseImpl(

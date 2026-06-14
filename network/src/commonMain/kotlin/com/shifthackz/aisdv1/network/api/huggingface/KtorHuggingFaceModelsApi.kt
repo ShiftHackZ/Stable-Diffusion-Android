@@ -1,16 +1,21 @@
 package com.shifthackz.aisdv1.network.api.huggingface
 
 import com.shifthackz.aisdv1.network.client.createConfiguredHttpClient
+import com.shifthackz.aisdv1.network.client.NetworkUsageCategory
+import com.shifthackz.aisdv1.network.client.trackUsage
+import com.shifthackz.aisdv1.network.client.trackedJsonBody
 import com.shifthackz.aisdv1.network.model.HuggingFaceModelRaw
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
 
 /**
- * Coordinates `KtorHuggingFaceModelsApi` behavior in the SDAI network layer.
+ * Ktor implementation of Hugging Face model discovery counted as configuration sync traffic.
+ *
+ * @param httpClient Configured Ktor client used to send provider requests.
+ * @param apiBaseUrl Hugging Face API base URL used for model search.
  *
  * @author Dmitriy Moroz
  */
@@ -52,11 +57,12 @@ class KtorHuggingFaceModelsApi(
         .get {
             url.takeFrom(apiBaseUrl)
             url.appendPathSegments(PATH_API, PATH_MODELS)
+            trackUsage(NetworkUsageCategory.CONFIGS)
             parameter(QUERY_INFERENCE_PROVIDER, PROVIDER_HF_INFERENCE)
             parameter(QUERY_PIPELINE_TAG, PIPELINE_TEXT_TO_IMAGE)
             parameter(QUERY_LIMIT, QUERY_LIMIT_VALUE)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     /**
      * Provides the `companion object` singleton used by the SDAI network layer.

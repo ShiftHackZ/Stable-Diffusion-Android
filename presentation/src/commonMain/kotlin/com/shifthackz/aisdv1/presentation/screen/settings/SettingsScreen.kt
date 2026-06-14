@@ -37,6 +37,14 @@ import com.shifthackz.aisdv1.presentation.screen.settings.platform.rememberSetti
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Main Settings tab screen shown inside the app bottom navigation scaffold.
+ *
+ * @param modifier Compose modifier applied to the Settings route.
+ * @param router Optional router override for tests and previews; Koin supplies the app router otherwise.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
@@ -67,6 +75,16 @@ fun SettingsScreen(
     }
 }
 
+/**
+ * Stateless Settings content used by the screen and tests.
+ *
+ * @param modifier Compose modifier applied to the Settings content root.
+ * @param state Current Settings MVI state.
+ * @param platformActions Platform permission and settings bridge used by Settings actions.
+ * @param processIntent Intent sink used to route UI actions back to the ViewModel.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 fun SettingsScreenContent(
     modifier: Modifier = Modifier,
@@ -105,14 +123,16 @@ fun SettingsScreenContent(
                 }
             },
             content = { paddingValues ->
+                val contentModifier = Modifier
+                    .padding(
+                        horizontal = paddingValues.calculateStartPadding(
+                            LocalLayoutDirection.current,
+                        ),
+                    )
+                    .padding(top = paddingValues.calculateTopPadding())
+
                 ContentSettingsState(
-                    modifier = Modifier
-                        .padding(
-                            horizontal = paddingValues.calculateStartPadding(
-                                LocalLayoutDirection.current,
-                            ),
-                        )
-                        .padding(top = paddingValues.calculateTopPadding()),
+                    modifier = contentModifier,
                     state = state,
                     platformActions = platformActions,
                     processIntent = processIntent,

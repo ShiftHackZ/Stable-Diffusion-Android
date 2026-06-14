@@ -2,6 +2,8 @@ package com.shifthackz.aisdv1.data.remote
 
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.domain.entity.DownloadState
+import com.shifthackz.aisdv1.domain.entity.NetworkUsageBucket
+import com.shifthackz.aisdv1.domain.repository.NetworkUsageRepository
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -21,20 +23,38 @@ import platform.Foundation.NSURLSessionTask
 import platform.darwin.NSObject
 
 /**
- * Coordinates `IosDownloadableModelFileDownloader` behavior in the SDAI data layer.
+ * Downloads local model archives into iOS app storage and reports received bytes.
+ *
+ * @param fileProviderDescriptor Provides the app-private local model directory path.
+ * @param networkUsageRepository Persists downloaded byte deltas for network usage statistics.
  *
  * @author Dmitriy Moroz
  */
 @OptIn(ExperimentalForeignApi::class)
 internal class IosDownloadableModelFileDownloader(
     /**
-     * Exposes the `fileProviderDescriptor` value used by the SDAI data layer.
+     * Provides the app-private local model directory path.
      *
      * @author Dmitriy Moroz
      */
     private val fileProviderDescriptor: FileProviderDescriptor,
+    /**
+     * Persists downloaded byte deltas for network usage statistics.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val networkUsageRepository: NetworkUsageRepository,
 ) : DownloadableModelFileDownloader {
 
+    /**
+     * Starts an NSURLSession download and emits model download progress.
+     *
+     * @param id Local model identifier that also names the destination directory.
+     * @param url Remote model archive URL.
+     * @return Download progress, completion, or error state stream.
+     *
+     * @author Dmitriy Moroz
+     */
     override fun download(
         id: String,
         url: String,
@@ -65,6 +85,9 @@ internal class IosDownloadableModelFileDownloader(
         val delegate = IosModelDownloadDelegate(
             destinationPath = temporaryPath,
             onProgress = { progress -> trySend(DownloadState.Downloading(progress)) },
+            onBytesReceived = { bytes ->
+                networkUsageRepository.enqueueIncrement(NetworkUsageBucket.MODEL_DOWNLOADS, bytes)
+            },
             onComplete = { result ->
                 finished = true
                 result.fold(
@@ -98,7 +121,7 @@ internal class IosDownloadableModelFileDownloader(
             },
         )
         session = NSURLSession.sessionWithConfiguration(
-            configuration = NSURLSessionConfiguration.defaultSessionConfiguration(),
+            configuration = modelDownloadSessionConfiguration(),
             delegate = delegate,
             delegateQueue = null,
         )
@@ -114,16 +137,45 @@ internal class IosDownloadableModelFileDownloader(
         }
     }.flowOn(Dispatchers.Default)
 
+    /**
+     * Download file names used while moving the completed NSURLSession temporary file into place.
+     *
+     * @author Dmitriy Moroz
+     */
     private companion object {
         const val DOWNLOAD_FILE_SUFFIX = ".download"
         const val MODEL_ARCHIVE_NAME = "model.zip"
     }
 }
 
+/**
+ * Creates a non-persistent session for large model archive downloads.
+ *
+ * Default iOS sessions can leave completed download artifacts under `Library/Caches`, which makes
+ * a model archive look like app cache until the user clears it manually.
+ *
+ * @return NSURLSession configuration that avoids persistent URL cache writes for model downloads.
+ *
+ * @author Dmitriy Moroz
+ */
+private fun modelDownloadSessionConfiguration(): NSURLSessionConfiguration =
+    NSURLSessionConfiguration.ephemeralSessionConfiguration()
+
+/**
+ * NSURLSession delegate that converts native progress callbacks into app download state callbacks.
+ *
+ * @param destinationPath Temporary destination where NSURLSession output is moved before finalization.
+ * @param onProgress Emits integer percent progress when iOS reports total expected byte count.
+ * @param onBytesReceived Emits every positive byte delta for traffic statistics.
+ * @param onComplete Completes the callbackFlow with success or a user-visible download error.
+ *
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalForeignApi::class)
 private class IosModelDownloadDelegate(
     private val destinationPath: String,
     private val onProgress: (Int) -> Unit,
+    private val onBytesReceived: (Long) -> Unit,
     private val onComplete: (Result<Unit>) -> Unit,
 ) : NSObject(), NSURLSessionDownloadDelegateProtocol {
 
@@ -137,6 +189,9 @@ private class IosModelDownloadDelegate(
         totalBytesWritten: Long,
         totalBytesExpectedToWrite: Long,
     ) {
+        if (didWriteData > 0L) {
+            onBytesReceived(didWriteData)
+        }
         if (totalBytesExpectedToWrite <= 0L) return
 
         val percent = ((totalBytesWritten * 100L) / totalBytesExpectedToWrite)
@@ -194,6 +249,13 @@ private class IosModelDownloadDelegate(
         complete(Result.failure(IllegalStateException(didCompleteWithError.localizedDescription)))
     }
 
+    /**
+     * Completes the delegate exactly once even when NSURLSession reports multiple terminal events.
+     *
+     * @param result Download finalization result propagated to the callbackFlow.
+     *
+     * @author Dmitriy Moroz
+     */
     private fun complete(result: Result<Unit>) {
         if (completed) return
         completed = true
@@ -201,6 +263,13 @@ private class IosModelDownloadDelegate(
     }
 }
 
+/**
+ * Converts non-2xx HTTP download responses into the same exception shape as Android downloads.
+ *
+ * @receiver Optional NSURL response produced by the download task.
+ *
+ * @author Dmitriy Moroz
+ */
 private fun NSURLResponse?.httpError(): IllegalStateException? {
     val statusCode = (this as? NSHTTPURLResponse)?.statusCode?.toInt() ?: return null
     return if (statusCode in 200..299) {
@@ -210,6 +279,15 @@ private fun NSURLResponse?.httpError(): IllegalStateException? {
     }
 }
 
+/**
+ * Removes stale final and temporary model archive files before retrying or after cancellation.
+ *
+ * @receiver File manager that owns the app storage mutation.
+ * @param destinationPath Final model archive path.
+ * @param temporaryPath Temporary download path used before finalization.
+ *
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalForeignApi::class)
 private fun NSFileManager.deleteDownloadFiles(
     destinationPath: String,
