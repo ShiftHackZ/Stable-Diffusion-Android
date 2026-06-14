@@ -29,6 +29,7 @@ kotlin {
         androidUnitTest.dependencies {
             implementation(libs.test.junit)
             implementation(libs.test.mockk)
+            implementation(libs.ktor.client.mock)
         }
     }
 }

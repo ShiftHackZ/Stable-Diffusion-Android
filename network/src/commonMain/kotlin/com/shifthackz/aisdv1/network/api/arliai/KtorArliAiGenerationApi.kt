@@ -1,20 +1,20 @@
 package com.shifthackz.aisdv1.network.api.arliai
 
 import com.shifthackz.aisdv1.network.client.createConfiguredHttpClient
+import com.shifthackz.aisdv1.network.client.NetworkUsageCategory
+import com.shifthackz.aisdv1.network.client.setTrackedJsonBody
+import com.shifthackz.aisdv1.network.client.trackUsage
+import com.shifthackz.aisdv1.network.client.trackedJsonBody
 import com.shifthackz.aisdv1.network.model.KtorStableDiffusionModelRaw
 import com.shifthackz.aisdv1.network.request.ArliAiImageToImageRequest
 import com.shifthackz.aisdv1.network.request.ArliAiTextToImageRequest
 import com.shifthackz.aisdv1.network.response.SdGenerationResponse
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.appendPathSegments
-import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 
 /**
@@ -46,7 +46,8 @@ class KtorArliAiGenerationApi(
         url.takeFrom(baseUrl)
         url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_SD_MODELS)
         header(HttpHeaders.Authorization, apiKey.headerValue)
-    }.body()
+        trackUsage(NetworkUsageCategory.CONFIGS)
+    }.trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     override suspend fun textToImage(
         apiKey: String,
@@ -56,10 +57,9 @@ class KtorArliAiGenerationApi(
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_TXT_TO_IMG)
             header(HttpHeaders.Authorization, apiKey.headerValue)
-            contentType(ContentType.Application.Json)
-            setBody(request)
+            setTrackedJsonBody(NetworkUsageCategory.INFERENCE, request)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.INFERENCE)
 
     override suspend fun imageToImage(
         apiKey: String,
@@ -69,10 +69,9 @@ class KtorArliAiGenerationApi(
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_SD_API, PATH_V1, PATH_IMG_TO_IMG)
             header(HttpHeaders.Authorization, apiKey.headerValue)
-            contentType(ContentType.Application.Json)
-            setBody(request)
+            setTrackedJsonBody(NetworkUsageCategory.INFERENCE, request)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.INFERENCE)
 
     private val String.headerValue: String
         get() = "Bearer $this"
