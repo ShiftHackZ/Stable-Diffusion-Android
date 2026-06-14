@@ -38,9 +38,8 @@ Nightly signing does not use JKS or Gradle `signing.properties`.
 
 The workflow signs the unsigned APK with Android SDK `apksigner` using:
 
-- `ANDROID_NIGHTLY_KEY_PK8_BASE64`: Base64-encoded PKCS#8 private key file.
+- `ANDROID_NIGHTLY_KEY_PK8_BASE64`: Base64-encoded plain PKCS#8 private key file.
 - `ANDROID_NIGHTLY_CERT_PEM_BASE64`: Base64-encoded X.509 certificate file.
-- `ANDROID_NIGHTLY_KEY_PASSWORD`: optional password for an encrypted private key.
 
 These values should be stored as repository or environment secrets. Do not commit them to the repository.
 
