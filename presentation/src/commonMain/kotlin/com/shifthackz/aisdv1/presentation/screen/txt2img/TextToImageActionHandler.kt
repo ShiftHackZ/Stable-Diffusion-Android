@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
@@ -15,6 +16,10 @@ import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
+import com.shifthackz.aisdv1.feature.benchmark.LocalGenerationBenchmarkGate
+import com.shifthackz.aisdv1.feature.benchmark.LocalGenerationGateResult
+import com.shifthackz.aisdv1.feature.benchmark.LocalGenerationRequest
+import com.shifthackz.aisdv1.feature.benchmark.isLocalGenerationSource
 import com.shifthackz.aisdv1.presentation.core.GenerationPlatformServices
 import com.shifthackz.aisdv1.presentation.core.ViewModelLauncher
 import com.shifthackz.aisdv1.presentation.model.GenerationModal
@@ -103,6 +108,12 @@ internal class TextToImageActionHandler(
      */
     private val dimensionValidator: DimensionValidator,
     /**
+     * Exposes the `localGenerationBenchmarkGateProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val localGenerationBenchmarkGateProvider: () -> LocalGenerationBenchmarkGate,
+    /**
      * Exposes the `imageSaver` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -159,6 +170,8 @@ internal class TextToImageActionHandler(
      */
     private var generationJob: Job? = null
 
+    private var pendingGeneration: PendingGeneration? = null
+
     /**
      * Executes the `generate` step in the SDAI presentation layer.
      *
@@ -171,6 +184,93 @@ internal class TextToImageActionHandler(
         if (!validatedState.canGenerate()) return
 
         val payload = validatedState.mapToPayload()
+        if (backgroundWorkObserver.hasActiveTasks()) {
+            updateState {
+                it.copy(screenModal = GenerationModal.Background.Running)
+            }
+            return
+        }
+        if (validatedState.mode.isLocalGenerationSource()) {
+            evaluateBenchmarkGate(validatedState, payload)
+            return
+        }
+
+        startGeneration(validatedState, payload)
+    }
+
+    fun runBenchmarkFromPrompt() {
+        localGenerationBenchmarkGateProvider().markFirstBenchmarkPromptAnswered()
+        pendingGeneration = null
+        updateState { it.copy(screenModal = GenerationModal.None) }
+        router.navigateToBenchmark()
+    }
+
+    fun skipBenchmarkPrompt() {
+        localGenerationBenchmarkGateProvider().markFirstBenchmarkPromptAnswered()
+        val pending = pendingGeneration ?: return updateState { it.copy(screenModal = GenerationModal.None) }
+        pendingGeneration = null
+        updateState { it.copy(screenModal = GenerationModal.None) }
+        startGeneration(pending.state, pending.payload)
+    }
+
+    fun continueAfterBenchmarkWarning(suppressFutureWarnings: Boolean) {
+        if (suppressFutureWarnings) {
+            localGenerationBenchmarkGateProvider().suppressRecommendationWarnings()
+        }
+        val pending = pendingGeneration ?: return updateState { it.copy(screenModal = GenerationModal.None) }
+        pendingGeneration = null
+        updateState { it.copy(screenModal = GenerationModal.None) }
+        startGeneration(pending.state, pending.payload)
+    }
+
+    fun dismissBenchmarkDialog() {
+        pendingGeneration = null
+        updateState { it.copy(screenModal = GenerationModal.None) }
+    }
+
+    private fun evaluateBenchmarkGate(
+        validatedState: TextToImageState,
+        payload: TextToImagePayload,
+    ) {
+        pendingGeneration = PendingGeneration(validatedState, payload)
+        launch(dispatchersProvider.io, CoroutineStart.DEFAULT) {
+            runCatching { localGenerationBenchmarkGateProvider().evaluate(validatedState.toBenchmarkRequest(payload)) }
+                .onSuccess { result ->
+                    withContext(dispatchersProvider.immediate) {
+                        when (result) {
+                            LocalGenerationGateResult.Ready -> {
+                                pendingGeneration = null
+                                startGeneration(validatedState, payload)
+                            }
+                            LocalGenerationGateResult.AskRunBenchmark -> updateState {
+                                it.copy(screenModal = GenerationModal.Benchmark.FirstLocalGeneration)
+                            }
+                            is LocalGenerationGateResult.ConfirmExceedsRecommendation -> updateState {
+                                it.copy(
+                                    screenModal = GenerationModal.Benchmark.ExceedsRecommendation(
+                                        reasons = result.reasons,
+                                        recommendation = result.recommendation,
+                                    ),
+                                )
+                            }
+                        }
+                    }
+                }
+                .onFailure { t ->
+                    if (t is CancellationException) throw t
+                    onError(t)
+                    withContext(dispatchersProvider.immediate) {
+                        pendingGeneration = null
+                        startGeneration(validatedState, payload)
+                    }
+                }
+        }
+    }
+
+    private fun startGeneration(
+        validatedState: TextToImageState,
+        payload: TextToImagePayload,
+    ) {
         if (backgroundWorkObserver.hasActiveTasks()) {
             updateState {
                 it.copy(screenModal = GenerationModal.Background.Running)
@@ -468,3 +568,19 @@ internal class TextToImageActionHandler(
     private suspend fun cacheResultIfNeeded(result: AiGenerationResult): AiGenerationResult =
         saveLastResultToCacheUseCase(result)
 }
+
+private data class PendingGeneration(
+    val state: TextToImageState,
+    val payload: TextToImagePayload,
+)
+
+private fun TextToImageState.toBenchmarkRequest(payload: TextToImagePayload): LocalGenerationRequest =
+    LocalGenerationRequest(
+        source = mode,
+        width = payload.width,
+        height = payload.height,
+        samplingSteps = payload.samplingSteps,
+        batchCount = batchCount,
+        hiresFix = hires.enabled,
+        sdxlBackend = payload.sdxlBackend,
+    )

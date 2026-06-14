@@ -22,6 +22,7 @@ import com.shifthackz.aisdv1.core.model.asString
  * @param showChevron show chevron value consumed by the API.
  * @param endValueText end value text value consumed by the API.
  * @param endValueContent end value content value consumed by the API.
+ * @param textSuffixContent optional content rendered after the main label.
  * @param startIconContent start icon content value consumed by the API.
  * @param onClick callback invoked when the user activates the control.
  * @author Dmitriy Moroz
@@ -38,6 +39,7 @@ fun SettingsItem(
     showChevron: Boolean = true,
     endValueText: UiText = UiText.empty,
     endValueContent: (@Composable () -> Unit)? = null,
+    textSuffixContent: (@Composable () -> Unit)? = null,
     startIconContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit = {},
 ) {
@@ -51,6 +53,7 @@ fun SettingsItem(
         showChevron = showChevron,
         endValueText = endValueText.asString(),
         endValueContent = endValueContent,
+        textSuffixContent = textSuffixContent,
         startIconContent = settingsStartIconContent(
             startIcon = startIcon,
             customContent = startIconContent,
@@ -65,6 +68,7 @@ fun SettingsItem(
  * @param modifier Compose modifier applied to the rendered UI.
  * @param icon icon value consumed by the API.
  * @param text text value consumed by the API.
+ * @param textSuffixContent optional content rendered after the main label.
  * @param iconContent icon content value consumed by the API.
  * @author Dmitriy Moroz
  */
@@ -73,11 +77,13 @@ fun SettingsItemContent(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
     text: UiText,
+    textSuffixContent: (@Composable () -> Unit)? = null,
     iconContent: (@Composable () -> Unit)? = null,
 ) {
     SettingsItemContent(
         modifier = modifier,
         text = text.asString(),
+        textSuffixContent = textSuffixContent,
         startIconContent = settingsStartIconContent(
             startIcon = icon,
             customContent = iconContent,

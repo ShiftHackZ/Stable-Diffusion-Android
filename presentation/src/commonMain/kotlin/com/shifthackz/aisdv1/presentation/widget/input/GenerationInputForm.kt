@@ -205,7 +205,8 @@ fun GenerationInputForm(
             when (state.mode) {
                 ServerSource.HORDE,
                 ServerSource.LOCAL_MICROSOFT_ONNX,
-                ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> {
+                ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
+                ServerSource.LOCAL_APPLE_CORE_ML -> {
                     DropdownTextField(
                         modifier = localModifier.padding(end = 4.dp),
                         label = Localization.string("width").asUiText(),

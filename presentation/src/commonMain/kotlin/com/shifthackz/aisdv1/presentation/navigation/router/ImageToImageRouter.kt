@@ -25,6 +25,12 @@ interface ImageToImageRouter {
      */
     fun navigateToServerSetup()
     /**
+     * Opens the hardware benchmark flow from the local generation guard.
+     *
+     * @author Dmitriy Moroz
+     */
+    fun navigateToBenchmark()
+    /**
      * Executes the `navigateToImageInPaint` step in the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -70,6 +76,12 @@ data object NoOpImageToImageRouter : ImageToImageRouter {
      * @author Dmitriy Moroz
      */
     override fun navigateToServerSetup() = Unit
+    /**
+     * Opens the hardware benchmark flow from the local generation guard.
+     *
+     * @author Dmitriy Moroz
+     */
+    override fun navigateToBenchmark() = Unit
     /**
      * Executes the `navigateToImageInPaint` step in the SDAI presentation layer.
      *

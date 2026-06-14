@@ -188,6 +188,8 @@ private class TestSettingsRouter : SettingsRouter {
         serverSetupSource = source
     }
 
+    override fun navigateToBenchmark() = Unit
+
     override fun navigateToDebugMenu() = Unit
 
     override fun navigateToDonate() = Unit

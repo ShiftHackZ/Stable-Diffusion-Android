@@ -34,6 +34,7 @@ val modules = listOf(
         ":demo",
         ":domain",
         ":feature:auth",
+        ":feature:benchmark",
         ":feature:coreml",
         ":feature:onnx",
         ":feature:mediapipe",

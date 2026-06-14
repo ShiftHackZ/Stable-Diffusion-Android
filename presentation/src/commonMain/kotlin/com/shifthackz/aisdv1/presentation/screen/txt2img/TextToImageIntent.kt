@@ -48,6 +48,30 @@ sealed interface TextToImageIntent : MviIntent {
      */
     data object Generate : TextToImageIntent
     /**
+     * Opens the benchmark screen from the first local generation prompt.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object RunBenchmarkFromPrompt : TextToImageIntent
+    /**
+     * Skips the first local generation benchmark prompt and continues generation.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object SkipBenchmarkPrompt : TextToImageIntent
+    /**
+     * Continues generation after the benchmark recommendation warning.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object ContinueAfterBenchmarkWarning : TextToImageIntent
+    /**
+     * Suppresses future benchmark recommendation warnings and continues generation.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object SuppressBenchmarkWarningAndContinue : TextToImageIntent
+    /**
      * Provides the `DismissModal` singleton used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz

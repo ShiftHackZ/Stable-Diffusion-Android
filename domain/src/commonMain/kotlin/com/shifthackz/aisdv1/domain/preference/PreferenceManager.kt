@@ -247,6 +247,20 @@ interface PreferenceManager {
      */
     var backgroundProcessCount: Int
     /**
+     * Tracks whether the first local generation benchmark prompt has already
+     * been answered.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localGenerationBenchmarkPromptAnswered: Boolean
+    /**
+     * Tracks whether benchmark recommendation warnings are muted until the next
+     * benchmark run.
+     *
+     * @author Dmitriy Moroz
+     */
+    var benchmarkRecommendationWarningSuppressed: Boolean
+    /**
      * Exposes the `galleryGrid` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz

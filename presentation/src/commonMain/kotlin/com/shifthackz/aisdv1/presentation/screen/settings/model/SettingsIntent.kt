@@ -21,6 +21,13 @@ sealed interface SettingsIntent : MviIntent {
     data object NavigateConfiguration : SettingsIntent
 
     /**
+     * Opens the benchmark screen from the Settings server section.
+     *
+     * @author Dmitriy Moroz
+     */
+    data object NavigateBenchmark : SettingsIntent
+
+    /**
      * Opens the debug/developer screen after developer mode is unlocked.
      *
      * @author Dmitriy Moroz

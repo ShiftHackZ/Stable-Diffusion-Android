@@ -19,6 +19,7 @@ out/
 
 # Gradle files
 .gradle/
+.gradle-user-home/
 build/
 
 keystore/

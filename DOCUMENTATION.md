@@ -116,6 +116,7 @@ The root Gradle build aggregates these documented modules:
 - `:demo`
 - `:domain`
 - `:feature:auth`
+- `:feature:benchmark`
 - `:feature:onnx`
 - `:feature:mediapipe`
 - `:feature:work`

@@ -394,6 +394,24 @@ internal class PreferenceManagerImpl(
         set(value) = keyValueStore.putInt(KEY_BACKGROUND_PROCESS_COUNT, value)
 
     /**
+     * Exposes the `localGenerationBenchmarkPromptAnswered` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var localGenerationBenchmarkPromptAnswered: Boolean
+        get() = keyValueStore.getBoolean(KEY_LOCAL_GENERATION_BENCHMARK_PROMPT_ANSWERED)
+        set(value) = putBoolean(KEY_LOCAL_GENERATION_BENCHMARK_PROMPT_ANSWERED, value)
+
+    /**
+     * Exposes the `benchmarkRecommendationWarningSuppressed` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var benchmarkRecommendationWarningSuppressed: Boolean
+        get() = keyValueStore.getBoolean(KEY_BENCHMARK_RECOMMENDATION_WARNING_SUPPRESSED)
+        set(value) = putBoolean(KEY_BENCHMARK_RECOMMENDATION_WARNING_SUPPRESSED, value)
+
+    /**
      * Exposes the `galleryGrid` value used by the SDAI data layer.
      *
      * @author Dmitriy Moroz
@@ -753,6 +771,18 @@ internal class PreferenceManagerImpl(
          * @author Dmitriy Moroz
          */
         const val KEY_BACKGROUND_PROCESS_COUNT = "key_background_process_count"
+        /**
+         * Exposes the `KEY_LOCAL_GENERATION_BENCHMARK_PROMPT_ANSWERED` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_LOCAL_GENERATION_BENCHMARK_PROMPT_ANSWERED = "key_local_generation_benchmark_prompt_answered"
+        /**
+         * Exposes the `KEY_BENCHMARK_RECOMMENDATION_WARNING_SUPPRESSED` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_BENCHMARK_RECOMMENDATION_WARNING_SUPPRESSED = "key_benchmark_recommendation_warning_suppressed"
         /**
          * Exposes the `KEY_GALLERY_GRID` value used by the SDAI data layer.
          *

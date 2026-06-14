@@ -50,6 +50,7 @@ import kotlinx.coroutines.delay
  * @param showChevron show chevron value consumed by the API.
  * @param endValueText end value text value consumed by the API.
  * @param endValueContent end value content value consumed by the API.
+ * @param textSuffixContent optional content rendered after the main label.
  * @param startIconContent start icon content value consumed by the API.
  * @param onClick callback invoked when the user activates the control.
  * @author Dmitriy Moroz
@@ -65,6 +66,7 @@ fun SettingsItem(
     showChevron: Boolean = true,
     endValueText: String = "",
     endValueContent: (@Composable () -> Unit)? = null,
+    textSuffixContent: (@Composable () -> Unit)? = null,
     startIconContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit = {},
 ) {
@@ -123,6 +125,7 @@ fun SettingsItem(
                     ?.let { Modifier.fillMaxWidth(0.8f) }
                     ?: Modifier,
                 text = text,
+                textSuffixContent = textSuffixContent,
                 startIconContent = startIconContent,
             )
             Row(
@@ -157,6 +160,7 @@ fun SettingsItem(
  *
  * @param text text value consumed by the API.
  * @param modifier Compose modifier applied to the rendered UI.
+ * @param textSuffixContent optional content rendered after the main label.
  * @param startIconContent start icon content value consumed by the API.
  * @author Dmitriy Moroz
  */
@@ -164,6 +168,7 @@ fun SettingsItem(
 fun SettingsItemContent(
     text: String,
     modifier: Modifier = Modifier,
+    textSuffixContent: (@Composable () -> Unit)? = null,
     startIconContent: (@Composable () -> Unit)? = null,
 ) {
     Row(
@@ -173,8 +178,16 @@ fun SettingsItemContent(
         Spacer(modifier = Modifier.width(8.dp))
         startIconContent?.invoke()
         Text(
+            modifier = if (textSuffixContent == null) {
+                Modifier
+            } else {
+                Modifier.weight(1f, fill = false)
+            },
             text = text,
             style = MaterialTheme.typography.bodyLarge,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
         )
+        textSuffixContent?.invoke()
     }
 }

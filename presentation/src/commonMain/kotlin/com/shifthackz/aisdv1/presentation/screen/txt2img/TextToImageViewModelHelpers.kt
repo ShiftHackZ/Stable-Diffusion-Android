@@ -47,7 +47,7 @@ internal const val MIN_CFG_SCALE = 1f
  *
  * @author Dmitriy Moroz
  */
-internal const val MAX_CFG_SCALE = 30f
+internal const val MAX_CFG_SCALE = 35f
 /**
  * Exposes the `MIN_SUB_SEED_STRENGTH` value used by the SDAI presentation layer.
  *

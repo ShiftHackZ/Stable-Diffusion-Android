@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.MiscellaneousServices
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SettingsEthernet
+import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +35,7 @@ import com.shifthackz.aisdv1.presentation.screen.settings.model.shortTitle
 import com.shifthackz.aisdv1.presentation.screen.settings.model.text
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsHeader
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
+import com.shifthackz.aisdv1.presentation.widget.source.BetaBadge
 
 @Composable
 internal fun SettingsServerSection(
@@ -57,6 +59,14 @@ internal fun SettingsServerSection(
                 text = text("settings_item_config"),
                 endValueText = state.serverSource.shortTitle().asUiText(),
                 onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.Speed,
+                text = text("settings_item_benchmark"),
+                textSuffixContent = { BetaBadge() },
+                onClick = { processIntent(SettingsIntent.NavigateBenchmark) },
             )
             if (state.showStabilityAiCredits) {
                 SettingsItem(
@@ -109,6 +119,7 @@ internal fun SettingsServerSection(
                         loading = state.loading,
                         startIcon = Icons.Default.MiscellaneousServices,
                         text = text("settings_item_background_generation"),
+                        textSuffixContent = { BetaBadge() },
                         onClick = {
                             processIntent(SettingsIntent.UpdateFlag.BackgroundGeneration(!state.backgroundGeneration))
                         },

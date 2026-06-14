@@ -25,6 +25,12 @@ interface TextToImageRouter {
      */
     fun navigateToServerSetup()
     /**
+     * Opens the hardware benchmark flow from the local generation guard.
+     *
+     * @author Dmitriy Moroz
+     */
+    fun navigateToBenchmark()
+    /**
      * Executes the `navigateToGalleryDetails` step in the SDAI presentation layer.
      *
      * @param itemId item id value consumed by the API.
@@ -64,6 +70,12 @@ data object NoOpTextToImageRouter : TextToImageRouter {
      * @author Dmitriy Moroz
      */
     override fun navigateToServerSetup() = Unit
+    /**
+     * Opens the hardware benchmark flow from the local generation guard.
+     *
+     * @author Dmitriy Moroz
+     */
+    override fun navigateToBenchmark() = Unit
     /**
      * Executes the `navigateToGalleryDetails` step in the SDAI presentation layer.
      *

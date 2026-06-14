@@ -27,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -92,8 +93,8 @@ fun SliderTextInputField(
     steps: Int = 0,
     sliderColors: SliderColors = SliderDefaults.colors(),
 ) {
-    var initialized by remember { mutableStateOf(false) }
-    var text by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf(value.roundTo(fractionDigits).toString()) }
+    var focused by remember { mutableStateOf(false) }
     val callback: (Float) -> Unit = { newValue ->
         newValue
             .coerceIn(valueRange)
@@ -103,17 +104,18 @@ fun SliderTextInputField(
     }
     val isNotApplied = text.toFloatOrNull()?.roundTo(fractionDigits) != value.roundTo(fractionDigits)
     val isValid = text.isNotBlank() && (text.toFloatOrNull()?.let { it in valueRange } ?: false)
-    LaunchedEffect(Unit) {
-        if (!initialized) {
-            text = value.roundTo(fractionDigits).toString()
-            initialized = true
+    val stateText = value.roundTo(fractionDigits).toString()
+    LaunchedEffect(focused, stateText) {
+        if (!focused) {
+            text = stateText
         }
     }
     Column(modifier = modifier) {
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp),
+                .padding(top = 8.dp)
+                .onFocusChanged { focused = it.isFocused },
             value = if (fractionDigits != 0) text else text.replace(".0", ""),
             onValueChange = { newText ->
                 text = newText

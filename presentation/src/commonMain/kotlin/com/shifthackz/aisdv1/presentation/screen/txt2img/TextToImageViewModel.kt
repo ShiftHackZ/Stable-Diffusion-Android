@@ -26,6 +26,7 @@ import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdscript.IsADetailerAvailableUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdsampler.GetStableDiffusionSamplersUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
+import com.shifthackz.aisdv1.feature.benchmark.LocalGenerationBenchmarkGate
 import com.shifthackz.aisdv1.presentation.core.GenerationFormUpdateEvent
 import com.shifthackz.aisdv1.presentation.core.GenerationPlatformServices
 import com.shifthackz.aisdv1.presentation.model.GenerationModal
@@ -166,6 +167,12 @@ class TextToImageViewModel(
      */
     private val dimensionValidator: DimensionValidator,
     /**
+     * Exposes the `localGenerationBenchmarkGateProvider` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val localGenerationBenchmarkGateProvider: () -> LocalGenerationBenchmarkGate,
+    /**
      * Exposes the `imageSaver` value used by the SDAI presentation layer.
      *
      * @author Dmitriy Moroz
@@ -222,6 +229,7 @@ class TextToImageViewModel(
         platformServices = platformServices,
         buildInfoProvider = buildInfoProvider,
         dimensionValidator = dimensionValidator,
+        localGenerationBenchmarkGateProvider = localGenerationBenchmarkGateProvider,
         imageSaver = imageSaver,
         imageSharer = imageSharer,
         router = router,
@@ -249,6 +257,13 @@ class TextToImageViewModel(
         when (intent) {
             TextToImageIntent.RefreshADetailerAvailability -> loadADetailerAvailability(force = true)
             TextToImageIntent.OpenADetailerInstallInstructions -> Unit
+            TextToImageIntent.RunBenchmarkFromPrompt -> actionHandler.runBenchmarkFromPrompt()
+            TextToImageIntent.SkipBenchmarkPrompt -> actionHandler.skipBenchmarkPrompt()
+            TextToImageIntent.ContinueAfterBenchmarkWarning ->
+                actionHandler.continueAfterBenchmarkWarning(suppressFutureWarnings = false)
+            TextToImageIntent.SuppressBenchmarkWarningAndContinue ->
+                actionHandler.continueAfterBenchmarkWarning(suppressFutureWarnings = true)
+            TextToImageIntent.DismissModal -> actionHandler.dismissBenchmarkDialog()
             else -> intentProcessor.process(intent)
         }
     }

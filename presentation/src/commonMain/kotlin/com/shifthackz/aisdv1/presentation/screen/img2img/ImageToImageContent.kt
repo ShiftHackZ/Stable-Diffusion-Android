@@ -414,5 +414,9 @@ fun ImageToImageContent(
         onSaveRequest = { processIntent(ImageToImageIntent.SaveGenerationResults(it)) },
         onReportRequest = { processIntent(ImageToImageIntent.ReportGenerationResult(it)) },
         onViewDetailRequest = { processIntent(ImageToImageIntent.ViewGenerationResult(it)) },
+        onBenchmarkRequest = { processIntent(ImageToImageIntent.RunBenchmarkFromPrompt) },
+        onSkipBenchmarkRequest = { processIntent(ImageToImageIntent.SkipBenchmarkPrompt) },
+        onBenchmarkContinueRequest = { processIntent(ImageToImageIntent.ContinueAfterBenchmarkWarning) },
+        onBenchmarkDoNotAskRequest = { processIntent(ImageToImageIntent.SuppressBenchmarkWarningAndContinue) },
     )
 }

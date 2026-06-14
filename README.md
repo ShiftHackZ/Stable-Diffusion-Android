@@ -83,6 +83,7 @@ iOS uses the shared mobile experience with remote generation providers and Silic
 | Stability style preset and clip guidance | Stability AI | 🟢 Yes | 🟢 Yes | Passed to Stability AI requests when selected. |
 | NSFW flag | AI Horde, Fal.ai, Silicon Diffusion Core ML | 🟢 Yes | 🟢 Yes | Exposed for Horde requests, mapped to Fal.ai safety-checker settings, and mapped to the local Core ML safety checker. |
 | Offline generation | Local ONNX, Local MediaPipe, Local SDXL, Silicon Diffusion Core ML | 🟢 Yes | 🟢 Yes | Runs after the selected local model is available on the current platform. |
+| On-device benchmark | Local ONNX, Local MediaPipe, Local SDXL, Silicon Diffusion Core ML | 🟢 Yes | 🟢 Yes | Runs a safe inference-like CPU and memory workload, stores the latest local result, and recommends local provider settings without loading model files or starting AI runtimes. |
 | Generation interrupt | AUTOMATIC1111, AI Horde, Local ONNX, Local SDXL, Silicon Diffusion Core ML | 🟢 Yes | 🟢 Yes | Other providers rely on request completion when no platform-level interrupt is exposed. |
 
 ## Core Workflow
@@ -108,6 +109,7 @@ iOS uses the shared mobile experience with remote generation providers and Silic
 - Server URL and credentials for own-server providers.
 - API keys for hosted providers.
 - Local model selection and download flow for supported local diffusion providers.
+- Hardware benchmark in AI Settings for local providers, including device score, acceleration availability, estimated generation time, and recommended local settings.
 - Server availability monitoring for compatible own-server modes.
 - Cache and gallery management.
 

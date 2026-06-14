@@ -159,6 +159,8 @@ class SettingsViewModel(
                 LaunchSource.SETTINGS,
             )
 
+            SettingsIntent.NavigateBenchmark -> router.navigateToBenchmark()
+
             SettingsIntent.NavigateDeveloperMode -> router.navigateToDebugMenu()
 
             SettingsIntent.SdModel.OpenChooser -> updateState {
