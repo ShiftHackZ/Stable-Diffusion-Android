@@ -8,14 +8,16 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 /**
- * Exposes the `persistentDatabasePlatformModule` value used by the SDAI storage layer.
+ * Platform-specific Room database builder binding.
  *
  * @author Dmitriy Moroz
  */
 expect val persistentDatabasePlatformModule: Module
 
 /**
- * Exposes the `persistentDatabaseModule` value used by the SDAI storage layer.
+ * Storage-layer Koin module that exposes the persistent database and DAO bindings.
+ *
+ * Network usage DAO is registered here so data repositories can observe traffic counters from Room.
  *
  * @author Dmitriy Moroz
  */
@@ -29,13 +31,15 @@ val persistentDatabaseModule = module {
     single { get<PersistentDatabase>().huggingFaceModelDao() }
     single { get<PersistentDatabase>().supporterDao() }
     single { get<PersistentDatabase>().benchmarkResultDao() }
+    single { get<PersistentDatabase>().networkUsageDao() }
 }
 
 /**
- * Loads SDAI data through `getPersistentDatabase`.
+ * Builds the Room database with the bundled SQLite driver and shared query dispatcher.
  *
- * @param builder builder value consumed by the API.
- * @return Result produced by `getPersistentDatabase`.
+ * @param builder Platform-specific Room database builder supplied by Koin.
+ * @return Configured persistent database instance.
+ *
  * @author Dmitriy Moroz
  */
 internal fun getPersistentDatabase(

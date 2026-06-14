@@ -5,12 +5,19 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
+import com.shifthackz.aisdv1.domain.entity.NetworkUsage
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalSdxlModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ObserveNetworkUsageUseCase
 import com.shifthackz.aisdv1.domain.usecase.stabilityai.ObserveStabilityAiCreditsUseCase
 import com.shifthackz.aisdv1.presentation.mocks.mockStableDiffusionModels
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
@@ -19,6 +26,7 @@ import com.shifthackz.aisdv1.presentation.screen.debug.DebugMenuAccessor
 import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsIntent
 import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsModal
 import com.shifthackz.aisdv1.presentation.screen.settings.platform.SettingsPlatformActions
+import com.shifthackz.aisdv1.presentation.screen.storageusage.StorageUsageObserver
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -39,26 +47,47 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
+/**
+ * Verifies Settings state aggregation, including observed storage/network usage summaries.
+ *
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModelTest {
 
     private val settings = MutableStateFlow(Settings(sdModel = "title_5598"))
     private val stabilityCredits = MutableStateFlow(5598f)
+    private val networkUsage = MutableStateFlow(NetworkUsage())
     private val getStableDiffusionModelsUseCase = mockk<GetStableDiffusionModelsUseCase>()
     private val observeStabilityAiCreditsUseCase = mockk<ObserveStabilityAiCreditsUseCase>()
     private val selectStableDiffusionModelUseCase = mockk<SelectStableDiffusionModelUseCase>()
     private val clearAppCacheUseCase = mockk<ClearAppCacheUseCase>()
+    private val getAllGalleryUseCase = mockk<GetAllGalleryUseCase>()
+    private val getLocalOnnxModelsUseCase = mockk<GetLocalOnnxModelsUseCase>()
+    private val getLocalMediaPipeModelsUseCase = mockk<GetLocalMediaPipeModelsUseCase>()
+    private val getLocalSdxlModelsUseCase = mockk<GetLocalSdxlModelsUseCase>()
+    private val getLocalCoreMlModelsUseCase = mockk<GetLocalCoreMlModelsUseCase>()
+    private val observeNetworkUsageUseCase = mockk<ObserveNetworkUsageUseCase>()
     private val preferenceManager = mockk<PreferenceManager>(relaxed = true)
     private val router = TestSettingsRouter()
     private val platformActions = TestSettingsPlatformActions()
     private val linksProvider = TestLinksProvider()
+    private lateinit var storageUsageObserver: StorageUsageObserver
     private lateinit var dispatchersProvider: DispatchersProvider
     private var viewModelScope: CoroutineScope? = null
 
     @Before
     fun initialize() {
+        storageUsageObserver = StorageUsageObserver()
         coEvery { getStableDiffusionModelsUseCase() } returns mockStableDiffusionModels
+        coEvery { clearAppCacheUseCase() } returns Unit
+        coEvery { getAllGalleryUseCase() } returns emptyList()
+        coEvery { getLocalOnnxModelsUseCase() } returns emptyList()
+        coEvery { getLocalMediaPipeModelsUseCase() } returns emptyList()
+        coEvery { getLocalSdxlModelsUseCase() } returns emptyList()
+        coEvery { getLocalCoreMlModelsUseCase() } returns emptyList()
         every { observeStabilityAiCreditsUseCase() } returns stabilityCredits
+        every { observeNetworkUsageUseCase() } returns networkUsage
         every { preferenceManager.observe() } returns settings
         every { preferenceManager.developerMode } returns false
     }
@@ -90,6 +119,47 @@ class SettingsViewModelTest {
         advanceUntilIdle()
 
         assertEquals(5598f, viewModel.state.value.stabilityAiCredits)
+    }
+
+    @Test
+    fun `given network usage changes, expected settings summary bytes update`() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        networkUsage.value = NetworkUsage(
+            modelDownloadBytes = 1024L,
+            configBytes = 512L,
+            inferenceBytes = 2048L,
+        )
+        advanceUntilIdle()
+
+        assertEquals(3584L, viewModel.state.value.networkUsageBytes)
+    }
+
+    @Test
+    fun `given storage observer notified, expected settings summary bytes update`() = runTest {
+        platformActions.appCacheBytes = 3_221_225_472L
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        assertEquals(3_221_225_472L, viewModel.state.value.storageUsageBytes)
+
+        platformActions.appCacheBytes = 0L
+        storageUsageObserver.notifyChanged()
+        advanceUntilIdle()
+
+        assertEquals(0L, viewModel.state.value.storageUsageBytes)
+    }
+
+    @Test
+    fun `given platform hides filesystem residue, expected settings storage summary is empty`() = runTest {
+        platformActions.visibleStorageThresholdBytes = 1024L
+        platformActions.appCacheBytes = 64L
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        assertEquals(0L, viewModel.state.value.storageUsageBytes)
+        assertEquals(64L, platformActions.appCacheBytes)
     }
 
     @Test
@@ -134,6 +204,17 @@ class SettingsViewModelTest {
     }
 
     @Test
+    fun `given usage navigation intents, expected router opens standalone usage routes`() = runTest {
+        val viewModel = createViewModel()
+
+        viewModel.processIntent(SettingsIntent.NavigateStorageUsage)
+        viewModel.processIntent(SettingsIntent.NavigateNetworkUsage)
+
+        assertEquals(true, router.storageUsageOpened)
+        assertEquals(true, router.networkUsageOpened)
+    }
+
+    @Test
     fun `given language selected, expected preference updated and modal closed`() = runTest {
         val viewModel = createViewModel()
 
@@ -158,6 +239,13 @@ class SettingsViewModelTest {
             observeStabilityAiCreditsUseCase = observeStabilityAiCreditsUseCase,
             selectStableDiffusionModelUseCase = selectStableDiffusionModelUseCase,
             clearAppCacheUseCase = clearAppCacheUseCase,
+            getAllGalleryUseCase = getAllGalleryUseCase,
+            getLocalOnnxModelsUseCase = getLocalOnnxModelsUseCase,
+            getLocalMediaPipeModelsUseCase = getLocalMediaPipeModelsUseCase,
+            getLocalSdxlModelsUseCase = getLocalSdxlModelsUseCase,
+            getLocalCoreMlModelsUseCase = getLocalCoreMlModelsUseCase,
+            observeNetworkUsageUseCase = observeNetworkUsageUseCase,
+            storageUsageObserver = storageUsageObserver,
             preferenceManager = preferenceManager,
             debugMenuAccessor = DebugMenuAccessor(preferenceManager),
             buildInfoProvider = TestBuildInfoProvider,
@@ -167,7 +255,6 @@ class SettingsViewModelTest {
         )
     }
 }
-
 private object TestBuildInfoProvider : BuildInfoProvider {
     override val isDebug: Boolean = true
     override val buildNumber: Int = 5598
@@ -179,16 +266,28 @@ private object TestBuildInfoProvider : BuildInfoProvider {
 
 private class TestSettingsRouter : SettingsRouter {
     var serverSetupSource: LaunchSource? = null
+    var storageUsageOpened = false
+    var networkUsageOpened = false
 
     override fun openDrawer() = Unit
 
     override fun closeDrawer() = Unit
+
+    override fun navigateBack() = Unit
 
     override fun navigateToServerSetup(source: LaunchSource) {
         serverSetupSource = source
     }
 
     override fun navigateToBenchmark() = Unit
+
+    override fun navigateToStorageUsage() {
+        storageUsageOpened = true
+    }
+
+    override fun navigateToNetworkUsage() {
+        networkUsageOpened = true
+    }
 
     override fun navigateToDebugMenu() = Unit
 
@@ -201,6 +300,8 @@ private class TestSettingsPlatformActions : SettingsPlatformActions {
     var requiresStoragePermissionForMediaStoreOverride = false
     var storagePermissionGranted = true
     var notificationPermissionGranted = true
+    var appCacheBytes = 0L
+    var visibleStorageThresholdBytes = 0L
     val openedUrls = mutableListOf<String>()
 
     override val requiresStoragePermissionForMediaStore: Boolean
@@ -211,6 +312,21 @@ private class TestSettingsPlatformActions : SettingsPlatformActions {
     override suspend fun requestStoragePermission(): Boolean = storagePermissionGranted
 
     override suspend fun requestNotificationPermission(): Boolean = notificationPermissionGranted
+
+    override fun mapStorageBytesForUi(bytes: Long): Long {
+        val safeBytes = bytes.coerceAtLeast(0L)
+        return if (safeBytes < visibleStorageThresholdBytes) 0L else safeBytes
+    }
+
+    override suspend fun getAppCacheBytes(): Long = appCacheBytes
+
+    override suspend fun clearAppCache() {
+        appCacheBytes = 0L
+    }
+
+    override suspend fun getAllDownloadedModelsBytes(): Long = 0L
+
+    override suspend fun getDownloadedModelsBytes(modelIds: List<String>): Long = 0L
 
     override fun openUrl(url: String) {
         openedUrls += url

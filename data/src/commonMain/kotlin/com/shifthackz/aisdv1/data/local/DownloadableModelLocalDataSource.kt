@@ -8,15 +8,18 @@ import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
-import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 
 /**
- * Coordinates `DownloadableModelLocalDataSource` behavior in the SDAI data layer.
+ * Reads local model metadata and combines it with filesystem download state.
  *
- * @throws IllegalStateException when the delegated operation cannot complete.
+ * @param dao Room DAO that stores local model metadata.
+ * @param preferenceManager Preferences source for currently selected local model ids.
+ * @param buildInfoProvider Build metadata used to filter custom model placeholders.
+ * @param fileStore Platform file store that resolves whether model files are downloaded.
+ * @throws IllegalStateException when delegated local model IO cannot complete.
+ *
  * @author Dmitriy Moroz
  */
 internal class DownloadableModelLocalDataSource(
@@ -175,14 +178,13 @@ internal class DownloadableModelLocalDataSource(
      */
     override fun observeAllOnnx(): Flow<List<LocalAiModel>> = dao
         .observeByType(LocalAiModel.Type.ONNX.key)
-        .map(List<LocalModelEntity>::mapEntityToDomain)
-        .map { models ->
+        .combine(preferenceManager.observe()) { entities, _ ->
             buildList {
-                addAll(models)
+                addAll(entities.mapEntityToDomain())
                 if (buildInfoProvider.type != BuildType.PLAY) add(LocalAiModel.CustomOnnx)
             }
+                .withLocalData()
         }
-        .map { models -> models.withLocalData() }
 
     /**
      * Loads SDAI data through `observeAllSdxl`.

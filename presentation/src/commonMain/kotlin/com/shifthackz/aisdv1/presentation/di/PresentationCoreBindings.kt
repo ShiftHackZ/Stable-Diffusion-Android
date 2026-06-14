@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.presentation.navigation.router.GalleryDetailRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.GalleryRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ImageToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.LoggerRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.NetworkUsageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpConfigurationLoaderRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpBenchmarkRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpDebugMenuRouter
@@ -27,11 +28,13 @@ import com.shifthackz.aisdv1.presentation.navigation.router.NoOpGalleryDetailRou
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpGalleryRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpImageToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpLoggerRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.NoOpNetworkUsageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpOnBoardingRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpReportRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpServerSetupRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpSettingsRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpSplashRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.NoOpStorageUsageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpTextToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.NoOpWebUiRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.OnBoardingRouter
@@ -39,6 +42,7 @@ import com.shifthackz.aisdv1.presentation.navigation.router.ReportRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ServerSetupRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.SettingsRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.SplashRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.StorageUsageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.TextToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.WebUiRouter
 import com.shifthackz.aisdv1.presentation.screen.benchmark.BenchmarkPlatformActions
@@ -70,6 +74,16 @@ import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkImageLoader
 import com.shifthackz.aisdv1.presentation.widget.work.NoOpBackgroundWorkImageLoader
 import org.koin.core.module.Module
 
+/**
+ * Registers presentation-layer singleton services and default no-op router bindings.
+ *
+ * Feature screens replace these no-op routers from the app shell, while tests and previews can use
+ * the same module without requiring a full navigation host.
+ *
+ * @receiver Koin module receiving presentation-level service and router bindings.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun Module.registerPresentationCoreBindings() {
     single<LinksProvider> { DefaultLinksProvider }
     single<BuildInfoProvider> { createPlatformBuildInfoProvider() }
@@ -91,6 +105,8 @@ internal fun Module.registerPresentationCoreBindings() {
     single<BenchmarkPlatformActions> { createDefaultBenchmarkPlatformActions() }
     single<ServerSetupRouter> { NoOpServerSetupRouter }
     single<SettingsRouter> { NoOpSettingsRouter }
+    single<StorageUsageRouter> { NoOpStorageUsageRouter }
+    single<NetworkUsageRouter> { NoOpNetworkUsageRouter }
     single<WebUiRouter> { NoOpWebUiRouter }
     single<LogReader> { NoOpLogReader }
     single<LoggerPlatformActions> { NoOpLoggerPlatformActions }

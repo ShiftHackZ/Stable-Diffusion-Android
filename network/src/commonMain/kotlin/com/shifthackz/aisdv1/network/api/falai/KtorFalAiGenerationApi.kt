@@ -1,25 +1,30 @@
 package com.shifthackz.aisdv1.network.api.falai
 
 import com.shifthackz.aisdv1.network.client.createConfiguredHttpClient
+import com.shifthackz.aisdv1.network.client.NetworkUsageCategory
+import com.shifthackz.aisdv1.network.client.setTrackedJsonBody
+import com.shifthackz.aisdv1.network.client.trackUsage
+import com.shifthackz.aisdv1.network.client.trackedByteArrayBody
+import com.shifthackz.aisdv1.network.client.trackedJsonBody
 import com.shifthackz.aisdv1.network.request.FalAiImageToImageRequest
 import com.shifthackz.aisdv1.network.request.FalAiTextToImageRequest
 import com.shifthackz.aisdv1.network.response.FalAiGenerationResponse
 import com.shifthackz.aisdv1.network.response.FalAiQueueStatusResponse
 import com.shifthackz.aisdv1.network.response.FalAiQueueSubmitResponse
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
-import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 
 /**
- * Coordinates `KtorFalAiGenerationApi` behavior in the SDAI network layer.
+ * Ktor implementation of Fal AI generation and queue polling with traffic accounting.
+ *
+ * @param httpClient Configured Ktor client used to send provider requests.
+ * @param apiBaseUrl Base API URL for validation and model submission endpoints.
+ * @param queueBaseUrl Base queue URL for polling and result endpoints.
  *
  * @author Dmitriy Moroz
  */
@@ -91,10 +96,9 @@ class KtorFalAiGenerationApi(
         .post {
             url.takeFrom("$queueBaseUrl/$model")
             header(HttpHeaders.Authorization, apiKey.headerValue)
-            contentType(ContentType.Application.Json)
-            setBody(request)
+            setTrackedJsonBody(NetworkUsageCategory.INFERENCE, request)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.INFERENCE)
 
     /**
      * Executes the `submitImageToImage` step in the SDAI network layer.
@@ -113,10 +117,9 @@ class KtorFalAiGenerationApi(
         .post {
             url.takeFrom("$queueBaseUrl/$model")
             header(HttpHeaders.Authorization, apiKey.headerValue)
-            contentType(ContentType.Application.Json)
-            setBody(request)
+            setTrackedJsonBody(NetworkUsageCategory.INFERENCE, request)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.INFERENCE)
 
     /**
      * Executes the `getQueueStatus` step in the SDAI network layer.
@@ -132,9 +135,10 @@ class KtorFalAiGenerationApi(
     ): FalAiQueueStatusResponse = httpClient
         .get {
             url.takeFrom(statusUrl)
+            trackUsage(NetworkUsageCategory.INFERENCE)
             header(HttpHeaders.Authorization, apiKey.headerValue)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.INFERENCE)
 
     /**
      * Executes the `getQueueResult` step in the SDAI network layer.
@@ -150,9 +154,10 @@ class KtorFalAiGenerationApi(
     ): FalAiGenerationResponse = httpClient
         .get {
             url.takeFrom(responseUrl)
+            trackUsage(NetworkUsageCategory.INFERENCE)
             header(HttpHeaders.Authorization, apiKey.headerValue)
         }
-        .body()
+        .trackedJsonBody(NetworkUsageCategory.INFERENCE)
 
     /**
      * Executes the `downloadImage` step in the SDAI network layer.
@@ -162,8 +167,11 @@ class KtorFalAiGenerationApi(
      * @author Dmitriy Moroz
      */
     override suspend fun downloadImage(url: String): ByteArray = httpClient
-        .get(url)
-        .body()
+        .get {
+            this.url.takeFrom(url)
+            trackUsage(NetworkUsageCategory.INFERENCE)
+        }
+        .trackedByteArrayBody(NetworkUsageCategory.INFERENCE)
 
     private val String.headerValue: String
         get() = "Key $this"

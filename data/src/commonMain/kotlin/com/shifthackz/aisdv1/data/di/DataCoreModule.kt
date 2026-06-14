@@ -54,6 +54,7 @@ import com.shifthackz.aisdv1.data.repository.HordeGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HuggingFaceGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HuggingFaceModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.LorasRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.NetworkUsageRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.OpenAiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.RandomImageRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.RemoteStabilityAiEnginesRepository
@@ -116,6 +117,7 @@ import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceModelsRepository
 import com.shifthackz.aisdv1.domain.repository.LorasRepository
+import com.shifthackz.aisdv1.domain.repository.NetworkUsageRepository
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.RandomImageRepository
 import com.shifthackz.aisdv1.domain.repository.ReportRepository
@@ -138,7 +140,10 @@ import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 /**
- * Exposes the `coreDataModule` value used by the SDAI data layer.
+ * Data-layer Koin module that wires repositories, network gateways, and persistent data sources.
+ *
+ * This module binds [NetworkUsageRepositoryImpl] so low-level traffic counters are backed by Room
+ * instead of volatile preferences or lifecycle refreshes.
  *
  * @author Dmitriy Moroz
  */
@@ -202,6 +207,9 @@ val coreDataModule = module {
     }
     single<SupportersDataSource.Local> {
         SupportersLocalDataSource(dao = get())
+    }
+    single<NetworkUsageRepository> {
+        NetworkUsageRepositoryImpl(dao = get())
     }
     single<DownloadableModelDataSource.Remote> {
         DownloadableModelRemoteDataSource(api = get(), fileDownloader = get())

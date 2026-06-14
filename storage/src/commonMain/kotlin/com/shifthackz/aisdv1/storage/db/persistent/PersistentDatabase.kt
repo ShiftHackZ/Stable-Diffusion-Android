@@ -14,15 +14,20 @@ import com.shifthackz.aisdv1.storage.db.persistent.contract.LocalModelContract
 import com.shifthackz.aisdv1.storage.db.persistent.dao.GenerationResultDao
 import com.shifthackz.aisdv1.storage.db.persistent.dao.HuggingFaceModelDao
 import com.shifthackz.aisdv1.storage.db.persistent.dao.LocalModelDao
+import com.shifthackz.aisdv1.storage.db.persistent.dao.NetworkUsageDao
 import com.shifthackz.aisdv1.storage.db.persistent.dao.SupporterDao
 import com.shifthackz.aisdv1.storage.db.persistent.entity.BenchmarkResultEntity
 import com.shifthackz.aisdv1.storage.db.persistent.entity.GenerationResultEntity
 import com.shifthackz.aisdv1.storage.db.persistent.entity.HuggingFaceModelEntity
 import com.shifthackz.aisdv1.storage.db.persistent.entity.LocalModelEntity
+import com.shifthackz.aisdv1.storage.db.persistent.entity.NetworkUsageEntity
 import com.shifthackz.aisdv1.storage.db.persistent.entity.SupporterEntity
 
 /**
- * Coordinates `PersistentDatabase` behavior in the SDAI storage layer.
+ * Main Room database containing generated images, downloaded models, and app statistics.
+ *
+ * Schema version 12 adds [NetworkUsageEntity] so traffic counters survive process restarts and can
+ * be observed by the standalone network usage screen.
  *
  * @author Dmitriy Moroz
  */
@@ -35,6 +40,7 @@ import com.shifthackz.aisdv1.storage.db.persistent.entity.SupporterEntity
         HuggingFaceModelEntity::class,
         SupporterEntity::class,
         BenchmarkResultEntity::class,
+        NetworkUsageEntity::class,
     ],
     autoMigrations = [
         /**
@@ -42,49 +48,75 @@ import com.shifthackz.aisdv1.storage.db.persistent.entity.SupporterEntity
          * - [GenerationResultContract.SUB_SEED]
          * - [GenerationResultContract.SUB_SEED_STRENGTH]
          * - [GenerationResultContract.DENOISING_STRENGTH]
-         */
+          *
+          * @author Dmitriy Moroz
+          */
         AutoMigration(from = 1, to = 2),
         /**
          * Added [LocalModelEntity].
-         */
+          *
+          * @author Dmitriy Moroz
+          */
         AutoMigration(from = 2, to = 3),
         /**
          * Added [HuggingFaceModelEntity].
-         */
+          *
+          * @author Dmitriy Moroz
+          */
         AutoMigration(from = 3, to = 4),
         /**
          * Added [SupporterEntity].
-         */
+          *
+          * @author Dmitriy Moroz
+          */
         AutoMigration(from = 4, to = 5),
         /**
          * Added 1 field to [LocalModelEntity]:
          * - [LocalModelContract.TYPE]
-         */
+          *
+          * @author Dmitriy Moroz
+          */
         AutoMigration(from = 5, to = 6),
         /**
          * Added 1 field to [GenerationResultEntity]:
          * - [GenerationResultContract.HIDDEN]
-         */
+          *
+          * @author Dmitriy Moroz
+          */
         AutoMigration(from = 6, to = 7),
         /**
          * Added index for gallery queries:
          * - [GenerationResultContract.CREATED_AT_INDEX]
-         */
+          *
+          * @author Dmitriy Moroz
+          */
         AutoMigration(from = 7, to = 8),
         /**
          * Added 1 field to [GenerationResultEntity]:
          * - [GenerationResultContract.MODEL_NAME]
-         */
+          *
+          * @author Dmitriy Moroz
+          */
         AutoMigration(from = 8, to = 9),
         /**
          * Added 1 field to [GenerationResultEntity]:
          * - [GenerationResultContract.LIKED]
-         */
+          *
+          * @author Dmitriy Moroz
+          */
         AutoMigration(from = 9, to = 10),
         /**
          * Added [BenchmarkResultEntity].
-         */
+          *
+          * @author Dmitriy Moroz
+          */
         AutoMigration(from = 10, to = 11),
+        /**
+         * Added [NetworkUsageEntity].
+          *
+          * @author Dmitriy Moroz
+          */
+        AutoMigration(from = 11, to = 12),
     ],
 )
 @TypeConverters(
@@ -127,6 +159,12 @@ internal abstract class PersistentDatabase : RoomDatabase() {
      * @author Dmitriy Moroz
      */
     abstract fun benchmarkResultDao(): BenchmarkResultDao
+    /**
+     * Returns the DAO used to persist and observe network traffic counters.
+     *
+     * @author Dmitriy Moroz
+     */
+    abstract fun networkUsageDao(): NetworkUsageDao
 
     /**
      * Provides the `companion object` singleton used by the SDAI storage layer.
@@ -145,7 +183,7 @@ internal abstract class PersistentDatabase : RoomDatabase() {
          *
          * @author Dmitriy Moroz
          */
-        const val DB_VERSION = 11
+        const val DB_VERSION = 12
     }
 }
 

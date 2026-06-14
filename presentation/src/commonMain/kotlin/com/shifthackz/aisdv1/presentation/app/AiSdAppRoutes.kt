@@ -28,6 +28,7 @@ import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderScree
 import com.shifthackz.aisdv1.presentation.screen.loader.ConfigurationLoaderViewModel
 import com.shifthackz.aisdv1.presentation.screen.loader.toContentState
 import com.shifthackz.aisdv1.presentation.screen.logger.LoggerScreen
+import com.shifthackz.aisdv1.presentation.screen.networkusage.NetworkUsageScreen
 import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingContent
 import com.shifthackz.aisdv1.presentation.screen.onboarding.OnBoardingViewModel
 import com.shifthackz.aisdv1.presentation.screen.report.ReportScreen
@@ -36,6 +37,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupConten
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupViewModel
 import com.shifthackz.aisdv1.presentation.screen.setup.platform.rememberServerSetupEffectHandler
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashScreenContent
+import com.shifthackz.aisdv1.presentation.screen.storageusage.StorageUsageScreen
 import com.shifthackz.aisdv1.presentation.screen.splash.SplashViewModel
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageContent
 import com.shifthackz.aisdv1.presentation.screen.txt2img.TextToImageViewModel
@@ -44,7 +46,23 @@ import com.shifthackz.aisdv1.presentation.screen.web.webui.WebUiScreen
 import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
 
-
+/**
+ * Hosts the persistent bottom-tab routes inside the app scaffold.
+ *
+ * Standalone overlay routes such as storage usage and network usage are deliberately excluded so
+ * they can render without the bottom bar.
+ *
+ * @param languageCode Active localization code used by rendered home tabs.
+ * @param activeRoute Route currently visible in the home scaffold.
+ * @param renderedRoutes Home routes already created and kept alive.
+ * @param router Root router shared by home tabs.
+ * @param buildInfoProvider Build metadata consumed by scaffold-level UI.
+ * @param preferenceManager Preferences source consumed by scaffold-level UI.
+ * @param textToImageViewModel Shared Text-to-Image ViewModel kept alive with its tab.
+ * @param imageToImageViewModel Shared Image-to-Image ViewModel kept alive with its tab.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun HomeRoutesScaffold(
     languageCode: String,
@@ -116,6 +134,16 @@ internal fun HomeRoutesScaffold(
     }
 }
 
+/**
+ * Keeps previously rendered home tabs alive while hiding inactive tabs at zero size.
+ *
+ * @param route Home route represented by this slot.
+ * @param activeRoute Currently visible home route.
+ * @param renderedRoutes Home routes already instantiated by the root route host.
+ * @param content Tab content that receives the slot modifier.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun HomeRouteSlot(
     route: AppRoute,
@@ -136,6 +164,18 @@ internal fun HomeRouteSlot(
     }
 }
 
+/**
+ * Renders routes that sit above the home scaffold and own their full-screen layout.
+ *
+ * @param languageCode Active localization code used by standalone route content.
+ * @param route Route currently requested by the root router.
+ * @param koin Presentation Koin instance used to resolve route dependencies.
+ * @param router Root router passed to overlay screens.
+ * @param urlLauncher Platform external URL launcher used by web/report flows.
+ * @param imageToImageViewModel Shared Image-to-Image ViewModel reused by in-paint overlay flow.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun OverlayRouteContent(
     languageCode: String,
@@ -152,6 +192,20 @@ internal fun OverlayRouteContent(
         AppRoute.Gallery,
         AppRoute.Settings,
         -> Unit
+
+        AppRoute.StorageUsage -> {
+            StorageUsageScreen(
+                modifier = Modifier.fillMaxSize(),
+                router = router,
+            )
+        }
+
+        AppRoute.NetworkUsage -> {
+            NetworkUsageScreen(
+                modifier = Modifier.fillMaxSize(),
+                router = router,
+            )
+        }
 
         AppRoute.Splash -> {
             val splashViewModel = remember(koin, router) {
@@ -288,6 +342,11 @@ internal fun OverlayRouteContent(
     }
 }
 
+/**
+ * Maps a route back to the home tab that should stay selected underneath it.
+ *
+ * @author Dmitriy Moroz
+ */
 internal fun AppRoute.asHomeTabRoute(): AppRoute? = when (this) {
     AppRoute.Home,
     AppRoute.TextToImage,
@@ -299,6 +358,8 @@ internal fun AppRoute.asHomeTabRoute(): AppRoute? = when (this) {
 
     AppRoute.ImageInPaint,
     AppRoute.Benchmark,
+    AppRoute.StorageUsage,
+    AppRoute.NetworkUsage,
     AppRoute.Splash,
     is AppRoute.OnBoarding,
     is AppRoute.Setup,

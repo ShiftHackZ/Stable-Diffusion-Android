@@ -14,6 +14,32 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
  * currently visible modal. Derived `show...` properties keep section visibility
  * rules close to the state they depend on.
  *
+ * @param loading True while Settings should show placeholder rows.
+ * @param onBoardingDemo Whether demo onboarding mode hides provider configuration actions.
+ * @param screenModal Modal currently shown above Settings.
+ * @param serverSource Current generation provider.
+ * @param sdModels Provider model names shown in the Settings picker.
+ * @param sdModelSelected Current provider model selection.
+ * @param stabilityAiCredits Current Stability AI balance shown in Settings.
+ * @param localUseNNAPI Whether ONNX local diffusion should use NNAPI acceleration.
+ * @param backgroundGenerationAvailable Whether background generation is supported by this target.
+ * @param backgroundGeneration Whether background generation is currently enabled.
+ * @param monitorConnectivity Whether server connectivity monitoring is enabled.
+ * @param autoSaveAiResults Whether generated images should be saved automatically.
+ * @param saveToMediaStore Whether generated images should be saved to the public gallery.
+ * @param formAdvancedOptionsAlwaysShow Whether advanced generation options are always expanded.
+ * @param formPromptTaggedInput Whether tagged prompt input mode is enabled.
+ * @param useSystemColorPalette Whether system dynamic colors should be used.
+ * @param useSystemDarkTheme Whether system dark theme should drive app theme.
+ * @param darkTheme Whether dark theme is currently enabled.
+ * @param colorToken Selected static color palette token.
+ * @param darkThemeToken Selected dark theme palette token.
+ * @param galleryGrid Selected gallery grid density.
+ * @param developerMode Whether developer-only Settings rows are visible.
+ * @param appVersion Version string shown in Settings.
+ * @param storageUsageBytes Current total storage bytes shown in the Settings summary row.
+ * @param networkUsageBytes Current total network bytes shown in the Settings summary row.
+ *
  * @author Dmitriy Moroz
  */
 @Immutable
@@ -41,6 +67,8 @@ data class SettingsState(
     val galleryGrid: Grid = Grid.Fixed2,
     val developerMode: Boolean = false,
     val appVersion: String = "",
+    val storageUsageBytes: Long = 0L,
+    val networkUsageBytes: Long = 0L,
 ) : MviState {
 
     val showStabilityAiCredits: Boolean

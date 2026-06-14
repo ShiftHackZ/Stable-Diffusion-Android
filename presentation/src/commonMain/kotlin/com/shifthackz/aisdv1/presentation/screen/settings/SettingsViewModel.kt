@@ -9,11 +9,18 @@ import com.shifthackz.aisdv1.core.mvi.BaseMviViewModel
 import com.shifthackz.aisdv1.core.mvi.EmptyEffect
 import com.shifthackz.aisdv1.domain.entity.ColorToken
 import com.shifthackz.aisdv1.domain.entity.DarkThemeToken
+import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalSdxlModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.gallery.GetAllGalleryUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.GetStableDiffusionModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.sdmodel.SelectStableDiffusionModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ObserveNetworkUsageUseCase
 import com.shifthackz.aisdv1.domain.usecase.stabilityai.ObserveStabilityAiCreditsUseCase
 import com.shifthackz.aisdv1.presentation.modal.language.applyAppLanguage
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
@@ -24,6 +31,10 @@ import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsIntent
 import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsModal
 import com.shifthackz.aisdv1.presentation.screen.settings.model.SettingsState
 import com.shifthackz.aisdv1.presentation.screen.settings.platform.SettingsPlatformActions
+import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.setupAllowedModes
+import com.shifthackz.aisdv1.presentation.screen.storageusage.StorageUsageObserver
+import com.shifthackz.aisdv1.presentation.model.shouldUseCoreMlModelStoreFallback
+import com.shifthackz.aisdv1.presentation.model.storageTextByteSize
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -34,6 +45,34 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeout
 
+/**
+ * ViewModel for the Settings tab.
+ *
+ * It owns the lightweight settings summaries, including observed storage and network usage byte
+ * totals, and delegates detailed cleanup/statistics flows to standalone usage screens.
+ *
+ * @param dispatchersProvider App coroutine dispatchers used by the MVI base class and IO work.
+ * @param getStableDiffusionModelsUseCase Reads provider model names for the Settings picker.
+ * @param observeStabilityAiCreditsUseCase Observes Stability AI credits for Settings summary rows.
+ * @param selectStableDiffusionModelUseCase Persists the selected remote model.
+ * @param clearAppCacheUseCase Legacy cache use case retained for existing Settings flows.
+ * @param getAllGalleryUseCase Reads generated gallery records for storage summaries.
+ * @param getLocalOnnxModelsUseCase Reads locally configured ONNX models.
+ * @param getLocalMediaPipeModelsUseCase Reads locally configured MediaPipe models.
+ * @param getLocalSdxlModelsUseCase Reads locally configured SDXL models.
+ * @param getLocalCoreMlModelsUseCase Reads locally configured Core ML models on supported builds.
+ * @param observeNetworkUsageUseCase Live Room-backed network usage stream.
+ * @param storageUsageObserver Shared invalidation stream for non-Room storage usage.
+ * @param preferenceManager Preferences source observed for provider/model refreshes.
+ * @param debugMenuAccessor Debug menu availability gate.
+ * @param buildInfoProvider Build metadata used to filter platform-supported settings.
+ * @param linksProvider External links shown from Settings.
+ * @param router Settings navigation contract.
+ * @param platformActions Platform permission and settings bridge.
+ * @param onError Error callback forwarded to the app-level error handling pipeline.
+ *
+ * @author Dmitriy Moroz
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModel(
     dispatchersProvider: DispatchersProvider,
@@ -41,6 +80,13 @@ class SettingsViewModel(
     observeStabilityAiCreditsUseCase: ObserveStabilityAiCreditsUseCase,
     private val selectStableDiffusionModelUseCase: SelectStableDiffusionModelUseCase,
     private val clearAppCacheUseCase: ClearAppCacheUseCase,
+    private val getAllGalleryUseCase: GetAllGalleryUseCase,
+    private val getLocalOnnxModelsUseCase: GetLocalOnnxModelsUseCase,
+    private val getLocalMediaPipeModelsUseCase: GetLocalMediaPipeModelsUseCase,
+    private val getLocalSdxlModelsUseCase: GetLocalSdxlModelsUseCase,
+    private val getLocalCoreMlModelsUseCase: GetLocalCoreMlModelsUseCase,
+    private val observeNetworkUsageUseCase: ObserveNetworkUsageUseCase,
+    private val storageUsageObserver: StorageUsageObserver,
     private val preferenceManager: PreferenceManager,
     private val debugMenuAccessor: DebugMenuAccessor,
     private val buildInfoProvider: BuildInfoProvider,
@@ -135,6 +181,8 @@ class SettingsViewModel(
                     }
                 }
         }
+        observeStorageUsageState()
+        observeNetworkUsageState()
     }
 
     override fun processIntent(intent: SettingsIntent) {
@@ -160,6 +208,10 @@ class SettingsViewModel(
             )
 
             SettingsIntent.NavigateBenchmark -> router.navigateToBenchmark()
+
+            SettingsIntent.NavigateStorageUsage -> router.navigateToStorageUsage()
+
+            SettingsIntent.NavigateNetworkUsage -> router.navigateToNetworkUsage()
 
             SettingsIntent.NavigateDeveloperMode -> router.navigateToDebugMenu()
 
@@ -302,10 +354,108 @@ class SettingsViewModel(
         updateState { it.copy(screenModal = SettingsModal.Communicating) }
         launch(ioDispatcher) {
             runCatching { clearAppCacheUseCase() }
+                .onSuccess { storageUsageObserver.notifyChanged() }
                 .onFailure(onError)
             processIntent(SettingsIntent.DismissDialog)
         }
     }
+
+    private fun observeStorageUsageState() {
+        launch(ioDispatcher) {
+            storageUsageObserver.observe()
+                .map {
+                    runCatching { loadStorageUsageBytes() }
+                        .onFailure(onError)
+                        .getOrDefault(currentState.storageUsageBytes)
+                }
+                .distinctUntilChanged()
+                .collect { storageUsageBytes ->
+                    updateState { state ->
+                        state.copy(storageUsageBytes = storageUsageBytes)
+                    }
+                }
+        }
+    }
+
+    private fun observeNetworkUsageState() {
+        launch(ioDispatcher) {
+            observeNetworkUsageUseCase()
+                .catch { t ->
+                    onError(t)
+                }
+                .collect { usage ->
+                    updateState { state ->
+                        state.copy(networkUsageBytes = usage.totalBytes)
+                    }
+                }
+        }
+    }
+
+    private suspend fun loadStorageUsageBytes(): Long {
+        val onnxModels = getDownloadedModels(getLocalOnnxModelsUseCase::invoke)
+        val mediaPipeModels = getDownloadedModels(getLocalMediaPipeModelsUseCase::invoke)
+        val sdxlModels = getDownloadedModels(getLocalSdxlModelsUseCase::invoke)
+        val coreMlModels = getDownloadedModels(getLocalCoreMlModelsUseCase::invoke)
+        val coreMlModelIds = coreMlModels.map(LocalAiModel::id)
+        val allowedModes = buildInfoProvider.setupAllowedModes()
+        val galleryBytes = getAllGalleryUseCase().sumOf { item ->
+            item.image.storageTextByteSize() + item.inputImage.storageTextByteSize()
+        }
+        var modelBytes = 0L
+        if (ServerSource.LOCAL_MICROSOFT_ONNX in allowedModes) {
+            modelBytes += platformActions.mapStorageBytesForUi(
+                platformActions.getDownloadedModelsBytes(onnxModels.map(LocalAiModel::id)),
+            )
+        }
+        if (ServerSource.LOCAL_GOOGLE_MEDIA_PIPE in allowedModes) {
+            modelBytes += platformActions.mapStorageBytesForUi(
+                platformActions.getDownloadedModelsBytes(mediaPipeModels.map(LocalAiModel::id)),
+            )
+        }
+        if (ServerSource.LOCAL_STABLE_DIFFUSION_CPP in allowedModes) {
+            modelBytes += platformActions.mapStorageBytesForUi(
+                platformActions.getDownloadedModelsBytes(sdxlModels.map(LocalAiModel::id)),
+            )
+        }
+        if (ServerSource.LOCAL_APPLE_CORE_ML in allowedModes) {
+            modelBytes += platformActions.mapStorageBytesForUi(
+                getCoreMlModelBytes(
+                    allowedModes = allowedModes,
+                    modelIds = coreMlModelIds,
+                ),
+            )
+        }
+        val cacheBytes = platformActions.mapStorageBytesForUi(platformActions.getAppCacheBytes())
+        return cacheBytes + galleryBytes + modelBytes
+    }
+
+    /**
+     * Reads Core ML model bytes from the entire platform model store on iOS-style targets.
+     *
+     * @param allowedModes Providers available on the current platform.
+     * @param modelIds Catalog model identifiers known to the app.
+     * @return Filesystem byte count included in the Settings storage summary.
+     * @author Dmitriy Moroz
+     */
+    private suspend fun getCoreMlModelBytes(
+        allowedModes: List<ServerSource>,
+        modelIds: List<String>,
+    ): Long =
+        if (allowedModes.shouldUseCoreMlModelStoreFallback()) {
+            platformActions.getAllDownloadedModelsBytes()
+        } else {
+            platformActions.getDownloadedModelsBytes(modelIds)
+        }
+
+    private suspend fun getDownloadedModels(
+        getModels: suspend () -> List<LocalAiModel>,
+    ): List<LocalAiModel> = runCatching { getModels() }
+        .onFailure(onError)
+        .getOrDefault(emptyList())
+        .filter { model ->
+            model.downloaded &&
+                model.id !in customModelIds
+        }
 
     private fun changeSaveToMediaStoreSetting(value: Boolean) {
         if (!value) {
@@ -369,9 +519,31 @@ class SettingsViewModel(
     }
 }
 
+/**
+ * Minimal key that triggers remote model list refreshes when provider-relevant settings change.
+ *
+ * @param source Current generation provider.
+ * @param serverUrl Provider URL whose changes require a model-list refresh.
+ * @param demoMode Whether demo mode is active and remote refreshes should be skipped.
+ * @param sdModel Currently selected model name used to keep list state stable.
+ *
+ * @author Dmitriy Moroz
+ */
 private data class SdModelsRefreshKey(
     val source: com.shifthackz.aisdv1.domain.entity.ServerSource,
     val serverUrl: String,
     val demoMode: Boolean,
     val sdModel: String,
+)
+
+/**
+ * Custom local model placeholders are user-managed paths and must not count as downloaded files.
+ *
+ * @author Dmitriy Moroz
+ */
+private val customModelIds = setOf(
+    LocalAiModel.CustomOnnx.id,
+    LocalAiModel.CustomMediaPipe.id,
+    LocalAiModel.CustomSdxl.id,
+    LocalAiModel.CustomCoreMl.id,
 )

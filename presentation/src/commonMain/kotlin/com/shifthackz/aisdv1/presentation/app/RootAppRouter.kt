@@ -11,11 +11,13 @@ import com.shifthackz.aisdv1.presentation.navigation.router.HistoryRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.HomeRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ImageToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.LoggerRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.NetworkUsageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.OnBoardingRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ReportRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.ServerSetupRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.SettingsRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.SplashRouter
+import com.shifthackz.aisdv1.presentation.navigation.router.StorageUsageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.TextToImageRouter
 import com.shifthackz.aisdv1.presentation.navigation.router.WebUiRouter
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -96,6 +98,9 @@ sealed interface AppRoute {
      * @author Dmitriy Moroz
      */
     data object Settings : AppRoute
+    data object StorageUsage : AppRoute
+
+    data object NetworkUsage : AppRoute
     /**
      * Provides the `Benchmark` singleton used by the SDAI presentation layer.
      *
@@ -164,6 +169,8 @@ class RootAppRouter(
     ReportRouter,
     SettingsRouter,
     BenchmarkRouter,
+    StorageUsageRouter,
+    NetworkUsageRouter,
     WebUiRouter,
     OnBoardingRouter {
 
@@ -246,6 +253,14 @@ class RootAppRouter(
 
     override fun navigateToBenchmark() {
         navigateTo(AppRoute.Benchmark)
+    }
+
+    override fun navigateToStorageUsage() {
+        navigateTo(AppRoute.StorageUsage)
+    }
+
+    override fun navigateToNetworkUsage() {
+        navigateTo(AppRoute.NetworkUsage)
     }
 
     override fun navigateToHistory() {
@@ -358,6 +373,8 @@ fun AppRoute.isHomeRoute(): Boolean = when (this) {
     AppRoute.ImageInPaint,
     AppRoute.History,
     AppRoute.Benchmark,
+    AppRoute.StorageUsage,
+    AppRoute.NetworkUsage,
     is AppRoute.Report,
     AppRoute.Debug,
     AppRoute.Logger,
@@ -378,6 +395,8 @@ private fun AppRoute.canFallBackToTextToImage(): Boolean = when (this) {
     AppRoute.Settings,
     AppRoute.History,
     AppRoute.Benchmark,
+    AppRoute.StorageUsage,
+    AppRoute.NetworkUsage,
     is AppRoute.GalleryDetail,
     is AppRoute.Report,
     AppRoute.Debug,

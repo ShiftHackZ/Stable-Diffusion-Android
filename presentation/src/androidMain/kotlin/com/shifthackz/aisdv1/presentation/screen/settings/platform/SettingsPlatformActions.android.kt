@@ -15,8 +15,14 @@ import com.shifthackz.aisdv1.core.common.extensions.showToast
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.presentation.utils.PermissionUtil
 import com.shifthackz.aisdv1.presentation.utils.ReportProblemEmailComposer
+import java.io.File
 import kotlinx.coroutines.CompletableDeferred
 
+/**
+ * Creates Android-specific settings actions for permissions, links, logs, and usage summaries.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 actual fun rememberSettingsPlatformActions(): SettingsPlatformActions {
     val context = LocalContext.current
@@ -46,6 +52,17 @@ actual fun rememberSettingsPlatformActions(): SettingsPlatformActions {
     }
 }
 
+/**
+ * Android bridge used by Settings for permissions plus cache/model byte summaries.
+ *
+ * @param context Android context used for permissions, app-private storage, links, and toasts.
+ * @param launchStoragePermission Launcher for Android storage/media runtime permissions.
+ * @param launchNotificationPermission Launcher for Android notification runtime permission.
+ * @param storagePermissionResult Pending storage permission continuation.
+ * @param notificationPermissionResult Pending notification permission continuation.
+ *
+ * @author Dmitriy Moroz
+ */
 private class AndroidSettingsPlatformActions(
     private val context: Context,
     private val launchStoragePermission: (Array<String>) -> Unit,
@@ -102,6 +119,24 @@ private class AndroidSettingsPlatformActions(
         return result.await()
     }
 
+    override suspend fun getAppCacheBytes(): Long = context.cacheDir.directorySize()
+
+    override suspend fun clearAppCache() {
+        context.cacheDir.listFiles()?.forEach { file ->
+            runCatching { file.deleteRecursively() }
+        }
+    }
+
+    override suspend fun getAllDownloadedModelsBytes(): Long =
+        File(context.filesDir, LOCAL_MODEL_DIRECTORY).directorySize()
+
+    override suspend fun getDownloadedModelsBytes(modelIds: List<String>): Long {
+        val modelDir = File(context.filesDir, LOCAL_MODEL_DIRECTORY)
+        return modelIds
+            .distinct()
+            .sumOf { id -> File(modelDir, id).directorySize() }
+    }
+
     override fun openUrl(url: String) {
         context.openUrl(url)
     }
@@ -118,3 +153,21 @@ private class AndroidSettingsPlatformActions(
         context.openAppSettings()
     }
 }
+
+
+/**
+ * Recursively calculates file or directory byte size, returning zero for missing paths.
+ *
+ * @receiver File or directory inside app-private storage.
+ *
+ * @author Dmitriy Moroz
+ */
+private fun File.directorySize(): Long {
+    if (!exists()) return 0L
+    if (isFile) return length()
+    return listFiles()
+        ?.sumOf { child -> child.directorySize() }
+        ?: 0L
+}
+
+private const val LOCAL_MODEL_DIRECTORY = "model"

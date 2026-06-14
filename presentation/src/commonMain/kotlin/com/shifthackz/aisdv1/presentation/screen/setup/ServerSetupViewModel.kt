@@ -35,6 +35,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSwarmUiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.ServerSetupRouter
+import com.shifthackz.aisdv1.presentation.screen.storageusage.StorageUsageObserver
 import com.shifthackz.aisdv1.presentation.screen.setup.model.HORDE_DEFAULT_API_KEY
 import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupEffect
 import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupIntent
@@ -58,6 +59,40 @@ import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * Owns provider setup state, validation, local model downloads, and final connection side effects.
+ *
+ * @param launchSource Screen that opened setup, used to decide back navigation and completion route.
+ * @param dispatchersProvider App coroutine dispatchers used by setup work.
+ * @param buildInfoProvider Build metadata used to filter platform-supported local providers.
+ * @param getConfigurationUseCase Reads the current provider configuration.
+ * @param getLocalOnnxModelsUseCase Reads locally configured ONNX models.
+ * @param getLocalMediaPipeModelsUseCase Reads locally configured MediaPipe models.
+ * @param getLocalSdxlModelsUseCase Reads locally configured SDXL models.
+ * @param getLocalCoreMlModelsUseCase Reads locally configured Core ML models on supported builds.
+ * @param fetchHuggingFaceModelsUseCase Fetches Hugging Face model list for remote setup.
+ * @param urlValidator Validates provider URL input.
+ * @param stringValidator Validates text settings entered by the user.
+ * @param filePathValidator Validates local file path settings.
+ * @param connectToA1111UseCase Applies Automatic1111 configuration.
+ * @param connectToSwarmUiUseCase Applies SwarmUI configuration.
+ * @param connectToHordeUseCase Applies Horde configuration.
+ * @param connectToHuggingFaceUseCase Applies Hugging Face configuration.
+ * @param connectToLocalDiffusionUseCase Applies ONNX local diffusion configuration.
+ * @param connectToMediaPipeUseCase Applies MediaPipe local diffusion configuration.
+ * @param connectToSdxlUseCase Applies SDXL local diffusion configuration.
+ * @param connectToCoreMlUseCase Applies Core ML local diffusion configuration.
+ * @param connectToOpenAiUseCase Applies OpenAI configuration.
+ * @param connectToStabilityAiUseCase Applies Stability AI configuration.
+ * @param connectToFalAiUseCase Applies Fal AI configuration.
+ * @param downloadModelUseCase Downloads a selected local model.
+ * @param deleteModelUseCase Deletes a selected local model.
+ * @param downloadGuard Platform guard for model download prerequisites.
+ * @param storageUsageObserver Invalidates Settings storage summaries after model changes.
+ * @param linksProvider External links and demo mode URL used by setup.
+ * @param preferenceManager Persists setup preferences.
+ * @param router Setup navigation contract.
+ * @param onError Error callback forwarded to the app-level error handling pipeline.
+ *
+ * @author Dmitriy Moroz
  */
 class ServerSetupViewModel(
     private val launchSource: LaunchSource = LaunchSource.SPLASH,
@@ -86,6 +121,7 @@ class ServerSetupViewModel(
     private val downloadModelUseCase: DownloadModelUseCase,
     private val deleteModelUseCase: DeleteModelUseCase,
     private val downloadGuard: ServerSetupDownloadGuard,
+    private val storageUsageObserver: StorageUsageObserver,
     private val linksProvider: LinksProvider,
     private val preferenceManager: PreferenceManager,
     private val router: ServerSetupRouter,
@@ -359,6 +395,9 @@ class ServerSetupViewModel(
                             onDownloadFailure(localModel, t)
                         }
                         .collect { downloadState ->
+                            if (downloadState is DownloadState.Complete) {
+                                storageUsageObserver.notifyChanged()
+                            }
                             updateState { state ->
                                 state.withUpdatedLocalModel(
                                     localModel.copy(
@@ -392,6 +431,7 @@ class ServerSetupViewModel(
     private fun deleteLocalModel(id: String) {
         launch(dispatchersProvider.io) {
             runCatching { deleteModelUseCase(id) }
+                .onSuccess { storageUsageObserver.notifyChanged() }
                 .onFailure(onError)
         }
     }

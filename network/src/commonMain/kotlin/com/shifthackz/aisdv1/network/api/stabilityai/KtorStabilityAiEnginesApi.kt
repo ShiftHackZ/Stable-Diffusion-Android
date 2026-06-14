@@ -1,7 +1,10 @@
 package com.shifthackz.aisdv1.network.api.stabilityai
 
 import com.shifthackz.aisdv1.network.client.createConfiguredHttpClient
+import com.shifthackz.aisdv1.network.client.NetworkUsageCategory
 import com.shifthackz.aisdv1.network.client.defaultNetworkJson
+import com.shifthackz.aisdv1.network.client.trackUsage
+import com.shifthackz.aisdv1.network.client.trackedBodyAsText
 import com.shifthackz.aisdv1.network.model.StabilityAiEngineRaw
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -14,7 +17,11 @@ import io.ktor.http.takeFrom
 import kotlinx.serialization.json.Json
 
 /**
- * Coordinates `KtorStabilityAiEnginesApi` behavior in the SDAI network layer.
+ * Ktor implementation of Stability AI engine discovery counted as configuration sync traffic.
+ *
+ * @param httpClient Configured Ktor client used to send provider requests.
+ * @param baseUrl Stability AI API base URL.
+ * @param json JSON codec used for counted response payloads.
  *
  * @author Dmitriy Moroz
  */
@@ -40,7 +47,9 @@ class KtorStabilityAiEnginesApi(
 ) : StabilityAiEnginesApi {
 
     constructor(baseUrl: String) : this(
-        httpClient = createConfiguredHttpClient(installContentNegotiation = false),
+        httpClient = createConfiguredHttpClient(
+            installContentNegotiation = false,
+        ),
         baseUrl = baseUrl,
     )
 
@@ -48,10 +57,11 @@ class KtorStabilityAiEnginesApi(
         .get {
             url.takeFrom(baseUrl)
             url.appendPathSegments(PATH_API_VERSION, PATH_ENGINES, PATH_LIST)
+            trackUsage(NetworkUsageCategory.CONFIGS)
             header(HttpHeaders.Authorization, "Bearer $apiKey")
             header(HttpHeaders.Accept, ContentType.Application.Json.toString())
         }
-        .bodyAsText()
+        .trackedBodyAsText(NetworkUsageCategory.CONFIGS)
         .let { json.decodeFromString<List<StabilityAiEngineRaw>>(it) }
 
     private companion object {

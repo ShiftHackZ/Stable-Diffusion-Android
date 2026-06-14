@@ -27,6 +27,10 @@ sealed interface SettingsIntent : MviIntent {
      */
     data object NavigateBenchmark : SettingsIntent
 
+    data object NavigateStorageUsage : SettingsIntent
+
+    data object NavigateNetworkUsage : SettingsIntent
+
     /**
      * Opens the debug/developer screen after developer mode is unlocked.
      *

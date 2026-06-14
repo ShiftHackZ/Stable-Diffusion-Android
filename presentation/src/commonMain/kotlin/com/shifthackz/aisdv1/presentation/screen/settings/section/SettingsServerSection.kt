@@ -9,7 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountTree
 import androidx.compose.material.icons.filled.AutoFixNormal
 import androidx.compose.material.icons.filled.Circle
-import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.DataUsage
 import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.DynamicForm
 import androidx.compose.material.icons.filled.Folder
@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SettingsEthernet
 import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +38,18 @@ import com.shifthackz.aisdv1.presentation.widget.item.SettingsHeader
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
 import com.shifthackz.aisdv1.presentation.widget.source.BetaBadge
 
+/**
+ * Server and app settings section, including usage summary entries that open standalone screens.
+ *
+ * @param state Settings state that provides provider, usage summary, and loading values.
+ * @param headerModifier Modifier shared by Settings section headers.
+ * @param itemModifier Modifier shared by Settings rows.
+ * @param warningModifier Modifier used by the background-generation warning copy.
+ * @param backgroundGenerationWarningKey Localization key for the current warning copy.
+ * @param processIntent Intent sink used to route row actions back to SettingsViewModel.
+ *
+ * @author Dmitriy Moroz
+ */
 @Composable
 internal fun SettingsServerSection(
     state: SettingsState,
@@ -264,9 +277,52 @@ internal fun SettingsServerSection(
             SettingsItem(
                 modifier = itemModifier,
                 loading = state.loading,
-                startIcon = Icons.Default.DeleteForever,
-                text = text("settings_item_clear_cache"),
-                onClick = { processIntent(SettingsIntent.Action.ClearAppCache.Request) },
+                startIcon = Icons.Default.Storage,
+                text = text("settings_item_storage_usage"),
+                endValueText = state.storageUsageBytes
+                    .takeIf { it > 0L }
+                    ?.formatSettingsUsageBytes()
+                    .orEmpty()
+                    .asUiText(),
+                onClick = {
+                    processIntent(SettingsIntent.NavigateStorageUsage)
+                },
+            )
+            SettingsItem(
+                modifier = itemModifier,
+                loading = state.loading,
+                startIcon = Icons.Default.DataUsage,
+                text = text("settings_item_network_usage"),
+                endValueText = state.networkUsageBytes
+                    .takeIf { it > 0L }
+                    ?.formatSettingsUsageBytes()
+                    .orEmpty()
+                    .asUiText(),
+                onClick = {
+                    processIntent(SettingsIntent.NavigateNetworkUsage)
+                },
             )
         }
+}
+
+/**
+ * Compact byte formatter for Settings list row summaries.
+ *
+ * @receiver Raw byte count to render as a short Settings list value.
+ *
+ * @author Dmitriy Moroz
+ */
+private fun Long.formatSettingsUsageBytes(): String {
+    val units = listOf("B", "KB", "MB", "GB", "TB")
+    var unitIndex = 0
+    var display = toDouble()
+    while (display >= 1000.0 && unitIndex < units.lastIndex) {
+        display /= 1000.0
+        unitIndex++
+    }
+    return if (unitIndex == 0 || display >= 100.0) {
+        "${display.toLong()} ${units[unitIndex]}"
+    } else {
+        "${(display * 10.0).toInt() / 10.0} ${units[unitIndex]}"
+    }
 }
