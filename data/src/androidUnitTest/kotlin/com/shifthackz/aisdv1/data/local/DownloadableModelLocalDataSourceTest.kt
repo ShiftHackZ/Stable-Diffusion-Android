@@ -23,6 +23,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Verifies downloadable local model queries, selected model refreshes, and build-type filtering.
@@ -59,6 +60,10 @@ class DownloadableModelLocalDataSourceTest {
         } returns ""
 
         every {
+            stubPreferenceManager.localBonsaiModelId
+        } returns ""
+
+        every {
             stubPreferenceManager.localSdxlModelId
         } returns ""
 
@@ -76,7 +81,8 @@ class DownloadableModelLocalDataSourceTest {
                 match { model ->
                     model.id == LocalAiModel.CustomOnnx.id ||
                         model.id == LocalAiModel.CustomMediaPipe.id ||
-                        model.id == LocalAiModel.CustomSdxl.id
+                        model.id == LocalAiModel.CustomSdxl.id ||
+                        model.id == LocalAiModel.CustomBonsai.id
                 },
             )
         } returns true
@@ -191,6 +197,21 @@ class DownloadableModelLocalDataSourceTest {
         val actual = localDataSource.getAllSdxl()
 
         Assert.assertEquals(listOf(LocalAiModel.CustomSdxl.copy(downloaded = true)), actual)
+    }
+
+    @Test
+    fun `given attempt to get all bonsai models, dao returns empty list, app build type is FULL, expected custom model excluded`() = runTest {
+        coEvery {
+            stubDao.queryByType(LocalAiModel.Type.Bonsai.key)
+        } returns emptyList()
+
+        every {
+            stubBuildInfoProvider.type
+        } returns BuildType.FULL
+
+        val actual = localDataSource.getAllBonsai()
+
+        Assert.assertEquals(emptyList<LocalAiModel>(), actual)
     }
 
     @Test
@@ -331,6 +352,21 @@ class DownloadableModelLocalDataSourceTest {
     }
 
     @Test
+    fun `given attempt to observe all bonsai models, dao emits empty list, app build type is FULL, expected custom model excluded`() = runTest {
+        every {
+            stubDao.observeByType(LocalAiModel.Type.Bonsai.key)
+        } returns flowOf(emptyList())
+
+        every {
+            stubBuildInfoProvider.type
+        } returns BuildType.FULL
+
+        val actual = localDataSource.observeAllBonsai().toList()
+
+        Assert.assertEquals(listOf(emptyList<LocalAiModel>()), actual)
+    }
+
+    @Test
     fun `given attempt to observe all onnx models, preference changes, expected local state refreshed`() = runTest {
         val onnxModel = mockLocalModelEntity.mapEntityToDomain()
         var selectedModelId = ""
@@ -346,7 +382,7 @@ class DownloadableModelLocalDataSourceTest {
             stubPreferenceManager.observe()
         } returns flow {
             emit(Settings())
-            delay(1L)
+            delay(1L.milliseconds)
             selectedModelId = mockLocalModelEntity.id
             emit(Settings(languageCode = "refresh"))
         }
@@ -387,7 +423,7 @@ class DownloadableModelLocalDataSourceTest {
             stubPreferenceManager.observe()
         } returns flow {
             emit(Settings())
-            delay(1L)
+            delay(1L.milliseconds)
             selectedModelId = coreMlEntity.id
             emit(Settings(languageCode = "refresh"))
         }

@@ -70,6 +70,10 @@ class BackgroundWorkViewModel(
                         is BackgroundWorkResult.Success -> Localization.string("notification_finish_title")
                         else -> ""
                     }
+                    val resultSubTitle = (result as? BackgroundWorkResult.Error)
+                        ?.t
+                        ?.message
+                        .orEmpty()
                     (result as? BackgroundWorkResult.Success)
                         ?.ai
                         ?.firstOrNull()
@@ -81,7 +85,7 @@ class BackgroundWorkViewModel(
                             running = false,
                             dismissible = result !is BackgroundWorkResult.None,
                             title = resultTitle,
-                            subTitle = "",
+                            subTitle = resultSubTitle,
                             isError = result is BackgroundWorkResult.Error,
                             image = null,
                         )

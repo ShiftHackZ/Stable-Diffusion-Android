@@ -51,4 +51,5 @@ internal actual fun isLocalGenerationSetupAvailable(): Boolean =
     Build.VERSION.SDK_INT < Build.VERSION_CODES.R || Environment.isExternalStorageManager()
 
 internal actual fun isServerSourceAvailableOnPlatform(source: ServerSource): Boolean =
-    source != ServerSource.LOCAL_APPLE_CORE_ML
+    source != ServerSource.LOCAL_APPLE_CORE_ML &&
+        source != ServerSource.LOCAL_APPLE_BONSAI

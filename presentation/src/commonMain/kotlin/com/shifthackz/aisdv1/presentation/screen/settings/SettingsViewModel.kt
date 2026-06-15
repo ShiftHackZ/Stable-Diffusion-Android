@@ -13,6 +13,7 @@ import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalBonsaiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
@@ -44,6 +45,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeout
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * ViewModel for the Settings tab.
@@ -61,6 +63,7 @@ import kotlinx.coroutines.withTimeout
  * @param getLocalMediaPipeModelsUseCase Reads locally configured MediaPipe models.
  * @param getLocalSdxlModelsUseCase Reads locally configured SDXL models.
  * @param getLocalCoreMlModelsUseCase Reads locally configured Core ML models on supported builds.
+ * @param getLocalBonsaiModelsUseCase Reads locally configured Bonsai models on supported builds.
  * @param observeNetworkUsageUseCase Live Room-backed network usage stream.
  * @param storageUsageObserver Shared invalidation stream for non-Room storage usage.
  * @param preferenceManager Preferences source observed for provider/model refreshes.
@@ -85,6 +88,7 @@ class SettingsViewModel(
     private val getLocalMediaPipeModelsUseCase: GetLocalMediaPipeModelsUseCase,
     private val getLocalSdxlModelsUseCase: GetLocalSdxlModelsUseCase,
     private val getLocalCoreMlModelsUseCase: GetLocalCoreMlModelsUseCase,
+    private val getLocalBonsaiModelsUseCase: GetLocalBonsaiModelsUseCase,
     private val observeNetworkUsageUseCase: ObserveNetworkUsageUseCase,
     private val storageUsageObserver: StorageUsageObserver,
     private val preferenceManager: PreferenceManager,
@@ -116,7 +120,7 @@ class SettingsViewModel(
         .distinctUntilChanged()
         .map {
             runCatching {
-                withTimeout(10_000L) { getStableDiffusionModelsUseCase() }
+                withTimeout(10_000L.milliseconds) { getStableDiffusionModelsUseCase() }
             }.getOrDefault(emptyList())
         }
 
@@ -396,6 +400,7 @@ class SettingsViewModel(
         val mediaPipeModels = getDownloadedModels(getLocalMediaPipeModelsUseCase::invoke)
         val sdxlModels = getDownloadedModels(getLocalSdxlModelsUseCase::invoke)
         val coreMlModels = getDownloadedModels(getLocalCoreMlModelsUseCase::invoke)
+        val bonsaiModels = getDownloadedModels(getLocalBonsaiModelsUseCase::invoke)
         val coreMlModelIds = coreMlModels.map(LocalAiModel::id)
         val allowedModes = buildInfoProvider.setupAllowedModes()
         val galleryBytes = getAllGalleryUseCase().sumOf { item ->
@@ -423,6 +428,11 @@ class SettingsViewModel(
                     allowedModes = allowedModes,
                     modelIds = coreMlModelIds,
                 ),
+            )
+        }
+        if (ServerSource.LOCAL_APPLE_BONSAI in allowedModes) {
+            modelBytes += platformActions.mapStorageBytesForUi(
+                platformActions.getDownloadedModelsBytes(bonsaiModels.map(LocalAiModel::id)),
             )
         }
         val cacheBytes = platformActions.mapStorageBytesForUi(platformActions.getAppCacheBytes())
@@ -530,7 +540,7 @@ class SettingsViewModel(
  * @author Dmitriy Moroz
  */
 private data class SdModelsRefreshKey(
-    val source: com.shifthackz.aisdv1.domain.entity.ServerSource,
+    val source: ServerSource,
     val serverUrl: String,
     val demoMode: Boolean,
     val sdModel: String,
@@ -546,4 +556,5 @@ private val customModelIds = setOf(
     LocalAiModel.CustomMediaPipe.id,
     LocalAiModel.CustomSdxl.id,
     LocalAiModel.CustomCoreMl.id,
+    LocalAiModel.CustomBonsai.id,
 )

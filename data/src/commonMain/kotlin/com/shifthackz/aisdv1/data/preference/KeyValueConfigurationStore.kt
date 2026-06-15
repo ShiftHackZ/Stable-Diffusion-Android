@@ -208,6 +208,24 @@ internal class KeyValueConfigurationStore(
         set(value) = keyValueStore.putString(KEY_CORE_ML_CUSTOM_MODEL_PATH, value)
 
     /**
+     * Exposes the `localBonsaiModelId` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var localBonsaiModelId: String
+        get() = keyValueStore.getString(KEY_BONSAI_MODEL_ID)
+        set(value) = keyValueStore.putString(KEY_BONSAI_MODEL_ID, value)
+
+    /**
+     * Exposes the `localBonsaiModelPath` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var localBonsaiModelPath: String
+        get() = keyValueStore.getString(KEY_BONSAI_CUSTOM_MODEL_PATH)
+        set(value) = keyValueStore.putString(KEY_BONSAI_CUSTOM_MODEL_PATH, value)
+
+    /**
      * Executes the `fixUrlSlashes` step in the SDAI data layer.
      *
      * @return Result produced by `fixUrlSlashes`.
@@ -269,6 +287,12 @@ internal class KeyValueConfigurationStore(
          * @author Dmitriy Moroz
          */
         const val KEY_CORE_ML_CUSTOM_MODEL_PATH = "key_core_ml_custom_model_path"
+        /**
+         * Exposes the `KEY_BONSAI_CUSTOM_MODEL_PATH` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_BONSAI_CUSTOM_MODEL_PATH = "key_bonsai_custom_model_path"
         /**
          * Exposes the `KEY_SDXL_CUSTOM_MODEL_PATH` value used by the SDAI data layer.
          *
@@ -341,6 +365,12 @@ internal class KeyValueConfigurationStore(
          * @author Dmitriy Moroz
          */
         const val KEY_CORE_ML_MODEL_ID = "key_core_ml_model_id"
+        /**
+         * Exposes the `KEY_BONSAI_MODEL_ID` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_BONSAI_MODEL_ID = "key_bonsai_model_id"
         /**
          * Exposes the `KEY_SDXL_MODEL_ID` value used by the SDAI data layer.
          *

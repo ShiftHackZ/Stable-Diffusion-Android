@@ -157,6 +157,8 @@ class PreferenceManagerImplTest {
         preferenceManager.forceSetupAfterUpdate = false
         preferenceManager.localOnnxModelId = "onnx-key"
         preferenceManager.localMediaPipeModelId = "mediapipe-key"
+        preferenceManager.localBonsaiModelId = "bonsai-key"
+        preferenceManager.localBonsaiCustomModelPath = "/models/bonsai"
         preferenceManager.localOnnxUseNNAPI = true
         preferenceManager.localOnnxAllowCancel = true
         preferenceManager.localOnnxSchedulerThread = SchedulersToken.IO_THREAD
@@ -164,6 +166,8 @@ class PreferenceManagerImplTest {
         Assert.assertFalse(preferenceManager.forceSetupAfterUpdate)
         Assert.assertEquals("onnx-key", preferenceManager.localOnnxModelId)
         Assert.assertEquals("mediapipe-key", preferenceManager.localMediaPipeModelId)
+        Assert.assertEquals("bonsai-key", preferenceManager.localBonsaiModelId)
+        Assert.assertEquals("/models/bonsai", preferenceManager.localBonsaiCustomModelPath)
         Assert.assertTrue(preferenceManager.localOnnxUseNNAPI)
         Assert.assertTrue(preferenceManager.localOnnxAllowCancel)
         Assert.assertEquals(SchedulersToken.IO_THREAD, preferenceManager.localOnnxSchedulerThread)

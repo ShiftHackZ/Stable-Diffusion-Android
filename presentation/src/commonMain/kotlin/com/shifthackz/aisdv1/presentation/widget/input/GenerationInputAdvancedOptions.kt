@@ -286,7 +286,7 @@ internal fun GenerationInputAdvancedOptions(
                     else -> Unit
                 }
 
-                //Steps not available for open ai
+                // Steps not available for providers with fixed sampler presets.
                 if (state.mode != ServerSource.OPEN_AI) {
                     val stepsMin = if (state.mode == ServerSource.FAL_AI) {
                         state.falAiModel.minInferenceSteps
@@ -297,6 +297,7 @@ internal fun GenerationInputAdvancedOptions(
                         ServerSource.LOCAL_MICROSOFT_ONNX -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
                         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
                         ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
+                        ServerSource.LOCAL_APPLE_BONSAI -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
                         ServerSource.STABILITY_AI -> SAMPLING_STEPS_RANGE_STABILITY_AI_MAX
                         ServerSource.FAL_AI -> state.falAiModel.maxInferenceSteps
                         ServerSource.ARLI_AI -> SAMPLING_STEPS_RANGE_ARLI_AI_MAX
@@ -322,7 +323,7 @@ internal fun GenerationInputAdvancedOptions(
                     )
                 }
 
-                // CFG scale not available on open ai and google media pipe
+                // CFG scale not available on providers with fixed guidance presets.
                 when (state.mode) {
                     ServerSource.OPEN_AI,
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Unit
@@ -364,7 +365,8 @@ internal fun GenerationInputAdvancedOptions(
                     ServerSource.STABILITY_AI,
                     ServerSource.ARLI_AI,
                     ServerSource.HORDE,
-                    ServerSource.LOCAL_APPLE_CORE_ML -> afterSlidersSection()
+                    ServerSource.LOCAL_APPLE_CORE_ML,
+                    ServerSource.LOCAL_APPLE_BONSAI -> afterSlidersSection()
 
                     else -> Unit
                 }
@@ -381,6 +383,7 @@ internal fun GenerationInputAdvancedOptions(
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
                     ServerSource.LOCAL_MICROSOFT_ONNX,
                     ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
+                    ServerSource.LOCAL_APPLE_BONSAI,
                     -> Unit
                     else -> GenerationBatchComponent(state = state, onEvent = onEvent)
                 }

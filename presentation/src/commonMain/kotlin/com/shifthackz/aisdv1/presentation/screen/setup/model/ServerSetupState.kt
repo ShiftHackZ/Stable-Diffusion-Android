@@ -60,6 +60,9 @@ data class ServerSetupState(
     val localSdxlCustomModelPath: String = "",
     val localCoreMlModels: List<LocalModel> = emptyList(),
     val localCoreMlCustomModelPath: String = "",
+    val localBonsaiModels: List<LocalModel> = emptyList(),
+    val localBonsaiCustomModel: Boolean = false,
+    val localBonsaiCustomModelPath: String = "",
     val passwordVisible: Boolean = false,
     val serverUrlValidationError: ValidationError? = null,
     val swarmUiUrlValidationError: ValidationError? = null,
@@ -74,6 +77,7 @@ data class ServerSetupState(
     val localCustomOnnxPathValidationError: ValidationError? = null,
     val localCustomMediaPipePathValidationError: ValidationError? = null,
     val localCustomSdxlPathValidationError: ValidationError? = null,
+    val localCustomBonsaiPathValidationError: ValidationError? = null,
 ) : MviState {
 
     val localCustomModel: Boolean
@@ -99,6 +103,7 @@ data class ServerSetupState(
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeModels
             ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> localSdxlModels
             ServerSource.LOCAL_APPLE_CORE_ML -> localCoreMlModels
+            ServerSource.LOCAL_APPLE_BONSAI -> localBonsaiModels
             else -> emptyList()
         }
 
@@ -163,6 +168,10 @@ data class ServerSetupState(
             localCoreMlModels = localCoreMlModels.withCommonNewState(value),
         )
 
+        ServerSource.LOCAL_APPLE_BONSAI -> copy(
+            localBonsaiModels = localBonsaiModels.withCommonNewState(value),
+        )
+
         else -> this
     }
 
@@ -207,6 +216,16 @@ data class ServerSetupState(
             ),
         )
 
+        ServerSource.LOCAL_APPLE_BONSAI -> copy(
+            modal = Modal.None,
+            localBonsaiModels = localBonsaiModels.withCommonNewState(
+                value.copy(
+                    downloadState = DownloadState.Unknown,
+                    downloaded = false,
+                ),
+            ),
+        )
+
         else -> copy(modal = Modal.None)
     }
 
@@ -225,6 +244,10 @@ data class ServerSetupState(
 
         ServerSource.LOCAL_APPLE_CORE_ML -> copy(
             localCoreMlModels = localCoreMlModels.withCommonNewState(value.copy(selected = true)),
+        )
+
+        ServerSource.LOCAL_APPLE_BONSAI -> copy(
+            localBonsaiModels = localBonsaiModels.withCommonNewState(value.copy(selected = true)),
         )
 
         else -> this
@@ -326,6 +349,7 @@ fun Configuration.toServerSetupState(
     localMediaPipeModels: List<LocalAiModel> = emptyList(),
     localSdxlModels: List<LocalAiModel> = emptyList(),
     localCoreMlModels: List<LocalAiModel> = emptyList(),
+    localBonsaiModels: List<LocalAiModel> = emptyList(),
     allowLocalCustomModels: Boolean = true,
     demoModeUrl: String = "",
     showBackNavArrow: Boolean = false,
@@ -366,6 +390,8 @@ fun Configuration.toServerSetupState(
         localSdxlCustomModelPath = localSdxlModelPath,
         localCoreMlModels = localCoreMlModels.mapToCommonSetupModels(),
         localCoreMlCustomModelPath = localCoreMlModelPath,
+        localBonsaiModels = localBonsaiModels.mapToCommonSetupModels(),
+        localBonsaiCustomModelPath = localBonsaiModelPath,
         openAiApiKey = openAiApiKey,
         stabilityAiApiKey = stabilityAiApiKey,
         falAiApiKey = falAiApiKey,

@@ -28,4 +28,6 @@ class ConfigurationStoreStub(
     override var localSdxlModelPath: String = configuration.localSdxlModelPath
     override var localCoreMlModelId: String = configuration.localCoreMlModelId
     override var localCoreMlModelPath: String = configuration.localCoreMlModelPath
+    override var localBonsaiModelId: String = configuration.localBonsaiModelId
+    override var localBonsaiModelPath: String = configuration.localBonsaiModelPath
 }

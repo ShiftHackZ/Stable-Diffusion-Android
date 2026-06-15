@@ -118,6 +118,16 @@ internal class DownloadableModelLocalDataSource(
         .withLocalData()
 
     /**
+     * Loads SDAI data through `getAllBonsai`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getAllBonsai() = dao
+        .queryByType(LocalAiModel.Type.Bonsai.key)
+        .mapEntityToDomain()
+        .withLocalData()
+
+    /**
      * Loads SDAI data through `getById`.
      *
      * @param id identifier of the target entity.
@@ -130,6 +140,7 @@ internal class DownloadableModelLocalDataSource(
             LocalAiModel.CustomMediaPipe.id -> LocalAiModel.CustomMediaPipe
             LocalAiModel.CustomSdxl.id -> LocalAiModel.CustomSdxl
             LocalAiModel.CustomCoreMl.id -> LocalAiModel.CustomCoreMl
+            LocalAiModel.CustomBonsai.id -> LocalAiModel.CustomBonsai
             else -> dao
                 .queryById(id)
                 .mapEntityToDomain()
@@ -166,6 +177,17 @@ internal class DownloadableModelLocalDataSource(
      */
     override suspend fun getSelectedCoreMl() = runCatching {
         getById(preferenceManager.localCoreMlModelId)
+    }.getOrElse {
+        throw IllegalStateException("No selected model.", it)
+    }
+
+    /**
+     * Loads SDAI data through `getSelectedBonsai`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getSelectedBonsai() = runCatching {
+        getById(preferenceManager.localBonsaiModelId)
     }.getOrElse {
         throw IllegalStateException("No selected model.", it)
     }
@@ -219,6 +241,20 @@ internal class DownloadableModelLocalDataSource(
         }
 
     /**
+     * Loads SDAI data through `observeAllBonsai`.
+     *
+     * @return Result produced by `observeAllBonsai`.
+     * @author Dmitriy Moroz
+     */
+    override fun observeAllBonsai(): Flow<List<LocalAiModel>> = dao
+        .observeByType(LocalAiModel.Type.Bonsai.key)
+        .combine(preferenceManager.observe()) { entities, _ ->
+            entities
+                .mapEntityToDomain()
+                .withLocalData()
+        }
+
+    /**
      * Performs the SDAI side effect handled by `save`.
      *
      * @param list list value consumed by the API.
@@ -261,6 +297,7 @@ internal class DownloadableModelLocalDataSource(
             LocalAiModel.Type.MediaPipe -> preferenceManager.localMediaPipeModelId == id
             LocalAiModel.Type.Sdxl -> preferenceManager.localSdxlModelId == id
             LocalAiModel.Type.CoreMl -> preferenceManager.localCoreMlModelId == id
+            LocalAiModel.Type.Bonsai -> preferenceManager.localBonsaiModelId == id
         },
     )
 
@@ -270,6 +307,7 @@ internal class DownloadableModelLocalDataSource(
             LocalAiModel.CustomMediaPipe.id,
             LocalAiModel.CustomSdxl.id,
             LocalAiModel.CustomCoreMl.id,
+            LocalAiModel.CustomBonsai.id,
         )
     }
 }

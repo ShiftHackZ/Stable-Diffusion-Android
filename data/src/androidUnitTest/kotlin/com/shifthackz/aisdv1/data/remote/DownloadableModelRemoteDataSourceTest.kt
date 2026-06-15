@@ -44,6 +44,10 @@ class DownloadableModelRemoteDataSourceTest {
             stubApi.fetchCoreMlModels()
         } returns emptyList()
 
+        coEvery {
+            stubApi.fetchBonsaiModels()
+        } returns emptyList()
+
         val expected = listOf(
             mockDownloadableModelsResponse.mapRawToCheckpointDomain(LocalAiModel.Type.ONNX),
             mockDownloadableModelsResponse.mapRawToCheckpointDomain(LocalAiModel.Type.MediaPipe),
@@ -72,6 +76,10 @@ class DownloadableModelRemoteDataSourceTest {
             stubApi.fetchCoreMlModels()
         } returns emptyList()
 
+        coEvery {
+            stubApi.fetchBonsaiModels()
+        } returns emptyList()
+
         val actual = remoteDataSource.fetch()
 
         Assert.assertEquals(emptyList<LocalAiModel>(), actual)
@@ -93,6 +101,10 @@ class DownloadableModelRemoteDataSourceTest {
 
         coEvery {
             stubApi.fetchCoreMlModels()
+        } returns emptyList()
+
+        coEvery {
+            stubApi.fetchBonsaiModels()
         } returns emptyList()
 
         val expected = mockDownloadableModelsResponse
@@ -121,8 +133,42 @@ class DownloadableModelRemoteDataSourceTest {
             stubApi.fetchCoreMlModels()
         } returns emptyList()
 
+        coEvery {
+            stubApi.fetchBonsaiModels()
+        } returns emptyList()
+
         val expected = mockDownloadableModelsResponse
             .mapRawToCheckpointDomain(LocalAiModel.Type.ONNX)
+
+        val actual = remoteDataSource.fetch()
+
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `given attempt to fetch models list, bonsai api returns data, expected bonsai models included`() = runTest {
+        coEvery {
+            stubApi.fetchOnnxModels()
+        } returns emptyList()
+
+        coEvery {
+            stubApi.fetchMediaPipeModels()
+        } returns emptyList()
+
+        coEvery {
+            stubApi.fetchSdxlModels()
+        } returns emptyList()
+
+        coEvery {
+            stubApi.fetchCoreMlModels()
+        } returns emptyList()
+
+        coEvery {
+            stubApi.fetchBonsaiModels()
+        } returns mockDownloadableModelsResponse
+
+        val expected = mockDownloadableModelsResponse
+            .mapRawToCheckpointDomain(LocalAiModel.Type.Bonsai)
 
         val actual = remoteDataSource.fetch()
 

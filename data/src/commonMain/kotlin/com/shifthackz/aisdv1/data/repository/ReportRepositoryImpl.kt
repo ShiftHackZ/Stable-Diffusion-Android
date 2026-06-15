@@ -44,6 +44,7 @@ internal class ReportRepositoryImpl(
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> preferenceManager.localMediaPipeModelId
             ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> preferenceManager.localSdxlModelId
             ServerSource.LOCAL_APPLE_CORE_ML -> preferenceManager.localCoreMlModelId
+            ServerSource.LOCAL_APPLE_BONSAI -> preferenceManager.localBonsaiModelId
             else -> ""
         }
         rds.send(text, reason, image, source.toString(), model)

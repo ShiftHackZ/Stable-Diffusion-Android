@@ -140,4 +140,16 @@ data class Configuration(
      * @author Dmitriy Moroz
      */
     val localCoreMlModelPath: String = "",
+    /**
+     * Exposes the `localBonsaiModelId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localBonsaiModelId: String = "",
+    /**
+     * Exposes the `localBonsaiModelPath` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val localBonsaiModelPath: String = "",
 )

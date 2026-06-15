@@ -26,6 +26,7 @@ kotlin {
         binaries.framework {
             baseName = "AiSdPresentation"
             isStatic = true
+            export(project(":feature:bonsai"))
             export(project(":feature:coreml"))
         }
     }
@@ -42,6 +43,7 @@ kotlin {
             implementation(project(":feature:auth"))
             implementation(project(":feature:benchmark"))
             implementation(project(":feature:work"))
+            api(project(":feature:bonsai"))
             api(project(":feature:coreml"))
             implementation(project(":network"))
             implementation(compose.animation)

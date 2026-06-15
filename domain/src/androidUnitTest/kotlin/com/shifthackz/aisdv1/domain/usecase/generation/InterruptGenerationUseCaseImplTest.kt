@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.domain.usecase.generation
 
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.BonsaiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
@@ -23,6 +24,7 @@ class InterruptGenerationUseCaseImplTest {
     private val stubLocalDiffusionGenerationRepository = mockk<LocalDiffusionGenerationRepository>()
     private val stubStableDiffusionCppGenerationRepository = mockk<StableDiffusionCppGenerationRepository>()
     private val stubCoreMlGenerationRepository = mockk<CoreMlGenerationRepository>()
+    private val stubBonsaiGenerationRepository = mockk<BonsaiGenerationRepository>()
     private val stubPreferenceManager = mockk<PreferenceManager>()
 
     private val useCase = InterruptGenerationUseCaseImpl(
@@ -31,6 +33,7 @@ class InterruptGenerationUseCaseImplTest {
         localDiffusionGenerationRepository = stubLocalDiffusionGenerationRepository,
         stableDiffusionCppGenerationRepository = stubStableDiffusionCppGenerationRepository,
         coreMlGenerationRepository = stubCoreMlGenerationRepository,
+        bonsaiGenerationRepository = stubBonsaiGenerationRepository,
         preferenceManager = stubPreferenceManager,
     )
 
@@ -85,6 +88,16 @@ class InterruptGenerationUseCaseImplTest {
     }
 
     @Test
+    fun `given source is LOCAL_APPLE_BONSAI, expected bonsai interrupt`() = runTest {
+        every { stubPreferenceManager.source } returns ServerSource.LOCAL_APPLE_BONSAI
+        coEvery { stubBonsaiGenerationRepository.interruptGeneration() } returns Unit
+
+        useCase()
+
+        coVerify(exactly = 1) { stubBonsaiGenerationRepository.interruptGeneration() }
+    }
+
+    @Test
     fun `given interrupt fails, expected error propagated`() = runTest {
         every { stubPreferenceManager.source } returns ServerSource.AUTOMATIC1111
         coEvery { stubStableDiffusionGenerationRepository.interruptGeneration() } throws stubException
@@ -105,5 +118,6 @@ class InterruptGenerationUseCaseImplTest {
         coVerify(exactly = 0) { stubLocalDiffusionGenerationRepository.interruptGeneration() }
         coVerify(exactly = 0) { stubStableDiffusionCppGenerationRepository.interruptGeneration() }
         coVerify(exactly = 0) { stubCoreMlGenerationRepository.interruptGeneration() }
+        coVerify(exactly = 0) { stubBonsaiGenerationRepository.interruptGeneration() }
     }
 }

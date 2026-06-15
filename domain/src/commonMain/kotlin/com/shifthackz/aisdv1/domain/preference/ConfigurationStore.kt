@@ -136,6 +136,18 @@ interface ConfigurationStore {
      * @author Dmitriy Moroz
      */
     var localCoreMlModelPath: String
+    /**
+     * Exposes the `localBonsaiModelId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localBonsaiModelId: String
+    /**
+     * Exposes the `localBonsaiModelPath` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localBonsaiModelPath: String
 
     /**
      * Loads SDAI data through `getConfiguration`.
@@ -168,6 +180,8 @@ interface ConfigurationStore {
         localSdxlModelPath = localSdxlModelPath,
         localCoreMlModelId = localCoreMlModelId,
         localCoreMlModelPath = localCoreMlModelPath,
+        localBonsaiModelId = localBonsaiModelId,
+        localBonsaiModelPath = localBonsaiModelPath,
     )
 
     /**
@@ -198,5 +212,7 @@ interface ConfigurationStore {
         localSdxlModelPath = configuration.localSdxlModelPath
         localCoreMlModelId = configuration.localCoreMlModelId
         localCoreMlModelPath = configuration.localCoreMlModelPath
+        localBonsaiModelId = configuration.localBonsaiModelId
+        localBonsaiModelPath = configuration.localBonsaiModelPath
     }
 }

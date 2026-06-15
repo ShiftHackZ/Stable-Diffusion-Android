@@ -236,6 +236,7 @@
     <string name="hint_mediapipe_sub_title">Эта конфигурация использует Google AI MediaPipe и позволяет запускать генерации Stable Diffusion на вашем телефоне без необходимости подключаться к удаленному серверу/облаку.</string>
     <string name="hint_sdxl_sub_title">Эта конфигурация использует stable-diffusion.cpp и позволяет запускать SDXL, SDXL-Turbo, LCM или квантованные GGUF-модели на телефоне.</string>
     <string name="hint_core_ml_sub_title">Локальная генерация на iPhone.</string>
+    <string name="hint_bonsai_sub_title">Локальная генерация Bonsai Image 4B на iPhone.</string>
 
     <string name="drawer_web_ui">Веб</string>
 
@@ -330,6 +331,7 @@
     <string name="settings_usage_category_models_mediapipe">MediaPipe модели</string>
     <string name="settings_usage_category_models_sdxl">SDXL модели</string>
     <string name="settings_usage_category_models_core_ml">Core ML модели</string>
+    <string name="settings_usage_category_models_bonsai">Bonsai модели</string>
     <string name="settings_usage_category_traffic_models">Скачивание AI моделей</string>
     <string name="settings_usage_category_traffic_configs">Стягивание конфигов</string>
     <string name="settings_usage_category_traffic_inference">Инференс</string>
@@ -343,6 +345,7 @@
     <string name="settings_usage_summary_models_mediapipe">MediaPipe модели</string>
     <string name="settings_usage_summary_models_sdxl">SDXL модели</string>
     <string name="settings_usage_summary_models_core_ml">Core ML модели</string>
+    <string name="settings_usage_summary_models_bonsai">Bonsai модели</string>
     <string name="settings_usage_clear_category">Очистить %1$s</string>
     <string name="settings_usage_clear_all_storage">Очистить все %1$s</string>
     <string name="settings_usage_reset_network">Сбросить статистику</string>
@@ -434,6 +437,7 @@
     <string name="error_localhost_url">Вы не можете использовать localhost (127.0.0.1) URL-адрес для подключения к серверу.</string>
     <string name="error_min_size">Минимальный размер %1$s</string>
     <string name="error_max_size">Максимальный размер %1$s</string>
+    <string name="error_size_multiple">Размер должен делиться на %1$s</string>
     <string name="error_download_fail">Ошибка при загрузке</string>
     <string name="error_generic">При обработке вашего запроса произошла ошибка. Повторите попытку позже.</string>
 

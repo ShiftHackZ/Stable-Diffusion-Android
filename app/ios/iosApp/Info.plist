@@ -36,6 +36,13 @@
 	<string>Save generated images to Photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select an input image for image-to-image generation.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Connect to local generation servers on your network.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

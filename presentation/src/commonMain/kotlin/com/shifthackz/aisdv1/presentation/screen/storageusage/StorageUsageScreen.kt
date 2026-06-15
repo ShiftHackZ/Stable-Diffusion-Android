@@ -138,6 +138,7 @@ private fun UsageItem.deleteDescription(): String = when (category) {
     UsageCategory.MODELS_MEDIAPIPE,
     UsageCategory.MODELS_SDXL,
     UsageCategory.MODELS_CORE_ML,
+    UsageCategory.MODELS_BONSAI,
     -> Localization.string(
         "settings_usage_delete_models_text",
         bytes.formatBytes(),

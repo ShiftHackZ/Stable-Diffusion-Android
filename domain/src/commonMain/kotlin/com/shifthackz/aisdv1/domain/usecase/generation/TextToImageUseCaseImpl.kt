@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.ArliAiGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.BonsaiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.FalAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
@@ -109,6 +110,13 @@ internal class TextToImageUseCaseImpl(
      */
     private val coreMlGenerationRepository: CoreMlGenerationRepository,
     /**
+     * Exposes the `bonsaiGenerationRepository` value used by the SDAI domain layer.
+     *
+     * @throws IllegalStateException when the current state is invalid.
+     * @author Dmitriy Moroz
+     */
+    private val bonsaiGenerationRepository: BonsaiGenerationRepository,
+    /**
      * Exposes the `preferenceManager` value used by the SDAI domain layer.
      *
      * @throws IllegalStateException when the current state is invalid.
@@ -150,6 +158,7 @@ internal class TextToImageUseCaseImpl(
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> mediaPipeGenerationRepository.generateFromText(payload)
         ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> stableDiffusionCppGenerationRepository.generateFromText(payload)
         ServerSource.LOCAL_APPLE_CORE_ML -> coreMlGenerationRepository.generateFromText(payload)
+        ServerSource.LOCAL_APPLE_BONSAI -> bonsaiGenerationRepository.generateFromText(payload)
         ServerSource.AUTOMATIC1111 -> error("Automatic1111 batch must be generated through generateFromText(payload).")
         ServerSource.FAL_AI -> error("Fal.ai batch must be generated through generateFromText(payload).")
         ServerSource.ARLI_AI -> error("ArliAI batch must be generated through generateFromText(payload).")

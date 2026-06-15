@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.shifthackz.aisdv1.presentation.widget.engine
 
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
@@ -7,6 +9,7 @@ import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalBonsaiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalSdxlModelsUseCase
@@ -27,6 +30,7 @@ import io.mockk.mockk
 import io.mockk.unmockkAll
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -50,6 +54,7 @@ class EngineSelectionViewModelTest {
     private val stubSettings = MutableStateFlow(Settings())
     private val stubLocalAiModels = MutableStateFlow<List<LocalAiModel>>(emptyList())
     private val stubLocalCoreMlModels = MutableStateFlow<List<LocalAiModel>>(emptyList())
+    private val stubLocalBonsaiModels = MutableStateFlow<List<LocalAiModel>>(emptyList())
     private val stubLocalSdxlModels = MutableStateFlow<List<LocalAiModel>>(emptyList())
     private val stubException = Throwable("Something went wrong.")
     private val stubPreferenceManager = mockk<PreferenceManager>()
@@ -58,6 +63,7 @@ class EngineSelectionViewModelTest {
     private val stubGetStableDiffusionModelsUseCase = mockk<GetStableDiffusionModelsUseCase>()
     private val stubObserveLocalAiModelsUseCase = mockk<ObserveLocalOnnxModelsUseCase>()
     private val stubObserveLocalCoreMlModelsUseCase = mockk<ObserveLocalCoreMlModelsUseCase>()
+    private val stubObserveLocalBonsaiModelsUseCase = mockk<ObserveLocalBonsaiModelsUseCase>()
     private val stubObserveLocalSdxlModelsUseCase = mockk<ObserveLocalSdxlModelsUseCase>()
     private val stubFetchAndGetStabilityAiEnginesUseCase = mockk<FetchAndGetStabilityAiEnginesUseCase>()
     private val stubFetchHuggingFaceModelsUseCase = mockk<FetchHuggingFaceModelsUseCase>()
@@ -76,6 +82,10 @@ class EngineSelectionViewModelTest {
         every {
             stubObserveLocalCoreMlModelsUseCase()
         } returns stubLocalCoreMlModels
+
+        every {
+            stubObserveLocalBonsaiModelsUseCase()
+        } returns stubLocalBonsaiModels
 
         every {
             stubObserveLocalSdxlModelsUseCase()
@@ -345,6 +355,7 @@ class EngineSelectionViewModelTest {
             DataTestCase.Exception -> emptyList()
         }
         stubLocalSdxlModels.value = emptyList()
+        stubLocalBonsaiModels.value = emptyList()
     }
 
     private fun TestScope.createViewModel() = EngineSelectionViewModel(
@@ -355,6 +366,7 @@ class EngineSelectionViewModelTest {
         getStableDiffusionModelsUseCase = stubGetStableDiffusionModelsUseCase,
         observeLocalOnnxModelsUseCase = stubObserveLocalAiModelsUseCase,
         observeLocalCoreMlModelsUseCase = stubObserveLocalCoreMlModelsUseCase,
+        observeLocalBonsaiModelsUseCase = stubObserveLocalBonsaiModelsUseCase,
         observeLocalSdxlModelsUseCase = stubObserveLocalSdxlModelsUseCase,
         fetchAndGetStabilityAiEnginesUseCase = stubFetchAndGetStabilityAiEnginesUseCase,
         getHuggingFaceModelsUseCase = stubFetchHuggingFaceModelsUseCase,

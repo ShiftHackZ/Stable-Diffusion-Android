@@ -49,12 +49,13 @@ import com.shifthackz.aisdv1.data.remote.RandomImageRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.ReportRemoteDataSource
 import com.shifthackz.aisdv1.data.repository.ArliAiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.ArliAiModelsRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.BonsaiGenerationRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.CoreMlGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.DownloadableModelRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.EmbeddingsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.FalAiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.ForgeModulesRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.GenerationResultRepositoryImpl
-import com.shifthackz.aisdv1.data.repository.CoreMlGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HordeGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HuggingFaceGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HuggingFaceModelsRepositoryImpl
@@ -116,12 +117,13 @@ import com.shifthackz.aisdv1.domain.gateway.ServerConnectivityGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.ArliAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.ArliAiModelsRepository
+import com.shifthackz.aisdv1.domain.repository.BonsaiGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
 import com.shifthackz.aisdv1.domain.repository.EmbeddingsRepository
 import com.shifthackz.aisdv1.domain.repository.FalAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.ForgeModulesRepository
 import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
-import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceModelsRepository
@@ -392,6 +394,17 @@ val coreDataModule = module {
             backgroundWorkObserver = get(),
             preferenceManager = get(),
             coreMlDiffusion = get(),
+            downloadableLocalDataSource = get(),
+            fileProviderDescriptor = get(),
+        )
+    }
+    single<BonsaiGenerationRepository> {
+        BonsaiGenerationRepositoryImpl(
+            mediaStoreGateway = get(),
+            localDataSource = get(),
+            backgroundWorkObserver = get(),
+            preferenceManager = get(),
+            bonsaiDiffusion = get(),
             downloadableLocalDataSource = get(),
             fileProviderDescriptor = get(),
         )

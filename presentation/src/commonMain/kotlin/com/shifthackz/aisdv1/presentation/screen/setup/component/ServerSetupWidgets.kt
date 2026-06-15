@@ -23,6 +23,7 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.feature.bonsai.BonsaiModelSupport
 import com.shifthackz.aisdv1.domain.feature.coreml.CoreMlModelSupport
 import com.shifthackz.aisdv1.presentation.modal.download.DownloadDialog
 import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
@@ -32,7 +33,6 @@ import com.shifthackz.aisdv1.presentation.widget.icon.BrandIcons
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialogContent
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.item.SettingsItem
-
 
 @Composable
 internal fun SettingsAction(
@@ -190,7 +190,9 @@ internal val ServerSource.icon: ImageVector
         ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
         -> Icons.Default.Android
 
-        ServerSource.LOCAL_APPLE_CORE_ML -> BrandIcons.Apple
+        ServerSource.LOCAL_APPLE_CORE_ML,
+        ServerSource.LOCAL_APPLE_BONSAI,
+        -> BrandIcons.Apple
     }
 
 internal fun ServerSource.title(strings: ServerSetupStrings): String = when (this) {
@@ -206,6 +208,7 @@ internal fun ServerSource.title(strings: ServerSetupStrings): String = when (thi
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeTitle
     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlTitle
     ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlTitle
+    ServerSource.LOCAL_APPLE_BONSAI -> strings.bonsaiTitle
 }
 
 internal fun ServerSource.subtitle(strings: ServerSetupStrings): String = when (this) {
@@ -221,6 +224,7 @@ internal fun ServerSource.subtitle(strings: ServerSetupStrings): String = when (
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeSubtitle
     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlSubtitle
     ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlSubtitle
+    ServerSource.LOCAL_APPLE_BONSAI -> strings.bonsaiSubtitle
 }
 
 internal fun ServerSetupState.ValidationError.message(
@@ -252,6 +256,12 @@ internal val ServerSetupState.mainButtonEnabled: Boolean
                     model.id !in CoreMlModelSupport.unsupportedModelIds
             }
 
+            ServerSource.LOCAL_APPLE_BONSAI -> localBonsaiModels.any { model ->
+                model.selected &&
+                    model.downloaded &&
+                    model.id !in BonsaiModelSupport.unsupportedModelIds
+            }
+
             else -> true
         }
     }
@@ -260,4 +270,5 @@ internal val ServerSetupState.LocalModel.isCustom: Boolean
     get() = id == LocalAiModel.CustomOnnx.id ||
         id == LocalAiModel.CustomMediaPipe.id ||
         id == LocalAiModel.CustomSdxl.id ||
-        id == LocalAiModel.CustomCoreMl.id
+        id == LocalAiModel.CustomCoreMl.id ||
+        id == LocalAiModel.CustomBonsai.id

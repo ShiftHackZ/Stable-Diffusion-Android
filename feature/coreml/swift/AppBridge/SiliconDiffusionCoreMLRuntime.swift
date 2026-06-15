@@ -1,4 +1,4 @@
-import AiSdPresentation
+@preconcurrency import AiSdPresentation
 import Foundation
 import SiliconDiffusionCoreML
 
@@ -8,8 +8,8 @@ final class SiliconDiffusionCoreMLRuntimeAdapter: NSObject, SiliconDiffusionCore
 
     func generate(
         request: SiliconDiffusionCoreMlRequest,
-        onProgress: @escaping (SiliconDiffusionCoreMlProgress) -> Void,
-        completion: @escaping (SiliconDiffusionCoreMlResponse) -> Void
+        onProgress: @escaping @Sendable (SiliconDiffusionCoreMlProgress) -> Void,
+        completion_ completion: @escaping @Sendable (SiliconDiffusionCoreMlResponse) -> Void
     ) {
         generator.generate(
             request: SiliconDiffusionCoreMLGenerator.Request(

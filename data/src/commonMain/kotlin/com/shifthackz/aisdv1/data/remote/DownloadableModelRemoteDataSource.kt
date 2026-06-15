@@ -48,7 +48,12 @@ internal class DownloadableModelRemoteDataSource(
                 .fetchCoreMlModels()
                 .mapRawToCheckpointDomain(LocalAiModel.Type.CoreMl)
         }.getOrElse { emptyList() }
-        return onnx + mediaPipe + sdxl + coreMl
+        val bonsai = runCatching {
+            api
+                .fetchBonsaiModels()
+                .mapRawToCheckpointDomain(LocalAiModel.Type.Bonsai)
+        }.getOrElse { emptyList() }
+        return onnx + mediaPipe + sdxl + coreMl + bonsai
     }
 
     /**

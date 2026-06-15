@@ -55,6 +55,12 @@ interface PreferenceManager {
      */
     var localCoreMlCustomModelPath: String
     /**
+     * Exposes the `localBonsaiCustomModelPath` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localBonsaiCustomModelPath: String
+    /**
      * Exposes the `localOnnxCustomModelPath` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz
@@ -216,6 +222,12 @@ interface PreferenceManager {
      * @author Dmitriy Moroz
      */
     var localCoreMlModelId: String
+    /**
+     * Exposes the `localBonsaiModelId` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var localBonsaiModelId: String
     /**
      * Exposes the `designUseSystemColorPalette` value used by the SDAI domain layer.
      *

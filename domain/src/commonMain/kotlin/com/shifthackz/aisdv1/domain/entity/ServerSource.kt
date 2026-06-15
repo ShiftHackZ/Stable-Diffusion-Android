@@ -98,6 +98,17 @@ enum class ServerSource(
             FeatureTag.Batch,
         ),
     ),
+    LOCAL_APPLE_BONSAI(
+        key = "local_apple_bonsai",
+        type = ServerSourceType.LOCAL,
+        readiness = ServerSourceReadiness.BETA,
+        version = "2026.6.15",
+        featureTags = setOf(
+            FeatureTag.Offline,
+            FeatureTag.Txt2Img,
+            FeatureTag.MultipleModels,
+        ),
+    ),
     HORDE(
         key = "horde",
         type = ServerSourceType.CLOUD,

@@ -77,7 +77,7 @@ class BenchmarkRecommendationPolicyTest {
     }
 
     @Test
-    fun `given high score ios device, expected core ml recommendation`() {
+    fun `given high score ios device, expected core ml and bonsai recommendations`() {
         val recommendations = BenchmarkRecommendationPolicy.providerRecommendations(
             deviceInfo = iphone(),
             totalScore = 7_200,
@@ -93,10 +93,18 @@ class BenchmarkRecommendationPolicyTest {
         assertEquals(50, coreMl.samplingSteps)
         assertEquals(45, coreMl.estimatedTimeSeconds)
         assertTrue(coreMl.backgroundGeneration)
+
+        val bonsai = recommendations.provider(ServerSource.LOCAL_APPLE_BONSAI)
+        assertTrue(bonsai.recommended)
+        assertEquals(512, bonsai.width)
+        assertEquals(512, bonsai.height)
+        assertEquals(20, bonsai.samplingSteps)
+        assertEquals(17, bonsai.estimatedTimeSeconds)
+        assertTrue(bonsai.backgroundGeneration)
     }
 
     @Test
-    fun `given real iphone 17 pro class device, expected high end core ml recommendation`() {
+    fun `given real iphone 17 pro class device, expected high end ios local recommendations`() {
         val recommendations = BenchmarkRecommendationPolicy.providerRecommendations(
             deviceInfo = iphone17Pro(),
             totalScore = 3_428,
@@ -112,6 +120,29 @@ class BenchmarkRecommendationPolicyTest {
         assertEquals(50, coreMl.samplingSteps)
         assertEquals(45, coreMl.estimatedTimeSeconds)
         assertTrue(coreMl.backgroundGeneration)
+
+        val bonsai = recommendations.provider(ServerSource.LOCAL_APPLE_BONSAI)
+        assertTrue(bonsai.recommended)
+        assertEquals(512, bonsai.width)
+        assertEquals(512, bonsai.height)
+        assertEquals(20, bonsai.samplingSteps)
+        assertEquals(17, bonsai.estimatedTimeSeconds)
+        assertTrue(bonsai.backgroundGeneration)
+    }
+
+    @Test
+    fun `given ios device without metal, expected bonsai is not recommended`() {
+        val recommendations = BenchmarkRecommendationPolicy.providerRecommendations(
+            deviceInfo = iphone().copy(accelerators = listOf(BenchmarkAccelerator.CORE_ML)),
+            totalScore = 7_200,
+            cpuScore = 5_800,
+            memoryScore = 5_200,
+            acceleratorScore = 3_600,
+        )
+
+        val bonsai = recommendations.provider(ServerSource.LOCAL_APPLE_BONSAI)
+        assertFalse(bonsai.recommended)
+        assertTrue(BenchmarkProviderIssue.ACCELERATOR_API_NOT_AVAILABLE in bonsai.issues)
     }
 
     private fun List<BenchmarkProviderRecommendation>.provider(

@@ -68,12 +68,13 @@ internal fun AppScaffold(
     router: RootAppRouter,
     buildInfoProvider: BuildInfoProvider,
     preferenceManager: PreferenceManager,
+    showHomeChrome: Boolean = currentRoute.isHomeRoute(),
     content: @Composable (Modifier) -> Unit,
 ) {
     val drawerOpen by router.drawerOpen.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val settings by preferenceManager.observe().collectAsState(Settings())
-    val showHomeNavigation = currentRoute.isHomeRoute()
+    val showHomeNavigation = showHomeChrome && currentRoute.isHomeRoute()
 
     LaunchedEffect(drawerOpen) {
         when {

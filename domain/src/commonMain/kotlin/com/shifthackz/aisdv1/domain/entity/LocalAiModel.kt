@@ -53,7 +53,8 @@ data class LocalAiModel(
         ONNX("onnx"),
         MediaPipe("mediapipe"),
         Sdxl("sdxl"),
-        CoreMl("coreml");
+        CoreMl("coreml"),
+        Bonsai("bonsai");
 
         companion object {
             fun parse(value: String?) = entries.find { it.key == value } ?: ONNX
@@ -88,6 +89,14 @@ data class LocalAiModel(
         val CustomCoreMl = LocalAiModel(
             id = "CUSTOM_CORE_ML",
             type = Type.CoreMl,
+            name = "Custom",
+            size = "NaN",
+            sources = emptyList(),
+        )
+
+        val CustomBonsai = LocalAiModel(
+            id = "CUSTOM_BONSAI",
+            type = Type.Bonsai,
             name = "Custom",
             size = "NaN",
             sources = emptyList(),

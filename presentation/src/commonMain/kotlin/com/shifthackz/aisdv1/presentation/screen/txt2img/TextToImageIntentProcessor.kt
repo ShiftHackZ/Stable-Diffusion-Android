@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.model.PromptTagEditRequest
 import com.shifthackz.aisdv1.presentation.navigation.router.TextToImageRouter
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationAspectRatio
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormConstants
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -172,9 +173,12 @@ internal class TextToImageIntentProcessor(
                 val minSteps = it.falAiModel.minInferenceSteps.takeIf { _ ->
                     it.mode == ServerSource.FAL_AI
                 } ?: MIN_STEPS
-                val maxSteps = it.falAiModel.maxInferenceSteps.takeIf { _ ->
-                    it.mode == ServerSource.FAL_AI
-                } ?: if (it.mode == ServerSource.ARLI_AI) MAX_ARLI_AI_STEPS else MAX_STEPS
+                val maxSteps = when (it.mode) {
+                    ServerSource.FAL_AI -> it.falAiModel.maxInferenceSteps
+                    ServerSource.ARLI_AI -> MAX_ARLI_AI_STEPS
+                    ServerSource.LOCAL_APPLE_BONSAI -> GenerationInputFormConstants.SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
+                    else -> MAX_STEPS
+                }
                 it.copy(samplingSteps = intent.value.coerceIn(minSteps, maxSteps), message = null)
             }
             is TextToImageIntent.UpdateCfgScale -> updateState {

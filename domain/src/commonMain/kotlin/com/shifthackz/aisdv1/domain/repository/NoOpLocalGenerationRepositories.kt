@@ -131,3 +131,36 @@ object NoOpCoreMlGenerationRepository : CoreMlGenerationRepository {
      */
     override suspend fun interruptGeneration() = Unit
 }
+
+/**
+ * Provides the `NoOpBonsaiGenerationRepository` singleton used by the SDAI domain layer.
+ *
+ * @throws IllegalStateException when the current state is invalid.
+ * @author Dmitriy Moroz
+ */
+object NoOpBonsaiGenerationRepository : BonsaiGenerationRepository {
+    /**
+     * Loads SDAI data through `observeStatus`.
+     *
+     * @return Result produced by `observeStatus`.
+     * @author Dmitriy Moroz
+     */
+    override fun observeStatus(): Flow<LocalDiffusionStatus> =
+        flowOf(LocalDiffusionStatus(current = 0, total = 0))
+
+    /**
+     * Executes the `generateFromText` step in the SDAI domain layer.
+     *
+     * @param payload generation payload used by the operation.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun generateFromText(payload: TextToImagePayload) =
+        error("Bonsai Image generation is available on iOS only.")
+
+    /**
+     * Performs the SDAI side effect handled by `interruptGeneration`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override suspend fun interruptGeneration() = Unit
+}

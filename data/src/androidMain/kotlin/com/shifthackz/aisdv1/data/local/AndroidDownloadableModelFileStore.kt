@@ -31,6 +31,7 @@ internal class AndroidDownloadableModelFileStore(
             LocalAiModel.CustomMediaPipe.id,
             LocalAiModel.CustomSdxl.id,
             LocalAiModel.CustomCoreMl.id,
+            LocalAiModel.CustomBonsai.id,
             -> true
 
             else -> when (model.type) {
@@ -50,6 +51,11 @@ internal class AndroidDownloadableModelFileStore(
                 }
 
                 LocalAiModel.Type.CoreMl -> {
+                    val files = getLocalModelFiles(model.id)
+                    files.isNotEmpty()
+                }
+
+                LocalAiModel.Type.Bonsai -> {
                     val files = getLocalModelFiles(model.id)
                     files.isNotEmpty()
                 }

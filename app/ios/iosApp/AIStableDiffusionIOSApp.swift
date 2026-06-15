@@ -3,6 +3,7 @@ import SwiftUI
 @main
 struct AIStableDiffusionIOSApp: App {
     init() {
+        SiliconDiffusionBonsaiRuntimeRegistration.registerIfAvailable()
         SiliconDiffusionCoreMLRuntimeRegistration.registerIfAvailable()
     }
 

@@ -102,6 +102,11 @@ internal fun ServerSetupState.validateServerSetup(
         isValid = localCoreMlModels.any { it.selected && it.downloaded },
         state = this,
     )
+
+    ServerSource.LOCAL_APPLE_BONSAI -> ServerSetupValidationResult(
+        isValid = localBonsaiModels.any { it.selected && it.downloaded },
+        state = this,
+    )
 }
 
 private fun ServerSetupState.validateApiKey(

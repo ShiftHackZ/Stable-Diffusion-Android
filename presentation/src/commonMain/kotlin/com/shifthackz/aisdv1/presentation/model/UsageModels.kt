@@ -39,6 +39,7 @@ enum class UsageCategory {
     MODELS_MEDIAPIPE,
     MODELS_SDXL,
     MODELS_CORE_ML,
+    MODELS_BONSAI,
     TRAFFIC_MODELS,
     TRAFFIC_CONFIGS,
     TRAFFIC_INFERENCE,
@@ -131,6 +132,7 @@ fun UsageCategory.isStorageCategory(): Boolean = when (this) {
     UsageCategory.MODELS_MEDIAPIPE,
     UsageCategory.MODELS_SDXL,
     UsageCategory.MODELS_CORE_ML,
+    UsageCategory.MODELS_BONSAI,
     -> true
 
     UsageCategory.TRAFFIC_MODELS,
@@ -149,6 +151,7 @@ fun UsageCategory.isModelCategory(): Boolean = when (this) {
     UsageCategory.MODELS_MEDIAPIPE,
     UsageCategory.MODELS_SDXL,
     UsageCategory.MODELS_CORE_ML,
+    UsageCategory.MODELS_BONSAI,
     -> true
 
     UsageCategory.CACHE,
@@ -170,7 +173,8 @@ fun List<ServerSource>.shouldUseCoreMlModelStoreFallback(): Boolean =
     ServerSource.LOCAL_APPLE_CORE_ML in this &&
         ServerSource.LOCAL_MICROSOFT_ONNX !in this &&
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE !in this &&
-        ServerSource.LOCAL_STABLE_DIFFUSION_CPP !in this
+        ServerSource.LOCAL_STABLE_DIFFUSION_CPP !in this &&
+        ServerSource.LOCAL_APPLE_BONSAI !in this
 
 /**
  * Estimates persisted text payload size for gallery records stored as strings.
