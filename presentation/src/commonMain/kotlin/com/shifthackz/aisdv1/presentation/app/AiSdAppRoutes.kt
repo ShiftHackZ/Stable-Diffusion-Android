@@ -58,6 +58,7 @@ import org.koin.core.parameter.parametersOf
  * @param router Root router shared by home tabs.
  * @param buildInfoProvider Build metadata consumed by scaffold-level UI.
  * @param preferenceManager Preferences source consumed by scaffold-level UI.
+ * @param showHomeChrome Whether bottom tabs and home-level chrome should be visible.
  * @param textToImageViewModel Shared Text-to-Image ViewModel kept alive with its tab.
  * @param imageToImageViewModel Shared Image-to-Image ViewModel kept alive with its tab.
  *
@@ -71,6 +72,7 @@ internal fun HomeRoutesScaffold(
     router: RootAppRouter,
     buildInfoProvider: BuildInfoProvider,
     preferenceManager: PreferenceManager,
+    showHomeChrome: Boolean = true,
     textToImageViewModel: TextToImageViewModel,
     imageToImageViewModel: ImageToImageViewModel,
 ) {
@@ -79,6 +81,7 @@ internal fun HomeRoutesScaffold(
         router = router,
         buildInfoProvider = buildInfoProvider,
         preferenceManager = preferenceManager,
+        showHomeChrome = showHomeChrome,
     ) { contentModifier ->
         Box(modifier = contentModifier.fillMaxSize()) {
             HomeRouteSlot(

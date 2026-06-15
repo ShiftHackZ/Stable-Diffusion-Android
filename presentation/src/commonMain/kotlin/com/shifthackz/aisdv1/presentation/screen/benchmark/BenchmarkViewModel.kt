@@ -215,6 +215,7 @@ private fun ServerSource.displayName(): String = when (this) {
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> Localization.string("srv_type_sdxl_short")
     ServerSource.LOCAL_APPLE_CORE_ML -> "Core ML"
+    ServerSource.LOCAL_APPLE_BONSAI -> "Silicon Diffusion PrismML Bonsai"
     ServerSource.HORDE -> Localization.string("srv_type_horde_short")
     ServerSource.HUGGING_FACE -> Localization.string("srv_type_hugging_face_short")
     ServerSource.OPEN_AI -> Localization.string("srv_type_open_ai")

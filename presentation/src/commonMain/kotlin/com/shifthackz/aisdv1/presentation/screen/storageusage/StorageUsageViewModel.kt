@@ -7,6 +7,7 @@ import com.shifthackz.aisdv1.core.mvi.EmptyEffect
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalBonsaiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
@@ -61,6 +62,7 @@ class StorageUsageViewModel(
     private val getLocalMediaPipeModelsUseCase: GetLocalMediaPipeModelsUseCase,
     private val getLocalSdxlModelsUseCase: GetLocalSdxlModelsUseCase,
     private val getLocalCoreMlModelsUseCase: GetLocalCoreMlModelsUseCase,
+    private val getLocalBonsaiModelsUseCase: GetLocalBonsaiModelsUseCase,
     private val deleteModelUseCase: DeleteModelUseCase,
     private val storageUsageObserver: StorageUsageObserver,
     private val buildInfoProvider: BuildInfoProvider,
@@ -132,7 +134,9 @@ class StorageUsageViewModel(
         val mediaPipeModels = getDownloadedModels(getLocalMediaPipeModelsUseCase::invoke)
         val sdxlModels = getDownloadedModels(getLocalSdxlModelsUseCase::invoke)
         val coreMlModels = getDownloadedModels(getLocalCoreMlModelsUseCase::invoke)
+        val bonsaiModels = getDownloadedModels(getLocalBonsaiModelsUseCase::invoke)
         val coreMlModelIds = coreMlModels.map(LocalAiModel::id)
+        val bonsaiModelIds = bonsaiModels.map(LocalAiModel::id)
         val allowedModes = buildInfoProvider.setupAllowedModes()
         val items = buildList {
             add(
@@ -193,6 +197,17 @@ class StorageUsageViewModel(
                             ),
                         ),
                         modelIds = coreMlModelIds,
+                    ),
+                )
+            }
+            if (ServerSource.LOCAL_APPLE_BONSAI in allowedModes) {
+                add(
+                    UsageItem(
+                        category = UsageCategory.MODELS_BONSAI,
+                        bytes = platformActions.mapStorageBytesForUi(
+                            platformActions.getDownloadedModelsBytes(bonsaiModelIds),
+                        ),
+                        modelIds = bonsaiModelIds,
                     ),
                 )
             }
@@ -300,6 +315,7 @@ class StorageUsageViewModel(
             UsageCategory.MODELS_MEDIAPIPE,
             UsageCategory.MODELS_SDXL,
             UsageCategory.MODELS_CORE_ML,
+            UsageCategory.MODELS_BONSAI,
             -> currentState.usage.items
                 .firstOrNull { it.category == category }
                 ?.modelIds
@@ -365,4 +381,5 @@ private val customModelIds = setOf(
     LocalAiModel.CustomMediaPipe.id,
     LocalAiModel.CustomSdxl.id,
     LocalAiModel.CustomCoreMl.id,
+    LocalAiModel.CustomBonsai.id,
 )

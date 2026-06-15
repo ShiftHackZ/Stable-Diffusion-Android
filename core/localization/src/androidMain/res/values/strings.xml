@@ -117,6 +117,7 @@
     <string name="srv_type_media_pipe_short" translatable="false">MediaPipe</string>
     <string name="srv_type_sdxl" translatable="false">Local Diffusion stable-diffusion.cpp SDXL (Experimental)</string>
     <string name="srv_type_sdxl_short" translatable="false">SDXL</string>
+    <string name="srv_type_bonsai_short" translatable="false">Bonsai</string>
     <string name="srv_type_hugging_face" translatable="false">Hugging Face Inference</string>
     <string name="srv_type_hugging_face_short" translatable="false">HuggingFace</string>
     <string name="srv_type_open_ai" translatable="false">OpenAI</string>
@@ -262,6 +263,7 @@
     <string name="hint_sdxl_title" translatable="false">Local Diffusion SDXL</string>
     <string name="hint_sdxl_sub_title">This configuration uses stable-diffusion.cpp and allows to run SDXL, SDXL-Turbo, LCM, or quantized GGUF models on your phone.</string>
     <string name="hint_core_ml_sub_title">Local generation on iPhone.</string>
+    <string name="hint_bonsai_sub_title">Local Bonsai Image 4B generation on iPhone.</string>
 
     <string name="drawer_web_ui">Web UI</string>
 
@@ -358,6 +360,7 @@
     <string name="settings_usage_category_models_mediapipe">MediaPipe models</string>
     <string name="settings_usage_category_models_sdxl">SDXL models</string>
     <string name="settings_usage_category_models_core_ml">Core ML models</string>
+    <string name="settings_usage_category_models_bonsai">Bonsai models</string>
     <string name="settings_usage_category_traffic_models">AI model downloads</string>
     <string name="settings_usage_category_traffic_configs">Config sync</string>
     <string name="settings_usage_category_traffic_inference">Inference</string>
@@ -371,6 +374,7 @@
     <string name="settings_usage_summary_models_mediapipe">MediaPipe models</string>
     <string name="settings_usage_summary_models_sdxl">SDXL models</string>
     <string name="settings_usage_summary_models_core_ml">Core ML models</string>
+    <string name="settings_usage_summary_models_bonsai">Bonsai models</string>
     <string name="settings_usage_clear_category">Clear %1$s</string>
     <string name="settings_usage_clear_all_storage">Clear all %1$s</string>
     <string name="settings_usage_reset_network">Reset statistics</string>
@@ -462,6 +466,7 @@
     <string name="error_localhost_url">You can not use localhost (127.0.0.1) URL to connect to server.</string>
     <string name="error_min_size">Minimum size is %1$s</string>
     <string name="error_max_size">Maximum size is %1$s</string>
+    <string name="error_size_multiple">Size must be divisible by %1$s</string>
     <string name="error_download_fail">Download failed</string>
     <string name="error_generic">Something wrong happened while processing your request, please try again later.</string>
 
@@ -568,7 +573,7 @@
     <string name="settings_item_benchmark">Benchmark</string>
     <string name="title_benchmark">Benchmark</string>
     <string name="benchmark_run">Run benchmark</string>
-    <string name="benchmark_running">Running benchmark...</string>
+    <string name="benchmark_running">Running benchmark…</string>
     <string name="benchmark_running_title">Running benchmark</string>
     <string name="benchmark_running_sub_title">Measuring a safe inference-like CPU and memory workload.</string>
     <string name="benchmark_no_results">No results yet</string>

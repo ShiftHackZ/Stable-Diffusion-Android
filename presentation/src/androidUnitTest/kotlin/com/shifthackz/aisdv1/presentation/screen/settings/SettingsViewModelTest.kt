@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.caching.ClearAppCacheUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalBonsaiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
@@ -67,6 +68,7 @@ class SettingsViewModelTest {
     private val getLocalMediaPipeModelsUseCase = mockk<GetLocalMediaPipeModelsUseCase>()
     private val getLocalSdxlModelsUseCase = mockk<GetLocalSdxlModelsUseCase>()
     private val getLocalCoreMlModelsUseCase = mockk<GetLocalCoreMlModelsUseCase>()
+    private val getLocalBonsaiModelsUseCase = mockk<GetLocalBonsaiModelsUseCase>()
     private val observeNetworkUsageUseCase = mockk<ObserveNetworkUsageUseCase>()
     private val preferenceManager = mockk<PreferenceManager>(relaxed = true)
     private val router = TestSettingsRouter()
@@ -86,6 +88,7 @@ class SettingsViewModelTest {
         coEvery { getLocalMediaPipeModelsUseCase() } returns emptyList()
         coEvery { getLocalSdxlModelsUseCase() } returns emptyList()
         coEvery { getLocalCoreMlModelsUseCase() } returns emptyList()
+        coEvery { getLocalBonsaiModelsUseCase() } returns emptyList()
         every { observeStabilityAiCreditsUseCase() } returns stabilityCredits
         every { observeNetworkUsageUseCase() } returns networkUsage
         every { preferenceManager.observe() } returns settings
@@ -244,6 +247,7 @@ class SettingsViewModelTest {
             getLocalMediaPipeModelsUseCase = getLocalMediaPipeModelsUseCase,
             getLocalSdxlModelsUseCase = getLocalSdxlModelsUseCase,
             getLocalCoreMlModelsUseCase = getLocalCoreMlModelsUseCase,
+            getLocalBonsaiModelsUseCase = getLocalBonsaiModelsUseCase,
             observeNetworkUsageUseCase = observeNetworkUsageUseCase,
             storageUsageObserver = storageUsageObserver,
             preferenceManager = preferenceManager,

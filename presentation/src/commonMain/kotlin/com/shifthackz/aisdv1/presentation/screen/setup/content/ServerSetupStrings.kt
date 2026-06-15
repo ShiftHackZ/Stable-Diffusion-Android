@@ -98,6 +98,8 @@ data class ServerSetupStrings(
     val sdxlSubtitle: String = Localization.string("hint_sdxl_sub_title"),
     val coreMlTitle: String = "Silicon Diffusion Core ML",
     val coreMlSubtitle: String = Localization.string("hint_core_ml_sub_title"),
+    val bonsaiTitle: String = "Silicon Diffusion PrismML Bonsai",
+    val bonsaiSubtitle: String = Localization.string("hint_bonsai_sub_title"),
     val localWarning: String = Localization.string("hint_local_diffusion_warning"),
     val localCustomSwitch: String = Localization.string("model_local_custom_switch"),
     val localPermissionHeader: String = Localization.string("model_local_permission_header"),

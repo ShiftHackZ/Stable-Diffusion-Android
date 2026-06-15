@@ -321,7 +321,8 @@ data class TextToImageState(
         get() = mode == ServerSource.LOCAL_MICROSOFT_ONNX ||
             mode == ServerSource.LOCAL_GOOGLE_MEDIA_PIPE ||
             mode == ServerSource.LOCAL_STABLE_DIFFUSION_CPP ||
-            mode == ServerSource.LOCAL_APPLE_CORE_ML
+            mode == ServerSource.LOCAL_APPLE_CORE_ML ||
+            mode == ServerSource.LOCAL_APPLE_BONSAI
 
     val hasValidationErrors: Boolean
         get() = promptValidationError != null ||
@@ -343,11 +344,13 @@ internal fun TextToImageState.mapToPayload(): TextToImagePayload = TextToImagePa
     width = when (mode) {
         ServerSource.OPEN_AI -> openAiSize.width
         ServerSource.FAL_AI -> falAiImageSize.width
+        ServerSource.LOCAL_APPLE_BONSAI -> width.toIntOrNull() ?: BONSAI_DEFAULT_SIZE
         else -> width.toIntOrNull() ?: DEFAULT_SIZE
     },
     height = when (mode) {
         ServerSource.OPEN_AI -> openAiSize.height
         ServerSource.FAL_AI -> falAiImageSize.height
+        ServerSource.LOCAL_APPLE_BONSAI -> height.toIntOrNull() ?: BONSAI_DEFAULT_SIZE
         else -> height.toIntOrNull() ?: DEFAULT_SIZE
     },
     restoreFaces = restoreFaces,
@@ -361,11 +364,13 @@ internal fun TextToImageState.mapToPayload(): TextToImagePayload = TextToImagePa
     nsfw = if (
         mode == ServerSource.HORDE ||
         mode == ServerSource.LOCAL_APPLE_CORE_ML ||
+        mode == ServerSource.LOCAL_APPLE_BONSAI ||
         mode == ServerSource.FAL_AI
     ) nsfw else false,
     batchCount = if (
         mode == ServerSource.LOCAL_MICROSOFT_ONNX ||
-        mode == ServerSource.LOCAL_STABLE_DIFFUSION_CPP
+        mode == ServerSource.LOCAL_STABLE_DIFFUSION_CPP ||
+        mode == ServerSource.LOCAL_APPLE_BONSAI
     ) {
         1
     } else {

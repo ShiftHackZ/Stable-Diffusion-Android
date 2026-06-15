@@ -19,6 +19,7 @@ import com.shifthackz.aisdv1.domain.usecase.arliai.FetchAndGetArliAiModelsUseCas
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.forgemodule.GetForgeModulesUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveBonsaiProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveCoreMlProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
@@ -126,6 +127,12 @@ class TextToImageViewModel(
      * @author Dmitriy Moroz
      */
     private val observeCoreMlProcessStatusUseCase: ObserveCoreMlProcessStatusUseCase,
+    /**
+     * Exposes the `observeBonsaiProcessStatusUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val observeBonsaiProcessStatusUseCase: ObserveBonsaiProcessStatusUseCase,
     /**
      * Exposes the `preferenceManager` value used by the SDAI presentation layer.
      *
@@ -345,6 +352,11 @@ class TextToImageViewModel(
         }
         launch(dispatchersProvider.immediate) {
             observeCoreMlProcessStatusUseCase().collect { status ->
+                updateLocalGenerationStatus(status)
+            }
+        }
+        launch(dispatchersProvider.immediate) {
+            observeBonsaiProcessStatusUseCase().collect { status ->
                 updateLocalGenerationStatus(status)
             }
         }

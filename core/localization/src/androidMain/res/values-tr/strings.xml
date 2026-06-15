@@ -236,6 +236,7 @@
     <string name="hint_mediapipe_sub_title">Bu yapılandırma Google AI MediaPipe çalışma zamanını kullanır ve uzak bir sunucuya/buluta bağlanmaya gerek kalmadan telefonunuzda Stable Diffusion AI nesillerini çalıştırmanıza olanak tanır.</string>
     <string name="hint_sdxl_sub_title">Bu yapılandırma stable-diffusion.cpp kullanır ve telefonunuzda SDXL, SDXL-Turbo, LCM veya kuantize GGUF modellerini çalıştırmanızı sağlar.</string>
     <string name="hint_core_ml_sub_title">iPhone üzerinde yerel üretim.</string>
+    <string name="hint_bonsai_sub_title">iPhone üzerinde yerel Bonsai Image 4B üretimi.</string>
 
     <string name="drawer_web_ui">Web arayüzü</string>
 
@@ -330,6 +331,7 @@
     <string name="settings_usage_category_models_mediapipe">MediaPipe modelleri</string>
     <string name="settings_usage_category_models_sdxl">SDXL modelleri</string>
     <string name="settings_usage_category_models_core_ml">Core ML modelleri</string>
+    <string name="settings_usage_category_models_bonsai">Bonsai modelleri</string>
     <string name="settings_usage_category_traffic_models">AI model indirmeleri</string>
     <string name="settings_usage_category_traffic_configs">Yapılandırma senkronizasyonu</string>
     <string name="settings_usage_category_traffic_inference">Inference</string>
@@ -343,6 +345,7 @@
     <string name="settings_usage_summary_models_mediapipe">MediaPipe modelleri</string>
     <string name="settings_usage_summary_models_sdxl">SDXL modelleri</string>
     <string name="settings_usage_summary_models_core_ml">Core ML modelleri</string>
+    <string name="settings_usage_summary_models_bonsai">Bonsai modelleri</string>
     <string name="settings_usage_clear_category">%1$s temizle</string>
     <string name="settings_usage_clear_all_storage">Tümünü temizle %1$s</string>
     <string name="settings_usage_reset_network">İstatistikleri sıfırla</string>
@@ -434,6 +437,7 @@
     <string name="error_localhost_url">Sunucuya bağlanmak için localhost (127.0.0.1) URL adresi kullanamazsınız.</string>
     <string name="error_min_size">Asgari boyut %1$s</string>
     <string name="error_max_size">Azami boyut %1$s</string>
+    <string name="error_size_multiple">Boyut %1$s ile bölünebilir olmalıdır</string>
     <string name="error_download_fail">Yükleme başarısız</string>
     <string name="error_generic">İsteğiniz işlenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.</string>
 

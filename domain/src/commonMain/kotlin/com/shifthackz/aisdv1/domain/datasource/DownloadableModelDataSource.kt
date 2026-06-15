@@ -70,6 +70,13 @@ sealed interface DownloadableModelDataSource {
          */
         suspend fun getAllCoreMl(): List<LocalAiModel>
         /**
+         * Loads SDAI data through `getAllBonsai`.
+         *
+         * @return Result produced by `getAllBonsai`.
+         * @author Dmitriy Moroz
+         */
+        suspend fun getAllBonsai(): List<LocalAiModel>
+        /**
          * Loads SDAI data through `getById`.
          *
          * @param id identifier of the target entity.
@@ -91,6 +98,13 @@ sealed interface DownloadableModelDataSource {
          * @author Dmitriy Moroz
          */
         suspend fun getSelectedCoreMl(): LocalAiModel
+        /**
+         * Loads SDAI data through `getSelectedBonsai`.
+         *
+         * @return Result produced by `getSelectedBonsai`.
+         * @author Dmitriy Moroz
+         */
+        suspend fun getSelectedBonsai(): LocalAiModel
         /**
          * Loads SDAI data through `getSelectedSdxl`.
          *
@@ -119,6 +133,13 @@ sealed interface DownloadableModelDataSource {
          * @author Dmitriy Moroz
          */
         fun observeAllCoreMl(): Flow<List<LocalAiModel>>
+        /**
+         * Loads SDAI data through `observeAllBonsai`.
+         *
+         * @return Result produced by `observeAllBonsai`.
+         * @author Dmitriy Moroz
+         */
+        fun observeAllBonsai(): Flow<List<LocalAiModel>>
         /**
          * Performs the SDAI side effect handled by `save`.
          *

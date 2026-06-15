@@ -50,6 +50,18 @@ internal const val MIN_CFG_SCALE = 1f
  */
 internal const val MAX_CFG_SCALE = 35f
 /**
+ * Exposes the `BONSAI_DEFAULT_SIZE` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
+internal const val BONSAI_DEFAULT_SIZE = 128
+/**
+ * Exposes the `BONSAI_SIZE_MULTIPLE` value used by the SDAI presentation layer.
+ *
+ * @author Dmitriy Moroz
+ */
+internal const val BONSAI_SIZE_MULTIPLE = 32
+/**
  * Exposes the `MIN_SUB_SEED_STRENGTH` value used by the SDAI presentation layer.
  *
  * @author Dmitriy Moroz
@@ -95,6 +107,10 @@ internal fun TextToImageState.progressModal(
         title = Localization.string("communicating_core_ml_title").asUiText(),
         canCancel = canCancelLocalGeneration,
     )
+    mode == ServerSource.LOCAL_APPLE_BONSAI -> GenerationModal.Generating(
+        title = "Bonsai Image".asUiText(),
+        canCancel = canCancelLocalGeneration,
+    )
     localSourceSelected -> GenerationModal.Generating(canCancel = canCancelLocalGeneration)
     else -> GenerationModal.Communicating()
 }
@@ -138,10 +154,13 @@ internal fun TextToImageState.validated(
         mode == ServerSource.ARLI_AI && arliAiModel.isBlank() -> Localization.string("error_invalid").asUiText()
         else -> null
     }
+    val validateBonsaiDimensions = mode == ServerSource.LOCAL_APPLE_BONSAI
     return copy(
         promptValidationError = null,
-        widthValidationError = widthResult?.errorMessage(),
-        heightValidationError = heightResult?.errorMessage(),
+        widthValidationError = widthResult?.errorMessage()
+            ?: width.bonsaiSizeError().takeIf { validateBonsaiDimensions },
+        heightValidationError = heightResult?.errorMessage()
+            ?: height.bonsaiSizeError().takeIf { validateBonsaiDimensions },
         error = sourceError,
     )
 }
@@ -176,6 +195,12 @@ internal fun ValidationResult<DimensionValidator.Error>.errorMessage(): UiText? 
             -> Localization.string("error_invalid")
         },
     )
+}
+
+private fun String.bonsaiSizeError(): UiText? {
+    val size = toIntOrNull() ?: return null
+    if (size % BONSAI_SIZE_MULTIPLE == 0) return null
+    return UiText.Static(Localization.string("error_size_multiple", BONSAI_SIZE_MULTIPLE))
 }
 
 /**
@@ -230,6 +255,8 @@ internal fun TextToImageState.withSource(
         source == ServerSource.AUTOMATIC1111
     }.orEmpty()
     val arliModels = arliAiModels.orEmpty()
+    val switchingToBonsai = source == ServerSource.LOCAL_APPLE_BONSAI &&
+        mode != ServerSource.LOCAL_APPLE_BONSAI
     return copy(
         mode = source,
         availableSamplers = samplers,
@@ -255,6 +282,16 @@ internal fun TextToImageState.withSource(
             aDetailerRefreshing
         } else {
             false
+        },
+        width = if (switchingToBonsai) {
+            BONSAI_DEFAULT_SIZE.toString()
+        } else {
+            width
+        },
+        height = if (switchingToBonsai) {
+            BONSAI_DEFAULT_SIZE.toString()
+        } else {
+            height
         },
     )
 }

@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.file.LOCAL_DIFFUSION_CUSTOM_PATH
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.presentation.screen.setup.component.SettingsAction
 import com.shifthackz.aisdv1.presentation.screen.setup.component.SwitchRow
 import com.shifthackz.aisdv1.presentation.screen.setup.component.isCustom
 import com.shifthackz.aisdv1.presentation.screen.setup.component.message
@@ -113,6 +112,7 @@ internal fun ConfigurationStep(
                 ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
                 ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
                 ServerSource.LOCAL_APPLE_CORE_ML,
+                ServerSource.LOCAL_APPLE_BONSAI,
                 -> LocalGenerationForm(
                     state = state,
                     strings = strings,
@@ -137,19 +137,22 @@ internal fun LocalGenerationForm(
                 ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeTitle
                 ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlTitle
                 ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlTitle
+                ServerSource.LOCAL_APPLE_BONSAI -> strings.bonsaiTitle
                 else -> strings.localDiffusionTitle
             },
             subtitle = when (state.mode) {
                 ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeSubtitle
                 ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlSubtitle
                 ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlSubtitle
+                ServerSource.LOCAL_APPLE_BONSAI -> strings.bonsaiSubtitle
                 else -> strings.localDiffusionSubtitle
             },
         )
         HintText(text = strings.localWarning)
         if (
             state.allowLocalCustomModels &&
-            state.mode != ServerSource.LOCAL_APPLE_CORE_ML
+            state.mode != ServerSource.LOCAL_APPLE_CORE_ML &&
+            state.mode != ServerSource.LOCAL_APPLE_BONSAI
         ) {
             SwitchRow(
                 icon = Icons.Outlined.Landslide,

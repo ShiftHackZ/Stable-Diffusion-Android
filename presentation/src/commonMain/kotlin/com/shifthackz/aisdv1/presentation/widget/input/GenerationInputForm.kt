@@ -63,7 +63,8 @@ fun GenerationInputForm(
                 ServerSource.HUGGING_FACE,
                 ServerSource.LOCAL_MICROSOFT_ONNX,
                 ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
-                ServerSource.LOCAL_APPLE_CORE_ML -> EngineSelectionComponent(
+                ServerSource.LOCAL_APPLE_CORE_ML,
+                ServerSource.LOCAL_APPLE_BONSAI -> EngineSelectionComponent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
@@ -160,7 +161,8 @@ fun GenerationInputForm(
             ServerSource.ARLI_AI,
             ServerSource.LOCAL_MICROSOFT_ONNX,
             ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
-            ServerSource.LOCAL_APPLE_CORE_ML -> {
+            ServerSource.LOCAL_APPLE_CORE_ML,
+            ServerSource.LOCAL_APPLE_BONSAI -> {
                 if (state.formPromptTaggedInput) {
                     ChipTextFieldWithItem(
                         modifier = Modifier
@@ -217,7 +219,8 @@ fun GenerationInputForm(
                 ServerSource.HORDE,
                 ServerSource.LOCAL_MICROSOFT_ONNX,
                 ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
-                ServerSource.LOCAL_APPLE_CORE_ML -> {
+                ServerSource.LOCAL_APPLE_CORE_ML,
+                ServerSource.LOCAL_APPLE_BONSAI -> {
                     DropdownTextField(
                         modifier = localModifier.padding(end = 4.dp),
                         label = Localization.string("width").asUiText(),

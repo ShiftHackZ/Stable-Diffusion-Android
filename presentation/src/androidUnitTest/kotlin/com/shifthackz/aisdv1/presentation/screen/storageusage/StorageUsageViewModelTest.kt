@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalBonsaiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
@@ -48,6 +49,7 @@ class StorageUsageViewModelTest {
     private val getLocalMediaPipeModelsUseCase = mockk<GetLocalMediaPipeModelsUseCase>()
     private val getLocalSdxlModelsUseCase = mockk<GetLocalSdxlModelsUseCase>()
     private val getLocalCoreMlModelsUseCase = mockk<GetLocalCoreMlModelsUseCase>()
+    private val getLocalBonsaiModelsUseCase = mockk<GetLocalBonsaiModelsUseCase>()
     private val deleteModelUseCase = mockk<DeleteModelUseCase>()
     private val storageUsageObserver = StorageUsageObserver()
     private val router = TestStorageUsageRouter()
@@ -64,6 +66,7 @@ class StorageUsageViewModelTest {
         coEvery { getLocalMediaPipeModelsUseCase() } returns emptyList()
         coEvery { getLocalSdxlModelsUseCase() } returns emptyList()
         coEvery { getLocalCoreMlModelsUseCase() } returns emptyList()
+        coEvery { getLocalBonsaiModelsUseCase() } returns emptyList()
         coEvery { deleteModelUseCase(any()) } returns Unit
     }
 
@@ -196,6 +199,7 @@ class StorageUsageViewModelTest {
             getLocalMediaPipeModelsUseCase = getLocalMediaPipeModelsUseCase,
             getLocalSdxlModelsUseCase = getLocalSdxlModelsUseCase,
             getLocalCoreMlModelsUseCase = getLocalCoreMlModelsUseCase,
+            getLocalBonsaiModelsUseCase = getLocalBonsaiModelsUseCase,
             deleteModelUseCase = deleteModelUseCase,
             storageUsageObserver = storageUsageObserver,
             buildInfoProvider = TestBuildInfoProvider,

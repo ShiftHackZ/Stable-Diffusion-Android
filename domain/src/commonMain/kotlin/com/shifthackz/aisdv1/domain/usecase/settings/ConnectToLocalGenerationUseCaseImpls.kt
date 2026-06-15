@@ -169,3 +169,45 @@ internal class ConnectToCoreMlUseCaseImpl(
         setServerConfigurationUseCase(newConfiguration)
     }
 }
+
+/**
+ * Implements `ConnectToBonsaiUseCase` behavior in the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
+internal class ConnectToBonsaiUseCaseImpl(
+    /**
+     * Exposes the `getConfigurationUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val getConfigurationUseCase: GetConfigurationUseCase,
+    /**
+     * Exposes the `setServerConfigurationUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
+) : ConnectToBonsaiUseCase {
+
+    /**
+     * Executes the `invoke` step in the SDAI domain layer.
+     *
+     * @param modelId model id value consumed by the API.
+     * @param modelPath model path value consumed by the API.
+     * @return Result produced by `invoke`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun invoke(
+        modelId: String,
+        modelPath: String,
+    ): Result<Unit> = runCatching {
+        val originalConfiguration = getConfigurationUseCase()
+        val newConfiguration = originalConfiguration.copy(
+            source = ServerSource.LOCAL_APPLE_BONSAI,
+            localBonsaiModelId = modelId,
+            localBonsaiModelPath = modelPath,
+        )
+        setServerConfigurationUseCase(newConfiguration)
+    }
+}

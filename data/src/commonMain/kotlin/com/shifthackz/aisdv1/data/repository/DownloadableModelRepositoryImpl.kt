@@ -97,6 +97,17 @@ internal class DownloadableModelRepositoryImpl(
     }
 
     /**
+     * Loads SDAI data through `getAllBonsai`.
+     *
+     * @return Result produced by `getAllBonsai`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun getAllBonsai(): List<LocalAiModel> {
+        refreshCache()
+        return localDataSource.getAllBonsai()
+    }
+
+    /**
      * Loads SDAI data through `observeAllOnnx`.
      *
      * @author Dmitriy Moroz
@@ -116,6 +127,13 @@ internal class DownloadableModelRepositoryImpl(
      * @author Dmitriy Moroz
      */
     override fun observeAllCoreMl() = localDataSource.observeAllCoreMl()
+
+    /**
+     * Loads SDAI data through `observeAllBonsai`.
+     *
+     * @author Dmitriy Moroz
+     */
+    override fun observeAllBonsai() = localDataSource.observeAllBonsai()
 
     /**
      * Executes the `refreshCache` step in the SDAI data layer.

@@ -27,7 +27,8 @@ internal class IosDownloadableModelFileStore(
             LocalAiModel.CustomOnnx.id,
             LocalAiModel.CustomMediaPipe.id,
             LocalAiModel.CustomSdxl.id,
-            LocalAiModel.CustomCoreMl.id -> true
+            LocalAiModel.CustomCoreMl.id,
+            LocalAiModel.CustomBonsai.id -> true
 
             else -> model.hasDownloadedArchive(
                 archivePath = "${fileProviderDescriptor.localModelDirPath}/${model.id}/$MODEL_ARCHIVE_NAME",

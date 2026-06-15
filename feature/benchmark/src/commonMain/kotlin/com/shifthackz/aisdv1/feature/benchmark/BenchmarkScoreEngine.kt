@@ -209,7 +209,7 @@ private data class WorkloadScore(
     val passes: Int,
 )
 
-private data class IosCoreMlProfile(
+private data class IosLocalGenerationProfile(
     val size: Int,
     val samplingSteps: Int,
     val estimatedTimeSeconds: Int,
@@ -505,14 +505,26 @@ internal object BenchmarkRecommendationPolicy {
         totalScore: Int,
         deviceInfo: BenchmarkDeviceInfo,
     ): Int {
-        if (provider == ServerSource.LOCAL_APPLE_CORE_ML) {
-            return estimateCoreMlWarmGenerationSeconds(
-                width = width,
-                height = height,
-                samplingSteps = samplingSteps,
-                totalScore = totalScore,
-                deviceInfo = deviceInfo,
-            )
+        when (provider) {
+            ServerSource.LOCAL_APPLE_CORE_ML -> {
+                return estimateCoreMlWarmGenerationSeconds(
+                    width = width,
+                    height = height,
+                    samplingSteps = samplingSteps,
+                    totalScore = totalScore,
+                    deviceInfo = deviceInfo,
+                )
+            }
+            ServerSource.LOCAL_APPLE_BONSAI -> {
+                return estimateBonsaiWarmGenerationSeconds(
+                    width = width,
+                    height = height,
+                    samplingSteps = samplingSteps,
+                    totalScore = totalScore,
+                    deviceInfo = deviceInfo,
+                )
+            }
+            else -> Unit
         }
         val pixelFactor = width * height / (512f * 512f)
         val stepFactor = samplingSteps / 20f
@@ -580,47 +592,102 @@ internal object BenchmarkRecommendationPolicy {
     ): List<BenchmarkProviderRecommendation> {
         val ramMb = effectiveRamMb(deviceInfo)
         val hasCoreMl = BenchmarkAccelerator.CORE_ML in deviceInfo.accelerators
-        if (!hasCoreMl) {
-            return listOf(
-                notRecommended(
-                    provider = ServerSource.LOCAL_APPLE_CORE_ML,
-                    issues = listOf(BenchmarkProviderIssue.ACCELERATOR_API_NOT_AVAILABLE),
-                ),
-            )
+        val hasMetal = BenchmarkAccelerator.METAL in deviceInfo.accelerators
+        return buildList {
+            if (hasCoreMl) {
+                val profile = iosCoreMlProfile(
+                    deviceInfo = deviceInfo,
+                    totalScore = totalScore,
+                    ramMb = ramMb,
+                )
+                add(
+                    recommended(
+                        provider = ServerSource.LOCAL_APPLE_CORE_ML,
+                        width = profile.size,
+                        height = profile.size,
+                        samplingSteps = profile.samplingSteps,
+                        cfgScale = 7f,
+                        estimatedTimeSeconds = profile.estimatedTimeSeconds,
+                        backgroundGeneration = profile.backgroundGeneration,
+                    ),
+                )
+            } else {
+                add(
+                    notRecommended(
+                        provider = ServerSource.LOCAL_APPLE_CORE_ML,
+                        issues = listOf(BenchmarkProviderIssue.ACCELERATOR_API_NOT_AVAILABLE),
+                    ),
+                )
+            }
+
+            if (hasMetal) {
+                val profile = iosBonsaiProfile(
+                    deviceInfo = deviceInfo,
+                    totalScore = totalScore,
+                    ramMb = ramMb,
+                )
+                add(
+                    recommended(
+                        provider = ServerSource.LOCAL_APPLE_BONSAI,
+                        width = profile.size,
+                        height = profile.size,
+                        samplingSteps = profile.samplingSteps,
+                        cfgScale = 7f,
+                        estimatedTimeSeconds = profile.estimatedTimeSeconds,
+                        backgroundGeneration = profile.backgroundGeneration,
+                    ),
+                )
+            } else {
+                add(
+                    notRecommended(
+                        provider = ServerSource.LOCAL_APPLE_BONSAI,
+                        issues = listOf(BenchmarkProviderIssue.ACCELERATOR_API_NOT_AVAILABLE),
+                    ),
+                )
+            }
         }
-        val profile = iosCoreMlProfile(
-            deviceInfo = deviceInfo,
-            totalScore = totalScore,
-            ramMb = ramMb,
-        )
-        return listOf(
-            recommended(
-                provider = ServerSource.LOCAL_APPLE_CORE_ML,
-                width = profile.size,
-                height = profile.size,
-                samplingSteps = profile.samplingSteps,
-                cfgScale = 7f,
-                estimatedTimeSeconds = profile.estimatedTimeSeconds,
-                backgroundGeneration = profile.backgroundGeneration,
-            ),
-        )
     }
 
     private fun iosCoreMlProfile(
         deviceInfo: BenchmarkDeviceInfo,
         totalScore: Int,
         ramMb: Long,
-    ): IosCoreMlProfile {
+    ): IosLocalGenerationProfile {
         val (size, steps, backgroundGeneration) = when {
             deviceInfo.isHighEndIosCoreMlDevice(ramMb) -> Triple(512, 50, true)
             ramMb >= 6_000L && totalScore >= 3_000 -> Triple(512, 30, true)
             ramMb >= 4_000L -> Triple(384, 20, false)
             else -> Triple(384, 12, false)
         }
-        return IosCoreMlProfile(
+        return IosLocalGenerationProfile(
             size = size,
             samplingSteps = steps,
             estimatedTimeSeconds = estimateCoreMlWarmGenerationSeconds(
+                width = size,
+                height = size,
+                samplingSteps = steps,
+                totalScore = totalScore,
+                deviceInfo = deviceInfo,
+            ),
+            backgroundGeneration = backgroundGeneration,
+        )
+    }
+
+    private fun iosBonsaiProfile(
+        deviceInfo: BenchmarkDeviceInfo,
+        totalScore: Int,
+        ramMb: Long,
+    ): IosLocalGenerationProfile {
+        val (size, steps, backgroundGeneration) = when {
+            deviceInfo.isHighEndIosCoreMlDevice(ramMb) -> Triple(512, 20, true)
+            ramMb >= 6_000L && totalScore >= 3_000 -> Triple(512, 16, true)
+            ramMb >= 4_000L -> Triple(384, 12, false)
+            else -> Triple(384, 8, false)
+        }
+        return IosLocalGenerationProfile(
+            size = size,
+            samplingSteps = steps,
+            estimatedTimeSeconds = estimateBonsaiWarmGenerationSeconds(
                 width = size,
                 height = size,
                 samplingSteps = steps,
@@ -645,6 +712,26 @@ internal object BenchmarkRecommendationPolicy {
             totalScore >= 4_200 && ramMb >= 6_000L -> 1_300f
             totalScore >= 3_000 && ramMb >= 5_000L -> 1_600f
             else -> 2_100f
+        }
+        return (samplingSteps * millisPerStepAt512 * pixelFactor / 1_000f)
+            .roundToInt()
+            .coerceIn(3, 900)
+    }
+
+    private fun estimateBonsaiWarmGenerationSeconds(
+        width: Int,
+        height: Int,
+        samplingSteps: Int,
+        totalScore: Int,
+        deviceInfo: BenchmarkDeviceInfo,
+    ): Int {
+        val ramMb = effectiveRamMb(deviceInfo)
+        val pixelFactor = width * height / (512f * 512f)
+        val millisPerStepAt512 = when {
+            deviceInfo.isHighEndIosCoreMlDevice(ramMb) -> 870f
+            totalScore >= 4_200 && ramMb >= 6_000L -> 1_050f
+            totalScore >= 3_000 && ramMb >= 5_000L -> 1_350f
+            else -> 1_900f
         }
         return (samplingSteps * millisPerStepAt512 * pixelFactor / 1_000f)
             .roundToInt()

@@ -16,6 +16,7 @@ import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalBonsaiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
@@ -23,6 +24,7 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalSdxlModelsUseCa
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToArliAiUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToBonsaiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToCoreMlUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToFalAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCase
@@ -36,7 +38,6 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSwarmUiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.navigation.router.ServerSetupRouter
-import com.shifthackz.aisdv1.presentation.screen.storageusage.StorageUsageObserver
 import com.shifthackz.aisdv1.presentation.screen.setup.model.HORDE_DEFAULT_API_KEY
 import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupEffect
 import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupIntent
@@ -46,10 +47,8 @@ import com.shifthackz.aisdv1.presentation.screen.setup.platform.ServerSetupDownl
 import com.shifthackz.aisdv1.presentation.screen.setup.reducer.ServerSetupIntentProcessor
 import com.shifthackz.aisdv1.presentation.screen.setup.validation.validateServerSetup
 import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.HUGGING_FACE_MODELS_TIMEOUT_MILLIS
-import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.mapFilePathToValidationError
-import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.mapStringToValidationError
-import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.mapUrlToValidationError
 import com.shifthackz.aisdv1.presentation.screen.setup.viewmodel.setupAllowedModes
+import com.shifthackz.aisdv1.presentation.screen.storageusage.StorageUsageObserver
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
@@ -105,6 +104,7 @@ class ServerSetupViewModel(
     private val getLocalMediaPipeModelsUseCase: GetLocalMediaPipeModelsUseCase,
     private val getLocalSdxlModelsUseCase: GetLocalSdxlModelsUseCase,
     private val getLocalCoreMlModelsUseCase: GetLocalCoreMlModelsUseCase,
+    private val getLocalBonsaiModelsUseCase: GetLocalBonsaiModelsUseCase,
     private val fetchHuggingFaceModelsUseCase: FetchHuggingFaceModelsUseCase,
     private val urlValidator: UrlValidator,
     private val stringValidator: CommonStringValidator,
@@ -117,6 +117,7 @@ class ServerSetupViewModel(
     private val connectToMediaPipeUseCase: ConnectToMediaPipeUseCase,
     private val connectToSdxlUseCase: ConnectToSdxlUseCase,
     private val connectToCoreMlUseCase: ConnectToCoreMlUseCase,
+    private val connectToBonsaiUseCase: ConnectToBonsaiUseCase,
     private val connectToOpenAiUseCase: ConnectToOpenAiUseCase,
     private val connectToStabilityAiUseCase: ConnectToStabilityAiUseCase,
     private val connectToFalAiUseCase: ConnectToFalAiUseCase,
@@ -165,6 +166,11 @@ class ServerSetupViewModel(
                 } else {
                     emptyList()
                 }
+                val bonsaiModels = if (ServerSource.LOCAL_APPLE_BONSAI in allowedModes) {
+                    getLocalBonsaiModelsUseCase()
+                } else {
+                    emptyList()
+                }
                 val models = runCatching {
                     withTimeout(HUGGING_FACE_MODELS_TIMEOUT_MILLIS.milliseconds) {
                         fetchHuggingFaceModelsUseCase()
@@ -181,6 +187,7 @@ class ServerSetupViewModel(
                     localMediaPipeModels = mediaPipeModels,
                     localSdxlModels = sdxlModels,
                     localCoreMlModels = coreMlModels,
+                    localBonsaiModels = bonsaiModels,
                     allowLocalCustomModels = buildInfoProvider.type != BuildType.PLAY,
                     demoModeUrl = linksProvider.demoModeUrl,
                     showBackNavArrow = launchSource == LaunchSource.SETTINGS,
@@ -255,6 +262,7 @@ class ServerSetupViewModel(
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> connectToMediaPipe()
                     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> connectToSdxl()
                     ServerSource.LOCAL_APPLE_CORE_ML -> connectToCoreMl()
+                    ServerSource.LOCAL_APPLE_BONSAI -> connectToBonsai()
                 }
             } catch (t: Throwable) {
                 if (t is CancellationException) throw t
@@ -345,6 +353,13 @@ class ServerSetupViewModel(
         modelId = currentState.localCoreMlModels.find { it.selected }?.id.orEmpty(),
         modelPath = currentState.localCoreMlCustomModelPath,
     )
+
+    private suspend fun connectToBonsai(): Result<Unit> {
+        return connectToBonsaiUseCase(
+            modelId = currentState.localBonsaiModels.find { it.selected }?.id.orEmpty(),
+            modelPath = "",
+        )
+    }
 
     private fun localModelDownloadClickReducer(value: ServerSetupState.LocalModel) {
         fun localModel(): ServerSetupState.LocalModel =

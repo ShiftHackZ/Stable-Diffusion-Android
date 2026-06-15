@@ -313,6 +313,7 @@ internal val ServerSource.displayName: String
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
         ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> Localization.string("srv_type_sdxl_short")
         ServerSource.LOCAL_APPLE_CORE_ML -> "Core ML"
+        ServerSource.LOCAL_APPLE_BONSAI -> "Silicon Diffusion PrismML Bonsai"
     }
 
 /**

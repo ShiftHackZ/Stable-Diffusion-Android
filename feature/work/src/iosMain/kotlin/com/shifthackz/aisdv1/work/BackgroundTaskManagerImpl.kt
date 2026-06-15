@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveBonsaiProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveCoreMlProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
@@ -38,6 +39,7 @@ internal class BackgroundTaskManagerImpl(
     private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
     private val observeCoreMlProcessStatusUseCase: ObserveCoreMlProcessStatusUseCase,
+    private val observeBonsaiProcessStatusUseCase: ObserveBonsaiProcessStatusUseCase,
     private val preferenceManager: PreferenceManager,
 ) : BackgroundTaskManager {
 
@@ -156,6 +158,7 @@ internal class BackgroundTaskManagerImpl(
             ServerSource.HORDE -> listenHordeStatus()
             ServerSource.LOCAL_MICROSOFT_ONNX -> listenLocalDiffusionStatus()
             ServerSource.LOCAL_APPLE_CORE_ML -> listenCoreMlStatus()
+            ServerSource.LOCAL_APPLE_BONSAI -> listenBonsaiStatus()
             else -> Unit
         }
     }
@@ -198,6 +201,16 @@ internal class BackgroundTaskManagerImpl(
     private fun listenCoreMlStatus() {
         statusScope.launch {
             observeCoreMlProcessStatusUseCase()
+                .catch { /* Status updates are best-effort on iOS background work. */ }
+                .collect { status ->
+                    postStepMessage(status.current, status.total)
+                }
+        }
+    }
+
+    private fun listenBonsaiStatus() {
+        statusScope.launch {
+            observeBonsaiProcessStatusUseCase()
                 .catch { /* Status updates are best-effort on iOS background work. */ }
                 .collect { status ->
                     postStepMessage(status.current, status.total)

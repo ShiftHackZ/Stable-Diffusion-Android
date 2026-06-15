@@ -38,7 +38,6 @@ fun AiSdApp() {
     }
     remember(preferenceManager) {
         Localization.setLanguageCode(preferenceManager.languageCode.takeIf(String::isNotBlank))
-        Unit
     }
     val router = remember { RootAppRouter() }
     val route by router.route.collectAsState()
@@ -95,6 +94,7 @@ fun AiSdApp() {
                         router = router,
                         buildInfoProvider = koin.get<BuildInfoProvider>(),
                         preferenceManager = preferenceManager,
+                        showHomeChrome = selectedHomeRoute != null,
                         textToImageViewModel = textToImageViewModel,
                         imageToImageViewModel = imageToImageViewModel,
                     )

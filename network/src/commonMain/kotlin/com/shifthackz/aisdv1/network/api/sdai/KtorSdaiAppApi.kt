@@ -133,6 +133,20 @@ class KtorSdaiAppApi(
         .trackedJsonBody(NetworkUsageCategory.CONFIGS)
 
     /**
+     * Loads SDAI data through `fetchBonsaiModels`.
+     *
+     * @return Result produced by `fetchBonsaiModels`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun fetchBonsaiModels(): List<DownloadableModelResponse> = httpClient
+        .get {
+            url.takeFrom(appBaseUrl)
+            url.appendPathSegments(PATH_BONSAI)
+            trackUsage(NetworkUsageCategory.CONFIGS)
+        }
+        .trackedJsonBody(NetworkUsageCategory.CONFIGS)
+
+    /**
      * Executes the `postReport` step in the SDAI network layer.
      *
      * @param request request value consumed by the API.
@@ -183,6 +197,12 @@ class KtorSdaiAppApi(
          * @author Dmitriy Moroz
          */
         const val PATH_CORE_ML = "coreml.json"
+        /**
+         * Exposes the `PATH_BONSAI` value used by the SDAI network layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val PATH_BONSAI = "bonsai.json"
         /**
          * Exposes the `PATH_REPORT` value used by the SDAI network layer.
          *

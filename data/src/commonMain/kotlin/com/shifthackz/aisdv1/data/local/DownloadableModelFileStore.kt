@@ -59,7 +59,8 @@ internal object NoOpDownloadableModelFileStore : DownloadableModelFileStore {
         model.id == LocalAiModel.CustomOnnx.id ||
             model.id == LocalAiModel.CustomMediaPipe.id ||
             model.id == LocalAiModel.CustomSdxl.id ||
-            model.id == LocalAiModel.CustomCoreMl.id
+            model.id == LocalAiModel.CustomCoreMl.id ||
+            model.id == LocalAiModel.CustomBonsai.id
 
     /**
      * Loads SDAI data through `resolvePath`.

@@ -55,6 +55,13 @@ interface DownloadableModelRepository {
      */
     suspend fun getAllCoreMl(): List<LocalAiModel>
     /**
+     * Loads SDAI data through `getAllBonsai`.
+     *
+     * @return Result produced by `getAllBonsai`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun getAllBonsai(): List<LocalAiModel>
+    /**
      * Loads SDAI data through `observeAllOnnx`.
      *
      * @return Result produced by `observeAllOnnx`.
@@ -75,4 +82,11 @@ interface DownloadableModelRepository {
      * @author Dmitriy Moroz
      */
     fun observeAllCoreMl(): Flow<List<LocalAiModel>>
+    /**
+     * Loads SDAI data through `observeAllBonsai`.
+     *
+     * @return Result produced by `observeAllBonsai`.
+     * @author Dmitriy Moroz
+     */
+    fun observeAllBonsai(): Flow<List<LocalAiModel>>
 }

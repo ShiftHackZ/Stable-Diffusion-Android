@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
 import com.shifthackz.aisdv1.presentation.navigation.router.ConfigurationLoaderRouter
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Coordinates `ConfigurationLoaderViewModel` behavior in the SDAI presentation layer.
@@ -62,7 +63,7 @@ class ConfigurationLoaderViewModel(
             runCatching {
                 val configuration = getConfigurationUseCase()
                 if (configuration.requiresRemotePreload()) {
-                    withTimeout(STARTUP_PRELOAD_TIMEOUT_MILLIS) {
+                    withTimeout(STARTUP_PRELOAD_TIMEOUT_MILLIS.milliseconds) {
                         dataPreLoaderUseCase()
                     }
                 }
@@ -108,6 +109,7 @@ private fun Configuration.requiresRemotePreload(): Boolean = when (source) {
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
     ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
     ServerSource.LOCAL_APPLE_CORE_ML,
+    ServerSource.LOCAL_APPLE_BONSAI,
     -> false
 }
 

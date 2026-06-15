@@ -261,6 +261,7 @@
     <string name="hint_mediapipe_sub_title">此配置使用 Google AI MediaPipe 运行时，您可以在手机端运行 Stable Diffusion AI 的生成功能，而无需连接至远程服务器/云。</string>
     <string name="hint_sdxl_sub_title">此配置使用 stable-diffusion.cpp，可在手机上运行 SDXL、SDXL-Turbo、LCM 或量化 GGUF 模型。</string>
     <string name="hint_core_ml_sub_title">在 iPhone 上进行本地生成。</string>
+    <string name="hint_bonsai_sub_title">在 iPhone 上进行本地 Bonsai Image 4B 生成。</string>
 
     <!-- 抽屉 -->
     <string name="drawer_web_ui">网络界面</string>
@@ -363,6 +364,7 @@
     <string name="settings_usage_category_models_mediapipe">MediaPipe 模型</string>
     <string name="settings_usage_category_models_sdxl">SDXL 模型</string>
     <string name="settings_usage_category_models_core_ml">Core ML 模型</string>
+    <string name="settings_usage_category_models_bonsai">Bonsai 模型</string>
     <string name="settings_usage_category_traffic_models">AI 模型下载</string>
     <string name="settings_usage_category_traffic_configs">配置同步</string>
     <string name="settings_usage_category_traffic_inference">推理</string>
@@ -376,6 +378,7 @@
     <string name="settings_usage_summary_models_mediapipe">MediaPipe 模型</string>
     <string name="settings_usage_summary_models_sdxl">SDXL 模型</string>
     <string name="settings_usage_summary_models_core_ml">Core ML 模型</string>
+    <string name="settings_usage_summary_models_bonsai">Bonsai 模型</string>
     <string name="settings_usage_clear_category">清除 %1$s</string>
     <string name="settings_usage_clear_all_storage">全部清除 %1$s</string>
     <string name="settings_usage_reset_network">重置统计</string>
@@ -479,6 +482,7 @@
     <string name="error_localhost_url">您不能使用本地主机 (127.0.0.1)URL 来连接到服务器。</string>
     <string name="error_min_size">最小尺寸为 %1$s</string>
     <string name="error_max_size">最大尺寸为 %1$s</string>
+    <string name="error_size_multiple">尺寸必须能被 %1$s 整除</string>
     <string name="error_download_fail">下载失败</string>
     <string name="error_generic">处理您的请求时发生错误，请稍后再试。</string>
 

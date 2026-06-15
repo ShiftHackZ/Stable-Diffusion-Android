@@ -827,6 +827,7 @@ fun UsageCategory.title(): String = Localization.string(
         UsageCategory.MODELS_MEDIAPIPE -> "settings_usage_category_models_mediapipe"
         UsageCategory.MODELS_SDXL -> "settings_usage_category_models_sdxl"
         UsageCategory.MODELS_CORE_ML -> "settings_usage_category_models_core_ml"
+        UsageCategory.MODELS_BONSAI -> "settings_usage_category_models_bonsai"
         UsageCategory.TRAFFIC_MODELS -> "settings_usage_category_traffic_models"
         UsageCategory.TRAFFIC_CONFIGS -> "settings_usage_category_traffic_configs"
         UsageCategory.TRAFFIC_INFERENCE -> "settings_usage_category_traffic_inference"
@@ -846,6 +847,7 @@ fun UsageCategory.summaryTitle(): String = Localization.string(
         UsageCategory.MODELS_MEDIAPIPE -> "settings_usage_summary_models_mediapipe"
         UsageCategory.MODELS_SDXL -> "settings_usage_summary_models_sdxl"
         UsageCategory.MODELS_CORE_ML -> "settings_usage_summary_models_core_ml"
+        UsageCategory.MODELS_BONSAI -> "settings_usage_summary_models_bonsai"
         UsageCategory.TRAFFIC_MODELS -> "settings_usage_category_traffic_models"
         UsageCategory.TRAFFIC_CONFIGS -> "settings_usage_category_traffic_configs"
         UsageCategory.TRAFFIC_INFERENCE -> "settings_usage_category_traffic_inference"
@@ -859,6 +861,7 @@ private fun UsageCategory.color(): Color = when (this) {
     UsageCategory.MODELS_MEDIAPIPE -> Color(0xFFF04462)
     UsageCategory.MODELS_SDXL -> Color(0xFF59C96B)
     UsageCategory.MODELS_CORE_ML -> Color(0xFF7E66E8)
+    UsageCategory.MODELS_BONSAI -> Color(0xFF2DB7A3)
     UsageCategory.TRAFFIC_MODELS -> Color(0xFF3D8BFF)
     UsageCategory.TRAFFIC_CONFIGS -> Color(0xFF65C96F)
     UsageCategory.TRAFFIC_INFERENCE -> Color(0xFFF0A13A)

@@ -10,8 +10,10 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.StabilityAiEngine
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionModel
 import com.shifthackz.aisdv1.domain.entity.SwarmUiModel
+import com.shifthackz.aisdv1.domain.feature.bonsai.BonsaiModelSupport
 import com.shifthackz.aisdv1.domain.feature.coreml.CoreMlModelSupport
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalBonsaiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalCoreMlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.ObserveLocalSdxlModelsUseCase
@@ -60,6 +62,12 @@ class EngineSelectionViewModel(
      * @author Dmitriy Moroz
      */
     private val observeLocalCoreMlModelsUseCase: ObserveLocalCoreMlModelsUseCase,
+    /**
+     * Exposes the `observeLocalBonsaiModelsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val observeLocalBonsaiModelsUseCase: ObserveLocalBonsaiModelsUseCase,
     /**
      * Exposes the `observeLocalSdxlModelsUseCase` value used by the SDAI presentation layer.
      *
@@ -148,6 +156,16 @@ class EngineSelectionViewModel(
                 onError(it)
                 emit(emptyList())
             }
+        val localBonsaiModels = observeLocalBonsaiModelsUseCase()
+            .map { models ->
+                models
+                    .filter(LocalAiModel::downloaded)
+                    .filter(BonsaiModelSupport::isSupported)
+            }
+            .catch {
+                onError(it)
+                emit(emptyList())
+            }
 
         launch(dispatchersProvider.io) {
             configuration
@@ -156,15 +174,20 @@ class EngineSelectionViewModel(
                     Triple(config, localModels, sdxlModels)
                 }
                 .combine(localCoreMlModels) { (config, localModels, sdxlModels), coreMlModels ->
+                    LocalModelOptions(config, localModels, sdxlModels, coreMlModels)
+                }
+                .combine(localBonsaiModels) { localModelOptions, bonsaiModels ->
+                    val config = localModelOptions.config
                     val visibleLocalModels = when (config.source) {
-                        ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> sdxlModels
-                        ServerSource.LOCAL_APPLE_CORE_ML -> coreMlModels
-                        else -> localModels
+                        ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> localModelOptions.sdxlModels
+                        ServerSource.LOCAL_APPLE_CORE_ML -> localModelOptions.coreMlModels
+                        ServerSource.LOCAL_APPLE_BONSAI -> bonsaiModels
+                        else -> localModelOptions.onnxModels
                     }
-                    Triple(config, visibleLocalModels, coreMlModels)
+                    config to visibleLocalModels
                 }
                 .catch { onError(it) }
-                .collectLatest { (config, localModels, _) ->
+                .collectLatest { (config, localModels) ->
                     updateState {
                         it.copy(
                             loading = true,
@@ -239,6 +262,7 @@ class EngineSelectionViewModel(
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
             ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
             ServerSource.LOCAL_APPLE_CORE_ML,
+            ServerSource.LOCAL_APPLE_BONSAI,
             ServerSource.HORDE,
             ServerSource.OPEN_AI,
             ServerSource.FAL_AI,
@@ -257,6 +281,7 @@ class EngineSelectionViewModel(
             ServerSource.LOCAL_MICROSOFT_ONNX -> preferenceManager.localOnnxModelId = intent.value
             ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> preferenceManager.localSdxlModelId = intent.value
             ServerSource.LOCAL_APPLE_CORE_ML -> preferenceManager.localCoreMlModelId = intent.value
+            ServerSource.LOCAL_APPLE_BONSAI -> preferenceManager.localBonsaiModelId = intent.value
             else -> Unit
         }
     }
@@ -319,8 +344,16 @@ private const val REMOTE_OPTIONS_TIMEOUT_MILLIS = 5_000L
 private fun Configuration.selectedLocalModelId(): String = when (source) {
     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> localSdxlModelId
     ServerSource.LOCAL_APPLE_CORE_ML -> localCoreMlModelId
+    ServerSource.LOCAL_APPLE_BONSAI -> localBonsaiModelId
     else -> localOnnxModelId
 }
+
+private data class LocalModelOptions(
+    val config: Configuration,
+    val onnxModels: List<LocalAiModel>,
+    val sdxlModels: List<LocalAiModel>,
+    val coreMlModels: List<LocalAiModel>,
+)
 
 /**
  * Executes the `hasA1111Endpoint` step in the SDAI presentation layer.

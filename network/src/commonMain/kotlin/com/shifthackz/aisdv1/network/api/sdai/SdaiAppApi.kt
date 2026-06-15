@@ -50,6 +50,13 @@ interface SdaiAppApi {
      * @author Dmitriy Moroz
      */
     suspend fun fetchCoreMlModels(): List<DownloadableModelResponse>
+    /**
+     * Loads SDAI data through `fetchBonsaiModels`.
+     *
+     * @return Result produced by `fetchBonsaiModels`.
+     * @author Dmitriy Moroz
+     */
+    suspend fun fetchBonsaiModels(): List<DownloadableModelResponse>
 
     /**
      * Executes the `postReport` step in the SDAI network layer.
