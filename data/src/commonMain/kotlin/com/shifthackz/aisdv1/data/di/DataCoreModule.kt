@@ -2,6 +2,7 @@ package com.shifthackz.aisdv1.data.di
 
 import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
 import com.shifthackz.aisdv1.data.gateway.ServerConnectivityGatewayImpl
+import com.shifthackz.aisdv1.data.local.ArliAiModelsLocalDataSource
 import com.shifthackz.aisdv1.data.local.DownloadableModelFileStore
 import com.shifthackz.aisdv1.data.local.DownloadableModelLocalDataSource
 import com.shifthackz.aisdv1.data.local.EmbeddingsLocalDataSource
@@ -19,6 +20,8 @@ import com.shifthackz.aisdv1.data.provider.ServerUrlProvider
 import com.shifthackz.aisdv1.data.remote.DownloadableModelFileDownloader
 import com.shifthackz.aisdv1.data.remote.DownloadableModelRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.HordeStatusSource
+import com.shifthackz.aisdv1.data.remote.KtorArliAiGenerationRemoteDataSource
+import com.shifthackz.aisdv1.data.remote.KtorArliAiModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorForgeModulesRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorFalAiGenerationRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.KtorHordeGenerationRemoteDataSource
@@ -44,6 +47,8 @@ import com.shifthackz.aisdv1.data.remote.KtorSwarmUiModelsRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.NoOpDownloadableModelFileDownloader
 import com.shifthackz.aisdv1.data.remote.RandomImageRemoteDataSource
 import com.shifthackz.aisdv1.data.remote.ReportRemoteDataSource
+import com.shifthackz.aisdv1.data.repository.ArliAiGenerationRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.ArliAiModelsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.DownloadableModelRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.EmbeddingsRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.FalAiGenerationRepositoryImpl
@@ -71,6 +76,8 @@ import com.shifthackz.aisdv1.data.repository.StableDiffusionScriptsRepositoryImp
 import com.shifthackz.aisdv1.data.repository.SupportersRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.SwarmUiGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.TemporaryGenerationResultRepositoryImpl
+import com.shifthackz.aisdv1.domain.datasource.ArliAiGenerationDataSource
+import com.shifthackz.aisdv1.domain.datasource.ArliAiModelsDataSource
 import com.shifthackz.aisdv1.domain.datasource.DownloadableModelDataSource
 import com.shifthackz.aisdv1.domain.datasource.EmbeddingsDataSource
 import com.shifthackz.aisdv1.domain.datasource.FalAiGenerationDataSource
@@ -107,6 +114,8 @@ import com.shifthackz.aisdv1.domain.gateway.MediaStoreGateway
 import com.shifthackz.aisdv1.domain.gateway.NoOpMediaStoreGateway
 import com.shifthackz.aisdv1.domain.gateway.ServerConnectivityGateway
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.ArliAiGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.ArliAiModelsRepository
 import com.shifthackz.aisdv1.domain.repository.DownloadableModelRepository
 import com.shifthackz.aisdv1.domain.repository.EmbeddingsRepository
 import com.shifthackz.aisdv1.domain.repository.FalAiGenerationRepository
@@ -183,6 +192,9 @@ val coreDataModule = module {
     }
     single<StableDiffusionModelsDataSource.Local> {
         StableDiffusionModelsLocalDataSource(dao = get())
+    }
+    single<ArliAiModelsDataSource.Local> {
+        ArliAiModelsLocalDataSource(dao = get())
     }
     single<StableDiffusionSamplersDataSource.Local> {
         StableDiffusionSamplersLocalDataSource(dao = get())
@@ -330,6 +342,28 @@ val coreDataModule = module {
     }
     single<FalAiGenerationRepository> {
         FalAiGenerationRepositoryImpl(
+            mediaStoreGateway = get(),
+            localDataSource = get(),
+            backgroundWorkObserver = get(),
+            preferenceManager = get(),
+            remoteDataSource = get(),
+        )
+    }
+    single<ArliAiGenerationDataSource.Remote> {
+        KtorArliAiGenerationRemoteDataSource(api = get())
+    }
+    single<ArliAiModelsDataSource.Remote> {
+        KtorArliAiModelsRemoteDataSource(api = get())
+    }
+    single<ArliAiModelsRepository> {
+        ArliAiModelsRepositoryImpl(
+            remoteDataSource = get(),
+            localDataSource = get(),
+            preferenceManager = get(),
+        )
+    }
+    single<ArliAiGenerationRepository> {
+        ArliAiGenerationRepositoryImpl(
             mediaStoreGateway = get(),
             localDataSource = get(),
             backgroundWorkObserver = get(),

@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.domain.interactor.settings
 
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToArliAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToFalAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCase
@@ -64,6 +65,12 @@ interface SetupConnectionInterActor {
      * @author Dmitriy Moroz
      */
     val connectToFalAi: ConnectToFalAiUseCase
+    /**
+     * Exposes the `connectToArliAi` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val connectToArliAi: ConnectToArliAiUseCase
     /**
      * Exposes the `connectToSwarmUi` value used by the SDAI domain layer.
      *

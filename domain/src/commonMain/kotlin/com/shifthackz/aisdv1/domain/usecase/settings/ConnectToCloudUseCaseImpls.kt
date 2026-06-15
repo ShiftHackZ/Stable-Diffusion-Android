@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.domain.usecase.settings
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
+import com.shifthackz.aisdv1.domain.usecase.connectivity.TestArliAiApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHordeApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestHuggingFaceApiKeyUseCase
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestFalAiApiKeyUseCase
@@ -11,6 +12,7 @@ import com.shifthackz.aisdv1.domain.usecase.connectivity.TestStabilityAiApiKeyUs
 import com.shifthackz.aisdv1.domain.usecase.connectivity.TestSwarmUiConnectivityUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Implements `DefaultConnectToSwarmUiUseCase` behavior in the SDAI domain layer.
@@ -52,7 +54,7 @@ internal class DefaultConnectToSwarmUiUseCaseImpl(
     ): Result<Unit> {
         var configuration: Configuration? = null
         return try {
-            withTimeout(CONNECTION_TIMEOUT_MILLIS) {
+            withTimeout(CONNECTION_TIMEOUT_MILLIS.milliseconds) {
                 val originalConfiguration = getConfigurationUseCase()
                 configuration = originalConfiguration
                 val newConfiguration = originalConfiguration.copy(
@@ -61,7 +63,7 @@ internal class DefaultConnectToSwarmUiUseCaseImpl(
                     authCredentials = credentials,
                 )
                 setServerConfigurationUseCase(newConfiguration)
-                delay(CONNECTION_DELAY_MILLIS)
+                delay(CONNECTION_DELAY_MILLIS.milliseconds)
                 withLocalNetworkPermissionRetry(url) {
                     testSwarmUiConnectivityUseCase(url)
                 }
@@ -311,6 +313,53 @@ internal class DefaultConnectToFalAiUseCaseImpl(
 }
 
 /**
+ * Implements `DefaultConnectToArliAiUseCase` behavior in the SDAI domain layer.
+ *
+ * @author Dmitriy Moroz
+ */
+internal class DefaultConnectToArliAiUseCaseImpl(
+    /**
+     * Exposes the `getConfigurationUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val getConfigurationUseCase: GetConfigurationUseCase,
+    /**
+     * Exposes the `setServerConfigurationUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val setServerConfigurationUseCase: SetServerConfigurationUseCase,
+    /**
+     * Exposes the `testArliAiApiKeyUseCase` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val testArliAiApiKeyUseCase: TestArliAiApiKeyUseCase,
+) : ConnectToArliAiUseCase {
+
+    /**
+     * Executes the `invoke` step in the SDAI domain layer.
+     *
+     * @param apiKey api key value consumed by the API.
+     * @return Result produced by `invoke`.
+     * @author Dmitriy Moroz
+     */
+    override suspend fun invoke(apiKey: String): Result<Unit> =
+        connectWithApiKey(
+            getConfigurationUseCase = getConfigurationUseCase,
+            setServerConfigurationUseCase = setServerConfigurationUseCase,
+            testApiKey = testArliAiApiKeyUseCase::invoke,
+        ) { configuration ->
+            configuration.copy(
+                source = ServerSource.ARLI_AI,
+                arliAiApiKey = apiKey,
+                authCredentials = AuthorizationCredentials.None,
+            )
+        }
+}
+
+/**
  * Executes the `connectWithApiKey` step in the SDAI domain layer.
  *
  * @param getConfigurationUseCase get configuration use case value consumed by the API.
@@ -331,7 +380,7 @@ private suspend fun connectWithApiKey(
         val originalConfiguration = getConfigurationUseCase()
         configuration = originalConfiguration
         setServerConfigurationUseCase(updateConfiguration(originalConfiguration))
-        delay(CONNECTION_DELAY_MILLIS)
+        delay(CONNECTION_DELAY_MILLIS.milliseconds)
         requireRemoteValidApiKey(testApiKey())
         Result.success(Unit)
     } catch (t: Throwable) {

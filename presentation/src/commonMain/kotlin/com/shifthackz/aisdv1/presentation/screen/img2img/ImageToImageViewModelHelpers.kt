@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.ArliAiSampler
 import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
@@ -157,6 +158,8 @@ internal fun ImageToImageState.validated(
             Localization.string("error_img2img_openai_unsupported")
         !sourceSupportsImageToImage ->
             Localization.string("error_img2img_local_android_only")
+        mode == ServerSource.ARLI_AI && arliAiModel.isBlank() ->
+            Localization.string("error_invalid")
         imageBase64.isBlank() ->
             Localization.string("error_img2img_select_input")
         else -> null
@@ -202,8 +205,11 @@ internal fun ImageToImageState.withSettings(
     stableDiffusionSamplers: List<String>?,
     forgeModules: List<ForgeModule>?,
     aDetailerAvailable: Boolean?,
+    arliAiModels: List<String>?,
 ): ImageToImageState =
-    withSource(settings.source, stableDiffusionSamplers, forgeModules, aDetailerAvailable).copy(
+    copy(arliAiModel = settings.arliAiModel)
+        .withSource(settings.source, stableDiffusionSamplers, forgeModules, aDetailerAvailable, arliAiModels)
+        .copy(
         advancedToggleButtonVisible = !settings.formAdvancedOptionsAlwaysShow,
         advancedOptionsVisible = if (settings.formAdvancedOptionsAlwaysShow) {
             true
@@ -227,14 +233,17 @@ internal fun ImageToImageState.withSource(
     stableDiffusionSamplers: List<String>?,
     forgeModules: List<ForgeModule>?,
     aDetailerAvailable: Boolean?,
+    arliAiModels: List<String>?,
 ): ImageToImageState {
     val samplers = when (source) {
         ServerSource.STABILITY_AI -> StabilityAiSampler.entries.map { "$it" }
+        ServerSource.ARLI_AI -> ArliAiSampler.supported
         else -> stableDiffusionSamplers.orEmpty()
     }
     val modules = forgeModules.orEmpty().takeIf {
         source == ServerSource.AUTOMATIC1111
     }.orEmpty()
+    val arliModels = arliAiModels.orEmpty()
     return copy(
         mode = source,
         availableSamplers = samplers,
@@ -243,6 +252,14 @@ internal fun ImageToImageState.withSource(
             ?: selectedSampler,
         availableForgeModules = modules,
         selectedForgeModules = selectedForgeModules.filter(modules::contains),
+        arliAiModels = arliModels.takeIf { source == ServerSource.ARLI_AI }.orEmpty(),
+        arliAiModel = if (source == ServerSource.ARLI_AI) {
+            arliAiModel.takeIf(arliModels::contains)
+                ?: arliModels.firstOrNull()
+                ?: arliAiModel
+        } else {
+            arliAiModel
+        },
         aDetailerAvailable = if (source == ServerSource.AUTOMATIC1111) {
             aDetailerAvailable ?: this.aDetailerAvailable
         } else {

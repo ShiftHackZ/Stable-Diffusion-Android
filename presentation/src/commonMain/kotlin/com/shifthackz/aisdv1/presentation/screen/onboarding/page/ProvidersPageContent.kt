@@ -58,6 +58,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun ProviderPageContent(
@@ -74,6 +75,7 @@ fun ProviderPageContent(
             ServerSource.HUGGING_FACE,
             ServerSource.OPEN_AI,
             ServerSource.STABILITY_AI,
+            ServerSource.ARLI_AI,
         )
     }
     var selectedSource by remember { mutableStateOf(ServerSource.STABILITY_AI) }
@@ -104,7 +106,7 @@ fun ProviderPageContent(
         val job = scope.launch {
             var index = previewSources.indexOf(selectedSource).coerceAtLeast(0)
             while (isPageVisible) {
-                delay(1200)
+                delay(1200.milliseconds)
                 index = (index + 1) % previewSources.size
                 selectedSource = previewSources[index]
             }
@@ -326,6 +328,7 @@ private fun ServerSource.previewTitle(strings: ServerSetupStrings): String = whe
     ServerSource.HUGGING_FACE -> strings.huggingFaceTitle
     ServerSource.OPEN_AI -> strings.openAiTitle
     ServerSource.STABILITY_AI -> strings.stabilityTitle
+    ServerSource.ARLI_AI -> strings.arliAiTitle
     else -> strings.automaticTitle
 }
 
@@ -333,5 +336,6 @@ private fun ServerSource.previewSubtitle(strings: ServerSetupStrings): String = 
     ServerSource.HUGGING_FACE -> strings.huggingFaceSubtitle
     ServerSource.OPEN_AI -> strings.openAiSubtitle
     ServerSource.STABILITY_AI -> strings.stabilitySubtitle
+    ServerSource.ARLI_AI -> strings.arliAiSubtitle
     else -> strings.automaticSubtitle
 }

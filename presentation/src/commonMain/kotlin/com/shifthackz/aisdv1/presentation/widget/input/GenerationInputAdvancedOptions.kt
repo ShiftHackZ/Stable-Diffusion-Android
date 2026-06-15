@@ -31,6 +31,7 @@ import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormConstants.CFG_SCALE_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormConstants.CFG_SCALE_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormConstants.SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
+import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormConstants.SAMPLING_STEPS_RANGE_ARLI_AI_MAX
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormConstants.SAMPLING_STEPS_RANGE_MAX
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormConstants.SAMPLING_STEPS_RANGE_MIN
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormConstants.SAMPLING_STEPS_RANGE_STABILITY_AI_MAX
@@ -64,6 +65,7 @@ internal fun GenerationInputAdvancedOptions(
                 // Sampler selection only supported for A1111, STABILITY AI
                 when (state.mode) {
                     ServerSource.STABILITY_AI,
+                    ServerSource.ARLI_AI,
                     ServerSource.AUTOMATIC1111 -> DropdownTextField(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -297,6 +299,7 @@ internal fun GenerationInputAdvancedOptions(
                         ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> SAMPLING_STEPS_LOCAL_DIFFUSION_MAX
                         ServerSource.STABILITY_AI -> SAMPLING_STEPS_RANGE_STABILITY_AI_MAX
                         ServerSource.FAL_AI -> state.falAiModel.maxInferenceSteps
+                        ServerSource.ARLI_AI -> SAMPLING_STEPS_RANGE_ARLI_AI_MAX
                         else -> SAMPLING_STEPS_RANGE_MAX
                     }
                     val steps = state.samplingSteps.coerceIn(stepsMin, stepsMax)
@@ -359,6 +362,7 @@ internal fun GenerationInputAdvancedOptions(
                     ServerSource.AUTOMATIC1111,
                     ServerSource.SWARM_UI,
                     ServerSource.STABILITY_AI,
+                    ServerSource.ARLI_AI,
                     ServerSource.HORDE,
                     ServerSource.LOCAL_APPLE_CORE_ML -> afterSlidersSection()
 

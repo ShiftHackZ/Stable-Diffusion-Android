@@ -9,11 +9,13 @@ import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.Settings
+import com.shifthackz.aisdv1.domain.entity.StableDiffusionModel
 import com.shifthackz.aisdv1.domain.entity.StableDiffusionSampler
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.usecase.arliai.FetchAndGetArliAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.forgemodule.GetForgeModulesUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
@@ -64,6 +66,12 @@ class TextToImageViewModel(
      * @author Dmitriy Moroz
      */
     private val getForgeModulesUseCase: GetForgeModulesUseCase,
+    /**
+     * Exposes the `fetchAndGetArliAiModelsUseCase` value used by the SDAI presentation layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    private val fetchAndGetArliAiModelsUseCase: FetchAndGetArliAiModelsUseCase,
     /**
      * Exposes the `isADetailerAvailableUseCase` value used by the SDAI presentation layer.
      *
@@ -215,6 +223,8 @@ class TextToImageViewModel(
     private var forgeModulesKey: StableDiffusionSamplersKey? = null
     private var aDetailerAvailable: Boolean? = null
     private var aDetailerAvailabilityKey: StableDiffusionSamplersKey? = null
+    private var arliAiModels: List<String>? = null
+    private var arliAiModelsKey: String? = null
 
     private val actionHandler = TextToImageActionHandler(
         dispatchersProvider = dispatchersProvider,
@@ -264,6 +274,10 @@ class TextToImageViewModel(
             TextToImageIntent.SuppressBenchmarkWarningAndContinue ->
                 actionHandler.continueAfterBenchmarkWarning(suppressFutureWarnings = true)
             TextToImageIntent.DismissModal -> actionHandler.dismissBenchmarkDialog()
+            is TextToImageIntent.UpdateArliAiModel -> {
+                preferenceManager.arliAiModel = intent.value
+                intentProcessor.process(intent)
+            }
             else -> intentProcessor.process(intent)
         }
     }
@@ -361,6 +375,7 @@ class TextToImageViewModel(
                                 stableDiffusionSamplers = stableDiffusionSamplers,
                                 forgeModules = forgeModules,
                                 aDetailerAvailable = aDetailerAvailable,
+                                arliAiModels = arliAiModels,
                             )
                         }
                     }
@@ -389,12 +404,14 @@ class TextToImageViewModel(
                 }
                 .collect { settings ->
                     refreshStableDiffusionMetadataIfNeeded(settings)
+                    refreshArliAiModelsIfNeeded(settings)
                     updateState { state ->
                         state.withSettings(
                             settings = settings,
                             stableDiffusionSamplers = stableDiffusionSamplers,
                             forgeModules = forgeModules,
                             aDetailerAvailable = aDetailerAvailable,
+                            arliAiModels = arliAiModels,
                         )
                     }
                 }
@@ -432,6 +449,7 @@ class TextToImageViewModel(
                 stableDiffusionSamplers = stableDiffusionSamplers,
                 forgeModules = forgeModules,
                 aDetailerAvailable = aDetailerAvailable,
+                arliAiModels = arliAiModels,
             )
         }
         loadSamplers()
@@ -453,6 +471,7 @@ class TextToImageViewModel(
                                 stableDiffusionSamplers = stableDiffusionSamplers,
                                 forgeModules = forgeModules,
                                 aDetailerAvailable = aDetailerAvailable,
+                                arliAiModels = arliAiModels,
                             )
                         }
                     }
@@ -478,6 +497,7 @@ class TextToImageViewModel(
                                 stableDiffusionSamplers = stableDiffusionSamplers,
                                 forgeModules = forgeModules,
                                 aDetailerAvailable = aDetailerAvailable,
+                                arliAiModels = arliAiModels,
                             )
                         }
                     }
@@ -491,6 +511,7 @@ class TextToImageViewModel(
                                 stableDiffusionSamplers = stableDiffusionSamplers,
                                 forgeModules = forgeModules,
                                 aDetailerAvailable = aDetailerAvailable,
+                                arliAiModels = arliAiModels,
                             )
                         }
                     }
@@ -530,4 +551,61 @@ class TextToImageViewModel(
                 }
         }
     }
+
+    private fun refreshArliAiModelsIfNeeded(settings: Settings) {
+        if (settings.source != ServerSource.ARLI_AI) {
+            arliAiModelsKey = null
+            return
+        }
+        val key = preferenceManager.arliAiApiKey
+        if (arliAiModelsKey == key) return
+
+        arliAiModelsKey = key
+        arliAiModels = emptyList()
+        updateState {
+            it.withSource(
+                source = ServerSource.ARLI_AI,
+                stableDiffusionSamplers = stableDiffusionSamplers,
+                forgeModules = forgeModules,
+                aDetailerAvailable = aDetailerAvailable,
+                arliAiModels = arliAiModels,
+            )
+        }
+        loadArliAiModels()
+    }
+
+    private fun loadArliAiModels() {
+        launch(dispatchersProvider.io) {
+            runCatching {
+                fetchAndGetArliAiModelsUseCase()
+                    .map(StableDiffusionModel::arliAiCheckpointName)
+                    .filter(String::isNotBlank)
+                    .distinct()
+            }
+                .onSuccess { models ->
+                    arliAiModels = models
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.copy(arliAiModel = preferenceManager.arliAiModel)
+                                .withSource(
+                                    source = it.mode,
+                                    stableDiffusionSamplers = stableDiffusionSamplers,
+                                    forgeModules = forgeModules,
+                                    aDetailerAvailable = aDetailerAvailable,
+                                    arliAiModels = arliAiModels,
+                                )
+                        }
+                    }
+                }
+                .onFailure { t ->
+                    withContext(dispatchersProvider.immediate) {
+                        updateState { it.copy(error = t.localizedMessageText()) }
+                    }
+                    onError(t)
+                }
+        }
+    }
 }
+
+private val StableDiffusionModel.arliAiCheckpointName: String
+    get() = title.ifBlank { modelName }.ifBlank { filename }

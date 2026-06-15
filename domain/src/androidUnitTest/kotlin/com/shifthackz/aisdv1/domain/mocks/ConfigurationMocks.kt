@@ -13,6 +13,7 @@ val mockConfiguration = Configuration(
     stabilityAiApiKey = "5598",
     stabilityAiEngineId = "5598",
     falAiApiKey = "5598",
+    arliAiApiKey = "5598",
     localOnnxModelId = "5598",
     localOnnxModelPath = "/storage/emulated/0/5598",
 )

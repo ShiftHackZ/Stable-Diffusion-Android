@@ -22,6 +22,7 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCa
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalSdxlModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchHuggingFaceModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToA1111UseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToArliAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToCoreMlUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToFalAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCase
@@ -56,6 +57,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Owns provider setup state, validation, local model downloads, and final connection side effects.
@@ -118,6 +120,7 @@ class ServerSetupViewModel(
     private val connectToOpenAiUseCase: ConnectToOpenAiUseCase,
     private val connectToStabilityAiUseCase: ConnectToStabilityAiUseCase,
     private val connectToFalAiUseCase: ConnectToFalAiUseCase,
+    private val connectToArliAiUseCase: ConnectToArliAiUseCase,
     private val downloadModelUseCase: DownloadModelUseCase,
     private val deleteModelUseCase: DeleteModelUseCase,
     private val downloadGuard: ServerSetupDownloadGuard,
@@ -163,7 +166,7 @@ class ServerSetupViewModel(
                     emptyList()
                 }
                 val models = runCatching {
-                    withTimeout(HUGGING_FACE_MODELS_TIMEOUT_MILLIS) {
+                    withTimeout(HUGGING_FACE_MODELS_TIMEOUT_MILLIS.milliseconds) {
                         fetchHuggingFaceModelsUseCase()
                     }
                 }
@@ -247,6 +250,7 @@ class ServerSetupViewModel(
                     ServerSource.OPEN_AI -> connectToOpenAi()
                     ServerSource.STABILITY_AI -> connectToStabilityAi()
                     ServerSource.FAL_AI -> connectToFalAi()
+                    ServerSource.ARLI_AI -> connectToArliAi()
                     ServerSource.LOCAL_MICROSOFT_ONNX -> connectToLocalDiffusion()
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> connectToMediaPipe()
                     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> connectToSdxl()
@@ -316,6 +320,10 @@ class ServerSetupViewModel(
 
     private suspend fun connectToFalAi(): Result<Unit> = connectToFalAiUseCase(
         apiKey = currentState.falAiApiKey,
+    )
+
+    private suspend fun connectToArliAi(): Result<Unit> = connectToArliAiUseCase(
+        apiKey = currentState.arliAiApiKey,
     )
 
     private suspend fun connectToLocalDiffusion(): Result<Unit> = connectToLocalDiffusionUseCase(

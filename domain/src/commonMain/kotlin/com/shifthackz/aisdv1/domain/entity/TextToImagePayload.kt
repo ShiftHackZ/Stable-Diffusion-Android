@@ -168,4 +168,10 @@ data class TextToImagePayload(
      * @author Dmitriy Moroz
      */
     val falAiSyncMode: Boolean = false,
+    /**
+     * Exposes the `arliAiModel` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val arliAiModel: String = "",
 )

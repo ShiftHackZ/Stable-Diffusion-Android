@@ -402,6 +402,7 @@ internal fun GenerationInputFormEvent.toTextToImageIntent(): TextToImageIntent? 
     is GenerationInputFormEvent.UpdateFalAiAcceleration -> TextToImageIntent.UpdateFalAiAcceleration(value)
     is GenerationInputFormEvent.UpdateSdxlBackend -> TextToImageIntent.UpdateSdxlBackend(value)
     is GenerationInputFormEvent.UpdateFalAiSyncMode -> TextToImageIntent.UpdateFalAiSyncMode(value)
+    is GenerationInputFormEvent.UpdateArliAiModel -> TextToImageIntent.UpdateArliAiModel(value)
     is GenerationInputFormEvent.UpdatePrompt -> TextToImageIntent.UpdatePrompt(value)
     is GenerationInputFormEvent.UpdateRestoreFaces -> TextToImageIntent.UpdateRestoreFaces(value)
     is GenerationInputFormEvent.UpdateSampler -> TextToImageIntent.UpdateSampler(value)

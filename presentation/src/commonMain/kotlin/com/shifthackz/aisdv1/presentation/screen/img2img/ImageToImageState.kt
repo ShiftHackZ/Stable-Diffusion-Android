@@ -288,12 +288,9 @@ data class ImageToImageState(
      * @author Dmitriy Moroz
      */
     override val falAiSyncMode: Boolean = false,
-    /**
-     * Exposes the `sdxlBackend` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     override val sdxlBackend: SdxlBackend = SdxlBackend.AUTO,
+    override val arliAiModels: List<String> = emptyList(),
+    override val arliAiModel: String = "",
     /**
      * Exposes the `widthValidationError` value used by the SDAI presentation layer.
      *
@@ -354,7 +351,8 @@ data class ImageToImageState(
             mode == ServerSource.HUGGING_FACE ||
             mode == ServerSource.STABILITY_AI ||
             mode == ServerSource.LOCAL_APPLE_CORE_ML ||
-            mode == ServerSource.FAL_AI
+            mode == ServerSource.FAL_AI ||
+            mode == ServerSource.ARLI_AI
 
     val sourceSupportsInPaint: Boolean
         get() = mode != ServerSource.LOCAL_APPLE_CORE_ML
@@ -427,6 +425,7 @@ internal fun ImageToImageState.mapToPayload(
     falAiImageSize = falAiImageSize,
     falAiAcceleration = falAiAcceleration,
     falAiSyncMode = falAiSyncMode,
+    arliAiModel = arliAiModel.takeIf { mode == ServerSource.ARLI_AI }.orEmpty(),
 )
 
 /**

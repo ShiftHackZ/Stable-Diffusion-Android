@@ -196,12 +196,9 @@ interface GenerationInputFormState {
      * @author Dmitriy Moroz
      */
     val falAiSyncMode: Boolean
-    /**
-     * Exposes the `sdxlBackend` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val sdxlBackend: SdxlBackend
+    val arliAiModels: List<String>
+    val arliAiModel: String
     /**
      * Exposes the `widthValidationError` value used by the SDAI presentation layer.
      *

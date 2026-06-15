@@ -32,6 +32,7 @@ fun ServerSource.getNameUiText(): UiText = Localization.string(
         ServerSource.OPEN_AI -> "srv_type_open_ai"
         ServerSource.STABILITY_AI -> "srv_type_stability_ai"
         ServerSource.FAL_AI -> "srv_type_fal_ai"
+        ServerSource.ARLI_AI -> "srv_type_arli_ai"
         ServerSource.SWARM_UI -> "srv_type_swarm_ui"
     },
 ).asUiText()

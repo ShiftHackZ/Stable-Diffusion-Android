@@ -19,6 +19,7 @@ class ConfigurationStoreStub(
     override var stabilityAiApiKey: String = configuration.stabilityAiApiKey
     override var stabilityAiEngineId: String = configuration.stabilityAiEngineId
     override var falAiApiKey: String = configuration.falAiApiKey
+    override var arliAiApiKey: String = configuration.arliAiApiKey
     override var localOnnxModelId: String = configuration.localOnnxModelId
     override var localOnnxModelPath: String = configuration.localOnnxModelPath
     override var localMediaPipeModelId: String = configuration.localMediaPipeModelId

@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.domain.usecase.generation
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.ArliAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.FalAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
@@ -68,6 +69,13 @@ internal class ImageToImageUseCaseImpl(
      */
     private val falAiGenerationRepository: FalAiGenerationRepository,
     /**
+     * Exposes the `arliAiGenerationRepository` value used by the SDAI domain layer.
+     *
+     * @throws IllegalStateException when the delegated operation cannot complete.
+     * @author Dmitriy Moroz
+     */
+    private val arliAiGenerationRepository: ArliAiGenerationRepository,
+    /**
      * Exposes the `preferenceManager` value used by the SDAI domain layer.
      *
      * @throws IllegalStateException when the delegated operation cannot complete.
@@ -85,6 +93,7 @@ internal class ImageToImageUseCaseImpl(
     override suspend fun invoke(payload: ImageToImagePayload) = when (preferenceManager.source) {
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.generateFromImage(payload)
         ServerSource.FAL_AI -> falAiGenerationRepository.generateFromImage(payload)
+        ServerSource.ARLI_AI -> arliAiGenerationRepository.generateFromImage(payload)
         else -> List(payload.batchCount.coerceAtLeast(1)) {
             generateSingle(payload)
         }
@@ -104,6 +113,7 @@ internal class ImageToImageUseCaseImpl(
         ServerSource.LOCAL_APPLE_CORE_ML -> coreMlGenerationRepository.generateFromImage(payload)
         ServerSource.AUTOMATIC1111 -> error("Automatic1111 batch must be generated through generateFromImage(payload).")
         ServerSource.FAL_AI -> error("Fal.ai batch must be generated through generateFromImage(payload).")
+        ServerSource.ARLI_AI -> error("ArliAI batch must be generated through generateFromImage(payload).")
         else -> throw IllegalStateException("Img2Img not yet supported on ${preferenceManager.source}!")
     }
 }

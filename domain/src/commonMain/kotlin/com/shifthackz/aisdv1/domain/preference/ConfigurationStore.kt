@@ -83,6 +83,12 @@ interface ConfigurationStore {
      */
     var falAiApiKey: String
     /**
+     * Exposes the `arliAiApiKey` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var arliAiApiKey: String
+    /**
      * Exposes the `localOnnxModelId` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz
@@ -152,6 +158,7 @@ interface ConfigurationStore {
         stabilityAiApiKey = stabilityAiApiKey,
         stabilityAiEngineId = stabilityAiEngineId,
         falAiApiKey = falAiApiKey,
+        arliAiApiKey = arliAiApiKey,
         authCredentials = authCredentials,
         localOnnxModelId = localOnnxModelId,
         localOnnxModelPath = localOnnxModelPath,
@@ -182,6 +189,7 @@ interface ConfigurationStore {
         stabilityAiApiKey = configuration.stabilityAiApiKey
         stabilityAiEngineId = configuration.stabilityAiEngineId
         falAiApiKey = configuration.falAiApiKey
+        arliAiApiKey = configuration.arliAiApiKey
         localOnnxModelId = configuration.localOnnxModelId
         localOnnxModelPath = configuration.localOnnxModelPath
         localMediaPipeModelId = configuration.localMediaPipeModelId

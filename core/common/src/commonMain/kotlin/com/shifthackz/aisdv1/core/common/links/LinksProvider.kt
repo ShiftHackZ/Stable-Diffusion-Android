@@ -43,6 +43,12 @@ interface LinksProvider {
      */
     val falAiInfoUrl: String
     /**
+     * Exposes the `arliAiInfoUrl` value used by the SDAI core common layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val arliAiInfoUrl: String
+    /**
      * Exposes the `privacyPolicyUrl` value used by the SDAI core common layer.
      *
      * @author Dmitriy Moroz

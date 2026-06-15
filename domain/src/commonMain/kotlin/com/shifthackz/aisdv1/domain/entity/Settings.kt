@@ -93,6 +93,12 @@ data class Settings(
      */
     val hordeApiKey: String = "",
     /**
+     * Exposes the `arliAiModel` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    val arliAiModel: String = "",
+    /**
      * Exposes the `localUseNNAPI` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz

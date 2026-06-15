@@ -793,6 +793,7 @@ private fun ServerSource.displayName(): String = when (this) {
     ServerSource.OPEN_AI -> Localization.string("srv_type_open_ai")
     ServerSource.STABILITY_AI -> Localization.string("srv_type_stability_ai")
     ServerSource.FAL_AI -> Localization.string("srv_type_fal_ai")
+    ServerSource.ARLI_AI -> Localization.string("srv_type_arli_ai")
 }
 
 private fun SdxlBackend.displayName(): String = displayName

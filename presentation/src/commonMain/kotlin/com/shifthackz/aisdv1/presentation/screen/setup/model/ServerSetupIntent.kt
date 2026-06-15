@@ -30,6 +30,7 @@ sealed interface ServerSetupIntent : MviIntent {
     data class UpdateOpenAiApiKey(val key: String) : ServerSetupIntent
     data class UpdateStabilityAiApiKey(val key: String) : ServerSetupIntent
     data class UpdateFalAiApiKey(val key: String) : ServerSetupIntent
+    data class UpdateArliAiApiKey(val key: String) : ServerSetupIntent
     data class UpdateHuggingFaceApiKey(val key: String) : ServerSetupIntent
     data class UpdateHuggingFaceModel(val model: String) : ServerSetupIntent
     data class UpdateDemoMode(val value: Boolean) : ServerSetupIntent
@@ -65,4 +66,5 @@ enum class ServerSetupLink {
     OpenAiInfo,
     StabilityAiInfo,
     FalAiInfo,
+    ArliAiInfo,
 }

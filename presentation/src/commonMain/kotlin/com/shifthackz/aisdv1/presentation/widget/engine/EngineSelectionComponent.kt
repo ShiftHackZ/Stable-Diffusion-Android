@@ -139,6 +139,7 @@ fun EngineSelectionContent(
         ServerSource.HORDE,
         ServerSource.OPEN_AI,
         ServerSource.FAL_AI,
+        ServerSource.ARLI_AI,
         -> Unit
     }
 }
