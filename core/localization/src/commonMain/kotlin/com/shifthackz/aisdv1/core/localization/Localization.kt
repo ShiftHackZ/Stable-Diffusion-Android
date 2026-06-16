@@ -151,6 +151,20 @@ object Localization {
 }
 
 /**
+ * Exposes the `localizationLanguages` value used by the SDAI localization layer.
+ *
+ * @author Dmitriy Moroz
+ */
+internal expect val localizationLanguages: List<LocalizationLanguage>
+
+/**
+ * Exposes the `localizationCatalog` value used by the SDAI localization layer.
+ *
+ * @author Dmitriy Moroz
+ */
+internal expect val localizationCatalog: Map<String, Map<String, String>>
+
+/**
  * Executes the `countryFlagDrawableResId` step in the SDAI localization layer.
  *
  * @param code code value consumed by the API.

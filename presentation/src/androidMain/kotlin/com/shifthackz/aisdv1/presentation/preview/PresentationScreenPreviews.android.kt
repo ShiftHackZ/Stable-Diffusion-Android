@@ -125,7 +125,7 @@ private fun SettingsContentPreview() {
                 monitorConnectivity = true,
                 autoSaveAiResults = true,
                 saveToMediaStore = true,
-                appVersion = "1.0.0 (200)",
+                appVersion = "1.0.0 (201)",
             ),
         )
     }

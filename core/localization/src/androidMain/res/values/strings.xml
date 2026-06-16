@@ -93,9 +93,9 @@
     <string name="error_unable_to_save_image">Unable to save image.</string>
     <string name="error_unable_to_share_image">Unable to share image.</string>
     <string name="error_img2img_openai_unsupported">Image-to-image is not supported by OpenAI in this app.</string>
-    <string name="error_img2img_local_android_only">Local Diffusion image-to-image is available on Android only.</string>
+    <string name="error_img2img_local_android_only">Local Diffusion image-to-image is unavailable on this device.</string>
     <string name="error_img2img_select_input">Select an input image first.</string>
-    <string name="error_source_android_only">This provider is Android-only for now.</string>
+    <string name="error_source_android_only">This provider is unavailable on this device.</string>
     <string name="error_source_img2img_unsupported">This provider does not support image-to-image here.</string>
     <string name="setup_localhost_url_title">Localhost URL</string>
     <string name="setup_localhost_url_text">This address points to the current device. Continue only if the server is reachable from this platform.</string>
@@ -266,7 +266,7 @@
     <string name="settings_item_demo">Demo mode</string>
     <string name="settings_item_monitor_connection">Monitor connection</string>
     <string name="settings_item_background_generation">Background generation (Beta)*</string>
-    <string name="settings_item_background_generation_warning">*Background generation may not work stable with Local Diffusion, please ensure that Local Diffusion works well on your Android device before enabling this.</string>
+    <string name="settings_item_background_generation_warning">*Background generation may be delayed or paused by the system. Please check that generation works before enabling this.</string>
     <string name="settings_item_auto_save">Auto save images</string>
     <string name="settings_item_auto_save_warning">*Images will always be saved to in-app gallery during background generation.</string>
     <string name="settings_item_auto_save_media_store">Save to Downloads</string>
@@ -311,7 +311,7 @@
     <string name="interaction_cache_sub_title">This will reset app settings and delete all the generated images. Do you want to proceed?</string>
 
     <string name="interaction_warning_title">Warning</string>
-    <string name="interaction_warning_localhost_sub_title">You are trying to connect to localhost (127.0.0.1) server.\n\nIt may not work unless you have ssh tunneling or another port forwarding mechanism set up on your Android device.</string>
+    <string name="interaction_warning_localhost_sub_title">You are trying to connect to localhost (127.0.0.1) server.\n\nIt may not work unless the server is running on this device or a network route is configured.</string>
 
     <string name="interaction_delete_generation_title">Delete image</string>
     <string name="interaction_delete_generation_sub_title">Are you sure you want to permanently delete this image?</string>
@@ -329,7 +329,7 @@
     <string name="interaction_in_paint_clear_sub_title">Are you sure you want to clear drawings?</string>
 
     <string name="interaction_background_scheduled_title">Background generation scheduled</string>
-    <string name="interaction_background_scheduled_sub_title">The task for background AI generation has been created.\n\nIn some cases, Android may start background work with a delay.\n\nYou will receive push notifications about the start, progress and completion of generation.</string>
+    <string name="interaction_background_scheduled_sub_title">The task for background AI generation has been created.\n\nIn some cases, the system may start background work with a delay.\n\nYou will receive notifications about the start, progress and completion of generation.</string>
 
     <string name="interaction_background_running_title">Background generation running</string>
     <string name="interaction_background_running_sub_title">Currently you already have a generation running in background, please wait until it\'s finished.</string>
@@ -372,7 +372,7 @@
 
     <string name="model_local_custom_switch">Load custom model</string>
     <string name="model_local_permission_header">Permissions</string>
-    <string name="model_local_permission_title">To be able to load custom model, you need to allow SDAI app manage storage permissions, because starting from Android 11 it is needed to access non-scoped storage files.</string>
+    <string name="model_local_permission_title">To load a custom model, allow SDAI to access the selected files.</string>
     <string name="model_local_permission_button">Setup permission</string>
     <string name="model_local_path_header">Model path</string>
     <string name="model_local_path_title">Local model folder path</string>
@@ -432,8 +432,10 @@
     <string name="scheduler_computation">Computation</string>
     <string name="scheduler_single_thread">Single Thread</string>
 
-    <string name="on_boarding_page_universal_title">[Universal] SDAI\nfor Android and iOS.</string>
-    <string name="on_boarding_page_universal_subtitle">Now SDAI supports both Android and iOS from one shared experience.</string>
+    <string name="on_boarding_page_universal_title">[SDAI]\nAI Image Generator.</string>
+    <string name="on_boarding_page_universal_subtitle">Create images with remote providers and a streamlined mobile workflow.</string>
+    <string name="on_boarding_page_universal_create">Create images</string>
+    <string name="on_boarding_page_universal_connect">Connect providers</string>
     <string name="on_boarding_page_universal_android">Android</string>
     <string name="on_boarding_page_universal_ios">iOS</string>
     <string name="on_boarding_page_form_title">Advanced [Stable Diffusion]\nAI generation features.</string>

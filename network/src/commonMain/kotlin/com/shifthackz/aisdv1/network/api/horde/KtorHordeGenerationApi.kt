@@ -160,7 +160,7 @@ class KtorHordeGenerationApi(
      * @author Dmitriy Moroz
      */
     private fun io.ktor.client.request.HttpRequestBuilder.hordeApiKey(apiKey: String) {
-        header(HttpHeaders.UserAgent, "Stable-Diffusion-Android")
+        header(HttpHeaders.UserAgent, "SDAI")
         header(HEADER_API_KEY, apiKey)
     }
 

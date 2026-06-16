@@ -89,9 +89,9 @@
     <string name="error_unable_to_save_image">Görüntü kaydedilemedi.</string>
     <string name="error_unable_to_share_image">Görüntü paylaşılamadı.</string>
     <string name="error_img2img_openai_unsupported">Bu uygulamada OpenAI için image-to-image desteklenmiyor.</string>
-    <string name="error_img2img_local_android_only">Local Diffusion image-to-image yalnızca Android üzerinde kullanılabilir.</string>
+    <string name="error_img2img_local_android_only">Local Diffusion image-to-image bu cihazda kullanılamaz.</string>
     <string name="error_img2img_select_input">Önce bir giriş görüntüsü seçin.</string>
-    <string name="error_source_android_only">Bu sağlayıcı şimdilik yalnızca Android üzerinde kullanılabilir.</string>
+    <string name="error_source_android_only">Bu sağlayıcı bu cihazda kullanılamaz.</string>
     <string name="error_source_img2img_unsupported">Bu sağlayıcı burada image-to-image desteklemiyor.</string>
     <string name="setup_localhost_url_title">Localhost URL</string>
     <string name="setup_localhost_url_text">Bu adres mevcut cihaza işaret eder. Yalnızca sunucu bu platformdan erişilebiliyorsa devam edin.</string>
@@ -243,7 +243,7 @@
     <string name="settings_item_demo">Demo modu</string>
     <string name="settings_item_monitor_connection">Bağlantıyı incele</string>
     <string name="settings_item_background_generation">Arkaplan oluşturma (Beta)*</string>
-    <string name="settings_item_background_generation_warning">*Arka plan oluşturma işlemi Yerel Yayılım ile stabil çalışmayabilir, lütfen bunu etkinleştirmeden önce Yerel Yayılımın Android cihazınızda düzgün çalıştığından emin olun.</string>
+    <string name="settings_item_background_generation_warning">*Arka plan oluşturma sistem tarafından geciktirilebilir veya duraklatılabilir. Etkinleştirmeden önce oluşturmanın çalıştığından emin olun.</string>
     <string name="settings_item_auto_save">Resimeleri otomatik kaydet</string>
     <string name="settings_item_auto_save_warning">*Arka planda oluşturma sırasında görseller her zaman uygulama içi galeriye kaydedilecektir.</string>
     <string name="settings_item_auto_save_media_store">İndirilenlere Kaydet</string>
@@ -288,7 +288,7 @@
     <string name="interaction_cache_sub_title">Bu işlem bütün uygulama ayarlarını ve oluşturulan resimleri silecektir. Devam etmek istiyor musunuz?</string>
 
     <string name="interaction_warning_title">Uyarı</string>
-    <string name="interaction_warning_localhost_sub_title">Localhost (127.0.0.1) sunucusuna bağlanmaya çalışıyorsunuz.\n\nAndroid cihazınızda ssh tüneli veya başka bir bağlantı noktası yönlendirme mekanizması kurulu olmadığı sürece çalışmayabilir.</string>
+    <string name="interaction_warning_localhost_sub_title">Localhost (127.0.0.1) sunucusuna bağlanmaya çalışıyorsunuz.\n\nSunucu bu cihazda çalışmıyorsa veya bir ağ rotası yapılandırılmadıysa çalışmayabilir.</string>
 
     <string name="interaction_delete_generation_title">Resmi sil</string>
     <string name="interaction_delete_generation_sub_title">Kalıcı olarak bu resmi silmek istediğinize emin misiniz?</string>
@@ -306,7 +306,7 @@
     <string name="interaction_in_paint_clear_sub_title">Çizimleri temizlemek istediğinizden emin misiniz?</string>
 
     <string name="interaction_background_scheduled_title">Arkaplan üretimi planlandı</string>
-    <string name="interaction_background_scheduled_sub_title">Arkaplanda yapay zeka üretimi için görev oluşturuldu.\n\nBazı durumlarda Android arkaplanda çalışmaya gecikmeli olarak başlayabilir.\n\nÜretimi başlatma, ilerleme ve tamamlama hakkında anında bildirimler alacaksınız.</string>
+    <string name="interaction_background_scheduled_sub_title">Arka planda AI oluşturma görevi oluşturuldu.\n\nBazı durumlarda sistem arka plan çalışmasını gecikmeli başlatabilir.\n\nOluşturmanın başlangıcı, ilerlemesi ve tamamlanması hakkında bildirimler alacaksınız.</string>
 
     <string name="interaction_background_running_title">Arkaplan oluşturma çalışıyor</string>
     <string name="interaction_background_running_sub_title">Şu anda arka planda çalışan bir nesil var, lütfen bitene kadar bekleyin.</string>
@@ -346,7 +346,7 @@
     <string name="notification_fail_sub_title">Uygulamayı açmak için buraya tıklayın.</string>
 
     <string name="model_local_custom_switch">Özel modeli yükle</string>
-    <string name="model_local_permission_title">Özel modeli yükleyebilmek için SDAI uygulamasının depolama izinlerini yönetmesine izin vermeniz gerekir; çünkü Android 11\'den itibaren kapsamlı olmayan depolama dosyalarına erişmek gerekir.</string>
+    <string name="model_local_permission_title">Özel modeli yüklemek için SDAI\'nin seçilen dosyalara erişmesine izin verin.</string>
     <string name="model_local_permission_button">Kurulum izni</string>
 
     <string name="model_local_custom_title">Yerel özel modeli kullanmak için telefonunuzun depolama alanındaki yerel klasöre yerleştirin.</string>
@@ -405,8 +405,10 @@
     <string name="scheduler_computation">Hesaplama</string>
     <string name="scheduler_single_thread">Tek İş Parçacığı</string>
 
-    <string name="on_boarding_page_universal_title">Android ve iOS için\n[evrensel] SDAI.</string>
-    <string name="on_boarding_page_universal_subtitle">SDAI artık aynı ortak deneyimle Android ve iOS desteği sunar.</string>
+    <string name="on_boarding_page_universal_title">[SDAI]\nAI görsel oluşturucu.</string>
+    <string name="on_boarding_page_universal_subtitle">Uzak sağlayıcılarla sade bir mobil akışta görseller oluşturun.</string>
+    <string name="on_boarding_page_universal_create">Görsel oluştur</string>
+    <string name="on_boarding_page_universal_connect">Sağlayıcıları bağla</string>
     <string name="on_boarding_page_universal_android">Android</string>
     <string name="on_boarding_page_universal_ios">iOS</string>
     <string name="on_boarding_page_form_title">Gelişmiş Özellikler\n[Kararlı Dağıtım].</string>

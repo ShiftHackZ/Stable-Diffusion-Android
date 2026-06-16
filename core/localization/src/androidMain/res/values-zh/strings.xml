@@ -98,9 +98,9 @@
     <string name="error_unable_to_save_image">无法保存图像。</string>
     <string name="error_unable_to_share_image">无法分享图像。</string>
     <string name="error_img2img_openai_unsupported">此应用不支持 OpenAI 的 image-to-image。</string>
-    <string name="error_img2img_local_android_only">Local Diffusion image-to-image 仅在 Android 上可用。</string>
+    <string name="error_img2img_local_android_only">Local Diffusion image-to-image 在此设备上不可用。</string>
     <string name="error_img2img_select_input">请先选择输入图像。</string>
-    <string name="error_source_android_only">此提供商目前仅支持 Android。</string>
+    <string name="error_source_android_only">此提供商在此设备上不可用。</string>
     <string name="error_source_img2img_unsupported">此提供商在这里不支持 image-to-image。</string>
     <string name="setup_localhost_url_title">Localhost URL</string>
     <string name="setup_localhost_url_text">此地址指向当前设备。仅当此平台可以访问服务器时才继续。</string>
@@ -275,7 +275,7 @@
     <string name="settings_item_demo">演示模式</string>
     <string name="settings_item_monitor_connection">监控连接</string>
     <string name="settings_item_background_generation">背景生成（测试版）*</string>
-    <string name="settings_item_background_generation_warning">*背景生成可能无法与 Local Diffusion 稳定配合使用，在启用此功能之前，请确保 Local Diffusion 在您的 Android 设备上正常运行。</string>
+    <string name="settings_item_background_generation_warning">*后台生成可能会被系统延迟或暂停。启用前，请确认生成可以正常工作。</string>
     <string name="settings_item_auto_save">自动保存图像</string>
     <string name="settings_item_auto_save_warning">*在后台生成期间，图像将始终保存到应用程序内图库。</string>
     <string name="settings_item_auto_save_media_store">保存到 Downloads</string>
@@ -326,7 +326,7 @@
 
     <!-- 警告互动 -->
     <string name="interaction_warning_title">警告</string>
-    <string name="interaction_warning_localhost_sub_title">您正在尝试连接到本地主机（127.0.0.1）服务器。\n\n除非您的 Android 设备上设置了 ssh 隧道或其他端口转发机制，否则它可能无法工作。</string>
+    <string name="interaction_warning_localhost_sub_title">您正在尝试连接到本地主机（127.0.0.1）服务器。\n\n如果服务器未在此设备上运行，或未配置网络路由，它可能无法工作。</string>
 
     <!-- 删除图像提示 -->
     <string name="interaction_delete_generation_title">删除图像</string>
@@ -347,7 +347,7 @@
     <string name="interaction_in_paint_clear_sub_title">您确定要清除绘画吗？</string>
 
     <string name="interaction_background_scheduled_title">后台生成已安排</string>
-    <string name="interaction_background_scheduled_sub_title">后台 AI 生成任务已创建。\n\n在某些情况下，Android 可能会延迟启动后台工作。\n\n您将收到有关生成的开始、进度和完成的推送通知。</string>
+    <string name="interaction_background_scheduled_sub_title">后台 AI 生成任务已创建。\n\n在某些情况下，系统可能会延迟启动后台工作。\n\n您将收到有关生成开始、进度和完成的通知。</string>
 
     <string name="interaction_background_running_title">后台生成运行中</string>
     <string name="interaction_background_running_sub_title">目前已有一个生成过程在后台运行，请等待其完成。</string>
@@ -392,7 +392,7 @@
 
     <!-- 本地自定义模型 -->
     <string name="model_local_custom_switch">加载自定义模型</string>
-    <string name="model_local_permission_title">为了能够加载自定义模型，您需要允许 SDAI 应用管理存储权限，因为从 Android 11 开始，它需要访问非范围存储文件。</string>
+    <string name="model_local_permission_title">要加载自定义模型，请允许 SDAI 访问所选文件。</string>
     <string name="model_local_permission_button">设置权限</string>
     <string name="model_local_path_header">模型路径</string>
     <string name="model_local_path_title">本地模型文件夹路径</string>
@@ -456,8 +456,10 @@
     <string name="scheduler_computation">计算</string>
     <string name="scheduler_single_thread">单线程</string>
 
-    <string name="on_boarding_page_universal_title">适用于 Android 和 iOS 的\n[通用] SDAI。</string>
-    <string name="on_boarding_page_universal_subtitle">现在 SDAI 通过同一套共享体验支持 Android 和 iOS。</string>
+    <string name="on_boarding_page_universal_title">[SDAI]\nAI 图像生成器。</string>
+    <string name="on_boarding_page_universal_subtitle">通过远程提供方和流畅的移动流程创建图像。</string>
+    <string name="on_boarding_page_universal_create">创建图像</string>
+    <string name="on_boarding_page_universal_connect">连接提供方</string>
     <string name="on_boarding_page_universal_android">Android</string>
     <string name="on_boarding_page_universal_ios">iOS</string>
     <string name="on_boarding_page_form_title">高级功能\n[稳定扩散]。</string>
