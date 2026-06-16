@@ -54,6 +54,8 @@ import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.presentation.generated.resources.Res
 import com.shifthackz.aisdv1.presentation.generated.resources.ic_share
+import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 import com.shifthackz.aisdv1.presentation.widget.image.DecodedImageBitmap
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImage
 import com.shifthackz.aisdv1.presentation.widget.image.ZoomableImageSource
@@ -111,6 +113,7 @@ fun GalleryDetailScreenContent(
                             }
                         }
                     },
+                    windowInsets = persistentTopAppBarWindowInsets(),
                 )
             },
             content = { paddingValues ->
@@ -279,6 +282,7 @@ internal fun GalleryDetailNavigationBar(
                     .fillMaxWidth()
                     .padding(top = 4.dp),
                 containerColor = MaterialTheme.colorScheme.surface,
+                windowInsets = persistentBottomBarWindowInsets(),
             ) {
                 state.tabs.forEach { tab ->
                     NavigationBarItem(

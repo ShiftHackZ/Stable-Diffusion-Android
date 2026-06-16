@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
@@ -45,6 +45,8 @@ import com.shifthackz.aisdv1.presentation.screen.setup.source.SourceFiltersBotto
 import com.shifthackz.aisdv1.presentation.screen.setup.source.SourceSelectionStep
 import com.shifthackz.aisdv1.presentation.screen.setup.source.SourceSelectionToolbar
 import com.shifthackz.aisdv1.presentation.screen.setup.source.SourceSortBottomSheet
+import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 
 @Composable
 fun ServerSetupContent(
@@ -83,6 +85,7 @@ fun ServerSetupContent(
                                 }
                             }
                         },
+                        windowInsets = persistentTopAppBarWindowInsets(),
                     )
                     ConfigurationStepBar(
                         currentStep = state.step,
@@ -100,7 +103,7 @@ fun ServerSetupContent(
             bottomBar = {
                 Button(
                     modifier = Modifier
-                        .navigationBarsPadding()
+                        .windowInsetsPadding(persistentBottomBarWindowInsets())
                         .fillMaxWidth()
                         .height(68.dp)
                         .background(MaterialTheme.colorScheme.background)

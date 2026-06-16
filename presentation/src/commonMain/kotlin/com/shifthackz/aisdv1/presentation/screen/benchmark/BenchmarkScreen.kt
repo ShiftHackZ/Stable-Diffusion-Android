@@ -13,9 +13,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -66,6 +66,8 @@ import com.shifthackz.aisdv1.feature.benchmark.BenchmarkResult
 import com.shifthackz.aisdv1.feature.benchmark.accelerationCapabilities
 import com.shifthackz.aisdv1.presentation.di.initKoin
 import com.shifthackz.aisdv1.presentation.navigation.router.BenchmarkRouter
+import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 import com.shifthackz.aisdv1.presentation.widget.dialog.ProgressDialog
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 import org.koin.core.parameter.parametersOf
@@ -144,12 +146,13 @@ fun BenchmarkScreenContent(
                         )
                     }
                 },
+                windowInsets = persistentTopAppBarWindowInsets(),
             )
         },
         bottomBar = {
             Button(
                 modifier = Modifier
-                    .navigationBarsPadding()
+                    .windowInsetsPadding(persistentBottomBarWindowInsets())
                     .fillMaxWidth()
                     .height(68.dp)
                     .background(MaterialTheme.colorScheme.background)

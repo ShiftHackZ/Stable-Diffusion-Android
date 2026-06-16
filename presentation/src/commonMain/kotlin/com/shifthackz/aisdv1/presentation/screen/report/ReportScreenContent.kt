@@ -15,9 +15,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -48,6 +49,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.domain.entity.ReportReason
 import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
+import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 import com.shifthackz.aisdv1.presentation.theme.textFieldColors
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 
@@ -212,6 +215,7 @@ fun ReportScreenContent(
 ) {
     Scaffold(
         modifier = modifier.imePadding(),
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -225,12 +229,13 @@ fun ReportScreenContent(
                         )
                     }
                 },
+                windowInsets = persistentTopAppBarWindowInsets(),
             )
         },
         bottomBar = {
             Button(
                 modifier = Modifier
-                    .navigationBarsPadding()
+                    .windowInsetsPadding(persistentBottomBarWindowInsets())
                     .height(height = 60.dp)
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)

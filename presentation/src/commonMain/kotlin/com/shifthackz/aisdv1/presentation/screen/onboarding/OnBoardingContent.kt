@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,6 +43,7 @@ import com.shifthackz.aisdv1.presentation.screen.onboarding.page.LocalDiffusionP
 import com.shifthackz.aisdv1.presentation.screen.onboarding.page.LookAndFeelPageContent
 import com.shifthackz.aisdv1.presentation.screen.onboarding.page.ProviderPageContent
 import com.shifthackz.aisdv1.presentation.screen.onboarding.page.UniversalPageContent
+import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -95,7 +96,7 @@ fun OnBoardingContent(
         bottomBar = {
             Column(
                 modifier = Modifier
-                    .navigationBarsPadding()
+                    .windowInsetsPadding(persistentBottomBarWindowInsets())
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
                 horizontalAlignment = Alignment.CenterHorizontally,

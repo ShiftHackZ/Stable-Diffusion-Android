@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -41,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 
 /**
@@ -109,7 +109,6 @@ fun HistoryScreenContent(
         modifier = modifier.fillMaxSize(),
         topBar = {
             CenterAlignedTopAppBar(
-                modifier = Modifier.statusBarsPadding(),
                 navigationIcon = {
                     IconButton(onClick = { processIntent(HistoryIntent.NavigateBack) }) {
                         Icon(
@@ -132,6 +131,7 @@ fun HistoryScreenContent(
                         )
                     }
                 },
+                windowInsets = persistentTopAppBarWindowInsets(),
             )
         },
     ) { paddingValues ->

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeveloperMode
@@ -49,11 +48,21 @@ import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerSheetContent
 import com.shifthackz.aisdv1.presentation.screen.drawer.DrawerSheetItem
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 import com.shifthackz.aisdv1.presentation.widget.connectivity.ConnectivityComposable
 import com.shifthackz.aisdv1.presentation.widget.source.getName
 
 /**
  * Renders the `AppScaffold` UI for the SDAI presentation layer.
+ *
+ * System-bar handling in this scaffold is intentionally explicit. Material `Scaffold` defaults and
+ * raw Compose `WindowInsets.statusBars`/`navigationBars` are not stable enough for the app's release
+ * matrix because Android has two layout contracts in the wild: legacy windows that are already
+ * resized away from system bars, and Android 15+ edge-to-edge windows where the app must reserve safe
+ * space itself. The Pixel 3a XL/API 32 release regression came from applying a Compose system-bar
+ * inset on top of a window that had already consumed it, which moved toolbars and persistent bottom
+ * controls by exactly one system-bar height. Keep the platform-specific inset helpers in this scaffold
+ * path so future SDK or CI/Docker build changes do not silently reintroduce duplicated padding.
  *
  * @param currentRoute current route value consumed by the API.
  * @param router router value consumed by the API.
@@ -107,6 +116,7 @@ internal fun AppScaffold(
         },
     ) {
         Scaffold(
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
             bottomBar = {
                 if (showHomeNavigation) {
                     HomeNavigationBar(
@@ -122,7 +132,7 @@ internal fun AppScaffold(
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .windowInsetsTopHeight(WindowInsets.statusBars)
+                        .windowInsetsTopHeight(persistentTopAppBarWindowInsets())
                         .background(TopAppBarDefaults.topAppBarColors().containerColor)
                 )
             },
