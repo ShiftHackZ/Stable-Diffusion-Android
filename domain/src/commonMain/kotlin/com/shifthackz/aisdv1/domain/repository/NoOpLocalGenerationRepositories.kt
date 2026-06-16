@@ -29,7 +29,7 @@ object NoOpLocalDiffusionGenerationRepository : LocalDiffusionGenerationReposito
      * @author Dmitriy Moroz
      */
     override suspend fun generateFromText(payload: TextToImagePayload) =
-        error("Local Diffusion generation is available on Android only.")
+        error("Local Diffusion generation is unavailable on this device.")
 
     /**
      * Performs the SDAI side effect handled by `interruptGeneration`.
@@ -53,7 +53,7 @@ object NoOpMediaPipeGenerationRepository : MediaPipeGenerationRepository {
      * @author Dmitriy Moroz
      */
     override suspend fun generateFromText(payload: TextToImagePayload) =
-        error("MediaPipe generation is available on Android only.")
+        error("MediaPipe generation is unavailable on this device.")
 }
 
 /**
@@ -80,7 +80,7 @@ object NoOpStableDiffusionCppGenerationRepository : StableDiffusionCppGeneration
      * @author Dmitriy Moroz
      */
     override suspend fun generateFromText(payload: TextToImagePayload) =
-        error("Local SDXL stable-diffusion.cpp generation is available on Android only.")
+        error("Local SDXL stable-diffusion.cpp generation is unavailable on this device.")
 
     /**
      * Performs the SDAI side effect handled by `interruptGeneration`.

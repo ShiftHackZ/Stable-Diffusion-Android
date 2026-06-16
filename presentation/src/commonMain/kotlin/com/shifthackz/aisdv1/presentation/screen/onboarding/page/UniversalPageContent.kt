@@ -11,7 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,7 +32,6 @@ import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingDensity
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneAspectRatio
 import com.shifthackz.aisdv1.presentation.screen.onboarding.onBoardingPhoneWidthFraction
 import com.shifthackz.aisdv1.presentation.widget.frame.PhoneFrame
-import com.shifthackz.aisdv1.presentation.widget.icon.BrandIcons
 
 /**
  * Renders the `UniversalPageContent` UI for the SDAI presentation layer.
@@ -84,22 +84,22 @@ fun UniversalPageContent(
                     ) {
                         PlatformCard(
                             modifier = Modifier.fillMaxWidth(),
-                            title = Localization.string("on_boarding_page_universal_android"),
+                            title = Localization.string("on_boarding_page_universal_create"),
                             icon = {
                                 Icon(
                                     modifier = Modifier.size(56.dp),
-                                    imageVector = Icons.Default.Android,
+                                    imageVector = Icons.Default.Image,
                                     contentDescription = null,
                                 )
                             },
                         )
                         PlatformCard(
                             modifier = Modifier.fillMaxWidth(),
-                            title = Localization.string("on_boarding_page_universal_ios"),
+                            title = Localization.string("on_boarding_page_universal_connect"),
                             icon = {
                                 Icon(
                                     modifier = Modifier.size(56.dp),
-                                    imageVector = BrandIcons.Apple,
+                                    imageVector = Icons.Default.Cloud,
                                     contentDescription = null,
                                 )
                             },

@@ -11,7 +11,7 @@ internal object StableDiffusionCppNoOp : StableDiffusionCpp {
     override suspend fun process(
         payload: TextToImagePayload,
         modelPath: String,
-    ): String = error("Local SDXL stable-diffusion.cpp generation is available on Android only.")
+    ): String = error("Local SDXL stable-diffusion.cpp generation is unavailable on this device.")
 
     override suspend fun interrupt() = Unit
 

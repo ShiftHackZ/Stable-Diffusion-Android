@@ -93,10 +93,10 @@
     <string name="error_unable_to_save_image">Не удалось сохранить изображение.</string>
     <string name="error_unable_to_share_image">Не удалось поделиться изображением.</string>
     <string name="error_img2img_openai_unsupported">Image-to-image в этом приложении не поддерживается для OpenAI.</string>
-    <string name="error_img2img_local_android_only">Local Diffusion image-to-image доступен только на Android.</string>
+    <string name="error_img2img_local_android_only">Local Diffusion image-to-image недоступен на этом устройстве.</string>
     <string name="error_img2img_select_input">Сначала выберите входное изображение.</string>
     <string name="error_generation_out_of_memory">На сервере закончилась GPU-память. Уменьшите размер изображения, Hires scale/steps или отключите Hires.Fix.</string>
-    <string name="error_source_android_only">Этот провайдер пока доступен только на Android.</string>
+    <string name="error_source_android_only">Этот провайдер недоступен на этом устройстве.</string>
     <string name="error_source_img2img_unsupported">Этот провайдер здесь не поддерживает image-to-image.</string>
     <string name="setup_localhost_url_title">Localhost URL</string>
     <string name="setup_localhost_url_text">Этот адрес указывает на текущее устройство. Продолжайте только если сервер доступен с этой платформы.</string>
@@ -309,7 +309,7 @@
     <string name="settings_item_demo">Демо режим</string>
     <string name="settings_item_monitor_connection">Мониторинг сервера</string>
     <string name="settings_item_background_generation">Фоновая генерация*</string>
-    <string name="settings_item_background_generation_warning">*Фоновая генерация может работать нестабильно с Local Diffusion. Перед включением убедитесь, что Local Diffusion работает на вашем устройстве Android.</string>
+    <string name="settings_item_background_generation_warning">*Фоновая генерация может запускаться с задержкой или приостанавливаться системой. Перед включением убедитесь, что генерация работает.</string>
     <string name="settings_item_background_generation_warning_ios">*Фоновая генерация может работать нестабильно с Silicon Diffusion. Перед включением убедитесь, что Silicon Diffusion работает на вашем iPhone.</string>
     <string name="settings_item_auto_save">Авто-сохранение фото</string>
     <string name="settings_item_auto_save_warning">*Изображения всегда будут сохраняться в галерее приложения во время фоновой генерации.</string>
@@ -396,7 +396,7 @@
     <string name="interaction_cache_sub_title">Это приведет к сбросу настроек программы и удалению всех созданных изображений. Вы хотите продолжить?</string>
 
     <string name="interaction_warning_title">Предупреждение</string>
-    <string name="interaction_warning_localhost_sub_title">Вы пытаетесь подключиться к локальному серверу localhost (127.0.0.1).\n\nЭто может не сработать, если на вашем Android-устройстве не настроено туннелирование ssh или другой механизм переадресации портов.</string>
+    <string name="interaction_warning_localhost_sub_title">Вы пытаетесь подключиться к локальному серверу localhost (127.0.0.1).\n\nЭто может не сработать, если сервер не запущен на этом устройстве или не настроен сетевой маршрут.</string>
 
     <string name="interaction_delete_generation_title">Удалить изображение</string>
     <string name="interaction_delete_generation_sub_title">Вы уверены, что хотите безвозвратно удалить это изображение?</string>
@@ -414,7 +414,7 @@
     <string name="interaction_in_paint_clear_sub_title">Вы уверены что хотите очистить зарисовки?</string>
 
     <string name="interaction_background_scheduled_title">Фоновая генерация запланирована</string>
-    <string name="interaction_background_scheduled_sub_title">Задача по фоновой генерации создана.\n\nВ некоторых случаях Android может начинать фоновую работу с задержкой.\n\nВы будете получать push-уведомления о начале, ходе и завершении генерации.</string>
+    <string name="interaction_background_scheduled_sub_title">Задача фоновой AI-генерации создана.\n\nВ некоторых случаях система может начать фоновую работу с задержкой.\n\nВы будете получать уведомления о начале, ходе и завершении генерации.</string>
 
     <string name="interaction_background_running_title">Фоновая генерация запущена</string>
     <string name="interaction_background_running_sub_title">В настоящее время у вас уже запущена генерация в фоновом режиме, пожалуйста, дождитесь ее завершения.</string>
@@ -456,7 +456,7 @@
 
     <string name="model_local_custom_switch">Загрузка кастом модели</string>
     <string name="model_local_permission_header">Разрешения</string>
-    <string name="model_local_permission_title">Чтобы иметь возможность загружать пользовательскую модель, вам необходимо разрешить приложению SDAI управлять разрешениями на хранилище, поскольку, начиная с Android 11, оно необходимо для доступа к файлам хранилища без области действия.</string>
+    <string name="model_local_permission_title">Чтобы загрузить пользовательскую модель, разрешите SDAI доступ к выбранным файлам.</string>
     <string name="model_local_permission_button">Настроить доступ</string>
     <string name="model_local_path_header">Путь к модели</string>
     <string name="model_local_path_title">Путь к папке локальной модели</string>
@@ -514,8 +514,10 @@
     <string name="scheduler_computation">Вычислительный</string>
     <string name="scheduler_single_thread">Однопоточность</string>
 
-    <string name="on_boarding_page_universal_title">[Единый] SDAI\nдля Android и iOS.</string>
-    <string name="on_boarding_page_universal_subtitle">Теперь SDAI поддерживает Android и iOS в едином общем интерфейсе.</string>
+    <string name="on_boarding_page_universal_title">[SDAI]\nгенератор AI-изображений.</string>
+    <string name="on_boarding_page_universal_subtitle">Создавайте изображения через удаленные провайдеры в удобном мобильном интерфейсе.</string>
+    <string name="on_boarding_page_universal_create">Создание изображений</string>
+    <string name="on_boarding_page_universal_connect">Подключение провайдеров</string>
     <string name="on_boarding_page_universal_android">Android</string>
     <string name="on_boarding_page_universal_ios">iOS</string>
     <string name="on_boarding_page_form_title">Расширенные функции\n[Stable Diffusion].</string>
