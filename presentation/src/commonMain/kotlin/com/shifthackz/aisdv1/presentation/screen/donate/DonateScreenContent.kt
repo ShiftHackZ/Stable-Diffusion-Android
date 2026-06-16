@@ -12,9 +12,10 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,6 +40,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifthackz.aisdv1.core.extensions.fadedEdge
+import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 import com.shifthackz.aisdv1.presentation.widget.item.SupporterItem
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 
@@ -106,6 +109,7 @@ fun DonateScreenContent(
 ) {
     Scaffold(
         modifier = modifier,
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -125,6 +129,7 @@ fun DonateScreenContent(
                         },
                     )
                 },
+                windowInsets = persistentTopAppBarWindowInsets(),
             )
         },
         bottomBar = {
@@ -135,7 +140,7 @@ fun DonateScreenContent(
             val bottomBgColor = MaterialTheme.colorScheme.surface
             Column(
                 modifier = Modifier
-                    .navigationBarsPadding()
+                    .windowInsetsPadding(persistentBottomBarWindowInsets())
                     .fillMaxWidth()
                     .clip(shape)
                     .drawBehind {

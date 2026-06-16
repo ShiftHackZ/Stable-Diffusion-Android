@@ -37,6 +37,7 @@ import com.shifthackz.aisdv1.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.di.initKoin
 import com.shifthackz.aisdv1.presentation.navigation.router.WebUiRouter
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 import com.shifthackz.aisdv1.presentation.widget.source.getName
 import org.koin.core.parameter.parametersOf
 
@@ -119,6 +120,7 @@ fun WebUiScreenContent(
                         )
                     }
                 },
+                windowInsets = persistentTopAppBarWindowInsets(),
             )
         },
         contentColor = MaterialTheme.colorScheme.surface,
