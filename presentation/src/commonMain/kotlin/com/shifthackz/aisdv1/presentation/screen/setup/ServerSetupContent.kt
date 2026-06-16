@@ -6,11 +6,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
@@ -29,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 
 /**
  * Carries `ServerSetupStrings` data through the SDAI presentation layer.
@@ -507,6 +510,7 @@ fun ServerSetupContent(
 
     Box(modifier = modifier.fillMaxSize()) {
         Scaffold(
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
             topBar = {
                 Column {
                     CenterAlignedTopAppBar(
@@ -528,6 +532,7 @@ fun ServerSetupContent(
                                 }
                             }
                         },
+                        windowInsets = persistentTopAppBarWindowInsets(),
                     )
                     ConfigurationStepBar(
                         currentStep = state.step,
@@ -538,7 +543,7 @@ fun ServerSetupContent(
             bottomBar = {
                 Button(
                     modifier = Modifier
-                        .navigationBarsPadding()
+                        .windowInsetsPadding(persistentBottomBarWindowInsets())
                         .fillMaxWidth()
                         .height(68.dp)
                         .background(MaterialTheme.colorScheme.background)

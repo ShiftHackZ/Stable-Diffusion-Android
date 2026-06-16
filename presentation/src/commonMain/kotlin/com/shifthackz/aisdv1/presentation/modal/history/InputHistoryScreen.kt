@@ -17,10 +17,9 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,6 +54,8 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.mvi.MviComponent
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.presentation.di.initKoin
+import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 
 /**
  * Renders the `InputHistoryBottomSheet` UI for the SDAI presentation layer.
@@ -76,7 +77,7 @@ fun InputHistoryBottomSheet(
     )
 
     ModalBottomSheet(
-        modifier = modifier.statusBarsPadding(),
+        modifier = modifier.windowInsetsPadding(persistentTopAppBarWindowInsets()),
         sheetState = sheetState,
         onDismissRequest = onClose,
         containerColor = MaterialTheme.colorScheme.background,
@@ -86,7 +87,7 @@ fun InputHistoryBottomSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.9f)
-                .navigationBarsPadding(),
+                .windowInsetsPadding(persistentBottomBarWindowInsets()),
             onGenerationSelected = onGenerationSelected,
         )
     }

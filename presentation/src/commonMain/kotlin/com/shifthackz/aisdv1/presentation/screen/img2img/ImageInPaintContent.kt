@@ -45,6 +45,8 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.presentation.theme.global.ApplySystemBarTheme
+import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
+import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
 
 /**
  * Renders the `ImageInPaintScreenContent` UI for the SDAI presentation layer.
@@ -85,6 +87,7 @@ internal fun ImageInPaintScreenContent(
                         )
                     }
                 },
+                windowInsets = persistentTopAppBarWindowInsets(),
             )
         },
         bottomBar = {
@@ -150,6 +153,7 @@ internal fun ImageInPaintScreenContent(
                 }
                 NavigationBar(
                     containerColor = MaterialTheme.colorScheme.surface,
+                    windowInsets = persistentBottomBarWindowInsets(),
                 ) {
                     ImageInPaintTab.entries.forEach { tab ->
                         NavigationBarItem(

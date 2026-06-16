@@ -7,6 +7,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
 
 /**
  * Carries bottom navigation item data used by [AppScaffold].
@@ -43,6 +44,14 @@ internal data class HomeNavigationBarItem(
 /**
  * Renders the app bottom navigation bar.
  *
+ * The `windowInsets` value is routed through `persistentBottomBarWindowInsets()` on purpose. A plain
+ * `WindowInsets.navigationBars` value looks correct on Android 15+ edge-to-edge devices and on iOS,
+ * but it is wrong on older Android devices whose content window is already laid out above the system
+ * navigation bar. That mismatch made release builds on a Pixel 3a XL with three-button navigation show
+ * an extra bottom gap equal to the system bar height. Keeping the workaround at the persistent
+ * navigation component protects all home tabs at once and avoids scattering API-level checks through
+ * individual screens.
+ *
  * @param items route items displayed in the bottom navigation bar.
  * @author Dmitriy Moroz
  */
@@ -52,6 +61,7 @@ internal fun HomeNavigationBar(
 ) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
+        windowInsets = persistentBottomBarWindowInsets(),
     ) {
         items.forEach { item ->
             NavigationBarItem(
