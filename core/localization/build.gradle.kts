@@ -1,3 +1,6 @@
+import org.gradle.api.Task
+import org.gradle.api.file.Directory
+import org.gradle.api.provider.Provider
 import org.w3c.dom.Element
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -13,9 +16,35 @@ private val localizationPackage = "com.shifthackz.aisdv1.core.localization"
 private val defaultLanguageCode = "en"
 private val preferredLanguageOrder = listOf(defaultLanguageCode, "uk", "tr", "ru", "zh")
 private val stringsResDir = layout.projectDirectory.dir("src/androidMain/res")
-private val generatedLocalizationDir = layout.buildDirectory.dir("generated/source/localizationCatalog/commonMain/kotlin")
+private val generatedAndroidLocalizationDir = layout.buildDirectory.dir(
+    "generated/source/localizationCatalog/androidMain/kotlin",
+)
+private val generatedIosLocalizationDir = layout.buildDirectory.dir(
+    "generated/source/localizationCatalog/iosMain/kotlin",
+)
 
-private val generateLocalizationCatalog by tasks.registering {
+private val iosStringKeysToRemove = setOf(
+    "on_boarding_page_universal_android",
+)
+
+private val generateAndroidLocalizationCatalog by tasks.registering {
+    configureLocalizationCatalogTask(
+        generatedLocalizationDir = generatedAndroidLocalizationDir,
+        transformStrings = { it },
+    )
+}
+
+private val generateIosLocalizationCatalog by tasks.registering {
+    configureLocalizationCatalogTask(
+        generatedLocalizationDir = generatedIosLocalizationDir,
+        transformStrings = { strings -> strings.toIosStrings() },
+    )
+}
+
+private fun Task.configureLocalizationCatalogTask(
+    generatedLocalizationDir: Provider<Directory>,
+    transformStrings: (Map<String, String>) -> Map<String, String>,
+) {
     val stringsFiles = fileTree(stringsResDir) {
         include("values*/strings.xml")
     }
@@ -26,7 +55,7 @@ private val generateLocalizationCatalog by tasks.registering {
         val languageStrings = stringsFiles.files
             .sortedBy { it.languageCode() }
             .associate { file ->
-                file.languageCode() to file.parseAndroidStrings()
+                file.languageCode() to transformStrings(file.parseAndroidStrings())
             }
             .toMutableMap()
 
@@ -45,7 +74,7 @@ private val generateLocalizationCatalog by tasks.registering {
             buildString {
                 appendLine("package $localizationPackage")
                 appendLine()
-                appendLine("internal val localizationLanguages: List<LocalizationLanguage> = listOf(")
+                appendLine("internal actual val localizationLanguages: List<LocalizationLanguage> = listOf(")
                 languages.forEach { code ->
                     val strings = languageStrings.getValue(code)
                     val languageName = strings["language"] ?: code
@@ -61,7 +90,7 @@ private val generateLocalizationCatalog by tasks.registering {
                         appendStringsMap("${code.sanitizedMapName()}Strings", languageStrings.getValue(code))
                     }
                 appendLine()
-                appendLine("internal val localizationCatalog: Map<String, Map<String, String>> = mapOf(")
+                appendLine("internal actual val localizationCatalog: Map<String, Map<String, String>> = mapOf(")
                 languages.forEach { code ->
                     val mapName = "${code.sanitizedMapName()}Strings"
                     val value = if (code == defaultLanguageCode) mapName else "enStrings + $mapName"
@@ -75,14 +104,22 @@ private val generateLocalizationCatalog by tasks.registering {
 
 kotlin {
     sourceSets {
+        androidMain {
+            kotlin.srcDir(generateAndroidLocalizationCatalog)
+        }
+        iosMain {
+            kotlin.srcDir(generateIosLocalizationCatalog)
+        }
         commonMain {
-            kotlin.srcDir(generateLocalizationCatalog)
             dependencies {
                 implementation(libs.kotlinx.coroutines.core)
             }
         }
     }
 }
+
+private fun Map<String, String>.toIosStrings(): Map<String, String> =
+    this - iosStringKeysToRemove
 
 private fun File.languageCode(): String {
     val qualifier = parentFile.name.removePrefix("values")

@@ -89,9 +89,9 @@
     <string name="error_unable_to_save_image">Не вдалося зберегти зображення.</string>
     <string name="error_unable_to_share_image">Не вдалося поширити зображення.</string>
     <string name="error_img2img_openai_unsupported">Image-to-image у цьому застосунку не підтримується для OpenAI.</string>
-    <string name="error_img2img_local_android_only">Local Diffusion image-to-image доступний лише на Android.</string>
+    <string name="error_img2img_local_android_only">Local Diffusion image-to-image недоступний на цьому пристрої.</string>
     <string name="error_img2img_select_input">Спочатку виберіть вхідне зображення.</string>
-    <string name="error_source_android_only">Цей провайдер поки доступний лише на Android.</string>
+    <string name="error_source_android_only">Цей провайдер недоступний на цьому пристрої.</string>
     <string name="error_source_img2img_unsupported">Цей провайдер тут не підтримує image-to-image.</string>
     <string name="setup_localhost_url_title">Localhost URL</string>
     <string name="setup_localhost_url_text">Ця адреса вказує на поточний пристрій. Продовжуйте лише якщо сервер доступний з цієї платформи.</string>
@@ -243,7 +243,7 @@
     <string name="settings_item_demo">Демо режим</string>
     <string name="settings_item_monitor_connection">Моніторинг сервера</string>
     <string name="settings_item_background_generation">Фонова генерація (Beta)*</string>
-    <string name="settings_item_background_generation_warning">*Генерація фону може працювати нестабільно з Local Diffusion, будь ласка, переконайтеся, що Local Diffusion добре працює на вашому пристрої Android, перш ніж увімкнути це.</string>
+    <string name="settings_item_background_generation_warning">*Фонова генерація може запускатися із затримкою або призупинятися системою. Перед увімкненням переконайтеся, що генерація працює.</string>
     <string name="settings_item_auto_save">Авто-збереження фото</string>
     <string name="settings_item_auto_save_warning">*Зображення завжди зберігаються в галереї додатку під час фонової генерації.</string>
     <string name="settings_item_auto_save_media_store">Зберігати в Завантажене</string>
@@ -288,7 +288,7 @@
     <string name="interaction_cache_sub_title">Це призведе до скидання налаштувань програми та видалення всіх створених зображень. Ви бажаєте продовжити?</string>
 
     <string name="interaction_warning_title">Попередження</string>
-    <string name="interaction_warning_localhost_sub_title">Ви намагаєтеся підключитися до локального сервера localhost (127.0.0.1).\n\nЦе може не працювати, якщо на вашому пристрої Android не налаштовано SSH-тунелювання або інший механізм переадресації портів.</string>
+    <string name="interaction_warning_localhost_sub_title">Ви намагаєтеся підключитися до локального сервера localhost (127.0.0.1).\n\nЦе може не спрацювати, якщо сервер не запущено на цьому пристрої або не налаштовано мережевий маршрут.</string>
 
     <string name="interaction_delete_generation_title">Видалити зображення</string>
     <string name="interaction_delete_generation_sub_title">Ви впевнені, що хочете остаточно видалити це зображення?</string>
@@ -306,7 +306,7 @@
     <string name="interaction_in_paint_clear_sub_title">Ви впевнені що хочете очистити креслення?</string>
 
     <string name="interaction_background_scheduled_title">Фонова генерація запланована</string>
-    <string name="interaction_background_scheduled_sub_title">Завдання для фонової генерації створено.\n\nУ деяких випадках Android може почати фонову роботу із затримкою.\n\nВи отримуватимете push-повідомлення про початок, хід і завершення генерації.</string>
+    <string name="interaction_background_scheduled_sub_title">Завдання фонової AI-генерації створено.\n\nУ деяких випадках система може почати фонову роботу із затримкою.\n\nВи отримуватимете сповіщення про початок, хід і завершення генерації.</string>
 
     <string name="interaction_background_running_title">Виконується фонова генерація</string>
     <string name="interaction_background_running_sub_title">Наразі у вас уже є генерація, що працює у фоновому режимі, будь ласка, зачекайте, поки вона завершиться.</string>
@@ -346,7 +346,7 @@
     <string name="notification_fail_sub_title">Натисніть щоб відкрити додаток.</string>
 
     <string name="model_local_custom_switch">Завантажити кастом модель</string>
-    <string name="model_local_permission_title">Щоб мати можливість завантажити спеціальну модель, вам потрібно дозволити додатку SDAI керувати дозволами на зберігання, оскільки, починаючи з Android 11, це потрібно для доступу до файлів зберігання без обмежень.</string>
+    <string name="model_local_permission_title">Щоб завантажити спеціальну модель, дозвольте SDAI доступ до вибраних файлів.</string>
     <string name="model_local_permission_button">Налаштувати доступ</string>
 
     <string name="model_local_custom_title">Щоб використовувати локальну спеціальну модель, помістіть її в локальну папку в пам’яті телефону.</string>
@@ -405,8 +405,10 @@
     <string name="scheduler_computation">Обчислення</string>
     <string name="scheduler_single_thread">Один потік</string>
 
-    <string name="on_boarding_page_universal_title">[Єдиний] SDAI\nдля Android та iOS.</string>
-    <string name="on_boarding_page_universal_subtitle">Тепер SDAI підтримує Android та iOS в одному спільному інтерфейсі.</string>
+    <string name="on_boarding_page_universal_title">[SDAI]\nгенератор AI-зображень.</string>
+    <string name="on_boarding_page_universal_subtitle">Створюйте зображення через віддалених провайдерів у зручному мобільному інтерфейсі.</string>
+    <string name="on_boarding_page_universal_create">Створення зображень</string>
+    <string name="on_boarding_page_universal_connect">Підключення провайдерів</string>
     <string name="on_boarding_page_universal_android">Android</string>
     <string name="on_boarding_page_universal_ios">iOS</string>
     <string name="on_boarding_page_form_title">Розширені можливості\n[Stable Diffusion].</string>
