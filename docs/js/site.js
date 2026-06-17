@@ -16,7 +16,7 @@
       nightly: "nightly.html",
       googlePlay: "https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app",
       fdroid: "https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss",
-      appStore: ""
+      appStore: "https://apps.apple.com/us/app/sdai-ai-image-generator/id6778314183"
     }
   };
 
