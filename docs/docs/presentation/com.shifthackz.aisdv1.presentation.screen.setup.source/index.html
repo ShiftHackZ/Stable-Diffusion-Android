@@ -1,0 +1,559 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.shifthackz.aisdv1.presentation.screen.setup.source</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script><meta id="sdai-docs-seo" name="description" content="Dokka API documentation for SDAI Kotlin Multiplatform, Android, iOS, and shared modules.">
+<link rel="canonical" href="https://sdai.moroz.cc/docs/presentation/com.shifthackz.aisdv1.presentation.screen.setup.source/index.html">
+<meta property="og:title" content="SDAI Documentation">
+<meta property="og:description" content="Kotlin API documentation for SDAI Android, iOS, and shared modules.">
+<meta property="og:url" content="https://sdai.moroz.cc/docs/presentation/com.shifthackz.aisdv1.presentation.screen.setup.source/index.html">
+<meta property="og:site_name" content="SDAI">
+<meta property="og:type" content="website">
+<style id="sdai-docs-branding">
+  .sdai-docs-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .sdai-docs-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .sdai-docs-links a:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .sdai-docs-links svg {
+    width: 18px;
+    height: 18px;
+  }
+  @media (max-width: 760px) {
+    .sdai-docs-links {
+      width: 100%;
+      justify-content: flex-start;
+      margin-left: 0;
+      padding: 6px 0;
+    }
+    .sdai-docs-links a {
+      padding: 0 6px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
+                    SDAI
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+<nav class="sdai-docs-links" aria-label="SDAI documentation links">
+  <a href="https://sdai.moroz.cc/">Main site</a>
+  <a href="https://t.me/sdai_app" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.86 4.58 18.62 19.84c-.24 1.08-.88 1.34-1.78.83l-4.92-3.63-2.37 2.28c-.26.26-.48.48-.98.48l.35-5.02 9.14-8.26c.4-.35-.09-.55-.61-.2L6.15 13.43l-4.87-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 3c.88-.33 1.65.2 1.31 1.58Z"/></svg>
+    <span>Telegram</span>
+  </a>
+  <a href="https://discord.gg/jzdR9m8Ves" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.54 5.26A18.1 18.1 0 0 0 15.04 3.86c-.19.34-.42.8-.57 1.16a16.7 16.7 0 0 0-4.99 0 12.3 12.3 0 0 0-.58-1.16 18 18 0 0 0-4.5 1.4C1.55 9.49.78 13.61 1.16 17.68a18.3 18.3 0 0 0 5.51 2.79c.44-.6.84-1.24 1.17-1.91-.64-.24-1.25-.54-1.82-.89.15-.11.3-.23.44-.35a12.96 12.96 0 0 0 11.08 0l.44.35c-.58.35-1.19.65-1.83.89.34.67.73 1.31 1.17 1.91a18.2 18.2 0 0 0 5.52-2.79c.46-4.72-.78-8.81-3.3-12.42ZM8.68 15.18c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.08 0 1.96.99 1.95 2.19 0 1.21-.87 2.2-1.95 2.2Zm6.64 0c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.09 0 1.96.99 1.95 2.19 0 1.21-.86 2.2-1.95 2.2Z"/></svg>
+    <span>Discord</span>
+  </a>
+</nav>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":presentation/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":presentation/commonMain" data-filter=":presentation/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    SDAI
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="presentation::com.shifthackz.aisdv1.presentation.screen.setup.source////PointingToDeclaration//-1625832475">
+  <div class="breadcrumbs"><a href="../index.html">presentation</a><span class="delimiter">/</span><span class="current">com.shifthackz.aisdv1.presentation.screen.setup.source</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="631486905%2FProperties%2F-1625832475" anchor-label="_mobileDataArrowsIcon" id="631486905%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="_mobile-data-arrows-icon.html"><span>_</span><wbr><span>mobile</span><wbr><span>Data</span><wbr><span>Arrows</span><wbr><span><span>Icon</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="631486905%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">var </span><a href="_mobile-data-arrows-icon.html">_mobileDataArrowsIcon</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/vector/ImageVector.html">ImageVector</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1892625604%2FProperties%2F-1625832475" anchor-label="MobileDataArrowsIcon" id="1892625604%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mobile-data-arrows-icon.html"><span>Mobile</span><wbr><span>Data</span><wbr><span>Arrows</span><wbr><span><span>Icon</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1892625604%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="-mobile-data-arrows-icon.html">MobileDataArrowsIcon</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/vector/ImageVector.html">ImageVector</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="550027468%2FProperties%2F-1625832475" anchor-label="sourceFiltersActive" id="550027468%2FProperties%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="source-filters-active.html"><span>source</span><wbr><span>Filters</span><wbr><span><span>Active</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="550027468%2FProperties%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/index.html">ServerSetupState</a><span class="token punctuation">.</span><a href="source-filters-active.html">sourceFiltersActive</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-151457749%2FFunctions%2F-1625832475" anchor-label="CompactSourceSearchField" id="-151457749%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-compact-source-search-field.html"><span>Compact</span><wbr><span>Source</span><wbr><span>Search</span><wbr><span><span>Field</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-151457749%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-compact-source-search-field.html"><span class="token function">CompactSourceSearchField</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">placeholder<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">onValueChange<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token operator"> = </span>Modifier</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-827217562%2FFunctions%2F-1625832475" anchor-label="containerColor" id="-827217562%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="container-color.html"><span>container</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-827217562%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source-readiness/index.html">ServerSourceReadiness</a><span class="token punctuation">.</span><a href="container-color.html"><span class="token function">containerColor</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1521063150%2FFunctions%2F-1625832475" anchor-label="contentColor" id="1521063150%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="content-color.html"><span>content</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1521063150%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source-readiness/index.html">ServerSourceReadiness</a><span class="token punctuation">.</span><a href="content-color.html"><span class="token function">contentColor</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1286815104%2FFunctions%2F-1625832475" anchor-label="hasSourceFilterMatch" id="-1286815104%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="has-source-filter-match.html"><span>has</span><wbr><span>Source</span><wbr><span>Filter</span><wbr><span><span>Match</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1286815104%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="has-source-filter-match.html"><span class="token function">hasSourceFilterMatch</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source-type/index.html">ServerSourceType</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">readinessFilters<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source-readiness/index.html">ServerSourceReadiness</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">tags<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-feature-tag/index.html">FeatureTag</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="774894539%2FFunctions%2F-1625832475" anchor-label="isItemFullyVisible" id="774894539%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-item-fully-visible.html"><span>is</span><wbr><span>Item</span><wbr><span>Fully</span><wbr><span><span>Visible</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="774894539%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/foundation/lazy/LazyListState.html">LazyListState</a><span class="token punctuation">.</span><a href="is-item-fully-visible.html"><span class="token function">isItemFullyVisible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">index<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks whether a lazy-list item is entirely inside the current viewport.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1715825115%2FFunctions%2F-1625832475" anchor-label="isSourceReadinessEnabled" id="-1715825115%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-source-readiness-enabled.html"><span>is</span><wbr><span>Source</span><wbr><span>Readiness</span><wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1715825115%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/index.html">ServerSetupState</a><span class="token punctuation">.</span><a href="is-source-readiness-enabled.html"><span class="token function">isSourceReadinessEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">readiness<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source-readiness/index.html">ServerSourceReadiness</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks whether adding <a href="is-source-readiness-enabled.html">readiness</a> keeps the filter set non-empty.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-758548899%2FFunctions%2F-1625832475" anchor-label="isSourceTagEnabled" id="-758548899%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-source-tag-enabled.html"><span>is</span><wbr><span>Source</span><wbr><span>Tag</span><wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-758548899%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/index.html">ServerSetupState</a><span class="token punctuation">.</span><a href="is-source-tag-enabled.html"><span class="token function">isSourceTagEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">tag<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-feature-tag/index.html">FeatureTag</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks whether adding <a href="is-source-tag-enabled.html">tag</a> keeps the filter set non-empty.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="136820903%2FFunctions%2F-1625832475" anchor-label="isSourceTypeEnabled" id="136820903%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-source-type-enabled.html"><span>is</span><wbr><span>Source</span><wbr><span>Type</span><wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="136820903%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/index.html">ServerSetupState</a><span class="token punctuation">.</span><a href="is-source-type-enabled.html"><span class="token function">isSourceTypeEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source-type/index.html">ServerSourceType</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks whether selecting <a href="is-source-type-enabled.html">type</a> can still produce at least one provider.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1520325070%2FFunctions%2F-1625832475" anchor-label="mapToUi" id="-1520325070%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-to-ui.html"><span>map</span><wbr><span>To</span><wbr><span><span>Ui</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1520325070%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source-readiness/index.html">ServerSourceReadiness</a><span class="token punctuation">.</span><a href="map-to-ui.html"><span class="token function">mapToUi</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">strings<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.content/-server-setup-strings/index.html">ServerSetupStrings</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source-type/index.html">ServerSourceType</a><span class="token punctuation">.</span><a href="map-to-ui.html"><span class="token function">mapToUi</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">strings<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.content/-server-setup-strings/index.html">ServerSetupStrings</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/-source-sort-order/index.html">ServerSetupState.SourceSortOrder</a><span class="token punctuation">.</span><a href="map-to-ui.html"><span class="token function">mapToUi</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">strings<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.content/-server-setup-strings/index.html">ServerSetupStrings</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1121788988%2FFunctions%2F-1625832475" anchor-label="matchesFilters" id="-1121788988%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="matches-filters.html"><span>matches</span><wbr><span><span>Filters</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1121788988%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token punctuation">.</span><a href="matches-filters.html"><span class="token function">matchesFilters</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/index.html">ServerSetupState</a><span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.content/-server-setup-strings/index.html">ServerSetupStrings</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1910255568%2FFunctions%2F-1625832475" anchor-label="SourceEmptyState" id="1910255568%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-empty-state.html"><span>Source</span><wbr><span>Empty</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1910255568%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-source-empty-state.html"><span class="token function">SourceEmptyState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">text<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="774585021%2FFunctions%2F-1625832475" anchor-label="SourceFiltersBottomSheet" id="774585021%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-filters-bottom-sheet.html"><span>Source</span><wbr><span>Filters</span><wbr><span>Bottom</span><wbr><span><span>Sheet</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="774585021%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-source-filters-bottom-sheet.html"><span class="token function">SourceFiltersBottomSheet</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/index.html">ServerSetupState</a><span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.content/-server-setup-strings/index.html">ServerSetupStrings</a><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-intent/index.html">ServerSetupIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Bottom sheet for provider type, readiness, and capability tag filters.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="158595197%2FFunctions%2F-1625832475" anchor-label="SourceMetaChip" id="158595197%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-meta-chip.html"><span>Source</span><wbr><span>Meta</span><wbr><span><span>Chip</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="158595197%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-source-meta-chip.html"><span class="token function">SourceMetaChip</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">text<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">containerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">contentColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="531865673%2FFunctions%2F-1625832475" anchor-label="SourceModeItem" id="531865673%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-mode-item.html"><span>Source</span><wbr><span>Mode</span><wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="531865673%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-source-mode-item.html"><span class="token function">SourceModeItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">source<span class="token operator">: </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token punctuation">, </span></span><span class="parameter ">selected<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.content/-server-setup-strings/index.html">ServerSetupStrings</a><span class="token punctuation">, </span></span><span class="parameter ">onClick<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders one provider option in the provider selection list.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-312342299%2FFunctions%2F-1625832475" anchor-label="SourceSelectionStep" id="-312342299%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-selection-step.html"><span>Source</span><wbr><span>Selection</span><wbr><span><span>Step</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-312342299%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-source-selection-step.html"><span class="token function">SourceSelectionStep</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/index.html">ServerSetupState</a><span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.content/-server-setup-strings/index.html">ServerSetupStrings</a><span class="token punctuation">, </span></span><span class="parameter ">listState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/foundation/lazy/LazyListState.html">LazyListState</a><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-intent/index.html">ServerSetupIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token operator"> = </span>Modifier</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders the provider picker list with search/filter/sort applied.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1311694509%2FFunctions%2F-1625832475" anchor-label="SourceSelectionToolbar" id="-1311694509%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-selection-toolbar.html"><span>Source</span><wbr><span>Selection</span><wbr><span><span>Toolbar</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1311694509%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-source-selection-toolbar.html"><span class="token function">SourceSelectionToolbar</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/index.html">ServerSetupState</a><span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.content/-server-setup-strings/index.html">ServerSetupStrings</a><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-intent/index.html">ServerSetupIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Compact toolbar for provider search, filter, and sort actions.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="160742800%2FFunctions%2F-1625832475" anchor-label="SourceSortBottomSheet" id="160742800%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-sort-bottom-sheet.html"><span>Source</span><wbr><span>Sort</span><wbr><span>Bottom</span><wbr><span><span>Sheet</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="160742800%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-source-sort-bottom-sheet.html"><span class="token function">SourceSortBottomSheet</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/index.html">ServerSetupState</a><span class="token punctuation">, </span></span><span class="parameter ">strings<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.content/-server-setup-strings/index.html">ServerSetupStrings</a><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-intent/index.html">ServerSetupIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Bottom sheet with provider list sort order options.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-706455924%2FFunctions%2F-1625832475" anchor-label="SourceSortToolbarIcon" id="-706455924%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-sort-toolbar-icon.html"><span>Source</span><wbr><span>Sort</span><wbr><span>Toolbar</span><wbr><span><span>Icon</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-706455924%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-source-sort-toolbar-icon.html"><span class="token function">SourceSortToolbarIcon</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1012414745%2FFunctions%2F-1625832475" anchor-label="SourceTypeChip" id="1012414745%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-type-chip.html"><span>Source</span><wbr><span>Type</span><wbr><span><span>Chip</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1012414745%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-source-type-chip.html"><span class="token function">SourceTypeChip</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">selected<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">onClick<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1088574055%2FFunctions%2F-1625832475" anchor-label="ToolbarIconButton" id="1088574055%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-toolbar-icon-button.html"><span>Toolbar</span><wbr><span>Icon</span><wbr><span><span>Button</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1088574055%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-toolbar-icon-button.html"><span class="token function">ToolbarIconButton</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">contentDescription<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">showDot<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">onClick<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter ">icon<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/vector/ImageVector.html">ImageVector</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">iconContent<span class="token operator">: </span><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a>&nbsp;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1959369831%2FFunctions%2F-1625832475" anchor-label="versionSortKey" id="-1959369831%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="version-sort-key.html"><span>version</span><wbr><span>Sort</span><wbr><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1959369831%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token punctuation">.</span><a href="version-sort-key.html"><span class="token function">versionSortKey</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Converts the date-like provider version format (<code class="lang-kotlin">yyyy.M.d[-tag]</code>) to a sortable key.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1280651988%2FFunctions%2F-1625832475" anchor-label="visibleSources" id="-1280651988%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visible-sources.html"><span>visible</span><wbr><span><span>Sources</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1280651988%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.model/-server-setup-state/index.html">ServerSetupState</a><span class="token punctuation">.</span><a href="visible-sources.html"><span class="token function">visibleSources</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">strings<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.screen.setup.content/-server-setup-strings/index.html">ServerSetupStrings</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Applies provider search, filters, and sort order to the available source list.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

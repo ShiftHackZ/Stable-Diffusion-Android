@@ -1,0 +1,797 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.shifthackz.aisdv1.presentation.screen.benchmark</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script><meta id="sdai-docs-seo" name="description" content="Dokka API documentation for SDAI Kotlin Multiplatform, Android, iOS, and shared modules.">
+<link rel="canonical" href="https://sdai.moroz.cc/docs/presentation/com.shifthackz.aisdv1.presentation.screen.benchmark/index.html">
+<meta property="og:title" content="SDAI Documentation">
+<meta property="og:description" content="Kotlin API documentation for SDAI Android, iOS, and shared modules.">
+<meta property="og:url" content="https://sdai.moroz.cc/docs/presentation/com.shifthackz.aisdv1.presentation.screen.benchmark/index.html">
+<meta property="og:site_name" content="SDAI">
+<meta property="og:type" content="website">
+<style id="sdai-docs-branding">
+  .sdai-docs-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .sdai-docs-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .sdai-docs-links a:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .sdai-docs-links svg {
+    width: 18px;
+    height: 18px;
+  }
+  @media (max-width: 760px) {
+    .sdai-docs-links {
+      width: 100%;
+      justify-content: flex-start;
+      margin-left: 0;
+      padding: 6px 0;
+    }
+    .sdai-docs-links a {
+      padding: 0 6px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
+                    SDAI
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+<nav class="sdai-docs-links" aria-label="SDAI documentation links">
+  <a href="https://sdai.moroz.cc/">Main site</a>
+  <a href="https://t.me/sdai_app" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.86 4.58 18.62 19.84c-.24 1.08-.88 1.34-1.78.83l-4.92-3.63-2.37 2.28c-.26.26-.48.48-.98.48l.35-5.02 9.14-8.26c.4-.35-.09-.55-.61-.2L6.15 13.43l-4.87-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 3c.88-.33 1.65.2 1.31 1.58Z"/></svg>
+    <span>Telegram</span>
+  </a>
+  <a href="https://discord.gg/jzdR9m8Ves" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.54 5.26A18.1 18.1 0 0 0 15.04 3.86c-.19.34-.42.8-.57 1.16a16.7 16.7 0 0 0-4.99 0 12.3 12.3 0 0 0-.58-1.16 18 18 0 0 0-4.5 1.4C1.55 9.49.78 13.61 1.16 17.68a18.3 18.3 0 0 0 5.51 2.79c.44-.6.84-1.24 1.17-1.91-.64-.24-1.25-.54-1.82-.89.15-.11.3-.23.44-.35a12.96 12.96 0 0 0 11.08 0l.44.35c-.58.35-1.19.65-1.83.89.34.67.73 1.31 1.17 1.91a18.2 18.2 0 0 0 5.52-2.79c.46-4.72-.78-8.81-3.3-12.42ZM8.68 15.18c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.08 0 1.96.99 1.95 2.19 0 1.21-.87 2.2-1.95 2.2Zm6.64 0c-1.07 0-1.95-.99-1.95-2.2 0-1.2.86-2.19 1.95-2.19 1.09 0 1.96.99 1.95 2.19 0 1.21-.86 2.2-1.95 2.2Z"/></svg>
+    <span>Discord</span>
+  </a>
+</nav>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":presentation/androidMain">android</button>
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":presentation/commonMain">common</button>
+                <button class="platform-tag platform-selector native-like" data-active="" aria-pressed="true" data-filter=":presentation/iosMain">ios</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":presentation/androidMain" data-filter=":presentation/androidMain">
+                                <span class="checkbox--icon"></span>
+                                android
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":presentation/commonMain" data-filter=":presentation/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option native-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":presentation/iosMain" data-filter=":presentation/iosMain">
+                                <span class="checkbox--icon"></span>
+                                ios
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    SDAI
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="presentation::com.shifthackz.aisdv1.presentation.screen.benchmark////PointingToDeclaration//1426011139">
+  <div class="breadcrumbs"><a href="../index.html">presentation</a><span class="delimiter">/</span><span class="current">com.shifthackz.aisdv1.presentation.screen.benchmark</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-130847611%2FClasslikes%2F97127765" anchor-label="AndroidBenchmarkPlatformActions" id="-130847611%2FClasslikes%2F97127765" data-filterable-set=":presentation/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-benchmark-platform-actions/index.html"><span>Android</span><wbr><span>Benchmark</span><wbr><span>Platform</span><wbr><span><span>Actions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-130847611%2FClasslikes%2F97127765"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-android-benchmark-platform-actions/index.html">AndroidBenchmarkPlatformActions</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>dispatchersProvider<span class="token operator">: </span><a href="../../core/common/com.shifthackz.aisdv1.core.common.schedulers/-dispatchers-provider/index.html">DispatchersProvider</a></span></span><span class="token punctuation">)</span> : <a href="-benchmark-platform-actions/index.html">BenchmarkPlatformActions</a></div><div class="brief "><p class="paragraph">Android implementation of benchmark platform side effects.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-67648687%2FClasslikes%2F-1625832475" anchor-label="BenchmarkActionResult" id="-67648687%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-benchmark-action-result/index.html"><span>Benchmark</span><wbr><span>Action</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-67648687%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-benchmark-action-result/index.html">BenchmarkActionResult</a></div><div class="brief "><p class="paragraph">Result returned by benchmark platform actions.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="489922824%2FClasslikes%2F-1625832475" anchor-label="BenchmarkIntent" id="489922824%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-benchmark-intent/index.html"><span>Benchmark</span><wbr><span><span>Intent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="489922824%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-benchmark-intent/index.html">BenchmarkIntent</a> : <a href="../../core/ui/com.shifthackz.aisdv1.core.mvi/-mvi-intent/index.html">MviIntent</a></div><div class="brief "><p class="paragraph">Describes user actions handled by <a href="-benchmark-view-model/index.html">BenchmarkViewModel</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-36668460%2FClasslikes%2F-1625832475" anchor-label="BenchmarkPlatformActions" id="-36668460%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-benchmark-platform-actions/index.html"><span>Benchmark</span><wbr><span>Platform</span><wbr><span><span>Actions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-36668460%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-benchmark-platform-actions/index.html">BenchmarkPlatformActions</a></div><div class="brief "><p class="paragraph">Defines platform side effects used by the benchmark screen.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2076476013%2FClasslikes%2F-1625832475" anchor-label="BenchmarkState" id="2076476013%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-benchmark-state/index.html"><span>Benchmark</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2076476013%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-benchmark-state/index.html">BenchmarkState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>loadingDevice<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>loadingResult<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>running<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>deviceInfo<span class="token operator">: </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-device-info/index.html">BenchmarkDeviceInfo</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>latestResult<span class="token operator">: </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-result/index.html">BenchmarkResult</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>error<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <a href="../../core/ui/com.shifthackz.aisdv1.core.mvi/-mvi-state/index.html">MviState</a></div><div class="brief "><p class="paragraph">Holds benchmark screen state.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1819746394%2FClasslikes%2F-1625832475" anchor-label="BenchmarkViewModel" id="1819746394%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-benchmark-view-model/index.html"><span>Benchmark</span><wbr><span>View</span><wbr><span><span>Model</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1819746394%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-benchmark-view-model/index.html">BenchmarkViewModel</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>dispatchersProvider<span class="token operator">: </span><a href="../../core/common/com.shifthackz.aisdv1.core.common.schedulers/-dispatchers-provider/index.html">DispatchersProvider</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>benchmarkManager<span class="token operator">: </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-manager/index.html">BenchmarkManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>router<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.navigation.router/-benchmark-router/index.html">BenchmarkRouter</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>platformActions<span class="token operator">: </span><a href="-benchmark-platform-actions/index.html">BenchmarkPlatformActions</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>onError<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span> : <a href="../../core/ui/com.shifthackz.aisdv1.core.mvi/-base-mvi-view-model/index.html">BaseMviViewModel</a><span class="token operator">&lt;</span><a href="-benchmark-state/index.html">BenchmarkState</a><span class="token punctuation">, </span><a href="-benchmark-intent/index.html">BenchmarkIntent</a><span class="token punctuation">, </span><a href="../../core/ui/com.shifthackz.aisdv1.core.mvi/-empty-effect/index.html">EmptyEffect</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Coordinates benchmark screen state and safe benchmark execution.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="742230695%2FClasslikes%2F-1449504415" anchor-label="IosBenchmarkPlatformActions" id="742230695%2FClasslikes%2F-1449504415" data-filterable-set=":presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-ios-benchmark-platform-actions/index.html"><span>Ios</span><wbr><span>Benchmark</span><wbr><span>Platform</span><wbr><span><span>Actions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="742230695%2FClasslikes%2F-1449504415"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-active="" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">class </span><a href="-ios-benchmark-platform-actions/index.html">IosBenchmarkPlatformActions</a> : <a href="../../presentation/com.shifthackz.aisdv1.presentation.screen.benchmark/-benchmark-platform-actions/index.html">BenchmarkPlatformActions</a></div><div class="brief "><p class="paragraph">iOS implementation of benchmark platform side effects.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1301619826%2FClasslikes%2F-1625832475" anchor-label="NoOpBenchmarkPlatformActions" id="1301619826%2FClasslikes%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-no-op-benchmark-platform-actions/index.html"><span>No</span><wbr><span>Op</span><wbr><span>Benchmark</span><wbr><span>Platform</span><wbr><span><span>Actions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1301619826%2FClasslikes%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-no-op-benchmark-platform-actions/index.html">NoOpBenchmarkPlatformActions</a> : <a href="-benchmark-platform-actions/index.html">BenchmarkPlatformActions</a></div><div class="brief "><p class="paragraph">No-op fallback for previews and tests.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="377692247%2FFunctions%2F-1625832475" anchor-label="AccelerationStatusChip" id="377692247%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-acceleration-status-chip.html"><span>Acceleration</span><wbr><span>Status</span><wbr><span><span>Chip</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="377692247%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-acceleration-status-chip.html"><span class="token function">AccelerationStatusChip</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">status<span class="token operator">: </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-acceleration-status/index.html">BenchmarkAccelerationStatus</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="622911476%2FFunctions%2F-1625832475" anchor-label="backgroundLabel" id="622911476%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="background-label.html"><span>background</span><wbr><span><span>Label</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="622911476%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-provider-recommendation/index.html">BenchmarkProviderRecommendation</a><span class="token punctuation">.</span><a href="background-label.html"><span class="token function">backgroundLabel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="518323870%2FFunctions%2F-1625832475" anchor-label="BenchmarkScreen" id="518323870%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-benchmark-screen.html"><span>Benchmark</span><wbr><span><span>Screen</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="518323870%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="-benchmark-screen.html"><span class="token function">BenchmarkScreen</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token operator"> = </span>Modifier<span class="token punctuation">, </span></span><span class="parameter ">router<span class="token operator">: </span><a href="../com.shifthackz.aisdv1.presentation.navigation.router/-benchmark-router/index.html">BenchmarkRouter</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders the benchmark screen with its Koin-provided ViewModel.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1838061764%2FFunctions%2F-1625832475" anchor-label="BenchmarkScreenContent" id="1838061764%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-benchmark-screen-content.html"><span>Benchmark</span><wbr><span>Screen</span><wbr><span><span>Content</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1838061764%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="-benchmark-screen-content.html"><span class="token function">BenchmarkScreenContent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token operator"> = </span>Modifier<span class="token punctuation">, </span></span><span class="parameter ">state<span class="token operator">: </span><a href="-benchmark-state/index.html">BenchmarkState</a><span class="token punctuation">, </span></span><span class="parameter ">processIntent<span class="token operator">: </span><span class="token punctuation">(</span><a href="-benchmark-intent/index.html">BenchmarkIntent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Renders benchmark screen content.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="553676342%2FFunctions%2F-1625832475" anchor-label="CapabilitiesSection" id="553676342%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-capabilities-section.html"><span>Capabilities</span><wbr><span><span>Section</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="553676342%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-capabilities-section.html"><span class="token function">CapabilitiesSection</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">loading<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">deviceInfo<span class="token operator">: </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-device-info/index.html">BenchmarkDeviceInfo</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-722145787%2FFunctions%2F-1625832475" anchor-label="containerColor" id="-722145787%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="container-color.html"><span>container</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-722145787%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-acceleration-status/index.html">BenchmarkAccelerationStatus</a><span class="token operator">?</span><span class="token punctuation">.</span><a href="container-color.html"><span class="token function">containerColor</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="76473405%2FFunctions%2F-1625832475" anchor-label="contentColor" id="76473405%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="content-color.html"><span>content</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="76473405%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-acceleration-status/index.html">BenchmarkAccelerationStatus</a><span class="token operator">?</span><span class="token punctuation">.</span><a href="content-color.html"><span class="token function">contentColor</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="316048970%2FFunctions%2F1426011139" anchor-label="createDefaultBenchmarkPlatformActions" id="316048970%2FFunctions%2F1426011139" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create-default-benchmark-platform-actions.html"><span>create</span><wbr><span>Default</span><wbr><span>Benchmark</span><wbr><span>Platform</span><wbr><span><span>Actions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="316048970%2FFunctions%2F1426011139"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button><button class="platform-bookmark" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain" data-toggle=":presentation/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="create-default-benchmark-platform-actions.html"><span class="token function">createDefaultBenchmarkPlatformActions</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-benchmark-platform-actions/index.html">BenchmarkPlatformActions</a></div><div class="brief "><p class="paragraph">Creates fallback benchmark platform actions for Android previews.</p></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="create-default-benchmark-platform-actions.html"><span class="token function">createDefaultBenchmarkPlatformActions</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-benchmark-platform-actions/index.html">BenchmarkPlatformActions</a></div><div class="brief "><p class="paragraph">Creates default platform actions for the current target.</p></div></div><div class="content sourceset-dependent-content" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="create-default-benchmark-platform-actions.html"><span class="token function">createDefaultBenchmarkPlatformActions</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../presentation/com.shifthackz.aisdv1.presentation.screen.benchmark/-benchmark-platform-actions/index.html">BenchmarkPlatformActions</a></div><div class="brief "><p class="paragraph">Creates benchmark platform actions for iOS.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="923249543%2FFunctions%2F-1625832475" anchor-label="deviceName" id="923249543%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="[common]device-name.html"><span>device</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="923249543%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-device-info/index.html">BenchmarkDeviceInfo</a><span class="token punctuation">.</span><a href="[common]device-name.html"><span class="token function">deviceName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-device-info/index.html">BenchmarkDeviceInfo</a><span class="token punctuation">.</span><a href="[common]device-name.html"><span class="token function">deviceName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2119718998%2FFunctions%2F-1625832475" anchor-label="DeviceSection" id="2119718998%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-device-section.html"><span>Device</span><wbr><span><span>Section</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2119718998%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-device-section.html"><span class="token function">DeviceSection</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">loading<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">deviceInfo<span class="token operator">: </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-device-info/index.html">BenchmarkDeviceInfo</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1545344099%2FFunctions%2F-1625832475" anchor-label="displayName" id="1545344099%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="[common]display-name.html"><span>display</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1545344099%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-sdxl-backend/index.html">SdxlBackend</a><span class="token punctuation">.</span><a href="[common]display-name.html"><span class="token function">displayName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-sdxl-backend/index.html">SdxlBackend</a><span class="token punctuation">.</span><a href="[common]display-name.html"><span class="token function">displayName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token punctuation">.</span><a href="[common]display-name.html"><span class="token function">displayName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token punctuation">.</span><a href="[common]display-name.html"><span class="token function">displayName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-accelerator/index.html">BenchmarkAccelerator</a><span class="token punctuation">.</span><a href="display-name.html"><span class="token function">displayName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-80174229%2FFunctions%2F1426011139" anchor-label="formatBenchmarkTimestamp" id="-80174229%2FFunctions%2F1426011139" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="format-benchmark-timestamp.html"><span>format</span><wbr><span>Benchmark</span><wbr><span><span>Timestamp</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-80174229%2FFunctions%2F1426011139"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button><button class="platform-bookmark" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain" data-toggle=":presentation/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="format-benchmark-timestamp.html"><span class="token function">formatBenchmarkTimestamp</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">epochMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Formats benchmark timestamps with the user's platform locale.</p></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="format-benchmark-timestamp.html"><span class="token function">formatBenchmarkTimestamp</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">epochMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Formats benchmark timestamps with the user's platform locale.</p></div></div><div class="content sourceset-dependent-content" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="format-benchmark-timestamp.html"><span class="token function">formatBenchmarkTimestamp</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">epochMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Formats benchmark timestamps with the user's platform locale.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1915905593%2FFunctions%2F-1625832475" anchor-label="InfoRow" id="1915905593%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-info-row.html"><span>Info</span><wbr><span><span>Row</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1915905593%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-info-row.html"><span class="token function">InfoRow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="861107162%2FFunctions%2F-1625832475" anchor-label="InfoRowContent" id="861107162%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-info-row-content.html"><span>Info</span><wbr><span>Row</span><wbr><span><span>Content</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="861107162%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-info-row-content.html"><span class="token function">InfoRowContent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a>&nbsp;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1793660264%2FFunctions%2F-1625832475" anchor-label="localBenchmarkProviders" id="-1793660264%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="local-benchmark-providers.html"><span>local</span><wbr><span>Benchmark</span><wbr><span><span>Providers</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1793660264%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-device-info/index.html">BenchmarkDeviceInfo</a><span class="token punctuation">.</span><a href="local-benchmark-providers.html"><span class="token function">localBenchmarkProviders</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../domain/com.shifthackz.aisdv1.domain.entity/-server-source/index.html">ServerSource</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-983048473%2FFunctions%2F-1625832475" anchor-label="localizedText" id="-983048473%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="localized-text.html"><span>localized</span><wbr><span><span>Text</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-983048473%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-acceleration-status/index.html">BenchmarkAccelerationStatus</a><span class="token operator">?</span><span class="token punctuation">.</span><a href="localized-text.html"><span class="token function">localizedText</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-provider-issue/index.html">BenchmarkProviderIssue</a><span class="token punctuation">.</span><a href="[common]localized-text.html"><span class="token function">localizedText</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-provider-issue/index.html">BenchmarkProviderIssue</a><span class="token punctuation">.</span><a href="[common]localized-text.html"><span class="token function">localizedText</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="886884246%2FFunctions%2F-1625832475" anchor-label="orUnknown" id="886884246%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="or-unknown.html"><span>or</span><wbr><span><span>Unknown</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="886884246%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">.</span><a href="or-unknown.html"><span class="token function">orUnknown</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-846608887%2FFunctions%2F-1625832475" anchor-label="ProviderRecommendationBlock" id="-846608887%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-provider-recommendation-block.html"><span>Provider</span><wbr><span>Recommendation</span><wbr><span><span>Block</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-846608887%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-provider-recommendation-block.html"><span class="token function">ProviderRecommendationBlock</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">recommendation<span class="token operator">: </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-provider-recommendation/index.html">BenchmarkProviderRecommendation</a><span class="token punctuation">, </span></span><span class="parameter ">pending<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2032055742%2FFunctions%2F-1625832475" anchor-label="ProviderRecommendationNote" id="-2032055742%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-provider-recommendation-note.html"><span>Provider</span><wbr><span>Recommendation</span><wbr><span><span>Note</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2032055742%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-provider-recommendation-note.html"><span class="token function">ProviderRecommendationNote</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">text<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1907972152%2FFunctions%2F-1625832475" anchor-label="ProviderRecommendationsSection" id="1907972152%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-provider-recommendations-section.html"><span>Provider</span><wbr><span>Recommendations</span><wbr><span><span>Section</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1907972152%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-provider-recommendations-section.html"><span class="token function">ProviderRecommendationsSection</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">loading<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">deviceInfo<span class="token operator">: </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-device-info/index.html">BenchmarkDeviceInfo</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">recommendations<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-provider-recommendation/index.html">BenchmarkProviderRecommendation</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1119864282%2FFunctions%2F-1625832475" anchor-label="ProviderRecommendationsSkeleton" id="-1119864282%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-provider-recommendations-skeleton.html"><span>Provider</span><wbr><span>Recommendations</span><wbr><span><span>Skeleton</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1119864282%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-provider-recommendations-skeleton.html"><span class="token function">ProviderRecommendationsSkeleton</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="616939126%2FFunctions%2F-1625832475" anchor-label="ProviderRecommendationTitle" id="616939126%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-provider-recommendation-title.html"><span>Provider</span><wbr><span>Recommendation</span><wbr><span><span>Title</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="616939126%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-provider-recommendation-title.html"><span class="token function">ProviderRecommendationTitle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">text<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1617019088%2FFunctions%2F-1449504415" anchor-label="rootViewController" id="1617019088%2FFunctions%2F-1449504415" data-filterable-set=":presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="root-view-controller.html"><span>root</span><wbr><span>View</span><wbr><span><span>Controller</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1617019088%2FFunctions%2F-1449504415"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-active="" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><span data-unresolved-link="platform.UIKit/UIApplication///PointingToDeclaration/">UIApplication</span><span class="token punctuation">.</span><a href="root-view-controller.html"><span class="token function">rootViewController</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="platform.UIKit/UIViewController///PointingToDeclaration/">UIViewController</span><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1283442469%2FFunctions%2F-1625832475" anchor-label="ScoreInfoRow" id="1283442469%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-score-info-row.html"><span>Score</span><wbr><span>Info</span><wbr><span><span>Row</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1283442469%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-score-info-row.html"><span class="token function">ScoreInfoRow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1612446327%2FFunctions%2F-1625832475" anchor-label="ScoreInfoRowSkeleton" id="1612446327%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-score-info-row-skeleton.html"><span>Score</span><wbr><span>Info</span><wbr><span>Row</span><wbr><span><span>Skeleton</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1612446327%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-score-info-row-skeleton.html"><span class="token function">ScoreInfoRowSkeleton</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="506356749%2FFunctions%2F-1625832475" anchor-label="ScoreSection" id="506356749%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-score-section.html"><span>Score</span><wbr><span><span>Section</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="506356749%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-score-section.html"><span class="token function">ScoreSection</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">result<span class="token operator">: </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-result/index.html">BenchmarkResult</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">loading<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">running<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-707779481%2FFunctions%2F-1625832475" anchor-label="SectionCard" id="-707779481%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-section-card.html"><span>Section</span><wbr><span><span>Card</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-707779481%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-section-card.html"><span class="token function">SectionCard</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">icon<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/vector/ImageVector.html">ImageVector</a><span class="token punctuation">, </span></span><span class="parameter ">title<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">content<span class="token operator">: </span><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/ColumnScope.html">ColumnScope</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2133380339%2FFunctions%2F-1625832475" anchor-label="shareText" id="-2133380339%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="share-text.html"><span>share</span><wbr><span><span>Text</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2133380339%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../feature/benchmark/com.shifthackz.aisdv1.feature.benchmark/-benchmark-result/index.html">BenchmarkResult</a><span class="token punctuation">.</span><a href="share-text.html"><span class="token function">shareText</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="557672663%2FFunctions%2F-1625832475" anchor-label="ShimmerLine" id="557672663%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-shimmer-line.html"><span>Shimmer</span><wbr><span><span>Line</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="557672663%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-shimmer-line.html"><span class="token function">ShimmerLine</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-310092122%2FFunctions%2F-1625832475" anchor-label="TableRowsSkeleton" id="-310092122%2FFunctions%2F-1625832475" data-filterable-set=":presentation/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-table-rows-skeleton.html"><span>Table</span><wbr><span>Rows</span><wbr><span><span>Skeleton</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-310092122%2FFunctions%2F-1625832475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">private </span><span class="token keyword">fun </span><a href="-table-rows-skeleton.html"><span class="token function">TableRowsSkeleton</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">count<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1644842723%2FFunctions%2F-1449504415" anchor-label="topMostPresentedViewController" id="-1644842723%2FFunctions%2F-1449504415" data-filterable-set=":presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="top-most-presented-view-controller.html"><span>top</span><wbr><span>Most</span><wbr><span>Presented</span><wbr><span>View</span><wbr><span><span>Controller</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1644842723%2FFunctions%2F-1449504415"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-active="" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><span data-unresolved-link="platform.UIKit/UIViewController///PointingToDeclaration/">UIViewController</span><span class="token punctuation">.</span><a href="top-most-presented-view-controller.html"><span class="token function">topMostPresentedViewController</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="platform.UIKit/UIViewController///PointingToDeclaration/">UIViewController</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
