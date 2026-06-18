@@ -1,12 +1,14 @@
-name: AndroidTest
+name: Android Unit Tests
 
 on:
+  pull_request :
+    branches : [ develop ]
   push :
-    branches : [ master ]
+    branches : [ master, develop ]
 
 jobs:
   test-feature:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
