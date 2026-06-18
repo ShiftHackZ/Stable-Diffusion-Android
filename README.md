@@ -32,6 +32,7 @@ Root-level Markdown documents:
 - Use one shared mobile experience across Android and iOS for remote generation workflows.
 - Work locally when privacy or connectivity matters with Android ONNX, MediaPipe, stable-diffusion.cpp SDXL, iOS Silicon Diffusion Core ML, or iOS Silicon Diffusion PrismML Bonsai.
 - Keep your creations in a local gallery with image details, zoom, sharing, native platform save flows, and zip export.
+- Check local-device fit before heavy runs with the on-device benchmark, then review storage and network usage from Settings.
 - Stay in control: the project is open source and the app does not include ads or telemetry.
 
 ## Screenshots
@@ -107,12 +108,13 @@ iOS uses the shared mobile experience with remote generation providers, Silicon 
 ### Configure
 
 - Provider setup from first launch or settings.
+- Provider search, type/readiness/tag filters, and sorting for faster backend selection.
 - Server URL and credentials for own-server providers.
 - API keys for hosted providers.
 - Local model selection and download flow for supported local diffusion providers.
 - Hardware benchmark in AI Settings for local providers, including device score, acceleration availability, estimated generation time, and recommended local settings.
 - Server availability monitoring for compatible own-server modes.
-- Cache and gallery management.
+- Storage usage and network usage screens for gallery/cache/model files and provider traffic counters.
 
 ## Setup
 

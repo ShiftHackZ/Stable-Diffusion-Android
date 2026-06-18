@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SDAI - Stable Diffusion AI for Android, iOS, and API Documentation</title>
-  <meta name="description" content="SDAI is an open-source mobile Stable Diffusion AI image generation app for Android and iOS with remote provider support, local Core ML generation, local gallery, advanced controls, developer documentation, and mobile-first workflows.">
-  <meta name="keywords" content="SDAI, Stable Diffusion AI, AI image generation, Android Stable Diffusion, iOS Stable Diffusion, Core ML Stable Diffusion, Silicon Diffusion Core ML, Dokka documentation, Kotlin API documentation, Automatic1111, SwarmUI, AI Horde, Hugging Face, Stability AI, OpenAI">
+  <meta name="description" content="SDAI is an open-source mobile AI image generation app for Android and iOS with self-hosted servers, hosted providers including Fal.ai and ArliAI, Android local SDXL/ONNX/MediaPipe, iOS Core ML/Bonsai, gallery, benchmark, usage tools, and API docs.">
+  <meta name="keywords" content="SDAI, Stable Diffusion AI, AI image generation, Android Stable Diffusion, iOS Stable Diffusion, Core ML Stable Diffusion, Silicon Diffusion Core ML, PrismML Bonsai, MLX, Local SDXL, stable-diffusion.cpp, Fal.ai, ArliAI, Dokka documentation, Kotlin API documentation, Automatic1111, SwarmUI, AI Horde, Hugging Face, Stability AI, OpenAI">
   <meta name="application-name" content="SDAI">
   <meta name="author" content="Moroz Inc.">
   <meta name="robots" content="index,follow,max-image-preview:large">
@@ -15,7 +15,7 @@
   <link rel="apple-touch-icon" href="https://sdai.moroz.cc/assets/sdai.png">
   <link rel="manifest" href="site.webmanifest">
   <meta property="og:title" content="SDAI - Stable Diffusion AI for Android, iOS, and API Documentation">
-  <meta property="og:description" content="Generate AI images from your phone with remote providers or local Core ML on iOS, and browse the SDAI Kotlin API documentation.">
+  <meta property="og:description" content="Generate AI images from your phone with self-hosted servers, cloud providers such as Fal.ai and ArliAI, Android local SDXL, or iOS Core ML/Bonsai, and browse the SDAI Kotlin API documentation.">
   <meta property="og:url" content="https://sdai.moroz.cc/">
   <meta property="og:site_name" content="SDAI">
   <meta property="og:type" content="website">
@@ -26,7 +26,7 @@
   <meta property="og:image:alt" content="SDAI AI image generation result preview">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SDAI - Stable Diffusion AI for Android, iOS, and API Documentation">
-  <meta name="twitter:description" content="An open-source mobile Stable Diffusion workflow with AI provider freedom, local Core ML on iOS, a clean gallery, and Dokka API docs.">
+  <meta name="twitter:description" content="An open-source mobile Stable Diffusion workflow with provider freedom, Android local SDXL/ONNX/MediaPipe, iOS Core ML/Bonsai, benchmark guidance, and Dokka API docs.">
   <meta name="twitter:image" content="https://sdai.moroz.cc/screenshots/site/ios/en-US/01-create.png">
   <link rel="icon" href="assets/sdai.png">
   <link rel="stylesheet" href="css/site.css">
@@ -62,7 +62,7 @@
           "alternateName": "Stable Diffusion AI",
           "applicationCategory": "MultimediaApplication",
           "operatingSystem": "Android, iOS",
-          "description": "Open-source mobile AI image generation app for Stable Diffusion workflows with remote AI provider support, iOS Core ML generation, and Android local diffusion options.",
+          "description": "Open-source mobile AI image generation app for Stable Diffusion workflows with self-hosted servers, hosted AI providers, Android local SDXL/ONNX/MediaPipe options, iOS Core ML/Bonsai generation, gallery, benchmark, and usage tools.",
           "image": "https://sdai.moroz.cc/assets/sdai.png",
           "screenshot": [
             "https://sdai.moroz.cc/screenshots/site/ios/en-US/01-create.png",
@@ -116,7 +116,7 @@
         <p class="eyebrow">Stable Diffusion AI for Android and iOS</p>
         <h1 class="hero-title">SDAI</h1>
         <p class="hero-tagline">
-          Generate images with your own server, cloud APIs, community workers, or on-device engines including Silicon Diffusion Core ML from one clean mobile workflow.
+          Generate images with your own server, OpenAI, Stability AI, Fal.ai, ArliAI, community workers, Android local engines, or iOS Core ML/Bonsai from one clean mobile workflow.
         </p>
         <div class="store-actions" data-store-buttons aria-label="Download SDAI"></div>
       </div>
@@ -147,11 +147,11 @@
               </figcaption>
             </figure>
             <figure class="screenshot-slide">
-              <img src="screenshots/site/ios/en-US/03-providers.png" width="1600" height="900" loading="lazy" alt="SDAI provider selection with Automatic1111, SwarmUI, AI Horde, and Hugging Face on an iPhone">
+              <img src="screenshots/site/ios/en-US/03-providers.png" width="1600" height="900" loading="lazy" alt="SDAI provider selection with remote and local generation providers on an iPhone">
               <figcaption class="screenshot-copy">
                 <span>Providers</span>
                 <h3>Choose your AI provider</h3>
-                <p>Connect Automatic1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, or local engines.</p>
+                <p>Connect Automatic1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Fal.ai, ArliAI, or local engines.</p>
               </figcaption>
             </figure>
             <figure class="screenshot-slide">
@@ -200,7 +200,7 @@
         </article>
         <article>
           <span>Provider freedom</span>
-          <p>Use your own server, cloud APIs, community workers, Android local engines, or iOS Silicon Diffusion Core ML.</p>
+          <p>Use your own server, hosted APIs such as Fal.ai and ArliAI, community workers, Android local engines, or iOS Core ML/Bonsai.</p>
         </article>
         <article>
           <span>Made for mobile</span>
@@ -215,14 +215,42 @@
         <div class="copy-stack">
           <p>
             SDAI connects to popular AI providers including Automatic1111,
-            SwarmUI, AI Horde, Hugging Face Inference, OpenAI, Stability AI, and
-            Local Diffusion engines, including Silicon Diffusion Core ML on iOS.
+            SwarmUI, AI Horde, Hugging Face Inference, OpenAI, Stability AI,
+            Fal.ai, ArliAI, and Local Diffusion engines.
+          </p>
+          <p>
+            Local generation spans Android ONNX, Google AI MediaPipe,
+            stable-diffusion.cpp SDXL, iOS Silicon Diffusion Core ML, and
+            PrismML Bonsai Image 4B on supported devices.
           </p>
           <p>
             Keep the controls artists expect: positive and negative prompts,
             size, seed, CFG scale, sampling steps, restore faces, Img2Img, Inpaint,
             LoRA, embeddings, hypernetworks, and model selection where supported.
           </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section provider-section surface-section">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-label">Provider coverage</p>
+          <h2>One app for self-hosted, hosted, and on-device generation.</h2>
+        </div>
+        <div class="cards-grid">
+          <article class="info-card">
+            <h3>Cloud and self-hosted</h3>
+            <p>Use A1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Fal.ai, or ArliAI from the shared generation flow.</p>
+          </article>
+          <article class="info-card">
+            <h3>Local engines</h3>
+            <p>Run Android ONNX, MediaPipe, stable-diffusion.cpp SDXL, iOS Core ML, or PrismML Bonsai after choosing a compatible model.</p>
+          </article>
+          <article class="info-card">
+            <h3>Device fit and usage</h3>
+            <p>Use benchmark recommendations for local providers, then review storage and network counters from Settings.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -271,15 +299,15 @@
         <div class="cards-grid">
           <article class="info-card">
             <h3>Choose your provider</h3>
-            <p>Point SDAI at your own WebUI server or pick a hosted provider when you need fast setup.</p>
+            <p>Search, filter, and sort self-hosted, cloud, and local providers by type, readiness, and feature tags.</p>
           </article>
           <article class="info-card">
             <h3>Tune generations</h3>
-            <p>Adjust dimensions, samplers, seed, CFG, batch size, and advanced options from a mobile-first UI.</p>
+            <p>Adjust dimensions, samplers, seed, CFG, batch size, local backend choices, and provider-specific options.</p>
           </article>
           <article class="info-card">
             <h3>Keep your results</h3>
-            <p>Review images in the built-in gallery and export single generations or your full collection.</p>
+            <p>Review images in the built-in gallery, export your collection, and monitor app storage and network traffic.</p>
           </article>
         </div>
       </div>
