@@ -35,9 +35,9 @@ class AiStableDiffusionClientApp : Application() {
     override fun onCreate() {
         super.onCreate()
         StrictMode.setVmPolicy(VmPolicy.Builder().build())
-        Thread.currentThread().setUncaughtExceptionHandler { _, t -> errorLog(t) }
         initializeKoin()
         initializeLogging()
+        initializeUncaughtExceptionHandler()
         initializeCursorSize()
         initializeWorkManager()
     }
@@ -84,6 +84,17 @@ class AiStableDiffusionClientApp : Application() {
             Timber.plant(Timber.DebugTree())
         }
         Timber.plant(FileLoggingTree())
+    }
+
+    private fun initializeUncaughtExceptionHandler() {
+        val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            try {
+                errorLog(throwable)
+            } finally {
+                defaultHandler?.uncaughtException(thread, throwable) ?: throw throwable
+            }
+        }
     }
 
     private fun initializeWorkManager() {
