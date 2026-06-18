@@ -148,7 +148,7 @@
   <div class="breadcrumbs"><a href="../../index.html">storage</a><span class="delimiter">/</span><a href="../index.html">com.shifthackz.aisdv1.storage.db.persistent</a><span class="delimiter">/</span><span class="current">PersistentDatabase</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Persistent</span><wbr><span><span>Database</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">PersistentDatabase</a> : <a href="https://developer.android.com/reference/kotlin/androidx/room/RoomDatabase.html">RoomDatabase</a><span class="source-link-wrapper"><span class="source-link" data-element-type="source-link">(<a href="https://github.com/ShiftHackZ/Stable-Diffusion-Android/tree/master/storage/src/commonMain/kotlin/com/shifthackz/aisdv1/storage/db/persistent/PersistentDatabase.kt#L87">source</a>)</span></span></div><p class="paragraph">Coordinates <code class="lang-kotlin">PersistentDatabase</code> behavior in the SDAI storage layer.</p><span class="kdoc-tag"><h4 class="">Author</h4><p class="paragraph">Dmitriy Moroz</p></span></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">PersistentDatabase</a> : <a href="https://developer.android.com/reference/kotlin/androidx/room/RoomDatabase.html">RoomDatabase</a><span class="source-link-wrapper"><span class="source-link" data-element-type="source-link">(<a href="https://github.com/ShiftHackZ/Stable-Diffusion-Android/tree/master/storage/src/commonMain/kotlin/com/shifthackz/aisdv1/storage/db/persistent/PersistentDatabase.kt#L126">source</a>)</span></span></div><p class="paragraph">Main Room database containing generated images, downloaded models, and app statistics.</p><p class="paragraph">Schema version 12 adds <a href="../../com.shifthackz.aisdv1.storage.db.persistent.entity/-network-usage-entity/index.html">NetworkUsageEntity</a> so traffic counters survive process restarts and can be observed by the standalone network usage screen.</p><span class="kdoc-tag"><h4 class="">Author</h4><p class="paragraph">Dmitriy Moroz</p></span></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
@@ -253,6 +253,21 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="index.html#-883479627%2FFunctions%2F22643700"><span class="token function">addTypeConverter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">kclass<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-class/index.html">KClass</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">converter<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1119401011%2FFunctions%2F22643700" anchor-label="benchmarkResultDao" id="1119401011%2FFunctions%2F22643700" data-filterable-set=":storage/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":storage/commonMain" data-filterable-set=":storage/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="benchmark-result-dao.html"><span>benchmark</span><wbr><span>Result</span><wbr><span><span>Dao</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1119401011%2FFunctions%2F22643700"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="benchmark-result-dao.html"><span class="token function">benchmarkResultDao</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.shifthackz.aisdv1.storage.db.persistent.dao/-benchmark-result-dao/index.html">BenchmarkResultDao</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">benchmarkResultDao</code> step in the SDAI storage layer.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -463,6 +478,21 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="local-model-dao.html"><span class="token function">localModelDao</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.shifthackz.aisdv1.storage.db.persistent.dao/-local-model-dao/index.html">LocalModelDao</a></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">localModelDao</code> step in the SDAI storage layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="197476784%2FFunctions%2F22643700" anchor-label="networkUsageDao" id="197476784%2FFunctions%2F22643700" data-filterable-set=":storage/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":storage/commonMain" data-filterable-set=":storage/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="network-usage-dao.html"><span>network</span><wbr><span>Usage</span><wbr><span><span>Dao</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="197476784%2FFunctions%2F22643700"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":storage/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="network-usage-dao.html"><span class="token function">networkUsageDao</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.shifthackz.aisdv1.storage.db.persistent.dao/-network-usage-dao/index.html">NetworkUsageDao</a></div><div class="brief "><p class="paragraph">Returns the DAO used to persist and observe network traffic counters.</p></div></div></div>
                 </div>
               </div>
             </div>

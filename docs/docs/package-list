@@ -11,6 +11,59 @@ $dokka.location:com.shifthackz.aisdv1.feature.mediapipe/MediaPipeImpl/imageGener
 $dokka.location:com.shifthackz.aisdv1.feature.mediapipe/MediaPipeImpl/initialize/#/PointingToDeclaration/feature/mediapipe/com.shifthackz.aisdv1.feature.mediapipe/[android-playstore]-media-pipe-impl/initialize.html
 $dokka.location:com.shifthackz.aisdv1.feature.mediapipe/MediaPipeImpl/preferenceManager/#/PointingToDeclaration/feature/mediapipe/com.shifthackz.aisdv1.feature.mediapipe/[android-playstore]-media-pipe-impl/preference-manager.html
 $dokka.location:com.shifthackz.aisdv1.feature.mediapipe/MediaPipeImpl/process/#com.shifthackz.aisdv1.domain.entity.TextToImagePayload/PointingToDeclaration/feature/mediapipe/com.shifthackz.aisdv1.feature.mediapipe/[android-playstore]-media-pipe-impl/process.html
+$dokka.location:com.shifthackz.aisdv1.presentation.screen.benchmark//deviceName/com.shifthackz.aisdv1.feature.benchmark.BenchmarkDeviceInfo#/PointingToDeclaration/presentation/com.shifthackz.aisdv1.presentation.screen.benchmark/[common]device-name.html
+$dokka.location:com.shifthackz.aisdv1.presentation.screen.benchmark//displayName/com.shifthackz.aisdv1.domain.entity.SdxlBackend#/PointingToDeclaration/presentation/com.shifthackz.aisdv1.presentation.screen.benchmark/[common]display-name.html
+$dokka.location:com.shifthackz.aisdv1.presentation.screen.benchmark//displayName/com.shifthackz.aisdv1.domain.entity.ServerSource#/PointingToDeclaration/presentation/com.shifthackz.aisdv1.presentation.screen.benchmark/[common]display-name.html
+$dokka.location:com.shifthackz.aisdv1.presentation.screen.benchmark//localizedText/com.shifthackz.aisdv1.feature.benchmark.BenchmarkProviderIssue#/PointingToDeclaration/presentation/com.shifthackz.aisdv1.presentation.screen.benchmark/[common]localized-text.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl///PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/index.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/BackgroundTaskManagerImpl/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[android]-background-task-manager-impl/-background-task-manager-impl.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/BackgroundTaskManagerImpl/#com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver#com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase#com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase#com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase#com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase#com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase#com.shifthackz.aisdv1.domain.usecase.generation.ObserveCoreMlProcessStatusUseCase#com.shifthackz.aisdv1.domain.usecase.generation.ObserveBonsaiProcessStatusUseCase#com.shifthackz.aisdv1.domain.preference.PreferenceManager/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/-background-task-manager-impl.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/activeJob/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/active-job.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/backgroundWorkObserver/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/background-work-observer.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/cancelAll/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/cancel-all.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/clearStatusSubscriptions/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/clear-status-subscriptions.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/coroutineScope/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/coroutine-scope.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/imageToImageUseCase/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/image-to-image-use-case.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/interruptGenerationUseCase/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/interrupt-generation-use-case.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/isActiveJob/#kotlinx.coroutines.Job/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/is-active-job.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/lastImageToImagePayload/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/last-image-to-image-payload.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/lastTextToImagePayload/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/last-text-to-image-payload.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/listenBonsaiStatus/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/listen-bonsai-status.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/listenCoreMlStatus/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/listen-core-ml-status.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/listenHordeStatus/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/listen-horde-status.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/listenLocalDiffusionStatus/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/listen-local-diffusion-status.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/listenSourceStatus/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/listen-source-status.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/observeBonsaiProcessStatusUseCase/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/observe-bonsai-process-status-use-case.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/observeCoreMlProcessStatusUseCase/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/observe-core-ml-process-status-use-case.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/observeHordeProcessStatusUseCase/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/observe-horde-process-status-use-case.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/observeLocalDiffusionProcessStatusUseCase/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/observe-local-diffusion-process-status-use-case.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/postRunningMessage/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/post-running-message.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/postStepMessage/#kotlin.Int#kotlin.Int/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/post-step-message.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/preferenceManager/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/preference-manager.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/readPayload/#kotlin.String/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[android]-background-task-manager-impl/read-payload.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/retryLastImageToImageTask/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/retry-last-image-to-image-task.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/retryLastTextToImageTask/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/retry-last-text-to-image-task.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/runGenerationTask/#kotlin.coroutines.SuspendFunction0[kotlin.collections.List[com.shifthackz.aisdv1.domain.entity.AiGenerationResult]]/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/run-generation-task.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/runWork/#kotlin.ByteArray#kotlin.String/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[android]-background-task-manager-impl/run-work.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/scheduleImageToImageTask/#com.shifthackz.aisdv1.domain.entity.ImageToImagePayload/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/schedule-image-to-image-task.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/scheduleTextToImageTask/#com.shifthackz.aisdv1.domain.entity.TextToImagePayload/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/schedule-text-to-image-task.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/statusScope/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/status-scope.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/textToImageUseCase/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-task-manager-impl/text-to-image-use-case.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundTaskManagerImpl/writePayload/#kotlin.ByteArray#kotlin.String/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[android]-background-task-manager-impl/write-payload.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl///PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/index.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/BackgroundWorkObserverImpl/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/-background-work-observer-impl.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/dismissResult/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/dismiss-result.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/hasActiveTasks/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/has-active-tasks.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/messageFlow/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/message-flow.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/observeResult/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/observe-result.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/observeStatus/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/observe-status.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/postCancelSignal/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/post-cancel-signal.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/postFailedSignal/#kotlin.Throwable/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/post-failed-signal.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/postStatusMessage/#kotlin.String#kotlin.String/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/post-status-message.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/postSuccessSignal/#kotlin.collections.List[com.shifthackz.aisdv1.domain.entity.AiGenerationResult]/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/post-success-signal.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/refreshStatus/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/refresh-status.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/resultFlow/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/result-flow.html
+$dokka.location:com.shifthackz.aisdv1.work/BackgroundWorkObserverImpl/stateFlow/#/PointingToDeclaration/feature/work/com.shifthackz.aisdv1.work/[ios]-background-work-observer-impl/state-flow.html
 module:app
 com.shifthackz.aisdv1.app
 com.shifthackz.aisdv1.app.di
@@ -68,15 +121,18 @@ com.shifthackz.aisdv1.domain.demo
 com.shifthackz.aisdv1.domain.di
 com.shifthackz.aisdv1.domain.entity
 com.shifthackz.aisdv1.domain.feature.auth
+com.shifthackz.aisdv1.domain.feature.bonsai
 com.shifthackz.aisdv1.domain.feature.coreml
 com.shifthackz.aisdv1.domain.feature.diffusion
 com.shifthackz.aisdv1.domain.feature.mediapipe
+com.shifthackz.aisdv1.domain.feature.sdxl
 com.shifthackz.aisdv1.domain.feature.work
 com.shifthackz.aisdv1.domain.gateway
 com.shifthackz.aisdv1.domain.interactor.settings
 com.shifthackz.aisdv1.domain.interactor.wakelock
 com.shifthackz.aisdv1.domain.preference
 com.shifthackz.aisdv1.domain.repository
+com.shifthackz.aisdv1.domain.usecase.arliai
 com.shifthackz.aisdv1.domain.usecase.caching
 com.shifthackz.aisdv1.domain.usecase.connectivity
 com.shifthackz.aisdv1.domain.usecase.debug
@@ -103,6 +159,9 @@ com.shifthackz.aisdv1.feature.auth
 com.shifthackz.aisdv1.feature.auth.credentials
 com.shifthackz.aisdv1.feature.auth.crypto
 com.shifthackz.aisdv1.feature.auth.di
+module:feature/benchmark
+com.shifthackz.aisdv1.feature.benchmark
+com.shifthackz.aisdv1.feature.benchmark.di
 module:feature/mediapipe
 com.shifthackz.aisdv1.feature.mediapipe
 com.shifthackz.aisdv1.feature.mediapipe.di
@@ -125,6 +184,7 @@ com.shifthackz.aisdv1.work.di
 com.shifthackz.aisdv1.work.mappers
 com.shifthackz.aisdv1.work.task
 module:network
+com.shifthackz.aisdv1.network.api.arliai
 com.shifthackz.aisdv1.network.api.automatic1111
 com.shifthackz.aisdv1.network.api.falai
 com.shifthackz.aisdv1.network.api.horde
@@ -161,6 +221,7 @@ com.shifthackz.aisdv1.presentation.model
 com.shifthackz.aisdv1.presentation.navigation.router
 com.shifthackz.aisdv1.presentation.platform
 com.shifthackz.aisdv1.presentation.preview
+com.shifthackz.aisdv1.presentation.screen.benchmark
 com.shifthackz.aisdv1.presentation.screen.debug
 com.shifthackz.aisdv1.presentation.screen.donate
 com.shifthackz.aisdv1.presentation.screen.drawer
@@ -170,13 +231,33 @@ com.shifthackz.aisdv1.presentation.screen.history
 com.shifthackz.aisdv1.presentation.screen.img2img
 com.shifthackz.aisdv1.presentation.screen.loader
 com.shifthackz.aisdv1.presentation.screen.logger
+com.shifthackz.aisdv1.presentation.screen.networkusage
+com.shifthackz.aisdv1.presentation.screen.networkusage.model
 com.shifthackz.aisdv1.presentation.screen.onboarding
 com.shifthackz.aisdv1.presentation.screen.onboarding.page
 com.shifthackz.aisdv1.presentation.screen.report
 com.shifthackz.aisdv1.presentation.screen.settings
+com.shifthackz.aisdv1.presentation.screen.settings.content
+com.shifthackz.aisdv1.presentation.screen.settings.modal
+com.shifthackz.aisdv1.presentation.screen.settings.model
+com.shifthackz.aisdv1.presentation.screen.settings.platform
+com.shifthackz.aisdv1.presentation.screen.settings.section
 com.shifthackz.aisdv1.presentation.screen.setup
+com.shifthackz.aisdv1.presentation.screen.setup.component
+com.shifthackz.aisdv1.presentation.screen.setup.content
+com.shifthackz.aisdv1.presentation.screen.setup.form.local
+com.shifthackz.aisdv1.presentation.screen.setup.form.remote
 com.shifthackz.aisdv1.presentation.screen.setup.mappers
+com.shifthackz.aisdv1.presentation.screen.setup.model
+com.shifthackz.aisdv1.presentation.screen.setup.platform
+com.shifthackz.aisdv1.presentation.screen.setup.reducer
+com.shifthackz.aisdv1.presentation.screen.setup.source
+com.shifthackz.aisdv1.presentation.screen.setup.validation
+com.shifthackz.aisdv1.presentation.screen.setup.viewmodel
 com.shifthackz.aisdv1.presentation.screen.splash
+com.shifthackz.aisdv1.presentation.screen.storageusage
+com.shifthackz.aisdv1.presentation.screen.storageusage.model
+com.shifthackz.aisdv1.presentation.screen.storageusage.platform
 com.shifthackz.aisdv1.presentation.screen.txt2img
 com.shifthackz.aisdv1.presentation.screen.web.webui
 com.shifthackz.aisdv1.presentation.theme
@@ -196,6 +277,7 @@ com.shifthackz.aisdv1.presentation.widget.item
 com.shifthackz.aisdv1.presentation.widget.scrollbar
 com.shifthackz.aisdv1.presentation.widget.source
 com.shifthackz.aisdv1.presentation.widget.toolbar
+com.shifthackz.aisdv1.presentation.widget.usage
 com.shifthackz.aisdv1.presentation.widget.work
 module:storage
 com.shifthackz.aisdv1.storage.converters

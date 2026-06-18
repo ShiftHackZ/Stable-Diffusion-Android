@@ -99,6 +99,7 @@
         <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
                 <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":presentation/androidMain">android</button>
                 <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":presentation/commonMain">common</button>
+                <button class="platform-tag platform-selector native-like" data-active="" aria-pressed="true" data-filter=":presentation/iosMain">ios</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
                 <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
@@ -119,6 +120,13 @@
                                 <input type="checkbox" class="checkbox--input" id=":presentation/commonMain" data-filter=":presentation/commonMain">
                                 <span class="checkbox--icon"></span>
                                 common
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option native-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":presentation/iosMain" data-filter=":presentation/iosMain">
+                                <span class="checkbox--icon"></span>
+                                ios
                             </label>
                         </li>
                 </ul>
@@ -152,7 +160,7 @@
         </nav>
         <div id="resizer" class="resizer" data-item-type="BAR"></div>
         <div id="main" data-item-type="SECTION" role="main">
-<div class="main-content" data-page-type="package" id="content" pageids="presentation::com.shifthackz.aisdv1.presentation.di////PointingToDeclaration//2033446062">
+<div class="main-content" data-page-type="package" id="content" pageids="presentation::com.shifthackz.aisdv1.presentation.di////PointingToDeclaration//1426011139">
   <div class="breadcrumbs"><a href="../index.html">presentation</a><span class="delimiter">/</span><span class="current">com.shifthackz.aisdv1.presentation.di</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
@@ -173,6 +181,23 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="core-presentation-module.html">corePresentationModule</a><span class="token operator">: </span><span data-unresolved-link="org.koin.core.module/Module///PointingToDeclaration/">Module</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">corePresentationModule</code> value used by the SDAI presentation layer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="197375131%2FProperties%2F1426011139" anchor-label="platformPresentationModule" id="197375131%2FProperties%2F1426011139" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain" data-filterable-set=":presentation/commonMain,:presentation/androidMain,:presentation/iosMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="platform-presentation-module.html"><span>platform</span><wbr><span>Presentation</span><wbr><span><span>Module</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="197375131%2FProperties%2F1426011139"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button><button class="platform-bookmark" data-filterable-current=":presentation/commonMain" data-filterable-set=":presentation/commonMain" data-toggle=":presentation/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":presentation/iosMain" data-filterable-set=":presentation/iosMain" data-toggle=":presentation/iosMain">ios</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">actual </span><span class="token keyword">val </span><a href="platform-presentation-module.html">platformPresentationModule</a><span class="token operator">: </span><span data-unresolved-link="org.koin.core.module/Module///PointingToDeclaration/">Module</span></div><div class="brief "><p class="paragraph">Exposes platform-specific presentation bindings.</p></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">expect </span><span class="token keyword">val </span><a href="platform-presentation-module.html">platformPresentationModule</a><span class="token operator">: </span><span data-unresolved-link="org.koin.core.module/Module///PointingToDeclaration/">Module</span></div><div class="brief "><p class="paragraph">Exposes platform-specific presentation bindings.</p></div></div><div class="content sourceset-dependent-content" data-togglable=":presentation/iosMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">actual </span><span class="token keyword">val </span><a href="platform-presentation-module.html">platformPresentationModule</a><span class="token operator">: </span><span data-unresolved-link="org.koin.core.module/Module///PointingToDeclaration/">Module</span></div><div class="brief "><p class="paragraph">Exposes platform-specific presentation bindings.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -206,7 +231,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":presentation/androidMain" data-filterable-set=":presentation/androidMain" data-active="" data-toggle=":presentation/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">val </span><a href="ui-utils-module.html">uiUtilsModule</a><span class="token operator">: </span><span data-unresolved-link="org.koin.core.module/Module///PointingToDeclaration/">Module</span></div><div class="brief "><p class="paragraph">Exposes the <code class="lang-kotlin">uiUtilsModule</code> value used by the SDAI presentation layer.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/androidMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">val </span><a href="ui-utils-module.html">uiUtilsModule</a><span class="token operator">: </span><span data-unresolved-link="org.koin.core.module/Module///PointingToDeclaration/">Module</span></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -240,7 +265,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.koin.core.module/Module///PointingToDeclaration/">Module</span><span class="token punctuation">.</span><a href="register-presentation-core-bindings.html"><span class="token function">registerPresentationCoreBindings</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">registerPresentationCoreBindings</code> step in the SDAI presentation layer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.koin.core.module/Module///PointingToDeclaration/">Module</span><span class="token punctuation">.</span><a href="register-presentation-core-bindings.html"><span class="token function">registerPresentationCoreBindings</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Registers presentation-layer singleton services and default no-op router bindings.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -255,7 +280,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.koin.core.module/Module///PointingToDeclaration/">Module</span><span class="token punctuation">.</span><a href="register-presentation-view-model-bindings.html"><span class="token function">registerPresentationViewModelBindings</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Executes the <code class="lang-kotlin">registerPresentationViewModelBindings</code> step in the SDAI presentation layer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":presentation/commonMain"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.koin.core.module/Module///PointingToDeclaration/">Module</span><span class="token punctuation">.</span><a href="register-presentation-view-model-bindings.html"><span class="token function">registerPresentationViewModelBindings</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Registers ViewModel factories and shared presentation observers.</p></div></div></div>
                 </div>
               </div>
             </div>
