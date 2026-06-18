@@ -13,6 +13,7 @@
       company: "https://moroz.cc",
       telegram: "https://t.me/sdai_app",
       discord: "https://discord.gg/jzdR9m8Ves",
+      fourPda: "https://4pda.to/forum/index.php?showtopic=1082639",
       nightly: "nightly.html",
       testFlight: "testflight.html",
       googlePlay: "https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app",
@@ -128,6 +129,7 @@
             <h2>Community</h2>
             <a href="${site.links.telegram}" ${external}>Telegram</a>
             <a href="${site.links.discord}" ${external}>Discord</a>
+            <a href="${site.links.fourPda}" ${external}>4PDA</a>
           </nav>
           <nav class="footer-column" aria-label="Beta testing">
             <h2>Beta Testing</h2>
