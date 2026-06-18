@@ -3,13 +3,12 @@
 ![Google Play](https://img.shields.io/endpoint?color=blue&logo=google-play&logoColor=white&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.shifthackz.aisdv1.app%26l%3DGoogle%2520Play%26m%3D%24version)
 ![F-Droid](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Ff-droid.org%2Fapi%2Fv1%2Fpackages%2Fcom.shifthackz.aisdv1.app.foss&query=%24.packages%5B0%5D.versionName&label=F-Droid&link=https%3A%2F%2Ff-droid.org%2Fpackages%2Fcom.shifthackz.aisdv1.app.foss%2F)
 
-[Website](https://sdai.moroz.cc) | [Nightly Build](https://github.com/ShiftHackZ/Stable-Diffusion-Android/releases/download/nightly/sdai-full-nightly.apk) | [Telegram](https://t.me/sdai_app) | [Discord](https://discord.gg/jzdR9m8Ves)
+[Website](https://sdai.moroz.cc) | [Google Play](https://4pda.to/forum/index.php?showtopic=1082639) | [F-Droid](https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss) | [App Store](https://apps.apple.com/us/app/sdai-ai-image-generator/id6778314183) | [Nightly Build](https://github.com/ShiftHackZ/Stable-Diffusion-Android/releases/download/nightly/sdai-full-nightly.apk) | [Telegram](https://t.me/sdai_app) | [Discord](https://discord.gg/jzdR9m8Ves) | [4PDA](https://4pda.to/forum/index.php?showtopic=1082639)
 
 <p>
   <a href="https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app"><img src="docs/assets/badge-google-play.svg" alt="Get it on Google Play" height="54"></a>
   <a href="https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss"><img src="docs/assets/badge-fdroid.svg" alt="Get it on F-Droid" height="54"></a>
-  <img src="docs/assets/badge-app-store-readme.png" alt="Download on the App Store" height="54">
-  <a href="https://4pda.to/forum/index.php?showtopic=1082639"><img src="docs/assets/4pda.png" alt="4PDA" height="54"></a>
+  <a href="https://apps.apple.com/us/app/sdai-ai-image-generator/id6778314183"><img src="docs/assets/badge-app-store-readme.png" alt="Download on the App Store" height="54"></a>
 </p>
 
 SDAI is an open-source, cross-platform AI image generation client for Android and iOS. It gives you one clean mobile workflow for self-hosted Stable Diffusion servers, hosted image APIs, crowdsourced generation, and platform-specific local generation where supported.
