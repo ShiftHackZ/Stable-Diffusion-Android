@@ -19,6 +19,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://sdai.moroz.cc/testflight.html</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://sdai.moroz.cc/privacy.html</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>yearly</changefreq>

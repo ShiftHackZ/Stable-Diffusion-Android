@@ -14,6 +14,7 @@
       telegram: "https://t.me/sdai_app",
       discord: "https://discord.gg/jzdR9m8Ves",
       nightly: "nightly.html",
+      testFlight: "testflight.html",
       googlePlay: "https://play.google.com/store/apps/details?id=com.shifthackz.aisdv1.app",
       fdroid: "https://f-droid.org/packages/com.shifthackz.aisdv1.app.foss",
       appStore: "https://apps.apple.com/us/app/sdai-ai-image-generator/id6778314183"
@@ -27,6 +28,19 @@
   };
 
   const external = 'target="_blank" rel="noopener noreferrer"';
+
+  const stableReleaseCta = {
+    home: {
+      label: "Get the app",
+      title: "Start generating with SDAI today.",
+      text: "Install from your preferred mobile app store or distribution channel and join the community for updates and help."
+    },
+    stable: {
+      label: "Latest stable release",
+      title: "Get the stable build for everyday use.",
+      text: "Install the current Google Play, F-Droid, or App Store release when you want the safest build. Keep beta channels for testing upcoming changes."
+    }
+  };
 
   function setActiveNav() {
     const page = document.body.dataset.page;
@@ -115,12 +129,16 @@
             <a href="${site.links.telegram}" ${external}>Telegram</a>
             <a href="${site.links.discord}" ${external}>Discord</a>
           </nav>
+          <nav class="footer-column" aria-label="Beta testing">
+            <h2>Beta Testing</h2>
+            <a href="${site.links.nightly}">Nightly Build</a>
+            <a href="${site.links.testFlight}">TestFlight Beta</a>
+          </nav>
           <nav class="footer-column" aria-label="Get app">
             <h2>Get app</h2>
             <a href="${site.links.googlePlay}" ${external}>Google Play</a>
             <a href="${site.links.fdroid}" ${external}>F-Droid</a>
             ${footerAppStoreLink()}
-            <a href="${site.links.nightly}">Nightly Build</a>
           </nav>
           <div class="footer-brand">
             <a class="footer-brand-row" href="${site.links.home}" aria-label="${site.name} home">
@@ -174,6 +192,24 @@
   function renderStoreButtons() {
     document.querySelectorAll("[data-store-buttons]").forEach((mount) => {
       mount.innerHTML = storeButtons();
+    });
+  }
+
+  function renderStableReleaseCtas() {
+    document.querySelectorAll("[data-stable-release-cta]").forEach((mount) => {
+      const copy = stableReleaseCta[mount.dataset.stableReleaseCta] || stableReleaseCta.home;
+      mount.outerHTML = `
+        <section class="section final-cta">
+          <div class="shell cta-grid">
+            <div>
+              <p class="section-label">${copy.label}</p>
+              <h2>${copy.title}</h2>
+              <p>${copy.text}</p>
+            </div>
+            <div class="store-actions" data-store-buttons aria-label="Download SDAI"></div>
+          </div>
+        </section>
+      `;
     });
   }
 
@@ -346,6 +382,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     renderHeader();
     renderFooter();
+    renderStableReleaseCtas();
     renderStoreButtons();
     setActiveNav();
     initMenu();

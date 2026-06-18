@@ -414,6 +414,20 @@ a:hover {
   background: #24292f;
 }
 
+.testflight-button {
+  background: #0a84ff;
+}
+
+.testflight-button .material-symbols-outlined {
+  width: 22px;
+  height: 22px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  font-size: 22px;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  line-height: 1;
+}
+
 .section-heading {
   max-width: 760px;
   margin-bottom: 34px;
@@ -706,7 +720,7 @@ a:hover {
 .nightly-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 24px;
   align-items: center;
   margin-top: 26px;
 }
@@ -849,7 +863,7 @@ a:hover {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(130px, 1fr)) minmax(220px, 1.2fr);
+  grid-template-columns: repeat(4, minmax(112px, 1fr)) minmax(200px, 1.2fr);
   gap: 32px;
 }
 
