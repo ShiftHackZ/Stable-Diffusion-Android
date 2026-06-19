@@ -6,6 +6,7 @@
     startYear: 2023,
     links: {
       home: "index.html",
+      faq: "faq.html",
       docs: "docs/",
       donate: "donate.html",
       privacy: "privacy.html",
@@ -71,7 +72,7 @@
           <div class="site-menu" id="site-menu" data-site-menu>
             <nav class="site-nav" aria-label="Main navigation">
               <a href="${site.links.home}" data-nav="home">Home</a>
-              <a href="${site.links.docs}" data-nav="docs">Documentation</a>
+              <a href="${site.links.faq}" data-nav="faq">FAQ</a>
               <a href="${site.links.privacy}" data-nav="privacy">Privacy Policy</a>
             </nav>
             <div class="social-links" aria-label="Community">
@@ -120,6 +121,7 @@
         <div class="shell footer-grid">
           <nav class="footer-column" aria-label="Info">
             <h2>Info</h2>
+            <a href="${site.links.faq}">FAQ</a>
             <a href="${site.links.privacy}">Privacy Policy</a>
             <a href="${site.links.docs}">Documentation</a>
             <a href="${site.links.github}" ${external}>GitHub</a>
@@ -299,6 +301,165 @@
     schedule();
   }
 
+  function createFaqItem(item, categoryLabel, isOpen) {
+    const details = document.createElement("details");
+    details.className = "faq-item";
+    details.open = isOpen;
+
+    const summary = document.createElement("summary");
+    summary.className = "faq-question";
+
+    const questionCopy = document.createElement("span");
+    questionCopy.className = "faq-question-copy";
+
+    const category = document.createElement("span");
+    category.className = "faq-category-pill";
+    category.textContent = categoryLabel;
+
+    const question = document.createElement("span");
+    question.className = "faq-question-text";
+    question.textContent = item.question;
+
+    const indicator = document.createElement("span");
+    indicator.className = "faq-indicator";
+    indicator.setAttribute("aria-hidden", "true");
+
+    questionCopy.append(category, question);
+    summary.append(questionCopy, indicator);
+
+    const answer = document.createElement("div");
+    answer.className = "faq-answer";
+
+    (item.answer || []).forEach((paragraph) => {
+      const node = document.createElement("p");
+      node.textContent = paragraph;
+      answer.append(node);
+    });
+
+    details.append(summary, answer);
+    return details;
+  }
+
+  function faqItemMatches(item, categoryLabel, query) {
+    if (!query) return true;
+    const text = [
+      categoryLabel,
+      item.question,
+      ...(item.answer || []),
+      ...(item.tags || [])
+    ].join(" ").toLowerCase();
+    return text.includes(query);
+  }
+
+  function addFaqStructuredData(data) {
+    const items = (data.categories || []).flatMap((category) => {
+      return (category.items || []).map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": (item.answer || []).join(" ")
+        }
+      }));
+    });
+
+    if (!items.length) return;
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": items
+    });
+    document.head.append(script);
+  }
+
+  async function initFaqPage() {
+    if (document.body.dataset.page !== "faq") return;
+
+    const list = document.querySelector("[data-faq-list]");
+    const status = document.querySelector("[data-faq-status]");
+    const search = document.querySelector("[data-faq-search]");
+    const tabs = document.querySelector("[data-faq-tabs]");
+    const updated = document.querySelector("[data-faq-updated]");
+    const count = document.querySelector("[data-faq-count]");
+    if (!list || !status || !tabs) return;
+
+    try {
+      const response = await fetch("faq.json", { cache: "no-store" });
+      if (!response.ok) throw new Error(`FAQ request failed: ${response.status}`);
+
+      const data = await response.json();
+      const categories = Array.isArray(data.categories) ? data.categories : [];
+      const total = categories.reduce((sum, category) => sum + (category.items || []).length, 0);
+      let activeCategory = "all";
+      let query = "";
+
+      if (updated) updated.textContent = formatSupporterDate(data.updated || "");
+      if (count) count.textContent = String(total);
+
+      const renderTabs = () => {
+        tabs.replaceChildren();
+
+        const allButton = document.createElement("button");
+        allButton.type = "button";
+        allButton.textContent = "All";
+        allButton.setAttribute("aria-pressed", String(activeCategory === "all"));
+        allButton.addEventListener("click", () => {
+          activeCategory = "all";
+          renderTabs();
+          renderFaq();
+        });
+        tabs.append(allButton);
+
+        categories.forEach((category) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = category.label;
+          button.setAttribute("aria-pressed", String(activeCategory === category.id));
+          button.addEventListener("click", () => {
+            activeCategory = category.id;
+            renderTabs();
+            renderFaq();
+          });
+          tabs.append(button);
+        });
+      };
+
+      const renderFaq = () => {
+        const matches = categories.flatMap((category) => {
+          if (activeCategory !== "all" && category.id !== activeCategory) return [];
+          return (category.items || [])
+            .filter((item) => faqItemMatches(item, category.label, query))
+            .map((item) => ({ item, category }));
+        });
+
+        list.replaceChildren();
+        matches.forEach(({ item, category }, index) => {
+          list.append(createFaqItem(item, category.label, index === 0));
+        });
+
+        status.textContent = matches.length
+          ? `${matches.length} question${matches.length === 1 ? "" : "s"}`
+          : "No matching questions.";
+        status.classList.toggle("is-empty", matches.length === 0);
+      };
+
+      search?.addEventListener("input", () => {
+        query = search.value.trim().toLowerCase();
+        renderFaq();
+      });
+
+      renderTabs();
+      renderFaq();
+      addFaqStructuredData(data);
+    } catch (error) {
+      status.textContent = "FAQ is temporarily unavailable.";
+      status.classList.add("is-empty");
+    }
+  }
+
   function formatSupporterDate(value) {
     if (typeof value !== "string") return "";
     const parts = value.split("-");
@@ -389,6 +550,7 @@
     setActiveNav();
     initMenu();
     initScreenshotSlider();
+    initFaqPage();
     initDonatePage();
 
     document.querySelectorAll("[data-year]").forEach((node) => {
