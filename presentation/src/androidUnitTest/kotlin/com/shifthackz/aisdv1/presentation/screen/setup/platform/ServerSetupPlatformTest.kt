@@ -9,22 +9,12 @@ import com.shifthackz.aisdv1.domain.entity.ServerSourceReadiness
 import com.shifthackz.aisdv1.presentation.model.displayName
 import com.shifthackz.aisdv1.presentation.model.readinessFor
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.allowedModes
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.shadows.ShadowBuild
 
-@RunWith(RobolectricTestRunner::class)
 class ServerSetupPlatformTest {
-
-    @After
-    fun tearDown() {
-        ShadowBuild.reset()
-    }
 
     @Test
     fun `given Android build, expected Core ML excluded by allowed platforms`() {
@@ -43,9 +33,12 @@ class ServerSetupPlatformTest {
 
     @Test
     fun `given platform reports arm64 ABI, expected Bonsai provider visible in setup list`() {
-        ShadowBuild.setSupported64BitAbis(arrayOf("arm64-v8a"))
-
-        assertTrue(isServerSourceAvailableOnPlatform(ServerSource.LOCAL_APPLE_BONSAI))
+        assertTrue(
+            isServerSourceAvailableOnAndroid(
+                source = ServerSource.LOCAL_APPLE_BONSAI,
+                supported64BitAbis = arrayOf("arm64-v8a"),
+            ),
+        )
     }
 
     @Test
