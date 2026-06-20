@@ -130,6 +130,7 @@ internal class BenchmarkScoreEngine(
             .fold(base) { score, capability ->
                 score + when (capability.accelerator) {
                     BenchmarkAccelerator.VULKAN -> 180
+                    BenchmarkAccelerator.BONSAI_VULKAN -> 220
                     BenchmarkAccelerator.OPEN_CL -> 320
                     BenchmarkAccelerator.NNAPI -> 240
                     BenchmarkAccelerator.METAL -> 760
@@ -157,6 +158,7 @@ internal class BenchmarkScoreEngine(
         deviceInfo: BenchmarkDeviceInfo,
         workload: WorkloadScore,
     ): List<String> = buildList {
+        deviceInfo.acceleratorDiagnostics.forEach(::add)
         if (deviceInfo.totalVramMb == null) add("VRAM is not directly exposed by this platform.")
         if (deviceInfo.accelerationCapabilities().none { it.status == BenchmarkAccelerationStatus.SUPPORTED }) {
             add("No supported local hardware acceleration backend was detected.")

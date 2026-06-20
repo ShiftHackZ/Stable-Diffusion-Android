@@ -1,177 +1,41 @@
 package com.shifthackz.aisdv1.domain.entity
 
 /**
- * Carries `TextToImagePayload` data through the SDAI domain layer.
+ * Provider-neutral request model for text-to-image generation.
  *
- * @author Dmitriy Moroz
+ * The payload intentionally carries superset fields from remote APIs and local
+ * runtimes. Repository and feature implementations pick the fields relevant to
+ * their provider, including Android local runtime backend choices such as SDXL
+ * and Bonsai.
  */
 data class TextToImagePayload(
-    /**
-     * Exposes the `prompt` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val prompt: String,
-    /**
-     * Exposes the `negativePrompt` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val negativePrompt: String,
-    /**
-     * Exposes the `samplingSteps` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val samplingSteps: Int,
-    /**
-     * Exposes the `cfgScale` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val cfgScale: Float,
-    /**
-     * Exposes the `width` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val width: Int,
-    /**
-     * Exposes the `height` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val height: Int,
-    /**
-     * Exposes the `restoreFaces` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val restoreFaces: Boolean,
-    /**
-     * Exposes the `seed` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val seed: String,
-    /**
-     * Exposes the `subSeed` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val subSeed: String,
-    /**
-     * Exposes the `subSeedStrength` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val subSeedStrength: Float,
-    /**
-     * Exposes the `sampler` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val sampler: String,
-    /**
-     * Exposes the `scheduler` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val scheduler: Scheduler = Scheduler.AUTOMATIC,
-    /**
-     * Exposes the `nsfw` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val nsfw: Boolean,
-    /**
-     * Exposes the `batchCount` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val batchCount: Int,
-    /**
-     * Exposes the `style` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val style: String?,
-    /**
-     * Exposes the `quality` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val quality: String?,
-    /**
-     * Exposes the `openAiModel` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val openAiModel: OpenAiModel?,
-    /**
-     * Exposes the `stabilityAiClipGuidance` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val stabilityAiClipGuidance: StabilityAiClipGuidance?,
-    /**
-     * Exposes the `stabilityAiStylePreset` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val stabilityAiStylePreset: StabilityAiStylePreset?,
-    /**
-     * Exposes the `aDetailer` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val aDetailer: ADetailerConfig = ADetailerConfig.DISABLED,
-    /**
-     * Exposes the `hires` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val hires: HiresConfig = HiresConfig.DISABLED,
-    /**
-     * Exposes the `forgeModules` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val forgeModules: List<ForgeModule> = emptyList(),
-    /**
-     * Exposes the `falAiModel` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val falAiModel: FalAiModel = FalAiModel.defaultTextToImage,
-    /**
-     * Exposes the `falAiImageSize` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val falAiImageSize: FalAiImageSize = FalAiImageSize.default,
-    /**
-     * Exposes the `falAiAcceleration` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val falAiAcceleration: FalAiAcceleration = FalAiAcceleration.default,
-    /**
-     * Exposes the `sdxlBackend` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val sdxlBackend: SdxlBackend = SdxlBackend.AUTO,
-    /**
-     * Exposes the `falAiSyncMode` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
+    val bonsaiBackend: BonsaiBackend = BonsaiBackend.AUTO,
     val falAiSyncMode: Boolean = false,
-    /**
-     * Exposes the `arliAiModel` value used by the SDAI domain layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val arliAiModel: String = "",
 )

@@ -50,6 +50,12 @@ internal actual fun ServerSetupLocalPathPickerButton(
 internal actual fun isLocalGenerationSetupAvailable(): Boolean =
     Build.VERSION.SDK_INT < Build.VERSION_CODES.R || Environment.isExternalStorageManager()
 
-internal actual fun isServerSourceAvailableOnPlatform(source: ServerSource): Boolean =
-    source != ServerSource.LOCAL_APPLE_CORE_ML &&
-        source != ServerSource.LOCAL_APPLE_BONSAI
+internal actual fun isServerSourceAvailableOnPlatform(source: ServerSource): Boolean = when (source) {
+    ServerSource.LOCAL_APPLE_BONSAI -> isAndroidBonsaiSupportedInPrinciple(Build.SUPPORTED_64_BIT_ABIS)
+    else -> true
+}
+
+internal fun isAndroidBonsaiSupportedInPrinciple(supported64BitAbis: Array<String>?): Boolean =
+    supported64BitAbis.orEmpty().any { abi -> abi == ANDROID_BONSAI_ABI }
+
+private const val ANDROID_BONSAI_ABI = "arm64-v8a"

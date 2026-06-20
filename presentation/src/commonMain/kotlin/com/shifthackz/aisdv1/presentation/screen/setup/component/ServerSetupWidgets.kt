@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.common.platform.Platform
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
@@ -171,8 +172,7 @@ internal fun ServerSetupModal(
     }
 }
 
-internal val ServerSource.icon: ImageVector
-    get() = when (this) {
+internal fun ServerSource.icon(platform: Platform): ImageVector = when (this) {
         ServerSource.AUTOMATIC1111,
         ServerSource.SWARM_UI,
         -> Icons.Default.Computer
@@ -191,11 +191,15 @@ internal val ServerSource.icon: ImageVector
         -> Icons.Default.Android
 
         ServerSource.LOCAL_APPLE_CORE_ML,
-        ServerSource.LOCAL_APPLE_BONSAI,
         -> BrandIcons.Apple
+
+        ServerSource.LOCAL_APPLE_BONSAI -> when (platform) {
+            Platform.ANDROID -> Icons.Default.Android
+            Platform.IOS -> BrandIcons.Apple
+        }
     }
 
-internal fun ServerSource.title(strings: ServerSetupStrings): String = when (this) {
+internal fun ServerSource.title(strings: ServerSetupStrings, platform: Platform): String = when (this) {
     ServerSource.AUTOMATIC1111 -> strings.automaticTitle
     ServerSource.SWARM_UI -> strings.swarmTitle
     ServerSource.HORDE -> strings.hordeTitle
@@ -208,10 +212,13 @@ internal fun ServerSource.title(strings: ServerSetupStrings): String = when (thi
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeTitle
     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlTitle
     ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlTitle
-    ServerSource.LOCAL_APPLE_BONSAI -> strings.bonsaiTitle
+    ServerSource.LOCAL_APPLE_BONSAI -> when (platform) {
+        Platform.ANDROID -> strings.bonsaiAndroidTitle
+        Platform.IOS -> strings.bonsaiTitle
+    }
 }
 
-internal fun ServerSource.subtitle(strings: ServerSetupStrings): String = when (this) {
+internal fun ServerSource.subtitle(strings: ServerSetupStrings, platform: Platform): String = when (this) {
     ServerSource.AUTOMATIC1111 -> strings.automaticSubtitle
     ServerSource.SWARM_UI -> strings.swarmSubtitle
     ServerSource.HORDE -> strings.hordeSubtitle
@@ -224,7 +231,10 @@ internal fun ServerSource.subtitle(strings: ServerSetupStrings): String = when (
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeSubtitle
     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlSubtitle
     ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlSubtitle
-    ServerSource.LOCAL_APPLE_BONSAI -> strings.bonsaiSubtitle
+    ServerSource.LOCAL_APPLE_BONSAI -> when (platform) {
+        Platform.ANDROID -> strings.bonsaiAndroidSubtitle
+        Platform.IOS -> strings.bonsaiSubtitle
+    }
 }
 
 internal fun ServerSetupState.ValidationError.message(

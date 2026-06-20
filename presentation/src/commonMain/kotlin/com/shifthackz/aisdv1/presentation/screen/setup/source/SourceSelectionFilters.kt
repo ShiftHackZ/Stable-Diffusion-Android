@@ -5,11 +5,12 @@ import com.shifthackz.aisdv1.domain.entity.FeatureTag
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.ServerSourceReadiness
 import com.shifthackz.aisdv1.domain.entity.ServerSourceType
-import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupState
-import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
-import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
+import com.shifthackz.aisdv1.presentation.model.readinessFor
 import com.shifthackz.aisdv1.presentation.screen.setup.component.subtitle
 import com.shifthackz.aisdv1.presentation.screen.setup.component.title
+import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
+import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupState
 
 /**
  * Applies provider search, filters, and sort order to the available source list.
@@ -42,7 +43,7 @@ internal fun ServerSetupState.visibleSources(strings: ServerSetupStrings): List<
  */
 internal fun ServerSetupState.isSourceTypeEnabled(type: ServerSourceType): Boolean =
     sourceTypeFilter == type ||
-        allowedModes.hasSourceFilterMatch(type, sourceReadinessFilters, sourceTagFilters)
+        allowedModes.hasSourceFilterMatch(this, type, sourceReadinessFilters, sourceTagFilters)
 
 /**
  * Checks whether adding [readiness] keeps the filter set non-empty.
@@ -53,6 +54,7 @@ internal fun ServerSetupState.isSourceTypeEnabled(type: ServerSourceType): Boole
 internal fun ServerSetupState.isSourceReadinessEnabled(readiness: ServerSourceReadiness): Boolean =
     readiness in sourceReadinessFilters ||
         allowedModes.hasSourceFilterMatch(
+            this,
             sourceTypeFilter,
             sourceReadinessFilters + readiness,
             sourceTagFilters,
@@ -67,6 +69,7 @@ internal fun ServerSetupState.isSourceReadinessEnabled(readiness: ServerSourceRe
 internal fun ServerSetupState.isSourceTagEnabled(tag: FeatureTag): Boolean =
     tag in sourceTagFilters ||
         allowedModes.hasSourceFilterMatch(
+            this,
             sourceTypeFilter,
             sourceReadinessFilters,
             sourceTagFilters + tag,
@@ -111,7 +114,8 @@ private fun ServerSource.matchesFilters(
     if (typeFilter != null && type != typeFilter) {
         return false
     }
-    if (state.sourceReadinessFilters.isNotEmpty() && readiness !in state.sourceReadinessFilters) {
+    val sourceReadiness = readinessFor(state.platform)
+    if (state.sourceReadinessFilters.isNotEmpty() && sourceReadiness !in state.sourceReadinessFilters) {
         return false
     }
     if (state.sourceTagFilters.isNotEmpty() && !featureTags.containsAll(state.sourceTagFilters)) {
@@ -127,10 +131,10 @@ private fun ServerSource.matchesFilters(
     }
     val searchableText = buildList {
         add(key)
-        add(title(strings))
-        add(subtitle(strings))
+        add(title(strings, state.platform))
+        add(subtitle(strings, state.platform))
         add(type.mapToUi(strings))
-        add(readiness.mapToUi(strings))
+        add(sourceReadiness.mapToUi(strings))
         add(version)
         featureTags.forEach { tag -> add(tag.mapToUi()) }
     }
@@ -140,12 +144,14 @@ private fun ServerSource.matchesFilters(
 }
 
 private fun List<ServerSource>.hasSourceFilterMatch(
+    state: ServerSetupState,
     type: ServerSourceType?,
     readinessFilters: Set<ServerSourceReadiness>,
     tags: Set<FeatureTag>,
 ): Boolean = any { source ->
+    val sourceReadiness = source.readinessFor(state.platform)
     (type == null || source.type == type) &&
-        (readinessFilters.isEmpty() || source.readiness in readinessFilters) &&
+        (readinessFilters.isEmpty() || sourceReadiness in readinessFilters) &&
         source.featureTags.containsAll(tags)
 }
 

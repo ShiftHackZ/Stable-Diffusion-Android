@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.local
 
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.data.hasZipArchiveSignature
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSFileManager
@@ -57,6 +58,7 @@ internal class IosDownloadableModelFileStore(
 
     private fun LocalAiModel.hasDownloadedArchive(archivePath: String): Boolean {
         if (!NSFileManager.defaultManager.fileExistsAtPath(path = archivePath)) return false
+        if (!archivePath.hasZipArchiveSignature()) return false
 
         val archiveSize = archivePath.fileSize() ?: return true
         val expectedSize = size.expectedSizeBytes() ?: return archiveSize > 0L

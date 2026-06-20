@@ -56,8 +56,7 @@ internal class AndroidDownloadableModelFileStore(
                 }
 
                 LocalAiModel.Type.Bonsai -> {
-                    val files = getLocalModelFiles(model.id)
-                    files.isNotEmpty()
+                    getLocalModelDirectory(model.id).hasBonsaiModelLayout()
                 }
             }
         }
@@ -135,4 +134,55 @@ internal class AndroidDownloadableModelFileStore(
     private companion object {
         val singleFileModelExtensions = setOf("ckpt", "gguf", "safetensors")
     }
+}
+
+private const val TEXT_ENCODER_MLX_DIRECTORY = "text_encoder-mlx-4bit"
+private const val TEXT_ENCODER_LEGACY_DIRECTORY = "text_encoder"
+private const val TRANSFORMER_DIRECTORY = "transformer-packed-mflux"
+private const val TOKENIZER_DIRECTORY = "tokenizer"
+private const val VAE_DIRECTORY = "vae"
+private const val SCHEDULER_DIRECTORY = "scheduler"
+private const val RESOURCES_DIRECTORY = "Resources"
+private const val EXTRACTED_DIRECTORY = "extracted"
+private const val MAX_NESTED_SEARCH_DEPTH = 4
+
+private fun File.hasBonsaiModelLayout(): Boolean {
+    if (!exists()) return false
+
+    directBonsaiCandidates()
+        .any(File::isBonsaiRoot)
+        .let { found -> if (found) return true }
+
+    val rootDepth = toPath().nameCount
+    return walkTopDown()
+        .filter(File::isDirectory)
+        .filter { candidate ->
+            candidate.toPath().nameCount - rootDepth <= MAX_NESTED_SEARCH_DEPTH
+        }
+        .any(File::isBonsaiRoot)
+}
+
+private fun File.directBonsaiCandidates(): List<File> = listOf(
+    this,
+    File(this, RESOURCES_DIRECTORY),
+    File(this, EXTRACTED_DIRECTORY),
+    File(File(this, EXTRACTED_DIRECTORY), RESOURCES_DIRECTORY),
+)
+
+private fun File.isBonsaiRoot(): Boolean {
+    val quantizationConfig = File(
+        File(this, TRANSFORMER_DIRECTORY),
+        "quantization_config.json",
+    )
+    val requiredDirectories = listOf(
+        File(this, TOKENIZER_DIRECTORY),
+        File(this, VAE_DIRECTORY),
+        File(this, SCHEDULER_DIRECTORY),
+    )
+
+    return quantizationConfig.isFile &&
+        listOf(TEXT_ENCODER_MLX_DIRECTORY, TEXT_ENCODER_LEGACY_DIRECTORY)
+            .map { name -> File(this, name) }
+            .any(File::isDirectory) &&
+        requiredDirectories.all(File::isDirectory)
 }

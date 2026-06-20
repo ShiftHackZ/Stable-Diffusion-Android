@@ -172,6 +172,7 @@
     <string name="hint_fal_ai_endpoint">Endpoint Fal.ai</string>
     <string name="hint_fal_ai_acceleration">Ускорение</string>
     <string name="hint_sdxl_backend">Рантайм бэкенд</string>
+    <string name="hint_bonsai_backend">Рантайм бэкенд</string>
     <string name="hint_fal_ai_sync_mode">Синхронный режим</string>
     <string name="title_input_image">Исходное изображение</string>
     <string name="hint_quality">Качество</string>
@@ -237,6 +238,7 @@
     <string name="hint_sdxl_sub_title">Эта конфигурация использует stable-diffusion.cpp и позволяет запускать SDXL, SDXL-Turbo, LCM или квантованные GGUF-модели на телефоне.</string>
     <string name="hint_core_ml_sub_title">Локальная генерация на iPhone.</string>
     <string name="hint_bonsai_sub_title">Локальная генерация Bonsai Image 4B на iPhone.</string>
+    <string name="hint_bonsai_android_sub_title">Локальная генерация Bonsai Image 4B на поддерживаемых устройствах.</string>
 
     <string name="drawer_web_ui">Веб</string>
 

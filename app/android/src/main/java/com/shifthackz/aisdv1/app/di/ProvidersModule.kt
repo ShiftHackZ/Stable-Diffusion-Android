@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
+import com.shifthackz.aisdv1.core.common.platform.Platform
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.time.TimeProvider
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
@@ -52,6 +53,7 @@ val providersModule = module {
             override val buildNumber: Int = BuildConfig.VERSION_CODE
             override val version: BuildVersion = BuildVersion(BuildConfig.VERSION_NAME)
             override val type: BuildType = BuildType.fromBuildConfig(BuildConfig.BUILD_FLAVOR_TYPE)
+            override val platform: Platform = Platform.ANDROID
 
             override fun toString(): String = buildString {
                 append("$version")

@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.remote
 
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
+import com.shifthackz.aisdv1.data.hasZipArchiveSignature
 import com.shifthackz.aisdv1.domain.entity.DownloadState
 import com.shifthackz.aisdv1.domain.entity.NetworkUsageBucket
 import com.shifthackz.aisdv1.domain.repository.NetworkUsageRepository
@@ -98,8 +99,17 @@ internal class IosDownloadableModelFileDownloader(
                                 error = null,
                             )
                         ) {
-                            trySend(DownloadState.Downloading(100))
-                            trySend(DownloadState.Complete(destinationPath))
+                            if (destinationPath.hasZipArchiveSignature()) {
+                                trySend(DownloadState.Downloading(100))
+                                trySend(DownloadState.Complete(destinationPath))
+                            } else {
+                                fileManager.deleteDownloadFiles(destinationPath, temporaryPath)
+                                trySend(
+                                    DownloadState.Error(
+                                        IllegalStateException("Downloaded model archive is not a valid zip file."),
+                                    ),
+                                )
+                            }
                         } else {
                             fileManager.deleteDownloadFiles(destinationPath, temporaryPath)
                             trySend(

@@ -50,6 +50,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.common.platform.Platform
 import com.shifthackz.aisdv1.core.extensions.shimmer
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -57,6 +58,7 @@ import com.shifthackz.aisdv1.core.mvi.MviComponent
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkAccelerationStatus
 import com.shifthackz.aisdv1.domain.entity.SdxlBackend
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.domain.entity.ServerSourceType
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkAccelerator
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkDeviceInfo
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkPlatform
@@ -65,6 +67,8 @@ import com.shifthackz.aisdv1.feature.benchmark.BenchmarkProviderRecommendation
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkResult
 import com.shifthackz.aisdv1.feature.benchmark.accelerationCapabilities
 import com.shifthackz.aisdv1.presentation.di.initKoin
+import com.shifthackz.aisdv1.presentation.model.compactDisplayName
+import com.shifthackz.aisdv1.presentation.model.isAvailableOn
 import com.shifthackz.aisdv1.presentation.navigation.router.BenchmarkRouter
 import com.shifthackz.aisdv1.presentation.theme.global.persistentBottomBarWindowInsets
 import com.shifthackz.aisdv1.presentation.theme.global.persistentTopAppBarWindowInsets
@@ -462,6 +466,7 @@ private fun ProviderRecommendationsSection(
                 providers.forEach { recommendation ->
                     ProviderRecommendationBlock(
                         recommendation = recommendation,
+                        platform = deviceInfo?.platform?.toPlatform() ?: Platform.ANDROID,
                         pending = recommendations.isEmpty(),
                     )
                 }
@@ -473,13 +478,14 @@ private fun ProviderRecommendationsSection(
 @Composable
 private fun ProviderRecommendationBlock(
     recommendation: BenchmarkProviderRecommendation,
+    platform: Platform,
     pending: Boolean,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         ProviderRecommendationTitle(
             text = Localization.string(
                 "benchmark_provider_recommended_settings",
-                recommendation.provider.displayName(),
+                recommendation.provider.compactDisplayName(platform),
             ),
         )
         when {
@@ -742,21 +748,17 @@ private fun BenchmarkDeviceInfo.deviceName(): String =
         .joinToString(" ")
         .ifBlank { Localization.string("benchmark_unknown") }
 
-private fun BenchmarkDeviceInfo.localBenchmarkProviders(): List<ServerSource> = when (platform) {
-    BenchmarkPlatform.ANDROID -> listOf(
-        ServerSource.LOCAL_MICROSOFT_ONNX,
-        ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
-        ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
-    )
-    BenchmarkPlatform.IOS -> listOf(
-        ServerSource.LOCAL_APPLE_CORE_ML,
-        ServerSource.LOCAL_APPLE_BONSAI,
-    )
-    BenchmarkPlatform.UNKNOWN -> emptyList()
-}
+private fun BenchmarkDeviceInfo.localBenchmarkProviders(): List<ServerSource> =
+    platform.toPlatformOrNull()?.let { targetPlatform ->
+        ServerSource.entries.filter { source ->
+            source.type == ServerSourceType.LOCAL &&
+                source.isAvailableOn(targetPlatform)
+        }
+    }.orEmpty()
 
 private fun BenchmarkAccelerator.displayName(): String = when (this) {
     BenchmarkAccelerator.VULKAN -> "Vulkan backend"
+    BenchmarkAccelerator.BONSAI_VULKAN -> "Bonsai Vulkan compute"
     BenchmarkAccelerator.OPEN_CL -> "OpenCL backend"
     BenchmarkAccelerator.NNAPI -> "NNAPI delegate"
     BenchmarkAccelerator.METAL -> "Metal"
@@ -787,23 +789,16 @@ private fun BenchmarkAccelerationStatus?.contentColor(): Color = when (this) {
     else -> Color.White
 }
 
-private fun ServerSource.displayName(): String = when (this) {
-    ServerSource.AUTOMATIC1111 -> Localization.string("srv_type_own_short")
-    ServerSource.SWARM_UI -> Localization.string("srv_type_swarm_ui")
-    ServerSource.LOCAL_MICROSOFT_ONNX -> Localization.string("srv_type_local_short")
-    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
-    ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> Localization.string("srv_type_sdxl_short")
-    ServerSource.LOCAL_APPLE_CORE_ML -> "Core ML"
-    ServerSource.LOCAL_APPLE_BONSAI -> "Silicon Diffusion PrismML Bonsai"
-    ServerSource.HORDE -> Localization.string("srv_type_horde_short")
-    ServerSource.HUGGING_FACE -> Localization.string("srv_type_hugging_face_short")
-    ServerSource.OPEN_AI -> Localization.string("srv_type_open_ai")
-    ServerSource.STABILITY_AI -> Localization.string("srv_type_stability_ai")
-    ServerSource.FAL_AI -> Localization.string("srv_type_fal_ai")
-    ServerSource.ARLI_AI -> Localization.string("srv_type_arli_ai")
-}
-
 private fun SdxlBackend.displayName(): String = displayName
+
+private fun BenchmarkPlatform.toPlatform(): Platform =
+    toPlatformOrNull() ?: Platform.ANDROID
+
+private fun BenchmarkPlatform.toPlatformOrNull(): Platform? = when (this) {
+    BenchmarkPlatform.ANDROID -> Platform.ANDROID
+    BenchmarkPlatform.IOS -> Platform.IOS
+    BenchmarkPlatform.UNKNOWN -> null
+}
 
 private fun BenchmarkProviderIssue.localizedText(): String = when (this) {
     BenchmarkProviderIssue.PLATFORM_UNSUPPORTED ->

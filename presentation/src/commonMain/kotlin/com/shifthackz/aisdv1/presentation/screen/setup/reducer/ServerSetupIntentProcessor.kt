@@ -6,6 +6,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.ServerSourceReadiness
 import com.shifthackz.aisdv1.domain.entity.ServerSourceType
 import com.shifthackz.aisdv1.presentation.navigation.router.ServerSetupRouter
+import com.shifthackz.aisdv1.presentation.model.readinessFor
 import com.shifthackz.aisdv1.presentation.screen.setup.model.HORDE_DEFAULT_API_KEY
 import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupEffect
 import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupIntent
@@ -65,6 +66,7 @@ internal class ServerSetupIntentProcessor(
             is ServerSetupIntent.UpdateSourceTypeFilter -> updateState {
                 if (
                     it.allowedModes.hasSourceFilterMatch(
+                        state = it,
                         type = intent.type,
                         readinessFilters = it.sourceReadinessFilters,
                         tags = it.sourceTagFilters,
@@ -85,6 +87,7 @@ internal class ServerSetupIntentProcessor(
                 }
                 if (
                     state.allowedModes.hasSourceFilterMatch(
+                        state = state,
                         type = state.sourceTypeFilter,
                         readinessFilters = nextFilters,
                         tags = state.sourceTagFilters,
@@ -105,6 +108,7 @@ internal class ServerSetupIntentProcessor(
                 }
                 if (
                     state.allowedModes.hasSourceFilterMatch(
+                        state = state,
                         type = state.sourceTypeFilter,
                         readinessFilters = state.sourceReadinessFilters,
                         tags = nextTags,
@@ -244,18 +248,21 @@ internal class ServerSetupIntentProcessor(
 }
 
 private fun List<ServerSource>.hasSourceFilterMatch(
+    state: ServerSetupState,
     type: ServerSourceType?,
     readinessFilters: Set<ServerSourceReadiness>,
     tags: Set<FeatureTag>,
 ): Boolean = any { source ->
+    val sourceReadiness = source.readinessFor(state.platform)
     (type == null || source.type == type) &&
-        (readinessFilters.isEmpty() || source.readiness in readinessFilters) &&
+        (readinessFilters.isEmpty() || sourceReadiness in readinessFilters) &&
         source.featureTags.containsAll(tags)
 }
 
 private fun ServerSetupState.withMatchingFilterSource(): ServerSetupState {
     if (
         listOf(mode).hasSourceFilterMatch(
+            state = this,
             type = sourceTypeFilter,
             readinessFilters = sourceReadinessFilters,
             tags = sourceTagFilters,
@@ -265,6 +272,7 @@ private fun ServerSetupState.withMatchingFilterSource(): ServerSetupState {
     }
     val firstMatchingSource = allowedModes.firstOrNull { source ->
         listOf(source).hasSourceFilterMatch(
+            state = this,
             type = sourceTypeFilter,
             readinessFilters = sourceReadinessFilters,
             tags = sourceTagFilters,

@@ -63,9 +63,10 @@ internal class AndroidDownloadableModelFileDownloader(
         url: String,
     ): Flow<DownloadState> = flow {
         val dir = File("${fileProviderDescriptor.localModelDirPath}/$id")
+        if (dir.exists()) dir.deleteRecursively()
+        dir.mkdirs()
+
         val destination = File(getDestinationPath(id, url))
-        if (destination.exists()) destination.delete()
-        if (!dir.exists()) dir.mkdirs()
 
         emit(DownloadState.Downloading(0))
         try {
@@ -80,10 +81,10 @@ internal class AndroidDownloadableModelFileDownloader(
             }
             emit(DownloadState.Complete(complete.path))
         } catch (e: CancellationException) {
-            destination.delete()
+            dir.deleteRecursively()
             throw e
         } catch (e: Exception) {
-            destination.delete()
+            dir.deleteRecursively()
             emit(DownloadState.Error(e))
         }
     }.flowOn(Dispatchers.IO)

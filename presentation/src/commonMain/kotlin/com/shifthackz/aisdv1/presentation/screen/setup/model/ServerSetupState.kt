@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.presentation.screen.setup.model
 
 import androidx.compose.runtime.Immutable
+import com.shifthackz.aisdv1.core.common.platform.Platform
 import com.shifthackz.aisdv1.core.mvi.MviState
 import com.shifthackz.aisdv1.domain.entity.Configuration
 import com.shifthackz.aisdv1.domain.entity.DownloadState
@@ -24,6 +25,7 @@ data class ServerSetupState(
     val showBackNavArrow: Boolean = false,
     val step: Step = Step.SOURCE,
     val mode: ServerSource = ServerSource.AUTOMATIC1111,
+    val platform: Platform = Platform.ANDROID,
     val allowedModes: List<ServerSource> = remoteSetupSources,
     val sourceSearchQuery: String = "",
     val sourceTypeFilter: ServerSourceType? = null,
@@ -344,6 +346,7 @@ data class ServerSetupState(
 
 fun Configuration.toServerSetupState(
     allowedModes: List<ServerSource>,
+    platform: Platform,
     huggingFaceModels: List<String>,
     localOnnxModels: List<LocalAiModel> = emptyList(),
     localMediaPipeModels: List<LocalAiModel> = emptyList(),
@@ -370,6 +373,7 @@ fun Configuration.toServerSetupState(
         loadingConfiguration = false,
         showBackNavArrow = showBackNavArrow,
         mode = safeMode,
+        platform = platform,
         allowedModes = allowedModes,
         allowLocalCustomModels = allowLocalCustomModels,
         serverUrl = serverUrl,

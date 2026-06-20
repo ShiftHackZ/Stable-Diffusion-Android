@@ -9,6 +9,7 @@ import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveBonsaiProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.work.Constants
@@ -20,9 +21,11 @@ import kotlinx.coroutines.CancellationException
 import java.io.File
 
 /**
- * Coordinates `ImageToImageTask` behavior in the SDAI background work feature layer.
+ * Background img2img worker.
  *
- * @author Dmitriy Moroz
+ * The task reads the cached serialized payload, subscribes to provider progress,
+ * runs the image-to-image use case, and publishes the result or failure through
+ * the common generation notification flow.
  */
 internal class ImageToImageTask(
     context: Context,
@@ -32,24 +35,10 @@ internal class ImageToImageTask(
     preferenceManager: PreferenceManager,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    observeBonsaiProcessStatusUseCase: ObserveBonsaiProcessStatusUseCase,
     interruptGenerationUseCase: InterruptGenerationUseCase,
-    /**
-     * Exposes the `backgroundWorkObserver` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val backgroundWorkObserver: BackgroundWorkObserver,
-    /**
-     * Exposes the `imageToImageUseCase` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val imageToImageUseCase: ImageToImageUseCase,
-    /**
-     * Exposes the `fileProviderDescriptor` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val fileProviderDescriptor: FileProviderDescriptor,
 ) : CoreGenerationWorker(
     context = context,
@@ -60,6 +49,7 @@ internal class ImageToImageTask(
     backgroundWorkObserver = backgroundWorkObserver,
     observeHordeProcessStatusUseCase = observeHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase = observeLocalDiffusionProcessStatusUseCase,
+    observeBonsaiProcessStatusUseCase = observeBonsaiProcessStatusUseCase,
     interruptGenerationUseCase = interruptGenerationUseCase,
 ) {
 
@@ -88,8 +78,7 @@ internal class ImageToImageTask(
                 return Result.failure()
             }
 
-            listenHordeStatus()
-            listenLocalDiffusionStatus()
+            listenSourceStatus()
 
             handleProcess()
             runCatching { imageToImageUseCase(payload) }

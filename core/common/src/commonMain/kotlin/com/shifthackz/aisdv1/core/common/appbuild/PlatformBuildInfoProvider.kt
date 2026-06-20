@@ -1,10 +1,10 @@
 package com.shifthackz.aisdv1.core.common.appbuild
 
 /**
- * Creates the SDAI value produced by `createPlatformBuildInfoProvider`.
+ * Creates the platform-specific build metadata provider.
  *
- * @return Result produced by `createPlatformBuildInfoProvider`.
- * @author Dmitriy Moroz
+ * Each target fills the shared [BuildInfoProvider] contract from its native
+ * build system so common code can make flavor and platform decisions without
+ * reaching into Android or iOS APIs.
  */
 expect fun createPlatformBuildInfoProvider(): BuildInfoProvider
-

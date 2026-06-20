@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.gallery.detail
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
+import com.shifthackz.aisdv1.core.common.platform.Platform
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.usecase.caching.GetLastResultFromCacheUseCase
@@ -42,6 +43,7 @@ class GalleryDetailViewModelTest {
         override val buildNumber = 1
         override val version = BuildVersion()
         override val type = BuildType.FULL
+        override val platform: Platform = Platform.ANDROID
     }
     private val getGenerationResultUseCase = mockk<GetGenerationResultUseCase>()
     private val getAllGalleryUseCase = mockk<GetAllGalleryUseCase>()

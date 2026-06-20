@@ -133,6 +133,7 @@ class ServerSetupViewModel(
 ) : BaseMviViewModel<ServerSetupState, ServerSetupIntent, ServerSetupEffect>(
     initialState = ServerSetupState(
         showBackNavArrow = launchSource == LaunchSource.SETTINGS,
+        platform = buildInfoProvider.platform,
         allowedModes = buildInfoProvider.setupAllowedModes(),
         demoModeUrl = linksProvider.demoModeUrl,
     ),
@@ -182,6 +183,7 @@ class ServerSetupViewModel(
                     .map(HuggingFaceModel::alias)
                 configuration.toServerSetupState(
                     allowedModes = allowedModes,
+                    platform = buildInfoProvider.platform,
                     huggingFaceModels = models,
                     localOnnxModels = onnxModels,
                     localMediaPipeModels = mediaPipeModels,

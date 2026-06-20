@@ -107,6 +107,7 @@ internal fun AppScaffold(
                 items = appDrawerItems(
                     currentRoute = currentRoute,
                     settings = settings,
+                    buildInfoProvider = buildInfoProvider,
                     router = router,
                 ),
                 header = {
@@ -244,9 +245,10 @@ private fun appBottomNavigationItems(
 private fun appDrawerItems(
     currentRoute: AppRoute,
     settings: Settings,
+    buildInfoProvider: BuildInfoProvider,
     router: RootAppRouter,
 ): List<DrawerSheetItem> {
-    val sourceName = settings.source.getName()
+    val sourceName = settings.source.getName(buildInfoProvider.platform)
     return buildList {
         add(
             DrawerSheetItem(

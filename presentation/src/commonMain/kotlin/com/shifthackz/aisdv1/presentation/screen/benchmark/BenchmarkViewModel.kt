@@ -1,16 +1,19 @@
 package com.shifthackz.aisdv1.presentation.screen.benchmark
 
+import com.shifthackz.aisdv1.core.common.platform.Platform
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.mvi.BaseMviViewModel
 import com.shifthackz.aisdv1.core.mvi.EmptyEffect
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkManager
+import com.shifthackz.aisdv1.feature.benchmark.BenchmarkPlatform
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkProviderIssue
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkProviderRecommendation
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkResult
 import com.shifthackz.aisdv1.presentation.navigation.router.BenchmarkRouter
 import com.shifthackz.aisdv1.domain.entity.SdxlBackend
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.presentation.model.compactDisplayName
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.withContext
 
@@ -164,7 +167,10 @@ private fun BenchmarkResult.shareText(): String = buildString {
     appendLine("${Localization.string("benchmark_estimated_time_short")}: ${Localization.string("benchmark_seconds", estimatedTimeSeconds)}")
     providerRecommendations.forEach { recommendation ->
         appendLine()
-        appendLine("${recommendation.provider.displayName()} ${Localization.string("benchmark_recommendations")}")
+        appendLine(
+            "${recommendation.provider.compactDisplayName(deviceInfo.platform.toPlatform())} " +
+                Localization.string("benchmark_recommendations"),
+        )
         if (recommendation.recommended) {
             appendLine("${Localization.string("benchmark_recommended_size")}: ${recommendation.width} x ${recommendation.height}")
             appendLine("${Localization.string("benchmark_recommended_steps")}: ${recommendation.samplingSteps}")
@@ -208,23 +214,15 @@ private fun BenchmarkProviderIssue.localizedText(): String = when (this) {
         Localization.string("benchmark_issue_accelerator_api_not_available")
 }
 
-private fun ServerSource.displayName(): String = when (this) {
-    ServerSource.AUTOMATIC1111 -> Localization.string("srv_type_own_short")
-    ServerSource.SWARM_UI -> Localization.string("srv_type_swarm_ui")
-    ServerSource.LOCAL_MICROSOFT_ONNX -> Localization.string("srv_type_local_short")
-    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Localization.string("srv_type_media_pipe_short")
-    ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> Localization.string("srv_type_sdxl_short")
-    ServerSource.LOCAL_APPLE_CORE_ML -> "Core ML"
-    ServerSource.LOCAL_APPLE_BONSAI -> "Silicon Diffusion PrismML Bonsai"
-    ServerSource.HORDE -> Localization.string("srv_type_horde_short")
-    ServerSource.HUGGING_FACE -> Localization.string("srv_type_hugging_face_short")
-    ServerSource.OPEN_AI -> Localization.string("srv_type_open_ai")
-    ServerSource.STABILITY_AI -> Localization.string("srv_type_stability_ai")
-    ServerSource.FAL_AI -> Localization.string("srv_type_fal_ai")
-    ServerSource.ARLI_AI -> Localization.string("srv_type_arli_ai")
-}
-
 private fun SdxlBackend.displayName(): String = displayName
+
+private fun BenchmarkPlatform.toPlatform(): Platform = when (this) {
+    BenchmarkPlatform.ANDROID,
+    BenchmarkPlatform.UNKNOWN,
+    -> Platform.ANDROID
+
+    BenchmarkPlatform.IOS -> Platform.IOS
+}
 
 private fun com.shifthackz.aisdv1.feature.benchmark.BenchmarkDeviceInfo.deviceName(): String =
     listOf(manufacturer, model)

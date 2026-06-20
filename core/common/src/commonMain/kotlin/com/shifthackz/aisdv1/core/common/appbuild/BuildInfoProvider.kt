@@ -1,52 +1,33 @@
 package com.shifthackz.aisdv1.core.common.appbuild
 
+import com.shifthackz.aisdv1.core.common.platform.Platform
+
 /**
- * Defines the `BuildInfoProvider` contract for the SDAI core common layer.
+ * Runtime build metadata shared by domain and presentation code.
  *
- * @author Dmitriy Moroz
+ * Provider filtering relies on both the distribution flavor and the current
+ * platform, so this abstraction is intentionally available outside platform UI
+ * modules.
  */
 interface BuildInfoProvider {
-    /**
-     * Exposes the `isDebug` value used by the SDAI core common layer.
-     *
-     * @author Dmitriy Moroz
-     */
+
     val isDebug: Boolean
-    /**
-     * Exposes the `buildNumber` value used by the SDAI core common layer.
-     *
-     * @author Dmitriy Moroz
-     */
+
     val buildNumber: Int
-    /**
-     * Exposes the `version` value used by the SDAI core common layer.
-     *
-     * @author Dmitriy Moroz
-     */
+
     val version: BuildVersion
-    /**
-     * Exposes the `type` value used by the SDAI core common layer.
-     *
-     * @author Dmitriy Moroz
-     */
+
     val type: BuildType
 
-    /**
-     * Provides the `companion object` singleton used by the SDAI core common layer.
-     *
-     * @author Dmitriy Moroz
-     */
+    val platform: Platform
+
     companion object {
-        /**
-         * Exposes the `stub` value used by the SDAI core common layer.
-         *
-         * @author Dmitriy Moroz
-         */
         val stub = object : BuildInfoProvider {
             override val isDebug: Boolean = true
             override val buildNumber: Int = 0
             override val version: BuildVersion = BuildVersion()
             override val type: BuildType = BuildType.FOSS
+            override val platform: Platform = Platform.ANDROID
 
             override fun toString(): String = displayString()
         }

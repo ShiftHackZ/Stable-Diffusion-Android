@@ -23,12 +23,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifthackz.aisdv1.core.common.platform.Platform
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
+import com.shifthackz.aisdv1.presentation.model.readinessFor
 import com.shifthackz.aisdv1.presentation.screen.setup.component.icon
-import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 import com.shifthackz.aisdv1.presentation.screen.setup.component.subtitle
 import com.shifthackz.aisdv1.presentation.screen.setup.component.title
+import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 
 /**
  * Renders one provider option in the provider selection list.
@@ -43,10 +45,12 @@ import com.shifthackz.aisdv1.presentation.screen.setup.component.title
 internal fun SourceModeItem(
     source: ServerSource,
     selected: Boolean,
+    platform: Platform,
     strings: ServerSetupStrings,
     onClick: () -> Unit,
 ) {
     val shape = RoundedCornerShape(16.dp)
+    val readiness = source.readinessFor(platform)
     Surface(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
@@ -68,7 +72,7 @@ internal fun SourceModeItem(
                     modifier = Modifier
                         .size(42.dp)
                         .padding(top = 8.dp, bottom = 8.dp),
-                    imageVector = source.icon,
+                    imageVector = source.icon(platform),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                 )
@@ -76,14 +80,14 @@ internal fun SourceModeItem(
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(vertical = 8.dp),
-                    text = source.title(strings),
+                    text = source.title(strings, platform),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
             }
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                text = source.subtitle(strings),
+                text = source.subtitle(strings, platform),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.W500,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -92,9 +96,9 @@ internal fun SourceModeItem(
                 modifier = Modifier.padding(4.dp),
             ) {
                 SourceMetaChip(
-                    text = source.readiness.mapToUi(strings),
-                    containerColor = source.readiness.containerColor(),
-                    contentColor = source.readiness.contentColor(),
+                    text = readiness.mapToUi(strings),
+                    containerColor = readiness.containerColor(),
+                    contentColor = readiness.contentColor(),
                 )
                 SourceMetaChip(
                     text = strings.sourceVersion(source.version),

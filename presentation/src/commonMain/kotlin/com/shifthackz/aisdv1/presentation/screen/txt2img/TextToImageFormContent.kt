@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.model.asString
+import com.shifthackz.aisdv1.presentation.model.compactDisplayName
 import com.shifthackz.aisdv1.presentation.platform.rememberExternalUrlLauncher
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputForm
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormEvent
@@ -97,7 +98,7 @@ internal fun TextToImageForm(
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             Text(
-                text = state.mode.displayName,
+                text = state.mode.compactDisplayName(state.platform),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,

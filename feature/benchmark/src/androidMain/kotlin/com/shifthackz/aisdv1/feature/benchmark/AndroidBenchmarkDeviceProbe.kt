@@ -21,6 +21,7 @@ internal class AndroidBenchmarkDeviceProbe(
         val memoryInfo = activityManager()?.let { manager ->
             ActivityManager.MemoryInfo().also(manager::getMemoryInfo)
         }
+        val vulkanProbe = AndroidBenchmarkVulkanProbe.capture()
         BenchmarkDeviceInfo(
             platform = BenchmarkPlatform.ANDROID,
             manufacturer = Build.MANUFACTURER.orUnknown(),
@@ -33,7 +34,8 @@ internal class AndroidBenchmarkDeviceProbe(
             availableRamMb = memoryInfo?.availMem?.bytesToMb() ?: maxMemoryMb(),
             totalVramMb = null,
             availableVramMb = null,
-            accelerators = accelerators(),
+            accelerators = accelerators(vulkanProbe),
+            acceleratorDiagnostics = listOf("Bonsai Vulkan probe: ${vulkanProbe.summary}"),
         )
     }.getOrElse { fallback() }
 
@@ -68,11 +70,16 @@ internal class AndroidBenchmarkDeviceProbe(
         return candidates.joinToString(" / ").ifBlank { "Android GPU" }
     }
 
-    private fun accelerators(): List<BenchmarkAccelerator> = buildList {
+    private fun accelerators(
+        vulkanProbe: AndroidBenchmarkVulkanProbeResult,
+    ): List<BenchmarkAccelerator> = buildList {
         if (hasSystemFeature("android.hardware.vulkan.level") ||
             hasSystemFeature("android.hardware.vulkan.version")
         ) {
             add(BenchmarkAccelerator.VULKAN)
+        }
+        if (vulkanProbe.usable) {
+            add(BenchmarkAccelerator.BONSAI_VULKAN)
         }
         if (hasOpenClLibrary()) add(BenchmarkAccelerator.OPEN_CL)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {

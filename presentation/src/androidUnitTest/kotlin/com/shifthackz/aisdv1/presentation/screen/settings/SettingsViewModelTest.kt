@@ -4,6 +4,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
 import com.shifthackz.aisdv1.core.common.links.LinksProvider
+import com.shifthackz.aisdv1.core.common.platform.Platform
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.domain.entity.NetworkUsage
 import com.shifthackz.aisdv1.domain.entity.ServerSource
@@ -264,6 +265,7 @@ private object TestBuildInfoProvider : BuildInfoProvider {
     override val buildNumber: Int = 5598
     override val version: BuildVersion = BuildVersion()
     override val type: BuildType = BuildType.FOSS
+    override val platform: Platform = Platform.ANDROID
 
     override fun toString(): String = "test-version"
 }

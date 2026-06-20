@@ -74,6 +74,26 @@ class BenchmarkRecommendationPolicyTest {
             BenchmarkAccelerationStatus.NOT_RECOMMENDED,
             capabilities.status(BenchmarkAccelerator.NNAPI),
         )
+        assertEquals(
+            BenchmarkAccelerationStatus.UNAVAILABLE,
+            capabilities.status(BenchmarkAccelerator.BONSAI_VULKAN),
+        )
+    }
+
+    @Test
+    fun `given pixel 3a class device with bonsai vulkan probe, expected bonsai compute is separate`() {
+        val capabilities = pixel3a()
+            .copy(accelerators = pixel3a().accelerators + BenchmarkAccelerator.BONSAI_VULKAN)
+            .accelerationCapabilities()
+
+        assertEquals(
+            BenchmarkAccelerationStatus.BACKEND_UNAVAILABLE,
+            capabilities.status(BenchmarkAccelerator.VULKAN),
+        )
+        assertEquals(
+            BenchmarkAccelerationStatus.SUPPORTED,
+            capabilities.status(BenchmarkAccelerator.BONSAI_VULKAN),
+        )
     }
 
     @Test

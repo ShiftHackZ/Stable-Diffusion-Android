@@ -13,6 +13,7 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveBonsaiProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -24,51 +25,28 @@ import kotlinx.coroutines.launch
 import com.shifthackz.aisdv1.core.localization.R as LocalizationR
 
 /**
- * Coordinates `CoreGenerationWorker` behavior in the SDAI background work feature layer.
+ * Shared foreground worker base for generation tasks.
  *
- * @author Dmitriy Moroz
+ * It owns cancellation, progress subscriptions, foreground notifications, and
+ * background observer updates that are common to txt2img and img2img work.
  */
 internal abstract class CoreGenerationWorker(
     context: Context,
     workerParameters: WorkerParameters,
     pushNotificationManager: PushNotificationManager,
     activityIntentProvider: ActivityIntentProvider,
-    /**
-     * Exposes the `preferenceManager` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val preferenceManager: PreferenceManager,
-    /**
-     * Exposes the `backgroundWorkObserver` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val backgroundWorkObserver: BackgroundWorkObserver,
-    /**
-     * Exposes the `observeHordeProcessStatusUseCase` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
-    /**
-     * Exposes the `observeLocalDiffusionProcessStatusUseCase` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
-    /**
-     * Exposes the `interruptGenerationUseCase` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
+    private val observeBonsaiProcessStatusUseCase: ObserveBonsaiProcessStatusUseCase,
     private val interruptGenerationUseCase: InterruptGenerationUseCase,
 ) : NotificationWorker(
     context = context,
     workerParameters = workerParameters,
     pushNotificationManager = pushNotificationManager,
     activityIntentProvider = activityIntentProvider,
-){
+) {
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -83,6 +61,15 @@ internal abstract class CoreGenerationWorker(
 
     protected fun clearSubscriptions() {
         coroutineScope.coroutineContext.cancelChildren()
+    }
+
+    protected fun listenSourceStatus() {
+        when (source) {
+            ServerSource.HORDE -> listenHordeStatus()
+            ServerSource.LOCAL_MICROSOFT_ONNX -> listenLocalDiffusionStatus()
+            ServerSource.LOCAL_APPLE_BONSAI -> listenBonsaiStatus()
+            else -> Unit
+        }
     }
 
     protected fun listenHordeStatus() {
@@ -134,6 +121,29 @@ internal abstract class CoreGenerationWorker(
                         silent = true,
                         progress = status.current to status.total,
                         canCancel = preferenceManager.localOnnxAllowCancel,
+                    )
+                }
+        }
+    }
+
+    protected fun listenBonsaiStatus() {
+        coroutineScope.launch {
+            observeBonsaiProcessStatusUseCase()
+                .catch { t -> errorLog(t) }
+                .collect { status ->
+                    val title = applicationContext.getString(LocalizationR.string.notification_running_title)
+                    val subTitle = applicationContext.getString(
+                        LocalizationR.string.communicating_status_steps,
+                        status.current.toString(),
+                        status.total.toString(),
+                    )
+                    backgroundWorkObserver.postStatusMessage(title, subTitle)
+                    setForegroundNotification(
+                        title = title,
+                        body = subTitle,
+                        silent = true,
+                        progress = status.current to status.total,
+                        canCancel = true,
                     )
                 }
         }

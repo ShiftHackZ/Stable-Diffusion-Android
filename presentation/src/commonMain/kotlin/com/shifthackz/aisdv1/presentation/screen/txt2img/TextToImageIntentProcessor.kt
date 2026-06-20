@@ -11,79 +11,25 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 
 /**
- * Coordinates `TextToImageIntentProcessor` behavior in the SDAI presentation layer.
+ * Applies synchronous txt2img UI intents.
  *
- * @author Dmitriy Moroz
+ * Navigation, form mutations, and result actions are handled here so the
+ * view-model can keep asynchronous generation and configuration loading logic
+ * separate from simple state transitions.
  */
 internal class TextToImageIntentProcessor(
-    /**
-     * Exposes the `router` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val router: TextToImageRouter,
-    /**
-     * Exposes the `updateState` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val updateState: (((TextToImageState) -> TextToImageState) -> Unit),
-    /**
-     * Exposes the `generate` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val generate: () -> Unit,
-    /**
-     * Exposes the `cancelGeneration` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val cancelGeneration: () -> Unit,
-    /**
-     * Exposes the `saveImage` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val saveImage: (String) -> Unit,
-    /**
-     * Exposes the `shareImage` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val shareImage: (String) -> Unit,
-    /**
-     * Exposes the `saveGenerationResults` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val saveGenerationResults: (List<AiGenerationResult>) -> Unit,
-    /**
-     * Exposes the `viewGenerationResult` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val viewGenerationResult: (AiGenerationResult) -> Unit,
-    /**
-     * Exposes the `reportGenerationResult` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val reportGenerationResult: (AiGenerationResult) -> Unit,
-    /**
-     * Exposes the `applyGenerationResult` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val applyGenerationResult: (AiGenerationResult) -> Unit,
 ) {
 
-    /**
-     * Executes the `process` step in the SDAI presentation layer.
-     *
-     * @param intent intent to process in the MVI workflow.
-     * @author Dmitriy Moroz
-     */
     fun process(intent: TextToImageIntent) {
         when (intent) {
             TextToImageIntent.OpenDrawer -> router.openDrawer()
@@ -273,6 +219,9 @@ internal class TextToImageIntentProcessor(
             }
             is TextToImageIntent.UpdateSdxlBackend -> updateState {
                 it.copy(sdxlBackend = intent.value, message = null)
+            }
+            is TextToImageIntent.UpdateBonsaiBackend -> updateState {
+                it.copy(bonsaiBackend = intent.value, message = null)
             }
             is TextToImageIntent.UpdateFalAiSyncMode -> updateState {
                 it.copy(falAiSyncMode = intent.value, message = null)
