@@ -26,6 +26,8 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.presentation.screen.setup.component.SwitchRow
 import com.shifthackz.aisdv1.presentation.screen.setup.component.isCustom
 import com.shifthackz.aisdv1.presentation.screen.setup.component.message
+import com.shifthackz.aisdv1.presentation.screen.setup.component.subtitle
+import com.shifthackz.aisdv1.presentation.screen.setup.component.title
 import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.ArliAiForm
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.Automatic1111Form
@@ -133,20 +135,8 @@ internal fun LocalGenerationForm(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         FormTitle(
-            title = when (state.mode) {
-                ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeTitle
-                ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlTitle
-                ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlTitle
-                ServerSource.LOCAL_APPLE_BONSAI -> strings.bonsaiTitle
-                else -> strings.localDiffusionTitle
-            },
-            subtitle = when (state.mode) {
-                ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeSubtitle
-                ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlSubtitle
-                ServerSource.LOCAL_APPLE_CORE_ML -> strings.coreMlSubtitle
-                ServerSource.LOCAL_APPLE_BONSAI -> strings.bonsaiSubtitle
-                else -> strings.localDiffusionSubtitle
-            },
+            title = state.mode.title(strings, state.platform),
+            subtitle = state.mode.subtitle(strings, state.platform),
         )
         HintText(text = strings.localWarning)
         if (

@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.storageusage
 import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.appbuild.BuildVersion
+import com.shifthackz.aisdv1.core.common.platform.Platform
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
@@ -239,6 +240,7 @@ private object TestBuildInfoProvider : BuildInfoProvider {
     override val buildNumber: Int = 5598
     override val version: BuildVersion = BuildVersion()
     override val type: BuildType = BuildType.FULL
+    override val platform: Platform = Platform.ANDROID
 }
 
 /**

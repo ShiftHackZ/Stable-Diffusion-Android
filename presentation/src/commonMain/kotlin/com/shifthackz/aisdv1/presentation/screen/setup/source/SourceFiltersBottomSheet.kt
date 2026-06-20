@@ -25,9 +25,10 @@ import com.shifthackz.aisdv1.domain.entity.FeatureTag
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.ServerSourceReadiness
 import com.shifthackz.aisdv1.domain.entity.ServerSourceType
+import com.shifthackz.aisdv1.presentation.model.readinessFor
+import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
 import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupIntent
 import com.shifthackz.aisdv1.presentation.screen.setup.model.ServerSetupState
-import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
 
 /**
@@ -55,7 +56,7 @@ internal fun SourceFiltersBottomSheet(
         .distinct()
         .sortedBy(FeatureTag::ordinal)
     val availableReadiness = state.allowedModes
-        .map(ServerSource::readiness)
+        .map { source -> source.readinessFor(state.platform) }
         .distinct()
         .sortedBy(ServerSourceReadiness::ordinal)
     Column(

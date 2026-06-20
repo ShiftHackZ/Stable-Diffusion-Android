@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.presentation.model.compactDisplayName
 import com.shifthackz.aisdv1.presentation.widget.scrollbar.verticalScrollbar
 
 
@@ -186,7 +187,7 @@ internal fun ImageInputSection(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = state.mode.displayName,
+                        text = state.mode.compactDisplayName(state.platform),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.W600,
                         maxLines = 1,

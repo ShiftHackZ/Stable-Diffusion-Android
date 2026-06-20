@@ -51,5 +51,17 @@ internal actual fun isLocalGenerationSetupAvailable(): Boolean =
     Build.VERSION.SDK_INT < Build.VERSION_CODES.R || Environment.isExternalStorageManager()
 
 internal actual fun isServerSourceAvailableOnPlatform(source: ServerSource): Boolean =
-    source != ServerSource.LOCAL_APPLE_CORE_ML &&
-        source != ServerSource.LOCAL_APPLE_BONSAI
+    isServerSourceAvailableOnAndroid(source, Build.SUPPORTED_64_BIT_ABIS)
+
+internal fun isServerSourceAvailableOnAndroid(
+    source: ServerSource,
+    supported64BitAbis: Array<String>?,
+): Boolean = when (source) {
+    ServerSource.LOCAL_APPLE_BONSAI -> isAndroidBonsaiSupportedInPrinciple(supported64BitAbis)
+    else -> true
+}
+
+internal fun isAndroidBonsaiSupportedInPrinciple(supported64BitAbis: Array<String>?): Boolean =
+    supported64BitAbis.orEmpty().any { abi -> abi == ANDROID_BONSAI_ABI }
+
+private const val ANDROID_BONSAI_ABI = "arm64-v8a"

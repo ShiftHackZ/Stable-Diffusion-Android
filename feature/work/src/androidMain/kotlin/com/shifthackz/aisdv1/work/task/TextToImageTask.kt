@@ -10,6 +10,7 @@ import com.shifthackz.aisdv1.core.notification.PushNotificationManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
+import com.shifthackz.aisdv1.domain.usecase.generation.ObserveBonsaiProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveHordeProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ObserveLocalDiffusionProcessStatusUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.TextToImageUseCase
@@ -22,9 +23,11 @@ import kotlinx.coroutines.CancellationException
 import java.io.File
 
 /**
- * Coordinates `TextToImageTask` behavior in the SDAI background work feature layer.
+ * Background txt2img worker.
  *
- * @author Dmitriy Moroz
+ * The task reads the cached generation payload, starts provider-specific
+ * progress observation, executes txt2img generation, and reports success,
+ * cancellation, or failure through the foreground notification path.
  */
 internal class TextToImageTask(
     context: Context,
@@ -33,30 +36,11 @@ internal class TextToImageTask(
     activityIntentProvider: ActivityIntentProvider,
     observeHordeProcessStatusUseCase: ObserveHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase: ObserveLocalDiffusionProcessStatusUseCase,
+    observeBonsaiProcessStatusUseCase: ObserveBonsaiProcessStatusUseCase,
     interruptGenerationUseCase: InterruptGenerationUseCase,
-    /**
-     * Exposes the `preferenceManager` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val preferenceManager: PreferenceManager,
-    /**
-     * Exposes the `backgroundWorkObserver` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val backgroundWorkObserver: BackgroundWorkObserver,
-    /**
-     * Exposes the `textToImageUseCase` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val textToImageUseCase: TextToImageUseCase,
-    /**
-     * Exposes the `fileProviderDescriptor` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val fileProviderDescriptor: FileProviderDescriptor,
 ) : CoreGenerationWorker(
     context = context,
@@ -67,6 +51,7 @@ internal class TextToImageTask(
     backgroundWorkObserver = backgroundWorkObserver,
     observeHordeProcessStatusUseCase = observeHordeProcessStatusUseCase,
     observeLocalDiffusionProcessStatusUseCase = observeLocalDiffusionProcessStatusUseCase,
+    observeBonsaiProcessStatusUseCase = observeBonsaiProcessStatusUseCase,
     interruptGenerationUseCase = interruptGenerationUseCase,
 ) {
 
@@ -117,8 +102,7 @@ internal class TextToImageTask(
                 return Result.failure()
             }
 
-            listenHordeStatus()
-            listenLocalDiffusionStatus()
+            listenSourceStatus()
 
             handleProcess()
             runCatching { textToImageUseCase(payload) }

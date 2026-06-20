@@ -1,6 +1,8 @@
 package com.shifthackz.aisdv1.domain.entity
 
 import com.shifthackz.aisdv1.core.common.appbuild.BuildType
+import com.shifthackz.aisdv1.core.common.platform.Platform
+import com.shifthackz.aisdv1.core.common.platform.PlatformValue
 
 /**
  * Provider catalog entry used by setup, onboarding, and settings screens.
@@ -15,15 +17,16 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 enum class ServerSource(
     val key: String,
     val type: ServerSourceType,
-    val readiness: ServerSourceReadiness,
+    val readiness: PlatformValue<ServerSourceReadiness>,
     val version: String,
     val featureTags: Set<FeatureTag>,
     val allowedInBuilds: Set<BuildType> = setOf(BuildType.FOSS, BuildType.PLAY, BuildType.FULL),
+    val allowedPlatforms: Set<Platform> = setOf(Platform.ANDROID, Platform.IOS),
 ) {
     AUTOMATIC1111(
         key = "custom",
         type = ServerSourceType.SELF_HOSTED,
-        readiness = ServerSourceReadiness.STABLE,
+        readiness = PlatformValue(ServerSourceReadiness.STABLE),
         version = "2026.6.10",
         featureTags = setOf(
             FeatureTag.Txt2Img,
@@ -39,7 +42,7 @@ enum class ServerSource(
     SWARM_UI(
         key = "swarm_ui",
         type = ServerSourceType.SELF_HOSTED,
-        readiness = ServerSourceReadiness.STABLE,
+        readiness = PlatformValue(ServerSourceReadiness.STABLE),
         version = "2026.6.10",
         featureTags = setOf(
             FeatureTag.Txt2Img,
@@ -54,18 +57,19 @@ enum class ServerSource(
     LOCAL_MICROSOFT_ONNX(
         key = "local",
         type = ServerSourceType.LOCAL,
-        readiness = ServerSourceReadiness.BETA,
+        readiness = PlatformValue(ServerSourceReadiness.BETA),
         version = "2024.9.23",
         featureTags = setOf(
             FeatureTag.Offline,
             FeatureTag.Txt2Img,
             FeatureTag.MultipleModels,
         ),
+        allowedPlatforms = setOf(Platform.ANDROID),
     ),
     LOCAL_GOOGLE_MEDIA_PIPE(
         key = "local_google_media_pipe",
         type = ServerSourceType.LOCAL,
-        readiness = ServerSourceReadiness.BETA,
+        readiness = PlatformValue(ServerSourceReadiness.BETA),
         version = "2026.6.10",
         featureTags = setOf(
             FeatureTag.Offline,
@@ -73,22 +77,27 @@ enum class ServerSource(
             FeatureTag.MultipleModels,
         ),
         allowedInBuilds = setOf(BuildType.PLAY, BuildType.FULL),
+        allowedPlatforms = setOf(Platform.ANDROID),
     ),
     LOCAL_STABLE_DIFFUSION_CPP(
         key = "local_stable_diffusion_cpp",
         type = ServerSourceType.LOCAL,
-        readiness = ServerSourceReadiness.ALPHA,
+        readiness = PlatformValue(ServerSourceReadiness.ALPHA),
         version = "2026.6.13",
         featureTags = setOf(
             FeatureTag.Offline,
             FeatureTag.Txt2Img,
             FeatureTag.MultipleModels,
         ),
+        allowedPlatforms = setOf(Platform.ANDROID),
     ),
     LOCAL_APPLE_CORE_ML(
         key = "local_apple_core_ml",
         type = ServerSourceType.LOCAL,
-        readiness = ServerSourceReadiness.ALPHA,
+        readiness = PlatformValue(
+            ios = ServerSourceReadiness.ALPHA,
+            android = ServerSourceReadiness.EXPERIMENTAL
+        ),
         version = "2026.6.12",
         featureTags = setOf(
             FeatureTag.Offline,
@@ -97,12 +106,16 @@ enum class ServerSource(
             FeatureTag.MultipleModels,
             FeatureTag.Batch,
         ),
+        allowedPlatforms = setOf(Platform.IOS),
     ),
     LOCAL_APPLE_BONSAI(
         key = "local_apple_bonsai",
         type = ServerSourceType.LOCAL,
-        readiness = ServerSourceReadiness.BETA,
-        version = "2026.6.15",
+        readiness = PlatformValue(
+            ios = ServerSourceReadiness.BETA,
+            android = ServerSourceReadiness.EXPERIMENTAL,
+        ),
+        version = "2026.6.20",
         featureTags = setOf(
             FeatureTag.Offline,
             FeatureTag.Txt2Img,
@@ -112,7 +125,7 @@ enum class ServerSource(
     HORDE(
         key = "horde",
         type = ServerSourceType.CLOUD,
-        readiness = ServerSourceReadiness.STABLE,
+        readiness = PlatformValue(ServerSourceReadiness.STABLE),
         version = "2026.6.10",
         featureTags = setOf(
             FeatureTag.Txt2Img,
@@ -123,7 +136,7 @@ enum class ServerSource(
     HUGGING_FACE(
         key = "hugging_face",
         type = ServerSourceType.CLOUD,
-        readiness = ServerSourceReadiness.STABLE,
+        readiness = PlatformValue(ServerSourceReadiness.STABLE),
         version = "2026.6.10",
         featureTags = setOf(
             FeatureTag.Txt2Img,
@@ -135,7 +148,7 @@ enum class ServerSource(
     OPEN_AI(
         key = "open_ai",
         type = ServerSourceType.CLOUD,
-        readiness = ServerSourceReadiness.STABLE,
+        readiness = PlatformValue(ServerSourceReadiness.STABLE),
         version = "2026.6.10",
         featureTags = setOf(
             FeatureTag.Txt2Img,
@@ -146,7 +159,7 @@ enum class ServerSource(
     STABILITY_AI(
         key = "stability_ai",
         type = ServerSourceType.CLOUD,
-        readiness = ServerSourceReadiness.STABLE,
+        readiness = PlatformValue(ServerSourceReadiness.STABLE),
         version = "2026.6.10",
         featureTags = setOf(
             FeatureTag.Txt2Img,
@@ -158,7 +171,7 @@ enum class ServerSource(
     FAL_AI(
         key = "fal_ai",
         type = ServerSourceType.CLOUD,
-        readiness = ServerSourceReadiness.ALPHA,
+        readiness = PlatformValue(ServerSourceReadiness.ALPHA),
         version = "2026.6.11",
         featureTags = setOf(
             FeatureTag.Txt2Img,
@@ -170,7 +183,7 @@ enum class ServerSource(
     ARLI_AI(
         key = "arli_ai",
         type = ServerSourceType.CLOUD,
-        readiness = ServerSourceReadiness.ALPHA,
+        readiness = PlatformValue(ServerSourceReadiness.ALPHA),
         version = "2026.6.13",
         featureTags = setOf(
             FeatureTag.Txt2Img,

@@ -21,6 +21,7 @@ enum class BenchmarkPlatform {
  */
 enum class BenchmarkAccelerator {
     VULKAN,
+    BONSAI_VULKAN,
     OPEN_CL,
     NNAPI,
     METAL,
@@ -74,6 +75,7 @@ data class BenchmarkDeviceInfo(
     val totalVramMb: Long?,
     val availableVramMb: Long?,
     val accelerators: List<BenchmarkAccelerator>,
+    val acceleratorDiagnostics: List<String> = emptyList(),
 )
 
 /**
@@ -148,6 +150,10 @@ private fun BenchmarkDeviceInfo.accelerationStatus(
     val apiDetected = accelerator in accelerators
     return when (platform) {
         BenchmarkPlatform.ANDROID -> when (accelerator) {
+            BenchmarkAccelerator.BONSAI_VULKAN -> when {
+                !apiDetected -> BenchmarkAccelerationStatus.UNAVAILABLE
+                else -> BenchmarkAccelerationStatus.SUPPORTED
+            }
             BenchmarkAccelerator.VULKAN,
             BenchmarkAccelerator.OPEN_CL -> when {
                 !apiDetected -> BenchmarkAccelerationStatus.UNAVAILABLE
@@ -176,6 +182,7 @@ private fun BenchmarkDeviceInfo.accelerationStatus(
                     BenchmarkAccelerationStatus.UNAVAILABLE
                 }
             BenchmarkAccelerator.VULKAN,
+            BenchmarkAccelerator.BONSAI_VULKAN,
             BenchmarkAccelerator.OPEN_CL,
             BenchmarkAccelerator.NNAPI -> BenchmarkAccelerationStatus.UNAVAILABLE
         }

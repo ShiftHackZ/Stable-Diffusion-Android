@@ -23,6 +23,9 @@ internal expect fun ServerSetupLocalPathPickerButton(
 internal expect fun isLocalGenerationSetupAvailable(): Boolean
 
 /**
- * Filters providers whose runtime cannot work on the current target.
+ * Filters providers that are impossible on the current target, such as a missing runtime ABI.
+ *
+ * Device capability and performance checks belong to benchmark/setup validation rather than the
+ * first provider list, so users can still discover providers supported in principle.
  */
 internal expect fun isServerSourceAvailableOnPlatform(source: ServerSource): Boolean

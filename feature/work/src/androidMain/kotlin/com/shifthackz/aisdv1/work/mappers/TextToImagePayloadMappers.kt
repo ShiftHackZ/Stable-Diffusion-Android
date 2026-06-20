@@ -1,5 +1,6 @@
 package com.shifthackz.aisdv1.work.mappers
 
+import com.shifthackz.aisdv1.domain.entity.BonsaiBackend
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
 import com.shifthackz.aisdv1.domain.entity.FalAiAcceleration
 import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
@@ -14,9 +15,11 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 /**
- * Exposes the `payloadJson` value used by the SDAI background work feature layer.
+ * JSON codec for background txt2img payload handoff.
  *
- * @author Dmitriy Moroz
+ * Unknown keys stay ignored so queued work from an older app version can still
+ * be read after new provider fields, such as local runtime backend choices, are
+ * added to the DTO.
  */
 @OptIn(ExperimentalSerializationApi::class)
 internal val payloadJson = Json {
@@ -25,10 +28,7 @@ internal val payloadJson = Json {
 }
 
 /**
- * Converts SDAI data with `toByteArray`.
- *
- * @return Result produced by `toByteArray`.
- * @author Dmitriy Moroz
+ * Serializes the domain payload for WorkManager cache storage.
  */
 internal fun TextToImagePayload.toByteArray(): ByteArray {
     return payloadJson
@@ -37,10 +37,7 @@ internal fun TextToImagePayload.toByteArray(): ByteArray {
 }
 
 /**
- * Converts SDAI data with `toTextToImagePayload`.
- *
- * @return Result produced by `toTextToImagePayload`.
- * @author Dmitriy Moroz
+ * Restores a cached WorkManager payload into the domain request model.
  */
 internal fun ByteArray.toTextToImagePayload(): TextToImagePayload? {
     return runCatching {
@@ -51,180 +48,42 @@ internal fun ByteArray.toTextToImagePayload(): TextToImagePayload? {
 }
 
 /**
- * Carries `TextToImagePayloadDto` data through the SDAI background work feature layer.
+ * Stable serialized form for txt2img background work.
  *
- * @author Dmitriy Moroz
+ * The DTO stores provider-specific options as strings so enum aliases can be
+ * parsed with backwards-compatible defaults when app versions change.
  */
 @Serializable
 private data class TextToImagePayloadDto(
-    /**
-     * Exposes the `prompt` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val prompt: String,
-    /**
-     * Exposes the `negativePrompt` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val negativePrompt: String,
-    /**
-     * Exposes the `samplingSteps` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val samplingSteps: Int,
-    /**
-     * Exposes the `cfgScale` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val cfgScale: Float,
-    /**
-     * Exposes the `width` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val width: Int,
-    /**
-     * Exposes the `height` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val height: Int,
-    /**
-     * Exposes the `restoreFaces` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val restoreFaces: Boolean,
-    /**
-     * Exposes the `seed` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val seed: String,
-    /**
-     * Exposes the `subSeed` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val subSeed: String,
-    /**
-     * Exposes the `subSeedStrength` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val subSeedStrength: Float,
-    /**
-     * Exposes the `sampler` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val sampler: String,
-    /**
-     * Exposes the `scheduler` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val scheduler: String? = null,
-    /**
-     * Exposes the `nsfw` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val nsfw: Boolean,
-    /**
-     * Exposes the `batchCount` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val batchCount: Int,
-    /**
-     * Exposes the `style` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val style: String?,
-    /**
-     * Exposes the `quality` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val quality: String?,
-    /**
-     * Exposes the `openAiModel` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val openAiModel: String?,
-    /**
-     * Exposes the `stabilityAiClipGuidance` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val stabilityAiClipGuidance: String?,
-    /**
-     * Exposes the `stabilityAiStylePreset` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val stabilityAiStylePreset: String?,
-    /**
-     * Exposes the `aDetailer` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val aDetailer: ADetailerConfigDto = ADetailerConfigDto(),
-    /**
-     * Exposes the `hires` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val hires: HiresConfigDto = HiresConfigDto(),
-    /**
-     * Exposes the `forgeModules` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val forgeModules: List<ForgeModuleDto> = emptyList(),
-    /**
-     * Exposes the `falAiModel` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val falAiModel: String? = null,
-    /**
-     * Exposes the `falAiImageSize` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val falAiImageSize: String? = null,
-    /**
-     * Exposes the `falAiAcceleration` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val falAiAcceleration: String? = null,
-    /**
-     * Exposes the `sdxlBackend` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     val sdxlBackend: String? = null,
-    /**
-     * Exposes the `falAiSyncMode` value used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
+    val bonsaiBackend: String? = null,
     val falAiSyncMode: Boolean = false,
 ) {
-    /**
-     * Converts SDAI data with `toPayload`.
-     *
-     * @author Dmitriy Moroz
-     */
     fun toPayload(): TextToImagePayload = TextToImagePayload(
         prompt = prompt,
         negativePrompt = negativePrompt,
@@ -252,21 +111,11 @@ private data class TextToImagePayloadDto(
         falAiImageSize = FalAiImageSize.parse(falAiImageSize),
         falAiAcceleration = FalAiAcceleration.parse(falAiAcceleration),
         sdxlBackend = SdxlBackend.parse(sdxlBackend),
+        bonsaiBackend = BonsaiBackend.parse(bonsaiBackend),
         falAiSyncMode = falAiSyncMode,
     )
 
-    /**
-     * Provides the `companion object` singleton used by the SDAI background work feature layer.
-     *
-     * @author Dmitriy Moroz
-     */
     companion object {
-        /**
-         * Executes the `from` step in the SDAI background work feature layer.
-         *
-         * @param payload generation payload used by the operation.
-         * @author Dmitriy Moroz
-         */
         fun from(payload: TextToImagePayload): TextToImagePayloadDto = TextToImagePayloadDto(
             prompt = payload.prompt,
             negativePrompt = payload.negativePrompt,
@@ -294,16 +143,14 @@ private data class TextToImagePayloadDto(
             falAiImageSize = payload.falAiImageSize.key,
             falAiAcceleration = payload.falAiAcceleration.key,
             sdxlBackend = payload.sdxlBackend.key,
+            bonsaiBackend = payload.bonsaiBackend.key,
             falAiSyncMode = payload.falAiSyncMode,
         )
     }
 }
 
 /**
- * Executes the `function` step in the SDAI background work feature layer.
- *
- * @return Result produced by `function`.
- * @author Dmitriy Moroz
+ * Parses enum names from cached payload fields while keeping unknown values nullable.
  */
 internal inline fun <reified T : Enum<T>> String?.parseEnumOrNull(): T? {
     return this?.let { value -> enumValues<T>().firstOrNull { it.name == value } }

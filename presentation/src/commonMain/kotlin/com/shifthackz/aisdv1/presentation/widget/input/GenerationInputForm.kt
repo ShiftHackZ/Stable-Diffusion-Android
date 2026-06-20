@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.domain.entity.BonsaiBackend
 import com.shifthackz.aisdv1.domain.entity.FalAiImageSize
 import com.shifthackz.aisdv1.domain.entity.FalAiModel
 import com.shifthackz.aisdv1.domain.entity.OpenAiModel
@@ -112,6 +113,19 @@ fun GenerationInputForm(
                     value = state.sdxlBackend,
                     items = SdxlBackend.entries,
                     onItemSelected = { onEvent(GenerationInputFormEvent.UpdateSdxlBackend(it)) },
+                    displayDelegate = { it.displayName.asUiText() },
+                )
+            }
+            if (
+                state.mode == ServerSource.LOCAL_APPLE_BONSAI &&
+                state.bonsaiBackendSelectionVisible
+            ) {
+                DropdownTextField(
+                    modifier = Modifier.padding(top = 8.dp),
+                    label = Localization.string("hint_bonsai_backend").asUiText(),
+                    value = state.bonsaiBackend,
+                    items = BonsaiBackend.entries,
+                    onItemSelected = { onEvent(GenerationInputFormEvent.UpdateBonsaiBackend(it)) },
                     displayDelegate = { it.displayName.asUiText() },
                 )
             }

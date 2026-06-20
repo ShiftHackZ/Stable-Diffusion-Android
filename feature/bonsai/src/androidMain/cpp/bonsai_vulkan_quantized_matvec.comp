@@ -1,0 +1,70 @@
+#version 450
+
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 0) readonly buffer WeightBuffer {
+    uint values[];
+} weights;
+
+layout(set = 0, binding = 1) readonly buffer ScaleBuffer {
+    float values[];
+} scales;
+
+layout(set = 0, binding = 2) readonly buffer BiasBuffer {
+    float values[];
+} biases;
+
+layout(set = 0, binding = 3) readonly buffer InputBuffer {
+    float values[];
+} input_values;
+
+layout(set = 0, binding = 4) writeonly buffer OutputBuffer {
+    float values[];
+} output_values;
+
+layout(push_constant) uniform Params {
+    uint input_values_count;
+    uint packed_columns;
+    uint scale_groups;
+    uint bits;
+    uint group_size;
+    uint output_rows;
+} params;
+
+shared float partials[64];
+
+void main() {
+    const uint row = gl_WorkGroupID.x;
+    const uint token = gl_WorkGroupID.y;
+    const uint lane = gl_LocalInvocationID.x;
+    const uint values_per_word = 32u / params.bits;
+    const uint mask = (1u << params.bits) - 1u;
+    const uint input_start = token * params.input_values_count;
+
+    float sum = 0.0;
+    for (uint column = lane; column < params.input_values_count; column += 64u) {
+        const uint word_column = column / values_per_word;
+        const uint offset = column - word_column * values_per_word;
+        const uint word = weights.values[row * params.packed_columns + word_column];
+        const uint quantized = (word >> (offset * params.bits)) & mask;
+        const uint group = column / params.group_size;
+        const uint scale_index = row * params.scale_groups + group;
+        const float weight = float(quantized) * scales.values[scale_index] +
+            biases.values[scale_index];
+        sum += input_values.values[input_start + column] * weight;
+    }
+
+    partials[lane] = sum;
+    barrier();
+
+    for (uint stride = 32u; stride > 0u; stride >>= 1u) {
+        if (lane < stride) {
+            partials[lane] += partials[lane + stride];
+        }
+        barrier();
+    }
+
+    if (lane == 0u) {
+        output_values.values[token * params.output_rows + row] = partials[0];
+    }
+}

@@ -89,6 +89,7 @@ internal fun SourceSelectionStep(
             SourceModeItem(
                 source = source,
                 selected = state.mode == source,
+                platform = state.platform,
                 strings = strings,
                 onClick = {
                     coroutineScope.launch {

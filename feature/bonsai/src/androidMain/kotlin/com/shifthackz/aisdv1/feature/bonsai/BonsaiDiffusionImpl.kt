@@ -1,43 +1,108 @@
 package com.shifthackz.aisdv1.feature.bonsai
 
+import android.os.Process
 import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.bonsai.BonsaiDiffusion
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.job
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 
 /**
- * Implements Android noop behavior for the iOS-only Bonsai feature layer.
+ * Android Bonsai runtime entry point backed by the NDK bridge.
  *
- * @author Dmitriy Moroz
+ * The implementation keeps native execution off the caller thread, serializes
+ * generation requests, and relays step progress through the shared local
+ * diffusion status contract.
  */
 internal class BonsaiDiffusionImpl : BonsaiDiffusion {
 
-    /**
-     * Executes the `process` step in the SDAI Bonsai feature layer.
-     *
-     * @param payload generation payload used by the operation.
-     * @param modelPath local model directory selected by the user.
-     * @author Dmitriy Moroz
-     */
+    private val mutex = Mutex()
+    private val statusFlow = MutableSharedFlow<LocalDiffusionStatus>(replay = 1)
+
     override suspend fun process(
         payload: TextToImagePayload,
         modelPath: String,
-    ): String {
-        throw IllegalStateException("Bonsai Image generation is available on iOS only.")
+    ): String = mutex.withLock {
+        withContext(Dispatchers.Default) {
+            AndroidBonsaiRequestValidator.validate(
+                payload = payload,
+                modelPath = modelPath,
+            )
+            BonsaiNativeBridge.ensureLoaded()
+            val layout = AndroidBonsaiModelLayout.resolve(modelPath)
+            statusFlow.tryEmit(LocalDiffusionStatus(current = 0, total = payload.samplingSteps))
+            val job = currentCoroutineContext().job
+            val cancellationHandle = job.invokeOnCompletion { cause ->
+                if (cause is CancellationException) {
+                    BonsaiNativeBridge.interrupt()
+                }
+            }
+
+            try {
+                withBackgroundThreadPriority {
+                    BonsaiNativeBridge.generate(
+                        layout = layout,
+                        prompt = payload.prompt,
+                        negativePrompt = payload.negativePrompt,
+                        samplingSteps = payload.samplingSteps,
+                        cfgScale = payload.cfgScale,
+                        width = payload.width,
+                        height = payload.height,
+                        seed = payload.seed,
+                        batchCount = payload.batchCount.coerceAtLeast(1),
+                        allowNsfw = payload.nsfw,
+                        backend = payload.bonsaiBackend.key,
+                        callback = object : BonsaiNativeBridge.ProgressCallback {
+                            override fun onProgress(current: Int, total: Int) {
+                                statusFlow.tryEmit(
+                                    LocalDiffusionStatus(
+                                        current = current,
+                                        total = total,
+                                    ),
+                                )
+                            }
+                        },
+                    )
+                }
+            } finally {
+                cancellationHandle.dispose()
+            }
+        }
     }
 
-    /**
-     * Performs the SDAI side effect handled by `interrupt`.
-     *
-     * @author Dmitriy Moroz
-     */
-    override suspend fun interrupt() = Unit
+    private inline fun <T> withBackgroundThreadPriority(block: () -> T): T {
+        val threadId = Process.myTid()
+        val previousPriority = runCatching {
+            Process.getThreadPriority(threadId)
+        }.getOrNull()
+        runCatching {
+            Process.setThreadPriority(threadId, Process.THREAD_PRIORITY_BACKGROUND)
+        }
+        return try {
+            block()
+        } finally {
+            if (previousPriority != null) {
+                runCatching {
+                    Process.setThreadPriority(threadId, previousPriority)
+                }
+            }
+        }
+    }
 
-    /**
-     * Loads SDAI data through `observeStatus`.
-     *
-     * @author Dmitriy Moroz
-     */
-    override fun observeStatus(): Flow<LocalDiffusionStatus> = flowOf(LocalDiffusionStatus(0, 0))
+    override suspend fun interrupt() {
+        if (BonsaiNativeBridge.isAvailable) {
+            runCatching { BonsaiNativeBridge.interrupt() }
+        }
+    }
+
+    override fun observeStatus(): Flow<LocalDiffusionStatus> = statusFlow
+        .onStart { emit(LocalDiffusionStatus(current = 0, total = 0)) }
 }

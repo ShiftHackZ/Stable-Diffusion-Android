@@ -172,6 +172,7 @@
     <string name="hint_fal_ai_endpoint">Fal.ai uç noktası</string>
     <string name="hint_fal_ai_acceleration">Hızlandırma</string>
     <string name="hint_sdxl_backend">Çalışma zamanı arka ucu</string>
+    <string name="hint_bonsai_backend">Çalışma zamanı arka ucu</string>
     <string name="hint_fal_ai_sync_mode">Senkronizasyon modu</string>
     <string name="title_input_image">Girdi görüntüsü</string>
     <string name="hint_quality">Kalite</string>
@@ -236,7 +237,8 @@
     <string name="hint_mediapipe_sub_title">Bu yapılandırma Google AI MediaPipe çalışma zamanını kullanır ve uzak bir sunucuya/buluta bağlanmaya gerek kalmadan telefonunuzda Stable Diffusion AI nesillerini çalıştırmanıza olanak tanır.</string>
     <string name="hint_sdxl_sub_title">Bu yapılandırma stable-diffusion.cpp kullanır ve telefonunuzda SDXL, SDXL-Turbo, LCM veya kuantize GGUF modellerini çalıştırmanızı sağlar.</string>
     <string name="hint_core_ml_sub_title">iPhone üzerinde yerel üretim.</string>
-    <string name="hint_bonsai_sub_title">iPhone üzerinde yerel Bonsai Image 4B üretimi.</string>
+    <string name="hint_bonsai_sub_title">iPhone cihazında yerel Bonsai Image 4B üretimi.</string>
+    <string name="hint_bonsai_android_sub_title">Desteklenen cihazlarda yerel Bonsai Image 4B üretimi.</string>
 
     <string name="drawer_web_ui">Web arayüzü</string>
 

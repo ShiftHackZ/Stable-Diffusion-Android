@@ -3,6 +3,8 @@ package com.shifthackz.aisdv1.data.local
 import com.shifthackz.aisdv1.core.common.file.FileProviderDescriptor
 import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -68,6 +70,39 @@ class AndroidDownloadableModelFileStoreTest {
 
         assertEquals(directory.path, actual)
     }
+
+    @Test
+    fun `given bonsai model directory contains complete layout, is downloaded returns true`() {
+        val model = model(id = "bonsai-model", type = LocalAiModel.Type.Bonsai)
+        File(temporaryFolder.root, model.id)
+            .apply(File::mkdirs)
+            .createBonsaiLayout()
+
+        val actual = fileStore.isDownloaded(model)
+
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `given bonsai model directory contains invalid residue, is downloaded returns false`() {
+        val model = model(id = "bonsai-model", type = LocalAiModel.Type.Bonsai)
+        val directory = File(temporaryFolder.root, model.id).apply(File::mkdirs)
+        File(directory, "download-error.html").writeText("pve001 unavailable")
+
+        val actual = fileStore.isDownloaded(model)
+
+        assertFalse(actual)
+    }
+}
+
+private fun File.createBonsaiLayout() {
+    File(this, "transformer-packed-mflux").apply(File::mkdirs)
+        .resolve("quantization_config.json")
+        .writeText("{}")
+    File(this, "text_encoder-mlx-4bit").mkdirs()
+    File(this, "tokenizer").mkdirs()
+    File(this, "vae").mkdirs()
+    File(this, "scheduler").mkdirs()
 }
 
 private fun model(

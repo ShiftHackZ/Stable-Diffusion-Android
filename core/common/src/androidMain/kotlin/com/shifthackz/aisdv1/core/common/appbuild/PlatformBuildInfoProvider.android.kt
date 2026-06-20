@@ -1,9 +1,9 @@
 package com.shifthackz.aisdv1.core.common.appbuild
 
 /**
- * Creates the SDAI value produced by `createPlatformBuildInfoProvider`.
+ * Supplies Android build metadata from the generated app-level provider.
  *
- * @return Result produced by `createPlatformBuildInfoProvider`.
- * @author Dmitriy Moroz
+ * Core modules use a stub here so Android app variants can override the binding
+ * with flavor-aware metadata during dependency injection.
  */
 actual fun createPlatformBuildInfoProvider(): BuildInfoProvider = BuildInfoProvider.stub

@@ -4,6 +4,21 @@ plugins {
 
 android {
     namespace = "com.shifthackz.aisdv1.feature.benchmark"
+
+    defaultConfig {
+        externalNativeBuild {
+            cmake {
+                arguments += "-DANDROID_STL=c++_shared"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/androidMain/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
 }
 
 kotlin {

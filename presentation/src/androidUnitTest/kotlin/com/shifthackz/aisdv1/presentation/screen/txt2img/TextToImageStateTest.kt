@@ -3,6 +3,7 @@ package com.shifthackz.aisdv1.presentation.screen.txt2img
 import com.shifthackz.aisdv1.core.validation.ValidationResult
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.ADetailerConfig
+import com.shifthackz.aisdv1.domain.entity.BonsaiBackend
 import com.shifthackz.aisdv1.domain.entity.ForgeModule
 import com.shifthackz.aisdv1.domain.entity.HiresConfig
 import com.shifthackz.aisdv1.domain.entity.Scheduler
@@ -126,6 +127,7 @@ class TextToImageStateTest {
             cfgScale = 7.5f,
             batchCount = 4,
             nsfw = true,
+            bonsaiBackend = BonsaiBackend.VULKAN,
         ).mapToPayload()
 
         Assert.assertEquals(30, payload.samplingSteps)
@@ -134,6 +136,17 @@ class TextToImageStateTest {
         Assert.assertEquals(DEFAULT_SIZE, payload.height)
         Assert.assertEquals(1, payload.batchCount)
         Assert.assertTrue(payload.nsfw)
+        Assert.assertEquals(BonsaiBackend.VULKAN, payload.bonsaiBackend)
+    }
+
+    @Test
+    fun `given non Bonsai state with Vulkan Bonsai backend, expected payload uses Auto backend`() {
+        val payload = TextToImageState(
+            mode = ServerSource.AUTOMATIC1111,
+            bonsaiBackend = BonsaiBackend.VULKAN,
+        ).mapToPayload()
+
+        Assert.assertEquals(BonsaiBackend.AUTO, payload.bonsaiBackend)
     }
 
     @Test
