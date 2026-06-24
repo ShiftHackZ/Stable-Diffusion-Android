@@ -1,1 +1,1 @@
-Create AI images on iPhone with your own server, hosted APIs, or community workers. Prompt, tune, preview, and save your results in SDAI.
+Create AI images on iPhone with your own server, hosted APIs, SDAI Cloud, or on-device Silicon Diffusion where supported.

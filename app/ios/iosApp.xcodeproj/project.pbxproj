@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		564B32062FE9E303009C2B4C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 564B32052FE9E303009C2B4C /* StoreKit.framework */; };
+		564B32082FEA7E7D009C2B4C /* SyncedIapProducts.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 564B32072FEA7E7D009C2B4C /* SyncedIapProducts.storekit */; };
 		6A2A00000000000000000001 /* AIStableDiffusionIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000002 /* AIStableDiffusionIOSApp.swift */; };
 		6A2A00000000000000000003 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000004 /* ComposeView.swift */; };
 		6A2A00000000000000000014 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000015 /* Assets.xcassets */; };
@@ -14,9 +16,16 @@
 		6A2A00000000000000000021 /* SiliconDiffusionCoreML in Frameworks */ = {isa = PBXBuildFile; productRef = 6A2A00000000000000000026 /* SiliconDiffusionCoreML */; };
 		6A2A00000000000000000030 /* SiliconDiffusionBonsaiRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000032 /* SiliconDiffusionBonsaiRuntime.swift */; };
 		6A2A00000000000000000031 /* SiliconDiffusionBonsai in Frameworks */ = {isa = PBXBuildFile; productRef = 6A2A00000000000000000035 /* SiliconDiffusionBonsai */; };
+		6A2A00000000000000000040 /* SDAIAdMobBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000041 /* SDAIAdMobBridge.swift */; };
+		6A2A00000000000000000042 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 6A2A00000000000000000046 /* GoogleMobileAds */; };
+		6A2A00000000000000000047 /* SDAIIapBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000048 /* SDAIIapBridge.swift */; };
+		6A2A00000000000000000050 /* OptionalNonFreeBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000051 /* OptionalNonFreeBridge.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		564B32032FE9E2F0009C2B4C /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
+		564B32052FE9E303009C2B4C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		564B32072FEA7E7D009C2B4C /* SyncedIapProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = SyncedIapProducts.storekit; sourceTree = "<group>"; };
 		6A2A00000000000000000002 /* AIStableDiffusionIOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIStableDiffusionIOSApp.swift; sourceTree = "<group>"; };
 		6A2A00000000000000000004 /* ComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		6A2A00000000000000000005 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,6 +33,10 @@
 		6A2A00000000000000000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A2A00000000000000000023 /* SiliconDiffusionCoreMLRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiliconDiffusionCoreMLRuntime.swift; sourceTree = "<group>"; };
 		6A2A00000000000000000032 /* SiliconDiffusionBonsaiRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiliconDiffusionBonsaiRuntime.swift; sourceTree = "<group>"; };
+		6A2A00000000000000000041 /* SDAIAdMobBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDAIAdMobBridge.swift; sourceTree = "<group>"; };
+		6A2A00000000000000000048 /* SDAIIapBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDAIIapBridge.swift; sourceTree = "<group>"; };
+		6A2A00000000000000000051 /* OptionalNonFreeBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalNonFreeBridge.swift; sourceTree = "<group>"; };
+		6A2A00000000000000000052 /* SDAIOptionalNonFree.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = SDAIOptionalNonFree.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,20 +44,33 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A2A00000000000000000042 /* GoogleMobileAds in Frameworks */,
 				6A2A00000000000000000031 /* SiliconDiffusionBonsai in Frameworks */,
 				6A2A00000000000000000021 /* SiliconDiffusionCoreML in Frameworks */,
+				564B32062FE9E303009C2B4C /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		564B32042FE9E303009C2B4C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				564B32052FE9E303009C2B4C /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6A2A00000000000000000007 = {
 			isa = PBXGroup;
 			children = (
 				6A2A00000000000000000008 /* iosApp */,
+				6A2A00000000000000000049 /* AdMob Swift */,
+				6A2A0000000000000000004A /* IAP Swift */,
 				6A2A00000000000000000033 /* Bonsai Swift */,
 				6A2A00000000000000000028 /* CoreML Swift */,
+				564B32042FE9E303009C2B4C /* Frameworks */,
 				6A2A00000000000000000009 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,10 +78,14 @@
 		6A2A00000000000000000008 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				564B32032FE9E2F0009C2B4C /* iosApp.entitlements */,
 				6A2A00000000000000000002 /* AIStableDiffusionIOSApp.swift */,
 				6A2A00000000000000000004 /* ComposeView.swift */,
+				6A2A00000000000000000051 /* OptionalNonFreeBridge.swift */,
 				6A2A00000000000000000015 /* Assets.xcassets */,
 				6A2A00000000000000000017 /* Info.plist */,
+				6A2A00000000000000000052 /* SDAIOptionalNonFree.xcconfig */,
+				564B32072FEA7E7D009C2B4C /* SyncedIapProducts.storekit */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -86,6 +116,24 @@
 			path = ../../feature/bonsai/swift/AppBridge;
 			sourceTree = "<group>";
 		};
+		6A2A00000000000000000049 /* AdMob Swift */ = {
+			isa = PBXGroup;
+			children = (
+				6A2A00000000000000000041 /* SDAIAdMobBridge.swift */,
+			);
+			name = "AdMob Swift";
+			path = ../../nonfree/admob/swift/AppBridge;
+			sourceTree = "<group>";
+		};
+		6A2A0000000000000000004A /* IAP Swift */ = {
+			isa = PBXGroup;
+			children = (
+				6A2A00000000000000000048 /* SDAIIapBridge.swift */,
+			);
+			name = "IAP Swift";
+			path = ../../nonfree/iap/swift/AppBridge;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -106,6 +154,7 @@
 			packageProductDependencies = (
 				6A2A00000000000000000035 /* SiliconDiffusionBonsai */,
 				6A2A00000000000000000026 /* SiliconDiffusionCoreML */,
+				6A2A00000000000000000046 /* GoogleMobileAds */,
 			);
 			productName = iosApp;
 			productReference = 6A2A00000000000000000005 /* iosApp.app */;
@@ -123,6 +172,11 @@
 				TargetAttributes = {
 					6A2A0000000000000000000A = {
 						CreatedOnToolsVersion = 15.4;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -138,6 +192,7 @@
 			packageReferences = (
 				6A2A00000000000000000034 /* XCLocalSwiftPackageReference "../../feature/bonsai" */,
 				6A2A00000000000000000024 /* XCLocalSwiftPackageReference "../../feature/coreml/swift" */,
+				6A2A00000000000000000044 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 6A2A00000000000000000009 /* Products */;
 			projectDirPath = "";
@@ -154,6 +209,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A2A00000000000000000014 /* Assets.xcassets in Resources */,
+				564B32082FEA7E7D009C2B4C /* SyncedIapProducts.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,6 +244,9 @@
 			files = (
 				6A2A00000000000000000001 /* AIStableDiffusionIOSApp.swift in Sources */,
 				6A2A00000000000000000003 /* ComposeView.swift in Sources */,
+				6A2A00000000000000000050 /* OptionalNonFreeBridge.swift in Sources */,
+				6A2A00000000000000000040 /* SDAIAdMobBridge.swift in Sources */,
+				6A2A00000000000000000047 /* SDAIIapBridge.swift in Sources */,
 				6A2A00000000000000000030 /* SiliconDiffusionBonsaiRuntime.swift in Sources */,
 				6A2A00000000000000000020 /* SiliconDiffusionCoreMLRuntime.swift in Sources */,
 			);
@@ -313,11 +372,13 @@
 		};
 		6A2A00000000000000000012 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A2A00000000000000000052 /* SDAIOptionalNonFree.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 204;
+				CURRENT_PROJECT_VERSION = 205;
 				DEVELOPMENT_TEAM = 383EQFRA4A;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -332,9 +393,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
+					"-ObjC",
 					"-framework",
 					AiSdPresentation,
 				);
@@ -349,11 +411,13 @@
 		};
 		6A2A00000000000000000013 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A2A00000000000000000052 /* SDAIOptionalNonFree.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 204;
+				CURRENT_PROJECT_VERSION = 205;
 				DEVELOPMENT_TEAM = 383EQFRA4A;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -368,9 +432,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
+					"-ObjC",
 					"-framework",
 					AiSdPresentation,
 				);
@@ -417,6 +482,17 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		6A2A00000000000000000044 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		6A2A00000000000000000026 /* SiliconDiffusionCoreML */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -427,6 +503,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6A2A00000000000000000034 /* XCLocalSwiftPackageReference "../../feature/bonsai" */;
 			productName = SiliconDiffusionBonsai;
+		};
+		6A2A00000000000000000046 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6A2A00000000000000000044 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

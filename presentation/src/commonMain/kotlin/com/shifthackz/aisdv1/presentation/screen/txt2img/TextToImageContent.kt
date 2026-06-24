@@ -42,6 +42,7 @@ import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.history.InputHistoryBottomSheet
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagDialog
 import com.shifthackz.aisdv1.presentation.model.ExtraType
+import com.shifthackz.aisdv1.presentation.widget.sdai.SdaiCloudTokenBalanceWidget
 import com.shifthackz.aisdv1.presentation.widget.input.GenerationInputFormEvent
 import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
@@ -142,6 +143,12 @@ fun TextToImageContent(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)
                         .padding(vertical = 4.dp),
+                )
+                SdaiCloudTokenBalanceWidget(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                    onBuyClick = { processIntent(TextToImageIntent.ShowSdaiCloudIapProducts) },
                 )
             }
         },
@@ -266,6 +273,18 @@ fun TextToImageContent(
         onSkipBenchmarkRequest = { processIntent(TextToImageIntent.SkipBenchmarkPrompt) },
         onBenchmarkContinueRequest = { processIntent(TextToImageIntent.ContinueAfterBenchmarkWarning) },
         onBenchmarkDoNotAskRequest = { processIntent(TextToImageIntent.SuppressBenchmarkWarningAndContinue) },
+        onSdaiCloudRewardedAdTopUpRequest = {
+            processIntent(TextToImageIntent.TopUpSdaiCloudWithRewardedAd)
+        },
+        onSdaiCloudIapProductsRequest = {
+            processIntent(TextToImageIntent.ShowSdaiCloudIapProducts)
+        },
+        onSdaiCloudIapTopUpRequest = { productId ->
+            processIntent(TextToImageIntent.TopUpSdaiCloudWithIap(productId))
+        },
+        onSdaiCloudRestorePurchasesRequest = {
+            processIntent(TextToImageIntent.RestoreSdaiCloudIapPurchases)
+        },
     )
 }
 

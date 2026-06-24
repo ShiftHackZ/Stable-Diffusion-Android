@@ -7,10 +7,14 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.ImageToImagePayload
+import com.shifthackz.aisdv1.domain.entity.SdaiCloudInsufficientTokensException
+import com.shifthackz.aisdv1.domain.entity.SdaiCloudTokenBalance
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.SdaiCloudTopUpRepository
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.GetRandomImageUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.ImageToImageUseCase
@@ -91,6 +95,7 @@ internal class ImageToImageActionHandler(
      * @author Dmitriy Moroz
      */
     private val preferenceManager: PreferenceManager,
+    private val sdaiCloudTopUpRepository: SdaiCloudTopUpRepository,
     /**
      * Exposes the `backgroundTaskManager` value used by the SDAI presentation layer.
      *
@@ -403,7 +408,7 @@ internal class ImageToImageActionHandler(
             return
         }
 
-        val shouldScheduleBackground = backgroundGenerationEnabled
+        val shouldScheduleBackground = backgroundGenerationEnabled && validatedState.mode != ServerSource.SDAI_CLOUD
         updateState {
             it.copy(
                 generating = true,
@@ -479,6 +484,19 @@ internal class ImageToImageActionHandler(
                 }
                 .onFailure { t ->
                     if (t is CancellationException) throw t
+                    if (t is SdaiCloudInsufficientTokensException) {
+                        pendingGenerationState = validatedState
+                        withContext(dispatchersProvider.immediate) {
+                            updateState {
+                                it.copy(
+                                    generating = false,
+                                    screenModal = GenerationModal.SdaiCloudTopUp.Required,
+                                    results = emptyList(),
+                                )
+                            }
+                        }
+                        return@onFailure
+                    }
                     platformServices.showGenerationFailed()
                     withContext(dispatchersProvider.immediate) {
                         updateState {
@@ -486,6 +504,108 @@ internal class ImageToImageActionHandler(
                                 generating = false,
                                 screenModal = GenerationModal.Error(t.localizedMessageText()),
                                 results = emptyList(),
+                            )
+                        }
+                    }
+                    onError(t)
+                }
+        }
+    }
+
+    fun showSdaiCloudIapProducts() {
+        updateState { it.copy(screenModal = GenerationModal.SdaiCloudTopUp.LoadingProducts) }
+        launch(dispatchersProvider.io, CoroutineStart.DEFAULT) {
+            runCatching { sdaiCloudTopUpRepository.getIapProducts() }
+                .onSuccess { products ->
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.copy(
+                                screenModal = GenerationModal.SdaiCloudTopUp.PurchaseSheet(products),
+                            )
+                        }
+                    }
+                }
+                .onFailure { t ->
+                    if (t is CancellationException) throw t
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.copy(screenModal = GenerationModal.Error(t.localizedMessageText()))
+                        }
+                    }
+                    onError(t)
+                }
+        }
+    }
+
+    fun topUpSdaiCloudWithRewardedAd() {
+        val pending = pendingGenerationState ?: return updateState { it.copy(screenModal = GenerationModal.None) }
+        topUpSdaiCloud(pending) { sdaiCloudTopUpRepository.topUpWithRewardedAd() }
+    }
+
+    fun topUpSdaiCloudWithIap(productId: String) {
+        val pending = pendingGenerationState
+        if (pending == null) {
+            topUpSdaiCloudOnly { sdaiCloudTopUpRepository.topUpWithIap(productId) }
+        } else {
+            topUpSdaiCloud(pending) { sdaiCloudTopUpRepository.topUpWithIap(productId) }
+        }
+    }
+
+    fun restoreSdaiCloudIapPurchases() {
+        val pending = pendingGenerationState
+        if (pending == null) {
+            topUpSdaiCloudOnly { sdaiCloudTopUpRepository.restoreIapPurchases() }
+        } else {
+            topUpSdaiCloud(pending) { sdaiCloudTopUpRepository.restoreIapPurchases() }
+        }
+    }
+
+    private fun topUpSdaiCloud(
+        pending: ImageToImageState,
+        block: suspend () -> SdaiCloudTokenBalance,
+    ) {
+        updateState { it.copy(screenModal = GenerationModal.SdaiCloudTopUp.Working) }
+        launch(dispatchersProvider.io, CoroutineStart.DEFAULT) {
+            runCatching { block() }
+                .onSuccess {
+                    withContext(dispatchersProvider.immediate) {
+                        pendingGenerationState = null
+                        startGeneration(pending)
+                    }
+                }
+                .onFailure { t ->
+                    if (t is CancellationException) throw t
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.copy(
+                                generating = false,
+                                screenModal = GenerationModal.Error(t.localizedMessageText()),
+                            )
+                        }
+                    }
+                    onError(t)
+                }
+        }
+    }
+
+    private fun topUpSdaiCloudOnly(
+        block: suspend () -> SdaiCloudTokenBalance,
+    ) {
+        updateState { it.copy(screenModal = GenerationModal.SdaiCloudTopUp.Working) }
+        launch(dispatchersProvider.io, CoroutineStart.DEFAULT) {
+            runCatching { block() }
+                .onSuccess {
+                    withContext(dispatchersProvider.immediate) {
+                        updateState { it.copy(screenModal = GenerationModal.None) }
+                    }
+                }
+                .onFailure { t ->
+                    if (t is CancellationException) throw t
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.copy(
+                                generating = false,
+                                screenModal = GenerationModal.Error(t.localizedMessageText()),
                             )
                         }
                     }

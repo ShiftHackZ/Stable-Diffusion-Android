@@ -1,5 +1,15 @@
+import org.gradle.api.Project
 import java.io.FileInputStream
 import java.util.Properties
+
+fun Project.optionalProjectDependency(
+    configurationName: String,
+    projectPath: String,
+) {
+    if (rootProject.findProject(projectPath) != null) {
+        dependencies.add(configurationName, project(projectPath))
+    }
+}
 
 plugins {
     alias(libs.plugins.generic.application)
@@ -44,7 +54,6 @@ android {
         buildConfigField("String", "LICENSE_URL", "\"https://github.com/ShiftHackZ/Stable-Diffusion-Android/blob/master/LICENSE\"")
         buildConfigField("String", "SETUP_INSTRUCTIONS_URL", "\"https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki\"")
         buildConfigField("String", "SWARM_UI_INFO_URL", "\"https://github.com/mcmonkeyprojects/SwarmUI/tree/master/docs\"")
-
         resourceConfigurations += listOf("en", "ru", "uk", "tr", "zh")
         manifestPlaceholders["excludePermissions"] = "true"
     }
@@ -86,6 +95,11 @@ dependencies {
     implementation(project(":feature:work"))
     implementation(project(":data"))
     implementation(project(":demo"))
+    optionalProjectDependency("playstoreImplementation", ":nonfree:admob")
+    optionalProjectDependency("playstoreImplementation", ":nonfree:iap")
+    optionalProjectDependency("playstoreImplementation", ":nonfree:localization")
+    optionalProjectDependency("playstoreImplementation", ":nonfree:sdai-cloud")
+    optionalProjectDependency("playstoreImplementation", ":nonfree:sdai-cloud-ui-kit")
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)

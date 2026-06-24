@@ -169,6 +169,18 @@ interface PreferenceManager {
      */
     var arliAiApiKey: String
     /**
+     * Exposes the `sdaiCloudInstallToken` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var sdaiCloudInstallToken: String
+    /**
+     * Exposes the `sdaiCloudTermsAcceptedVersion` value used by the SDAI domain layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    var sdaiCloudTermsAcceptedVersion: String
+    /**
      * Exposes the `arliAiModel` value used by the SDAI domain layer.
      *
      * @author Dmitriy Moroz

@@ -2,13 +2,15 @@
 
 SDAI — відкритий генератор зображень зі ШІ для Android. Застосунок дає зрозумілий мобільний workflow для промптів, налаштувань генерації, перегляду результатів і вибору AI provider під вашу задачу.
 
-SDAI підходить, коли потрібен гнучкий AI art generator без прив'язки до одного хмарного сервісу. Підключайте власний сервер AUTOMATIC1111 або SwarmUI, використовуйте community workers AI Horde, працюйте з hosted providers на кшталт Hugging Face, OpenAI Images або Stability AI, або пробуйте підтримувані Android local diffusion engines там, де вони доступні.
+SDAI підходить, коли потрібен гнучкий AI art generator без прив'язки до одного хмарного сервісу. Підключайте власний сервер AUTOMATIC1111 або SwarmUI, використовуйте community workers AI Horde, працюйте з hosted providers на кшталт Hugging Face, OpenAI Images, Stability AI, Fal.ai або ArliAI, пробуйте підтримувані Android local diffusion engines або використовуйте опціональний hosted provider SDAI Cloud у Google Play build.
 
 Що можна робити:
 - створювати зображення за текстовим prompt
+- використовувати Img2Img та Inpaint там, де це підтримується
 - використовувати positive і negative prompt, якщо це підтримує провайдер
 - налаштовувати розмір, seed, steps, CFG scale, samplers, batch options і provider-specific settings
-- працювати з Img2Img, Inpaint, LoRA, embeddings, hypernetworks і вибором моделі, якщо це доступно у провайдера
+- працювати з LoRA, embeddings, hypernetworks і вибором моделі, якщо це доступно у провайдера
+- генерувати локально через підтримувані Android local engines і завантажені або імпортовані моделі
 - зберігати згенеровані зображення у вбудованій галереї
 - відкривати details генерації, повторно використовувати prompts, ділитися зображеннями, зберігати на пристрій або експортувати галерею
 - змінювати світлу й темну тему, мову, розмір сітки галереї та оформлення
@@ -16,10 +18,16 @@ SDAI підходить, коли потрібен гнучкий AI art generat
 Чому обирають SDAI:
 - свобода вибору AI provider
 - mobile-first workflow для серйозної генерації зображень
-- self-hosted, cloud, community і local options
-- без реклами, без телеметрії, без provider lock-in
-- open-source проєкт, який розвивається разом зі спільнотою
+- self-hosted, cloud, community, local і опціональний SDAI Cloud
+- без телеметрії та без provider lock-in
+- open-source проєкт з опціональними store-only можливостями SDAI Cloud
 
-SDAI створений для художників, ентузіастів, prompt engineers і розробників, яким потрібна генерація зображень на ходу без втрати контролю. Почніть із demo mode, підключіть провайдер, якому довіряєте, і перетворюйте ідеї на зображення прямо з телефона.
+SDAI Cloud:
+- доступний лише в офіційних Google Play та App Store builds
+- опціональний hosted generation provider на SDAI app tokens
+- токени можна поповнювати через rewarded ads або in-app purchases там, де це доступно
+- регулюється SDAI Cloud Terms of Service, які показуються під час налаштування
+
+SDAI створений для художників, ентузіастів, prompt engineers і розробників, яким потрібна генерація зображень на ходу без втрати контролю. Почніть із demo mode, підключіть провайдер, якому довіряєте, або використовуйте SDAI Cloud в офіційному store build.
 
 Примітка: доступність функцій залежить від вибраного AI provider і flavor застосунку. Деякі local generation можливості працюють лише на Android і можуть бути недоступні в окремих каналах розповсюдження.

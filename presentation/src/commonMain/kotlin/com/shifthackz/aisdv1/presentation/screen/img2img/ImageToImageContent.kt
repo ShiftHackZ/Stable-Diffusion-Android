@@ -41,6 +41,7 @@ import com.shifthackz.aisdv1.presentation.modal.embedding.EmbeddingScreen
 import com.shifthackz.aisdv1.presentation.modal.extras.ExtrasScreen
 import com.shifthackz.aisdv1.presentation.modal.tag.EditTagDialog
 import com.shifthackz.aisdv1.presentation.screen.txt2img.decodeBase64ImageBitmap
+import com.shifthackz.aisdv1.presentation.widget.sdai.SdaiCloudTokenBalanceWidget
 import com.shifthackz.aisdv1.presentation.widget.toolbar.GenerationBottomToolbar
 import com.shifthackz.aisdv1.presentation.widget.work.BackgroundWorkWidget
 
@@ -278,6 +279,12 @@ fun ImageToImageContent(
                         .background(MaterialTheme.colorScheme.background)
                         .padding(vertical = 4.dp),
                 )
+                SdaiCloudTokenBalanceWidget(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                    onBuyClick = { processIntent(ImageToImageIntent.ShowSdaiCloudIapProducts) },
+                )
             }
         },
         bottomBar = {
@@ -418,5 +425,17 @@ fun ImageToImageContent(
         onSkipBenchmarkRequest = { processIntent(ImageToImageIntent.SkipBenchmarkPrompt) },
         onBenchmarkContinueRequest = { processIntent(ImageToImageIntent.ContinueAfterBenchmarkWarning) },
         onBenchmarkDoNotAskRequest = { processIntent(ImageToImageIntent.SuppressBenchmarkWarningAndContinue) },
+        onSdaiCloudRewardedAdTopUpRequest = {
+            processIntent(ImageToImageIntent.TopUpSdaiCloudWithRewardedAd)
+        },
+        onSdaiCloudIapProductsRequest = {
+            processIntent(ImageToImageIntent.ShowSdaiCloudIapProducts)
+        },
+        onSdaiCloudIapTopUpRequest = { productId ->
+            processIntent(ImageToImageIntent.TopUpSdaiCloudWithIap(productId))
+        },
+        onSdaiCloudRestorePurchasesRequest = {
+            processIntent(ImageToImageIntent.RestoreSdaiCloudIapPurchases)
+        },
     )
 }

@@ -16,6 +16,7 @@ import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.SdaiCloudTopUpRepository
 import com.shifthackz.aisdv1.domain.usecase.arliai.FetchAndGetArliAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.forgemodule.GetForgeModulesUseCase
@@ -62,6 +63,7 @@ class TextToImageViewModel(
     private val observeCoreMlProcessStatusUseCase: ObserveCoreMlProcessStatusUseCase,
     private val observeBonsaiProcessStatusUseCase: ObserveBonsaiProcessStatusUseCase,
     private val preferenceManager: PreferenceManager,
+    private val sdaiCloudTopUpRepository: SdaiCloudTopUpRepository,
     private val backgroundTaskManager: BackgroundTaskManager,
     private val backgroundWorkObserver: BackgroundWorkObserver,
     private val wakeLockInterActor: WakeLockInterActor,
@@ -106,6 +108,7 @@ class TextToImageViewModel(
         saveLastResultToCacheUseCase = saveLastResultToCacheUseCase,
         interruptGenerationUseCase = interruptGenerationUseCase,
         preferenceManager = preferenceManager,
+        sdaiCloudTopUpRepository = sdaiCloudTopUpRepository,
         backgroundTaskManager = backgroundTaskManager,
         backgroundWorkObserver = backgroundWorkObserver,
         wakeLockInterActor = wakeLockInterActor,
@@ -147,6 +150,10 @@ class TextToImageViewModel(
             TextToImageIntent.SuppressBenchmarkWarningAndContinue ->
                 actionHandler.continueAfterBenchmarkWarning(suppressFutureWarnings = true)
             TextToImageIntent.DismissModal -> actionHandler.dismissBenchmarkDialog()
+            TextToImageIntent.TopUpSdaiCloudWithRewardedAd -> actionHandler.topUpSdaiCloudWithRewardedAd()
+            TextToImageIntent.ShowSdaiCloudIapProducts -> actionHandler.showSdaiCloudIapProducts()
+            is TextToImageIntent.TopUpSdaiCloudWithIap -> actionHandler.topUpSdaiCloudWithIap(intent.productId)
+            TextToImageIntent.RestoreSdaiCloudIapPurchases -> actionHandler.restoreSdaiCloudIapPurchases()
             is TextToImageIntent.UpdateArliAiModel -> {
                 preferenceManager.arliAiModel = intent.value
                 intentProcessor.process(intent)

@@ -102,6 +102,7 @@ data class ImageToImageState(
             mode == ServerSource.HORDE ||
             mode == ServerSource.HUGGING_FACE ||
             mode == ServerSource.STABILITY_AI ||
+            mode == ServerSource.SDAI_CLOUD ||
             mode == ServerSource.LOCAL_APPLE_CORE_ML ||
             mode == ServerSource.FAL_AI ||
             mode == ServerSource.ARLI_AI
@@ -157,7 +158,7 @@ internal fun ImageToImageState.mapToPayload(
         mode == ServerSource.LOCAL_APPLE_CORE_ML ||
         mode == ServerSource.FAL_AI
     ) nsfw else false,
-    batchCount = batchCount,
+    batchCount = if (mode == ServerSource.SDAI_CLOUD) 1 else batchCount,
     inPaintingMaskInvert = inPaint.maskMode.inverse,
     inPaintFullResPadding = inPaint.onlyMaskedPaddingPx,
     inPaintingFill = inPaint.maskContent.fill,

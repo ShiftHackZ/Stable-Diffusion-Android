@@ -16,4 +16,5 @@ val featureModule = arrayOf(
     onnxModule,
     mediaPipeModule,
     sdxlModule,
+    *monetizationFeatureModule,
 )

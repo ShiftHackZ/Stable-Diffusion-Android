@@ -1,0 +1,5 @@
+SDAI_CLOUD_API_URL =
+SDAI_ADMOB_IOS_APP_ID =
+SDAI_CLOUD_IOS_REWARDED_AD_UNIT_ID =
+
+#include? "../../nonfree/ios/SDAINonFree.xcconfig"

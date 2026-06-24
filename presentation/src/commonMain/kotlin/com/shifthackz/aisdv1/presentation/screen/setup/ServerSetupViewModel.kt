@@ -14,6 +14,7 @@ import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.SdaiCloudLegalRepository
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalBonsaiModelsUseCase
@@ -33,6 +34,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseC
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToMediaPipeUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToOpenAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSdxlUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSdaiCloudUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToStabilityAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSwarmUiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
@@ -122,6 +124,8 @@ class ServerSetupViewModel(
     private val connectToStabilityAiUseCase: ConnectToStabilityAiUseCase,
     private val connectToFalAiUseCase: ConnectToFalAiUseCase,
     private val connectToArliAiUseCase: ConnectToArliAiUseCase,
+    private val connectToSdaiCloudUseCase: ConnectToSdaiCloudUseCase,
+    private val sdaiCloudLegalRepository: SdaiCloudLegalRepository,
     private val downloadModelUseCase: DownloadModelUseCase,
     private val deleteModelUseCase: DeleteModelUseCase,
     private val downloadGuard: ServerSetupDownloadGuard,
@@ -193,11 +197,15 @@ class ServerSetupViewModel(
                     allowLocalCustomModels = buildInfoProvider.type != BuildType.PLAY,
                     demoModeUrl = linksProvider.demoModeUrl,
                     showBackNavArrow = launchSource == LaunchSource.SETTINGS,
+                    sdaiCloudTermsAcceptedVersion = preferenceManager.sdaiCloudTermsAcceptedVersion,
                 )
             }
                 .onSuccess { state ->
                     withContext(dispatchersProvider.immediate) {
                         emitState(state)
+                    }
+                    if (ServerSource.SDAI_CLOUD in state.allowedModes) {
+                        loadSdaiCloudTerms()
                     }
                 }
                 .onFailure { t ->
@@ -227,6 +235,7 @@ class ServerSetupViewModel(
         download = ::download,
         validateAndConnectToServer = ::validateAndConnectToServer,
         connectToServer = ::connectToServer,
+        loadSdaiCloudTerms = ::loadSdaiCloudTerms,
     )
 
     override fun processIntent(intent: ServerSetupIntent) = intentProcessor.process(intent)
@@ -260,6 +269,7 @@ class ServerSetupViewModel(
                     ServerSource.STABILITY_AI -> connectToStabilityAi()
                     ServerSource.FAL_AI -> connectToFalAi()
                     ServerSource.ARLI_AI -> connectToArliAi()
+                    ServerSource.SDAI_CLOUD -> connectToSdaiCloud()
                     ServerSource.LOCAL_MICROSOFT_ONNX -> connectToLocalDiffusion()
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> connectToMediaPipe()
                     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> connectToSdxl()
@@ -274,6 +284,10 @@ class ServerSetupViewModel(
                 result.fold(
                     onSuccess = {
                         preferenceManager.forceSetupAfterUpdate = false
+                        if (currentState.mode == ServerSource.SDAI_CLOUD) {
+                            preferenceManager.sdaiCloudTermsAcceptedVersion =
+                                currentState.sdaiCloudTermsVersion
+                        }
                         updateState { state -> state.copy(modal = ServerSetupState.Modal.None) }
                         router.navigateToPostSetupConfigLoader()
                     },
@@ -335,6 +349,35 @@ class ServerSetupViewModel(
     private suspend fun connectToArliAi(): Result<Unit> = connectToArliAiUseCase(
         apiKey = currentState.arliAiApiKey,
     )
+
+    private suspend fun connectToSdaiCloud(): Result<Unit> = connectToSdaiCloudUseCase(
+        platform = buildInfoProvider.platform,
+        appVersion = buildInfoProvider.version.toString(),
+    )
+
+    private fun loadSdaiCloudTerms() {
+        updateState { state ->
+            if (ServerSource.SDAI_CLOUD in state.allowedModes) {
+                state.withSdaiCloudTermsLoading()
+            } else {
+                state
+            }
+        }
+        launch(dispatchersProvider.io) {
+            val terms = runCatching { sdaiCloudLegalRepository.getTerms() }
+            withContext(dispatchersProvider.immediate) {
+                terms.fold(
+                    onSuccess = { value ->
+                        updateState { state -> state.withSdaiCloudTerms(value) }
+                    },
+                    onFailure = { t ->
+                        updateState { state -> state.withSdaiCloudTermsLoadFailed() }
+                        onError(t)
+                    },
+                )
+            }
+        }
+    }
 
     private suspend fun connectToLocalDiffusion(): Result<Unit> = connectToLocalDiffusionUseCase(
         modelId = currentState.localOnnxModels.find { it.selected }?.id.orEmpty(),

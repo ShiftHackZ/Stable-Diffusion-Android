@@ -74,6 +74,10 @@ sealed interface ImageToImageIntent : MviIntent {
      * @author Dmitriy Moroz
      */
     data object Generate : ImageToImageIntent
+    data object TopUpSdaiCloudWithRewardedAd : ImageToImageIntent
+    data object ShowSdaiCloudIapProducts : ImageToImageIntent
+    data class TopUpSdaiCloudWithIap(val productId: String) : ImageToImageIntent
+    data object RestoreSdaiCloudIapPurchases : ImageToImageIntent
     /**
      * Opens the benchmark screen from the first local generation prompt.
      *

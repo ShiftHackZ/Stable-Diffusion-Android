@@ -219,7 +219,7 @@
           "id": "privacy-telemetry",
           "question": "Does SDAI collect my prompts, images, or analytics?",
           "answer": [
-            "SDAI itself does not include ads or telemetry. Local settings, generated images, provider configuration, and model files are stored on your device.",
+            "SDAI does not include telemetry. FOSS builds do not include nonfree monetization modules; official Google Play and App Store builds can optionally use SDAI Cloud with rewarded ads or in-app purchases after you choose that provider. Local settings, generated images, provider configuration, and model files are stored on your device.",
             "When you use a remote provider, prompts, source images, settings, and API keys are sent to that provider or to your own server because that is how remote generation works. Local generation is designed to run on device after the model is available."
           ],
           "tags": [

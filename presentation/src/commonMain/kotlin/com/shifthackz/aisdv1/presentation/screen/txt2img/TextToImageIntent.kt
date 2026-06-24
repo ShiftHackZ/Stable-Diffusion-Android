@@ -30,6 +30,10 @@ sealed interface TextToImageIntent : MviIntent {
     data object NavigateBack : TextToImageIntent
     data object ConfigureProvider : TextToImageIntent
     data object Generate : TextToImageIntent
+    data object TopUpSdaiCloudWithRewardedAd : TextToImageIntent
+    data object ShowSdaiCloudIapProducts : TextToImageIntent
+    data class TopUpSdaiCloudWithIap(val productId: String) : TextToImageIntent
+    data object RestoreSdaiCloudIapPurchases : TextToImageIntent
     data object RunBenchmarkFromPrompt : TextToImageIntent
     data object SkipBenchmarkPrompt : TextToImageIntent
     data object ContinueAfterBenchmarkWarning : TextToImageIntent

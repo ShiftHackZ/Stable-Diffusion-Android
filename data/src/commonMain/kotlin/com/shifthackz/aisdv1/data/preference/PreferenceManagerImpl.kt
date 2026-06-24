@@ -1,6 +1,7 @@
 package com.shifthackz.aisdv1.data.preference
 
 import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
 import com.shifthackz.aisdv1.core.common.file.LOCAL_DIFFUSION_CUSTOM_PATH
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersToken
 import com.shifthackz.aisdv1.domain.entity.ColorToken
@@ -27,6 +28,7 @@ internal class PreferenceManagerImpl(
      * @author Dmitriy Moroz
      */
     private val keyValueStore: KeyValueStore,
+    private val buildInfoProvider: BuildInfoProvider,
 ) : PreferenceManager {
 
     /**
@@ -201,7 +203,11 @@ internal class PreferenceManagerImpl(
      * @author Dmitriy Moroz
      */
     override var source: ServerSource
-        get() = ServerSource.parse(keyValueStore.getString(KEY_SERVER_SOURCE, ServerSource.AUTOMATIC1111.key))
+        get() = ServerSource.parseOrDefault(
+            value = keyValueStore.getString(KEY_SERVER_SOURCE, defaultSource().key),
+            buildType = buildInfoProvider.type,
+            platform = buildInfoProvider.platform,
+        )
         set(value) = putString(KEY_SERVER_SOURCE, value.key)
 
     /**
@@ -275,6 +281,24 @@ internal class PreferenceManagerImpl(
     override var arliAiApiKey: String
         get() = keyValueStore.getString(KEY_ARLI_AI_API_KEY)
         set(value) = putString(KEY_ARLI_AI_API_KEY, value)
+
+    /**
+     * Exposes the `sdaiCloudInstallToken` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var sdaiCloudInstallToken: String
+        get() = keyValueStore.getString(KEY_SDAI_CLOUD_INSTALL_TOKEN)
+        set(value) = putString(KEY_SDAI_CLOUD_INSTALL_TOKEN, value)
+
+    /**
+     * Exposes the `sdaiCloudTermsAcceptedVersion` value used by the SDAI data layer.
+     *
+     * @author Dmitriy Moroz
+     */
+    override var sdaiCloudTermsAcceptedVersion: String
+        get() = keyValueStore.getString(KEY_SDAI_CLOUD_TERMS_ACCEPTED_VERSION)
+        set(value) = putString(KEY_SDAI_CLOUD_TERMS_ACCEPTED_VERSION, value)
 
     /**
      * Exposes the `arliAiModel` value used by the SDAI data layer.
@@ -731,6 +755,18 @@ internal class PreferenceManagerImpl(
          */
         const val KEY_ARLI_AI_API_KEY = "key_arli_ai_api_key"
         /**
+         * Exposes the `KEY_SDAI_CLOUD_INSTALL_TOKEN` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_SDAI_CLOUD_INSTALL_TOKEN = "key_sdai_cloud_install_token"
+        /**
+         * Exposes the `KEY_SDAI_CLOUD_TERMS_ACCEPTED_VERSION` value used by the SDAI data layer.
+         *
+         * @author Dmitriy Moroz
+         */
+        const val KEY_SDAI_CLOUD_TERMS_ACCEPTED_VERSION = "key_sdai_cloud_terms_accepted_version"
+        /**
          * Exposes the `KEY_ARLI_AI_MODEL_KEY` value used by the SDAI data layer.
          *
          * @author Dmitriy Moroz
@@ -857,6 +893,12 @@ internal class PreferenceManagerImpl(
          */
         const val KEY_LANGUAGE_CODE = "key_language_code"
     }
+
+    private fun defaultSource(): ServerSource =
+        ServerSource.defaultFor(
+            buildType = buildInfoProvider.type,
+            platform = buildInfoProvider.platform,
+        )
 }
 
 /**

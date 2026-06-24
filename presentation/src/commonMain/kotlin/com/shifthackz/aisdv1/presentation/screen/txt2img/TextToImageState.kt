@@ -140,7 +140,8 @@ internal fun TextToImageState.mapToPayload(): TextToImagePayload = TextToImagePa
     batchCount = if (
         mode == ServerSource.LOCAL_MICROSOFT_ONNX ||
         mode == ServerSource.LOCAL_STABLE_DIFFUSION_CPP ||
-        mode == ServerSource.LOCAL_APPLE_BONSAI
+        mode == ServerSource.LOCAL_APPLE_BONSAI ||
+        mode == ServerSource.SDAI_CLOUD
     ) {
         1
     } else {

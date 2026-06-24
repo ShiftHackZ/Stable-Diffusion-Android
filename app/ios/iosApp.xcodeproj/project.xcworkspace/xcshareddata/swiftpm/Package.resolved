@@ -1,5 +1,5 @@
 {
-  "originHash" : "9bb7af3cc591fd395697623669e2979c28dcf66fd6f7f73d7da1cf7918e5d9ce",
+  "originHash" : "e03393664895ddc62b6451bd9a3f7e9dc20692d64e762513ed12c5584f779450",
   "pins" : [
     {
       "identity" : "ml-stable-diffusion",
@@ -33,6 +33,24 @@
       "state" : {
         "revision" : "0c0290ff6b24942dadb83a929ffaaa1481df04a2",
         "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "swift-package-manager-google-mobile-ads",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
+      "state" : {
+        "revision" : "166a2dcff33c893b22e4bfccbbdd0ed00a248c24",
+        "version" : "13.5.0"
+      }
+    },
+    {
+      "identity" : "swift-package-manager-google-user-messaging-platform",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git",
+      "state" : {
+        "revision" : "13b248eaa73b7826f0efb1bcf455e251d65ecb1b",
+        "version" : "3.1.0"
       }
     },
     {

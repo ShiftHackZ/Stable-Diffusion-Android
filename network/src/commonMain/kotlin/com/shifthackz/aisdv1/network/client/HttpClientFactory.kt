@@ -31,6 +31,9 @@ expect fun platformHttpClientEngine(): HttpClientEngineFactory<HttpClientEngineC
 fun createConfiguredHttpClient(
     json: Json = defaultNetworkJson,
     installContentNegotiation: Boolean = true,
+    connectTimeoutMillis: Long = DEFAULT_TIMEOUT_MILLIS,
+    requestTimeoutMillis: Long = DEFAULT_TIMEOUT_MILLIS,
+    socketTimeoutMillis: Long = DEFAULT_TIMEOUT_MILLIS,
     configure: HttpClientConfig<HttpClientEngineConfig>.() -> Unit = {},
 ): HttpClient = HttpClient(platformHttpClientEngine()) {
     expectSuccess = true
@@ -44,9 +47,9 @@ fun createConfiguredHttpClient(
     }
 
     install(HttpTimeout) {
-        connectTimeoutMillis = DEFAULT_TIMEOUT_MILLIS
-        requestTimeoutMillis = DEFAULT_TIMEOUT_MILLIS
-        socketTimeoutMillis = DEFAULT_TIMEOUT_MILLIS
+        this.connectTimeoutMillis = connectTimeoutMillis
+        this.requestTimeoutMillis = requestTimeoutMillis
+        this.socketTimeoutMillis = socketTimeoutMillis
     }
 
     install(Logging) {

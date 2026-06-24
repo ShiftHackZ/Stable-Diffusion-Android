@@ -8,6 +8,7 @@ import com.shifthackz.aisdv1.domain.repository.CoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.FalAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.SdaiCloudGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.SwarmUiGenerationRepository
@@ -26,6 +27,7 @@ internal class ImageToImageUseCaseImpl(
      * @author Dmitriy Moroz
      */
     private val stableDiffusionGenerationRepository: StableDiffusionGenerationRepository,
+    private val sdaiCloudGenerationRepository: SdaiCloudGenerationRepository,
     /**
      * Exposes the `swarmUiGenerationRepository` value used by the SDAI domain layer.
      *
@@ -94,6 +96,7 @@ internal class ImageToImageUseCaseImpl(
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.generateFromImage(payload)
         ServerSource.FAL_AI -> falAiGenerationRepository.generateFromImage(payload)
         ServerSource.ARLI_AI -> arliAiGenerationRepository.generateFromImage(payload)
+        ServerSource.SDAI_CLOUD -> listOf(sdaiCloudGenerationRepository.generateFromImage(payload))
         else -> List(payload.batchCount.coerceAtLeast(1)) {
             generateSingle(payload)
         }
@@ -114,6 +117,7 @@ internal class ImageToImageUseCaseImpl(
         ServerSource.AUTOMATIC1111 -> error("Automatic1111 batch must be generated through generateFromImage(payload).")
         ServerSource.FAL_AI -> error("Fal.ai batch must be generated through generateFromImage(payload).")
         ServerSource.ARLI_AI -> error("ArliAI batch must be generated through generateFromImage(payload).")
+        ServerSource.SDAI_CLOUD -> error("SDAI Cloud batch must be generated through generateFromImage(payload).")
         else -> throw IllegalStateException("Img2Img not yet supported on ${preferenceManager.source}!")
     }
 }

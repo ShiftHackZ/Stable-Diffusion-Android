@@ -10,6 +10,8 @@
       docs: "docs/",
       donate: "donate.html",
       privacy: "privacy.html",
+      sdaiCloudTos: "sdai-cloud-terms.html",
+      sdaiCloudTermsApi: "https://sdai-cloud.moroz.cc/v1/legal/sdai-cloud-terms",
       github: "https://github.com/ShiftHackZ/Stable-Diffusion-Android",
       company: "https://moroz.cc",
       telegram: "https://t.me/sdai_app",
@@ -123,6 +125,7 @@
             <h2>Info</h2>
             <a href="${site.links.faq}">FAQ</a>
             <a href="${site.links.privacy}">Privacy Policy</a>
+            <a href="${site.links.sdaiCloudTos}">SDAI Cloud TOS</a>
             <a href="${site.links.docs}">Documentation</a>
             <a href="${site.links.github}" ${external}>GitHub</a>
             <a href="${site.links.donate}">Donate</a>
@@ -542,6 +545,116 @@
     }
   }
 
+  function markdownLineToNode(line) {
+    const heading = /^(#{1,3})\s+(.+)$/.exec(line);
+    if (heading) {
+      const node = document.createElement(`h${Math.min(heading[1].length + 1, 4)}`);
+      node.textContent = heading[2];
+      return node;
+    }
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = line;
+    return paragraph;
+  }
+
+  function renderTermsMarkdown(markdown, mount) {
+    const lines = String(markdown || "").replace(/\r\n/g, "\n").split("\n");
+    let paragraph = [];
+    let list = null;
+
+    const flushParagraph = () => {
+      if (!paragraph.length) return;
+      mount.append(markdownLineToNode(paragraph.join(" ")));
+      paragraph = [];
+    };
+
+    const flushList = () => {
+      if (!list) return;
+      mount.append(list);
+      list = null;
+    };
+
+    lines.forEach((rawLine) => {
+      const line = rawLine.trim();
+      if (!line) {
+        flushParagraph();
+        flushList();
+        return;
+      }
+
+      const item = /^[-*]\s+(.+)$/.exec(line);
+      if (item) {
+        flushParagraph();
+        if (!list) list = document.createElement("ul");
+        const li = document.createElement("li");
+        li.textContent = item[1];
+        list.append(li);
+        return;
+      }
+
+      if (/^#{1,3}\s+/.test(line)) {
+        flushParagraph();
+        flushList();
+        mount.append(markdownLineToNode(line));
+        return;
+      }
+
+      paragraph.push(line);
+    });
+
+    flushParagraph();
+    flushList();
+  }
+
+  async function initSdaiCloudTermsPage() {
+    if (document.body.dataset.page !== "sdai-cloud-terms") return;
+
+    const status = document.querySelector("[data-sdai-cloud-terms-status]");
+    const content = document.querySelector("[data-sdai-cloud-terms-content]");
+    const retry = document.querySelector("[data-sdai-cloud-terms-retry]");
+    const title = document.querySelector("[data-sdai-cloud-terms-title]");
+    const version = document.querySelector("[data-sdai-cloud-terms-version]");
+    if (!status || !content) return;
+
+    const setLoading = () => {
+      status.textContent = "Loading SDAI Cloud Terms of Service...";
+      status.classList.remove("is-error");
+      content.replaceChildren();
+      retry?.classList.add("is-hidden");
+    };
+
+    const setError = () => {
+      status.textContent = "SDAI Cloud Terms of Service are temporarily unavailable. Please try again later.";
+      status.classList.add("is-error");
+      retry?.classList.remove("is-hidden");
+    };
+
+    const load = async () => {
+      setLoading();
+      try {
+        const response = await fetch(site.links.sdaiCloudTermsApi, { cache: "no-store" });
+        if (!response.ok) throw new Error(`Terms request failed: ${response.status}`);
+        const data = await response.json();
+        const documentBody = data.bodyMarkdown || data.body || "";
+        if (!documentBody.trim()) throw new Error("Terms document is empty");
+
+        status.textContent = "";
+        status.classList.remove("is-error");
+        retry?.classList.add("is-hidden");
+        if (title && data.title) title.textContent = data.title;
+        if (version && data.version) version.textContent = `Effective ${data.version}`;
+        content.replaceChildren();
+        renderTermsMarkdown(documentBody, content);
+      } catch (error) {
+        setError();
+      }
+    };
+
+    retry?.addEventListener("click", load);
+    load();
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     renderHeader();
     renderFooter();
@@ -552,6 +665,7 @@
     initScreenshotSlider();
     initFaqPage();
     initDonatePage();
+    initSdaiCloudTermsPage();
 
     document.querySelectorAll("[data-year]").forEach((node) => {
       node.textContent = String(new Date().getFullYear());

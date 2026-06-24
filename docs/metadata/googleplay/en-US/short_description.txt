@@ -1,1 +1,1 @@
-Open-source AI image generator with provider freedom and gallery.
+Open-source AI generator with providers, gallery, and SDAI Cloud.

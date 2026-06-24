@@ -74,6 +74,23 @@ internal fun ServerSetupState.validateServerSetup(
         update = { error -> copy(arliAiApiKeyValidationError = error) },
     )
 
+    ServerSource.SDAI_CLOUD -> ServerSetupValidationResult(
+        isValid = sdaiCloudConsentAccepted &&
+            !sdaiCloudTermsLoading &&
+            sdaiCloudTermsVersion.isNotBlank(),
+        state = copy(
+            sdaiCloudConsentValidationError = if (
+                sdaiCloudConsentAccepted &&
+                !sdaiCloudTermsLoading &&
+                sdaiCloudTermsVersion.isNotBlank()
+            ) {
+                null
+            } else {
+                ServerSetupState.ValidationError.EmptyField
+            },
+        ),
+    )
+
     ServerSource.LOCAL_MICROSOFT_ONNX -> validateLocalModel(
         customModel = localOnnxCustomModel,
         customModelPath = localOnnxCustomModelPath,

@@ -5,6 +5,7 @@ struct AIStableDiffusionIOSApp: App {
     init() {
         SiliconDiffusionBonsaiRuntimeRegistration.registerIfAvailable()
         SiliconDiffusionCoreMLRuntimeRegistration.registerIfAvailable()
+        OptionalNonFreeBridge.registerIfAvailable()
     }
 
     var body: some Scene {

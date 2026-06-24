@@ -173,6 +173,7 @@ fun GenerationInputForm(
             ServerSource.HUGGING_FACE,
             ServerSource.STABILITY_AI,
             ServerSource.ARLI_AI,
+            ServerSource.SDAI_CLOUD,
             ServerSource.LOCAL_MICROSOFT_ONNX,
             ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
             ServerSource.LOCAL_APPLE_CORE_ML,
@@ -255,6 +256,7 @@ fun GenerationInputForm(
                 ServerSource.SWARM_UI,
                 ServerSource.HUGGING_FACE,
                 ServerSource.ARLI_AI,
+                ServerSource.SDAI_CLOUD,
                 -> {
                     GenerationSizeTextFieldsComponent(modifier = localModifier, state = state, onEvent = onEvent)
                 }

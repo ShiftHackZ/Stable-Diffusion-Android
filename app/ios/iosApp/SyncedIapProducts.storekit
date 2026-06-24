@@ -1,0 +1,87 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "1B27A719",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "5.99",
+      "familyShareable" : false,
+      "internalID" : "6782652225",
+      "localizations" : [
+        {
+          "description" : "Plus tokens pack for SDAI Cloud generation",
+          "displayName" : "Plus tokens pack",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "sdai_tokens_plus",
+      "referenceName" : "Plus tokens pack",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "12.99",
+      "familyShareable" : false,
+      "internalID" : "6782652413",
+      "localizations" : [
+        {
+          "description" : "Pro tokens pack for SDAI Cloud generation",
+          "displayName" : "Pro tokens pack",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "sdai_tokens_pro",
+      "referenceName" : "Pro tokens pack",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "6782651810",
+      "localizations" : [
+        {
+          "description" : "Starter tokens pack for SDAI Cloud generation",
+          "displayName" : "Starter tokens pack",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "sdai_tokens_starter",
+      "referenceName" : "Starter tokens pack",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6778314183",
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_developerTeamID" : "383EQFRA4A",
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 803896960.578475,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 5,
+    "minor" : 0
+  }
+}

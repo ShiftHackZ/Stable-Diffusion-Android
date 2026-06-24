@@ -4,15 +4,19 @@ Write prompts, tune settings, connect the image provider you already use, and ke
 
 Built for flexible AI art workflows:
 - Connect to self-hosted WebUI servers and supported hosted APIs
-- Use community workers when you need remote generation
+- Use SDAI Cloud when you want the optional hosted provider included in the App Store build
+- Generate on device with supported Silicon Diffusion Core ML and PrismML Bonsai models
 - Prompt with positive and negative text where supported
-- Adjust size, seed, steps, CFG scale, sampler, model or engine settings when available
+- Adjust size, seed, steps, CFG scale, sampler, model, engine, or provider settings when available
+- Use Img2Img where the selected provider supports image input
 - Review generated images in a built-in gallery
 - Open result details, reuse prompts, share images, and save to your device
 - Choose language, gallery density, theme behavior, and accent color
 
 SDAI does not lock your work into one cloud. Use the AI provider that fits the moment, keep your workflow mobile, and move from prompt to saved image without losing control.
 
-No ads. No telemetry. Open source. Provider-first.
+SDAI Cloud is optional. It uses app tokens for hosted generation, with top-ups through rewarded ads or in-app purchases where available. The open-source project remains provider-first, and SDAI Cloud has its own Terms of Service shown during setup.
+
+No telemetry. Open source. Provider-first.
 
 Feature availability depends on the selected AI provider.

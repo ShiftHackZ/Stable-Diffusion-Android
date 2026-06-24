@@ -365,6 +365,7 @@ internal fun GenerationInputAdvancedOptions(
                     ServerSource.STABILITY_AI,
                     ServerSource.ARLI_AI,
                     ServerSource.HORDE,
+                    ServerSource.SDAI_CLOUD,
                     ServerSource.LOCAL_APPLE_CORE_ML,
                     ServerSource.LOCAL_APPLE_BONSAI -> afterSlidersSection()
 
@@ -384,6 +385,7 @@ internal fun GenerationInputAdvancedOptions(
                     ServerSource.LOCAL_MICROSOFT_ONNX,
                     ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
                     ServerSource.LOCAL_APPLE_BONSAI,
+                    ServerSource.SDAI_CLOUD,
                     -> Unit
                     else -> GenerationBatchComponent(state = state, onEvent = onEvent)
                 }

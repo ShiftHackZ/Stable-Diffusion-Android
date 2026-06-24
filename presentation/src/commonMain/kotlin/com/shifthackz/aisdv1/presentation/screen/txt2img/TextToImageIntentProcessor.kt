@@ -36,6 +36,10 @@ internal class TextToImageIntentProcessor(
             TextToImageIntent.NavigateBack -> router.navigateBack()
             TextToImageIntent.ConfigureProvider -> router.navigateToServerSetup()
             TextToImageIntent.Generate -> generate()
+            TextToImageIntent.TopUpSdaiCloudWithRewardedAd -> Unit
+            TextToImageIntent.ShowSdaiCloudIapProducts -> Unit
+            is TextToImageIntent.TopUpSdaiCloudWithIap -> Unit
+            TextToImageIntent.RestoreSdaiCloudIapPurchases -> Unit
             TextToImageIntent.RunBenchmarkFromPrompt -> Unit
             TextToImageIntent.SkipBenchmarkPrompt -> Unit
             TextToImageIntent.ContinueAfterBenchmarkWarning -> Unit

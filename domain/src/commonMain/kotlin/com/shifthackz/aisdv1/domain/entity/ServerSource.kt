@@ -23,6 +23,18 @@ enum class ServerSource(
     val allowedInBuilds: Set<BuildType> = setOf(BuildType.FOSS, BuildType.PLAY, BuildType.FULL),
     val allowedPlatforms: Set<Platform> = setOf(Platform.ANDROID, Platform.IOS),
 ) {
+    SDAI_CLOUD(
+        key = "sdai_cloud",
+        type = ServerSourceType.CLOUD,
+        readiness = PlatformValue(ServerSourceReadiness.STABLE),
+        version = "2026.6.24",
+        featureTags = setOf(
+            FeatureTag.Txt2Img,
+            FeatureTag.Img2Img,
+        ),
+        allowedInBuilds = setOf(BuildType.PLAY),
+        allowedPlatforms = setOf(Platform.ANDROID, Platform.IOS),
+    ),
     AUTOMATIC1111(
         key = "custom",
         type = ServerSourceType.SELF_HOSTED,
@@ -191,10 +203,25 @@ enum class ServerSource(
             FeatureTag.MultipleModels,
             FeatureTag.Batch,
         ),
-    );
+    ),
+    ;
 
     companion object {
         fun parse(value: String) = entries.find { it.key == value } ?: AUTOMATIC1111
+
+        fun defaultFor(
+            buildType: BuildType,
+            platform: Platform,
+        ): ServerSource =
+            entries.firstOrNull { source ->
+                buildType in source.allowedInBuilds && platform in source.allowedPlatforms
+            } ?: AUTOMATIC1111
+
+        fun parseOrDefault(
+            value: String,
+            buildType: BuildType,
+            platform: Platform,
+        ): ServerSource = entries.find { it.key == value } ?: defaultFor(buildType, platform)
     }
 }
 

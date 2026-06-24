@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.model.UiText
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
+import com.shifthackz.aisdv1.domain.entity.SdaiCloudIapProduct
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkLimitExceeded
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkRecommendation
 
@@ -21,6 +22,21 @@ sealed interface GenerationModal {
      * @author Dmitriy Moroz
      */
     data object None : GenerationModal
+
+    sealed interface SdaiCloudTopUp : GenerationModal {
+        data object Required : SdaiCloudTopUp
+
+        data object LoadingProducts : SdaiCloudTopUp
+
+        @Immutable
+        data class PurchaseSheet(
+            val products: List<SdaiCloudIapProduct> = emptyList(),
+            val selectedProductId: String? = products.lastOrNull()?.productId,
+            val restoreAvailable: Boolean = true,
+        ) : SdaiCloudTopUp
+
+        data object Working : SdaiCloudTopUp
+    }
 
     /**
      * Defines the `Background` contract for the SDAI presentation layer.

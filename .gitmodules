@@ -13,3 +13,8 @@
 [submodule "feature/sdxl/src/androidMain/cpp/vendor/OpenCL-ICD-Loader"]
 	path = feature/sdxl/src/androidMain/cpp/vendor/OpenCL-ICD-Loader
 	url = https://github.com/KhronosGroup/OpenCL-ICD-Loader.git
+[submodule "nonfree"]
+	path = nonfree
+	url = https://github.com/ShiftHackZ/SDAI-KMP-nonfree.git
+	update = none
+	ignore = all

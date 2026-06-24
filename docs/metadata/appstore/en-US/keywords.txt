@@ -1,1 +1,1 @@
-art,prompt,avatar,anime,diffusion,webui,server,cloud,model,gallery,inpaint,img2img,txt2img
+art,prompt,avatar,anime,diffusion,webui,server,cloud,model,gallery,inpaint,img2img,txt2img,sdai

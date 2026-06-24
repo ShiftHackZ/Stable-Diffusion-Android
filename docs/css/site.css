@@ -281,6 +281,94 @@ a:hover {
   border-bottom: 1px solid var(--line);
 }
 
+.sdai-cloud-promo-section {
+  padding: 34px 0 74px;
+  background: var(--bg);
+}
+
+.sdai-cloud-promo {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 34px;
+  align-items: center;
+  padding: 34px;
+  overflow: hidden;
+  color: #ffffff;
+  background: #17151f;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.sdai-cloud-promo-media {
+  display: grid;
+  place-items: center;
+  min-height: 190px;
+  background: #232033;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+}
+
+.sdai-cloud-promo-media img {
+  width: 132px;
+  height: 132px;
+  border-radius: 26px;
+  box-shadow: 0 22px 42px rgba(0, 0, 0, 0.34);
+}
+
+.sdai-cloud-promo-copy h2 {
+  max-width: 760px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1.02;
+}
+
+.sdai-cloud-promo-copy p:not(.section-label) {
+  max-width: 790px;
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 1.05rem;
+}
+
+.sdai-cloud-promo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.primary-link,
+.secondary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.primary-link {
+  color: #17151f;
+  background: #ffffff;
+}
+
+.primary-link:hover {
+  color: #17151f;
+  background: #f0ebff;
+}
+
+.secondary-link {
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.secondary-link:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.46);
+}
+
 .feature-create-section {
   background: var(--bg);
 }
@@ -1124,6 +1212,54 @@ a:hover {
   color: var(--muted);
 }
 
+.terms-document {
+  padding: 34px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.terms-version {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.terms-status {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.terms-status.is-error {
+  color: #9f2f29;
+}
+
+.retry-button {
+  min-height: 42px;
+  margin-top: 16px;
+  padding: 0 18px;
+  color: #ffffff;
+  font-weight: 800;
+  background: var(--primary-dark);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.terms-document h2,
+.terms-document h3,
+.terms-document h4 {
+  margin: 30px 0 12px;
+  color: var(--primary-dark);
+}
+
+.terms-document p,
+.terms-document li {
+  color: var(--ink);
+}
+
 .is-hidden {
   display: none !important;
 }
@@ -1292,6 +1428,15 @@ a:hover {
     padding-bottom: 48px;
   }
 
+  .sdai-cloud-promo {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .sdai-cloud-promo-media {
+    min-height: 150px;
+  }
+
   .feature-strip,
   .cards-grid,
   .footer-grid {
@@ -1349,6 +1494,10 @@ a:hover {
     width: 118px;
     height: 118px;
     border-radius: 22px;
+  }
+
+  .sdai-cloud-promo-section {
+    padding: 24px 0 54px;
   }
 
   .store-actions {

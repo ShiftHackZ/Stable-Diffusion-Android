@@ -12,9 +12,9 @@
   <a href="https://apps.apple.com/us/app/sdai-ai-image-generator/id6778314183"><img src="docs/assets/badge-app-store-readme.png" alt="Download on the App Store" height="54"></a>
 </p>
 
-SDAI is an open-source, cross-platform AI image generation client for Android and iOS. It gives you one clean mobile workflow for self-hosted Stable Diffusion servers, hosted image APIs, crowdsourced generation, and platform-specific local generation where supported.
+SDAI is an open-source, cross-platform AI image generation client for Android and iOS. It gives you one clean mobile workflow for self-hosted Stable Diffusion servers, hosted image APIs, crowdsourced generation, platform-specific local generation where supported, and the optional SDAI Cloud provider in official store builds.
 
-No ads. No telemetry. No lock-in to a single provider.
+No telemetry. No lock-in to a single provider. The FOSS build remains free of nonfree monetization modules; Google Play and App Store builds can optionally use SDAI Cloud with rewarded ads and in-app purchases for app tokens.
 
 ## Project Documentation
 
@@ -34,7 +34,7 @@ Root-level Markdown documents:
 - Work locally when privacy or connectivity matters with Android ONNX, MediaPipe, stable-diffusion.cpp SDXL, Android Local Diffusion PrismML Bonsai, iOS Silicon Diffusion Core ML, or iOS Silicon Diffusion PrismML Bonsai.
 - Keep your creations in a local gallery with image details, zoom, sharing, native platform save flows, and zip export.
 - Check local-device fit before heavy runs with the on-device benchmark, then review storage and network usage from Settings.
-- Stay in control: the project is open source and the app does not include ads or telemetry.
+- Stay in control: the public project remains open source, FOSS builds stay free of nonfree monetization modules, and SDAI Cloud is optional in official store builds.
 
 ## Screenshots
 
@@ -53,6 +53,7 @@ iOS uses the shared mobile experience with remote generation providers, Silicon 
 
 | Provider / backend | What it connects to | iOS    | Android `playstore` | Android `full` | Android `foss` | Notes |
 | --- | --- |--------| --- | --- | --- | --- |
+| SDAI Cloud | Hosted SDAI backend using app tokens | 🟢 Yes | 🟢 Yes | 🔴 No | 🔴 No | Stable provider since 2026.6.24. Available only in official App Store and Google Play builds. Optional; governed by the SDAI Cloud Terms of Service. |
 | AUTOMATIC1111 WebUI | Your own Stable-Diffusion-WebUI API server | 🟢 Yes | 🟢 Yes | 🟢 Yes | 🟢 Yes | Own server, demo mode, txt2img, img2img, inpaint, models, LoRA, embeddings, hypernetworks. |
 | SwarmUI | Your own SwarmUI server | 🟢 Yes | 🟢 Yes | 🟢 Yes | 🟢 Yes | Own server with SwarmUI model, LoRA, and embeddings discovery. |
 | AI Horde | Crowdsourced Stable Horde workers | 🟢 Yes | 🟢 Yes | 🟢 Yes | 🟢 Yes | Works with the default anonymous key or your own Horde API key. |
@@ -71,8 +72,8 @@ iOS uses the shared mobile experience with remote generation providers, Silicon 
 
 | AI-specific feature | Supported providers | Notes |
 | --- | --- | --- |
-| Text to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Fal.ai, ArliAI, Local ONNX, Local MediaPipe, Local SDXL, Local/Silicon Diffusion PrismML Bonsai, Silicon Diffusion Core ML | Core generation path exists for every provider exposed by the current platform/build. |
-| Image to image | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, Stability AI, Fal.ai, ArliAI, Silicon Diffusion Core ML | OpenAI and Android local diffusion providers are txt2img-only in the app. Core ML img2img requires a compatible downloaded model archive. |
+| Text to image | SDAI Cloud, AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Fal.ai, ArliAI, Local ONNX, Local MediaPipe, Local SDXL, Local/Silicon Diffusion PrismML Bonsai, Silicon Diffusion Core ML | Core generation path exists for every provider exposed by the current platform/build. |
+| Image to image | SDAI Cloud, AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, Stability AI, Fal.ai, ArliAI, Silicon Diffusion Core ML | OpenAI and Android local diffusion providers are txt2img-only in the app. Core ML img2img requires a compatible downloaded model archive. |
 | Inpaint mask controls | AUTOMATIC1111 | Mask image, mask blur, mask mode, masked content, inpaint area, and only-masked padding are mapped to the A1111 img2img API. |
 | Negative prompt | AUTOMATIC1111, SwarmUI, Hugging Face, Stability AI, ArliAI, Local ONNX, Local SDXL, Local/Silicon Diffusion PrismML Bonsai, Silicon Diffusion Core ML | Horde, OpenAI, and MediaPipe flows do not expose/send a negative prompt. |
 | Batch generation | AUTOMATIC1111, SwarmUI, AI Horde, Hugging Face, OpenAI, Stability AI, Fal.ai, ArliAI | Fal.ai uses native `num_images`; ArliAI uses the SDNext-compatible batch size field; local providers are treated as single-image generation flows. |
@@ -120,7 +121,11 @@ iOS uses the shared mobile experience with remote generation providers, Silicon 
 
 ## Setup
 
-### Option 1: AUTOMATIC1111 WebUI
+### Option 1: SDAI Cloud
+
+SDAI Cloud is the optional hosted provider available in official Google Play and App Store builds. It uses SDAI app tokens for generation, with top-ups through rewarded ads or in-app purchases where available. It is not included in the `full` or `foss` Android builds, and it is governed by the SDAI Cloud Terms of Service shown during setup.
+
+### Option 2: AUTOMATIC1111 WebUI
 
 Use this if you already run [Stable-Diffusion-WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) locally, on a server, or in a notebook environment.
 
@@ -131,53 +136,53 @@ Use this if you already run [Stable-Diffusion-WebUI](https://github.com/AUTOMATI
 
 Demo mode is available from the setup screen if you want to explore the app without connecting to a real generator.
 
-### Option 2: SwarmUI
+### Option 3: SwarmUI
 
 Use this if your generation environment is powered by [SwarmUI](https://github.com/mcmonkeyprojects/SwarmUI). Start SwarmUI in server mode, copy the reachable URL, then choose SwarmUI during SDAI setup.
 
-### Option 3: AI Horde
+### Option 4: AI Horde
 
 [AI Horde](https://stablehorde.net/) is a crowdsourced distributed cluster of image generation workers. SDAI can use the default anonymous key (`0000000000`) or your own key from [stablehorde.net/register](https://stablehorde.net/register).
 
-### Option 4: Hugging Face Inference API
+### Option 5: Hugging Face Inference API
 
 [Hugging Face Inference API](https://huggingface.co/docs/api-inference/index) lets SDAI call hosted public or private image models. Create an API key in [Hugging Face account settings](https://huggingface.co/settings/tokens), then select the Hugging Face provider in SDAI.
 
-### Option 5: OpenAI
+### Option 6: OpenAI
 
 OpenAI image generation in SDAI uses GPT Image models through the Images API. Create an API key in [OpenAI API key settings](https://platform.openai.com/api-keys), then select OpenAI in SDAI.
 
-### Option 6: Stability AI
+### Option 7: Stability AI
 
 [Stability AI](https://platform.stability.ai/) support uses the Stability image API. Create an API key on the [Stability AI keys page](https://platform.stability.ai/account/keys), then select Stability AI and choose an engine in SDAI.
 
-### Option 7: Fal.ai
+### Option 8: Fal.ai
 
 [Fal.ai](https://fal.ai/) support uses the Fal.ai queue API for compatible FLUX text-to-image and image-to-image endpoints. Create an API key in the [Fal.ai dashboard](https://fal.ai/dashboard/keys), then select Fal.ai in SDAI and choose the endpoint from the shared generation form.
 
-### Option 8: ArliAI
+### Option 9: ArliAI
 
 [ArliAI](https://www.arliai.com/quick-start) support uses the ArliAI SDNext-compatible image API. Create an ArliAI API key, select ArliAI in SDAI, connect, and choose the checkpoint from the shared generation form after model discovery completes.
 
-### Option 9: Local Diffusion with Microsoft ONNX Runtime
+### Option 10: Local Diffusion with Microsoft ONNX Runtime
 
 Use this on Android for on-device txt2img generation. Download or provide a compatible ONNX local diffusion model, select it in setup, and generate without sending prompts to a remote service.
 
-### Option 10: Local Diffusion with Google AI MediaPipe
+### Option 11: Local Diffusion with Google AI MediaPipe
 
 Use this on Android for on-device txt2img generation through Google AI MediaPipe. This provider is available only in `playstore` and `full` Android flavors.
 
-### Option 11: Local SDXL with stable-diffusion.cpp
+### Option 12: Local SDXL with stable-diffusion.cpp
 
 Use this on Android for on-device SDXL-compatible txt2img generation through stable-diffusion.cpp. Download a supported model from the in-app SDXL catalog or provide a compatible local single-file model outside the Play build, then choose the runtime backend from Auto, CPU, OpenCL, or Vulkan. Mobile SDXL is memory-heavy, so the catalog starts with compact/quantized GGUF options such as SSD-1B / LCM-style models before larger desktop-class SDXL files.
 
-### Option 12: Silicon Diffusion Core ML
+### Option 13: Silicon Diffusion Core ML
 
 Use this on iOS for on-device Stable Diffusion generation through Core ML. Download a supported Core ML model from the in-app catalog or import a compatible local model package, select it during setup, and generate without sending prompts or source images to a remote service.
 
 The first-party catalog intentionally starts with Apple/Hugging Face Stable Diffusion 1.x and 2.x palettized Core ML archives. SDXL archives are not exposed by default until memory and execution-plan compatibility are stable across a tested device matrix.
 
-### Option 13: PrismML Bonsai Image 4B
+### Option 14: PrismML Bonsai Image 4B
 
 Use this for on-device text-to-image generation with PrismML Bonsai Image 4B. Download a supported Bonsai Ternary or Binary model archive from the in-app catalog, select it during setup, and generate without sending prompts to a remote service.
 
@@ -187,9 +192,9 @@ iOS support is beta. Android support is experimental and device-sensitive: run t
 
 ## Build Flavor Notes
 
-Android flavor availability is driven by the Gradle flavor configuration and runtime provider filtering. Most network providers are available everywhere; Google AI MediaPipe is intentionally unavailable in `foss`. Local SDXL through stable-diffusion.cpp and Local Diffusion PrismML Bonsai are available in `playstore`, `full`, and `foss`; their model catalogs are shared, and model files are downloaded or imported by the user rather than bundled into the app. The Play build avoids custom local model path selection for local diffusion models because broad file access is not generally accepted for Google Play distribution.
+Android flavor availability is driven by the Gradle flavor configuration and runtime provider filtering. Most network providers are available everywhere; Google AI MediaPipe is intentionally unavailable in `foss`. SDAI Cloud, AdMob, and in-app purchase integration are private optional modules included only in official Google Play builds, not in `full` or `foss`. Local SDXL through stable-diffusion.cpp and Local Diffusion PrismML Bonsai are available in `playstore`, `full`, and `foss`; their model catalogs are shared, and model files are downloaded or imported by the user rather than bundled into the app. The Play build avoids custom local model path selection for local diffusion models because broad file access is not generally accepted for Google Play distribution.
 
-The iOS app is not split into Android-style flavors. It uses the shared mobile UI, remote-provider stack, Silicon Diffusion Core ML, and Silicon Diffusion PrismML Bonsai. Android ONNX, MediaPipe, SDXL, and Local Diffusion PrismML Bonsai local runtimes remain Android-specific.
+The iOS app is not split into Android-style flavors. The public code uses the shared mobile UI, remote-provider stack, Silicon Diffusion Core ML, and Silicon Diffusion PrismML Bonsai. The App Store build can additionally include the private optional SDAI Cloud, AdMob, and in-app purchase modules. Android ONNX, MediaPipe, SDXL, and Local Diffusion PrismML Bonsai local runtimes remain Android-specific.
 
 For a historical overview of flavor policy, see the project wiki page: [Build flavor difference](https://github.com/ShiftHackZ/Stable-Diffusion-Android/wiki/Build-flavor-difference).
 

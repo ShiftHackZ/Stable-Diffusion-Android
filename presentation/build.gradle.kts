@@ -1,6 +1,17 @@
 plugins {
     alias(libs.plugins.generic.kmp.compose)
+    alias(libs.plugins.generic.flavors)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+}
+
+val nonFreeMonetizationModules = listOf(
+    ":nonfree:admob",
+    ":nonfree:iap",
+    ":nonfree:sdai-cloud",
+    ":nonfree:sdai-cloud-ui-kit",
+)
+val hasNonFreeMonetizationModules = nonFreeMonetizationModules.all { modulePath ->
+    rootProject.findProject(modulePath) != null
 }
 
 android {
@@ -28,6 +39,10 @@ kotlin {
             isStatic = true
             export(project(":feature:bonsai"))
             export(project(":feature:coreml"))
+            if (hasNonFreeMonetizationModules) {
+                export(project(":nonfree:admob"))
+                export(project(":nonfree:iap"))
+            }
         }
     }
 
@@ -92,8 +107,23 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
         }
 
-        iosMain.dependencies {
-            implementation(project(":feature:sdxl"))
+        iosMain {
+            kotlin.srcDir(
+                if (hasNonFreeMonetizationModules) {
+                    "../nonfree/sdai-cloud-ui-kit/src/iosPresentation/kotlin"
+                } else {
+                    "src/iosFreeMain/kotlin"
+                },
+            )
+            dependencies {
+                implementation(project(":feature:sdxl"))
+                if (hasNonFreeMonetizationModules) {
+                    api(project(":nonfree:admob"))
+                    api(project(":nonfree:iap"))
+                    implementation(project(":nonfree:sdai-cloud"))
+                    implementation(project(":nonfree:sdai-cloud-ui-kit"))
+                }
+            }
         }
 
         androidUnitTest.dependencies {

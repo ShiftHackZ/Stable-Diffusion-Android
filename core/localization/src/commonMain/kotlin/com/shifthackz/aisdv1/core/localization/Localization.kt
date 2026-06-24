@@ -45,6 +45,8 @@ object Localization {
      */
     private val languageCodeState = MutableStateFlow(supportedLanguageCode(platformLanguageCode()))
 
+    private val extensionCatalog = mutableMapOf<String, MutableMap<String, String>>()
+
     /**
      * Exposes the `entries` value used by the SDAI localization layer.
      *
@@ -86,7 +88,22 @@ object Localization {
      * @author Dmitriy Moroz
      */
     fun strings(languageCode: String = currentLanguageCode()): Map<String, String> =
-        localizationCatalog.getValue(supportedLanguageCode(languageCode))
+        supportedLanguageCode(languageCode).let { code ->
+            localizationCatalog.getValue(code) +
+                extensionCatalog[DEFAULT_LANGUAGE_CODE].orEmpty() +
+                extensionCatalog[code].orEmpty()
+        }
+
+    /**
+     * Registers optional localization strings supplied by build-specific modules.
+     */
+    fun registerStrings(catalog: Map<String, Map<String, String>>) {
+        catalog.forEach { (languageCode, strings) ->
+            val normalizedCode = supportedLanguageCode(languageCode)
+            val target = extensionCatalog.getOrPut(normalizedCode) { mutableMapOf() }
+            target.putAll(strings)
+        }
+    }
 
     /**
      * Executes the `string` step in the SDAI localization layer.

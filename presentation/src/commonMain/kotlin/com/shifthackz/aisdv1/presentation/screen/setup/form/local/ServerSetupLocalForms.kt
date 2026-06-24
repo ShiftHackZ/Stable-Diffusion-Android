@@ -37,6 +37,7 @@ import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.HintText
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.HordeForm
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.HuggingFaceForm
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.OpenAiForm
+import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.SdaiCloudForm
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.SetupTextField
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.StabilityAiForm
 import com.shifthackz.aisdv1.presentation.screen.setup.form.remote.SwarmUiForm
@@ -105,6 +106,12 @@ internal fun ConfigurationStep(
                 )
 
                 ServerSource.STABILITY_AI -> StabilityAiForm(
+                    state = state,
+                    strings = strings,
+                    processIntent = processIntent,
+                )
+
+                ServerSource.SDAI_CLOUD -> SdaiCloudForm(
                     state = state,
                     strings = strings,
                     processIntent = processIntent,

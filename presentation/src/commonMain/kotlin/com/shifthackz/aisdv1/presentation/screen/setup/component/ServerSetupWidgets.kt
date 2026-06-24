@@ -185,6 +185,9 @@ internal fun ServerSource.icon(platform: Platform): ImageVector = when (this) {
         ServerSource.ARLI_AI,
         -> Icons.Default.Cloud
 
+        ServerSource.SDAI_CLOUD,
+        -> BrandIcons.Sdai
+
         ServerSource.LOCAL_MICROSOFT_ONNX,
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
         ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
@@ -208,6 +211,7 @@ internal fun ServerSource.title(strings: ServerSetupStrings, platform: Platform)
     ServerSource.STABILITY_AI -> strings.stabilityTitle
     ServerSource.FAL_AI -> strings.falAiTitle
     ServerSource.ARLI_AI -> strings.arliAiTitle
+    ServerSource.SDAI_CLOUD -> strings.sdaiCloudTitle
     ServerSource.LOCAL_MICROSOFT_ONNX -> strings.localDiffusionTitle
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeTitle
     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlTitle
@@ -227,6 +231,7 @@ internal fun ServerSource.subtitle(strings: ServerSetupStrings, platform: Platfo
     ServerSource.STABILITY_AI -> strings.stabilitySubtitle
     ServerSource.FAL_AI -> strings.falAiSubtitle
     ServerSource.ARLI_AI -> strings.arliAiSubtitle
+    ServerSource.SDAI_CLOUD -> strings.sdaiCloudSubtitle
     ServerSource.LOCAL_MICROSOFT_ONNX -> strings.localDiffusionSubtitle
     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> strings.mediaPipeSubtitle
     ServerSource.LOCAL_STABLE_DIFFUSION_CPP -> strings.sdxlSubtitle
@@ -271,6 +276,10 @@ internal val ServerSetupState.mainButtonEnabled: Boolean
                     model.downloaded &&
                     model.id !in BonsaiModelSupport.unsupportedModelIds
             }
+
+            ServerSource.SDAI_CLOUD -> !sdaiCloudTermsLoading &&
+                sdaiCloudTermsVersion.isNotBlank() &&
+                sdaiCloudConsentAccepted
 
             else -> true
         }

@@ -12,6 +12,7 @@ import org.koin.dsl.module
  */
 internal actual val platformPresentationModule = module {
     includes(sdxlModule)
+    includes(optionalNonFreePresentationModules)
 
     single<GenerationPlatformServices> { IosGenerationPlatformServices }
 }

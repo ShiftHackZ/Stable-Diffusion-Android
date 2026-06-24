@@ -22,30 +22,40 @@ dependencyResolutionManagement {
 
 rootProject.name = "AI Stable Diffusion Client v1"
 
-val modules = listOf(
-        ":app",
-        ":core:common",
-        ":core:imageprocessing",
-        ":core:localization",
-        ":core:notification",
-        ":core:ui",
-        ":core:validation",
-        ":data",
-        ":demo",
-        ":domain",
-        ":feature:auth",
-        ":feature:benchmark",
-        ":feature:bonsai",
-        ":feature:coreml",
-        ":feature:onnx",
-        ":feature:mediapipe",
-        ":feature:sdxl",
-        ":feature:work",
-        ":network",
-        ":presentation",
-        ":storage",
+val publicModules = listOf(
+    ":app",
+    ":core:common",
+    ":core:imageprocessing",
+    ":core:localization",
+    ":core:notification",
+    ":core:ui",
+    ":core:validation",
+    ":data",
+    ":demo",
+    ":domain",
+    ":feature:auth",
+    ":feature:benchmark",
+    ":feature:bonsai",
+    ":feature:coreml",
+    ":feature:mediapipe",
+    ":feature:onnx",
+    ":feature:sdxl",
+    ":feature:work",
+    ":network",
+    ":presentation",
+    ":storage",
 )
 
-include(modules)
+val optionalNonFreeModules = listOf(
+    ":nonfree:admob",
+    ":nonfree:iap",
+    ":nonfree:localization",
+    ":nonfree:sdai-cloud",
+    ":nonfree:sdai-cloud-ui-kit",
+).filter { module ->
+    file(module.removePrefix(":").replace(':', '/') + "/build.gradle.kts").exists()
+}
+
+include(publicModules + optionalNonFreeModules)
 
 project(":app").projectDir = file("app/android")

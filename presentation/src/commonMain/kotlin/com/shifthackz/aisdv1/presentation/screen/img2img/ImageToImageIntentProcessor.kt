@@ -116,6 +116,10 @@ internal class ImageToImageIntentProcessor(
                 )
             }
             ImageToImageIntent.Generate -> generate()
+            ImageToImageIntent.TopUpSdaiCloudWithRewardedAd -> Unit
+            ImageToImageIntent.ShowSdaiCloudIapProducts -> Unit
+            is ImageToImageIntent.TopUpSdaiCloudWithIap -> Unit
+            ImageToImageIntent.RestoreSdaiCloudIapPurchases -> Unit
             ImageToImageIntent.RunBenchmarkFromPrompt -> Unit
             ImageToImageIntent.SkipBenchmarkPrompt -> Unit
             ImageToImageIntent.ContinueAfterBenchmarkWarning -> Unit

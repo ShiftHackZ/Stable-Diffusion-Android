@@ -20,11 +20,13 @@ val preferenceDataModule = module {
     single<PreferenceManager> {
         PreferenceManagerImpl(
             keyValueStore = createKeyValueStore(KEY_PREFERENCE_MANAGER),
+            buildInfoProvider = get(),
         )
     }
     single<ConfigurationStore> {
         KeyValueConfigurationStore(
             keyValueStore = createKeyValueStore(KEY_PREFERENCE_MANAGER),
+            buildInfoProvider = get(),
         )
     }
     single<AuthorizationStore> {

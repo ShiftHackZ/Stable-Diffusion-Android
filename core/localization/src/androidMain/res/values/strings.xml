@@ -126,6 +126,7 @@
     <string name="srv_type_stability_ai" translatable="false">Stability AI</string>
     <string name="srv_type_fal_ai" translatable="false">Fal.ai</string>
     <string name="srv_type_arli_ai" translatable="false">ArliAI</string>
+    <string name="srv_type_sdai_cloud" translatable="false">SDAI Cloud</string>
     <string name="srv_type_swarm_ui" translatable="false">Swarm UI</string>
 
     <string name="hint_prompt">Prompt</string>
@@ -246,6 +247,38 @@
 
     <string name="hint_arli_ai_title">Connect to ArliAI</string>
     <string name="hint_arli_ai_sub_title">ArliAI provides SDNext-compatible cloud image generation APIs.</string>
+    <string name="hint_sdai_cloud_title" translatable="false">SDAI Cloud</string>
+    <string name="hint_sdai_cloud_sub_title">Generate through the hosted SDAI backend using app credits.</string>
+    <string name="hint_sdai_cloud_consent">Use SDAI Cloud for generation requests and rewarded ad credits.</string>
+    <string name="hint_sdai_cloud_consent_required">Consent is required to use SDAI Cloud.</string>
+    <string name="hint_sdai_cloud_terms_agree">I agree with SDAI Cloud Terms of Service.</string>
+    <string name="hint_sdai_cloud_terms_loading">Loading SDAI Cloud terms…</string>
+    <string name="hint_sdai_cloud_terms_unavailable_title">SDAI Cloud temporarily unavailable</string>
+    <string name="hint_sdai_cloud_terms_unavailable">SDAI Cloud terms are unavailable. Check the server connection and try again.</string>
+    <string name="hint_sdai_cloud_usage">Prompts and img2img inputs are sent to the SDAI Cloud backend. Rewarded ads can grant cloud credits after consent is completed.</string>
+    <string name="sdai_cloud_top_up_title">SDAI Cloud balance is zero</string>
+    <string name="sdai_cloud_top_up_text">Choose how to add SDAI tokens. Generation will continue automatically after the balance is updated.</string>
+    <string name="sdai_cloud_top_up_watch_ad">Watch rewarded ad</string>
+    <string name="sdai_cloud_top_up_buy_tokens">Buy tokens</string>
+    <string name="sdai_cloud_top_up_restore_purchases">Restore pending purchases</string>
+    <string name="sdai_cloud_top_up_no_products">Purchases are not available right now.</string>
+    <string name="sdai_cloud_top_up_loading_products_title">Loading purchase options…</string>
+    <string name="sdai_cloud_top_up_loading_products_subtitle">Prices come from the store. Token amounts come from SDAI Cloud policy.</string>
+    <string name="sdai_cloud_purchase_sheet_title">Add SDAI tokens</string>
+    <string name="sdai_cloud_purchase_sheet_subtitle">Pick a token pack or restore an unfinished purchase.</string>
+    <string name="sdai_cloud_purchase_sheet_tokens">%1$s SDAI tokens</string>
+    <string name="sdai_cloud_purchase_sheet_buy">Buy selected pack</string>
+    <string name="sdai_cloud_purchase_sheet_best_value">Best value</string>
+    <string name="sdai_cloud_purchase_sheet_popular">Popular</string>
+    <string name="sdai_cloud_purchase_sheet_restore_subtitle">Checks the store for unfinished token purchases.</string>
+    <string name="sdai_cloud_purchase_sheet_price_unavailable">Store price</string>
+    <string name="sdai_cloud_balance_title" translatable="false">SDAI Cloud</string>
+    <string name="sdai_cloud_balance_syncing">Syncing token balance…</string>
+    <string name="sdai_cloud_balance_empty">No tokens available</string>
+    <string name="sdai_cloud_balance_available">%1$s tokens available</string>
+    <string name="sdai_cloud_balance_buy">Buy</string>
+    <string name="sdai_cloud_top_up_progress_title">Updating SDAI Cloud balance…</string>
+    <string name="sdai_cloud_top_up_progress_subtitle">Please wait while the store or ad reward is verified.</string>
     <string name="hint_arli_ai_about">ArliAI API docs</string>
     <string name="hint_arli_ai_model">ArliAI model checkpoint</string>
 

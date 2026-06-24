@@ -1,1 +1,1 @@
-арт,промпт,аватар,аниме,diffusion,webui,server,gallery,img2img
+арт,промпт,аватар,аниме,diffusion,webui,server,cloud,gallery,img2img

@@ -4,7 +4,9 @@ import UIKit
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        ComposeContainerViewController(contentController: MainViewControllerKt.MainViewController())
+        let controller = ComposeContainerViewController(contentController: MainViewControllerKt.MainViewController())
+        OptionalNonFreeBridge.setRootViewController(controller)
+        return controller
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
@@ -40,5 +42,10 @@ private final class ComposeContainerViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         contentController.didMove(toParent: self)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        OptionalNonFreeBridge.setRootViewController(self)
     }
 }

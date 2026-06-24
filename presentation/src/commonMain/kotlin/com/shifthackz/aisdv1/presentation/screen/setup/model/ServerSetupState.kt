@@ -11,6 +11,7 @@ import com.shifthackz.aisdv1.domain.entity.LocalAiModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.ServerSourceReadiness
 import com.shifthackz.aisdv1.domain.entity.ServerSourceType
+import com.shifthackz.aisdv1.domain.entity.SdaiCloudTerms
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 
 /**
@@ -24,7 +25,8 @@ import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 data class ServerSetupState(
     val showBackNavArrow: Boolean = false,
     val step: Step = Step.SOURCE,
-    val mode: ServerSource = ServerSource.AUTOMATIC1111,
+    val mode: ServerSource = remoteSetupSources.first(),
+    val activeConfigurationMode: ServerSource = remoteSetupSources.first(),
     val platform: Platform = Platform.ANDROID,
     val allowedModes: List<ServerSource> = remoteSetupSources,
     val sourceSearchQuery: String = "",
@@ -43,6 +45,13 @@ data class ServerSetupState(
     val stabilityAiApiKey: String = "",
     val falAiApiKey: String = "",
     val arliAiApiKey: String = "",
+    val sdaiCloudConsentAccepted: Boolean = false,
+    val sdaiCloudTermsVersion: String = "",
+    val sdaiCloudTermsTitle: String = "",
+    val sdaiCloudTermsBody: String = "",
+    val sdaiCloudTermsLoading: Boolean = false,
+    val sdaiCloudTermsLoadFailed: Boolean = false,
+    val sdaiCloudTermsAcceptedVersion: String = "",
     val hordeDefaultApiKey: Boolean = false,
     val demoMode: Boolean = false,
     val demoModeUrl: String = "",
@@ -76,6 +85,7 @@ data class ServerSetupState(
     val stabilityAiApiKeyValidationError: ValidationError? = null,
     val falAiApiKeyValidationError: ValidationError? = null,
     val arliAiApiKeyValidationError: ValidationError? = null,
+    val sdaiCloudConsentValidationError: ValidationError? = null,
     val localCustomOnnxPathValidationError: ValidationError? = null,
     val localCustomMediaPipePathValidationError: ValidationError? = null,
     val localCustomSdxlPathValidationError: ValidationError? = null,
@@ -131,6 +141,52 @@ data class ServerSetupState(
         AuthType.ANONYMOUS -> AuthorizationCredentials.None
         AuthType.HTTP_BASIC -> AuthorizationCredentials.HttpBasic(login, password)
     }
+
+    fun withMode(value: ServerSource): ServerSetupState {
+        val nextState = copy(mode = value)
+        return if (value == ServerSource.SDAI_CLOUD) {
+            nextState.withSdaiCloudConsentFromStoredTerms()
+        } else {
+            nextState.copy(sdaiCloudConsentValidationError = null)
+        }
+    }
+
+    fun withSdaiCloudTerms(value: SdaiCloudTerms): ServerSetupState =
+        copy(
+            sdaiCloudTermsVersion = value.version,
+            sdaiCloudTermsTitle = value.title,
+            sdaiCloudTermsBody = value.body,
+            sdaiCloudTermsLoading = false,
+            sdaiCloudTermsLoadFailed = false,
+            sdaiCloudConsentValidationError = null,
+        ).withSdaiCloudConsentFromStoredTerms()
+
+    fun withSdaiCloudTermsLoading(): ServerSetupState =
+        copy(
+            sdaiCloudTermsLoading = true,
+            sdaiCloudTermsLoadFailed = false,
+            sdaiCloudConsentValidationError = null,
+        )
+
+    fun withSdaiCloudTermsLoadFailed(): ServerSetupState =
+        copy(
+            sdaiCloudTermsLoading = false,
+            sdaiCloudTermsLoadFailed = true,
+            sdaiCloudConsentAccepted = false,
+            sdaiCloudConsentValidationError = ValidationError.EmptyField,
+        )
+
+    private fun withSdaiCloudConsentFromStoredTerms(): ServerSetupState =
+        if (mode != ServerSource.SDAI_CLOUD) {
+            this
+        } else {
+            copy(
+                sdaiCloudConsentAccepted = activeConfigurationMode == ServerSource.SDAI_CLOUD &&
+                    sdaiCloudTermsVersion.isNotBlank() &&
+                    sdaiCloudTermsAcceptedVersion == sdaiCloudTermsVersion,
+                sdaiCloudConsentValidationError = null,
+            )
+        }
 
     fun withLocalCustomModelPath(value: String): ServerSetupState = when (mode) {
         ServerSource.LOCAL_MICROSOFT_ONNX -> copy(
@@ -332,6 +388,7 @@ data class ServerSetupState(
 
     companion object {
         val remoteSetupSources = listOf(
+            ServerSource.SDAI_CLOUD,
             ServerSource.AUTOMATIC1111,
             ServerSource.SWARM_UI,
             ServerSource.HORDE,
@@ -356,8 +413,11 @@ fun Configuration.toServerSetupState(
     allowLocalCustomModels: Boolean = true,
     demoModeUrl: String = "",
     showBackNavArrow: Boolean = false,
+    sdaiCloudTermsAcceptedVersion: String = "",
 ): ServerSetupState {
-    val safeMode = source.takeIf(allowedModes::contains) ?: ServerSource.AUTOMATIC1111
+    val safeMode = source.takeIf(allowedModes::contains)
+        ?: allowedModes.firstOrNull()
+        ?: ServerSource.AUTOMATIC1111
     val supportedHuggingFaceAliases = HuggingFaceModel.supportedHfInferenceTextToImageAliases
     val safeHuggingFaceModels = (
         huggingFaceModels
@@ -373,8 +433,11 @@ fun Configuration.toServerSetupState(
         loadingConfiguration = false,
         showBackNavArrow = showBackNavArrow,
         mode = safeMode,
+        activeConfigurationMode = safeMode,
         platform = platform,
         allowedModes = allowedModes,
+        sdaiCloudTermsLoading = ServerSource.SDAI_CLOUD in allowedModes,
+        sdaiCloudTermsAcceptedVersion = sdaiCloudTermsAcceptedVersion,
         allowLocalCustomModels = allowLocalCustomModels,
         serverUrl = serverUrl,
         swarmUiUrl = swarmUiUrl,

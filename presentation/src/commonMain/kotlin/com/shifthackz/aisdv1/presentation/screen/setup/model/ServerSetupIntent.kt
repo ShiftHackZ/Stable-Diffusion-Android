@@ -31,6 +31,8 @@ sealed interface ServerSetupIntent : MviIntent {
     data class UpdateStabilityAiApiKey(val key: String) : ServerSetupIntent
     data class UpdateFalAiApiKey(val key: String) : ServerSetupIntent
     data class UpdateArliAiApiKey(val key: String) : ServerSetupIntent
+    data class UpdateSdaiCloudConsent(val value: Boolean) : ServerSetupIntent
+    data object RetrySdaiCloudTerms : ServerSetupIntent
     data class UpdateHuggingFaceApiKey(val key: String) : ServerSetupIntent
     data class UpdateHuggingFaceModel(val model: String) : ServerSetupIntent
     data class UpdateDemoMode(val value: Boolean) : ServerSetupIntent

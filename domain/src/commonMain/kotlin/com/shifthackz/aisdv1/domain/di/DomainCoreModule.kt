@@ -17,11 +17,19 @@ import com.shifthackz.aisdv1.domain.repository.NoOpCoreMlGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpLocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpMediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpNetworkUsageRepository
+import com.shifthackz.aisdv1.domain.repository.NoOpSdaiCloudCreditsRepository
+import com.shifthackz.aisdv1.domain.repository.NoOpSdaiCloudGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.NoOpSdaiCloudLegalRepository
+import com.shifthackz.aisdv1.domain.repository.NoOpSdaiCloudTopUpRepository
 import com.shifthackz.aisdv1.domain.repository.NoOpStableDiffusionCppGenerationRepository
 import com.shifthackz.aisdv1.domain.usecase.arliai.FetchAndGetArliAiModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.arliai.FetchAndGetArliAiModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.repository.NoOpWakeLockRepository
 import com.shifthackz.aisdv1.domain.repository.NetworkUsageRepository
+import com.shifthackz.aisdv1.domain.repository.SdaiCloudCreditsRepository
+import com.shifthackz.aisdv1.domain.repository.SdaiCloudGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.SdaiCloudLegalRepository
+import com.shifthackz.aisdv1.domain.repository.SdaiCloudTopUpRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionCppGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.WakeLockRepository
 import com.shifthackz.aisdv1.domain.usecase.caching.AppCacheCleaner
@@ -166,6 +174,7 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToMediaPipeUseCaseIm
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToOpenAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSdxlUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSdxlUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSdaiCloudUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToStabilityAiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToSwarmUiUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.DefaultConnectToA1111UseCaseImpl
@@ -179,8 +188,11 @@ import com.shifthackz.aisdv1.domain.usecase.settings.DefaultConnectToSwarmUiUseC
 import com.shifthackz.aisdv1.domain.usecase.settings.DefaultGetConfigurationUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.DefaultSetServerConfigurationUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.GetConfigurationUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.NoOpConnectToSdaiCloudUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.NoOpObserveSdaiCloudTokenBalanceUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ObserveNetworkUsageUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ObserveNetworkUsageUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ObserveSdaiCloudTokenBalanceUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ResetNetworkUsageUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ResetNetworkUsageUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.SetServerConfigurationUseCase
@@ -219,6 +231,10 @@ val coreDomainModule = module {
     single<StableDiffusionCppGenerationRepository> { NoOpStableDiffusionCppGenerationRepository }
     single<CoreMlGenerationRepository> { NoOpCoreMlGenerationRepository }
     single<BonsaiGenerationRepository> { NoOpBonsaiGenerationRepository }
+    single<SdaiCloudCreditsRepository> { NoOpSdaiCloudCreditsRepository }
+    single<SdaiCloudGenerationRepository> { NoOpSdaiCloudGenerationRepository }
+    single<SdaiCloudLegalRepository> { NoOpSdaiCloudLegalRepository }
+    single<SdaiCloudTopUpRepository> { NoOpSdaiCloudTopUpRepository }
     single<WakeLockRepository> { NoOpWakeLockRepository }
     single<NetworkUsageRepository> { NoOpNetworkUsageRepository }
     single<AppCacheCleaner> { NoOpAppCacheCleaner }
@@ -365,6 +381,7 @@ val coreDomainModule = module {
     factory<TextToImageUseCase> {
         TextToImageUseCaseImpl(
             stableDiffusionGenerationRepository = get(),
+            sdaiCloudGenerationRepository = get(),
             hordeGenerationRepository = get(),
             huggingFaceGenerationRepository = get(),
             openAiGenerationRepository = get(),
@@ -383,6 +400,7 @@ val coreDomainModule = module {
     factory<ImageToImageUseCase> {
         ImageToImageUseCaseImpl(
             stableDiffusionGenerationRepository = get(),
+            sdaiCloudGenerationRepository = get(),
             swarmUiGenerationRepository = get(),
             hordeGenerationRepository = get(),
             huggingFaceGenerationRepository = get(),
@@ -568,6 +586,12 @@ val coreDomainModule = module {
             setServerConfigurationUseCase = get(),
             testArliAiApiKeyUseCase = get(),
         )
+    }
+    factory<ConnectToSdaiCloudUseCase> {
+        NoOpConnectToSdaiCloudUseCase
+    }
+    single<ObserveSdaiCloudTokenBalanceUseCase> {
+        NoOpObserveSdaiCloudTokenBalanceUseCase
     }
     factory<FetchSupportersUseCase> {
         FetchSupportersUseCaseImpl(repository = get())

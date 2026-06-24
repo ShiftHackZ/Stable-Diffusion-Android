@@ -13,6 +13,7 @@ import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.SdaiCloudGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionCppGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
@@ -32,6 +33,7 @@ internal class TextToImageUseCaseImpl(
      * @author Dmitriy Moroz
      */
     private val stableDiffusionGenerationRepository: StableDiffusionGenerationRepository,
+    private val sdaiCloudGenerationRepository: SdaiCloudGenerationRepository,
     /**
      * Exposes the `hordeGenerationRepository` value used by the SDAI domain layer.
      *
@@ -137,6 +139,7 @@ internal class TextToImageUseCaseImpl(
         ServerSource.AUTOMATIC1111 -> stableDiffusionGenerationRepository.generateFromText(payload)
         ServerSource.FAL_AI -> falAiGenerationRepository.generateFromText(payload)
         ServerSource.ARLI_AI -> arliAiGenerationRepository.generateFromText(payload)
+        ServerSource.SDAI_CLOUD -> listOf(sdaiCloudGenerationRepository.generateFromText(payload))
         else -> List(payload.batchCount.coerceAtLeast(1)) {
             generateSingle(payload)
         }
@@ -162,5 +165,6 @@ internal class TextToImageUseCaseImpl(
         ServerSource.AUTOMATIC1111 -> error("Automatic1111 batch must be generated through generateFromText(payload).")
         ServerSource.FAL_AI -> error("Fal.ai batch must be generated through generateFromText(payload).")
         ServerSource.ARLI_AI -> error("ArliAI batch must be generated through generateFromText(payload).")
+        ServerSource.SDAI_CLOUD -> error("SDAI Cloud batch must be generated through generateFromText(payload).")
     }
 }

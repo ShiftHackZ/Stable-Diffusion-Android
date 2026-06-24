@@ -3,8 +3,11 @@
 package com.shifthackz.aisdv1.presentation.screen.setup.content
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,10 +15,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,7 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.domain.entity.ServerSource
@@ -101,32 +106,11 @@ fun ServerSetupContent(
                 }
             },
             bottomBar = {
-                Button(
-                    modifier = Modifier
-                        .windowInsetsPadding(persistentBottomBarWindowInsets())
-                        .fillMaxWidth()
-                        .height(68.dp)
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(horizontal = 16.dp)
-                        .padding(bottom = 16.dp, top = 8.dp),
-                    enabled = !state.loadingConfiguration && state.mainButtonEnabled,
-                    onClick = { processIntent(ServerSetupIntent.MainButtonClick) },
-                ) {
-                    Text(
-                        text = when (state.step) {
-                            ServerSetupState.Step.SOURCE -> strings.next
-                            ServerSetupState.Step.CONFIGURE -> when (state.mode) {
-                                ServerSource.LOCAL_MICROSOFT_ONNX,
-                                ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
-                                ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
-                                -> strings.setup
-
-                                else -> strings.connect
-                            }
-                        },
-                        color = LocalContentColor.current,
-                    )
-                }
+                ServerSetupBottomBar(
+                    state = state,
+                    strings = strings,
+                    processIntent = processIntent,
+                )
             },
         ) { paddingValues ->
             if (state.loadingConfiguration) {
@@ -203,3 +187,105 @@ fun ServerSetupContent(
         }
     }
 }
+
+@Composable
+private fun ServerSetupBottomBar(
+    state: ServerSetupState,
+    strings: ServerSetupStrings,
+    processIntent: (ServerSetupIntent) -> Unit,
+) {
+    val isSdaiCloudTermsStep = state.step == ServerSetupState.Step.CONFIGURE &&
+        state.mode == ServerSource.SDAI_CLOUD
+
+    Column(
+        modifier = Modifier
+            .windowInsetsPadding(persistentBottomBarWindowInsets())
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 16.dp, top = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        if (isSdaiCloudTermsStep) {
+            SdaiCloudTermsConsentRow(
+                state = state,
+                strings = strings,
+                processIntent = processIntent,
+            )
+        }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(52.dp),
+            enabled = !state.loadingConfiguration && state.mainButtonEnabled,
+            onClick = { processIntent(ServerSetupIntent.MainButtonClick) },
+        ) {
+            Text(
+                text = state.mainButtonText(strings),
+                color = LocalContentColor.current,
+            )
+        }
+    }
+}
+
+@Composable
+private fun SdaiCloudTermsConsentRow(
+    state: ServerSetupState,
+    strings: ServerSetupStrings,
+    processIntent: (ServerSetupIntent) -> Unit,
+) {
+    val enabled = !state.sdaiCloudTermsLoading &&
+        state.sdaiCloudTermsVersion.isNotBlank() &&
+        !state.sdaiCloudTermsLoadFailed
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .clickable(enabled = enabled) {
+                    processIntent(ServerSetupIntent.UpdateSdaiCloudConsent(!state.sdaiCloudConsentAccepted))
+                }
+                .padding(horizontal = 4.dp, vertical = 2.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Checkbox(
+                checked = state.sdaiCloudConsentAccepted,
+                enabled = enabled,
+                onCheckedChange = { value ->
+                    processIntent(ServerSetupIntent.UpdateSdaiCloudConsent(value))
+                },
+            )
+            Text(
+                modifier = Modifier.weight(1f),
+                text = strings.sdaiCloudTermsAgree,
+                color = if (enabled) {
+                    MaterialTheme.colorScheme.onSurface
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+        if (state.sdaiCloudConsentValidationError != null && enabled) {
+            Text(
+                modifier = Modifier.padding(start = 16.dp),
+                text = strings.sdaiCloudConsentRequired,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+    }
+}
+
+private fun ServerSetupState.mainButtonText(strings: ServerSetupStrings): String =
+    when (step) {
+        ServerSetupState.Step.SOURCE -> strings.next
+        ServerSetupState.Step.CONFIGURE -> when (mode) {
+            ServerSource.LOCAL_MICROSOFT_ONNX,
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+            ServerSource.LOCAL_STABLE_DIFFUSION_CPP,
+            -> strings.setup
+
+            else -> strings.connect
+        }
+    }

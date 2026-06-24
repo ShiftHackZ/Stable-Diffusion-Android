@@ -1,5 +1,7 @@
 package com.shifthackz.aisdv1.data.preference
 
+import com.shifthackz.aisdv1.core.common.appbuild.BuildInfoProvider
+import com.shifthackz.aisdv1.core.common.extensions.fixUrlSlashes
 import com.shifthackz.aisdv1.domain.entity.HuggingFaceModel
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.ConfigurationStore
@@ -16,6 +18,7 @@ internal class KeyValueConfigurationStore(
      * @author Dmitriy Moroz
      */
     private val keyValueStore: KeyValueStore,
+    private val buildInfoProvider: BuildInfoProvider,
 ) : ConfigurationStore {
 
     /**
@@ -60,7 +63,11 @@ internal class KeyValueConfigurationStore(
      * @author Dmitriy Moroz
      */
     override var source: ServerSource
-        get() = ServerSource.parse(keyValueStore.getString(KEY_SERVER_SOURCE, ServerSource.AUTOMATIC1111.key))
+        get() = ServerSource.parseOrDefault(
+            value = keyValueStore.getString(KEY_SERVER_SOURCE, defaultSource().key),
+            buildType = buildInfoProvider.type,
+            platform = buildInfoProvider.platform,
+        )
         set(value) = keyValueStore.putString(KEY_SERVER_SOURCE, value.key)
 
     /**
@@ -390,4 +397,10 @@ internal class KeyValueConfigurationStore(
          */
         const val URL_PROTOCOL_MARKER = "SDAI_URL_PROTOCOL_MARKER"
     }
+
+    private fun defaultSource(): ServerSource =
+        ServerSource.defaultFor(
+            buildType = buildInfoProvider.type,
+            platform = buildInfoProvider.platform,
+        )
 }

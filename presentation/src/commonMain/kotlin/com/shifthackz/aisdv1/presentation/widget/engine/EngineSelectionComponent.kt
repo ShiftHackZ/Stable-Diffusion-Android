@@ -150,6 +150,7 @@ fun EngineSelectionContent(
         ServerSource.OPEN_AI,
         ServerSource.FAL_AI,
         ServerSource.ARLI_AI,
+        ServerSource.SDAI_CLOUD,
         -> Unit
     }
 }

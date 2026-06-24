@@ -18,9 +18,12 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
+import com.shifthackz.aisdv1.core.sdai.SdaiCloudPurchaseProductUi
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.SdaiCloudIapProduct
 import com.shifthackz.aisdv1.feature.benchmark.BenchmarkLimitExceeded
 import com.shifthackz.aisdv1.presentation.model.GenerationModal
+import com.shifthackz.aisdv1.presentation.widget.sdai.rememberSdaiCloudUi
 import com.shifthackz.aisdv1.presentation.widget.dialog.DecisionInteractiveDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.ErrorDialog
 import com.shifthackz.aisdv1.presentation.widget.dialog.GenerationImageBatchResultModal
@@ -56,9 +59,33 @@ fun GenerationModalRenderer(
     onSkipBenchmarkRequest: () -> Unit,
     onBenchmarkContinueRequest: () -> Unit,
     onBenchmarkDoNotAskRequest: () -> Unit,
+    onSdaiCloudRewardedAdTopUpRequest: () -> Unit,
+    onSdaiCloudIapProductsRequest: () -> Unit,
+    onSdaiCloudIapTopUpRequest: (String) -> Unit,
+    onSdaiCloudRestorePurchasesRequest: () -> Unit,
 ) {
+    val sdaiCloudUi = rememberSdaiCloudUi()
+
     when (screenModal) {
         GenerationModal.None -> Unit
+
+        GenerationModal.SdaiCloudTopUp.Required -> sdaiCloudUi.RequiredTopUpDialog(
+            onDismissRequest = onDismissRequest,
+            onRewardedAdRequest = onSdaiCloudRewardedAdTopUpRequest,
+            onIapProductsRequest = onSdaiCloudIapProductsRequest,
+        )
+
+        GenerationModal.SdaiCloudTopUp.LoadingProducts -> sdaiCloudUi.LoadingProductsDialog()
+
+        is GenerationModal.SdaiCloudTopUp.PurchaseSheet -> sdaiCloudUi.PurchaseSheet(
+            products = screenModal.products.map(SdaiCloudIapProduct::toUi),
+            restoreAvailable = screenModal.restoreAvailable,
+            onDismissRequest = onDismissRequest,
+            onIapRequest = onSdaiCloudIapTopUpRequest,
+            onRestorePurchasesRequest = onSdaiCloudRestorePurchasesRequest,
+        )
+
+        GenerationModal.SdaiCloudTopUp.Working -> sdaiCloudUi.WorkingDialog()
 
         is GenerationModal.Communicating -> ProgressDialog(
             canDismiss = false,
@@ -154,6 +181,15 @@ fun GenerationModalRenderer(
         )
     }
 }
+
+private fun SdaiCloudIapProduct.toUi(): SdaiCloudPurchaseProductUi =
+    SdaiCloudPurchaseProductUi(
+        productId = productId,
+        title = title,
+        description = description,
+        formattedPrice = formattedPrice,
+        tokenAmount = tokenAmount,
+    )
 
 @Composable
 private fun BenchmarkExceedsActions(

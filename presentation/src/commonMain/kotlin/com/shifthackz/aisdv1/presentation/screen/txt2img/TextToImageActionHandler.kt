@@ -7,11 +7,14 @@ import com.shifthackz.aisdv1.core.localization.Localization
 import com.shifthackz.aisdv1.core.model.asUiText
 import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
+import com.shifthackz.aisdv1.domain.entity.SdaiCloudInsufficientTokensException
+import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.entity.TextToImagePayload
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
+import com.shifthackz.aisdv1.domain.repository.SdaiCloudTopUpRepository
 import com.shifthackz.aisdv1.domain.usecase.caching.SaveLastResultToCacheUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.InterruptGenerationUseCase
 import com.shifthackz.aisdv1.domain.usecase.generation.SaveGenerationResultUseCase
@@ -35,131 +38,27 @@ import kotlinx.coroutines.withContext
  * @author Dmitriy Moroz
  */
 internal class TextToImageActionHandler(
-    /**
-     * Exposes the `dispatchersProvider` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val dispatchersProvider: DispatchersProvider,
-    /**
-     * Exposes the `textToImageUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val textToImageUseCase: TextToImageUseCase,
-    /**
-     * Exposes the `saveGenerationResultUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val saveGenerationResultUseCase: SaveGenerationResultUseCase,
-    /**
-     * Exposes the `saveLastResultToCacheUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val saveLastResultToCacheUseCase: SaveLastResultToCacheUseCase,
-    /**
-     * Exposes the `interruptGenerationUseCase` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val interruptGenerationUseCase: InterruptGenerationUseCase,
-    /**
-     * Exposes the `preferenceManager` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val preferenceManager: PreferenceManager,
-    /**
-     * Exposes the `backgroundTaskManager` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
+    private val sdaiCloudTopUpRepository: SdaiCloudTopUpRepository,
     private val backgroundTaskManager: BackgroundTaskManager,
-    /**
-     * Exposes the `backgroundWorkObserver` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val backgroundWorkObserver: BackgroundWorkObserver,
-    /**
-     * Exposes the `wakeLockInterActor` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val wakeLockInterActor: WakeLockInterActor,
-    /**
-     * Exposes the `platformServices` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val platformServices: GenerationPlatformServices,
-    /**
-     * Exposes the `buildInfoProvider` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val buildInfoProvider: BuildInfoProvider,
-    /**
-     * Exposes the `dimensionValidator` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val dimensionValidator: DimensionValidator,
-    /**
-     * Exposes the `localGenerationBenchmarkGateProvider` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val localGenerationBenchmarkGateProvider: () -> LocalGenerationBenchmarkGate,
-    /**
-     * Exposes the `imageSaver` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val imageSaver: ImageSaver,
-    /**
-     * Exposes the `imageSharer` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val imageSharer: ImageSharer,
-    /**
-     * Exposes the `router` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val router: TextToImageRouter,
-    /**
-     * Exposes the `currentState` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val currentState: () -> TextToImageState,
-    /**
-     * Exposes the `emitState` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val emitState: (TextToImageState) -> Unit,
-    /**
-     * Exposes the `updateState` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val updateState: ((TextToImageState) -> TextToImageState) -> Unit,
-    /**
-     * Exposes the `launch` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val launch: ViewModelLauncher,
-    /**
-     * Exposes the `onError` value used by the SDAI presentation layer.
-     *
-     * @author Dmitriy Moroz
-     */
     private val onError: (Throwable) -> Unit,
 ) {
 
@@ -277,7 +176,7 @@ internal class TextToImageActionHandler(
             }
             return
         }
-        if (backgroundGenerationEnabled) {
+        if (backgroundGenerationEnabled && validatedState.mode != ServerSource.SDAI_CLOUD) {
             backgroundTaskManager.scheduleTextToImageTask(payload)
             backgroundWorkObserver.refreshStatus()
             updateState {
@@ -328,6 +227,19 @@ internal class TextToImageActionHandler(
                 }
                 .onFailure { t ->
                     if (t is CancellationException) throw t
+                    if (t is SdaiCloudInsufficientTokensException) {
+                        pendingGeneration = PendingGeneration(validatedState, payload)
+                        withContext(dispatchersProvider.immediate) {
+                            updateState {
+                                it.copy(
+                                    generating = false,
+                                    screenModal = GenerationModal.SdaiCloudTopUp.Required,
+                                    results = emptyList(),
+                                )
+                            }
+                        }
+                        return@onFailure
+                    }
                     platformServices.showGenerationFailed()
                     withContext(dispatchersProvider.immediate) {
                         updateState {
@@ -335,6 +247,108 @@ internal class TextToImageActionHandler(
                                 generating = false,
                                 screenModal = GenerationModal.Error(t.localizedMessageText()),
                                 results = emptyList(),
+                            )
+                        }
+                    }
+                    onError(t)
+                }
+        }
+    }
+
+    fun showSdaiCloudIapProducts() {
+        updateState { it.copy(screenModal = GenerationModal.SdaiCloudTopUp.LoadingProducts) }
+        launch(dispatchersProvider.io, CoroutineStart.DEFAULT) {
+            runCatching { sdaiCloudTopUpRepository.getIapProducts() }
+                .onSuccess { products ->
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.copy(
+                                screenModal = GenerationModal.SdaiCloudTopUp.PurchaseSheet(products),
+                            )
+                        }
+                    }
+                }
+                .onFailure { t ->
+                    if (t is CancellationException) throw t
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.copy(screenModal = GenerationModal.Error(t.localizedMessageText()))
+                        }
+                    }
+                    onError(t)
+                }
+        }
+    }
+
+    fun topUpSdaiCloudWithRewardedAd() {
+        val pending = pendingGeneration ?: return updateState { it.copy(screenModal = GenerationModal.None) }
+        topUpSdaiCloud(pending) { sdaiCloudTopUpRepository.topUpWithRewardedAd() }
+    }
+
+    fun topUpSdaiCloudWithIap(productId: String) {
+        val pending = pendingGeneration
+        if (pending == null) {
+            topUpSdaiCloudOnly { sdaiCloudTopUpRepository.topUpWithIap(productId) }
+        } else {
+            topUpSdaiCloud(pending) { sdaiCloudTopUpRepository.topUpWithIap(productId) }
+        }
+    }
+
+    fun restoreSdaiCloudIapPurchases() {
+        val pending = pendingGeneration
+        if (pending == null) {
+            topUpSdaiCloudOnly { sdaiCloudTopUpRepository.restoreIapPurchases() }
+        } else {
+            topUpSdaiCloud(pending) { sdaiCloudTopUpRepository.restoreIapPurchases() }
+        }
+    }
+
+    private fun topUpSdaiCloud(
+        pending: PendingGeneration,
+        block: suspend () -> com.shifthackz.aisdv1.domain.entity.SdaiCloudTokenBalance,
+    ) {
+        updateState { it.copy(screenModal = GenerationModal.SdaiCloudTopUp.Working) }
+        launch(dispatchersProvider.io, CoroutineStart.DEFAULT) {
+            runCatching { block() }
+                .onSuccess {
+                    withContext(dispatchersProvider.immediate) {
+                        pendingGeneration = null
+                        startGeneration(pending.state, pending.payload)
+                    }
+                }
+                .onFailure { t ->
+                    if (t is CancellationException) throw t
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.copy(
+                                generating = false,
+                                screenModal = GenerationModal.Error(t.localizedMessageText()),
+                            )
+                        }
+                    }
+                    onError(t)
+                }
+        }
+    }
+
+    private fun topUpSdaiCloudOnly(
+        block: suspend () -> com.shifthackz.aisdv1.domain.entity.SdaiCloudTokenBalance,
+    ) {
+        updateState { it.copy(screenModal = GenerationModal.SdaiCloudTopUp.Working) }
+        launch(dispatchersProvider.io, CoroutineStart.DEFAULT) {
+            runCatching { block() }
+                .onSuccess {
+                    withContext(dispatchersProvider.immediate) {
+                        updateState { it.copy(screenModal = GenerationModal.None) }
+                    }
+                }
+                .onFailure { t ->
+                    if (t is CancellationException) throw t
+                    withContext(dispatchersProvider.immediate) {
+                        updateState {
+                            it.copy(
+                                generating = false,
+                                screenModal = GenerationModal.Error(t.localizedMessageText()),
                             )
                         }
                     }

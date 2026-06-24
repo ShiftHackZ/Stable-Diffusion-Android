@@ -24,6 +24,7 @@ internal class ServerSetupIntentProcessor(
     private val download: (String, String) -> Unit,
     private val validateAndConnectToServer: () -> Unit,
     private val connectToServer: () -> Unit,
+    private val loadSdaiCloudTerms: () -> Unit,
 ) {
 
     fun process(intent: ServerSetupIntent) {
@@ -55,8 +56,16 @@ internal class ServerSetupIntentProcessor(
                 download(modelId, url)
             }
 
-            is ServerSetupIntent.UpdateServerMode -> updateState {
-                it.copy(mode = intent.mode)
+            is ServerSetupIntent.UpdateServerMode -> {
+                updateState {
+                    it.withMode(intent.mode)
+                }
+                if (intent.mode == ServerSource.SDAI_CLOUD) {
+                    val state = currentState()
+                    if (!state.sdaiCloudTermsLoading && state.sdaiCloudTermsVersion.isBlank()) {
+                        loadSdaiCloudTerms()
+                    }
+                }
             }
 
             is ServerSetupIntent.UpdateSourceSearchQuery -> updateState {
@@ -188,6 +197,15 @@ internal class ServerSetupIntentProcessor(
             is ServerSetupIntent.UpdateArliAiApiKey -> updateState {
                 it.copy(arliAiApiKey = intent.key, arliAiApiKeyValidationError = null)
             }
+
+            is ServerSetupIntent.UpdateSdaiCloudConsent -> updateState {
+                it.copy(
+                    sdaiCloudConsentAccepted = intent.value,
+                    sdaiCloudConsentValidationError = null,
+                )
+            }
+
+            ServerSetupIntent.RetrySdaiCloudTerms -> loadSdaiCloudTerms()
 
             is ServerSetupIntent.UpdateHuggingFaceApiKey -> updateState {
                 it.copy(huggingFaceApiKey = intent.key, huggingFaceApiKeyValidationError = null)
