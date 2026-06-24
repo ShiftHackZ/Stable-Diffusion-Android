@@ -234,10 +234,10 @@ BibTeX:
 
 ```bibtex
 @software{sdai,
-  title = {Stable Diffusion AI (SDAI)},
-  author = {Moroz, Dmitriy},
+  title = {Stable Diffusion KMP (SDAI)},
+  author = {Dmitriy Moroz, Moroz Inc.},
   year = {2023},
-  url = {https://github.com/ShiftHackZ/Stable-Diffusion-Android},
+  url = {https://github.com/ShiftHackZ/Stable-Diffusion-KMP},
   note = {Open-source cross-platform AI image generation client}
 }
 ```
