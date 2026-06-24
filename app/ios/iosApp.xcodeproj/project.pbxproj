@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		564B32062FE9E303009C2B4C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 564B32052FE9E303009C2B4C /* StoreKit.framework */; };
-		564B32082FEA7E7D009C2B4C /* SyncedIapProducts.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 564B32072FEA7E7D009C2B4C /* SyncedIapProducts.storekit */; };
 		6A2A00000000000000000001 /* AIStableDiffusionIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000002 /* AIStableDiffusionIOSApp.swift */; };
 		6A2A00000000000000000003 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000004 /* ComposeView.swift */; };
 		6A2A00000000000000000014 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A2A00000000000000000015 /* Assets.xcassets */; };
@@ -209,7 +208,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A2A00000000000000000014 /* Assets.xcassets in Resources */,
-				564B32082FEA7E7D009C2B4C /* SyncedIapProducts.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
