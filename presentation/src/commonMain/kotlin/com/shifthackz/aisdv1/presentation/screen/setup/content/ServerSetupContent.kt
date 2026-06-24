@@ -203,7 +203,7 @@ private fun ServerSetupBottomBar(
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp, top = 8.dp),
+            .padding(top = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         if (isSdaiCloudTermsStep) {
@@ -216,7 +216,8 @@ private fun ServerSetupBottomBar(
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp),
+                .height(60.dp)
+                .padding(bottom = 16.dp),
             enabled = !state.loadingConfiguration && state.mainButtonEnabled,
             onClick = { processIntent(ServerSetupIntent.MainButtonClick) },
         ) {
