@@ -3,7 +3,9 @@
 package com.shifthackz.aisdv1.presentation.screen.setup.source
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -19,18 +21,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifthackz.aisdv1.core.common.platform.Platform
 import com.shifthackz.aisdv1.domain.entity.ServerSource
+import com.shifthackz.aisdv1.presentation.generated.resources.Res
+import com.shifthackz.aisdv1.presentation.generated.resources.sdai_logo
 import com.shifthackz.aisdv1.presentation.model.readinessFor
 import com.shifthackz.aisdv1.presentation.screen.setup.component.icon
 import com.shifthackz.aisdv1.presentation.screen.setup.component.subtitle
 import com.shifthackz.aisdv1.presentation.screen.setup.component.title
 import com.shifthackz.aisdv1.presentation.screen.setup.content.ServerSetupStrings
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * Renders one provider option in the provider selection list.
@@ -68,13 +74,10 @@ internal fun SourceModeItem(
                 .padding(horizontal = 4.dp, vertical = 4.dp),
         ) {
             Row {
-                Icon(
-                    modifier = Modifier
-                        .size(42.dp)
-                        .padding(top = 8.dp, bottom = 8.dp),
-                    imageVector = source.icon(platform),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                SourceProviderIcon(
+                    modifier = Modifier.size(42.dp),
+                    source = source,
+                    platform = platform,
                 )
                 Text(
                     modifier = Modifier
@@ -122,6 +125,48 @@ internal fun SourceModeItem(
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun SourceProviderIcon(
+    source: ServerSource,
+    platform: Platform,
+    modifier: Modifier = Modifier,
+) {
+    if (source == ServerSource.SDAI_CLOUD) {
+        Box(
+            modifier = modifier,
+            contentAlignment = Alignment.Center,
+        ) {
+            Surface(
+                modifier = Modifier.size(30.dp),
+                shape = RoundedCornerShape(7.dp),
+                color = Color.White,
+                tonalElevation = 1.dp,
+            ) {
+                Image(
+                    modifier = Modifier
+                        .size(30.dp)
+                        .padding(2.dp)
+                        .clip(RoundedCornerShape(7.dp)),
+                    painter = painterResource(Res.drawable.sdai_logo),
+                    contentDescription = null,
+                )
+            }
+        }
+    } else {
+        Box(
+            modifier = modifier,
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                modifier = Modifier.size(26.dp),
+                imageVector = source.icon(platform),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
         }
     }
 }

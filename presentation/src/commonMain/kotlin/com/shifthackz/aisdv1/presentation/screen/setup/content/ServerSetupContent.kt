@@ -216,7 +216,7 @@ private fun ServerSetupBottomBar(
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(52.dp),
+                .height(60.dp),
             enabled = !state.loadingConfiguration && state.mainButtonEnabled,
             onClick = { processIntent(ServerSetupIntent.MainButtonClick) },
         ) {
